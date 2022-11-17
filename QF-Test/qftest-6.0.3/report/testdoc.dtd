@@ -1,0 +1,131 @@
+<!-- ........................................................................
+     QFS Test Pkgdoc 1.0 DTD
+
+     Copyright 2005 Quality First Software GmbH
+         All Rights Reserved.
+
+     Permission to use, copy, modify and distribute the Test Report 1.1 DTD
+     and its accompanying documentation for any purpose and without fee is
+     hereby granted in perpetuity, provided that the above copyright notice
+     and this paragraph appear in all copies.  The copyright holders make no
+     representation about the suitability of the DTD for any purpose.
+
+     It is provided "as is" without expressed or implied warranty.
+......................................................................... -->
+
+<!-- This is the driver file for version 1.0 of the Pkgdoc DTD.
+
+     Please use this formal public identifier to identify it:
+
+     "-//QFS//DTD Pkgdoc 1.0//EN"
+-->
+<!ENTITY % Report.version "-//QFS//DTD Pkgdoc 1.1//EN">
+
+<!-- Use this URI to identify the default namespace:
+
+         "http://www.qfs.de/2003/pkgdoc"
+-->
+<!ENTITY % Report.ns "http://www.qfs.de/2003/pkgdoc">
+
+<!-- ........................................................................
+     This DTD defines a generic structure for XML package documentation
+     generated from test-suites.
+
+     This file should be considered work in progress. The structure and
+     attributes have not been finalized yet and may change incomatibly in
+     future versions.
+......................................................................... -->
+
+<!--.........................................................................
+     Node hierarchy
+..........................................................................-->
+
+<!-- test-summary is the root node of a testdoc summary.
+-->
+<!ELEMENT test-summary
+     (summary?, test-suite*)
+>
+
+<!-- test-summary attributes:
+     State attributes.
+-->
+<!ATTLIST test-summary
+     sourcedir        CDATA        #IMPLIED
+>
+
+<!-- test-suite is the root node of a testdoc.
+-->
+<!ELEMENT test-suite
+     (summary?, comment?, testset*)
+>
+
+<!-- test-suite attributes:
+     State attributes.
+     Common attributes:
+
+     type        The type of the test-suite: currently only "qftest"
+     file        Identifier for the test-suite, i.e. the filename of
+            the original QF-Test test-suite.
+     qftest-version    Version of QF-Test
+-->
+<!ATTLIST test-suite
+     type        (qftest)    #REQUIRED
+     file        CDATA        #IMPLIED
+     sourcedir        CDATA        #IMPLIED
+     qftest-version    CDATA        #IMPLIED
+>
+
+<!-- .................................................................... -->
+
+<!-- testset represents a Test-set node in a QF-Test test-suite.
+-->
+<!ELEMENT testset
+     (summary?, comment?, (testset | testcase)*)>
+
+<!-- testset attributes
+     name        The name of the testset.
+     id            Optional identifier for the testset.
+-->
+<!ATTLIST testset
+     name        CDATA        #REQUIRED
+     qname        CDATA        #REQUIRED
+     id            CDATA        #IMPLIED
+>
+
+<!-- .................................................................... -->
+
+<!-- testcase represents a Test-case node in a QF-Test test-suite.
+-->
+<!ELEMENT testcase
+     (comment?)>
+
+<!-- testcase attributes
+     name        The name of the testcase.
+     id            Optional identifier for the testcase.
+-->
+<!ATTLIST testcase
+     name        CDATA        #REQUIRED
+     qname        CDATA        #REQUIRED
+     id            CDATA        #IMPLIED
+     implemented    CDATA        #REQUIRED
+>
+
+<!-- .................................................................... -->
+
+<!-- All major nodes can contain an optional summary.
+-->
+<!ELEMENT summary EMPTY >
+<!ATTLIST summary
+     testsets        CDATA        #REQUIRED
+     totalcases        CDATA        #REQUIRED
+     implcases        CDATA        #REQUIRED
+     nonimplcases    CDATA        #REQUIRED
+     percentimpl    CDATA        #REQUIRED
+>
+
+<!-- .................................................................... -->
+
+<!-- All major nodes can contain an optional comment.
+-->
+<!ELEMENT comment (#PCDATA) >
+

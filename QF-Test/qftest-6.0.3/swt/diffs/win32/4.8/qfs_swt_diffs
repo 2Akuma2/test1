@@ -1,0 +1,5216 @@
+Index: org/eclipse/swt/SWT.java
+===================================================================
+--- org/eclipse/swt/SWT.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/SWT.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -8,6 +8,7 @@
+  * Contributors:
+  *     IBM Corporation - initial API and implementation
+  *     Lars Vogel <Lars.Vogel@vogella.com> - Bug 455263
++ *     QFS GmbH - Accessibility/Testing hooks (see <QFS>)
+  *******************************************************************************/
+ package org.eclipse.swt;
+ 
+@@ -4419,7 +4420,19 @@
+ 	return Platform.PLATFORM;
+ }
+ 
++// <QFS>
+ /**
++ * Returns the SWT platform name including architecture.
++ * Examples: "win32", "motif", "gtk", "gtk-64", "photon", "carbon"
++ *
++ * @return the SWT platform name
++ */
++public static String getPlatformAndArch () {
++    return getPlatform();
++}
++// </QFS>
++
++/**
+  * Returns the SWT version number as an integer.
+  * Example: "SWT051" == 51
+  *
+Index: org/eclipse/swt/dnd/DropTarget.java
+===================================================================
+--- org/eclipse/swt/dnd/DropTarget.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/dnd/DropTarget.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -7,6 +7,7 @@
+  *
+  * Contributors:
+  *     IBM Corporation - initial API and implementation
++ *     QFS GmbH - Accessibility/Testing hooks (see <QFS>)
+  *******************************************************************************/
+ package org.eclipse.swt.dnd;
+ 
+@@ -160,6 +161,9 @@
+ 	} else if (control instanceof Tree) {
+ 		dropEffect = new TreeDropTargetEffect((Tree) control);
+ 	}
++        // <QFS>
++        getDisplay().runDNDCreationHooks(this);
++        // </QFS>
+ }
+ 
+ static int checkStyle (int style) {
+Index: org/eclipse/swt/dnd/DragSource.java
+===================================================================
+--- org/eclipse/swt/dnd/DragSource.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/dnd/DragSource.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -7,6 +7,7 @@
+  *
+  * Contributors:
+  *     IBM Corporation - initial API and implementation
++ *     QFS GmbH - Accessibility/Testing hooks (see <QFS>)
+  *     Lars Vogel <Lars.Vogel@vogella.com> - Bug 497807
+  *******************************************************************************/
+ package org.eclipse.swt.dnd;
+@@ -186,6 +187,9 @@
+ 	} else if (control instanceof Table) {
+ 		dragEffect = new TableDragSourceEffect((Table) control);
+ 	}
++        // <QFS>
++        getDisplay().runDNDCreationHooks(this);
++        // </QFS>
+ }
+ 
+ static int checkStyle(int style) {
+Index: org/eclipse/swt/widgets/Tree.java
+===================================================================
+--- org/eclipse/swt/widgets/Tree.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/Tree.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -5998,7 +5998,8 @@
+ 				}
+ 				tvItem.stateMask = OS.TVIS_SELECTED;
+ 				OS.SendMessage (handle, OS.TVM_GETITEM, 0, tvItem);
+-				if ((style & SWT.MULTI) != 0 && OS.GetKeyState (OS.VK_CONTROL) < 0) {
++                                // <QFS/> Changed to getDisplay().GetKeyState
++				if ((style & SWT.MULTI) != 0 && getDisplay().GetKeyState (OS.VK_CONTROL) < 0) {
+ 					if ((tvItem.state & OS.TVIS_SELECTED) != 0) {
+ 						tvItem.state &= ~OS.TVIS_SELECTED;
+ 					} else {
+@@ -6116,7 +6117,8 @@
+ 			*/
+ 			return LRESULT.ZERO;
+ 		case OS.VK_ADD:
+-			if (OS.GetKeyState (OS.VK_CONTROL) < 0) {
++                        // <QFS/> changed to getDisplay().GetKeyState
++			if (getDisplay().GetKeyState (OS.VK_CONTROL) < 0) {
+ 				if (hwndHeader != 0) {
+ 					TreeColumn [] newColumns = new TreeColumn [columnCount];
+ 					System.arraycopy (columns, 0, newColumns, 0, columnCount);
+@@ -6138,7 +6140,8 @@
+ 			OS.SendMessage (handle, OS.WM_CHANGEUISTATE, OS.UIS_INITIALIZE, 0);
+ 			if (itemToolTipHandle != 0) OS.ShowWindow (itemToolTipHandle, OS.SW_HIDE);
+ 			if ((style & SWT.SINGLE) != 0) break;
+-			if (OS.GetKeyState (OS.VK_SHIFT) < 0) {
++                        // <QFS/> Changed to getDisplay().GetKeyState
++			if (getDisplay().GetKeyState (OS.VK_SHIFT) < 0) {
+ 				int /*long*/ hItem = OS.SendMessage (handle, OS.TVM_GETNEXTITEM, OS.TVGN_CARET, 0);
+ 				if (hItem != 0) {
+ 					if (hAnchor == 0) hAnchor = hItem;
+@@ -6184,7 +6187,8 @@
+ 					return new LRESULT (code);
+ 				}
+ 			}
+-			if (OS.GetKeyState (OS.VK_CONTROL) < 0) {
++                        // <QFS/> Changed to getDisplay().GetKeyState
++			if (getDisplay().GetKeyState (OS.VK_CONTROL) < 0) {
+ 				int /*long*/ hItem = OS.SendMessage (handle, OS.TVM_GETNEXTITEM, OS.TVGN_CARET, 0);
+ 				if (hItem != 0) {
+ 					TVITEM tvItem = new TVITEM ();
+Index: org/eclipse/swt/widgets/Shell.java
+===================================================================
+--- org/eclipse/swt/widgets/Shell.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/Shell.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -2315,7 +2315,8 @@
+ 	* embedded widget's event loop.
+ 	*/
+ 	POINT pt = new POINT ();
+-	if (!OS.GetCursorPos (pt)) {
++        // <QFS/> Get overridden cursor position
++	if (!OS._GetCursorPos (pt)) {
+ 		int pos = OS.GetMessagePos ();
+ 		OS.POINTSTOPOINT (pt, pos);
+ 	}
+Index: org/eclipse/swt/widgets/List.java
+===================================================================
+--- org/eclipse/swt/widgets/List.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/List.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -1670,7 +1670,8 @@
+ 	* it inaccessible from the keyboard.  The fix is to implement
+ 	* the key processing.
+ 	*/
+-	if (OS.GetKeyState (OS.VK_CONTROL) < 0 && OS.GetKeyState (OS.VK_SHIFT) >= 0) {
++        // <QFS/> Changed to getDisplay().GetKeyState
++	if (getDisplay().GetKeyState (OS.VK_CONTROL) < 0 && getDisplay().GetKeyState (OS.VK_SHIFT) >= 0) {
+ 		int bits = OS.GetWindowLong (handle, OS.GWL_STYLE);
+ 		if ((bits & OS.LBS_EXTENDEDSEL) != 0) {
+ 			switch ((int)/*64*/wParam) {
+@@ -1699,7 +1700,8 @@
+ 	* it inaccessible from the keyboard.  The fix is to implement
+ 	* the key processing.
+ 	*/
+-	if (OS.GetKeyState (OS.VK_CONTROL) < 0 && OS.GetKeyState (OS.VK_SHIFT) >= 0) {
++        // <QFS/> Changed to getDisplay().GetKeyState
++	if (getDisplay().GetKeyState (OS.VK_CONTROL) < 0 && getDisplay().GetKeyState (OS.VK_SHIFT) >= 0) {
+ 		int bits = OS.GetWindowLong (handle, OS.GWL_STYLE);
+ 		if ((bits & OS.LBS_EXTENDEDSEL) != 0) {
+ 			int newIndex = -1;
+Index: org/eclipse/swt/widgets/Control.java
+===================================================================
+--- org/eclipse/swt/widgets/Control.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/Control.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -8,6 +8,7 @@
+  * Contributors:
+  *     IBM Corporation - initial API and implementation
+  *     Stefan Xenos (Google) - bug 468854 - Add a requestLayout method to Control
++ *     QFS GmbH - Accessibility/Testing hooks (see <QFS>)
+  *******************************************************************************/
+ package org.eclipse.swt.widgets;
+ 
+@@ -20,6 +21,11 @@
+ import org.eclipse.swt.internal.gdip.*;
+ import org.eclipse.swt.internal.win32.*;
+ 
++// <QFS>
++import de.qfs.lib.log.Log;
++import de.qfs.lib.log.Logger;
++// </QFS>
++
+ /**
+  * Control is the abstract superclass of all windowed user interface classes.
+  * <p>
+@@ -46,6 +52,13 @@
+  */
+ public abstract class Control extends Widget implements Drawable {
+ 
++    // {{{ <QFS> Log
++
++    private final static Logger logger = new Logger("org.eclipse.swt.widgets.Control");
++    private final static Logger suppresslogger = new Logger("suppress.aus.ab.DBG");
++
++    // }}} </QFS>
++
+ 	/**
+ 	 * the handle to the OS resource
+ 	 * (Warning: This field is platform dependent)
+@@ -883,7 +896,8 @@
+ boolean dragDetect (int button, int count, int stateMask, int x, int y) {
+ 	if (button != 1 || count != 1) return false;
+ 	boolean dragging = dragDetect (handle, x, y, false, null, null);
+-	if (OS.GetKeyState (OS.VK_LBUTTON) < 0) {
++        // <QFS/> Changed to getDisplay().GetKeyState
++	if (getDisplay().GetKeyState (OS.VK_LBUTTON) < 0) {
+ 		if (OS.GetCapture () != handle) OS.SetCapture (handle);
+ 	}
+ 	if (!dragging) {
+@@ -907,7 +921,8 @@
+ 		* extended-key flag, context code, previous key-state flag,
+ 		* and transition-state flag) which is non-trivial.
+ 		*/
+-		if (button == 1 && OS.GetKeyState (OS.VK_ESCAPE) >= 0) {
++                // <QFS/> Changed to getDisplay().GetKeyState
++		if (button == 1 && getDisplay().GetKeyState (OS.VK_ESCAPE) >= 0) {
+ 			int wParam = 0;
+ 			if ((stateMask & SWT.CTRL) != 0) wParam |= OS.MK_CONTROL;
+ 			if ((stateMask & SWT.SHIFT) != 0) wParam |= OS.MK_SHIFT;
+@@ -1737,7 +1752,8 @@
+ 	if (!OS.GetClientRect (handle, rect)) return false;
+ 	OS.MapWindowPoints (handle, 0, rect, 2);
+ 	POINT pt = new POINT ();
+-	return OS.GetCursorPos (pt) && OS.PtInRect (rect, pt);
++        // <QFS/> Get overridden cursor position
++	return OS._GetCursorPos (pt) && OS.PtInRect (rect, pt);
+ }
+ 
+ boolean hasCustomBackground() {
+@@ -3359,7 +3375,8 @@
+ 	int /*long*/ hwndCursor = OS.GetCapture ();
+ 	if (hwndCursor == 0) {
+ 		POINT pt = new POINT ();
+-		if (!OS.GetCursorPos (pt)) return;
++                // <QFS/> Get overridden cursor position
++		if (!OS._GetCursorPos (pt)) return;
+ 		int /*long*/ hwnd = hwndCursor = OS.WindowFromPoint (pt);
+ 		while (hwnd != 0 && hwnd != handle) {
+ 			hwnd = OS.GetParent (hwnd);
+@@ -4127,7 +4144,8 @@
+ boolean translateMnemonic (MSG msg) {
+ 	if (msg.wParam < 0x20) return false;
+ 	int /*long*/ hwnd = msg.hwnd;
+-	if (OS.GetKeyState (OS.VK_MENU) >= 0) {
++        // <QFS/> Changed to getDisplay().GetKeyState
++	if (getDisplay().GetKeyState (OS.VK_MENU) >= 0) {
+ 		int /*long*/ code = OS.SendMessage (hwnd, OS.WM_GETDLGCODE, 0, 0);
+ 		if ((code & OS.DLGC_WANTALLKEYS) != 0) return false;
+ 		if ((code & OS.DLGC_BUTTON) == 0) return false;
+@@ -4146,6 +4164,13 @@
+ }
+ 
+ boolean translateTraversal (MSG msg) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("translateTraversal(MSG)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("msg: ").add(msg)).log(Log.MTD);
++    }
++    // </QFS>
+ 	int /*long*/ hwnd = msg.hwnd;
+ 	int key = (int)/*64*/msg.wParam;
+ 	if (key == OS.VK_MENU) {
+@@ -4186,7 +4211,8 @@
+ 		}
+ 		case OS.VK_TAB: {
+ 			lastAscii = '\t';
+-			boolean next = OS.GetKeyState (OS.VK_SHIFT) >= 0;
++                        // <QFS/> Changed to getDisplay().GetKeyState
++			boolean next = getDisplay().GetKeyState (OS.VK_SHIFT) >= 0;
+ 			int /*long*/ code = OS.SendMessage (hwnd, OS.WM_GETDLGCODE, 0, 0);
+ 			if ((code & (OS.DLGC_WANTTAB | OS.DLGC_WANTALLKEYS)) != 0) {
+ 				/*
+@@ -4198,7 +4224,8 @@
+ 				* Shift+Tab to the control.
+ 				*/
+ 				if ((code & OS.DLGC_HASSETSEL) != 0) {
+-					if (next && OS.GetKeyState (OS.VK_CONTROL) >= 0) {
++                                        // <QFS/> Changed to getDisplay().GetKeyState
++					if (next && getDisplay().GetKeyState (OS.VK_CONTROL) >= 0) {
+ 						doit = false;
+ 					}
+ 				} else {
+@@ -4226,7 +4253,8 @@
+ 		case OS.VK_NEXT: {
+ 			all = true;
+ 			lastVirtual = true;
+-			if (OS.GetKeyState (OS.VK_CONTROL) >= 0) return false;
++                        // <QFS/> Changed to getDisplay().GetKeyState
++			if (getDisplay().GetKeyState (OS.VK_CONTROL) >= 0) return false;
+ 			int /*long*/ code = OS.SendMessage (hwnd, OS.WM_GETDLGCODE, 0, 0);
+ 			if ((code & OS.DLGC_WANTALLKEYS) != 0) {
+ 				/*
+@@ -4249,7 +4277,15 @@
+ 	display.lastAscii = lastAscii;
+ 	display.lastVirtual = lastVirtual;
+ 	display.lastNull = display.lastDead = false;
+-	if (!setKeyState (event, SWT.Traverse, msg.wParam, msg.lParam)) return false;
++	if (!setKeyState (event, SWT.Traverse, msg.wParam, msg.lParam)) {
++            // <QFS>
++            if (logger.level >= Log.DBG) {
++                logger.log(Log.DBG, "translateTraversal(MSG)",
++                           "setKeyState returned false");
++            }
++            // </QFS>
++            return false;
++        }
+ 	Shell shell = getShell ();
+ 	Control control = this;
+ 	do {
+@@ -4756,6 +4792,19 @@
+ abstract int /*long*/ windowProc ();
+ 
+ int /*long*/ windowProc (int /*long*/ hwnd, int msg, int /*long*/ wParam, int /*long*/ lParam) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("windowProc(int,int,int,int)");
++        boolean[] hasMatch = new boolean[1];
++        String msgtype = OS.getWinMsgType(msg, hasMatch);
++        (logger.level < Log.MTD ? lb : lb
++         .add("hwnd: ").addHex(hwnd)
++         .add(", class=").add(this.getClass().getName())
++         .add(", msg: ").add(OS.getWinMsgType(msg, null))
++         .add(", wParam: ").addHex(wParam)
++         .add(", lParam: ").addHex(lParam)).log(Log.MTD);
++    }
++    // </QFS>
+ 	Display display = this.display;
+ 	LRESULT result = null;
+ 	switch (msg) {
+@@ -4893,6 +4942,14 @@
+ }
+ 
+ LRESULT WM_COMMAND (int /*long*/ wParam, int /*long*/ lParam) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("WM_COMMAND(int,int)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("wParam: ").add(wParam)
++         .add(", lParam: ").add(lParam)).log(Log.MTD);
++    }
++    // </QFS>
+ 	/*
+ 	* When the WM_COMMAND message is sent from a
+ 	* menu, the HWND parameter in LPARAM is zero.
+@@ -4902,6 +4959,12 @@
+ 		if (shell.isEnabled ()) {
+ 			int id = OS.LOWORD (wParam);
+ 			MenuItem item = display.getMenuItem (id);
++                        // <QFS>
++                        if (logger.level >= Log.DBG) {
++                            logger.build("WM_COMMAND(int,int)")
++                                .add("item: ").add(item).log(Log.DBG);
++                        }
++                        // </QFS>
+ 			if (item != null && item.isEnabled ()) {
+ 				return item.wmCommandChild (wParam, lParam);
+ 			}
+@@ -5040,6 +5103,14 @@
+ }
+ 
+ LRESULT WM_HSCROLL (int /*long*/ wParam, int /*long*/ lParam) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("WM_HSCROLL(int,int)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("wParam: ").addHex(wParam)
++         .add(", lParam: ").addHex(lParam)).log(Log.MTD);
++    }
++    // </QFS>
+ 	Control control = display.getControl (lParam);
+ 	if (control == null) return null;
+ 	return control.wmScrollChild (wParam, lParam);
+@@ -5072,6 +5143,14 @@
+ }
+ 
+ LRESULT WM_INITMENUPOPUP (int /*long*/ wParam, int /*long*/ lParam) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("WM_INITMENUPOPUP(int,int)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("wParam: ").addHex(wParam)
++         .add(", lParam: ").addHex(lParam)).log(Log.MTD);
++    }
++    // </QFS>
+ 
+ 	/* Ignore WM_INITMENUPOPUP for an accelerator */
+ 	if (display.accelKeyHit) return null;
+@@ -5083,10 +5162,22 @@
+ 	*/
+ 	Shell shell = getShell ();
+ 	Menu oldMenu = shell.activeMenu, newMenu = null;
++        // <QFS>
++        if (logger.level >= Log.DBG) {
++            logger.build("WM_INITMENUPOPUP(int,int)")
++                .add("oldMenu: ").add(oldMenu).log(Log.DBG);
++        }
++        // </QFS>
+ 	if (OS.HIWORD (lParam) == 0) {
+ 		newMenu = menuShell ().findMenu (wParam);
+ 		if (newMenu != null) newMenu.update ();
+ 	}
++        // <QFS>
++        if (logger.level >= Log.DBG) {
++            logger.build("WM_INITMENUPOPUP(int,int)")
++                .add("newMenu: ").add(newMenu).log(Log.DBG);
++        }
++        // </QFS>
+ 	Menu menu = newMenu;
+ 	while (menu != null && menu != oldMenu) {
+ 		menu = menu.getParentMenu ();
+@@ -5119,9 +5210,21 @@
+ 	*/
+ 	if (newMenu != null && newMenu.isDisposed ()) newMenu = null;
+ 	shell.activeMenu = newMenu;
++        // <QFS>
++        if (logger.level >= Log.DBG) {
++            logger.build("WM_INITMENUPOPUP(int,int)")
++                .add("shell.activeMenu: ").add(shell.activeMenu).log(Log.DBG);
++        }
++        // </QFS>
+ 
+ 	/* Send the show event */
+ 	if (newMenu != null && newMenu != oldMenu) {
++            // <QFS>
++            if (logger.level >= Log.DBG) {
++                logger.build("WM_INITMENUPOPUP(int,int)")
++                    .add("show newMenu: ").add(newMenu).log(Log.DBG);
++            }
++            // </QFS>
+ 		newMenu.sendEvent (SWT.Show);
+ 		// widget could be disposed at this point
+ 	}
+@@ -5134,13 +5237,45 @@
+ }
+ 
+ LRESULT WM_KEYDOWN (int /*long*/ wParam, int /*long*/ lParam) {
+-	return wmKeyDown (handle, wParam, lParam);
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("WM_KEYDOWN(int,int)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("wParam: ").addHex(wParam)
++         .add(", lParam: ").addHex(lParam)).log(Log.MTD);
+ }
++    // </QFS>
++    LRESULT lresult = wmKeyDown (handle, wParam, lParam);
++    // <QFS>
++    if (logger.level >= Log.MTDDETAIL) {
++        logger.log(Log.MTDDETAIL, "WM_KEYDOWN(int,int)",
++                   "lresult="+(lresult == null ? "null" : ""+lresult.value));
++    }
++    // </QFS>
+ 
++    return lresult;
++}
++
+ LRESULT WM_KEYUP (int /*long*/ wParam, int /*long*/ lParam) {
+-	return wmKeyUp (handle, wParam, lParam);
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("WM_KEYDOWN(int,int)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("wParam: ").addHex(wParam)
++         .add(", lParam: ").addHex(lParam)).log(Log.MTD);
+ }
++    // </QFS>
++    LRESULT lresult = wmKeyUp (handle, wParam, lParam);
++    // <QFS>
++    if (logger.level >= Log.MTDDETAIL) {
++        logger.log(Log.MTDDETAIL, "WM_KEYUP(int,int)",
++                   "lresult="+(lresult == null ? "null" : ""+lresult.value));
++    }
++    // </QFS>
+ 
++    return lresult;
++}
++
+ LRESULT WM_KILLFOCUS (int /*long*/ wParam, int /*long*/ lParam) {
+ 	return wmKillFocus (handle, wParam, lParam);
+ }
+@@ -5201,6 +5336,14 @@
+ }
+ 
+ LRESULT WM_MENUSELECT (int /*long*/ wParam, int /*long*/ lParam) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("WM_MENUSELECT(int,int)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("wParam: ").add(wParam)
++         .add(", lParam: ").add(lParam)).log(Log.MTD);
++    }
++    // </QFS>
+ 	int code = OS.HIWORD (wParam);
+ 	Shell shell = getShell ();
+ 	OS.KillTimer (this.handle, Menu.ID_TOOLTIP_TIMER);
+@@ -5236,6 +5379,12 @@
+ 		* to null in a destroyed widget is not harmful.
+ 		*/
+ 		shell.activeMenu = null;
++                // <QFS>
++                if (logger.level >= Log.DBG) {
++                    logger.build("WM_MENUSELECT(int,int)")
++                        .add("shell.activeMenu: ").add(shell.activeMenu).log(Log.DBG);
++                }
++                // </QFS>
+ 		return null;
+ 	}
+ 	if ((code & OS.MF_SYSMENU) != 0) return null;
+@@ -5653,6 +5802,14 @@
+ }
+ 
+ LRESULT WM_VSCROLL (int /*long*/ wParam, int /*long*/ lParam) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("WM_VSCROLL(int,int)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("wParam: ").addHex(wParam)
++         .add(", lParam: ").addHex(lParam)).log(Log.MTD);
++    }
++    // </QFS>
+ 	Control control = display.getControl (lParam);
+ 	if (control == null) return null;
+ 	return control.wmScrollChild (wParam, lParam);
+Index: org/eclipse/swt/widgets/MenuItem.java
+===================================================================
+--- org/eclipse/swt/widgets/MenuItem.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/MenuItem.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -7,6 +7,7 @@
+  *
+  * Contributors:
+  *     IBM Corporation - initial API and implementation
++ *     QFS GmbH - Accessibility/Testing hooks (see <QFS>)
+  *******************************************************************************/
+ package org.eclipse.swt.widgets;
+ 
+@@ -17,6 +18,11 @@
+ import org.eclipse.swt.internal.*;
+ import org.eclipse.swt.internal.win32.*;
+ 
++// <QFS>
++import de.qfs.lib.log.Log;
++import de.qfs.lib.log.Logger;
++// </QFS>
++
+ /**
+  * Instances of this class represent a selectable user interface object
+  * that issues notification when pressed and released.
+@@ -44,6 +50,13 @@
+ 	/* Image margin. */
+ 	final static int MARGIN_WIDTH = 1;
+ 	final static int MARGIN_HEIGHT = 1;
++    // <QFS>
++    /**
++     * The Logger used for logging.
++     */
++    private final static Logger logger =
++        new Logger ("org.eclipse.swt.widgets.MenuItem");
++    // </QFS>
+ 
+ /**
+  * Constructs a new instance of this class given its parent
+@@ -319,7 +332,8 @@
+  *
+  * @since 3.1
+  */
+-/*public*/ Rectangle getBounds () {
++// <QFS/> Made public.
++public Rectangle getBounds () {
+ 	checkWidget ();
+ 	int index = parent.indexOf (this);
+ 	if (index == -1) return new Rectangle (0, 0, 0, 0);
+@@ -347,10 +361,16 @@
+ 	} else {
+ 		int /*long*/ hMenu = parent.handle;
+ 		RECT rect1 = new RECT ();
++                // <QFS/> Bug? Need getShell.handle instead of 0 ???
++                // Leave unchanged for now
++                // if (!OS.GetMenuItemRect (parent.getShell().handle, hMenu, 0, rect1)) {
+ 		if (!OS.GetMenuItemRect (0, hMenu, 0, rect1)) {
+ 			return new Rectangle (0, 0, 0, 0);
+ 		}
+ 		RECT rect2 = new RECT ();
++                // <QFS/> Bug? Need getShell.handle instead of 0 ???
++                // Leave unchanged for now
++                // if (!OS.GetMenuItemRect (parent.getShell().handle, hMenu, index, rect2)) {
+ 		if (!OS.GetMenuItemRect (0, hMenu, index, rect2)) {
+ 			return new Rectangle (0, 0, 0, 0);
+ 		}
+@@ -1104,6 +1124,14 @@
+ }
+ 
+ LRESULT wmCommandChild (int /*long*/ wParam, int /*long*/ lParam) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("wmCommandChild(int,int)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("wParam: ").add(wParam)
++         .add(", lParam: ").add(lParam)).log(Log.MTD);
++    }
++    // </QFS>
+ 	if ((style & SWT.CHECK) != 0) {
+ 		setSelection (!getSelection ());
+ 	} else {
+Index: org/eclipse/swt/widgets/Text.java
+===================================================================
+--- org/eclipse/swt/widgets/Text.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/Text.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -1721,7 +1721,8 @@
+ 	* is to detect this case and avoid sending a verify
+ 	* event.
+ 	*/
+-	if (OS.GetKeyState (OS.VK_LBUTTON) < 0) {
++        // <QFS/> Changed to getDisplay().GetKeyState
++	if (getDisplay().GetKeyState (OS.VK_LBUTTON) < 0) {
+ 		if (handle == OS.GetCapture()) return true;
+ 	}
+ 
+@@ -2553,7 +2554,8 @@
+ 	*/
+ 	switch ((int)/*64*/wParam) {
+ 		case SWT.DEL:
+-			if (OS.GetKeyState (OS.VK_CONTROL) < 0) {
++                        // <QFS/> Changed to getDisplay().GetKeyState
++			if (getDisplay().GetKeyState (OS.VK_CONTROL) < 0) {
+ 				if ((style & SWT.READ_ONLY) != 0 || (style & SWT.PASSWORD) != 0) return LRESULT.ZERO;
+ 				Point selection = getSelection ();
+ 				int x = selection.x;
+Index: org/eclipse/swt/widgets/FontDialog.java
+===================================================================
+--- org/eclipse/swt/widgets/FontDialog.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/FontDialog.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -7,6 +7,7 @@
+  *
+  * Contributors:
+  *     IBM Corporation - initial API and implementation
++ *     QFS GmbH - Accessibility/Testing hooks (see <QFS>)
+  *******************************************************************************/
+ package org.eclipse.swt.widgets;
+ 
+@@ -15,6 +16,11 @@
+ import org.eclipse.swt.graphics.*;
+ import org.eclipse.swt.internal.win32.*;
+ 
++// <QFS>
++import de.qfs.lib.log.Log;
++import de.qfs.lib.log.Logger;
++// </QFS>
++
+ /**
+  * Instances of this class allow the user to select a font
+  * from all available fonts in the system.
+@@ -33,6 +39,13 @@
+  * @noextend This class is not intended to be subclassed by clients.
+  */
+ public class FontDialog extends Dialog {
++    // <QFS>
++    /**
++     * The Logger used for logging.
++     */
++    private final static Logger logger =
++        new Logger ("org.eclipse.swt.widgets.ColorDialog");
++    // </QFS>
+ 	FontData fontData;
+ 	RGB rgb;
+ 	boolean effectsVisible = true;
+@@ -221,6 +234,22 @@
+ 		display.setModalDialog (this);
+ 	}
+ 
++        // <QFS>
++        runDialogShownHooks();
++        if (hwndOwner != 0) {
++            boolean ok = OS.SetForegroundWindow(hwndOwner);
++            if (logger.level >= Log.DBG) {
++                logger.build("open()").add("called SetForegroundWindow hwndOwner: ")
++                    .addHex(hwndOwner)
++                    .add(", returned ok: ").add(ok).log(Log.DBG);
++            }
++        } else {
++            if (logger.level >= Log.WRN) {
++                logger.log(Log.WRN, "open()",
++                           "hwndOwner is null - unable to call SetForegroundWindow");
++            }
++        }
++        // </QFS>
+ 	display.sendPreExternalEventDispatchEvent ();
+ 	/* Open the dialog */
+ 	boolean success = OS.ChooseFont (lpcf);
+@@ -292,6 +321,15 @@
+ 	*/
+ //	if (hwndOwner != 0) OS.UpdateWindow (hwndOwner);
+ 
++        // <QFS>
++        Object[] replaced = (Object[]) _qfGetDisplay().runDialogClosedHooks
++            (this, success ? new Object[] {fontData, rgb} : null);
++        if (replaced != null) {
++            fontData = (FontData) replaced[0];
++            rgb = (RGB) replaced[1];
++            success = true;
++        }
++        // </QFS>
+ 	if (!success) return null;
+ 	return fontData;
+ }
+Index: org/eclipse/swt/widgets/Table.java
+===================================================================
+--- org/eclipse/swt/widgets/Table.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/Table.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -3557,7 +3557,8 @@
+ 			}
+ 		}
+ 		if (explorerTheme) {
+-			if (!ignoreDrawHot || drawDrophilited || (!ignoreDrawSelection && clrSelectionBk != -1)) {
++	if (!ignoreDrawHot || (!ignoreDrawSelection && clrSelectionBk != -1)) {
++			boolean hot = drawHot;
+ 				RECT pClipRect = new RECT ();
+ 				OS.SetRect (pClipRect, nmcd.left, nmcd.top, nmcd.right, nmcd.bottom);
+ 				RECT rect = new RECT ();
+@@ -3581,8 +3582,7 @@
+ 				}
+ 				int /*long*/ hTheme = OS.OpenThemeData (handle, Display.LISTVIEW);
+ 				int iStateId = selected ? OS.LISS_SELECTED : OS.LISS_HOT;
+-				if (OS.GetFocus () != handle && selected && !drawHot) iStateId = OS.LISS_SELECTEDNOTFOCUS;
+-				if (drawDrophilited) iStateId = OS.LISS_SELECTED;
++			if (OS.GetFocus () != handle && selected && !hot) iStateId = OS.LISS_SELECTEDNOTFOCUS;
+ 				OS.DrawThemeBackground (hTheme, hDC, OS.LVP_LISTITEM, iStateId, rect, pClipRect);
+ 				OS.CloseThemeData (hTheme);
+ 			}
+@@ -5927,7 +5927,8 @@
+ 			*/
+ 			return LRESULT.ZERO;
+ 		case OS.VK_ADD:
+-			if (OS.GetKeyState (OS.VK_CONTROL) < 0) {
++                        // <QFS/> Changed to getDisplay().GetKeyState
++                        if (getDisplay().GetKeyState (OS.VK_CONTROL) < 0) {
+ 				int index = 0;
+ 				while (index < columnCount) {
+ 					if (!columns [index].getResizable ()) break;
+Index: org/eclipse/swt/widgets/EventTable.java
+===================================================================
+--- org/eclipse/swt/widgets/EventTable.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/EventTable.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -7,6 +7,7 @@
+  *
+  * Contributors:
+  *     IBM Corporation - initial API and implementation
++ *     QFS GmbH - Accessibility/Testing hooks (see <QFS>)
+  *******************************************************************************/
+ package org.eclipse.swt.widgets;
+ 
+@@ -14,6 +15,11 @@
+ import org.eclipse.swt.*;
+ import org.eclipse.swt.internal.*;
+ 
++// <QFS>
++import de.qfs.lib.log.Log;
++import de.qfs.lib.log.Logger;
++// </QFS>
++
+ /**
+  * Instances of this class implement a simple
+  * look up mechanism that maps an event type
+@@ -22,6 +28,12 @@
+  */
+ 
+ class EventTable {
++    // <QFS>
++    private final static Logger logger =
++        new Logger ("org.eclipse.swt.widgets.EventTable");
++    // </QFS>
++
++
+ 	int [] types;
+ 	Listener [] listeners;
+ 	int level;
+@@ -74,6 +86,14 @@
+ }
+ 
+ public void sendEvent (Event event) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        logger.build("sendEvent(Event)")
++            .add("eventtype=").add(Display.getEventName(event.type))
++            .add(", widget.class: ").add(event.widget == null ? "null" : event.widget.getClass().getName())
++            .log(Log.MTD);
++    }
++    // </QFS>
+ 	if (types == null) return;
+ 	level += level >= 0 ? 1 : -1;
+ 	try {
+Index: org/eclipse/swt/widgets/Tracker.java
+===================================================================
+--- org/eclipse/swt/widgets/Tracker.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/Tracker.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -7,6 +7,7 @@
+  *
+  * Contributors:
+  *     IBM Corporation - initial API and implementation
++ *     QFS GmbH - Accessibility/Testing hooks (see <QFS>)
+  *******************************************************************************/
+ package org.eclipse.swt.widgets;
+ 
+@@ -17,6 +18,11 @@
+ import org.eclipse.swt.internal.*;
+ import org.eclipse.swt.internal.win32.*;
+ 
++// <QFS>
++import de.qfs.lib.log.Log;
++import de.qfs.lib.log.Logger;
++// </QFS>
++
+ /**
+  *  Instances of this class implement rubber banding rectangles that are
+  *  drawn onto a parent <code>Composite</code> or <code>Display</code>.
+@@ -41,6 +47,13 @@
+  * @noextend This class is not intended to be subclassed by clients.
+  */
+ public class Tracker extends Widget {
++    // <QFS>
++    /**
++     * The Logger used for logging.
++     */
++    private final static Logger logger =
++        new Logger ("org.eclipse.swt.widgets.Tracker");
++    // </QFS>
+ 	Control parent;
+ 	boolean tracking, cancelled, stippled;
+ 	Rectangle [] rectangles = new Rectangle [0], proportions = rectangles;
+@@ -467,9 +480,35 @@
+  * </ul>
+  */
+ public boolean open () {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        logger.dumpStack(Log.MTD, "open()", "");
++    }
++    // </QFS>
+ 	checkWidget ();
+ 	cancelled = false;
+ 	tracking = true;
++        // <QFS>
++        // Check if we're running a eclipse.ui DnD loop and inform the display if necessary.
++        java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream();
++        java.io.PrintWriter pw = new java.io.PrintWriter (os);
++        try {
++            throw new Exception();
++        } catch (Exception ex) {
++            ex.printStackTrace(pw);
++        }
++        pw.close();
++        String dump = os.toString();
++        boolean insideDnD =
++            dump.indexOf("org.eclipse.e4.ui.workbench.addons.dndaddon.DnDManager.startDrag") > 0
++            || dump.indexOf("org.eclipse.ui.internal.dnd.DragUtil.performDrag") > 0;
++        if (logger.level >= Log.DBG) {
++            logger.build("open()").add("insideDnD: ").add(insideDnD).log(Log.DBG);
++        }
++        if (insideDnD) {
++            display.runDNDTrackerHooks(true, false);
++        }
++        // </QFS>
+ 
+ 	/*
+ 	* If exactly one of UP/DOWN is specified as a style then set the cursor
+@@ -485,7 +524,8 @@
+ 	}
+ 
+ 	Callback newProc = null;
+-	boolean mouseDown = OS.GetKeyState(OS.VK_LBUTTON) < 0;
++        // <QFS/> Changed to getDisplay().GetKeyState
++	boolean mouseDown = getDisplay().GetKeyState(OS.VK_LBUTTON) < 0;
+ 	/*
+ 	* Bug in Vista. Drawing directly to the screen with XOR does not
+ 	* perform well. The fix is to draw on layered window instead.
+@@ -563,7 +603,8 @@
+ 	Point cursorPos = null;
+ 	if (mouseDown) {
+ 		POINT pt = new POINT ();
+-		OS.GetCursorPos (pt);
++                // <QFS/> Get overridden cursor position
++		OS._GetCursorPos (pt);
+ 		cursorPos = new Point (pt.x, pt.y);
+ 	} else {
+ 		if ((style & SWT.RESIZE) != 0) {
+@@ -647,6 +688,11 @@
+ 		}
+ 	}
+ 	tracking = false;
++        // <QFS>
++        if (insideDnD) {
++            display.runDNDTrackerHooks(false, cancelled);
++        }
++        // </QFS>
+ 	return !cancelled;
+ }
+ 
+@@ -981,7 +1027,8 @@
+ 	LRESULT result = super.wmKeyDown (hwnd, wParam, lParam);
+ 	if (result != null) return result;
+ 	boolean isMirrored = parent != null && (parent.style & SWT.MIRRORED) != 0;
+-	int stepSize = OS.GetKeyState (OS.VK_CONTROL) < 0 ? STEPSIZE_SMALL : STEPSIZE_LARGE;
++        // <QFS/> Changed to getDisplay().GetKeyState
++	int stepSize = getDisplay().GetKeyState (OS.VK_CONTROL) < 0 ? STEPSIZE_SMALL : STEPSIZE_LARGE;
+ 	int xChange = 0, yChange = 0;
+ 	switch ((int)/*64*/wParam) {
+ 		case OS.VK_ESCAPE:
+Index: org/eclipse/swt/widgets/Synchronizer.java
+===================================================================
+--- org/eclipse/swt/widgets/Synchronizer.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/Synchronizer.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -7,6 +7,7 @@
+  *
+  * Contributors:
+  *     IBM Corporation - initial API and implementation
++ *     QFS GmbH - Accessibility/Testing hooks (see <QFS>)
+  *******************************************************************************/
+ package org.eclipse.swt.widgets;
+ 
+@@ -13,6 +14,11 @@
+ import org.eclipse.swt.*;
+ import org.eclipse.swt.graphics.*;
+ 
++// <QFS>
++import de.qfs.lib.log.Log;
++import de.qfs.lib.log.Logger;
++// </QFS>
++
+ /**
+  * Instances of this class provide synchronization support
+  * for displays. A default instance is created automatically
+@@ -37,6 +43,12 @@
+ 	RunnableLock [] messages;
+ 	Object messageLock = new Object ();
+ 	Thread syncThread;
++    // <QFS>
++    /**
++     * The logger used for logging.
++     */
++    private final static Logger logger = new Logger("org.eclipse.swt.widgets.Synchronizer");
++    // </QFS>
+ 	static final int GROW_SIZE = 4;
+ 	static final int MESSAGE_LIMIT = 64;
+ 
+@@ -50,7 +62,17 @@
+  * @param display the display to create the synchronizer on
+  */
+ public Synchronizer (Display display) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("Synchronizer(Display)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("this: ").add(this)
++         .add(", display: ").add(display)).log(Log.MTD);
++    }
++    // </QFS>
++
+ 	this.display = display;
++
+ }
+ 
+ /**
+@@ -117,6 +139,8 @@
+ 	if (wake) display.wakeThread ();
+ }
+ 
++    // <QFS> Delegate to asyncExec except for special cases where QF-Test calls must not be
++    // blocked in a derived class.
+ /**
+  * Causes the <code>run()</code> method of the runnable to
+  * be invoked by the user-interface thread at the next
+@@ -128,7 +152,65 @@
+  *
+  * @see #syncExec
+  */
++    protected void internalAsyncExec (Runnable runnable) {
++        if (logger.level >= Log.MTD) {
++            Logger.Builder lb = logger.build("internalAsyncExec(Runnable)");
++            (logger.level < Log.MTDDETAIL ? lb : lb
++             .add("runnable: ").add(runnable)).log(Log.MTD);
++        }
++        if (runnable != null
++            && "org.eclipse.ui.internal.UISynchronizer".equals(getClass().getName())
++            && runnable.getClass().getName().startsWith("de.qfs.")) {
++            trueAsyncExec(runnable);
++        } else {
++            asyncExec(runnable);
++        }
++    }
++    // </QFS>
++
++    // <QFS> Delegate to trueAsyncExec.
++    /**
++     * Causes the <code>run()</code> method of the runnable to
++     * be invoked by the user-interface thread at the next
++     * reasonable opportunity. The caller of this method continues
++     * to run in parallel, and is not notified when the
++     * runnable has completed.
++     *
++     * @param runnable code to run on the user-interface thread.
++     *
++     * @see #syncExec
++     */
+ protected void asyncExec (Runnable runnable) {
++        if (logger.level >= Log.MTD) {
++            Logger.Builder lb = logger.build("asyncExec(Runnable)");
++            (logger.level < Log.MTDDETAIL ? lb : lb
++             .add("runnable: ").add(runnable)).log(Log.MTD);
++        }
++        trueAsyncExec(runnable);
++    }
++    // </QFS>
++
++    // <QFS/> Copy of original asyncExec.
++/**
++ * Causes the <code>run()</code> method of the runnable to
++ * be invoked by the user-interface thread at the next
++ * reasonable opportunity. The caller of this method continues
++ * to run in parallel, and is not notified when the
++ * runnable has completed.
++ *
++ * @param runnable code to run on the user-interface thread.
++ *
++ * @see #syncExec
++ */
++void trueAsyncExec (Runnable runnable) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("trueAsyncExec(Runnable)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("this: ").add(this)
++         .add(", runnable: ").add(runnable)).log(Log.MTD);
++    }
++    // </QFS>
+ 	if (runnable == null) {
+ 		//TEMPORARY CODE
+ 		if (!(IS_GTK || IS_COCOA)) {
+@@ -170,9 +252,23 @@
+ }
+ 
+ boolean runAsyncMessages (boolean all) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("runAsyncMessages(boolean)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("this: ").add(this)
++         .add(", all: ").add(all)).log(Log.MTD);
++    }
++    // </QFS>
+ 	boolean run = false;
+ 	do {
+ 		RunnableLock lock = removeFirst ();
++                // <QFS>
++                if (logger.level >= Log.DBG) {
++                    logger.build("runAsyncMessages(boolean)")
++                        .add("lock: ").add(lock).log(Log.DBG);
++                }
++                // </QFS>
+ 		if (lock == null) return run;
+ 		run = true;
+ 		synchronized (lock) {
+@@ -179,7 +275,19 @@
+ 			syncThread = lock.thread;
+ 			display.sendPreEvent(SWT.None);
+ 			try {
++                            // <QFS>
++                            if (logger.level >= Log.DBG) {
++                                logger.log(Log.DBG, "runAsyncMessages(boolean)",
++                                           "Executing lock");
++                            }
++                            // </QFS>
+ 				lock.run (display);
++                            // <QFS>
++                            if (logger.level >= Log.DBG) {
++                                logger.log(Log.DBG, "runAsyncMessages(boolean)",
++                                           "Executing lock... done");
++                            }
++                            // </QFS>
+ 			} catch (Throwable t) {
+ 				lock.throwable = t;
+ 				SWT.error (SWT.ERROR_FAILED_EXEC, t);
+@@ -195,6 +303,8 @@
+ 	return run;
+ }
+ 
++    // <QFS> Delegate to syncExec except for special cases where QF-Test calls must not be
++    // blocked in a derived class.
+ /**
+  * Causes the <code>run()</code> method of the runnable to
+  * be invoked by the user-interface thread at the next
+@@ -209,7 +319,71 @@
+  *
+  * @see #asyncExec
+  */
++    protected void internalSyncExec (Runnable runnable) {
++        if (logger.level >= Log.MTD) {
++            Logger.Builder lb = logger.build("internalSyncExec(Runnable)");
++            (logger.level < Log.MTDDETAIL ? lb : lb
++             .add("runnable: ").add(runnable)).log(Log.MTD);
++        }
++        if (runnable != null
++            && "org.eclipse.ui.internal.UISynchronizer".equals(getClass().getName())
++            && runnable.getClass().getName().startsWith("de.qfs.")) {
++            trueSyncExec(runnable);
++        } else {
++            syncExec(runnable);
++        }
++    }
++    // </QFS>
++
++    // <QFS> Delegate to trueSyncExec.
++    /**
++     * Causes the <code>run()</code> method of the runnable to
++     * be invoked by the user-interface thread at the next
++     * reasonable opportunity. The thread which calls this method
++     * is suspended until the runnable completes.
++     *
++     * @param runnable code to run on the user-interface thread.
++     *
++     * @exception SWTException <ul>
++     *    <li>ERROR_FAILED_EXEC - if an exception occurred when executing the runnable</li>
++     * </ul>
++     *
++     * @see #asyncExec
++     */
+ protected void syncExec (Runnable runnable) {
++        if (logger.level >= Log.MTD) {
++            Logger.Builder lb = logger.build("syncExec(Runnable)");
++            (logger.level < Log.MTDDETAIL ? lb : lb
++             .add("runnable: ").add(runnable)).log(Log.MTD);
++        }
++        trueSyncExec(runnable);
++    }
++    // </QFS>
++
++    // <QFS/> Copy of original syncExec.
++/**
++ * Causes the <code>run()</code> method of the runnable to
++ * be invoked by the user-interface thread at the next
++ * reasonable opportunity. The thread which calls this method
++ * is suspended until the runnable completes.
++ *
++ * @param runnable code to run on the user-interface thread.
++ *
++ * @exception SWTException <ul>
++ *    <li>ERROR_FAILED_EXEC - if an exception occurred when executing the runnable</li>
++ * </ul>
++ *
++ * @see #asyncExec
++ */
++protected void trueSyncExec (Runnable runnable) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("trueSyncExec(Runnable)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("this: ").add(this)
++         .add(", runnable: ").add(runnable)).log(Log.MTD);
++    }
++    // </QFS>
+ 	RunnableLock lock = null;
+ 	synchronized (Device.class) {
+ 		if (display == null || display.isDisposed ()) SWT.error (SWT.ERROR_DEVICE_DISPOSED);
+Index: org/eclipse/swt/widgets/Link.java
+===================================================================
+--- org/eclipse/swt/widgets/Link.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/Link.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -8,6 +8,7 @@
+  * Contributors:
+  *     IBM Corporation - initial API and implementation
+  *     Conrad Groth - Bug 401015 - [CSS] Add support for styling hyperlinks in Links
++ *     QFS GmbH - Accessibility/Testing hooks (see <QFS>)
+  *******************************************************************************/
+ package org.eclipse.swt.widgets;
+ 
+@@ -846,7 +847,8 @@
+ 				sendSelectionEvent (SWT.Selection, event, true);
+ 				break;
+ 			case SWT.TAB:
+-				boolean next = OS.GetKeyState (OS.VK_SHIFT) >= 0;
++                                // <QFS/> Changed to getDisplay().GetKeyState
++				boolean next = getDisplay().GetKeyState (OS.VK_SHIFT) >= 0;
+ 				if (next) {
+ 					if (focusIndex < offsets.length - 1) {
+ 						focusIndex++;
+@@ -905,7 +907,8 @@
+ 	if (count == 0) {
+ 		return new LRESULT (code | OS.DLGC_STATIC);
+ 	}
+-	boolean next = OS.GetKeyState (OS.VK_SHIFT) >= 0;
++        // <QFS/> Changed to getDisplay().GetKeyState
++	boolean next = getDisplay().GetKeyState (OS.VK_SHIFT) >= 0;
+ 	if (next && index < count - 1) {
+ 		return new LRESULT (code | OS.DLGC_WANTTAB);
+ 	}
+@@ -1034,7 +1037,8 @@
+ 	if (!useCommonControl()) {
+ 		int x = OS.GET_X_LPARAM (lParam);
+ 		int y = OS.GET_Y_LPARAM (lParam);
+-		if (OS.GetKeyState (OS.VK_LBUTTON) < 0) {
++                // <QFS/> Changed to getDisplay().GetKeyState
++		if (getDisplay().GetKeyState (OS.VK_LBUTTON) < 0) {
+ 			int oldSelection = selection.y;
+ 			selection.y = layout.getOffset (DPIUtil.autoScaleDown(x), DPIUtil.autoScaleDown(y), null);
+ 			if (selection.y != oldSelection) {
+Index: org/eclipse/swt/widgets/MessageBox.java
+===================================================================
+--- org/eclipse/swt/widgets/MessageBox.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/MessageBox.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -7,6 +7,7 @@
+  *
+  * Contributors:
+  *     IBM Corporation - initial API and implementation
++ *     QFS GmbH - Accessibility/Testing hooks (see <QFS>)
+  *******************************************************************************/
+ package org.eclipse.swt.widgets;
+ 
+@@ -13,6 +14,10 @@
+ 
+ import org.eclipse.swt.internal.win32.*;
+ import org.eclipse.swt.*;
++// <QFS>
++import de.qfs.lib.log.Log;
++import de.qfs.lib.log.Logger;
++// </QFS>
+ 
+ /**
+  * Instances of this class are used to inform or warn the user.
+@@ -38,6 +43,15 @@
+  * @noextend This class is not intended to be subclassed by clients.
+  */
+ public  class MessageBox extends Dialog {
++
++    // <QFS>
++    /**
++     * The Logger used for logging.
++     */
++    private final static Logger logger =
++        new Logger ("org.eclipse.swt.widgets.MessageBox");
++    // </QFS>
++
+ 	String message = "";
+ 
+ /**
+@@ -196,6 +210,23 @@
+ 	/* Use the character encoding for the default locale */
+ 	TCHAR buffer1 = new TCHAR (0, message, true);
+ 	TCHAR buffer2 = new TCHAR (0, title, true);
++
++        // <QFS>
++        runDialogShownHooks();
++        if (hwndOwner != 0) {
++            boolean ok = OS.SetForegroundWindow(hwndOwner);
++            if (logger.level >= Log.DBG) {
++                logger.build("open()").add("called SetForegroundWindow hwndOwner: ")
++                    .addHex(hwndOwner)
++                    .add(", returned ok: ").add(ok).log(Log.DBG);
++            }
++        } else {
++            if (logger.level >= Log.WRN) {
++                logger.log(Log.WRN, "open()",
++                           "hwndOwner is null - unable to call SetForegroundWindow");
++            }
++        }
++        // </QFS>
+ 	int code = OS.MessageBox (hwndOwner, buffer1, buffer2, bits);
+ 	display.sendPostExternalEventDispatchEvent ();
+ 
+@@ -212,31 +243,53 @@
+ 	*/
+ //	if (hwndOwner != 0) OS.UpdateWindow (hwndOwner);
+ 
++        // <QFS/> Don't return immediately so result can be overridden.
++        int ret;
+ 	/* Compute and return the result */
+ 	if (code != 0) {
+ 		int type = bits & 0x0F;
+-		if (type == OS.MB_OK) return SWT.OK;
+-		if (type == OS.MB_OKCANCEL) {
+-			return (code == OS.IDOK) ? SWT.OK : SWT.CANCEL;
++            if (type == OS.MB_OK) {
++                ret = SWT.OK;
++            } else if (type == OS.MB_OKCANCEL) {
++                ret = (code == OS.IDOK) ? SWT.OK : SWT.CANCEL;
++            } else if (type == OS.MB_YESNO) {
++                ret = (code == OS.IDYES) ? SWT.YES : SWT.NO;
++            } else if (type == OS.MB_YESNOCANCEL) {
++                if (code == OS.IDYES) {
++                    ret = SWT.YES;
++                } else if (code == OS.IDNO) {
++                    ret = SWT.NO;
++                } else {
++                    ret = SWT.CANCEL;
+ 		}
+-		if (type == OS.MB_YESNO) {
+-			return (code == OS.IDYES) ? SWT.YES : SWT.NO;
++            } else if (type == OS.MB_RETRYCANCEL) {
++                ret = (code == OS.IDRETRY) ? SWT.RETRY : SWT.CANCEL;
++            } else if (type == OS.MB_ABORTRETRYIGNORE) {
++                if (code == OS.IDRETRY) {
++                    ret = SWT.RETRY;
++                } else if (code == OS.IDABORT) {
++                    ret = SWT.ABORT;
++                } else {
++                    ret = SWT.IGNORE;
+ 		}
+-		if (type == OS.MB_YESNOCANCEL) {
+-			if (code == OS.IDYES) return SWT.YES;
+-			if (code == OS.IDNO) return SWT.NO;
+-			return SWT.CANCEL;
++            } else {
++                ret = SWT.CANCEL;
+ 		}
+-		if (type == OS.MB_RETRYCANCEL) {
+-			return (code == OS.IDRETRY) ? SWT.RETRY : SWT.CANCEL;
++        } else {
++                ret = SWT.CANCEL;
+ 		}
+-		if (type == OS.MB_ABORTRETRYIGNORE) {
+-			if (code == OS.IDRETRY) return SWT.RETRY;
+-			if (code == OS.IDABORT) return SWT.ABORT;
+-			return SWT.IGNORE;
++
++        // <QFS>
++        Object result = new Integer (ret);
++        result = _qfGetDisplay().runDialogClosedHooks(this, result);
++        if (logger.level >= Log.DBG) {
++            logger.build("open()").add("result: ").add(result).log(Log.DBG);
+ 		}
++        if (result instanceof Integer) {
++            ret = ((Integer) result).intValue();
+ 	}
+-	return SWT.CANCEL;
++        // </QFS>
++        return ret;
+ }
+ 
+ /**
+Index: org/eclipse/swt/widgets/Dialog.java
+===================================================================
+--- org/eclipse/swt/widgets/Dialog.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/Dialog.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -7,12 +7,18 @@
+  *
+  * Contributors:
+  *     IBM Corporation - initial API and implementation
++ *     QFS GmbH - Accessibility/Testing hooks (see <QFS>)
+  *******************************************************************************/
+ package org.eclipse.swt.widgets;
+ 
+ 
+ import org.eclipse.swt.*;
++// <QFS>
++import de.qfs.lib.log.Log;
++import de.qfs.lib.log.Logger;
++// </QFS>
+ 
++
+ /**
+  * This class is the abstract superclass of the classes
+  * that represent the built in platform dialogs.
+@@ -76,6 +82,34 @@
+  */
+ 
+ public abstract class Dialog {
++    // <QFS>
++
++    // {{{ Logging
++
++    /**
++     * The Logger used for logging.
++     */
++    private final static Logger logger =
++        new Logger ("org.eclipse.swt.widgets.Dialog");
++
++    // }}}
++
++    // {{{ runDialogShownHooks
++
++    void runDialogShownHooks()
++    {
++        if (logger.level >= Log.MTD) {
++            Logger.Builder lb = logger.build("runDialogShownHooks()");
++            (logger.level < Log.MTDDETAIL ? lb : lb
++             .add("this: ").add(this)).log(Log.MTD);
++        }
++        _qfGetDisplay().runDialogShownHooks(this, null);
++    }
++
++    // }}}
++
++    // </QFS>
++
+ 	int style;
+ 	Shell parent;
+ 	String title;
+@@ -128,6 +162,9 @@
+ 	this.parent = parent;
+ 	this.style = style;
+ 	title = "";
++        // <QFS>
++        _qfGetDisplay().runDialogCreationHooks(this);
++        // </QFS>
+ }
+ 
+ /**
+@@ -198,7 +235,18 @@
+ 	SWT.error(code);
+ }
+ 
++    // <QFS>
+ /**
++     * Get the display of the dialog.
++     *
++     * @return  The display of the dialog.
++     */
++    protected final Display _qfGetDisplay() {
++        return parent != null ? parent.display : Display.getCurrent ();
++    }
++    // </QFS>
++
++/**
+  * Returns the receiver's parent, which must be a <code>Shell</code>
+  * or null.
+  *
+Index: org/eclipse/swt/widgets/Combo.java
+===================================================================
+--- org/eclipse/swt/widgets/Combo.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/Combo.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -8,6 +8,7 @@
+  * Contributors:
+  *     IBM Corporation - initial API and implementation
+  *     Lars Vogel <Lars.Vogel@vogella.com> - Bug 483540
++ *     QFS GmbH - Accessibility/Testing hooks (see <QFS>)
+  *******************************************************************************/
+ package org.eclipse.swt.widgets;
+ 
+@@ -18,6 +19,11 @@
+ import org.eclipse.swt.internal.*;
+ import org.eclipse.swt.internal.win32.*;
+ 
++// <QFS>
++import de.qfs.lib.log.Log;
++import de.qfs.lib.log.Logger;
++// </QFS>
++
+ /**
+  * Instances of this class are controls that allow the user
+  * to choose an item from a list of items, or optionally
+@@ -58,6 +64,13 @@
+  * @noextend This class is not intended to be subclassed by clients.
+  */
+ public class Combo extends Composite {
++    // <QFS>
++    /**
++     * The Logger used for logging.
++     */
++    private final static Logger logger =
++        new Logger ("org.eclipse.swt.widgets.Combo");
++    // </QFS>
+ 	boolean noSelection, ignoreDefaultSelection, ignoreCharacter, ignoreModify, ignoreResize, lockText;
+ 	int scrollWidth, visibleCount;
+ 	int /*long*/ cbtHook;
+@@ -1841,7 +1854,8 @@
+ 	* is to detect this case and avoid sending a verify
+ 	* event.
+ 	*/
+-	if (OS.GetKeyState (OS.VK_LBUTTON) < 0) {
++        // <QFS/> Changed to getDisplay().GetKeyState
++	if (getDisplay().GetKeyState (OS.VK_LBUTTON) < 0) {
+ 		if (OS.GetDlgItem (handle, CBID_EDIT) == OS.GetCapture()) return true;
+ 	}
+ 
+@@ -2654,6 +2668,16 @@
+ 	}
+ 	switch (msg) {
+ 		case OS.CB_SETCURSEL: {
++                    // <QFS>
++                    if (logger.level >= Log.MTD) {
++                        Logger.Builder lb = logger.build("windowProc(int,int,int,int)");
++                        (logger.level < Log.MTDDETAIL ? lb : lb
++                         .add("CB_SETCURSEL - hwnd: ").addHex(hwnd)
++                         .add(", msg: ").add(msg)
++                         .add(", wParam: ").addHex(wParam)
++                         .add(", lParam: ").addHex(lParam)).log(Log.MTD);
++                    }
++                    // </QFS>
+ 			int /*long*/ code = OS.CB_ERR;
+ 			int index = (int)/*64*/ wParam;
+ 			if ((style & SWT.READ_ONLY) != 0) {
+@@ -3089,6 +3113,14 @@
+ 
+ @Override
+ LRESULT wmCommandChild (int /*long*/ wParam, int /*long*/ lParam) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("wmCommandChild(int,int)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("wParam: ").addHex(wParam)
++         .add(", lParam: ").addHex(lParam)).log(Log.MTD);
++    }
++    // </QFS>
+ 	int code = OS.HIWORD (wParam);
+ 	switch (code) {
+ 		case OS.CBN_EDITCHANGE:
+@@ -3118,6 +3150,12 @@
+ 			* to match the list selection by re-selecting the list item.
+ 			*/
+ 			int index = (int)/*64*/OS.SendMessage (handle, OS.CB_GETCURSEL, 0, 0);
++                        // <QFS>
++                        if (logger.level >= Log.DBG) {
++                            logger.build("wmCommandChild(int,int)")
++                                .add("index: ").add(index).log(Log.DBG);
++                        }
++                        // </QFS>
+ 			if (index != OS.CB_ERR) {
+ 				OS.SendMessage (handle, OS.CB_SETCURSEL, index, 0);
+ 			}
+Index: org/eclipse/swt/widgets/FileDialog.java
+===================================================================
+--- org/eclipse/swt/widgets/FileDialog.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/FileDialog.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -7,6 +7,7 @@
+  *
+  * Contributors:
+  *     IBM Corporation - initial API and implementation
++ *     QFS GmbH - Accessibility/Testing hooks (see <QFS>)
+  *******************************************************************************/
+ package org.eclipse.swt.widgets;
+ 
+@@ -15,6 +16,13 @@
+ import org.eclipse.swt.internal.win32.*;
+ import org.eclipse.swt.*;
+ 
++// <QFS>
++import java.io.File;
++
++import de.qfs.lib.log.Log;
++import de.qfs.lib.log.Logger;
++// </QFS>
++
+ /**
+  * Instances of this class allow the user to navigate
+  * the file system and select or enter a file name.
+@@ -36,6 +44,15 @@
+  * @noextend This class is not intended to be subclassed by clients.
+  */
+ public class FileDialog extends Dialog {
++
++    // <QFS>
++    /**
++     * The Logger used for logging.
++     */
++    private final static Logger logger =
++        new Logger ("org.eclipse.swt.widgets.FileDialog");
++    // </QFS>
++
+ 	String [] filterNames = new String [0];
+ 	String [] filterExtensions = new String [0];
+ 	String [] fileNames = new String [0];
+@@ -366,6 +383,22 @@
+ 		display.setModalDialog (this);
+ 	}
+ 
++        // <QFS>
++        runDialogShownHooks();
++        if (hwndOwner != 0) {
++            boolean ok = OS.SetForegroundWindow(hwndOwner);
++            if (logger.level >= Log.DBG) {
++                logger.build("open()").add("called SetForegroundWindow hwndOwner: ")
++                    .addHex(hwndOwner)
++                    .add(", returned ok: ").add(ok).log(Log.DBG);
++            }
++        } else {
++            if (logger.level >= Log.WRN) {
++                logger.log(Log.WRN, "open()",
++                           "hwndOwner is null - unable to call SetForegroundWindow");
++            }
++        }
++        // </QFS>
+ 	/*
+ 	* Feature in Windows.  For some reason, the WH_MSGFILTER filter
+ 	* does not run for GetSaveFileName() or GetOpenFileName().  The
+@@ -482,7 +515,13 @@
+ //	if (hwndOwner != 0) OS.UpdateWindow (hwndOwner);
+ 
+ 	/* Answer the full path or null */
+-	return fullPath;
++        // <QFS>
++        Object result = fullPath;
++        result = _qfGetDisplay().runDialogClosedHooks(this, result);
++	return (result instanceof String) || result == null
++            ? (String) result
++            : fullPath;
++        // </QFS>
+ }
+ 
+ /**
+Index: org/eclipse/swt/widgets/Menu.java
+===================================================================
+--- org/eclipse/swt/widgets/Menu.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/Menu.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -7,6 +7,7 @@
+  *
+  * Contributors:
+  *     IBM Corporation - initial API and implementation
++ *     QFS GmbH - Accessibility/Testing hooks (see <QFS>)
+  *******************************************************************************/
+ package org.eclipse.swt.widgets;
+ 
+@@ -17,6 +18,11 @@
+ import org.eclipse.swt.internal.*;
+ import org.eclipse.swt.internal.win32.*;
+ 
++// <QFS>
++import de.qfs.lib.log.Log;
++import de.qfs.lib.log.Logger;
++// </QFS>
++
+ /**
+  * Instances of this class are user interface objects that contain
+  * menu items.
+@@ -40,7 +46,14 @@
+  * @noextend This class is not intended to be subclassed by clients.
+  */
+ public class Menu extends Widget {
++    // <QFS>
+ 	/**
++     * The Logger used for logging.
++     */
++    private final static Logger logger =
++        new Logger ("org.eclipse.swt.widgets.Menu");
++    // </QFS>
++	/**
+ 	 * the handle to the OS resource
+ 	 * (Warning: This field is platform dependent)
+ 	 * <p>
+@@ -61,6 +74,7 @@
+ 	Image backgroundImage;
+ 	boolean hasLocation;
+ 	MenuItem cascade;
++    public // <QFS/> temporarily made public
+ 	Decorations parent;
+ 	MenuItem selectedMenuItem;
+ 
+@@ -214,12 +228,22 @@
+ 	createWidget ();
+ }
+ 
+-void _setVisible (boolean visible) {
++// <QFS/> made public
++public void _setVisible (boolean visible) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("_setVisible(boolean)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("this: ").add(this)
++         .add("visible: ").add(visible)).log(Log.MTD);
++    }
++    // </QFS>
+ 	if ((style & (SWT.BAR | SWT.DROP_DOWN)) != 0) return;
+ 	int /*long*/ hwndParent = parent.handle;
+ 	if (visible) {
+ 		int flags = OS.TPM_LEFTBUTTON;
+-		if (OS.GetKeyState (OS.VK_LBUTTON) >= 0) flags |= OS.TPM_RIGHTBUTTON;
++        // <QFS/> Changed to getDisplay().GetKeyState
++        if (getDisplay().GetKeyState (OS.VK_LBUTTON) >= 0) flags |= OS.TPM_RIGHTBUTTON;
+ 		if ((style & SWT.RIGHT_TO_LEFT) != 0) flags |= OS.TPM_RIGHTALIGN;
+ 		if ((parent.style & SWT.MIRRORED) != 0) {
+ 			flags &= ~OS.TPM_RIGHTALIGN;
+@@ -247,13 +271,119 @@
+ 		* the case when TrackPopupMenu() fails and the number of items in
+ 		* the menu is zero and issue a fake WM_MENUSELECT.
+ 		*/
++        // <QFS>
++        if (logger.level >= Log.DBG) {
++            logger.build("_setVisible(boolean)")
++                .add("calling OS.TrackPopupMenu on this: ").add(this)
++                .add(", flags: ").addHex(flags)
++                .add(", handle: ").addHex(handle)
++                .add(", hwndParent: ").addHex(hwndParent)
++                .log(Log.DBG);
++        }
++        // Force pseudo-visibility while TrackPopupMenu is active. Otherwise a call to
++        // Display.readAndDispatch() can cause Display.popups to become null and thus the Menu to
++        // return visible false.
++        Object visCount = getData("qfs:popupvisible");
++        if (visCount instanceof Integer) {
++            setData("qfs:popupvisible", new Integer (((Integer) visCount).intValue() + 1));
++        } else {
++            setData("qfs:popupvisible", new Integer (1));
++        }
++        // </QFS>
+ 		boolean success = OS.TrackPopupMenu (handle, flags, nX, nY, 0, hwndParent, null);
++        // <QFS>
++        visCount = getData("qfs:popupvisible");
++        if (visCount instanceof Integer) {
++            int count = ((Integer) visCount).intValue() - 1;
++            setData("qfs:popupvisible", count <= 0 ? null : new Integer (count));
++        }
++        int err = -1;
++        if (! success) {
++            err = OS.GetLastError();
++        }
++        if (logger.level >= Log.DBG) {
++            logger.build("_setVisible(boolean)")
++                .add("OS.TrackPopupMenu returned success: ").add(success)
++                .add(", this: ").add(this)
++                .add(", err: ").add(err)
++                .log(Log.DBG);
++        }
++        // Display.(a)syncExec can lead to WM_NULL messages being posted through
++        // Display.wakeThread which in turn can confuse a certain type of modal popup menu because
++        // they turn up just after OS.TrackPopupMenu but before the WM_COMMAND resulting from a
++        // MenuItem selection. Removing all pending WM_NULL messages that come before a pending
++        // WM_COMMAND here prevents that and is safe since we're already on the dispatch thread
++        // anyway.
++        MSG msg = new MSG ();
++        if (OS.PeekMessage(msg, 0, OS.WM_COMMAND, OS.WM_COMMAND,
++                              OS.PM_NOREMOVE | OS.PM_NOYIELD)) {
++            if (logger.level >= Log.DBG) {
++                logger.log(Log.DBG, "_setVisible(boolean)",
++                           "WM_COMMAND pending");
++            }
++            while (OS.PeekMessage(msg, 0, 0, 0, OS.PM_NOREMOVE | OS.PM_NOYIELD)) {
++                if (msg.message == OS.WM_NULL) {
++                    OS.PeekMessage(msg, 0, OS.WM_NULL, OS.WM_NULL, OS.PM_REMOVE | OS.PM_NOYIELD);
++                    if (logger.level >= Log.MSG) {
++                        logger.build("_setVisible(boolean)").add("removed WM_NULL").log(Log.MSG);
++                    }
++                } else if (msg.message == OS.WM_APP + 89) {
++                    // qftest callback - _very_ special case
++                    OS.PeekMessage(msg, 0, OS.WM_APP + 89, OS.WM_NULL,
++                                   OS.PM_REMOVE | OS.PM_NOYIELD);
++                    if (logger.level >= Log.MSG) {
++                        logger.build("_setVisible(boolean)")
++                            .add("removed qftest callback").log(Log.MSG);
++                    }
++                    if (logger.level >= Log.DBGDETAIL) {
++                        logger.log(Log.DBGDETAIL, "_setVisible(boolean)",
++                                   "now calling OS.TranslateMessage");
++                    }
++                    OS.TranslateMessage (msg);
++                    if (logger.level >= Log.DBGDETAIL) {
++                        logger.log(Log.DBGDETAIL, "_setVisible(boolean)",
++                                   "now calling OS.DispatchMessage");
++                    }
++                    try {
++                        getDisplay().eventProcessedByReadAndDispatch++;
++                        OS.DispatchMessage (msg);
++                    } finally {
++                        getDisplay().eventProcessedByReadAndDispatch--;
++                    }
++                } else if (msg.message == OS.WM_COMMAND) {
++                    if (logger.level >= Log.MSG) {
++                        logger.build("_setVisible(boolean)").add("success, WM_COMMAND now first")
++                            .log(Log.MSG);
++                    }
++                    break;
++                } else {
++                    if (logger.level >= Log.MSG) {
++                        logger.build("_setVisible(boolean)").add("oops, unexpected message: ")
++                            .add(msg.message).log(Log.MSG);
++                    }
++                    break;
++                }
++            }
++        }
++        // </QFS>
+ 		// widget could be disposed at this point
+ 		display.sendPostExternalEventDispatchEvent ();
+ 		if (!success && OS.GetMenuItemCount (handle) == 0) {
++            // <QFS>
++            if (logger.level >= Log.DBG) {
++                logger.log(Log.DBG, "_setVisible(boolean)",
++                           "now SendMessage WM_MENUSELECT");
++            }
++            // </QFS>
+ 			OS.SendMessage (hwndParent, OS.WM_MENUSELECT, OS.MAKEWPARAM (0, 0xFFFF), 0);
+ 		}
+ 	} else {
++        // <QFS>
++        if (logger.level >= Log.DBG) {
++            logger.log(Log.DBG, "_setVisible(boolean)",
++                       "now SendMessage WM_CANCELMODE");
++        }
++        // </QFS>
+ 		OS.SendMessage (hwndParent, OS.WM_CANCELMODE, 0, 0);
+ 	}
+ 	/*
+@@ -265,7 +395,12 @@
+ 	if (hFocus != 0) {
+ 		OS.NotifyWinEvent (OS.EVENT_OBJECT_FOCUS, hFocus, OS.OBJID_CLIENT, 0);
+ 	}
++    // <QFS>
++    if (logger.level >= Log.DBG) {
++        logger.build("_setVisible(boolean)").add("done. this: ").add(this).log(Log.DBG);
+ }
++    // </QFS>
++}
+ 
+ /**
+  * Adds the listener to the collection of listeners who will
+@@ -340,6 +475,11 @@
+ }
+ 
+ void createHandle () {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        logger.log(Log.MTD, "createHandle()", "");
++    }
++    // </QFS>
+ 	if (handle != 0) return;
+ 	if ((style & SWT.BAR) != 0) {
+ 		handle = OS.CreateMenu ();
+@@ -502,7 +642,13 @@
+  *
+  * @since 3.1
+  */
+-/*public*/ Rectangle getBounds () {
++// <QFS/> Made public.
++public Rectangle getBounds () {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        logger.log(Log.MTD, "getBounds()", "");
++    }
++    // </QFS>
+ 	checkWidget ();
+ 	if ((style & SWT.BAR) != 0) {
+ 		if (parent.menuBar != this) {
+@@ -520,9 +666,27 @@
+ 		int count = OS.GetMenuItemCount (handle);
+ 		if (count != 0) {
+ 			RECT rect1 = new RECT ();
++                        // <QFS/> Bug? Need getShell.handle instead of 0 ???
++                        // Leave unchanged for now
++                        // if (OS.GetMenuItemRect (getShell().handle, handle, 0, rect1)) {
+ 			if (OS.GetMenuItemRect (0, handle, 0, rect1)) {
++                            // <QFS>
++                            if (logger.level >= Log.DBG) {
++                                logger.build("getBounds()")
++                                    .add("rect1: ").add(rect1).log(Log.DBG);
++                            }
++                            // </QFS>
+ 				RECT rect2 = new RECT ();
++                                // <QFS/> Bug? Need getShell.handle instead of 0 ???
++                                // Leave unchanged for now
++                                // if (OS.GetMenuItemRect (getShell().handle, handle, count - 1, rect2)) {
+ 				if (OS.GetMenuItemRect (0, handle, count - 1, rect2)) {
++                                    // <QFS>
++                                    if (logger.level >= Log.DBG) {
++                                        logger.build("getBounds()")
++                                            .add("rect2: ").add(rect2).log(Log.DBG);
++                                    }
++                                    // </QFS>
+ 					int x = rect1.left - 2, y = rect1.top - 2;
+ 					int width = (rect2.right - rect2.left) + 4;
+ 					int height = (rect2.bottom - rect1.top) + 4;
+@@ -802,6 +966,11 @@
+  * </ul>
+  */
+ public boolean getVisible () {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        logger.log(Log.MTD, "getVisible()", "");
++    }
++    // </QFS>
+ 	checkWidget ();
+ 	if ((style & SWT.BAR) != 0) {
+ 		return this == parent.menuShell ().menuBar;
+@@ -808,16 +977,40 @@
+ 	}
+ 	if ((style & SWT.POP_UP) != 0) {
+ 		Menu [] popups = display.popups;
++                // <QFS>
++                if (logger.level >= Log.DBG) {
++                    logger.build("getVisible()").add("popups: ").addAll(popups).log(Log.DBG);
++                }
++                // </QFS>
+ 		if (popups == null) return false;
+ 		for (int i=0; i<popups.length; i++) {
++                    // <QFS>
++                    if (logger.level >= Log.DBG && popups [i] == this) {
++                        logger.log(Log.DBG, "getVisible()",
++                                   "Found me");
++                    }
++                    // </QFS>
+ 			if (popups [i] == this) return true;
+ 		}
+ 	}
+ 	Shell shell = getShell ();
+ 	Menu menu = shell.activeMenu;
++        // <QFS>
++        if (logger.level >= Log.DBG) {
++            logger.build("getVisible()").add("shell: ").add(shell)
++                .add(", menu: ").add(menu)
++                .add(", is me: ").add(menu == this).log(Log.DBG);
++        }
++        // </QFS>
+ 	while (menu != null && menu != this) {
+ 		menu = menu.getParentMenu ();
++                // <QFS>
++                if (logger.level >= Log.DBG) {
++                    logger.build("getVisible()").add("parent menu: ").add(menu)
++                        .add(", is me: ").add(menu == this).log(Log.DBG);
+ 	}
++                // </QFS>
++        }
+ 	return this == menu;
+ }
+ 
+@@ -899,6 +1092,11 @@
+  * @see #getVisible
+  */
+ public boolean isVisible () {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        logger.log(Log.MTD, "isVisible()", "");
++    }
++    // </QFS>
+ 	checkWidget ();
+ 	return getVisible ();
+ }
+@@ -1264,7 +1462,20 @@
+  * </ul>
+  */
+ public void setVisible (boolean visible) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("setVisible(boolean)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("this: ").add(this)
++         .add("visible: ").add(visible)).log(Log.MTD);
++    }
++    // </QFS>
+ 	checkWidget ();
++        // <QFS>
++        if (logger.level >= Log.DBG) {
++            logger.build("setVisible(boolean)").add("style: ").addHex(style).log(Log.DBG);
++        }
++        // </QFS>
+ 	if ((style & (SWT.BAR | SWT.DROP_DOWN)) != 0) return;
+ 	if (visible) {
+ 		display.addPopup (this);
+@@ -1272,7 +1483,13 @@
+ 		display.removePopup (this);
+ 		_setVisible (false);
+ 	}
++        // <QFS>
++        if (logger.level >= Log.DBG) {
++            logger.log(Log.DBG, "setVisible(boolean)",
++                       "done");
+ }
++        // </QFS>
++}
+ 
+ void update () {
+ 	if ((style & SWT.BAR) != 0) {
+Index: org/eclipse/swt/widgets/Display.java
+===================================================================
+--- org/eclipse/swt/widgets/Display.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/Display.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -7,6 +7,7 @@
+  *
+  * Contributors:
+  *     IBM Corporation - initial API and implementation
++ *     QFS GmbH - Accessibility/Testing hooks (see <QFS>)
+  *******************************************************************************/
+ package org.eclipse.swt.widgets;
+ 
+@@ -19,6 +20,21 @@
+ import org.eclipse.swt.internal.*;
+ import org.eclipse.swt.internal.win32.*;
+ 
++// <QFS>
++import org.eclipse.swt.dnd.DragSource;
++import org.eclipse.swt.dnd.DropTarget;
++import java.io.BufferedReader;
++import java.io.InputStream;
++import java.io.InputStreamReader;
++import java.util.Iterator;
++import java.util.Map;
++import java.util.Properties;
++import java.util.StringTokenizer;
++
++import de.qfs.lib.log.Log;
++import de.qfs.lib.log.Logger;
++// </QFS>
++
+ /**
+  * Instances of this class are responsible for managing the
+  * connection between SWT and the underlying operating
+@@ -97,9 +113,1411 @@
+  * @see <a href="http://www.eclipse.org/swt/">Sample code and further information</a>
+  * @noextend This class is not intended to be subclassed by clients.
+  */
++
++@SuppressWarnings("rawtypes")
+ public class Display extends Device {
+ 
++    // <QFS>
++    // {{{ Logging
++
+ 	/**
++     * The logger used for logging.
++     */
++    private final static Logger logger = new Logger("org.eclipse.swt.widgets.Display");
++
++    // }}}
++
++    /**
++     * Monitor for class level synchronization.
++     */
++    final static Object classLock = new Object ();
++
++    //------------------------------------------------------------------------------------------
++    // Hooks for display creation notification
++    //------------------------------------------------------------------------------------------
++
++    // {{{ interface IDisplayCreationHook
++
++    public interface IDisplayCreationHook {
++        /**
++         * Notify the hook that a new display was created.
++         *
++         * @param       display The newly created Display.
++         */
++        public void displayCreated(Display display);
++    }
++
++    // }}}
++
++    /**
++     * Registered hooks.
++     */
++    static IDisplayCreationHook[] creationHooks;
++
++    // {{{ addDisplayCreationHook
++
++    public static void addDisplayCreationHook(IDisplayCreationHook hook)
++    {
++        synchronized (classLock) {
++            if (creationHooks == null) {
++                creationHooks = new IDisplayCreationHook[] {hook};
++                return;
++            }
++            // Prevent double registration. If the hook is already registered, move it to the
++            // front.
++            for (int i = 0; i < creationHooks.length; i++) {
++                if (creationHooks[i] == hook) {
++                    if (i == 0) {
++                        return;
++                    }
++                    System.arraycopy(creationHooks, 0, creationHooks, 1, i);
++                    creationHooks[0] = hook;
++                }
++            }
++            // Insert new hook at front
++            IDisplayCreationHook[] tmp = new IDisplayCreationHook[creationHooks.length + 1];
++            tmp[0] = hook;
++            System.arraycopy(creationHooks, 0, tmp, 1, creationHooks.length);
++            creationHooks = tmp;
++        }
++    }
++
++    // }}}
++    // {{{ removeDisplayCreationHook
++
++    public static void removeDisplayCreationHook(IDisplayCreationHook hook)
++    {
++        synchronized (classLock) {
++            if (creationHooks == null) {
++                return;
++            }
++
++            for (int i = 0; i < creationHooks.length; i++) {
++                if (creationHooks[i] == hook) {
++                    if (creationHooks.length == 1) {
++                        creationHooks = null;
++                        return;
++                    }
++                    // Insert new hook at front
++                    IDisplayCreationHook[] tmp =
++                        new IDisplayCreationHook[creationHooks.length - 1];
++                    if (i > 0) {
++                        System.arraycopy(creationHooks, 0, tmp, 0, i - 1);
++                    }
++                    if (i < creationHooks.length - 1) {
++                        System.arraycopy(creationHooks, i + 1, tmp, i,
++                                         creationHooks.length - i - 1);
++                    }
++                    creationHooks = tmp;
++                }
++            }
++        }
++    }
++
++    // }}}
++    // {{{ runDisplayCreationHooks
++
++    static void runDisplayCreationHooks(Display display)
++    {
++        IDisplayCreationHook[] tmp;
++        synchronized (classLock) {
++            if (creationHooks == null) {
++                return;
++            }
++            tmp = (IDisplayCreationHook[]) creationHooks.clone();
++        }
++        if (tmp != null) {
++            for (int i = 0; i < tmp.length; i++) {
++                try {
++                    tmp[i].displayCreated(display);
++                } catch (Throwable ex) {
++                    ex.printStackTrace();
++                }
++            }
++        }
++    }
++
++    // }}}
++
++    //------------------------------------------------------------------------------------------
++    // Hooks for Dialog creation and showing
++    //------------------------------------------------------------------------------------------
++    // {{{ interface IDialogHook
++
++    public interface IDialogHook {
++        // {{{ dialogCreated
++
++        /**
++         * Notify the hook that a new display was created.
++         *
++         * @param       dialog The dialog that was created.
++         */
++        public void dialogCreated(Dialog dialog);
++
++        // }}}
++        // {{{ dialogShown
++
++        /**
++         * Notify the hook that a dialog is about to be shown.
++         *
++         * @param       dialog The dialog that is about to be shown.
++         * @param       handle System specific handle for the dialog.
++         */
++        public void dialogShown(Dialog dialog, Object handle);
++
++        // }}}
++        // {{{ dialogClosed
++
++        /**
++         * Notify the hook that a dialog was closed.
++         *
++         * @param       dialog The dialog that was closed.
++         * @param       result The result representing the user's choice.
++         *
++         * @return  Optional replacement for the original result.
++         */
++        public Object dialogClosed(Dialog dialog, Object result);
++
++        // }}}
++    }
++
++    // }}}
++
++    /**
++     * Registered hooks.
++     */
++    private IDialogHook[] dialogHooks;
++
++    // {{{ addDialogHook
++
++    /**
++     * Add a dialog hook.
++     *
++     * @param   hook    The hook to add.
++     */
++    public void addDialogHook(IDialogHook hook)
++    {
++        if (logger.level >= Log.MTD) {
++            Logger.Builder lb = logger.build("addDialogHook(IDialogHook)");
++            (logger.level < Log.MTDDETAIL ? lb : lb
++             .add("hook: ").add(hook)).log(Log.MTD);
++        }
++
++        checkDevice();
++
++        if (dialogHooks == null) {
++            dialogHooks = new IDialogHook[] {hook};
++            return;
++        }
++        // Prevent double registration. If the hook is already registered, move it to the
++        // front.
++        for (int i = 0; i < dialogHooks.length; i++) {
++            if (dialogHooks[i] == hook) {
++                if (i == 0) {
++                    return;
++                }
++                System.arraycopy(dialogHooks, 0, dialogHooks, 1, i);
++                dialogHooks[0] = hook;
++            }
++        }
++        // Insert new hook at front
++        IDialogHook[] tmp = new IDialogHook[dialogHooks.length + 1];
++        tmp[0] = hook;
++        System.arraycopy(dialogHooks, 0, tmp, 1, dialogHooks.length);
++        dialogHooks = tmp;
++    }
++
++    // }}}
++    // {{{ removeDialogHook
++
++    /**
++     * Remove a dialog hook.
++     *
++     * @param   hook    The hook to remove.
++     */
++    public void removeDialogHook(IDialogHook hook)
++    {
++        if (logger.level >= Log.MTD) {
++            Logger.Builder lb = logger.build("removeDialogHook(IDialogHook)");
++            (logger.level < Log.MTDDETAIL ? lb : lb
++             .add("hook: ").add(hook)).log(Log.MTD);
++        }
++
++        checkDevice();
++
++        if (dialogHooks == null) {
++            return;
++        }
++
++        for (int i = 0; i < dialogHooks.length; i++) {
++            if (dialogHooks[i] == hook) {
++                if (dialogHooks.length == 1) {
++                    dialogHooks = null;
++                    return;
++                }
++                // Insert new hook at front
++                IDialogHook[] tmp = new IDialogHook[dialogHooks.length - 1];
++                if (i > 0) {
++                    System.arraycopy(dialogHooks, 0, tmp, 0, i - 1);
++                }
++                if (i < dialogHooks.length - 1) {
++                    System.arraycopy(dialogHooks, i + 1, tmp, i,
++                                     dialogHooks.length - i - 1);
++                }
++                dialogHooks = tmp;
++            }
++        }
++    }
++
++    // }}}
++    // {{{ runDialogCreationHooks
++
++    /**
++     * Notify all hooks about a newly created dialog.
++     *
++     * @param   dialog  The new dialog.
++     */
++    public void runDialogCreationHooks(Dialog dialog)
++    {
++        if (logger.level >= Log.MTD) {
++            Logger.Builder lb = logger.build("runDialogCreationHooks(Dialog)");
++            (logger.level < Log.MTDDETAIL ? lb : lb
++             .add("dialog: ").add(dialog)).log(Log.MTD);
++        }
++
++        checkDevice();
++
++        if (dialogHooks == null) {
++            return;
++        }
++        IDialogHook[] tmp = (IDialogHook[]) dialogHooks.clone();
++        for (int i = 0; i < tmp.length; i++) {
++            try {
++                tmp[i].dialogCreated(dialog);
++            } catch (Throwable ex) {
++                ex.printStackTrace();
++            }
++        }
++    }
++
++    // }}}
++    // {{{ runDialogShownHooks
++
++    /**
++     * Notify all hooks about a dialog being shown.
++     *
++     * @param   dialog  The shown dialog.
++     * @param   handle  The handle for the dialog.
++     */
++    public void runDialogShownHooks(Dialog dialog, Object handle)
++    {
++        if (logger.level >= Log.MTD) {
++            Logger.Builder lb = logger.build("runDialogShownHooks(Dialog,int)");
++            (logger.level < Log.MTDDETAIL ? lb : lb
++             .add("dialog: ").add(dialog)
++             .add(", handle: ").add(handle)).log(Log.MTD);
++        }
++
++        checkDevice();
++
++        if (dialogHooks == null) {
++            return;
++        }
++        IDialogHook[] tmp = (IDialogHook[]) dialogHooks.clone();
++        for (int i = 0; i < tmp.length; i++) {
++            try {
++                tmp[i].dialogShown(dialog, handle);
++            } catch (Throwable ex) {
++                ex.printStackTrace();
++            }
++        }
++    }
++
++    // }}}
++    // {{{ runDialogClosedHooks
++
++    /**
++     * Notify all hooks about a dialog being closed.
++     *
++     * @param   dialog  The closed dialog.
++     * @param   result  The result of the operation (depends on the type of dialog).
++     *
++     * @return  Optional replacement for the original result.
++     */
++    public Object runDialogClosedHooks(Dialog dialog, Object result)
++    {
++        if (logger.level >= Log.MTD) {
++            Logger.Builder lb = logger.build("runDialogClosedHooks(Dialog,Object)");
++            (logger.level < Log.MTDDETAIL ? lb : lb
++             .add("dialog: ").add(dialog)
++             .add(", result: ").add(result)).log(Log.MTD);
++        }
++
++        checkDevice();
++
++        if (dialogHooks == null) {
++            return result;
++        }
++        IDialogHook[] tmp = (IDialogHook[]) dialogHooks.clone();
++        for (int i = 0; i < tmp.length; i++) {
++            try {
++                result = tmp[i].dialogClosed(dialog, result);
++            } catch (Throwable ex) {
++                ex.printStackTrace();
++            }
++        }
++        return result;
++    }
++
++    // }}}
++
++    //------------------------------------------------------------------------------------------
++    // Hooks for DND creation
++    //------------------------------------------------------------------------------------------
++    // {{{ interface IDNDHook
++
++    public interface IDNDHook {
++        // {{{ dragSourceCreated
++
++        /**
++         * Notify the hook that a new DragSource was created.
++         *
++         * @param       dragSource The DragSource that was created.
++         */
++        public void dragSourceCreated(DragSource dragSource);
++
++        // }}}
++        // {{{ dropTargetCreated
++
++        /**
++         * Notify the hook that a new DropTarget was created.
++         *
++         * @param       dropTarget The DropTarget that was created.
++         */
++        public void dropTargetCreated(DropTarget dropTarget);
++
++        // }}}
++        // {{{ trackerDragStarted
++
++        /**
++         * Notify the listener that a Drag involving a Tracker was started.
++         */
++        public void trackerDragStarted();
++
++        // }}}
++        // {{{ trackerDragFinished
++
++        /**
++         * Notify the listener that a Drag involving a Tracker was finished.
++         *
++         * @param   cancelled       Whether the drag was cancelled.
++         */
++        public void trackerDragFinished(boolean cancelled);
++
++        // }}}
++    }
++
++    // }}}
++
++    /**
++     * Registered hooks.
++     */
++    private IDNDHook[] dndHooks;
++
++    // {{{ addDNDHook
++
++    /**
++     * Add a dnd hook.
++     *
++     * @param   hook    The hook to add.
++     */
++    public void addDNDHook(IDNDHook hook)
++    {
++        if (logger.level >= Log.MTD) {
++            Logger.Builder lb = logger.build("addDNDHook(IDNDHook)");
++            (logger.level < Log.MTDDETAIL ? lb : lb
++             .add("hook: ").add(hook)).log(Log.MTD);
++        }
++
++        checkDevice();
++
++        if (dndHooks == null) {
++            dndHooks = new IDNDHook[] {hook};
++            return;
++        }
++        // Prevent double registration. If the hook is already registered, move it to the
++        // front.
++        for (int i = 0; i < dndHooks.length; i++) {
++            if (dndHooks[i] == hook) {
++                if (i == 0) {
++                    return;
++                }
++                System.arraycopy(dndHooks, 0, dndHooks, 1, i);
++                dndHooks[0] = hook;
++            }
++        }
++        // Insert new hook at front
++        IDNDHook[] tmp = new IDNDHook[dndHooks.length + 1];
++        tmp[0] = hook;
++        System.arraycopy(dndHooks, 0, tmp, 1, dndHooks.length);
++        dndHooks = tmp;
++    }
++
++    // }}}
++    // {{{ removeDNDHook
++
++    /**
++     * Remove a dnd hook.
++     *
++     * @param   hook    The hook to remove.
++     */
++    public void removeDNDHook(IDNDHook hook)
++    {
++        if (logger.level >= Log.MTD) {
++            Logger.Builder lb = logger.build("removeDNDHook(IDNDHook)");
++            (logger.level < Log.MTDDETAIL ? lb : lb
++             .add("hook: ").add(hook)).log(Log.MTD);
++        }
++
++        checkDevice();
++
++        if (dndHooks == null) {
++            return;
++        }
++
++        for (int i = 0; i < dndHooks.length; i++) {
++            if (dndHooks[i] == hook) {
++                if (dndHooks.length == 1) {
++                    dndHooks = null;
++                    return;
++                }
++                // Insert new hook at front
++                IDNDHook[] tmp = new IDNDHook[dndHooks.length - 1];
++                if (i > 0) {
++                    System.arraycopy(dndHooks, 0, tmp, 0, i - 1);
++                }
++                if (i < dndHooks.length - 1) {
++                    System.arraycopy(dndHooks, i + 1, tmp, i,
++                                     dndHooks.length - i - 1);
++                }
++                dndHooks = tmp;
++            }
++        }
++    }
++
++    // }}}
++    // {{{ runDNDCreationHooks
++
++    /**
++     * Notify all hooks about a newly created DragSource or DropTarget.
++     *
++     * @param   dragSource     The new DragSource.
++     */
++    public void runDNDCreationHooks(DragSource dragSource)
++    {
++        if (logger.level >= Log.MTD) {
++            Logger.Builder lb = logger.build("runDNDCreationHooks(DragSource)");
++            (logger.level < Log.MTDDETAIL ? lb : lb
++             .add("dragSource: ").add(dragSource)).log(Log.MTD);
++        }
++
++        checkDevice();
++
++        if (dndHooks == null) {
++            return;
++        }
++        IDNDHook[] tmp = (IDNDHook[]) dndHooks.clone();
++        for (int i = 0; i < tmp.length; i++) {
++            try {
++                tmp[i].dragSourceCreated(dragSource);
++            } catch (Throwable ex) {
++                ex.printStackTrace();
++            }
++        }
++    }
++
++    // }}}
++    // {{{ runDNDCreationHooks
++
++    /**
++     * Notify all hooks about a newly created DropTarget or DropTarget.
++     *
++     * @param   dropTarget     The new DropTarget.
++     */
++    public void runDNDCreationHooks(DropTarget dropTarget)
++    {
++        if (logger.level >= Log.MTD) {
++            Logger.Builder lb = logger.build("runDNDCreationHooks(DropTarget)");
++            (logger.level < Log.MTDDETAIL ? lb : lb
++             .add("dropTarget: ").add(dropTarget)).log(Log.MTD);
++        }
++
++        checkDevice();
++
++        if (dndHooks == null) {
++            return;
++        }
++        IDNDHook[] tmp = (IDNDHook[]) dndHooks.clone();
++        for (int i = 0; i < tmp.length; i++) {
++            try {
++                tmp[i].dropTargetCreated(dropTarget);
++            } catch (Throwable ex) {
++                ex.printStackTrace();
++            }
++        }
++    }
++
++    // }}}
++    // {{{ runDNDTrackerHooks
++
++    /**
++     * Notify all hooks about DnD performed through a Tracker.
++     *
++     * @param   start   True if the DnD is started, false if finished.
++     * @param   cancelled True if the DnD was cancelled.
++     */
++    public void runDNDTrackerHooks(boolean start, boolean cancelled)
++    {
++        if (logger.level >= Log.MTD) {
++            Logger.Builder lb = logger.build("runDNDTrackerHooks(boolean,boolean)");
++            (logger.level < Log.MTDDETAIL ? lb : lb
++             .add("start: ").add(start)
++             .add(", cancelled: ").add(cancelled)).log(Log.MTD);
++        }
++
++        checkDevice();
++
++        if (dndHooks == null) {
++            return;
++        }
++        IDNDHook[] tmp = (IDNDHook[]) dndHooks.clone();
++        for (int i = 0; i < tmp.length; i++) {
++            try {
++                if (start) {
++                    tmp[i].trackerDragStarted();
++                } else {
++                    tmp[i].trackerDragFinished(cancelled);
++                }
++            } catch (Throwable ex) {
++                ex.printStackTrace();
++            }
++        }
++    }
++
++    // }}}
++
++    //------------------------------------------------------------------------------------------
++    // Event filter at Win32 level
++    //------------------------------------------------------------------------------------------
++    // {{{ interface IWin32EventFilter
++
++    public interface IWin32EventFilter {
++        /**
++         * Possibly filter a Win32 message.
++         *
++         * @param       hwnd        The window handle.
++         * @param       msg         The message type.
++         * @param       wParam      win32 wParam.
++         * @param       lParam      win32 lParam.
++         *
++         * @return      True to process the event normally, false to filter it. (i.e. "keep it?")
++         */
++        public boolean filterWin32Event(int hwnd, int msg, int wParam, int lParam);
++    }
++
++    // }}}
++
++    /**
++     * Registered Win32 event filters.
++     */
++    IWin32EventFilter[] win32EventFilters;
++    public int eventProcessedByReadAndDispatch = 0;
++
++    // {{{ addWin32EventFilter
++
++    public void addWin32EventFilter(IWin32EventFilter hook)
++    {
++        synchronized (classLock) {
++            if (win32EventFilters == null) {
++                win32EventFilters = new IWin32EventFilter[] {hook};
++                return;
++            }
++            // Prevent double registration. If the hook is already registered, move it to the
++            // front.
++            for (int i = 0; i < win32EventFilters.length; i++) {
++                if (win32EventFilters[i] == hook) {
++                    if (i == 0) {
++                        return;
++                    }
++                    System.arraycopy(win32EventFilters, 0, win32EventFilters, 1, i);
++                    win32EventFilters[0] = hook;
++                }
++            }
++            // Insert new hook at front
++            IWin32EventFilter[] tmp = new IWin32EventFilter[win32EventFilters.length + 1];
++            tmp[0] = hook;
++            System.arraycopy(win32EventFilters, 0, tmp, 1, win32EventFilters.length);
++            win32EventFilters = tmp;
++        }
++    }
++
++    // }}}
++    // {{{ removeWin32EventFilter
++
++    public void removeWin32EventFilter(IWin32EventFilter hook)
++    {
++        synchronized (classLock) {
++            if (win32EventFilters == null) {
++                return;
++            }
++
++            for (int i = 0; i < win32EventFilters.length; i++) {
++                if (win32EventFilters[i] == hook) {
++                    if (win32EventFilters.length == 1) {
++                        win32EventFilters = null;
++                        return;
++                    }
++                    // Insert new hook at front
++                    IWin32EventFilter[] tmp =
++                        new IWin32EventFilter[win32EventFilters.length - 1];
++                    if (i > 0) {
++                        System.arraycopy(win32EventFilters, 0, tmp, 0, i - 1);
++                    }
++                    if (i < win32EventFilters.length - 1) {
++                        System.arraycopy(win32EventFilters, i + 1, tmp, i,
++                                         win32EventFilters.length - i - 1);
++                    }
++                    win32EventFilters = tmp;
++                }
++            }
++        }
++    }
++
++    // }}}
++    // {{{ runWin32EventFilters
++
++    /**
++     * Run all registered filters and possibly filter a Win32 message.
++     * Filters are only run until the first one wants to filter it (returns false);
++     *
++     * @param       hwnd        The window handle.
++     * @param       msg         The message type.
++     * @param       wParam      win32 wParam.
++     * @param       lParam      win32 lParam.
++     *
++     * @return      True to process the event normally, false to filter it. (i.e. "keep it?")
++     */
++    protected boolean runWin32EventFilters(int hwnd, int msg, int wParam, int lParam)
++    {
++        // <QFS>
++        if (logger.level >= Log.MTD) {
++            Logger.Builder lb = logger.build("runWin32EventFilters(int,int,int,int)");
++            (logger.level < Log.MTDDETAIL ? lb : lb
++             .add("hwnd: ").addHex(hwnd)
++             .add(", msg: ").add(msg)
++             .add(", wParam: ").addHex(wParam)
++             .add(", lParam: ").addHex(lParam)).log(Log.MTD);
++        }
++        // </QFS>
++        IWin32EventFilter[] tmp;
++        synchronized (classLock) {
++            if (win32EventFilters == null) {
++                return true;
++            }
++            tmp = (IWin32EventFilter[]) win32EventFilters.clone();
++        }
++        if (tmp != null) {
++            for (int i = 0; i < tmp.length; i++) {
++                try {
++                    if (! tmp[i].filterWin32Event(hwnd, msg, wParam, lParam)) {
++                        // <QFS>
++                        if (logger.level >= Log.DBG) {
++                            logger.log(Log.DBG, "runWin32EventFilters(int,int,int,int)",
++                                       "filterWin32Event returned false");
++                        }
++                        // </QFS>
++                        return false;
++                    }
++                } catch (Throwable ex) {
++                    ex.printStackTrace();
++                }
++            }
++        }
++        return true;
++    }
++
++    // }}}
++
++    /**
++     * Misc
++     */
++    // {{{ logMessage
++
++    public void logMessage(String method,
++                           int hwnd, int msg, int wParam, int lParam,
++                           String preText,
++                           Logger logger,
++                           int fixedloglevel)
++    {
++        // get name of control
++        Control control = getControl(hwnd);
++        String controlClassName = control != null ? control.getClass().getName() : "(unknown control)";
++
++        // determine loglevel
++        int loglevel = Log.MTD;
++        String msgtype = null;
++
++        if (logger.level >= Log.MTD) {
++            boolean[] hasMatch = new boolean[1];
++            msgtype = OS.getWinMsgType(msg, hasMatch);
++            loglevel = OS.isMessageImportant(msg)
++                ? Log.MTD
++                : (OS.isMessageUnimportant(msg) || ! hasMatch[0])
++                ? Log.DBGDETAIL
++                : Log.DBG;
++        }
++        if (fixedloglevel >= 0)
++            loglevel = fixedloglevel;
++
++        // now do the real logging
++        if (logger.level >= loglevel) {
++            Logger.Builder lb = logger.build(method)
++                .add(preText != null ? preText : "")
++                .add("msg: ").add(msgtype)
++                .add(", hwnd: ").addHex(hwnd)
++                .add(", controlclass=").add(controlClassName);
++            switch (msg) {
++            case OS.WM_LBUTTONDOWN:
++            case OS.WM_LBUTTONUP:
++                lb  .add(", keyflags=").addHex(wParam)
++                    .add(", x=").add(lParam & 0xffff)
++                    .add(", y=").add(lParam >> 16)
++                    .log(loglevel);
++                break;
++            default:
++                lb  .add(", wParam: ").addHex(wParam)
++                    .add(", lParam: ").addHex(lParam)
++                    .log(loglevel);
++                break;
++            }
++        }
++    }
++
++    // }}}
++    // {{{ getLastMouse
++
++    public int getLastMouse()
++    {
++        return lastMouse;
++    }
++
++    // }}}
++
++    // {{{ variables
++
++    public final static String[] EVENTS = new String[] {
++        "None", "KeyDown", "KeyUp", "MouseDown", "MouseUp", "MouseMove", "MouseEnter", "MouseExit",
++        "MouseDoubleClick", "Paint", "Move", "Resize", "Dispose", "Selection", "DefaultSelection",
++        "FocusIn", "FocusOut", "Expand", "Collapse", "Iconify", "Deiconify", "Close", "Show",
++        "Hide", "Modify", "Verify", "Activate", "Deactivate", "Help", "DragDetect", "Arm",
++        "Traverse", "MouseHover", "HardKeyDown", "HardKeyUp", "MenuDetect", "SetData"};
++
++    // }}}
++    // {{{ getEventName
++
++    public final static String getEventName(int event)
++    {
++        if (event >= 0 && event <= 36) {
++            return EVENTS[event];
++        }
++        return "Unknown";
++    }
++
++    // }}}
++
++    //------------------------------------------------------------------------------------------
++    // KeyState override during replay
++    //------------------------------------------------------------------------------------------
++    // {{{ variables
++
++    protected boolean replaying;
++    protected Widget replayTarget;
++    private long replayingUntil;
++    private int replayPos;
++    private int replayFwKeys;
++
++    // }}}
++    // {{{ GetKeyState
++
++    /**
++     * The GetKeyState function retrieves the status of the specified virtual key.
++     * If replaying is false, this is just OS.GetKeyState().
++     * If replaying is true, it returns the replayed keyState.
++     *
++     * @param   nVirtKey
++     *
++     * @return  -1 if key is pressed, 0 if not.
++     */
++    public short GetKeyState(int nVirtKey)
++    {
++        if (logger.level >= Log.MTD) {
++            Logger.Builder lb = logger.build("GetKeyState(int)");
++            (logger.level < Log.MTDDETAIL ? lb : lb
++             .add("nVirtKey: ").add(nVirtKey)).log(Log.MTD);
++        }
++        if (logger.level >= Log.DBG) {
++            logger.dumpStack(Log.DBG, "GetKeyState(int)",
++                       "");
++        }
++
++        if (replaying) {
++            int mask;
++            switch (nVirtKey) {
++            case OS.VK_SHIFT:
++                mask = SWT.SHIFT;
++                break;
++            case OS.VK_CONTROL:
++                mask = SWT.CONTROL;
++                break;
++            case OS.VK_MENU:
++                mask = SWT.ALT;
++                break;
++            case OS.VK_LBUTTON:
++                mask = SWT.BUTTON1;
++                break;
++            case OS.VK_MBUTTON:
++                mask = SWT.BUTTON2;
++                break;
++            case OS.VK_RBUTTON:
++                mask = SWT.BUTTON3;
++                break;
++            default:
++                mask = 0;
++            }
++
++            if (logger.level >= Log.DBG) {
++                logger.build("GetKeyState(int)").add("mask: ").addHex(mask)
++                    .add(", replayFwKeys").addHex(replayFwKeys).log(Log.DBG);
++            }
++            return ((replayFwKeys & mask) != 0) ? (short)-1 : 0;
++        } else {
++            return OS.GetKeyState(nVirtKey);
++        }
++    }
++
++    // }}}
++    // {{{ GetMessagePos
++
++    /**
++     * The GetMessagePos function returns a long value that gives the cursor position in
++     * screen coordinates.
++     *
++     * If replaying is false, this is just OS.GetMessagePos().
++     * If replaying is true, it returns the replayed position.
++     *
++     * @return The return value specifies the x- and y-coordinates of the cursor position.
++     *           The x-coordinate is the low order int and the y-coordinate is the high-order int.
++     *
++     */
++    int GetMessagePos()
++    {
++        if (isReplaying()) {
++            return replayPos;
++        } else {
++            return OS.GetMessagePos();
++        }
++    }
++
++    // }}}
++    // {{{ setReplayState
++
++    public void setReplayState(boolean replaying, long until, int pos, Widget target)
++    {
++        if (logger.level >= Log.MTD) {
++            Logger.Builder lb = logger.build("setReplayState(boolean,long,int,Widget)");
++            (logger.level < Log.MTDDETAIL ? lb : lb
++             .add("replaying: ").add(replaying)
++             .add(", until: ").add(until)
++             .add(", pos: ").add(pos)
++             .add(", target: ").add(target)).log(Log.MTD);
++        }
++        this.replaying = replaying;
++        replayingUntil = until;
++        if (replaying) {
++            replayPos = pos;
++            replayTarget = target;
++        }
++    }
++
++    // }}}
++    // {{{ setReplayKeyState
++
++    public void setReplayKeyState(boolean replaying, long until, int keyState)
++    {
++        if (logger.level >= Log.MTD) {
++            Logger.Builder lb = logger.build("setReplayKeyState(boolean,long,int)");
++            (logger.level < Log.MTDDETAIL ? lb : lb
++             .add("replaying: ").add(replaying)
++             .add(", until: ").add(until)
++             .add(", keyState: ").addHex(keyState)).log(Log.MTD);
++        }
++        this.replaying = replaying;
++        replayingUntil = until;
++        if (replaying) {
++            replayFwKeys = keyState;
++        }
++    }
++
++    // }}}
++    // {{{ setReplayKeyStateWnd
++
++    public void setReplayKeyStateWnd(int keyState)
++    {
++        if (logger.level >= Log.MTD) {
++            Logger.Builder lb = logger.build("setReplayKeyStateWnd(int)");
++            (logger.level < Log.MTDDETAIL ? lb : lb
++             .add("keyState: ").add(keyState)).log(Log.MTD);
++        }
++        replayFwKeys = 0;
++        if ((keyState & OS.MK_SHIFT) != 0) {
++            replayFwKeys |= SWT.SHIFT;
++        }
++        if ((keyState & OS.MK_CONTROL) != 0) {
++            replayFwKeys |= SWT.CONTROL;
++        }
++        if ((keyState & OS.MK_LBUTTON) != 0) {
++            replayFwKeys |= SWT.BUTTON1;
++        }
++        if ((keyState & OS.MK_MBUTTON) != 0) {
++            replayFwKeys |= SWT.BUTTON2;
++        }
++        if ((keyState & OS.MK_RBUTTON) != 0) {
++            replayFwKeys |= SWT.BUTTON3;
++        }
++    }
++
++    // }}}
++    // {{{ isReplaying
++
++    protected boolean isReplaying()
++    {
++        return replaying
++            || (replayingUntil != 0 && replayingUntil > System.currentTimeMillis());
++    }
++
++    // }}}
++
++    //------------------------------------------------------------------------------------------
++    // Helper class for accessing environment variables
++    //
++    // Doesn't belong here.
++    //------------------------------------------------------------------------------------------
++    // {{{ class Environment
++
++    private static class Environment
++    {
++        // {{{ variables
++
++        /**
++         * Names used by DOS/Windows 95 variants.
++         */
++        private final String[] dosNames = {
++            "Windows 95", "Windows 98", "Windows ME"
++        };
++
++        /**
++         * Whether the JDK is at least version 1.5 so we can use System.getenv.
++         */
++        private final boolean is15 = "1.5".compareTo(System.getProperty("java.version")) <= 0;
++
++        /**
++         * Unknown os.
++         */
++        private final int OS_OTHER = 0;
++
++        /**
++         * Posix variants.
++         */
++        private final int OS_POSIX = 1;
++
++        /**
++         * Windows NT variants.
++         */
++        private final int OS_NT = 2;
++
++        /**
++         * DOS/Windows 95 variants.
++         */
++        private final int OS_DOS = 3;
++
++        /**
++         * MacOS variants < Mac OS-X
++         */
++        private final int OS_MAC = 4;
++
++        /**
++         * The os type.
++         */
++        private int os = OS_OTHER;
++
++        /**
++         * The actual environment.
++         */
++        private Properties environment;
++
++        // }}}
++
++        //--------------------------------------------------------------------------------------
++        // Constructor
++        //--------------------------------------------------------------------------------------
++        // {{{ Environment
++
++        /**
++         * Create a new Environment.
++         */
++        public Environment ()
++        {
++            determineOS();
++            if (os != OS_OTHER) {
++                initEnvironment();
++            }
++        }
++
++        // }}}
++
++        //--------------------------------------------------------------------------------------
++        // Public methods
++        //--------------------------------------------------------------------------------------
++        // {{{ isAvaliable
++
++        /**
++         * Test whether the Environment is available.
++         *
++         * @return      Whether the Environment is available.
++         */
++        public boolean isAvaliable()
++        {
++            return os != OS_OTHER;
++        }
++
++        // }}}
++        // {{{ getEnvironment
++
++        /**
++         * Get the whole set of environment variables.
++         *
++         * @return  The environment variables.
++         */
++        public final Properties getEnvironment()
++        {
++            if (os == OS_OTHER) {
++                return null;
++            }
++            synchronized (this) {
++                if (environment == null) {
++                    initEnvironment();
++                }
++            }
++            return environment;
++        }
++
++        // }}}
++        // {{{ setEnvironment
++
++        /**
++         * Set the whole set of environment variables.
++         *
++         * @param   environment     The environment to set.
++         */
++        public final void setEnvironment(Properties environment)
++        {
++            if (os == OS_OTHER) {
++                return;
++            }
++            this.environment = environment;
++        }
++
++
++
++        // }}}
++        // {{{ getEnv
++
++        /**
++         * Get one environment variable.
++         *
++         * @param   name    The name of the environment variable.
++         *
++         * @return  The respective environment value or null if undefined.
++         */
++        public String getEnv(String name)
++        {
++            if (os == OS_OTHER) {
++                return null;
++            }
++            return getEnvironment().getProperty(transformName(name));
++        }
++
++        // }}}
++        // {{{ setEnv
++
++        /**
++         * Set an environment variable value.
++         *
++         * @param   name    The name of the environment variable.
++         * @param   value   The value of the environment variable.
++         */
++        public void setEnv(String name, String value)
++        {
++            if (os == OS_OTHER) {
++                return;
++            }
++            getEnvironment().put(transformName(name), value);
++        }
++
++        // }}}
++        // {{{ unsetEnv
++        /**
++         * Delete an environment variable.
++         *
++         * @param   name    The name of the environment variable.
++         */
++        public void unsetEnv(String name)
++        {
++            if (os == OS_OTHER) {
++                return;
++            }
++            getEnvironment().remove(transformName(name));
++        }
++
++        // }}}
++
++        //--------------------------------------------------------------------------------------
++        // Helper methods
++        //--------------------------------------------------------------------------------------
++        // {{{ determineOS
++
++        /**
++         * Determine the type of the underlying operating system.
++         */
++        private void determineOS()
++        {
++            String osname = System.getProperty("os.name");
++            // debug("osname: " + osname);
++            if (osname == null) {
++                if (is15) {
++                    os = OS_POSIX;
++                    return;
++                }
++                return;
++            }
++
++            if (osname.startsWith("Windows")) {
++                int i;
++                for (i = 0; i < dosNames.length; i++) {
++                    if (dosNames[i].equalsIgnoreCase(osname)) {
++                        os = OS_DOS;
++                    }
++                }
++                if (i == dosNames.length) {
++                    os = OS_NT;
++                }
++            } else if (osname.startsWith("MacOS")) {
++                os = OS_MAC;
++            } else {
++                os = OS_POSIX;
++            }
++            // debug("os: " + os);
++        }
++
++        // }}}
++        // {{{ initEnvironment
++
++        /**
++         * Initialize the environment by executing a subshell.
++         */
++        private void initEnvironment()
++        {
++            environment = new Properties();
++
++            if (is15) {
++                try {
++                    Map env = (Map) System.class.getMethod("getenv", new Class[0])
++                        .invoke(null, new Object[0]);
++                    for (Iterator i = env.entrySet().iterator(); i.hasNext(); ) {
++                        Map.Entry entry = (Map.Entry) i.next();
++                        environment.put(transformName((String) entry.getKey()), entry.getValue());
++                    }
++                    return;
++                } catch (Throwable ex) {
++                    // debug(ex);
++                }
++            }
++            String[] envCommand = null;
++            switch(os) {
++            case OS_POSIX:
++                envCommand = new String[] {"sh", "-c", "env"};
++                break;
++            case OS_NT:
++                envCommand = new String[] {"cmd", "/c", "set"};
++                break;
++            case OS_DOS:
++                envCommand = new String[] {"command.com", "/c", "set"};
++                break;
++            }
++
++            if (envCommand != null) {
++                try {
++                    Process process = Runtime.getRuntime().exec(envCommand);
++                    BufferedReader in = new BufferedReader
++                        (new InputStreamReader(process.getInputStream()));
++                    String line = in.readLine();
++                    if (line.indexOf('=') <= 0) {
++                        terminateProcess(process);
++                        return;
++                    }
++                    StringBuffer sb = new StringBuffer ();
++                    String key = "";
++                    int lines = 0;
++                    while (line != null) {
++                        lines++;
++                        int idx = line.indexOf('=');
++                        if (idx < 0) {
++                            // Belongs to previous line
++                            sb.append("\n");
++                            sb.append(line);
++                        } else {
++                            environment.put(key, sb.toString());
++                            sb.setLength(0);
++                            key = transformName(line.substring(0, idx));
++                            sb.append(line.substring(idx + 1));
++                        }
++                        line = in.readLine();
++                    }
++                    environment.put(key, sb.toString());
++                    terminateProcess(process);
++                    // debug("lines: " + lines);
++                    // debug("environment: " + environment);
++                } catch (Throwable ex) {
++                    // debug(ex);
++                    os = OS_OTHER;
++                }
++            }
++        }
++
++        // }}}
++        // {{{ terminateProcess
++
++        /**
++         * Terminate a process cleanly and make sure its output and error streams are read to
++         * prevent it from blocking.
++         *
++         * @param   process The process to terminate.
++         */
++        private void terminateProcess(final Process process)
++        {
++            final byte[] buf = new byte[32768];
++            // Make sure output stream gets cleared.
++            new Thread() {
++                public void run() {
++                    try {
++                        InputStream in = process.getInputStream();
++                        while (in.read(buf) >= 0) {
++                        }
++                    } catch (Throwable ex) {
++                        // debug(ex);
++                    }
++                }
++            }.start();
++            // Make sure error stream gets cleared.
++            new Thread() {
++                public void run() {
++                    try {
++                        InputStream in = process.getErrorStream();
++                        while (in.read(buf) >= 0) {
++                        }
++                    } catch (Throwable ex) {
++                        // debug(ex);
++                    }
++                }
++            }.start();
++            process.destroy();
++        }
++
++        // }}}
++        // {{{ transformName
++
++        /**
++         * Transform the name of an envrionment variable: On Windows Systems the name is converted
++         * to upper case.
++         *
++         * @param   name    The name of the envrionment variable.
++         *
++         * @return  The transformed name.
++         */
++        private String transformName(String name)
++        {
++            return (os == OS_DOS || os == OS_NT) ? name.toUpperCase() : name;
++        }
++
++        // }}}
++    }
++    // }}}
++
++    /**
++     * Static initialization: Check system properties and environment variables for display
++     * creation hooks.
++     */
++    static {
++        try {
++            String hookClasses = System.getProperty("eclipse.swt.DisplayCreationHooks");
++            String envHooks = new Environment ().getEnv("SWT_DISPLAY_CREATION_HOOKS");
++            if (envHooks != null) {
++                hookClasses = hookClasses == null ? envHooks : (hookClasses + ":" + envHooks);
++            }
++            if (hookClasses != null) {
++                for (StringTokenizer st = new StringTokenizer(hookClasses, ":;, \t\r\n");
++                     st.hasMoreTokens(); ) {
++                    String clName = st.nextToken();
++                    try {
++                        Class cl;
++                        try {
++                            // First try to fall back to the system ClassLoader
++                            cl = ClassLoader.getSystemClassLoader().loadClass(clName);
++                        } catch (Throwable th) {
++                            // Then try the ClassLoader for this code
++                            cl = Display.class.getClassLoader().loadClass(clName);
++                        }
++                        Object o = cl.getConstructor(new Class[] {Class.class})
++                            .newInstance(new Object[] {Display.class});
++                        String buildnumber = null;
++                        try {
++                            java.io.InputStream in = Display.class.getResourceAsStream
++                                ("/org/eclipse/swt/widgets/qfsbuild.properties");
++                            Properties build = new Properties ();
++                            build.load(in);
++                            buildnumber = build.getProperty("buildnumber");
++                        } catch (Throwable th) {
++                            if (logger.level >= Log.WRN) {
++                                logger.log(Log.WRN, "run()", th);
++                            }
++                        }
++                        System.out.println("SWT " + SWT.getVersion() + " build qftest." +
++                                           (buildnumber == null ? "?" : buildnumber));
++                    } catch (Throwable th) {
++                        if (logger.level >= Log.WRN) {
++                            logger.log(Log.WRN, "run()", th);
++                        }
++                        System.err.println("Could not load class " + clName);
++                    }
++                }
++            }
++        } catch (Throwable th) {
++            th.printStackTrace();
++        }
++    }
++// </QFS>
++
++	/**
+ 	 * the handle to the OS message queue
+ 	 * (Warning: This field is platform dependent)
+ 	 * <p>
+@@ -233,8 +1651,10 @@
+ 	int clickCount, lastTime, lastButton;
+ 	int /*long*/ lastClickHwnd;
+ 	int scrollRemainder, scrollHRemainder;
+-	int lastKey, lastMouse, lastAscii;
+-	boolean lastVirtual, lastNull, lastDead;
++        // <QFS/> public - TODO provide get-functions instead
++	public int lastKey, lastMouse, lastAscii;
++        // <QFS/> public - TODO provide get-functions instead
++	public boolean lastVirtual, lastNull, lastDead;
+ 	byte [] keyboard = new byte [256];
+ 	boolean accelKeyHit, mnemonicKeyHit;
+ 	boolean lockActiveWindow, captureChanged, xMouse;
+@@ -467,6 +1887,9 @@
+  */
+ public Display (DeviceData data) {
+ 	super (data);
++        // <QFS> Execute display creation hooks
++        runDisplayCreationHooks(this);
++        // </QFS>
+ }
+ 
+ Control _getFocusControl () {
+@@ -622,6 +2045,13 @@
+ }
+ 
+ void addPopup (Menu menu) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("addPopup(Menu)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("menu: ").add(menu)).log(Log.MTD);
++    }
++    // </QFS>
+ 	if (popups == null) popups = new Menu [4];
+ 	int length = popups.length;
+ 	for (int i=0; i<length; i++) {
+@@ -640,7 +2070,8 @@
+ 	popups [index] = menu;
+ }
+ 
+-int asciiKey (int key) {
++// <QFS/> made public
++public int asciiKey (int key) {
+ 	/* Get the current keyboard. */
+ 	for (int i=0; i<keyboard.length; i++) keyboard [i] = 0;
+ 	if (!OS.GetKeyboardState (keyboard)) return 0;
+@@ -676,7 +2107,8 @@
+ public void asyncExec (Runnable runnable) {
+ 	synchronized (Device.class) {
+ 		if (isDisposed ()) error (SWT.ERROR_DEVICE_DISPOSED);
+-		synchronizer.asyncExec (runnable);
++                // <QFS/> Redirected to internalAsyncExec.
++                synchronizer.internalAsyncExec (runnable);
+ 	}
+ }
+ 
+@@ -764,7 +2196,8 @@
+ 	for (int i=0; i<shells.length; i++) shells [i].updateModal ();
+ }
+ 
+-int controlKey (int key) {
++// <QFS/> made public
++public int controlKey (int key) {
+ 	int upper = (int)/*64*/OS.CharUpper ((short) key);
+ 	if (64 <= upper && upper <= 95) return upper & 0xBF;
+ 	return key;
+@@ -1195,15 +2628,29 @@
+ 	return false;
+ }
+ 
+-boolean filters (int eventType) {
++// <QFS/> make public
++public boolean filters (int eventType) {
+ 	if (filterTable == null) return false;
+ 	return filterTable.hooks (eventType);
+ }
+ 
+ boolean filterMessage (MSG msg) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("filterMessage(MSG)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("msg: ").add(OS.getWinMsgType(msg.message, null))).log(Log.MTD);
++    }
++    // </QFS>
+ 	int message = msg.message;
+ 	if (OS.WM_KEYFIRST <= message && message <= OS.WM_KEYLAST) {
+ 		Control control = findControl (msg.hwnd);
++                // <QFS>
++                if (logger.level >= Log.DBG) {
++                    logger.build("filterMessage(MSG)")
++                        .add("control: ").add(control).log(Log.DBG);
++                }
++                // </QFS>
+ 		if (control != null) {
+ 			if (translateAccelerator (msg, control) || translateMnemonic (msg, control) || translateTraversal (msg, control)) {
+ 				lastAscii = lastKey = 0;
+@@ -1526,7 +2973,8 @@
+ 	return new Rectangle (x, y, width, height);
+ }
+ 
+-Control getControl (int /*long*/ handle) {
++// <QFS/> made public
++public Control getControl (int /*long*/ handle) {
+ 	if (handle == 0) return null;
+ 	if (lastControl != null && lastHwnd == handle) {
+ 		return lastControl;
+@@ -1569,7 +3017,8 @@
+ public Control getCursorControl () {
+ 	checkDevice ();
+ 	POINT pt = new POINT ();
+-	if (!OS.GetCursorPos (pt)) return null;
++        // <QFS/> Get overridden cursor position
++	if (!OS._GetCursorPos (pt)) return null;
+ 	return findControl (OS.WindowFromPoint (pt));
+ }
+ 
+@@ -1591,9 +3040,16 @@
+ 
+ Point getCursorLocationInPixels () {
+ 	POINT pt = new POINT ();
+-	OS.GetCursorPos (pt);
+-	return new Point (pt.x, pt.y);
++        // <QFS/> Get overridden cursor position
++        OS._GetCursorPos (pt);
++        // <QFS> Log result
++        Point ret = new Point (pt.x, pt.y);
++        if (logger.level >= Log.DBG) {
++            logger.build("getCursorLocation()").add("ret: ").add(ret).log(Log.DBG);
+ }
++        return ret;
++        // </QFS>
++}
+ 
+ /**
+  * Returns an array containing the recommended cursor sizes.
+@@ -1995,7 +3451,8 @@
+ 	return list;
+ }
+ 
+-int getLastEventTime () {
++// <QFS/> made public
++public int getLastEventTime () {
+ 	return OS.GetMessageTime ();
+ }
+ 
+@@ -2955,7 +4412,59 @@
+ 	return new Rectangle (rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
+ }
+ 
++/*
++ * Returns a single character, converted from the default
++ * multi-byte character set (MBCS) used by the operating
++ * system widgets to a wide character set (WCS) used by Java.
++ *
++ * @param ch the MBCS character
++ * @return the WCS character
++ */
++// <QFS/> made public
++public static char mbcsToWcs (int ch) {
++	return mbcsToWcs (ch, 0);
++}
++
++/*
++ * Returns a single character, converted from the specified
++ * multi-byte character set (MBCS) used by the operating
++ * system widgets to a wide character set (WCS) used by Java.
++ *
++ * @param ch the MBCS character
++ * @param codePage the code page used to convert the character
++ * @return the WCS character
++ */
++static char mbcsToWcs (int ch, int codePage) {
++	if (OS.IsUnicode) return (char) ch;
++	int key = ch & 0xFFFF;
++	if (key <= 0x7F) return (char) ch;
++	byte [] buffer;
++	if (key <= 0xFF) {
++		buffer = new byte [1];
++		buffer [0] = (byte) key;
++	} else {
++		buffer = new byte [2];
++		buffer [0] = (byte) ((key >> 8) & 0xFF);
++		buffer [1] = (byte) (key & 0xFF);
++	}
++	char [] unicode = new char [1];
++	int cp = codePage != 0 ? codePage : OS.CP_ACP;
++	int count = OS.MultiByteToWideChar (cp, OS.MB_PRECOMPOSED, buffer, buffer.length, unicode, 1);
++	if (count == 0) return 0;
++	return unicode [0];
++}
++
+ int /*long*/ messageProc (int /*long*/ hwnd, int /*long*/ msg, int /*long*/ wParam, int /*long*/ lParam) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("messageProc(int,int,int,int)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("hwnd: ").addHex(hwnd)
++         .add(", msg: ").add(OS.getWinMsgType(msg, null))
++         .add(", wParam: ").add(wParam)
++         .add(", lParam: ").add(lParam)).log(Log.MTD);
++    }
++    // </QFS>
+ 	switch ((int)/*64*/msg) {
+ 		case SWT_RUNASYNC: {
+ 			if (runMessagesInIdle) runAsyncMessages (false);
+@@ -2966,6 +4475,12 @@
+ 			MSG keyMsg = new MSG ();
+ 			OS.MoveMemory (keyMsg, lParam, MSG.sizeof);
+ 			Control control = findControl (keyMsg.hwnd);
++                        // <QFS>
++                        if (logger.level >= Log.DBG) {
++                            logger.build("messageProc(int,int,int,int)")
++                                .add("control: ").add(control).log(Log.DBG);
++                        }
++                        // </QFS>
+ 			if (control != null) {
+ 				/*
+ 				* Feature in Windows.  When the user types an accent key such
+@@ -2997,9 +4512,10 @@
+ 											int value = OS.VkKeyScan (ACCENTS [i]);
+ 											if (value != -1 && (value & 0xFF) == keyMsg.wParam) {
+ 												int state = value >> 8;
+-												if ((OS.GetKeyState (OS.VK_SHIFT) < 0) == ((state & 0x1) != 0) &&
+-													(OS.GetKeyState (OS.VK_CONTROL) < 0) == ((state & 0x2) != 0) &&
+-													(OS.GetKeyState (OS.VK_MENU) < 0) == ((state & 0x4) != 0)) {
++                                                                                                        // <QFS/> changed to GetKeyState
++													if ((GetKeyState (OS.VK_SHIFT) < 0) == ((state & 0x1) != 0) &&
++														(GetKeyState (OS.VK_CONTROL) < 0) == ((state & 0x2) != 0) &&
++														(GetKeyState (OS.VK_MENU) < 0) == ((state & 0x4) != 0)) {
+ 														if ((state & 0x7) != 0) accentKey = true;
+ 														break;
+ 												}
+@@ -3259,6 +4775,14 @@
+ 		case OS.MSGF_SCROLLBAR:
+ 		case OS.MSGF_SIZE: {
+ 			OS.MoveMemory (hookMsg, lParam, MSG.sizeof);
++                                // <QFS>
++                                boolean filterit = filterMessage (hookMsg); // SWT/Display
++                                logMessage("msgFilterProc(int,int,int)",
++                                           hookMsg.hwnd, hookMsg.message, hookMsg.wParam,
++                                           hookMsg.lParam,
++                                           (filterit ? "would be filtered by SWT/Display: " : ""),
++                                           logger, -1);
++                                // </QFS>
+ 			if (hookMsg.message == OS.WM_NULL) {
+ 				MSG msg = new MSG ();
+ 				int flags = OS.PM_NOREMOVE | OS.PM_NOYIELD | OS.PM_QS_INPUT | OS.PM_QS_POSTMESSAGE;
+@@ -3272,7 +4796,8 @@
+ 	return OS.CallNextHookEx (filterHook, (int)/*64*/code, wParam, lParam);
+ }
+ 
+-int numpadKey (int key) {
++// <QFS/> made public
++public int numpadKey (int key) {
+ 	switch (key) {
+ 		case OS.VK_NUMPAD0:	return '0';
+ 		case OS.VK_NUMPAD1:	return '1';
+@@ -3520,6 +5045,12 @@
+  * @see #wake
+  */
+ public boolean readAndDispatch () {
++    // <QFS>
++    if (logger.level >= Log.DBGDETAIL) {
++        logger.log(Log.DBGDETAIL, "readAndDispatch()",
++                   "");
++    }
++    // </QFS>
+ 	checkDevice ();
+ 	lpStartupInfo = null;
+ 	drawMenuBars ();
+@@ -3527,10 +5058,45 @@
+ 	runDeferredLayouts ();
+ 	runPopups ();
+ 	if (OS.PeekMessage (msg, 0, 0, 0, OS.PM_REMOVE)) {
+-		if (!filterMessage (msg)) {
++        // <QFS>
++        boolean filterit = filterMessage (msg); // SWT/Display
++        this.logMessage("readAndDispatch()",
++                        msg.hwnd, msg.message, msg.wParam, msg.lParam,
++                        (filterit ? "filtered by SWT/Display: " : ""),
++                        logger, -1);
++
++        // ??? runWin32EventFilters only if ( ! filterMessage  ) ???
++        boolean keepit = runWin32EventFilters(msg.hwnd, msg.message,
++                                              msg.wParam, msg.lParam); // filtered by qftest?
++        eventProcessedByReadAndDispatch++;
++        if (logger.level >= Log.DBG) {
++            logger.build("readAndDispatch()")
++                .add("eventProcessedByReadAndDispatch increased to ")
++                .add(eventProcessedByReadAndDispatch).log(Log.DBG);
++        }
++        try {
++
++            if ( keepit && ! filterit ) {
++                if (logger.level >= Log.DBGDETAIL) {
++                    logger.log(Log.DBGDETAIL, "readAndDispatch()",
++                               "now calling OS.TranslateMessage");
++                }
+ 			OS.TranslateMessage (msg);
++                if (logger.level >= Log.DBGDETAIL) {
++                    logger.log(Log.DBGDETAIL, "readAndDispatch()",
++                               "now calling OS.DispatchMessage");
++                }
+ 			OS.DispatchMessage (msg);
+ 		}
++        } finally {
++            eventProcessedByReadAndDispatch--;
++            if (logger.level >= Log.DBG) {
++                logger.build("readAndDispatch()")
++                    .add("eventProcessedByReadAndDispatch decreased to ")
++                    .add(eventProcessedByReadAndDispatch).log(Log.DBG);
++            }
++        }
++        // </QFS>
+ 		runDeferredEvents ();
+ 		return true;
+ 	}
+@@ -3893,6 +5459,13 @@
+ }
+ 
+ void removePopup (Menu menu) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("removePopup(Menu)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("menu: ").add(menu)).log(Log.MTD);
++    }
++    // </QFS>
+ 	if (popups == null) return;
+ 	for (int i=0; i<popups.length; i++) {
+ 		if (popups [i] == menu) {
+@@ -3903,6 +5476,13 @@
+ }
+ 
+ boolean runAsyncMessages (boolean all) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("runAsyncMessages(boolean)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("all: ").add(all)).log(Log.MTD);
++    }
++    // </QFS>
+ 	return synchronizer.runAsyncMessages (all);
+ }
+ 
+@@ -3960,19 +5540,49 @@
+ }
+ 
+ boolean runPopups () {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("runPopups()");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("popups: ").addAll(popups)).log(Log.MTD);
++    }
++    // </QFS>
+ 	if (popups == null) return false;
+ 	boolean result = false;
+ 	while (popups != null) {
+ 		Menu menu = popups [0];
++                // <QFS>
++                if (logger.level >= Log.DBG) {
++                    logger.build("runPopups()").add("menu: ").add(menu).log(Log.DBG);
++                }
++                // </QFS>
+ 		if (menu == null) break;
+ 		int length = popups.length;
+ 		System.arraycopy (popups, 1, popups, 0, --length);
+ 		popups [length] = null;
+ 		runDeferredEvents ();
++                // <QFS>
++                if (logger.level >= Log.DBG) {
++                    logger.log(Log.DBG, "runPopups()",
++                               "runDeferredEvents done");
++                }
++                // </QFS>
+ 		if (!menu.isDisposed ()) menu._setVisible (true);
++                // <QFS>
++                if (logger.level >= Log.DBG) {
++                    logger.log(Log.DBG, "runPopups()",
++                               "menu._setVisible done");
++                }
++                // </QFS>
+ 		result = true;
+ 	}
+ 	popups = null;
++        // <QFS>
++        if (logger.level >= Log.DBG) {
++            logger.log(Log.DBG, "runPopups()",
++                       "all done");
++        }
++        // </QFS>
+ 	return result;
+ }
+ 
+@@ -4020,6 +5630,13 @@
+ }
+ 
+ boolean runTimer (int /*long*/ id) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("runTimer(int)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("id: ").add(id)).log(Log.MTD);
++    }
++    // </QFS>
+ 	if (timerList != null && timerIds != null) {
+ 		int index = 0;
+ 		while (index <timerIds.length) {
+@@ -4027,6 +5644,12 @@
+ 				OS.KillTimer (hwndMessage, timerIds [index]);
+ 				timerIds [index] = 0;
+ 				Runnable runnable = timerList [index];
++                                // <QFS>
++                                if (logger.level >= Log.MSG) {
++                                    logger.build("runTimer(int)")
++                                        .add("runnable: ").add(runnable).log(Log.MSG);
++                                }
++                                // </QFS>
+ 				timerList [index] = null;
+ 				if (runnable != null) {
+ 					try {
+@@ -4042,6 +5665,12 @@
+ 			index++;
+ 		}
+ 	}
++    // <QFS>
++    if (logger.level >= Log.MSG) {
++        logger.log(Log.MSG, "runTimer(int)",
++                   "No timer for id " + id);
++    }
++    // </QFS>
+ 	return false;
+ }
+ 
+@@ -4502,7 +6131,8 @@
+ 	return errorHandler;
+ }
+ 
+-int shiftedKey (int key) {
++// <QFS/> made public
++public int shiftedKey (int key) {
+ 	/* Clear the virtual keyboard and press the shift key */
+ 	for (int i=0; i<keyboard.length; i++) keyboard [i] = 0;
+ 	keyboard [OS.VK_SHIFT] |= 0x80;
+@@ -4564,7 +6194,8 @@
+ 		if (isDisposed ()) error (SWT.ERROR_DEVICE_DISPOSED);
+ 		synchronizer = this.synchronizer;
+ 	}
+-	synchronizer.syncExec (runnable);
++        // <QFS/> Redirected to internalSyncExec.
++        synchronizer.internalSyncExec (runnable);
+ }
+ 
+ /**
+@@ -4642,7 +6273,8 @@
+ 	return result;
+ }
+ 
+-static int translateKey (int key) {
++// <QFS/> Made public.
++public static int translateKey (int key) {
+ 	for (int i=0; i<KeyTable.length; i++) {
+ 		if (KeyTable [i] [0] == key) return KeyTable [i] [1];
+ 	}
+@@ -4659,6 +6291,14 @@
+ }
+ 
+ boolean translateTraversal (MSG msg, Control control) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("translateTraversal(MSG,Control)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("msg: ").add(OS.getWinMsgType(msg.message, null))
++         .add(", control: ").add(control)).log(Log.MTD);
++    }
++    // </QFS>
+ 	switch (msg.message) {
+ 		case OS.WM_KEYDOWN:
+ 			switch ((int)/*64*/msg.wParam) {
+@@ -4684,7 +6324,8 @@
+ 	return false;
+ }
+ 
+-static int untranslateKey (int key) {
++// <QFS/> Made public.
++public static int untranslateKey (int key) {
+ 	for (int i=0; i<KeyTable.length; i++) {
+ 		if (KeyTable [i] [1] == key) return KeyTable [i] [0];
+ 	}
+@@ -4749,24 +6390,151 @@
+ }
+ 
+ void wakeThread () {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        logger.dumpStack(Log.MTD, "wakeThread()", "");
++    }
++    // </QFS>
+ 	OS.PostThreadMessage (threadId, OS.WM_NULL, 0, 0);
+ }
+ 
++/*
++ * Returns a single character, converted from the wide
++ * character set (WCS) used by Java to the specified
++ * multi-byte character set used by the operating system
++ * widgets.
++ *
++ * @param ch the WCS character
++ * @param codePage the code page used to convert the character
++ * @return the MBCS character
++ */
++// <QFS/> made public
++public static int wcsToMbcs (char ch, int codePage) {
++	if (OS.IsUnicode) return ch;
++	if (ch <= 0x7F) return ch;
++	TCHAR buffer = new TCHAR (codePage, ch, false);
++	return buffer.tcharAt (0);
++}
++
++/*
++ * Returns a single character, converted from the wide
++ * character set (WCS) used by Java to the default
++ * multi-byte character set used by the operating system
++ * widgets.
++ *
++ * @param ch the WCS character
++ * @return the MBCS character
++ */
++static int wcsToMbcs (char ch) {
++	return wcsToMbcs (ch, 0);
++}
++
+ int /*long*/ windowProc (int /*long*/ hwnd, int /*long*/ msg, int /*long*/ wParam, int /*long*/ lParam) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        logger.build("windowProc(int,int,int,int)")
++            .add("hwnd: ").addHex(hwnd)
++            .add(", msg: ").add(OS.getWinMsgType(msg, null))
++            .add(", wParam: ").addHex(wParam)
++            .add(", lParam: ").addHex(lParam)
++            .log(Log.MTD);
++    }
++        boolean keepit = true;
++        eventProcessedByReadAndDispatch--;
++        if (logger.level >= Log.DBG) {
++            logger.build("windowProc(int,int,int,int)")
++                .add("eventProcessedByReadAndDispatch decreased to ")
++                .add(eventProcessedByReadAndDispatch).log(Log.DBG);
++        }
++        try {
++            // Run filter only if eventProcessedByReadAndDispatch was not > 0 before decrementing.
++            if (eventProcessedByReadAndDispatch < 0) {
++                keepit = runWin32EventFilters(hwnd, msg, wParam, lParam);
++            }
++            if (msg == OS.WM_MOUSEMOVE
++                || msg == OS.WM_LBUTTONDOWN
++                || msg == OS.WM_LBUTTONUP
++                || msg == OS.WM_MBUTTONDOWN
++                || msg == OS.WM_MBUTTONUP
++                || msg == OS.WM_RBUTTONDOWN
++                || msg == OS.WM_RBUTTONUP) {
++                // Save the state of the modifier keys and mouse buttons so that GetKeyState
++                // overriding works.
++                setReplayKeyStateWnd(wParam);
++            }
++            // </QFS>
+ 	if (lastControl != null && lastHwnd == hwnd) {
+-		return lastControl.windowProc (hwnd, (int)/*64*/msg, wParam, lParam);
++                // <QFS>
++                if (keepit) {
++                // </QFS>
++                    int ret = lastControl.windowProc (hwnd, (int)/*64*/msg, wParam, lParam);
++                // <QFS>
++                    if (logger.level >= Log.MTDDETAIL) {
++                        logger.log(Log.MTDDETAIL, "windowProc(int,int,int,int)",
++                                   "Control.windowProc returned "+ret
++                                   +" - this will now be returned by this Display.windowProc");
+ 	}
++                    return ret;
++                }
++                // </QFS>
++            }
+ 	int index = (int)/*64*/OS.GetProp (hwnd, SWT_OBJECT_INDEX) - 1;
+ 	if (0 <= index && index < controlTable.length) {
++                if (keepit) {
+ 		Control control = controlTable [index];
+ 		if (control != null) {
+ 			lastHwnd = hwnd;
+ 			lastControl = control;
+-			return control.windowProc (hwnd, (int)/*64*/msg, wParam, lParam);
++                        int ret = control.windowProc (hwnd, (int)/*64*/msg, wParam, lParam);
++                        // <QFS>
++                        if (logger.level >= Log.MTDDETAIL) {
++                            logger.log(Log.MTDDETAIL, "windowProc(int,int,int,int)",
++                                       "Control.windowProc returned "+ret
++                                       +" - this will now be returned by this Display.windowProc");
+ 		}
++                        // Need to run async messages while modal dialogs (e.g. file dialog) are
++                        // displayed.
++                        // if (synchronizer != null) {
++                            // runAsyncMessages(false);
++                        // }
++                        // </QFS>
++                        return ret;
+ 	}
+-	return OS.DefWindowProc (hwnd, (int)/*64*/msg, wParam, lParam);
+ }
++            }
++            // <QFS>
++            if ( ! keepit) {
++                // Need to run async messages while modal dialogs (e.g. file dialog) are displayed.
++                // if (synchronizer != null) {
++                    // runAsyncMessages(false);
++                // }
++                if (logger.level >= Log.DBG) {
++                    logger.log(Log.DBG, "windowProc(int,int,int,int)",
++                               "keepit == false ie. return 0");
++                }
++                return 0;
++            }
++            // </QFS>
++            int ret = OS.DefWindowProc (hwnd, (int)/*64*/msg, wParam, lParam);
++            // <QFS>
++            if (logger.level >= Log.DBG) {
++                logger.build("windowProc(int,int,int,int)").add("ret: ").add(ret).log(Log.DBG);
++            }
++            // Need to run async messages while modal dialogs (e.g. file dialog) are displayed.
++            // if (synchronizer != null) {
++                // runAsyncMessages(false);
++            // }
++            // </QFS>
++            return ret;
++        } finally {
++            eventProcessedByReadAndDispatch++;
++            if (logger.level >= Log.DBG) {
++                logger.build("windowProc(int,int,int,int)")
++                    .add("eventProcessedByReadAndDispatch increased to ")
++                    .add(eventProcessedByReadAndDispatch).log(Log.DBG);
++            }
++        }
++}
+ 
+ int textWidth (String text, int /*long*/ handle) {
+ 	int /*long*/ oldFont = 0;
+Index: org/eclipse/swt/widgets/Decorations.java
+===================================================================
+--- org/eclipse/swt/widgets/Decorations.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/Decorations.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -1372,7 +1372,8 @@
+ 			return true;
+ 		}
+ 		if (msg.message == OS.WM_KEYDOWN) {
+-			if (OS.GetKeyState (OS.VK_CONTROL) >= 0) return false;
++                        // <QFS/> Changed to getDisplay().GetKeyState
++			if (getDisplay().GetKeyState (OS.VK_CONTROL) >= 0) return false;
+ 			switch ((int)/*64*/(msg.wParam)) {
+ 				case OS.VK_F4:
+ 					OS.PostMessage (handle, OS.WM_CLOSE, 0, 0);
+Index: org/eclipse/swt/widgets/Spinner.java
+===================================================================
+--- org/eclipse/swt/widgets/Spinner.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/Spinner.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -7,6 +7,7 @@
+  *
+  * Contributors:
+  *     IBM Corporation - initial API and implementation
++ *     QFS GmbH - Accessibility/Testing hooks (see <QFS>)
+  *******************************************************************************/
+ package org.eclipse.swt.widgets;
+ 
+@@ -754,7 +755,8 @@
+ 	/*
+ 	* If the left button is down, the text widget refuses the character.
+ 	*/
+-	if (OS.GetKeyState (OS.VK_LBUTTON) < 0) {
++        // <QFS/> Changed to getDisplay().GetKeyState
++	if (getDisplay().GetKeyState (OS.VK_LBUTTON) < 0) {
+ 		return true;
+ 	}
+ 
+Index: org/eclipse/swt/widgets/Scrollable.java
+===================================================================
+--- org/eclipse/swt/widgets/Scrollable.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/Scrollable.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -16,6 +16,11 @@
+ import org.eclipse.swt.internal.*;
+ import org.eclipse.swt.internal.win32.*;
+ 
++// <QFS>
++import de.qfs.lib.log.Log;
++import de.qfs.lib.log.Logger;
++// </QFS>
++
+ /**
+  * This class is the abstract superclass of all classes which
+  * represent controls that have standard scroll bars.
+@@ -34,6 +39,17 @@
+  * @noextend This class is not intended to be subclassed by clients.
+  */
+ public abstract class Scrollable extends Control {
++
++    // {{{ <QFS> Log
++
++    /**
++     * The Logger used for logging.
++     */
++    private final static Logger logger =
++        new Logger ("org.eclipse.swt.widgets.Scrollable");
++
++    // }}} </QFS>
++
+ 	ScrollBar horizontalBar, verticalBar;
+ 
+ 	/**
+@@ -340,6 +356,17 @@
+ 
+ @Override
+ LRESULT WM_HSCROLL (int /*long*/ wParam, int /*long*/ lParam) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("WM_HSCROLL(int,int)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("wParam: ").addHex(wParam)
++         .add(", lParam: ").addHex(lParam)).log(Log.MTD);
++    }
++    if (logger.level >= Log.DBG) {
++        logger.build("WM_HSCROLL(int,int)").add("state: ").add(state).log(Log.DBG);
++    }
++    // </QFS>
+ 	LRESULT result = super.WM_HSCROLL (wParam, lParam);
+ 	if (result != null) return result;
+ 	if (horizontalBar != null && lParam == 0) {
+@@ -364,6 +391,17 @@
+ 
+ @Override
+ LRESULT WM_VSCROLL (int /*long*/ wParam, int /*long*/ lParam) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("WM_VSCROLL(int,int)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("wParam: ").addHex(wParam)
++         .add(", lParam: ").addHex(lParam)).log(Log.MTD);
++    }
++    if (logger.level >= Log.DBG) {
++        logger.build("WM_VSCROLL(int,int)").add("state: ").add(state).log(Log.DBG);
++    }
++    // </QFS>
+ 	LRESULT result = super.WM_VSCROLL (wParam, lParam);
+ 	if (result != null) return result;
+ 	if (verticalBar != null && lParam == 0) {
+@@ -435,6 +473,18 @@
+ }
+ 
+ LRESULT wmScroll (ScrollBar bar, boolean update, int /*long*/ hwnd, int msg, int /*long*/ wParam, int /*long*/ lParam) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("wmScroll(ScrollBar,boolean,int,int,int,int)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("bar: ").add(bar)
++         .add(", update: ").add(update)
++         .add(", hwnd: ").addHex(hwnd)
++         .add(", msg: ").add(msg)
++         .add(", wParam: ").addHex(wParam)
++         .add(", lParam: ").addHex(lParam)).log(Log.MTD);
++    }
++    // </QFS>
+ 	LRESULT result = null;
+ 	if (update) {
+ 		int type = msg == OS.WM_HSCROLL ? OS.SB_HORZ : OS.SB_VERT;
+@@ -442,6 +492,13 @@
+ 		info.cbSize = SCROLLINFO.sizeof;
+ 		info.fMask = OS.SIF_TRACKPOS | OS.SIF_POS | OS.SIF_RANGE;
+ 		OS.GetScrollInfo (hwnd, type, info);
++                // <QFS>
++                if (logger.level >= Log.DBG) {
++                    logger.build("wmScroll(ScrollBar,boolean,int,int,int,int)")
++                        .add("at method begin: info.nPos: ").add(info.nPos)
++                        .add(", info.nTrackPos: ").add(info.nTrackPos).log(Log.DBG);
++                }
++                // </QFS>
+ 		info.fMask = OS.SIF_POS;
+ 		int code = OS.LOWORD (wParam);
+ 		switch (code) {
+@@ -477,6 +534,18 @@
+ 		result = code == 0 ? LRESULT.ZERO : new LRESULT (code);
+ 	}
+ 	bar.wmScrollChild (wParam, lParam);
++        // <QFS>
++        SCROLLINFO info = new SCROLLINFO ();
++        info.cbSize = org.eclipse.swt.internal.win32.SCROLLINFO.sizeof;
++        info.fMask = OS.SIF_TRACKPOS | OS.SIF_POS | OS.SIF_RANGE;
++        OS.GetScrollInfo (hwnd, OS.SB_HORZ, info);
++        if (logger.level >= Log.DBG) {
++            logger.build("wmScroll(ScrollBar,boolean,int,int,int,int)")
++                .add("at method end: info.nPos: ").add(info.nPos)
++                .add(", info.nTrackPos: ").add(info.nTrackPos).log(Log.DBG);
++        }
++
++        // </QFS>
+ 	return result;
+ }
+ 
+Index: org/eclipse/swt/widgets/ScrollBar.java
+===================================================================
+--- org/eclipse/swt/widgets/ScrollBar.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/ScrollBar.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -530,6 +530,9 @@
+ 	return (psbi.rgstate [0] & OS.STATE_SYSTEM_INVISIBLE) == 0;
+ }
+ 
++    // <QFS>
++    public
++    // </QFS>
+ int /*long*/ hwndScrollBar () {
+ 	return parent.scrolledHandle ();
+ }
+Index: org/eclipse/swt/widgets/Widget.java
+===================================================================
+--- org/eclipse/swt/widgets/Widget.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/Widget.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -7,6 +7,7 @@
+  *
+  * Contributors:
+  *     IBM Corporation - initial API and implementation
++ *     QFS GmbH - Accessibility/Testing hooks (see <QFS>)
+  *******************************************************************************/
+ package org.eclipse.swt.widgets;
+ 
+@@ -17,6 +18,11 @@
+ import org.eclipse.swt.internal.*;
+ import org.eclipse.swt.internal.win32.*;
+ 
++// <QFS>
++import de.qfs.lib.log.Log;
++import de.qfs.lib.log.Logger;
++// </QFS>
++
+ /**
+  * This class is the abstract superclass of all user interface objects.
+  * Widgets are created, disposed and issue notification to listeners
+@@ -45,6 +51,11 @@
+  * @see <a href="http://www.eclipse.org/swt/">Sample code and further information</a>
+  */
+ public abstract class Widget {
++    // <QFS>
++    private final static Logger logger = new Logger("org.eclipse.swt.widgets.Widget");
++    private final static Logger suppresslogger = new Logger("suppress.aus.ab.DBG");
++    // </QFS>
++
+ 	int style, state;
+ 	Display display;
+ 	EventTable eventTable;
+@@ -666,7 +677,8 @@
+  *
+  * @see #isListening
+  */
+-boolean hooks (int eventType) {
++// <QFS/> made public
++public boolean hooks (int eventType) {
+ 	if (eventTable == null) return false;
+ 	return eventTable.hooks (eventType);
+ }
+@@ -1057,7 +1069,8 @@
+ 	sendEvent (eventType, null, true);
+ }
+ 
+-void sendEvent (int eventType, Event event) {
++// <QFS/> Made public.
++public void sendEvent (int eventType, Event event) {
+ 	sendEvent (eventType, event, true);
+ }
+ 
+@@ -1267,12 +1280,13 @@
+ }
+ 
+ boolean setInputState (Event event, int type) {
+-	if (OS.GetKeyState (OS.VK_MENU) < 0) event.stateMask |= SWT.ALT;
+-	if (OS.GetKeyState (OS.VK_SHIFT) < 0) event.stateMask |= SWT.SHIFT;
+-	if (OS.GetKeyState (OS.VK_CONTROL) < 0) event.stateMask |= SWT.CONTROL;
+-	if (OS.GetKeyState (OS.VK_LBUTTON) < 0) event.stateMask |= SWT.BUTTON1;
+-	if (OS.GetKeyState (OS.VK_MBUTTON) < 0) event.stateMask |= SWT.BUTTON2;
+-	if (OS.GetKeyState (OS.VK_RBUTTON) < 0) event.stateMask |= SWT.BUTTON3;
++        // <QFS/> changed to getDisplay().GetKeyState
++	if (getDisplay().GetKeyState (OS.VK_MENU) < 0) event.stateMask |= SWT.ALT;
++	if (getDisplay().GetKeyState (OS.VK_SHIFT) < 0) event.stateMask |= SWT.SHIFT;
++	if (getDisplay().GetKeyState (OS.VK_CONTROL) < 0) event.stateMask |= SWT.CONTROL;
++	if (getDisplay().GetKeyState (OS.VK_LBUTTON) < 0) event.stateMask |= SWT.BUTTON1;
++	if (getDisplay().GetKeyState (OS.VK_MBUTTON) < 0) event.stateMask |= SWT.BUTTON2;
++	if (getDisplay().GetKeyState (OS.VK_RBUTTON) < 0) event.stateMask |= SWT.BUTTON3;
+ 	/*
+ 	* Bug in Windows.  On some machines that do not have XBUTTONs,
+ 	* the MK_XBUTTON1 and OS.MK_XBUTTON2 bits are sometimes set,
+@@ -1280,8 +1294,8 @@
+ 	* for the extra buttons only when they exist.
+ 	*/
+ 	if (display.xMouse) {
+-		if (OS.GetKeyState (OS.VK_XBUTTON1) < 0) event.stateMask |= SWT.BUTTON4;
+-		if (OS.GetKeyState (OS.VK_XBUTTON2) < 0) event.stateMask |= SWT.BUTTON5;
++	if (getDisplay().GetKeyState (OS.VK_XBUTTON1) < 0) event.stateMask |= SWT.BUTTON4;
++	if (getDisplay().GetKeyState (OS.VK_XBUTTON2) < 0) event.stateMask |= SWT.BUTTON5;
+ 	}
+ 	switch (type) {
+ 		case SWT.MouseDown:
+@@ -1428,10 +1442,24 @@
+ 	return false;
+ }
+ 
++public // <QFS/> temporarily made public
+ boolean showMenu (int x, int y) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("showMenu(int,int)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("this: ").add(this)
++         .add(", x: ").add(x)
++         .add(", y: ").add(y)).log(Log.MTD);
++    }
++    if (logger.level >= Log.DBG) {
++        logger.dumpStack(Log.DBG, "showMenu(int,int)", "");
++    }
++    // </QFS>
+ 	return showMenu (x, y, SWT.MENU_MOUSE);
+ }
+ 
++public // <QFS/> temporarily made public
+ boolean showMenu (int x, int y, int detail) {
+ 	Event event = new Event ();
+ 	event.setLocationInPixels(x, y);
+@@ -1445,10 +1473,13 @@
+ 	if (!event.doit) return true;
+ 	Menu menu = getMenu ();
+ 	if (menu != null && !menu.isDisposed ()) {
+-		Point loc = event.getLocationInPixels(); // In Pixels
+-		if (x != loc.x || y != loc.y) {
++                // <QFS> Always force desired location, otherwise the popup will always
++                // appear at the location of the mouse cursor
++		// Point loc = event.getLocationInPixels(); // In Pixels
++		// if (x != loc.x || y != loc.y) {
+ 			menu.setLocation (event.getLocation());
+-		}
++		// }
++                // </QFS>
+ 		menu.setVisible (true);
+ 		return true;
+ 	}
+@@ -1491,6 +1522,15 @@
+ }
+ 
+ LRESULT wmContextMenu (int /*long*/ hwnd, int /*long*/ wParam, int /*long*/ lParam) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("wmContextMenu(int,int,int)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("hwnd: ").add(hwnd)
++         .add(", wParam: ").add(wParam)
++         .add(", lParam: ").add(lParam)).log(Log.MTD);
++    }
++    // </QFS>
+ 	if (wParam != hwnd) return null;
+ 
+ 	/*
+@@ -1510,9 +1550,27 @@
+ 		OS.POINTSTOPOINT (pt, lParam);
+ 		x = pt.x;
+ 		y = pt.y;
++                // <QFS>
++                if (logger.level >= Log.DBG) {
++                    logger.build("wmContextMenu(int,int,int)")
++                        .add("pt1: ").add(pt).log(Log.DBG);
++                }
++                // </QFS>
+ 		detail = SWT.MENU_MOUSE;
+ 		OS.ScreenToClient (hwnd, pt);
++                // <QFS>
++                if (logger.level >= Log.DBG) {
++                    logger.build("wmContextMenu(int,int,int)")
++                        .add("pt2: ").add(pt).log(Log.DBG);
++                }
++                // </QFS>
+ 		RECT rect = new RECT ();
++                // <QFS>
++                if (logger.level >= Log.DBG) {
++                    logger.build("wmContextMenu(int,int,int)")
++                        .add("rect: ").add(rect).log(Log.DBG);
++                }
++                // </QFS>
+ 		OS.GetClientRect (hwnd, rect);
+ 		if (!OS.PtInRect (rect, pt)) return null;
+ 	} else {
+@@ -1541,6 +1599,15 @@
+ }
+ 
+ LRESULT wmKeyDown (int /*long*/ hwnd, int /*long*/ wParam, int /*long*/ lParam) {
++    // <QFS>
++    if (logger.level >= Log.MTD) {
++        Logger.Builder lb = logger.build("wmKeyDown(int,int,int)");
++        (logger.level < Log.MTDDETAIL ? lb : lb
++         .add("hwnd: ").add(hwnd)
++         .add(", wParam: ").add(wParam)
++         .add(", lParam: ").add(lParam)).log(Log.MTD);
++    }
++    // </QFS>
+ 
+ 	/* Ignore repeating modifier keys by testing key down state */
+ 	switch ((int)/*64*/wParam) {
+@@ -1602,7 +1669,7 @@
+ 
+ 	/*
+ 	*  Bug in Windows.  Somehow, the widget is becoming disposed after
+-	*  calling PeekMessage().  In rare circumstances, it seems that
++        *  calling PeekMessage().  In rare cirucmstances, it seems that
+ 	*  PeekMessage() can allow SWT listeners to run that might contain
+ 	*  application code that disposes the widget.  It is not exactly
+ 	*  clear how this can happen.  PeekMessage() is only looking for
+@@ -1641,7 +1708,7 @@
+ 		* treated as both a virtual key and an ASCII key by Windows.
+ 		* Therefore, we will not receive a WM_CHAR for this key.
+ 		* The fix is to treat VK_DELETE as a special case and map
+-		* the ASCII value explicitly (Delete is 0x7F).
++                * the ASCII value explictly (Delete is 0x7F).
+ 		*/
+ 		if (display.lastKey == OS.VK_DELETE) display.lastAscii = 0x7F;
+ 
+@@ -1663,6 +1730,13 @@
+ 			* special Windows keypad sequence when NumLock is down (ie. typing
+ 			* ALT+0231 should gives 'c' with a cedilla when NumLock is down).
+ 			*/
++                    // <QFS>
++                    if (logger.level >= Log.MTDDETAIL) {
++                        logger.log(Log.MTDDETAIL, "wmKeyDown(int,int,int)",
++                                   "lastKey-test");
++                    }
++                    // </QFS>
++
+ 			if (display.asciiKey (display.lastKey) != 0) return null;
+ 			display.lastAscii = display.numpadKey (display.lastKey);
+ 		}
+@@ -1701,7 +1775,22 @@
+ 			* To avoid the extra SWT.KeyDown, look for a space and
+ 			* issue the event from WM_CHAR.
+ 			*/
++                    // <QFS>
++                    if (logger.level >= Log.MTDDETAIL) {
++                        logger.log(Log.MTDDETAIL, "wmKeyDown(int,int,int)",
++                                   "asciiKey test1");
++                    }
++                    // </QFS>
++
+ 			if (asciiKey == ' ') return null;
++                    // <QFS>
++                    if (logger.level >= Log.DBG) {
++                        logger.build("wmKeyDown(int,int,int)")
++                            .add("asciiKey test2: asciiKey=").add(asciiKey)
++                            .add(" ==? wParam=").addHex(wParam).log(Log.DBG);
++                    }
++                    // </QFS>
++
+ 			if (asciiKey != (int)/*64*/wParam) return null;
+ 			/*
+ 			* Feature in Windows. The virtual key VK_CANCEL is treated
+@@ -1710,6 +1799,13 @@
+ 			* this key. To avoid the extra SWT.KeyDown, look for
+ 			* VK_CANCEL and issue the event from WM_CHAR.
+ 			*/
++                        // <QFS>
++                        if (logger.level >= Log.MTDDETAIL) {
++                            logger.log(Log.MTDDETAIL, "wmKeyDown(int,int,int)",
++                                       "cancel test");
++                        }
++                        // </QFS>
++
+ 			if (wParam == OS.VK_CANCEL) return null;
+ 		}
+ 
+@@ -1719,8 +1815,16 @@
+ 		* key such as 'A' or Shift+A.  In that case, issue the
+ 		* key event from WM_CHAR.
+ 		*/
+-		if (OS.GetKeyState (OS.VK_CONTROL) >= 0) return null;
++                // <QFS>
++                if (logger.level >= Log.MTDDETAIL) {
++                    logger.log(Log.MTDDETAIL, "wmKeyDown(int,int,int)",
++                               "control test");
++                }
++                // </QFS>
+ 
++                // <QFS/> changed to getDisplay().GetKeyState
++                if (getDisplay().GetKeyState (OS.VK_CONTROL) >= 0) return null;
++
+ 		/*
+ 		* Get the shifted state or convert to lower case if necessary.
+ 		* If the user types Ctrl+A, LastAscii should be 'a', not 'A'.
+@@ -1728,20 +1832,39 @@
+ 		* If the user types Ctrl+Shift+6, the value of LastAscii will
+ 		* depend on the international keyboard.
+ 		*/
+-	 	if (OS.GetKeyState (OS.VK_SHIFT) < 0) {
++                // <QFS/> changed to getDisplay().GetKeyState
++                if (getDisplay().GetKeyState (OS.VK_SHIFT) < 0) {
+ 			display.lastAscii = display.shiftedKey ((int)/*64*/wParam);
+ 			if (display.lastAscii == 0) display.lastAscii = mapKey;
+ 	 	} else {
+ 	 		display.lastAscii = (int)/*64*/OS.CharLower ((short) mapKey);
+ 	 	}
++                // <QFS>
++                if (logger.level >= Log.MTDDETAIL) {
++                    logger.log(Log.MTDDETAIL, "wmKeyDown(int,int,int)",
++                               "@-test");
++                }
++                // </QFS>
+ 
+ 		/* Note that Ctrl+'@' is ASCII NUL and is delivered in WM_CHAR */
+ 		if (display.lastAscii == '@') return null;
+ 		display.lastAscii = display.controlKey (display.lastAscii);
+ 	}
++        // <QFS>
++        if (logger.level >= Log.MTDDETAIL) {
++            logger.log(Log.MTDDETAIL, "wmKeyDown(int,int,int)",
++                       "doing sendKeyEvent now");
++        }
++        // </QFS>
+ 	if (!sendKeyEvent (SWT.KeyDown, OS.WM_KEYDOWN, wParam, lParam)) {
+ 		return LRESULT.ONE;
+ 	}
++        // <QFS>
++        if (logger.level >= Log.MTDDETAIL) {
++            logger.log(Log.MTDDETAIL, "wmKeyDown(int,int,int)",
++                       "sendKeyEvent failed");
++        }
++        // </QFS>
+ 	// widget could be disposed at this point
+ 	return null;
+ }
+@@ -1876,7 +1999,8 @@
+ 		consume = new boolean [1];
+ 		dragging = dragDetect (hwnd, x, y, true, detect, consume);
+ 		if (isDisposed ()) return LRESULT.ZERO;
+-		mouseDown = OS.GetKeyState (OS.VK_LBUTTON) < 0;
++                        // <QFS/> changed to getDisplay().GetKeyState
++			mouseDown = getDisplay().GetKeyState (OS.VK_LBUTTON) < 0;
+ 	}
+ 	display.captureChanged = false;
+ 	boolean dispatch = sendMouseEvent (SWT.MouseDown, 1, count, 0, false, hwnd, OS.WM_LBUTTONDOWN, wParam, lParam);
+@@ -1914,7 +2038,8 @@
+ 			* extended-key flag, context code, previous key-state flag,
+ 			* and transition-state flag) which is non-trivial.
+ 			*/
+-			if (OS.GetKeyState (OS.VK_ESCAPE) >= 0) {
++                        // <QFS/> changed to getDisplay().GetKeyState
++			if (getDisplay().GetKeyState (OS.VK_ESCAPE) >= 0) {
+ 				OS.SendMessage (hwnd, OS.WM_LBUTTONUP, wParam, lParam);
+ 			}
+ 		}
+@@ -2033,8 +2158,13 @@
+ LRESULT wmMouseMove (int /*long*/ hwnd, int /*long*/ wParam, int /*long*/ lParam) {
+ 	LRESULT result = null;
+ 	Display display = this.display;
+-	int pos = OS.GetMessagePos ();
+-	if (pos != display.lastMouse || display.captureChanged) {
++    // <QFS> changed "OS.GetMessagePos" to "getDisplay().GetMessagePos" and test for overridden
++    // position and target
++    int pos = display.GetMessagePos ();
++    if ((! display.isReplaying()
++         || display.replayTarget == this)
++    // </QFS>
++	&& (pos != display.lastMouse || display.captureChanged)) {
+ 		boolean trackMouse = (state & TRACK_MOUSE) != 0;
+ 		boolean mouseEnter = hooks (SWT.MouseEnter) || display.filters (SWT.MouseEnter);
+ 		boolean mouseExit = hooks (SWT.MouseExit) || display.filters (SWT.MouseExit);
+Index: org/eclipse/swt/widgets/DirectoryDialog.java
+===================================================================
+--- org/eclipse/swt/widgets/DirectoryDialog.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/DirectoryDialog.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -7,6 +7,7 @@
+  *
+  * Contributors:
+  *     IBM Corporation - initial API and implementation
++ *     QFS GmbH - Accessibility/Testing hooks (see <QFS>)
+  *     Martin Karpisek <martin.karpisek@gmail.com> - Bug 443250
+  *******************************************************************************/
+ package org.eclipse.swt.widgets;
+@@ -16,6 +17,10 @@
+ import org.eclipse.swt.internal.*;
+ import org.eclipse.swt.internal.com.win32.*;
+ import org.eclipse.swt.internal.win32.*;
++// <QFS>
++import de.qfs.lib.log.Log;
++import de.qfs.lib.log.Logger;
++// </QFS>
+ 
+ /**
+  * Instances of this class allow the user to navigate
+@@ -36,6 +41,14 @@
+  * @noextend This class is not intended to be subclassed by clients.
+  */
+ public class DirectoryDialog extends Dialog {
++    // <QFS>
++    /**
++     * The Logger used for logging.
++     */
++    private final static Logger logger =
++        new Logger ("org.eclipse.swt.widgets.DirectoryDialog");
++    // </QFS>
++
+ 	static final byte[] CLSID_FileOpenDialog = new byte[16];
+ 	static final byte[] IID_IFileOpenDialog = new byte[16];
+ 	static final byte[] IID_IShellItem = new byte[16];
+@@ -230,6 +243,23 @@
+ 	*/
+ 	int oldErrorMode = OS.SetErrorMode (OS.SEM_FAILCRITICALERRORS);
+ 
++        // <QFS>
++        runDialogShownHooks();
++        if (hwndOwner != 0) {
++            boolean ok = OS.SetForegroundWindow(hwndOwner);
++            if (logger.level >= Log.DBG) {
++                logger.build("open()").add("called SetForegroundWindow hwndOwner: ")
++                    .addHex(hwndOwner)
++                    .add(", returned ok: ").add(ok).log(Log.DBG);
++            }
++        } else {
++            if (logger.level >= Log.WRN) {
++                logger.log(Log.WRN, "open()",
++                           "hwndOwner is null - unable to call SetForegroundWindow");
++            }
++        }
++        // </QFS>
++
+ 	display.sendPreExternalEventDispatchEvent ();
+ 	int /*long*/ lpItemIdList = OS.SHBrowseForFolder (lpbi);
+ 	display.sendPostExternalEventDispatchEvent ();
+@@ -271,9 +301,13 @@
+ 	*/
+ //	if (hwndOwner != 0) OS.UpdateWindow (hwndOwner);
+ 
+-	/* Return the directory path */
+-	if (!success) return null;
+-	return directoryPath;
++        // <QFS>
++        Object result = success ? directoryPath : null;
++        result = _qfGetDisplay().runDialogClosedHooks(this, result);
++	return (result instanceof String) || result == null
++            ? (String) result
++            : success ? directoryPath : null;
++        // </QFS>
+ }
+ 
+ private String openCommonItemDialog() {
+@@ -315,6 +349,22 @@
+ 		}
+ 
+ 		int /*long*/ hwndOwner = parent.handle;
++                // <QFS>
++                runDialogShownHooks();
++                if (hwndOwner != 0) {
++                    boolean ok = OS.SetForegroundWindow(hwndOwner);
++                    if (logger.level >= Log.DBG) {
++                        logger.build("open()").add("called SetForegroundWindow hwndOwner: ")
++                            .addHex(hwndOwner)
++                            .add(", returned ok: ").add(ok).log(Log.DBG);
++                    }
++                } else {
++                    if (logger.level >= Log.WRN) {
++                        logger.log(Log.WRN, "open()",
++                                   "hwndOwner is null - unable to call SetForegroundWindow");
++                    }
++                }
++                // </QFS>
+ 		if (OS.VtblCall(FileDialogVtbl.SHOW, fileDialog, hwndOwner) == OS.S_OK) {
+ 			if (OS.VtblCall(FileDialogVtbl.GET_RESULT, fileDialog, ppv) == OS.S_OK) {
+ 				int /*long*/ psi = ppv[0];
+@@ -332,6 +382,13 @@
+ 		}
+ 
+ 		OS.VtblCall(FileDialogVtbl.RELEASE, fileDialog);
++                // <QFS>
++                Object result = directoryPath;
++                result = _qfGetDisplay().runDialogClosedHooks(this, result);
++                return (result instanceof String) || result == null
++                    ? (String) result
++                    : directoryPath;
++                // </QFS>
+ 	}
+ 
+ 	return directoryPath;
+Index: org/eclipse/swt/widgets/ToolItem.java
+===================================================================
+--- org/eclipse/swt/widgets/ToolItem.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/ToolItem.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -178,7 +178,8 @@
+ 
+ void click (boolean dropDown) {
+ 	int /*long*/ hwnd = parent.handle;
+-	if (OS.GetKeyState (OS.VK_LBUTTON) < 0) return;
++        // <QFS/> Changed to getDisplay().GetKeyState
++	if (getDisplay().GetKeyState (OS.VK_LBUTTON) < 0) return;
+ 	int index = (int)/*64*/OS.SendMessage (hwnd, OS.TB_COMMANDTOINDEX, id, 0);
+ 	RECT rect = new RECT ();
+ 	OS.SendMessage (hwnd, OS.TB_GETITEMRECT, index, rect);
+Index: org/eclipse/swt/widgets/ColorDialog.java
+===================================================================
+--- org/eclipse/swt/widgets/ColorDialog.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/ColorDialog.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -7,6 +7,7 @@
+  *
+  * Contributors:
+  *     IBM Corporation - initial API and implementation
++ *     QFS GmbH - Accessibility/Testing hooks (see <QFS>)
+  *******************************************************************************/
+ package org.eclipse.swt.widgets;
+ 
+@@ -16,6 +17,11 @@
+ import org.eclipse.swt.*;
+ import org.eclipse.swt.graphics.*;
+ 
++// <QFS>
++import de.qfs.lib.log.Log;
++import de.qfs.lib.log.Logger;
++// </QFS>
++
+ /**
+  * Instances of this class allow the user to select a color
+  * from a predefined set of available colors.
+@@ -34,6 +40,14 @@
+  * @noextend This class is not intended to be subclassed by clients.
+  */
+ public class ColorDialog extends Dialog {
++    // <QFS>
++    /**
++     * The Logger used for logging.
++     */
++    private final static Logger logger =
++        new Logger ("org.eclipse.swt.widgets.ColorDialog");
++    // </QFS>
++
+ 	static final int CUSTOM_COLOR_COUNT = 16; // from the MS spec for CHOOSECOLOR.lpCustColors
+ 	Display display;
+ 	int width, height;
+@@ -251,6 +265,22 @@
+ 		display.setModalDialog (this);
+ 	}
+ 
++        // <QFS>
++        runDialogShownHooks();
++        if (hwndOwner != 0) {
++            boolean ok = OS.SetForegroundWindow(hwndOwner);
++            if (logger.level >= Log.DBG) {
++                logger.build("open()").add("called SetForegroundWindow hwndOwner: ")
++                    .addHex(hwndOwner)
++                    .add(", returned ok: ").add(ok).log(Log.DBG);
++            }
++        } else {
++            if (logger.level >= Log.WRN) {
++                logger.log(Log.WRN, "open()",
++                           "hwndOwner is null - unable to call SetForegroundWindow");
++            }
++        }
++        // </QFS>
+ 	display.sendPreExternalEventDispatchEvent ();
+ 	/* Open the dialog */
+ 	boolean success = OS.ChooseColor (lpcc);
+@@ -315,6 +345,12 @@
+ 	*/
+ //	if (hwndOwner != 0) OS.UpdateWindow (hwndOwner);
+ 
++        // <QFS>
++        rgb = (RGB) _qfGetDisplay().runDialogClosedHooks(this, success ? rgb : null);
++        if (rgb != null) {
++            success = true;
++        }
++        // </QFS>
+ 	display = null;
+ 	if (!success) return null;
+ 	return rgb;
+@@ -354,4 +390,4 @@
+ 	this.rgbs = rgbs;
+ }
+ 
+-}
+\ No newline at end of file
++}
+Index: org/eclipse/swt/widgets/Sash.java
+===================================================================
+--- org/eclipse/swt/widgets/Sash.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/widgets/Sash.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -208,8 +208,10 @@
+ 		case OS.VK_DOWN:
+ 
+ 			/* Calculate the new x or y position */
+-			if (OS.GetKeyState (OS.VK_LBUTTON) < 0) return result;
+-			int step = OS.GetKeyState (OS.VK_CONTROL) < 0 ? INCREMENT : PAGE_INCREMENT;
++                        // <QFS/> Changed to getDisplay().GetKeyState
++			if (getDisplay().GetKeyState (OS.VK_LBUTTON) < 0) return result;
++                        // <QFS/> Changed to getDisplay().GetKeyState
++			int step = getDisplay().GetKeyState (OS.VK_CONTROL) < 0 ? INCREMENT : PAGE_INCREMENT;
+ 			if ((style & SWT.VERTICAL) != 0) {
+ 				if (wParam == OS.VK_UP || wParam == OS.VK_DOWN) break;
+ 				if (wParam == OS.VK_LEFT) step = -step;
+Index: org/eclipse/swt/internal/DPIUtil.java
+===================================================================
+--- org/eclipse/swt/internal/DPIUtil.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/internal/DPIUtil.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -76,7 +76,8 @@
+ 	 */
+ 	private static final String SWT_AUTOSCALE_METHOD = "swt.autoScale.method";
+ 	static {
+-		autoScaleValue = System.getProperty (SWT_AUTOSCALE);
++                // <QFS/> Default-Disable autoScale util we can handle it
++                autoScaleValue = System.getProperty (SWT_AUTOSCALE, "false");
+ 
+ 		String value = System.getProperty (SWT_AUTOSCALE_METHOD);
+ 		if (value != null) {
+Index: org/eclipse/swt/internal/SWTMessages.properties
+===================================================================
+--- org/eclipse/swt/internal/SWTMessages.properties	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/internal/SWTMessages.properties	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -115,4 +115,4 @@
+ SWT_ValidTo=Valid To
+ SWT_ValidFromTo=Valid from: {0} to: {1}
+ SWT_Subject=Subject
+-SWT_SerialNumber=Serial Number
++SWT_SerialNumber=Serial Number
+\ No newline at end of file
+Index: org/eclipse/swt/internal/win32/OS.java
+===================================================================
+--- org/eclipse/swt/internal/win32/OS.java	(.../vendor/swt/win32/4.8/src)	(Revision 33233)
++++ org/eclipse/swt/internal/win32/OS.java	(.../trunk/thirdparty/swt/4.8/win32/src)	(Revision 33233)
+@@ -7,6 +7,7 @@
+  *
+  * Contributors:
+  *     IBM Corporation - initial API and implementation
++ *     QFS GmbH - Accessibility/Testing hooks (see <QFS>)
+  *     Martin Karpisek <martin.karpisek@gmail.com> - Bug 443250
+  *******************************************************************************/
+ package org.eclipse.swt.internal.win32;
+@@ -14,11 +15,85 @@
+ 
+ import org.eclipse.swt.internal.*;
+ 
++// <QFS>
++import java.util.HashSet;
++import java.util.Set;
++
++import de.qfs.lib.log.Log;
++import de.qfs.lib.log.Logger;
++// </QFS>
++
+ public class OS extends C {
+ 	static {
+ 		Library.loadLibrary ("swt"); //$NON-NLS-1$
+ 	}
+ 
++    // <QFS>
++    // {{{ QF-Log, statics
++
++    /**
++     * The Logger used for logging.
++     */
++    private final static Logger logger =
++        new Logger ("org.eclipse.swt.internal.win32.OS");
++
++
++    // key = int Windows-Event
++    private static Set importantEvents = new HashSet();
++    private static Set unimportantEvents = new HashSet();
++    static {
++        importantEvents.add(new Integer(OS.WM_LBUTTONDOWN));
++        importantEvents.add(new Integer(OS.WM_LBUTTONUP));
++        importantEvents.add(new Integer(OS.WM_LBUTTONDBLCLK));
++        importantEvents.add(new Integer(OS.WM_MBUTTONDOWN));
++        importantEvents.add(new Integer(OS.WM_MBUTTONUP));
++        importantEvents.add(new Integer(OS.WM_MBUTTONDBLCLK));
++        importantEvents.add(new Integer(OS.WM_RBUTTONDOWN));
++        importantEvents.add(new Integer(OS.WM_RBUTTONUP));
++        importantEvents.add(new Integer(OS.WM_RBUTTONDBLCLK));
++        importantEvents.add(new Integer(OS.WM_MOUSEMOVE));
++        importantEvents.add(new Integer(OS.WM_ACTIVATE));
++        importantEvents.add(new Integer(OS.WM_KEYDOWN));
++        importantEvents.add(new Integer(OS.WM_KEYUP));
++        importantEvents.add(new Integer(OS.WM_CHAR)); // why do we get that one when KEYDOWN is suppressed? where does it come from?
++        // importantEvents.add(new Integer(OS.WM_GETDLGCODE)); // why do we get that one when KEYDOWN is suppressed? where does it come from?
++        importantEvents.add(new Integer(OS.WM_NCLBUTTONDOWN));
++        importantEvents.add(new Integer(OS.WM_SYSCOMMAND)); // -> menubar
++        // importantEvents.add(new Integer(OS.WM_SETCURSOR));
++        importantEvents.add(new Integer(OS.WM_MENUSELECT));
++        importantEvents.add(new Integer(OS.WM_INITMENUPOPUP));
++        // importantEvents.add(new Integer(OS.));
++        // importantEvents.add(new Integer(OS.));
++        // importantEvents.add(new Integer(OS.));
++        // importantEvents.add(new Integer(OS.));
++
++        unimportantEvents.add(new Integer(OS.WM_PAINT));
++        unimportantEvents.add(new Integer(OS.WM_GETFONT));
++        unimportantEvents.add(new Integer(OS.WM_NCACTIVATE));
++        unimportantEvents.add(new Integer(OS.WM_NCCALCSIZE));
++        unimportantEvents.add(new Integer(OS.WM_NCHITTEST));
++        unimportantEvents.add(new Integer(OS.WM_NOTIFY));
++        unimportantEvents.add(new Integer(OS.WM_SETCURSOR));
++        unimportantEvents.add(new Integer(OS.WM_SETFONT));
++        unimportantEvents.add(new Integer(OS.WM_ERASEBKGND));
++        unimportantEvents.add(new Integer(OS.WM_TIMER));
++        unimportantEvents.add(new Integer(OS.WM_ENTERIDLE));
++    }
++
++    static ThreadLocal replayOverride = new ThreadLocal ();
++    public static void setReplaying(boolean replaying, int replayPos)
++    {
++        if (logger.level >= Log.MTD) {
++            Logger.Builder lb = logger.build("setReplaying(boolean,int)");
++            (logger.level < Log.MTDDETAIL ? lb : lb
++             .add("replaying: ").add(replaying)
++             .add(", replayPos: ").add(replayPos)).log(Log.MTD);
++        }
++        replayOverride.set(replaying ? new Integer (replayPos) : null);
++    }
++    // }}}
++    // </QFS>
++
+ 	/*
+ 	* SWT Windows flags
+ 	*/
+@@ -1273,6 +1348,11 @@
+ 	public static final int SB_THUMBPOSITION = 0x4;
+ 	public static final int SB_THUMBTRACK = 0x5;
+ 	public static final int SB_TOP = 0x6;
++    // <QFS>
++    public static final int SB_LEFT = 0x6;
++    public static final int SB_PAGELEFT = 0x2;
++    public static final int SB_LINELEFT = 0x0;
++    // </QFS>
+ 	public static final int SB_VERT = 0x1;
+ 	public static final int SC_CLOSE = 0xf060;
+ 	public static final int SC_MOVE = 0xf010;
+@@ -1636,6 +1716,9 @@
+ 	public static final int TTS_NOFADE = 0x20;
+ 	public static final int TTS_NOPREFIX = 0x02;
+ 	public static final int TV_FIRST = 0x1100;
++        // <QFS>
++        public static final int TVM_SETSCROLLTIME = TV_FIRST + 33;
++        // </QFS>
+ 	public static final int TVE_COLLAPSE = 0x1;
+ 	public static final int TVE_COLLAPSERESET = 0x8000;
+ 	public static final int TVE_EXPAND = 0x2;
+@@ -1700,7 +1783,6 @@
+ 	public static final int TVM_SETINSERTMARK = 0x111a;
+ 	public static final int TVM_SETITEM = 0x113f;
+ 	public static final int TVM_SETITEMHEIGHT = TV_FIRST + 27;
+-	public static final int TVM_SETSCROLLTIME = TV_FIRST + 33;
+ 	public static final int TVM_SETTEXTCOLOR = 0x111e;
+ 	public static final int TVM_SORTCHILDREN = TV_FIRST + 19;
+ 	public static final int TVM_SORTCHILDRENCB = TV_FIRST + 21;
+@@ -1860,6 +1942,11 @@
+ 	public static final int WHITE_BRUSH = 0;
+ 	public static final int WHITENESS = 0x00FF0062;
+ 	public static final int WM_ACTIVATE = 0x6;
++    // <QFS>
++    public static final int WM_SETTEXT = 0xC;
++    public static final int WM_GETTEXT = 0xD;
++    public static final int WM_GETTEXTLENGTH = 0xE;
++    // </QFS>
+ 	public static final int WM_ACTIVATEAPP = 0x1c;
+ 	public static final int WM_APP = 0x8000;
+ 	public static final int WM_DWMCOLORIZATIONCOLORCHANGED = 0x320;
+@@ -1928,7 +2015,13 @@
+ 	public static final int WM_NCACTIVATE = 0x86;
+ 	public static final int WM_NCCALCSIZE = 0x83;
+ 	public static final int WM_NCHITTEST = 0x84;
++    // <QFS>
++    public static final int WM_NCMOUSEMOVE = 0x00A0;
++    // </QFS>
+ 	public static final int WM_NCLBUTTONDOWN = 0x00A1;
++    // <QFS>
++    public static final int WM_NCLBUTTONUP = 0x00A2;
++    // </QFS>
+ 	public static final int WM_NCPAINT = 0x85;
+ 	public static final int WM_NOTIFY = 0x4e;
+ 	public static final int WM_NULL = 0x0;
+@@ -1950,7 +2043,6 @@
+ 	public static final int WM_SETFONT = 0x30;
+ 	public static final int WM_SETICON = 0x80;
+ 	public static final int WM_SETREDRAW = 0xb;
+-	public static final int WM_SETTEXT = 12;
+ 	public static final int WM_SETTINGCHANGE = 0x1A;
+ 	public static final int WM_SHOWWINDOW = 0x18;
+ 	public static final int WM_SIZE = 0x5;
+@@ -2012,10 +2104,195 @@
+ 	public static final int XBUTTON2 = 0x2;
+ 	public static final int X509_ASN_ENCODING = 1;
+ 
++    // <QFS>
++    public static final int WA_INACTIVE = 0;
++    public static final int WA_ACTIVE = 1;
++    // </QFS>
++
+ public static int VERSION (int major, int minor) {
+ 	return major << 16 | minor;
+ }
+ 
++// <QFS>
++    // {{{ getWinMsgType
++
++    public final static String getWinMsgType(int msg, boolean[] hasMatch)
++    {
++        String msgtype = null;
++        switch (msg) {
++            // {{{ big case to get name
++
++        case OS.WM_SETTEXT: msgtype = "WM_SETTEXT"; break;
++        case OS.WM_GETTEXT: msgtype = "WM_GETTEXT"; break;
++        case OS.WM_GETTEXTLENGTH: msgtype = "WM_GETTEXTLENGTH"; break;
++        case OS.WM_ACTIVATE: msgtype = "WM_ACTIVATE"; break;
++        case OS.WM_ACTIVATEAPP: msgtype = "WM_ACTIVATEAPP"; break;
++        case OS.WM_APP: msgtype = "WM_APP"; break;
++        case OS.WM_CANCELMODE: msgtype = "WM_CANCELMODE"; break;
++        case OS.WM_CAPTURECHANGED: msgtype = "WM_CAPTURECHANGED"; break;
++        case OS.WM_CHANGEUISTATE: msgtype = "WM_CHANGEUISTATE"; break;
++        case OS.WM_CHAR: msgtype = "WM_CHAR"; break;
++        case OS.WM_CLEAR: msgtype = "WM_CLEAR"; break;
++        case OS.WM_CLOSE: msgtype = "WM_CLOSE"; break;
++        case OS.WM_COMMAND: msgtype = "WM_COMMAND"; break;
++        case OS.WM_CONTEXTMENU: msgtype = "WM_CONTEXTMENU"; break;
++        case OS.WM_COPY: msgtype = "WM_COPY"; break;
++        case OS.WM_CREATE: msgtype = "WM_CREATE"; break;
++        case OS.WM_CTLCOLORBTN: msgtype = "WM_CTLCOLORBTN"; break;
++        case OS.WM_CTLCOLORDLG: msgtype = "WM_CTLCOLORDLG"; break;
++        case OS.WM_CTLCOLOREDIT: msgtype = "WM_CTLCOLOREDIT"; break;
++        case OS.WM_CTLCOLORLISTBOX: msgtype = "WM_CTLCOLORLISTBOX"; break;
++        case OS.WM_CTLCOLORMSGBOX: msgtype = "WM_CTLCOLORMSGBOX"; break;
++        case OS.WM_CTLCOLORSCROLLBAR: msgtype = "WM_CTLCOLORSCROLLBAR"; break;
++        case OS.WM_CTLCOLORSTATIC: msgtype = "WM_CTLCOLORSTATIC"; break;
++        case OS.WM_CUT: msgtype = "WM_CUT"; break;
++        case OS.WM_DEADCHAR: msgtype = "WM_DEADCHAR"; break;
++        case OS.WM_DESTROY: msgtype = "WM_DESTROY"; break;
++        case OS.WM_DRAWITEM: msgtype = "WM_DRAWITEM"; break;
++        case OS.WM_ENDSESSION: msgtype = "WM_ENDSESSION"; break;
++        case OS.WM_ENTERIDLE: msgtype = "WM_ENTERIDLE"; break;
++        case OS.WM_ERASEBKGND: msgtype = "WM_ERASEBKGND"; break;
++        case OS.WM_GETDLGCODE: msgtype = "WM_GETDLGCODE"; break;
++        case OS.WM_GETFONT: msgtype = "WM_GETFONT"; break;
++            //      case OS.WM_GETICON: msgtype = "WM_GETICON"; break;
++        case OS.WM_GETOBJECT: msgtype = "WM_GETOBJECT"; break;
++        case OS.WM_GETMINMAXINFO: msgtype = "WM_GETMINMAXINFO"; break;
++        case OS.WM_HELP: msgtype = "WM_HELP"; break;
++        case OS.WM_HOTKEY: msgtype = "WM_HOTKEY"; break;
++        case OS.WM_HSCROLL: msgtype = "WM_HSCROLL"; break;
++        case OS.WM_IME_CHAR: msgtype = "WM_IME_CHAR"; break;
++        case OS.WM_IME_COMPOSITION: msgtype = "WM_IME_COMPOSITION"; break;
++        case OS.WM_INITDIALOG: msgtype = "WM_INITDIALOG"; break;
++        case OS.WM_INITMENUPOPUP: msgtype = "WM_INITMENUPOPUP"; break;
++        case OS.WM_INPUTLANGCHANGE: msgtype = "WM_INPUTLANGCHANGE"; break;
++        case OS.WM_KEYDOWN: msgtype = "WM_KEYDOWN"; break;
++            // case OS.WM_KEYFIRST: msgtype = "WM_KEYFIRST"; break;
++        case OS.WM_KEYLAST: msgtype = "WM_KEYLAST"; break;
++        case OS.WM_KEYUP: msgtype = "WM_KEYUP"; break;
++        case OS.WM_KILLFOCUS: msgtype = "WM_KILLFOCUS"; break;
++        case OS.WM_LBUTTONDBLCLK: msgtype = "WM_LBUTTONDBLCLK"; break;
++        case OS.WM_LBUTTONDOWN: msgtype = "WM_LBUTTONDOWN"; break;
++        case OS.WM_LBUTTONUP: msgtype = "WM_LBUTTONUP"; break;
++        case OS.WM_MBUTTONDBLCLK: msgtype = "WM_MBUTTONDBLCLK"; break;
++        case OS.WM_MBUTTONDOWN: msgtype = "WM_MBUTTONDOWN"; break;
++        case OS.WM_MBUTTONUP: msgtype = "WM_MBUTTONUP"; break;
++        case OS.WM_MEASUREITEM: msgtype = "WM_MEASUREITEM"; break;
++        case OS.WM_MENUCHAR: msgtype = "WM_MENUCHAR"; break;
++        case OS.WM_MENUSELECT: msgtype = "WM_MENUSELECT"; break;
++        case OS.WM_MOUSEACTIVATE: msgtype = "WM_MOUSEACTIVATE"; break;
++        case OS.WM_MOUSEMOVE: msgtype = "WM_MOUSEMOVE"; break;
++        case OS.WM_MOUSEHOVER: msgtype = "WM_MOUSEHOVER"; break;
++        case OS.WM_MOUSELEAVE: msgtype = "WM_MOUSELEAVE"; break;
++        case OS.WM_MOUSEWHEEL: msgtype = "WM_MOUSEWHEEL"; break;
++        case OS.WM_MOUSELAST: msgtype = "WM_MOUSELAST"; break;
++        case OS.WM_MOVE: msgtype = "WM_MOVE"; break;
++        case OS.WM_NCACTIVATE: msgtype = "WM_NCACTIVATE"; break;
++        case OS.WM_NCCALCSIZE: msgtype = "WM_NCCALCSIZE"; break;
++        case OS.WM_NCMOUSEMOVE: msgtype = "WM_NCMOUSEMOVE"; break;
++        case OS.WM_NCHITTEST: msgtype = "WM_NCHITTEST"; break;
++        case OS.WM_NCLBUTTONDOWN: msgtype = "WM_NCLBUTTONDOWN"; break;
++        case OS.WM_NCLBUTTONUP: msgtype = "WM_NCLBUTTONUP"; break;
++        case OS.WM_NOTIFY: msgtype = "WM_NOTIFY"; break;
++        case OS.WM_NULL: msgtype = "WM_NULL"; break;
++        case OS.WM_PAINT: msgtype = "WM_PAINT"; break;
++        case OS.WM_PALETTECHANGED: msgtype = "WM_PALETTECHANGED"; break;
++        case OS.WM_PARENTNOTIFY: msgtype = "WM_PARENTNOTIFY"; break;
++        case OS.WM_PASTE: msgtype = "WM_PASTE"; break;
++        case OS.WM_PRINTCLIENT: msgtype = "WM_PRINTCLIENT"; break;
++        case OS.WM_QUERYENDSESSION: msgtype = "WM_QUERYENDSESSION"; break;
++        case OS.WM_QUERYNEWPALETTE: msgtype = "WM_QUERYNEWPALETTE"; break;
++        case OS.WM_QUERYOPEN: msgtype = "WM_QUERYOPEN"; break;
++        case OS.WM_RBUTTONDBLCLK: msgtype = "WM_RBUTTONDBLCLK"; break;
++        case OS.WM_RBUTTONDOWN: msgtype = "WM_RBUTTONDOWN"; break;
++        case OS.WM_RBUTTONUP: msgtype = "WM_RBUTTONUP"; break;
++        case OS.WM_SETCURSOR: msgtype = "WM_SETCURSOR"; break;
++        case OS.WM_SETFOCUS: msgtype = "WM_SETFOCUS"; break;
++        case OS.WM_SETFONT: msgtype = "WM_SETFONT"; break;
++        case OS.WM_SETICON: msgtype = "WM_SETICON"; break;
++        case OS.WM_SETREDRAW: msgtype = "WM_SETREDRAW"; break;
++        case OS.WM_SETTINGCHANGE: msgtype = "WM_SETTINGCHANGE"; break;
++        case OS.WM_SHOWWINDOW: msgtype = "WM_SHOWWINDOW"; break;
++        case OS.WM_SIZE: msgtype = "WM_SIZE"; break;
++        case OS.WM_SYSCHAR: msgtype = "WM_SYSCHAR"; break;
++        case OS.WM_SYSCOLORCHANGE: msgtype = "WM_SYSCOLORCHANGE"; break;
++        case OS.WM_SYSCOMMAND: msgtype = "WM_SYSCOMMAND"; break;
++        case OS.WM_SYSKEYDOWN: msgtype = "WM_SYSKEYDOWN"; break;
++        case OS.WM_SYSKEYUP: msgtype = "WM_SYSKEYUP"; break;
++        case OS.WM_TIMER: msgtype = "WM_TIMER"; break;
++        case OS.WM_UNDO: msgtype = "WM_UNDO"; break;
++        case OS.WM_USER: msgtype = "WM_USER"; break;
++        case OS.WM_VSCROLL: msgtype = "WM_VSCROLL"; break;
++        case OS.WM_WINDOWPOSCHANGED: msgtype = "WM_WINDOWPOSCHANGED"; break;
++        case OS.WM_WINDOWPOSCHANGING: msgtype = "WM_WINDOWPOSCHANGING"; break;
++
++        case OS.WM_XBUTTONDOWN: msgtype = "WM_XBUTTONDOWN"; break;
++        case OS.WM_XBUTTONUP: msgtype = "WM_XBUTTONUP"; break;
++
++	case OS.TVM_DELETEITEM: msgtype = "TVM_DELETEITEM"; break;
++	case OS.TVM_ENSUREVISIBLE: msgtype = "TVM_ENSUREVISIBLE"; break;
++	case OS.TVM_EXPAND: msgtype = "TVM_EXPAND"; break;
++	case OS.TVM_GETBKCOLOR: msgtype = "TVM_GETBKCOLOR"; break;
++	case OS.TVM_GETCOUNT: msgtype = "TVM_GETCOUNT"; break;
++	case OS.TVM_GETIMAGELIST: msgtype = "TVM_GETIMAGELIST"; break;
++	case 0x113e: msgtype = "TVM_GETITEM"; break;
++	case 0x110c: msgtype = "TVM_GETITEM"; break;
++	case OS.TVM_GETITEMHEIGHT: msgtype = "TVM_GETITEMHEIGHT"; break;
++	case OS.TVM_GETITEMRECT: msgtype = "TVM_GETITEMRECT"; break;
++	case OS.TVM_GETNEXTITEM: msgtype = "TVM_GETNEXTITEM"; break;
++	case OS.TVM_GETTEXTCOLOR: msgtype = "TVM_GETTEXTCOLOR"; break;
++	case OS.TVM_GETTOOLTIPS: msgtype = "TVM_GETTOOLTIPS"; break;
++	case OS.TVM_GETVISIBLECOUNT: msgtype = "TVM_GETVISIBLECOUNT"; break;
++	case OS.TVM_HITTEST: msgtype = "TVM_HITTEST"; break;
++	case 0x1132: msgtype = "TVM_INSERTITEM"; break;
++	case 0x1100: msgtype = "TVM_INSERTITEM"; break;
++	case OS.TVM_MAPACCIDTOHTREEITEM: msgtype = "TVM_MAPACCIDTOHTREEITEM"; break;
++	case OS.TVM_MAPHTREEITEMTOACCID: msgtype = "TVM_MAPHTREEITEMTOACCID"; break;
++	case OS.TVM_SELECTITEM: msgtype = "TVM_SELECTITEM"; break;
++	case OS.TVM_SETBKCOLOR: msgtype = "TVM_SETBKCOLOR"; break;
++	case OS.TVM_SETIMAGELIST: msgtype = "TVM_SETIMAGELIST"; break;
++	case OS.TVM_SETINSERTMARK: msgtype = "TVM_SETINSERTMARK"; break;
++	case 0x113f: msgtype = "TVM_SETITEM"; break;
++	case 0x110d: msgtype = "TVM_SETITEM"; break;
++	case OS.TVM_SETTEXTCOLOR: msgtype = "TVM_SETTEXTCOLOR"; break;
++
++            //case OS.WM_ACTIVATE: msgtype = "WM_ACTIVATE"; break;
++            //case OS.WM_DESTROY: msgtype = "WM_DESTROY"; break;
++            //case OS.WM_MOVE: msgtype = "WM_MOVE"; break;
++            //case OS.WM_SIZE: msgtype = "WM_SIZE"; break;
++            // }}}
++        }
++        if (msgtype == null) {
++            if (hasMatch != null)
++                hasMatch[0] = false;
++            msgtype = Integer.toHexString(msg);
++        } else {
++            if (hasMatch != null)
++                hasMatch[0] = true;
++        }
++        return msgtype;
++    }
++
++    // }}}
++    // {{{ isMessageImportant
++
++    public static boolean isMessageImportant(int msg)
++    {
++        return importantEvents.contains(new Integer(msg));
++    }
++
++
++    // }}}
++    // {{{ isMessageUnimportant
++
++    public static boolean isMessageUnimportant(int msg)
++    {
++        return unimportantEvents.contains(new Integer(msg));
++    }
++
++    // }}}
++// </QFS>
++
++
+ /** 64 bit */
+ public static final native int ACCEL_sizeof ();
+ public static final native int ACTCTX_sizeof ();
+@@ -3829,6 +4106,31 @@
+ public static final native int GetCurrentProcessExplicitAppUserModelID(int /*long*/[] AppID);
+ public static final native int /*long*/ GetCursor ();
+ public static final native boolean GetCursorPos (POINT lpPoint);
++// <QFS> Wrapper for GetCursorPos to override during replay
++public static final boolean _GetCursorPos (POINT lpPoint)
++{
++    boolean ret;
++    Integer replayPos = (Integer) replayOverride.get();
++    if (replayPos == null) {
++        ret = GetCursorPos(lpPoint);
++    } else {
++        ret = true;
++        lpPoint.x = replayPos.intValue() & 0xFFFF;
++        lpPoint.y = replayPos.intValue() >> 16;
++    }
++    if (logger.level >= Log.DBG) {
++        Logger.Builder lb = logger.build("_GetCursorPos(POINT)").add("ret: ").add(ret);
++        if (ret) {
++            lb.add(", x: ").add(lpPoint.x).add(", y: ").add(lpPoint.y);
++        }
++        if (replayPos != null) {
++            lb.add(" [overridden]");
++        }
++        lb.log(Log.DBG);
++    }
++    return ret;
++}
++// </QFS>
+ /** @param hwnd cast=(HWND) */
+ public static final native int /*long*/ GetDC (int /*long*/ hwnd);
+ /**
