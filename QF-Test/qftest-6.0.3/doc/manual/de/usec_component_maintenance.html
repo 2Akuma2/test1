@@ -1,0 +1,244 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Bereinigung und Wartung des Komponentenbaums</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_component_maintenance"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_troubleshooting.html#usec_troubleshooting"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 5.10&nbsp;L&ouml;sung von Problemen bei der Wiedererkennung" title="Vorheriges Kapitel: 5.10&nbsp;L&ouml;sung von Problemen bei der Wiedererkennung"></a></td><td class="navicon"><a href="user_componentinspection.html#usec_componentinspection"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 5.12&nbsp;
+        Untersuchung von Komponenten" title="N&auml;chste Seite: 5.12&nbsp;
+        Untersuchung von Komponenten"></a></td><td class="navicon"><a href="user_componentinspection.html#usec_componentinspection"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 5.12&nbsp;
+        Untersuchung von Komponenten" title="N&auml;chstes Kapitel: 5.12&nbsp;
+        Untersuchung von Komponenten"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 5&nbsp;Komponenten" title="Kapitel-&Uuml;bersicht: 5&nbsp;Komponenten"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_component_maintenance">5.11</a></span>
+</div>
+<a href="contents.html#toc_usec_component_maintenance">Bereinigung und Wartung des Komponentenbaums</a>
+</h4>
+      
+<p>
+        Im Laufe der Testerstellung k&ouml;nnen sich zum einen ungenutzte Komponenten
+        im Komponentenbaum ansammeln. Hier k&ouml;nnen Sie ab und zu den
+        <a href="#usec_cleancomponenttree">Komponentenbaum bereinigen</a>. Zum anderen k&ouml;nnen sich die
+        Wiedererkennungsmerkmale durch &Auml;nderungen in der Applikationsoberfl&auml;che
+        &auml;ndern. Bevor die &Auml;nderungen nach mehreren Oberfl&auml;chen&auml;nderungen so
+        stark werden, dass die Wiedererkennung bricht, macht es Sinn, in den
+        betroffenen Fenstern und Dialogen <a href="#usec_update_components">'Komponenten' aktualisieren</a>
+        durchzuf&uuml;hren.
+      </p>
+
+      
+
+      
+<a name="usec_cleancomponenttree"></a>
+       
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_cleancomponenttree">5.11.1</a></span>
+</div>
+<a href="contents.html#toc_usec_cleancomponenttree">Komponentenbaum bereinigen</a>
+</h5>
+        
+<p>
+          Immer wenn eine Sequenz aufgezeichnet wird, werden f&uuml;r die
+          Komponenten, die noch nicht in der Testsuite vorhanden
+          sind, neue Knoten angelegt. Wird die Sequenz sp&auml;ter gel&ouml;scht, bleiben die
+          'Komponenten' erhalten, daher haben 'Komponenten' eine
+          gewisse Tendenz sich anzusammeln.
+        </p>
+        
+<p>
+          Das Kontextmen&uuml; f&uuml;r
+          'Fenster' und 'Komponente' Knoten hat zwei Eintr&auml;ge namens
+          &raquo;<em>Ungenutzte&nbsp;Komponenten&nbsp;markieren...</em>&laquo; und
+          &raquo;<em>Ungenutzte&nbsp;Komponenten&nbsp;entfernen</em>&laquo;,
+          die jene 'Komponenten' markieren oder ganz entfernen, auf die
+          sich kein anderer Knoten in dieser Testsuite mehr bezieht.
+        </p>
+        
+<p>
+          Vorsicht
+          ist geboten, falls Sie Variablen in 'QF-Test ID der Komponente' Attributen verwenden, da die Automatik
+          diese nicht erkennt.
+        </p>
+        
+<p>
+          Werden 'Komponenten' aus anderen Testsuiten
+          referenziert, sollte diese zum selben Projekt geh&ouml;ren oder das Attribut
+          <a href="rootnode.html#att_RootStep_dependencies" shape="rect">'Abh&auml;ngige Dateien (umgekehrte Includes)'</a> des 'Testsuite'
+          Wurzelknotens korrekt gesetzt sein.
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_update_components"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_update_components">5.11.2</a></span>
+</div>
+<a href="contents.html#toc_usec_update_components">'Komponenten' aktualisieren</a>
+</h5>
+        
+<p>
+          Es ist kaum zu vermeiden, dass sich die Komponenten des SUT im Lauf
+          der Zeit ver&auml;ndern. Wie beschrieben stellt dies kein gro&szlig;es Problem
+          dar, sofern Bezeichner konsequent eingesetzt werden, da QF-Test
+          dann mit fast jeder Art von Ver&auml;nderung zurechtkommt.
+        </p>
+        
+<p>
+          Ohne Bezeichner summieren sich &Auml;nderungen mit der Zeit und
+          k&ouml;nnen einen Punkt erreichen, an dem die Wiedererkennung fehlschl&auml;gt.
+          Um dieses Problem zu umgehen, sollten Sie die 'Komponenten' in
+          QF-Test von Zeit zu Zeit an den aktuellen Stand des SUT anpassen. Dies
+          kann mit Hilfe des Men&uuml;eintrags &raquo;<em>Komponente(n)           aktualisieren</em>&laquo; in dem Kontextmen&uuml; geschehen, das Sie nach einem
+          Klick mit der rechten Maustaste auf einen beliebigen Knoten unterhalb
+          des <a href="components.html#step_WindowList" shape="rect">'Fenster und Komponenten'</a> Knotens erhalten.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span> Diese Funktion kann sehr viel Information
+          auf einmal &auml;ndern, daher ist es schwierig zu beurteilen, ob alles wie
+          erwartet funktioniert hat oder ob eine Komponente falsch erkannt
+          wurde. Erstellen Sie daher immer eine Sicherheitskopie, bevor
+          Sie viele Komponenten aktualisieren. Au&szlig;erdem sollten Sie
+          'Fenster' f&uuml;r 'Fenster' vorgehen und darauf achten, dass
+          die Komponenten, die Sie aktualisieren wollen, im SUT sichtbar sind
+          (mit Ausnahme der Men&uuml;eintr&auml;ge). Stellen Sie nach jedem Schritt
+          sicher, dass die Tests immer noch sauber laufen.
+        </p>
+        
+<p>
+          Vorausgesetzt, dass eine Verbindung zum SUT besteht, erscheint bei Aufruf dieser
+          Funktion folgender Dialog:
+        </p>
+        
+<a name="figure_5.13"></a><a name="figure_5.13"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/UpdateComponents.png" target="_blank"><img src="images/UpdateComponents.png" alt="Komponenten               aktualisieren Dialog" width="344" height="258" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;5.13</a>:&nbsp;&nbsp;Komponenten aktualisieren Dialog</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Sind Sie mit mehreren SUT Clients verbunden, m&uuml;ssen Sie zun&auml;chst
+          einen f&uuml;r die Aktualisierung ausw&auml;hlen.
+        </p>
+        
+<p>
+          Legen Sie fest, ob Sie nur den/die selektierten 'Komponente'
+          Knoten selbst oder auch dessen/deren Kindknoten aktualisieren wollen.
+        </p>
+        
+<p>
+          Sie k&ouml;nnen auch Komponenten einbeziehen, die im SUT momentan nicht
+          sichtbar sind. Dies ist vor allem f&uuml;r Men&uuml;eintr&auml;ge hilfreich.
+        </p>
+        
+<p>
+          Die <a href="components.html#att_ComponentStep_id" shape="rect">'QF-Test ID'</a> eines aktualisierten Knotens wird beibehalten, wenn "QF-Test ID
+          des urspr&uuml;nglichen Knotens &uuml;bernehmen" gew&auml;hlt ist. Andernfalls erh&auml;lt der Knoten eine von
+          QF-Test generierte 'QF-Test ID', sofern sinnvolle Informationen zur Verf&uuml;gung stehen. Andere
+          Knoten, die sich auf diese 'QF-Test ID' beziehen, werden automatisch angepasst. QF-Test pr&uuml;ft
+          dabei auch Abh&auml;ngigkeiten in den Testsuiten, die zum selben Projekt geh&ouml;ren oder die
+          im Attribut <a href="rootnode.html#att_RootStep_dependencies" shape="rect">'Abh&auml;ngige Dateien (umgekehrte Includes)'</a>
+          des <a href="rootnode.html#step_RootStep" shape="rect">'Testsuite'</a> Knotens aufgef&uuml;hrt sind. Diese Testsuiten werden automatisch geladen
+          und indirekte Abh&auml;ngigkeiten ebenfalls aufgel&ouml;st.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span> In diesem Fall werden die ge&auml;nderten Testsuiten automatisch
+          ge&ouml;ffnet, damit die &Auml;nderungen gespeichert oder r&uuml;ckg&auml;ngig gemacht werden k&ouml;nnen.
+        </p>
+        
+<p>
+          Nach der Best&auml;tigung mit "OK" wird QF-Test versuchen, die betreffenden
+          Komponenten im SUT zu lokalisieren und aktuelle Informationen
+          einzuholen. Komponenten, die nicht gefunden werden k&ouml;nnen, werden
+          &uuml;bersprungen. Anschlie&szlig;end werden die 'Komponente' Knoten an die
+          aktuelle Struktur des GUI im SUT angepasst, was auch zur Folge haben
+          kann, dass Knoten verschoben werden.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r gro&szlig;e Hierarchien von Komponenten kann diese &auml;u&szlig;erst komplexe Operation
+          einige Zeit in Anspruch nehmen, in extremen F&auml;llen sogar einige Minuten.
+        </p>
+        
+<p>
+          Diese Funktion ist besonders n&uuml;tzlich, wenn Bezeichner zum
+          ersten Mal im SUT verwendet werden. Wenn Sie bereits einige Tests
+          erstellt haben, bevor Sie die Entwickler &uuml;berzeugen konnten,
+          Bezeichner zu vergeben, k&ouml;nnen Sie hiermit die Bezeichner in Ihre
+          'Komponenten' einbinden und gleichzeitig die 'QF-Test IDs'
+          anpassen. Dies funktioniert am besten, wenn Sie eine SUT Version
+          bekommen k&ouml;nnen, die bis auf die Bezeichner mit der vorherigen Version
+          &uuml;bereinstimmt.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span> Sehr wichtiger Hinweis: Das Aktualisieren von ganzen Fenstern oder Hierarchien
+          von Komponenten ab einer gewissen Gr&ouml;&szlig;e f&uuml;hrt oft zu dem Versuch, Komponenten zu
+          aktualisieren, die im Moment nicht vorhanden oder unsichtbar sind. In so einem Fall ist es
+          sehr wichtig, falsch-positive Treffer f&uuml;r diese Komponenten zu verhindern. Sie k&ouml;nnen dies
+          erreichen, indem Sie vor&uuml;bergehend die 'Bonus' und 'Herabsetzung...' Optionen zur
+          Wiedererkennung (<a href="opt_play.html#sec_opt_recognition">Abschnitt 37.3.4</a>) ver&auml;ndern. Setzen Sie insbesondere
+          die 'Herabsetzung f&uuml;r Merkmal' auf einen Wert unterhalb des Wertes der
+          'Mindestwahrscheinlichkeit', also z.B. auf 49, sofern Sie ansonsten die Standardwerte
+          verwenden. Vergessen Sie nicht, die urspr&uuml;nglichen Werte hinterher wiederherzustellen.
+        </p>
+        
+<p>
+          Wenn Sie die Einstellung der Optionen <a href="opt_play.html#opt_nameoverride">Gewichtung von Namen (Wiedergabe)</a> und <a href="opt_record.html#opt_nameoverriderec">Gewichtung von Namen (Aufnahme)</a> &auml;ndern m&uuml;ssen, zum Beispiel weil sich Bezeichner von Komponenten
+          wider Erwarten als nicht eindeutig herausgestellt haben, &auml;ndern Sie zun&auml;chst nur die
+          Option f&uuml;r die Aufnahme. Wenn die Aktualisierung beendet ist, ziehen Sie die Option f&uuml;r
+          die Wiedergabe entsprechend nach.
+        </p>
+      
+
+      
+
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_troubleshooting.html#usec_troubleshooting"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 5.10&nbsp;L&ouml;sung von Problemen bei der Wiedererkennung" title="Vorheriges Kapitel: 5.10&nbsp;L&ouml;sung von Problemen bei der Wiedererkennung"></a></td><td class="navicon"><a href="user_componentinspection.html#usec_componentinspection"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 5.12&nbsp;
+        Untersuchung von Komponenten" title="N&auml;chste Seite: 5.12&nbsp;
+        Untersuchung von Komponenten"></a></td><td class="navicon"><a href="user_componentinspection.html#usec_componentinspection"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 5.12&nbsp;
+        Untersuchung von Komponenten" title="N&auml;chstes Kapitel: 5.12&nbsp;
+        Untersuchung von Komponenten"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 5&nbsp;Komponenten" title="Kapitel-&Uuml;bersicht: 5&nbsp;Komponenten"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

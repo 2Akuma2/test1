@@ -1,0 +1,335 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Component nodes versus SmartID</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_components_step_vs_smartid"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_components_gui.html#usec_components_gui"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 5.1&nbsp;Components of a GUI" title="Previous Chapter: 5.1&nbsp;Components of a GUI"></a></td><td class="navicon"><a href="bp_componentrecognition.html#sec_bpComponentRecognition"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 5.3&nbsp;How to achieve robust component recognition" title="Next Page: 5.3&nbsp;How to achieve robust component recognition"></a></td><td class="navicon"><a href="bp_componentrecognition.html#sec_bpComponentRecognition"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 5.3&nbsp;How to achieve robust component recognition" title="Next Chapter: 5.3&nbsp;How to achieve robust component recognition"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 5&nbsp;Components" title="Chapter Overview: 5&nbsp;Components"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_components_step_vs_smartid">5.2</a></span>
+</div>
+<a href="contents.html#toc_usec_components_step_vs_smartid">'Component' nodes versus SmartID</a>
+</h4>
+      
+<p>
+        Regognition criteria can be linked to events in tests in two different ways.
+        With the classic method, the criteria are stored as attributes of a <a href="components.html#step_ComponentStep" shape="rect">'Component'</a>
+        node (see <a href="user_componentstep.html#usec_componentstep">'Component' node</a>).
+        These are then referenced in the tests via their 'QF-Test component ID'.
+        Alternatively, GUI elements can be addressed
+        directly by the recognition criteria via <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a>.
+        'Components' are not neccessary in that case.
+      </p>
+      
+<p>
+        SmartIDs and classic recorded 'Component' nodes can be used alternatingly,
+        and even combined when neccessary. The following points may help you
+        decide whether to use SmartIDs or record components.
+      </p>
+      
+<ul>
+        
+<li>
+           
+<a href="#component_step_vs_smartid_readability">Improved readability of tests</a>
+        
+</li>
+        
+<li>
+           
+<a href="#component_step_vs_smartid_tdd">Test-driven development</a>
+        
+</li>
+        
+<li>
+           
+<a href="#component_step_vs_smartid_keyword_driven_testing">Keyword-driven testing</a>
+        
+</li>
+        
+<li>
+           
+<a href="#component_step_vs_smartid_stability">Stability of recognition</a>
+        
+</li>
+        
+<li>
+           
+<a href="#component_step_vs_smartid_maintainability">Maintainability</a>
+        
+</li>
+        
+<li>
+           
+<a href="#component_step_vs_smartid_performance">Performance</a>
+        
+</li>
+      
+</ul>
+
+      
+<a name="component_step_vs_smartid_readability"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_component_step_vs_smartid_readability">5.2.1</a></span>
+</div>
+<a href="contents.html#toc_component_step_vs_smartid_readability">Improved readability of tests</a>
+</h5>
+        
+<p>
+          SmartIDs offer advantages over recorded 'Component' nodes in the following situation:
+        </p>
+        
+<p>
+          The referenced GUI components should be directly recognizable in event and check steps.
+          If the <a href="usec_components_name.html#usec_components_identifier">Component identifiers</a> of the components are cryptic,
+          but usable descriptions are available, SmartIDs have the advantage.
+        </p>
+        
+<a name="figure_5.2"></a><a name="figure_5.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/componentsReadabilitySmartIDs.png" target="_blank"><img src="images/componentsReadabilitySmartIDs.png" alt="Readability of SmartIDs" width="298" height="98" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;5.2</a>:&nbsp;&nbsp;Readability of SmartIDs</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<a name="figure_5.3"></a><a name="figure_5.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/componentsReadabilityIdentifier.png" target="_blank"><img src="images/componentsReadabilityIdentifier.png" alt="Readability of identifiers" width="326" height="98" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;5.3</a>:&nbsp;&nbsp;Readability of identifiers</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          The readability of a test can also be improved in procedures,
+          if description-based SmartIDs can be used instead of cryptic identifiers.
+        </p>
+        
+<p>
+          SmartIDs also can increase readability for fields with the same recognition criteria
+          but differently labeled container panels.
+          In the following example, the SmartIDs <code>#Shipping address@#Last name</code>
+          and <code>#Billing address@#Last name</code> could be used.
+        </p>
+        
+<a name="figure_5.4"></a><a name="figure_5.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/components_smartids_titledpanels.png" target="_blank"><img src="images/components_smartids_titledpanels.png" alt="SmartIDs with titled panels" width="908" height="237" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;5.4</a>:&nbsp;&nbsp;Readability of SmartIDs in panels with description</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+<a name="component_step_vs_smartid_tdd"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_component_step_vs_smartid_tdd">5.2.2</a></span>
+</div>
+<a href="contents.html#toc_component_step_vs_smartid_tdd">Test-driven development</a>
+</h5>
+        
+<p>
+          With test driven development, the big advantage offered by SmartIDs
+          is that no 'Components' need to be created.
+          Additionally, in test driven development <a href="usec_components_name.html#usec_components_identifier">Component identifiers</a>
+          are often defined in the technical design and can then be used for test creation.
+          For example, if the component identifier is <code>btnOK</code>,
+          the component can be referenced via the SmartID <code>#btnOK</code>.
+        </p>
+      
+
+      
+<a name="component_step_vs_smartid_keyword_driven_testing"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_component_step_vs_smartid_keyword_driven_testing">5.2.3</a></span>
+</div>
+<a href="contents.html#toc_component_step_vs_smartid_keyword_driven_testing">Keyword-driven testing</a>
+</h5>
+        
+<p>
+          Keyword-driven tests are implemented on a technical level
+          with procedure calls and parameters. This way, the test creator
+          does not record any components and is dependent on visual information from the GUI
+          for identifying components.
+          This could be the label of the component or its function (class).
+          In a SmartID, these possibilities for recognition can also be combined
+          with each other and with an index.
+        </p>
+       
+
+      
+<a name="component_step_vs_smartid_stability"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_component_step_vs_smartid_stability">5.2.4</a></span>
+</div>
+<a href="contents.html#toc_component_step_vs_smartid_stability">Stability of recognition</a>
+</h5>
+        
+<p>
+          The stability of recognition is equally good with recorded components and SmartIDs
+          if the SmartID uses the name, if possible in combination with the class.
+          At it's core, stability of recognition depends on the probability of change
+          of the used criteria.
+          If, for example, the label of a component is stable across versions of an application,
+          the recognition via a label-based SmartID (<a href="usec_components_feature.html#usec_components_feature">Feature</a>
+          or <a href="usec_components_extrafeatures.html#usec_components_qfslabel">qfs:label</a>) will be stable as well.
+        </p>
+        
+<p>
+          Recorded 'Component' nodes use a predefined algorithm for recognition.
+          It gives different importance to individual recognition criteria.
+          Class, name, and hierarchy have the highest priority.
+          If no name is present, hierarchy, label, index, and geometry (in descending importance)
+          are combined into a probability.
+          That probability is the basis for deciding if a GUI element is the wanted component.
+        </p>
+        
+<p>
+          This algorithm has proven very good for most usage scenarios.
+          However, there are cases in which subordinate recognition criteria (like the label)
+          offer greater stability than the higher-weighted criteria.
+          With recorded 'Component' nodes, we could intervene via a resolver, see <a href="tech_resolversmodule.html#sec_resolversmodule">The <code class="moduledef">resolvers</code> module</a>.
+          However, the strengths of the SmartID get to shine here,
+          because it can specifically target a stable recognition criterium
+          (or even a combination of multiple criteria).
+        </p>
+        
+<p>
+          This is the case when, for example, the label is more stable than the
+          <a href="usec_components_name.html#usec_components_identifier">Component identifiers</a>.
+        </p>
+        
+<p>
+          SmartIDs also have advantages when there is a big chance of changes
+          to the component hierarchy during version changes (or even just during application start)
+          or if recognition features of parent components change.
+          SmartIDs don't consider the component hierarchy by default.
+        </p>
+      
+
+      
+<a name="component_step_vs_smartid_maintainability"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_component_step_vs_smartid_maintainability">5.2.5</a></span>
+</div>
+<a href="contents.html#toc_component_step_vs_smartid_maintainability">Maintainability</a>
+</h5>
+        
+<p>
+          Regarding the maintainability, recorded 'Component' nodes have the upper hand,
+          because recognition criteria are stored centrally in the node,
+          and later changes only need to be performed in this one place.
+        </p>
+        
+<p>
+          With SmartIDs however, recognition criteria are stored decentrally.
+          It is possible to perform changes across tests via the powerful search-and-replace feature.
+          For SmartIDs with the same recognition criteria for different components,
+          manual tweaking may still be necessary.
+        </p>
+      
+
+      
+<a name="component_step_vs_smartid_performance"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_component_step_vs_smartid_performance">5.2.6</a></span>
+</div>
+<a href="contents.html#toc_component_step_vs_smartid_performance">Performance</a>
+</h5>
+        
+<p>
+          SmartIDs that use <a href="usec_components_name.html#usec_components_identifier">Component identifiers</a> can keep up well with
+          a 'Component' node performance-wise, because the recognized 'Names' are indexed.
+        </p>
+        
+<p>
+          However, if the SmartID uses the label (<a href="usec_components_feature.html#usec_components_feature">Feature</a>
+          or <a href="usec_components_extrafeatures.html#usec_components_qfslabel">qfs:label</a>) or other <a href="usec_components_extrafeatures.html#usec_components_extrafeatures">Extra features</a>,
+          performance will not be as good as with recorded 'Component' nodes,
+          since the GUI elements are not filtered by 'Class name' beforehand
+          and all GUI elements with matching classes must be searched.
+        </p>
+      
+
+      
+<a name="sec_N70542"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N70542">5.2.7</a></span>
+</div>
+<a href="contents.html#toc_sec_N70542">Combining 'Component' nodes and SmartIDs</a>
+</h5>
+        
+<p>
+          Recorded 'Component' nodes can be combined with SmartIDs.
+          You can find details about this in <a href="user_subitems.html#usec_subitems">Sub-items: Addressing relative to a parent component</a>
+          and <a href="user_smartid.html#usec_components_qftestid_as_smartid">Component 'QF-Test ID' as SmartID</a>.
+        </p>
+        
+<p>
+          Recorded components can be used to overlay the SmartID syntax
+          by setting their <a href="components.html#att_ComponentStep_id" shape="rect">'QF-Test ID'</a> to a SmartID including prefix "#".
+          This allows simple, data-driven or pre-generated tests to be created with SmartID
+          and only at neuralgic points to define individual components more specifically
+          without having to adapt the tests or procedures for this.
+        </p>
+      
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_components_gui.html#usec_components_gui"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 5.1&nbsp;Components of a GUI" title="Previous Chapter: 5.1&nbsp;Components of a GUI"></a></td><td class="navicon"><a href="bp_componentrecognition.html#sec_bpComponentRecognition"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 5.3&nbsp;How to achieve robust component recognition" title="Next Page: 5.3&nbsp;How to achieve robust component recognition"></a></td><td class="navicon"><a href="bp_componentrecognition.html#sec_bpComponentRecognition"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 5.3&nbsp;How to achieve robust component recognition" title="Next Chapter: 5.3&nbsp;How to achieve robust component recognition"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 5&nbsp;Components" title="Chapter Overview: 5&nbsp;Components"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

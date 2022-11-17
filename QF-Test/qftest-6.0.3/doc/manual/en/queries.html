@@ -1,0 +1,1053 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Queries</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_queries"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="checks.html#sec_checks"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 38.9&nbsp;Checks" title="Previous Chapter: 38.9&nbsp;Checks"></a></td><td class="navicon"><a href="miscnodes.html#sec_miscnodes"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 38.11&nbsp;Miscellaneous" title="Next Page: 38.11&nbsp;Miscellaneous"></a></td><td class="navicon"><a href="miscnodes.html#sec_miscnodes"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 38.11&nbsp;Miscellaneous" title="Next Chapter: 38.11&nbsp;Miscellaneous"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 38&nbsp;Elements of a test-suite" title="Chapter Overview: 38&nbsp;Elements of a test-suite"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_queries">38.10</a></span>
+</div>
+<a href="contents.html#toc_sec_queries">Queries</a>
+</h4>
+    
+<p>
+      Automating a GUI test gets difficult whenever the SUT shows dynamic or
+      unpredictable behavior, i.e. when it displays values that change with
+      every run of the program. This is typically the case for fields that
+      are filled automatically with things like the current time, an automatic
+      ID from a database, etc.
+    </p>
+    
+<p>
+      QF-Test addresses this issue with means to read values from the SUT's
+      components or to determine the numerical index of a sub-item when given
+      its name. These values are stored in variables to be used again later as
+      the test proceeds.
+    </p>
+    
+
+    
+<a name="step_FetchTextStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_FetchTextStep">38.10.1</a></span>
+</div>
+<a href="contents.html#toc_step_FetchTextStep">'Fetch text'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/fetchtext.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            This node lets you read a value from the SUT during the
+            execution of a test run. The text is assigned to the local or global
+            variable (see <a href="user_variables.html#usec_variables">chapter 6</a>) named by the
+            <a href="#att_FetchTextStep_varname" shape="rect">'Variable name'</a> attribute.
+          </p>
+          
+<p>
+            Not all components display text and some complex components
+            contain multiple textual items, so this operation is only
+            supported for certain components or sub-items. If you try to fetch
+            the text from the wrong component, an
+            <a href="exceptions.html#ex_OperationNotSupportedException" shape="rect"><code>OperationNotSupportedException</code></a> is thrown, while an
+            unsupported sub-item leads to an
+            <a href="exceptions.html#ex_UnexpectedIndexException" shape="rect"><code>UnexpectedIndexException</code></a>.
+            The following table lists the supported component and sub-item
+            targets for this operation. (P/S) means primary/secondary index.
+          </p>
+          
+<p>
+<span class="margin"><a name="web_N142208"></a><span class="note">Web</span></span>
+            In web applications every node could contain some text, so QF-Test
+            returns either the text or an empty value, but never throws an
+            <code>OperationNotSupportedException</code>.
+          </p>
+          
+<a name="table_38.24"></a><a name="table_38.24"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="3">
+              
+<tr>
+                
+<th align="left" rowspan="1" colspan="1">Class</th>
+                <th align="left" rowspan="1" colspan="1">Index (P/S)</th>
+                <th align="left" rowspan="1" colspan="1">Result</th>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>AbstractButton</code></td>
+                <td rowspan="1" colspan="1">-/-</td>
+                <td rowspan="1" colspan="1"><code>getText()</code></td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Dialog</code></td>
+                <td rowspan="1" colspan="1">-/-</td>
+                <td rowspan="1" colspan="1"><code>getTitle()</code></td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Frame</code></td>
+                <td rowspan="1" colspan="1">-/-</td>
+                <td rowspan="1" colspan="1"><code>getTitle()</code></td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>ComboBox</code></td>
+                <td rowspan="1" colspan="1">-/-</td>
+                <td rowspan="1" colspan="1">Current value (use renderer)</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>ComboBox</code></td>
+                <td rowspan="1" colspan="1">List item/-</td>
+                <td rowspan="1" colspan="1">List item (use renderer)</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JEditorPane</code></td>
+                <td rowspan="1" colspan="1">Character index/-</td>
+                <td rowspan="1" colspan="1">Structural element at index (experimental)</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Label</code></td>
+                <td rowspan="1" colspan="1">-/-</td>
+                <td rowspan="1" colspan="1"><code>getText()</code></td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>List</code></td>
+                <td rowspan="1" colspan="1">Item/-</td>
+                <td rowspan="1" colspan="1">Item (use renderer)</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>TabbedPane</code></td>
+                <td rowspan="1" colspan="1">Tab/-</td>
+                <td rowspan="1" colspan="1">Title of tab</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Table</code></td>
+                <td rowspan="1" colspan="1">Column/Row</td>
+                <td rowspan="1" colspan="1">Cell contents (use renderer)</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTableHeader</code></td>
+                <td rowspan="1" colspan="1">Column/-</td>
+                <td rowspan="1" colspan="1">Column title (use renderer)</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>TextArea</code></td>
+                <td rowspan="1" colspan="1">Line number/-</td>
+                <td rowspan="1" colspan="1">Line of text</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTextComponent</code></td>
+                <td rowspan="1" colspan="1">-/-</td>
+                <td rowspan="1" colspan="1"><code>getText()</code></td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Tree</code></td>
+                <td rowspan="1" colspan="1">Node/-</td>
+                <td rowspan="1" colspan="1">Node (use renderer)</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Label</code></td>
+                <td rowspan="1" colspan="1">-/-</td>
+                <td rowspan="1" colspan="1"><code><code>getText()</code></code></td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>TextField</code></td>
+                <td rowspan="1" colspan="1">-/-</td>
+                <td rowspan="1" colspan="1"><code><code>getText()</code></code></td>
+              
+</tr>
+            
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;38.24</a>:&nbsp;&nbsp;Components supported by 'Fetch text'</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> All kinds of <a href="sequences.html#sec_sequences" shape="rect">sequences</a>.</p>
+<p>
+<strong>Children:</strong> None</p>
+<p>
+<strong>Execution:</strong> 
+          The data of the target component is sent to the SUT. The
+          <code>TestEventQueue</code> determines the corresponding component,
+          retrieves the requested value and sends it back to QF-Test,
+          where it is stored in a global variable.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.67"></a><a name="figure_38.67"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_FetchTextStep.png" target="_blank"><img src="images/att_FetchTextStep.png" alt="Fetch text attributes" texscale=".66" width="393" height="357"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.67</a>:&nbsp;&nbsp;'Fetch text' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_FetchTextStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        The name of the SUT client process from which to query the data.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_FetchTextStep_component"></a>
+<dt>'QF-Test component ID'</dt>
+<dd>
+      
+<p>
+        The <a href="components.html#att_WindowStep_id" shape="rect">'QF-Test ID'</a> of the <a href="components.html#step_WindowStep" shape="rect">'Window'</a>,
+        <a href="components.html#step_ComponentStep" shape="rect">'Component'</a> or <a href="components.html#step_SubItemStep" shape="rect">'Item'</a> node that is to be
+        queried.
+      </p>
+      
+<p>
+    The "Select component" button
+    <img src="../icons/select_component.png" style="vertical-align: text-bottom" alt="[Select component]" title="Select component" width="20" height="20" texscale=".66">
+    brings up a dialog in which you can select the component
+    interactively. You can also get to this dialog by pressing
+    [Shift-Return] or
+    [Alt-Return], when the focus is in the
+    text field. As an alternative you can copy the target node with
+    [Ctrl-C] or
+    &raquo;<em>Edit</em>&laquo;-&raquo;<em>Copy</em>&laquo;
+    and insert its QF-Test component ID into the text field by pressing
+    [Ctrl-V].
+  </p>
+      
+<p>
+    This attribute supports a special format
+    for referencing components in other test suites
+    (see <a href="user_distributed.html#usec_suitereference">section 23.1</a>).
+    Furthermore, sub-elements of nodes can be addressed directly
+    without requiring separate nodes for them (see <a href="user_subitems.html#usec_subitems">section 5.9</a>). 
+    When using SmartIDs, you can address a GUI element
+    directly via its recognition criteria.
+    For more information, refer to <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a>
+    and <a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">'Component' nodes versus SmartID</a>.
+  </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_FetchTextStep_varname"></a>
+<dt>'Variable name'</dt>
+<dd>
+            
+            
+<p>
+              The name of the global variable to which the result of the query
+              is assigned (see <a href="user_variables.html#usec_variables">chapter 6</a>).
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_FetchTextStep_local"></a>
+<dt>'Local variable'</dt>
+<dd>
+      
+<p>
+        This flag determines whether to create a local or global variable binding. If unset, the
+        variable is bound in the global variables. If set, the topmost current binding for the
+        variable is replaced with the new value, provided this binding is within the context of
+        the currently executing <a href="procedures.html#step_Procedure" shape="rect">'Procedure'</a>, <a href="dependencies.html#step_Dependency" shape="rect">'Dependency'</a> or <a href="sequences.html#step_TestCase" shape="rect">'Test-case'</a> node. If no
+        such binding exists, a new binding is created in the currently executing 'Procedure',
+        'Dependency' or 'Test-case' node or, if there is no such node in the topmost node on the variables stack,
+	falling back to the global bindings if necessary. See
+        <a href="user_variables.html#usec_variables">chapter 6</a> for a detailed explanation of variable binding and lookup.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_FetchTextStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_FetchTextStep_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_FetchTextStep_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_FetchIndexStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_FetchIndexStep">38.10.2</a></span>
+</div>
+<a href="contents.html#toc_step_FetchIndexStep">'Fetch index'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/fetchindex.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            With the help of this node you can determine the index of a
+            sub-item during the execution of a test, provided its displayed
+            text is known. Obviously only an <a href="components.html#step_SubItemStep" shape="rect">'Item'</a> is supported as
+            the target component. The result is assigned to the local or global
+            variable (see <a href="user_variables.html#usec_variables">chapter 6</a>) named by the
+            <a href="#att_FetchIndexStep_varname" shape="rect">'Variable name'</a> attribute.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> All kinds of <a href="sequences.html#sec_sequences" shape="rect">sequences</a>.</p>
+<p>
+<strong>Children:</strong> None</p>
+<p>
+<strong>Execution:</strong> 
+          The data of the target component is sent to the SUT. The
+          <code>TestEventQueue</code> determines the corresponding component, searches
+          for the requested sub-item and sends its index back to QF-Test,
+          where it is stored in a global variable.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.68"></a><a name="figure_38.68"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_FetchIndexStep.png" target="_blank"><img src="images/att_FetchIndexStep.png" alt="Fetch index attributes" texscale=".66" width="393" height="375"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.68</a>:&nbsp;&nbsp;'Fetch index' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_FetchIndexStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        The name of the SUT client process from which to query the data.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_FetchIndexStep_component"></a>
+<dt>'QF-Test component ID'</dt>
+<dd>
+      
+<p>
+        The <a href="components.html#att_WindowStep_id" shape="rect">'QF-Test ID'</a> of the <a href="components.html#step_WindowStep" shape="rect">'Window'</a>,
+        <a href="components.html#step_ComponentStep" shape="rect">'Component'</a> or <a href="components.html#step_SubItemStep" shape="rect">'Item'</a> node that is to be
+        queried.
+      </p>
+      
+<p>
+    The "Select component" button
+    <img src="../icons/select_component.png" style="vertical-align: text-bottom" alt="[Select component]" title="Select component" width="20" height="20" texscale=".66">
+    brings up a dialog in which you can select the component
+    interactively. You can also get to this dialog by pressing
+    [Shift-Return] or
+    [Alt-Return], when the focus is in the
+    text field. As an alternative you can copy the target node with
+    [Ctrl-C] or
+    &raquo;<em>Edit</em>&laquo;-&raquo;<em>Copy</em>&laquo;
+    and insert its QF-Test component ID into the text field by pressing
+    [Ctrl-V].
+  </p>
+      
+<p>
+    This attribute supports a special format
+    for referencing components in other test suites
+    (see <a href="user_distributed.html#usec_suitereference">section 23.1</a>).
+    Furthermore, sub-elements of nodes can be addressed directly
+    without requiring separate nodes for them (see <a href="user_subitems.html#usec_subitems">section 5.9</a>). 
+    When using SmartIDs, you can address a GUI element
+    directly via its recognition criteria.
+    For more information, refer to <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a>
+    and <a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">'Component' nodes versus SmartID</a>.
+  </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_FetchIndexStep_varname"></a>
+<dt>'Variable name'</dt>
+<dd>
+            
+            
+<p>
+              The name of the global variable to which the result of the query
+              is assigned (see <a href="user_variables.html#usec_variables">chapter 6</a>).
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_FetchIndexStep_local"></a>
+<dt>'Local variable'</dt>
+<dd>
+      
+<p>
+        This flag determines whether to create a local or global variable binding. If unset, the
+        variable is bound in the global variables. If set, the topmost current binding for the
+        variable is replaced with the new value, provided this binding is within the context of
+        the currently executing <a href="procedures.html#step_Procedure" shape="rect">'Procedure'</a>, <a href="dependencies.html#step_Dependency" shape="rect">'Dependency'</a> or <a href="sequences.html#step_TestCase" shape="rect">'Test-case'</a> node. If no
+        such binding exists, a new binding is created in the currently executing 'Procedure',
+        'Dependency' or 'Test-case' node or, if there is no such node in the topmost node on the variables stack,
+	falling back to the global bindings if necessary. See
+        <a href="user_variables.html#usec_variables">chapter 6</a> for a detailed explanation of variable binding and lookup.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_FetchIndexStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_FetchIndexStep_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_FetchIndexStep_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_FetchGeometryStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_FetchGeometryStep">38.10.3</a></span>
+</div>
+<a href="contents.html#toc_step_FetchGeometryStep">'Fetch geometry'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/fetchgeometry.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Use this node to find out the geometry of a window, component or sub-item in the
+            SUT. The result is stored in up to four local or global variables, one each for the X and Y
+            coordinates, width and height.
+          </p>
+          
+<p>
+            This node is useful if you want to set the <a href="events.html#att_MouseEventStep_xy" shape="rect">'X'</a>
+            and <a href="events.html#att_MouseEventStep_xy" shape="rect">'Y'</a> coordinates of a <a href="events.html#step_MouseEventStep" shape="rect">'Mouse event'</a>
+            relative to the right or bottom border of the target
+            component. Simply fetch the component's width and height and
+            define the coordinates using the extended variable syntax for
+            expressions (see <a href="user_variables.html#usec_expressions">section 6.6</a>).
+          </p>
+          
+<p>
+            The following table lists the supported sub-item targets for this
+            operation. (P/S) means primary/secondary index.
+          </p>
+          
+<a name="table_38.25"></a><a name="table_38.25"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="3">
+              
+<tr>
+                
+<th align="left" rowspan="1" colspan="1">Class</th>
+                <th align="left" rowspan="1" colspan="1">Index (P/S)</th>
+                <th align="left" rowspan="1" colspan="1">Result</th>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JList</code></td>
+                <td rowspan="1" colspan="1">Item/-</td>
+                <td rowspan="1" colspan="1">Item</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTabbedPane</code></td>
+                <td rowspan="1" colspan="1">Tab/-</td>
+                <td rowspan="1" colspan="1">Tab</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTable</code></td>
+                <td rowspan="1" colspan="1">Column/-</td>
+                <td rowspan="1" colspan="1">Column</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTable</code></td>
+                <td rowspan="1" colspan="1">Column/Row</td>
+                <td rowspan="1" colspan="1">Cell</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTableHeader</code></td>
+                <td rowspan="1" colspan="1">Column/-</td>
+                <td rowspan="1" colspan="1">Column title</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTree</code></td>
+                <td rowspan="1" colspan="1">Node/-</td>
+                <td rowspan="1" colspan="1">Node</td>
+              
+</tr>
+            
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;38.25</a>:&nbsp;&nbsp;Components supported by 'Fetch geometry'</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> All kinds of <a href="sequences.html#sec_sequences" shape="rect">sequences</a>.</p>
+<p>
+<strong>Children:</strong> None</p>
+<p>
+<strong>Execution:</strong> 
+          The data of the target component is sent to the SUT. The
+          <code>TestEventQueue</code> determines the corresponding component,
+          retrieves its geometry and sends it back to QF-Test,
+          where the values are stored in global variables.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.69"></a><a name="figure_38.69"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_FetchGeometryStep.png" target="_blank"><img src="images/att_FetchGeometryStep.png" alt="Fetch geometry attributes" texscale=".66" width="393" height="430"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.69</a>:&nbsp;&nbsp;'Fetch geometry' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_FetchGeometryStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        The name of the SUT client process from which to query the data.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_FetchGeometryStep_component"></a>
+<dt>'QF-Test component ID'</dt>
+<dd>
+      
+<p>
+        The <a href="components.html#att_WindowStep_id" shape="rect">'QF-Test ID'</a> of the <a href="components.html#step_WindowStep" shape="rect">'Window'</a>,
+        <a href="components.html#step_ComponentStep" shape="rect">'Component'</a> or <a href="components.html#step_SubItemStep" shape="rect">'Item'</a> node that is to be
+        queried.
+      </p>
+      
+<p>
+    The "Select component" button
+    <img src="../icons/select_component.png" style="vertical-align: text-bottom" alt="[Select component]" title="Select component" width="20" height="20" texscale=".66">
+    brings up a dialog in which you can select the component
+    interactively. You can also get to this dialog by pressing
+    [Shift-Return] or
+    [Alt-Return], when the focus is in the
+    text field. As an alternative you can copy the target node with
+    [Ctrl-C] or
+    &raquo;<em>Edit</em>&laquo;-&raquo;<em>Copy</em>&laquo;
+    and insert its QF-Test component ID into the text field by pressing
+    [Ctrl-V].
+  </p>
+      
+<p>
+    This attribute supports a special format
+    for referencing components in other test suites
+    (see <a href="user_distributed.html#usec_suitereference">section 23.1</a>).
+    Furthermore, sub-elements of nodes can be addressed directly
+    without requiring separate nodes for them (see <a href="user_subitems.html#usec_subitems">section 5.9</a>). 
+    When using SmartIDs, you can address a GUI element
+    directly via its recognition criteria.
+    For more information, refer to <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a>
+    and <a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">'Component' nodes versus SmartID</a>.
+  </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_FetchGeometryStep_windowrelative"></a>
+<dt>'Location relative to window'</dt>
+<dd>
+            
+            
+<p>
+              This attribute determines whether the X and Y coordinate of a
+              component or sub-item is calculated relative to its parent
+              component or relative to its parent window. For windows there is
+              no difference.
+            </p>
+          
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_FetchGeometryStep_xvarname"></a>
+<dt>'Variable for x'</dt>
+<dd>
+            
+            
+<p>
+              The name of the global variable to which the X coordinate of the
+              window, component or sub-item is assigned (see <a href="user_variables.html#usec_variables">chapter 6</a>). If you are not interested in the X
+              coordinate, leave this value empty.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_FetchGeometryStep_yvarname"></a>
+<dt>'Variable for y'</dt>
+<dd>
+            
+            
+<p>
+              The name of the global variable to which the Y coordinate of the
+              window, component or sub-item is assigned (see <a href="user_variables.html#usec_variables">chapter 6</a>). If you are not interested in the Y
+              coordinate, leave this value empty.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_FetchGeometryStep_widthvarname"></a>
+<dt>'Variable for width'</dt>
+<dd>
+            
+            
+<p>
+              The name of the global variable to which the width of the
+              window, component or sub-item is assigned (see <a href="user_variables.html#usec_variables">chapter 6</a>). If you are not interested in the width,
+              leave this value empty.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_FetchGeometryStep_heightvarname"></a>
+<dt>'Variable for height'</dt>
+<dd>
+            
+            
+<p>
+              The name of the global variable to which the height of the
+              window, component or sub-item is assigned (see <a href="user_variables.html#usec_variables">chapter 6</a>). If you are not interested in the height,
+              leave this value empty.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_FetchGeometryStep_local"></a>
+<dt>'Local variable'</dt>
+<dd>
+      
+<p>
+        This flag determines whether to create local or global variable bindings. If unset, the
+        variables are bound in the global variables. If set, the topmost current binding for a
+        variable is replaced with the new value, provided this binding is within the context of
+        the currently executing <a href="procedures.html#step_Procedure" shape="rect">'Procedure'</a>, <a href="dependencies.html#step_Dependency" shape="rect">'Dependency'</a> or <a href="sequences.html#step_TestCase" shape="rect">'Test-case'</a> node. If no
+        such binding exists, a new binding is created in the currently executing 'Procedure',
+        'Dependency' or 'Test-case' node or, if there is no such node in the topmost node on the variables stack,
+	falling back to the global bindings if necessary. See
+        <a href="user_variables.html#usec_variables">chapter 6</a> for a detailed explanation of variable binding and lookup.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_FetchGeometryStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_FetchGeometryStep_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_FetchGeometryStep_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="checks.html#sec_checks"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 38.9&nbsp;Checks" title="Previous Chapter: 38.9&nbsp;Checks"></a></td><td class="navicon"><a href="miscnodes.html#sec_miscnodes"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 38.11&nbsp;Miscellaneous" title="Next Page: 38.11&nbsp;Miscellaneous"></a></td><td class="navicon"><a href="miscnodes.html#sec_miscnodes"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 38.11&nbsp;Miscellaneous" title="Next Chapter: 38.11&nbsp;Miscellaneous"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 38&nbsp;Elements of a test-suite" title="Chapter Overview: 38&nbsp;Elements of a test-suite"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

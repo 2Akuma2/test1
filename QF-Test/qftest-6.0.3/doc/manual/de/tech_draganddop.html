@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Drag&amp;Drop</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_draganddrop"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_timing.html#sec_timing"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 45.2&nbsp;Timing" title="N&auml;chste Seite: 45.2&nbsp;Timing"></a></td><td class="navicon"><a href="tech_timing.html#sec_timing"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 45.2&nbsp;Timing" title="N&auml;chstes Kapitel: 45.2&nbsp;Timing"></a></td><td class="navicon"><a href="tech_misc.html#tsec_miscellaneous"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 45&nbsp;Technische Details zu verschiedenen Themen" title="Kapitel-&Uuml;bersicht: 45&nbsp;Technische Details zu verschiedenen Themen"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_draganddrop">45.1</a></span>
+</div>
+<a href="contents.html#toc_sec_draganddrop">Drag&amp;Drop</a>
+</h4>
+        
+<p>
+          F&uuml;r Java war Drag&amp;Drop von Anfang an ein schwieriges Thema. In JDK&nbsp;1.1
+          gab es daf&uuml;r gar keine Unterst&uuml;tzung, in JDK&nbsp;1.2 erste, kaum brauchbare
+          Gehversuche und seit JDK&nbsp;1.3 eine relativ vollst&auml;ndige und portable
+          Implementierung, die allerdings bei manchen VMs f&uuml;r
+          Stabilit&auml;tsprobleme sorgt. Der Grund f&uuml;r diese Schwierigkeiten ist
+          zum einen in dem extrem unterschiedlichen Ansatz der verschiedenen
+          Betriebssysteme f&uuml;r die Implementierung von Drag&amp;Drop zu suchen, zum
+          anderen in dem Anspruch, nicht nur Drag&amp;Drop innerhalb von Java
+          Programmen zu unterst&uuml;tzen, sondern auch zwischen Java und dem
+          zugrundeliegenden System.
+        </p>
+        
+<p>
+          Die Konsequenz aus dieser Situation ist, dass Drag&amp;Drop in Java vollst&auml;ndig "native"
+          implementiert ist, d.h. auf der Ebene des Betriebssystems. Die zugeh&ouml;rigen Events sind
+          f&uuml;r QF-Test weder auswertbar, noch k&ouml;nnen sie von QF-Test mit Java-Mitteln generiert werden.
+          Daher kann Drag&amp;Drop nicht direkt abgespielt werden.
+        </p>
+        
+<p>
+          Dennoch bietet QF-Test f&uuml;r JDK&nbsp;1.3 und h&ouml;her Unterst&uuml;tzung f&uuml;r Drag&amp;Drop. Die direkte Aufnahme
+          von Drag&amp;Drop wird ab JDK&nbsp;1.4 unterst&uuml;tzt. Zur Wiedergabe dienen die
+          <a href="events.html#step_MouseEventStep" shape="rect">'Mausevents'</a> <code>DRAG_FROM</code> und <code>DROP_TO</code>, sowie das
+          optionalen <code>DRAG_OVER</code>. Beim Abspielen setzt QF-Test den sogenannten AWT Robot
+          ein, der es erm&ouml;glicht, "harte" Events auf Betriebssystemebene zu generieren und der
+          erst ab JDK&nbsp;1.3 zu Java geh&ouml;rt. Diese "harten" Events bewegen den Mauszeiger
+          tats&auml;chlich &uuml;ber den Bildschirm und l&ouml;sen so die n&ouml;tigen Events f&uuml;r eine Drag&amp;Drop Operation
+          aus.
+        </p>
+        
+<p>
+          Auch die Simulation von Drag&amp;Drop bei gedr&uuml;ckter [Shift] oder
+          [Strg] Taste ist m&ouml;glich. &Auml;ndern Sie hierzu die
+          <a href="events.html#att_MouseEventStep_modifiers" shape="rect">'Modifiers'</a> Attribute der <code>DRAG_FROM</code>,
+          <code>DRAG_OVER</code> und <code>DRAG_TO</code> 'Mausevents' und f&uuml;gen Sie den
+          Shift oder Strg modifier hinzu. F&uuml;r Strg m&uuml;ssen Sie z.B. 2 zum aktuellen Wert
+          addieren. Es ist sogar m&ouml;glich, das Dr&uuml;cken oder Loslassen der [Shift] oder [Strg] Tasten w&auml;hrend der Drag Operation zu
+          simulieren, indem Sie nur die Modifier eines Teils der Events &auml;ndern.
+        </p>
+        
+<p>
+          Wie erw&auml;hnt war Drag&amp;Drop anfangs auf manchen Systemen nicht gerade stabil. Mit &auml;lteren
+          JDKs konnte es vorkommen, dass der Einsatz des AWT Robot zum Simulieren von Drag&amp;Drop
+          das SUT zum Absturz bringt, oder im Extremfall sogar das gesamte System lahm legt.
+          Inzwischen ist die Situation deutlich besser. Durch die Einf&uuml;hrung der Interpolation von
+          Mausbewegungen konnte die Zuverl&auml;ssigkeit der Drag&amp;Drop Wiedergabe deutlich verbessert
+          werden. N&auml;heres hierzu finden Sie in <a href="opt_play.html#sec_opt_robot">Abschnitt 37.3.5.1</a>.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span> Unter Windows kann es zu allem &Uuml;berfluss
+          auch zu Konflikten mit dem Maustreiber kommen. Sollte es Probleme mit
+          Drag&amp;Drop geben, reduzieren Sie in den Mauseinstellungen der
+          Systemsteuerung die Geschwindigkeit des Mauszeigers auf 50%.
+        </p>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_timing.html#sec_timing"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 45.2&nbsp;Timing" title="N&auml;chste Seite: 45.2&nbsp;Timing"></a></td><td class="navicon"><a href="tech_timing.html#sec_timing"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 45.2&nbsp;Timing" title="N&auml;chstes Kapitel: 45.2&nbsp;Timing"></a></td><td class="navicon"><a href="tech_misc.html#tsec_miscellaneous"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 45&nbsp;Technische Details zu verschiedenen Themen" title="Kapitel-&Uuml;bersicht: 45&nbsp;Technische Details zu verschiedenen Themen"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

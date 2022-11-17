@@ -1,0 +1,1136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>The user interface</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_gui"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_installation.html#usec_installation"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 1&nbsp;Installation and startup" title="Previous Chapter: 1&nbsp;Installation and startup"></a></td><td class="navicon"><a href="user_quickstart.html#usec_quickstart"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 3&nbsp;Quickstart your application" title="Next Page: 3&nbsp;Quickstart your application"></a></td><td class="navicon"><a href="user_quickstart.html#usec_quickstart"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 3&nbsp;Quickstart your application" title="Next Chapter: 3&nbsp;Quickstart your application"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;User manual" title="Chapter Overview: I&nbsp;User manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_gui">2</a></span>
+</div>
+<a href="contents.html#toc_usec_gui">The user interface</a>
+</h3>
+    
+<p>
+      This chapter explains the structure of QF-Test's main window.
+      When you are done reading, it might be a good
+      idea to run QF-Test and try things out. In the &raquo;<em>Help</em>&laquo; menu there is an entry labeled &raquo;<em>Tutorial</em>&laquo;
+      that should bring up your web browser with a hands-on, learning-by-doing
+      tutorial. Should this fail because QF-Test cannot determine your system's standard browser, the
+      tutorial can be found in the directory
+      <code>qftest-6.0.3/doc/tutorial</code>, where a PDF version
+      is also available.
+    </p>
+    
+<p>
+      
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+      The first part of the video <a href="https://www.qfs.de/en/yt/main-window-sut-40.html" class="videolink" target="_blank">'Main window
+      and the System under Test'</a> shows the structure of the QF-Test main window.
+    </p>
+
+    
+
+    
+<a name="usec_gui_suite"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_gui_suite">2.1</a></span>
+</div>
+<a href="contents.html#toc_usec_gui_suite">The test-suite</a>
+</h4>
+      
+<p>
+        Automating a GUI test basically requires two things: control structure
+        and data. The control structure defines what to do and when to do
+        it. The data for a test consists of information about the SUT's GUI
+        components, the events that will be triggered and the expected
+        results.
+      </p>
+      
+<p>
+        QF-Test combines all of these into one data structure, a tree hierarchy
+        that we call a
+
+        <a name="idx_N67158"></a><em>test-suite</em>.
+
+        The elements of the tree are called
+
+        <a name="idx_N67166"></a><em>nodes</em>.
+
+        Nodes can contain
+
+        <a name="idx_N67174"></a><em>child nodes</em>
+
+        (often just called <em>children</em>) and are themselves
+        contained in a
+
+        <a name="idx_N67185"></a><em>parent node</em>
+
+        (or just <em>parent</em>). The
+
+        <a name="idx_N67196"></a><em>root node</em>
+
+        of the tree represents the test-suite as a whole.
+      </p>
+      
+<p>
+        There are more than 60 different kinds of nodes all of which are
+        explained in detail in the <a href="nodes.html#sec_suite" shape="rect">reference manual</a>.
+        Some nodes are used as containers for data while others control the
+        execution of a test. All of them have their own unique set of
+        attributes.
+      </p>
+      
+<p>
+        The attributes of the currently selected node are displayed to the
+        right of the tree in a detail view which can be toggled on and off via
+        the
+        &raquo;<em>View</em>&laquo;-&raquo;<em>Details</em>&laquo;
+        menu item.
+      </p>
+      
+<a name="figure_2.1"></a><a name="figure_2.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/TestSuite.png" target="_blank"><img src="images/TestSuite.png" alt="Structure of a test-suite" width="986" height="872" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;2.1</a>:&nbsp;&nbsp;Structure of a test-suite</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        The image above shows an example for a simple test-suite. The
+        attributes of the node named "Simple test" can be edited in the detail
+        view to the right.
+      </p>
+      
+<p>
+        The basic structure of a test-suite and thus the child nodes of the <a href="rootnode.html#step_RootStep" shape="rect">'Test-suite'</a> root
+        node is fixed. An arbitrary number of <a href="sequences.html#step_TestSet" shape="rect">'Test-set'</a> and <a href="sequences.html#step_TestCase" shape="rect">'Test-case'</a> with or without
+        <a href="dependencies.html#step_Dependency" shape="rect">'Dependency'</a> nodes are
+        followed by the <a href="procedures.html#step_PackageRoot" shape="rect">'Procedures'</a>, <a href="sequences.html#step_ExtraSequence" shape="rect">'Extras'</a> and <a href="components.html#step_WindowList" shape="rect">'Windows and components'</a> nodes. The
+        'Procedures' node holds <a href="procedures.html#step_Package" shape="rect">'Packages'</a> and <a href="procedures.html#step_Procedure" shape="rect">'Procedures'</a> which are explained further
+        in <a href="user_organization.html#usec_procedures">section 8.5</a>. The 'Extras' node is a kind of playground or
+        clipboard where all kinds of nodes can be added for experimentation or temporary storage.
+        The windows and components of the SUT's user interface are represented as
+        <a href="components.html#step_WindowStep" shape="rect">'Window'</a> and <a href="components.html#step_ComponentStep" shape="rect">'Component'</a> nodes which are located below the 'Windows and components'
+        node.
+      </p>
+      
+<p>
+        To get detailed information about a node or one of its attributes,
+        click on it with the right mouse button and select &raquo;<em>What's&nbsp;this?</em>&laquo; from the context menu. This will bring up
+        a browser displaying the corresponding section of the reference
+        manual.
+      </p>
+    
+
+    
+    
+
+    
+<a name="usec_gui_editing"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_gui_editing">2.2</a></span>
+</div>
+<a href="contents.html#toc_usec_gui_editing">Basic editing</a>
+</h4>
+      
+<p>
+        Editing a test-suite falls into two categories: operations like
+        Cut/Copy/Paste on the tree's nodes and changing the attributes of a
+        node. The latter can be done either by editing the fields in the
+        detail view and selecting <em>OK</em> or pressing [Return], or by bringing up a dialog for the selected node with
+        &raquo;<em>Edit</em>&laquo;-&raquo;<em>Properties</em>&laquo; or [Alt-Return] and changing the values there. If you
+        change some values in the detail view and forget to press <em>OK</em>
+        before moving the selection to another node, QF-Test will pop up a dialog
+        with the changed values, asking you to either confirm your changes or
+        discard them.  This feature can be turned off with the option
+        <a href="opt_general.html#opt_askaccept">Ask before implicitly accepting detail modifications</a>.
+     </p>
+      
+<p>
+        Some non-obvious key-bindings may come in handy when editing
+        multi-line text attribute: [Ctrl-TAB] and [Shift-Ctrl-TAB] move the focus out of the text field, while
+        [Ctrl-Return] is a shortcut to
+        select the <em>OK</em> button.
+      </p>
+      
+<p>
+        An extremely useful feature is the &raquo;<em>Edit</em>&laquo;-&raquo;<em>Undo</em>&laquo; function ([Ctrl-Z]) which will take back any kind of change
+        made to the test-suite, including recordings or use of the replace
+        dialog. Changes are undone step by step. If you find you went too far
+        and undid more than you wanted, you can use &raquo;<em>Edit</em>&laquo;-&raquo;<em>Redo</em>&laquo;
+        ([Ctrl-Y]) to undo the undone.
+        The number of steps that can taken back are limited only by available
+        memory and can be configured with the option <a href="opt_general.html#opt_undolimit">Number of undo levels per suite</a> (default 30).
+      </p>
+
+      
+
+      
+<a name="sec_N67412"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N67412">2.2.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N67412">Navigating the tree</a>
+</h5>
+        
+<p>
+          Though the key-bindings for tree navigation are similar to those of
+          most tree components, it won't hurt to mention them here. Besides,
+          QF-Test comes with a few non-standard bindings that may come in
+          handy.
+        </p>
+        
+<p>
+          The cursor keys are used for basic navigation. [Up] and [Down] are
+          obvious. [Right] either expands a closed node
+          or moves down one row while [Left] closes an
+          open node or moves to its parent.
+        </p>
+        
+<p>
+          QF-Test's trees support a special variant of
+          multi-selection. Multiple discontinuous regions can be selected, but
+          only among siblings, i.e. children of the same node. If
+          multi-selection across the whole tree were allowed, cutting and
+          pasting nodes would become a real brain-teaser. Keys to try are
+          [Shift-Up] and [Shift-Down] to extend the selection,
+          [Ctrl-Up] and [Ctrl-Down] to move without affecting the
+          selection and [Space] to toggle the selection
+          of the current node. Similarly, mouse-clicks with [Shift] extend the selection while clicks with [Ctrl] toggle the selection of the node being clicked on.
+        </p>
+        
+<p>
+          Special bindings include [Alt-Right] and [Alt-Left] which
+          recursively expand or collapse a node and all of its children.
+          [Alt-Down] and [Alt-Up] can be used to move to the next or
+          previous sibling of a node, skipping the intermediate child nodes.
+        </p>
+        
+<p>
+          QF-Test keeps a history of recently visited nodes. [Ctrl-Backspace] will take you back to the
+          previously selected node. Also worthy of note are [Ctrl-Right] and [Ctrl-Left] which will scroll the tree to the
+          right or left if it doesn't fit its frame.
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_insert"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_insert">2.2.2</a></span>
+</div>
+<a href="contents.html#toc_usec_insert">Insertion marker</a>
+</h5>
+        
+<p>
+          When inserting a new node or pasting in a copy of some other nodes,
+          the insertion marker shows the place where the nodes will end up.
+        </p>
+        
+<a name="fig_insertmark"></a><a name="figure_2.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/insertmark.png" target="_blank"><img src="images/insertmark.png" alt="Insertion marker" width="268" height="98" texscale="1"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;2.2</a>:&nbsp;&nbsp;Insertion marker</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Nodes are always inserted after the selected node. If the selected
+          node is expanded, the new node is inserted as the first child of the
+          selected node, otherwise it becomes a sibling of same. This
+          behavior will take a little to get used to, especially for
+          long-time users of the Windows explorer. However, there is no other
+          way to insert a node at a definite position.  In the example shown
+          in <a href="#fig_insertmark">figure&nbsp;2.2</a> above, a new node would be
+          inserted as the first child of the sequence called "Events", just
+          before the <a href="events.html#step_MouseEventStep" shape="rect">'Mouse event'</a>.
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_copy_paste"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_copy_paste">2.2.3</a></span>
+</div>
+<a href="contents.html#toc_usec_copy_paste">Moving nodes</a>
+</h5>
+        
+<p>
+          Nodes can be copied and pasted or moved around within a test-suite or to another suite.
+          The standard keyboard shortcuts for cut, copy and paste, [Ctrl-X], [Ctrl-C] and [Ctrl-V] are available as well as entries in the context menu.
+        </p>
+        
+<p>
+          
+<span class="margin"><a name="new_N67568"></a><span class="note">2.0+</span></span>
+          Alternatively, nodes can be moved using standard Drag&amp;Drop operations. The default
+          operation will move the selected node(s). If the [CTRL] key is
+          held down during the drop, the nodes are copied instead.
+        </p>
+        
+<p>
+          While dragging the mouse over the tree of a test-suite, the insertion marker shows
+          where the nodes will be dropped when the mouse button is released and whether the
+          operation is allowed. A green marker signals a legal operation, a red marker an
+          illegal one. Nothing will happen if the nodes are dropped on an illegal target
+          position.
+        </p>
+        
+<p>
+          During the drag you can expand or collapse nodes by dragging the mouse cursor over the
+          expansion toggle and keeping it there for a moment. That way you can easily navigate
+          to the desired target location without interrupting and restarting the drag.
+        </p>
+        
+<p>
+          The Drag&amp;Drop operation can be aborted at any time by pressing [Esc].
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_transform_nodes"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_transform_nodes">2.2.4</a></span>
+</div>
+<a href="contents.html#toc_usec_transform_nodes">Transforming nodes</a>
+</h5>
+        
+<p>
+          Some nodes can be transformed into different node types, which is a lot more convenient
+          than first creating the desired target node and then copying over the required
+          attributes. Examples of interchangeable nodes are <a href="sequences.html#step_BasicSequence" shape="rect">'Sequence'</a> and <a href="sequences.html#step_TestStep" shape="rect">'Test-step'</a> or
+          <a href="control.html#step_ServerScriptStep" shape="rect">'Server script'</a> and <a href="control.html#step_ClientScriptStep" shape="rect">'SUT script'</a>. The transformation of a node is
+          possible only if its childnodes and its current position in the tree are also valid for
+          the desired target node. The potential transformation targets can be selected from the
+          entry &raquo;<em>Transform node into</em>&laquo; in the context menu. If the entry is
+          not available there are no valid target nodes. In that case, moving the node to the
+          <a href="sequences.html#step_ExtraSequence" shape="rect">'Extras'</a> node first may help.
+        </p>
+        
+<p>
+          You can find more details about the conversion mechanism under
+          <a href="tech_transformdetails.html#sec_transformdetails">Details about transforming nodes</a>.
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_tables"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_tables">2.2.5</a></span>
+</div>
+<a href="contents.html#toc_usec_tables">Tables</a>
+</h5>
+        
+<p>
+          In various places QF-Test employs tables to view and edit a set of
+          values, e.g. when defining <a href="user_variables.html#usec_variables" shape="rect">variables</a> or
+          for <a href="checks.html#sec_checks" shape="rect">checks</a> of multiple elements.
+        </p>
+        
+<a name="expl_table"></a><a name="figure_2.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/tableedit.png" target="_blank"><img src="images/tableedit.png" alt="Example table" width="540" height="130" texscale="1"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;2.3</a>:&nbsp;&nbsp;Example table</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          The buttons above the tables have the following keyboard shortcuts
+          and effects:
+        </p>
+        
+<table class="indent" cellspacing="0" texwidth="\linewidth">
+          
+<tr>
+            
+<td class="top" texalign="l" rowspan="1" colspan="1">
+              <img src="../icons/row_new.png" alt="Insert row" width="20" height="20" texscale="1">
+            </td>
+            <td texalign="l" rowspan="1" colspan="1">&nbsp;</td>
+            <td class="top" rowspan="1" colspan="1">
+              [Shift-Insert]<br>
+              Insert a new row.
+            </td>
+          
+</tr>
+
+          
+<tr>
+            
+<td class="top" texalign="l" rowspan="1" colspan="1">
+              <img src="../icons/row_edit.png" alt="Edit row" width="20" height="20" texscale="1">
+            </td>
+            <td texalign="l" rowspan="1" colspan="1">&nbsp;</td>
+            <td class="top" rowspan="1" colspan="1">
+              [Shift-Return],
+              [Alt-Return]<br>
+              Edit a row. Opens a dialog with fields for every cell of the selected row.
+            </td>
+          
+</tr>
+
+          
+<tr>
+            
+<td class="top" rowspan="1" colspan="1">
+              <img src="../icons/row_delete.png" alt="Delete row" width="20" height="20" texscale="1">
+            </td>
+            <td rowspan="1" colspan="1">&nbsp;</td>
+            <td class="top" rowspan="1" colspan="1">
+              [Shift-Delete]<br>
+              Delete the selected row.
+            </td>
+          
+</tr>
+
+          
+<tr>
+            
+<td class="top" rowspan="1" colspan="1">
+              <img src="../icons/row_up.png" alt="Move row up" width="20" height="20" texscale="1">
+            </td>
+            <td rowspan="1" colspan="1">&nbsp;</td>
+            <td class="top" rowspan="1" colspan="1">
+              [Shift-Ctrl-Up]<br>
+              Move the selected row up by one.
+            </td>
+          
+</tr>
+
+          
+<tr>
+            
+<td class="top" rowspan="1" colspan="1">
+              <img src="../icons/row_down.png" alt="Move row down" width="20" height="20" texscale="1">
+            </td>
+            <td rowspan="1" colspan="1">&nbsp;</td>
+            <td class="top" rowspan="1" colspan="1">
+              [Shift-Ctrl-Down]<br>
+              Move the selected row down by one.
+            </td>
+          
+</tr>
+        
+</table>
+        
+<p>
+          Some tables also offer the ability to add and remove columns and edit the column title.
+          For these, the following additional buttons are available:
+        </p>
+        
+<table class="indent" cellspacing="0" texwidth="\linewidth">
+          
+<tr>
+            
+<td class="top" texalign="l" rowspan="1" colspan="1">
+              <img src="../icons/column_new.png" alt="Insert column" width="20" height="20" texscale="1">
+            </td>
+            <td texalign="l" rowspan="1" colspan="1">&nbsp;</td>
+            <td class="top" rowspan="1" colspan="1">
+              Insert a new column.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td class="top" texalign="l" rowspan="1" colspan="1">
+              <img src="../icons/column_delete.png" alt="Delete column" width="20" height="20" texscale="1">
+            </td>
+            <td texalign="l" rowspan="1" colspan="1">&nbsp;</td>
+            <td class="top" rowspan="1" colspan="1">
+              Delete the selected column.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td class="top" texalign="l" rowspan="1" colspan="1">
+              <img src="../icons/column_edit.png" alt="Edit column title" width="20" height="20" texscale="1">
+            </td>
+            <td texalign="l" rowspan="1" colspan="1">&nbsp;</td>
+            <td class="top" rowspan="1" colspan="1">
+              Edit the title of the selected column.
+            </td>
+          
+</tr>
+        
+</table>
+        
+<p>
+          To enter a value directly into the selected cell just start
+          typing. This way you overwrite the current value of the cell. To edit
+          the current value, either double click the cell or press
+          [F2]. To finish editing press [Return], to cancel and restore the old value press
+          [Escape].  If you try to enter an invalid value
+          the cell's border will turn red and you can't accept the value.
+        </p>
+        
+<p>
+          Multi-selection of table rows is supported via mouse-clicks with
+          [Shift/Ctrl] and [Shift/Ctrl-Up/Down]. Cut copy and paste of the
+          selected rows is done with [Ctrl-X/C/V]. Pasting is restricted to tables with a similar column
+          structure.
+        </p>
+        
+<p>
+          In the table's context menu additional actions might be available,
+          e.g. show line numbers, locate component, etc.
+        </p>
+        
+<p>
+          A mouse click in a column header will activate sorting of table rows.
+          A double-click in a column header will resize the column to fit the
+          largest value in the column or opens the editor for the header text (data table).
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_basicEditPack"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_basicEditPack">2.2.6</a></span>
+</div>
+<a href="contents.html#toc_usec_basicEditPack">Packing and Unpacking</a>
+</h5>
+
+        
+
+        
+        
+        
+<p>
+          During test development it is often necessary to move several nodes into a new parent
+          node. A typical situation could be the re-factoring of procedures to re-organize them in
+          packages or to wrap a workflow into a 'Try'/'Catch' block.
+        </p>
+        
+<p>
+          For such requirements QF-Test allows the user to pack nodes into others. This can be
+          achieved by selecting the nodes to pack, right-clicking and selecting
+          &raquo;<em>Pack nodes</em>&laquo; and the desired parent node.
+        </p>
+        
+<p>
+          QF-Test also allows the user to unpack such nodes and remove their parent. This can be
+          used to remove unnecessary packages or test-sets from the structure or to dispense with
+          sequences or 'Try'/'Catch' blocks that are no longer required. For unpacking
+          right-click the node to unpack and select &raquo;<em>Unpack nodes</em>&laquo;.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Note</span></span> The packing and unpacking actions are only shown in the menu if the desired
+          target structure is legal.
+        </p>
+      
+        
+
+        
+      
+      
+      
+      
+      
+
+      
+<a name="usec_basicEditSort"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_basicEditSort">2.2.7</a></span>
+</div>
+<a href="contents.html#toc_usec_basicEditSort">Sorting Nodes</a>
+</h5>
+        
+<p>
+          QF-Test allows sorting nodes. This can be achieved by clicking at a node with the right mouse button and selecting
+          &raquo;<em>Sort child nodes</em>&laquo;. Alternatively you can also select multiple nodes, perform a right mouse click and
+          then choose &raquo;<em>Sort nodes</em>&laquo;, which will sort the current
+          selected nodes.
+        </p>
+        
+<p>
+          To guarantee a better overview the sorting algorithm puts ciphers prior to capital letter and those prior to small letters.
+          Sorting doesn't modify the base structure of QF-Test nodes. It also follows the rule to keep 'Package' nodes always prior to 'Dependency'
+          nodes and those always prior to 'Procedure' nodes.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Note</span></span> The base structure of a test-suite will not be altered during sorting.
+          You can sort test-cases or procedures but the 'Procedures' node will always stay prior to the 'Windows and components' node.
+        </p>
+      
+
+      
+
+    
+
+    
+    
+
+    
+<a name="usec_gui_advanced_editing"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_gui_advanced_editing">2.3</a></span>
+</div>
+<a href="contents.html#toc_usec_gui_advanced_editing">Advanced editing</a>
+</h4>
+      
+<p>
+        This section explains how to use the more advanced editing
+        techniques such as search/replace and multiple views on the same
+        test-suite.
+      </p>
+
+      
+
+      
+<a name="usec_searching"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_searching">2.3.1</a></span>
+</div>
+<a href="contents.html#toc_usec_searching">Searching</a>
+</h5>
+        
+<p>
+          QF-Test provides two kinds of search operations, a general search through all nodes and
+          attributes of a test-suite or run-log and in incremental search through the contents of
+          a text area, including script terminals or program output.
+        </p>
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+<a name="usec_gensearch"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_gensearch">2.3.1.1</a></span>
+</div>
+<a href="contents.html#toc_usec_gensearch">General search</a>
+</h5>
+          
+<p>
+            Though search and replace operations in QF-Test have much in
+            common, there are significant differences, especially in the scope of the
+            operation. Searching normally starts at the selected node and
+            traverses the whole tree depth-first to the end. After asking for
+            confirmation the search continues from the root of the tree to the
+            original start of the search so each node is traversed exactly once.
+            This is not unlike search operations in common text processors and
+            should be intuitive to use.
+          </p>
+          
+<a name="parameter_search_text"></a>
+<p id="parameter_search_text">
+            By default QF-Test shows the search dialog in 'simple' mode, which allows
+            searching for any appearance of a given text.
+          </p>
+          
+<a name="figure_2.4"></a><a name="figure_2.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/dlg_Search.png" target="_blank"><img src="images/dlg_Search.png" alt="The simple search dialog" width="322" height="266" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;2.4</a>:&nbsp;&nbsp;The simple search dialog</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            For a more specific search QF-Test allows limiting the search to specific
+            attributes, node types or specific states of nodes. Therefore you have
+            to switch to the 'advanced' mode by clicking the 'Switch mode'
+            button in the toolbar of the search dialog.
+          </p>
+          
+<a name="figure_2.5"></a><a name="figure_2.5"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/dlg_SearchAdvanced.png" target="_blank"><img src="images/dlg_SearchAdvanced.png" alt="The advanced search dialog" width="697" height="640" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;2.5</a>:&nbsp;&nbsp;The advanced search dialog</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            By default QF-Test will search all attributes in all kinds of nodes for the requested
+            string.
+          </p>
+          
+<a name="parameter_search_attribute"></a>
+<p id="parameter_search_attribute">
+            Use the "In attribute" option to limit the search to a
+            specific attribute.
+          </p>
+          
+<a name="parameter_search_nodetype"></a>
+<p id="parameter_search_nodetype">
+            The "Node type" option allows to limit the search to nodes of
+            a specific kind.
+          </p>
+          
+<a name="parameter_search_range"></a>
+<p id="parameter_search_range">
+            The option "Scope of search operation" tells QF-Test where to search
+            for the given expression, below the selected node(s), in the current test-suite or in
+            all currently opened suites.
+          </p>
+          
+<a name="parameter_search_nodestates"></a>
+<p id="parameter_search_nodestates">
+            Activating options in "Only nodes with the following states"
+            limits the search to nodes that have all of the activated states, e.g. a
+            green mark and a breakpoint.
+          </p>
+          
+<a name="parameter_search_whole"></a>
+<p id="parameter_search_whole">
+            If "Match whole attribute" is selected, a
+            search for the word "tree", for example, will not match an attribute
+            value of "treeNode".
+          </p>
+          
+<a name="parameter_search_regexp"></a>
+<p id="parameter_search_regexp">
+            Regular expressions are explained in <a href="tech_regexp.html#sec_regexp">section 45.3</a>.
+          </p>
+          
+<p>
+            
+<span class="margin"><span class="note">Note</span></span> To search for values of boolean attributes
+            like <a href="events.html#att_MouseEventStep_hardevent" shape="rect">'Replay as "hard" event'</a>, use "true" or "false" (no quotes). If you
+            want to search for an empty value you have to check
+            "Match whole attribute".
+          </p>
+          
+<p>
+            If the search is successful, the resultant node is selected and a
+            message in the status line displays the name of the attribute that
+            contains the value.
+          </p>
+          
+<p>
+<span class="margin"><a name="new_N68240"></a><span class="note">3.4+</span></span>As already mentioned the searching
+            process usually starts from the currently selected node.
+            In case you want to select other nodes during your search process
+            you can continue the previous search by
+            using the "Search continue" button.
+          </p>
+          
+<p>
+            Once you have closed the search dialog you can still continue the
+            search pressing [F3]. You can even trigger
+            the same search from a new node pressing [Ctrl-G].
+          </p>
+          
+<p>
+            A very useful feature is the ability to quickly locate all 'Procedure call' nodes that
+            call a given 'Procedure' or all event nodes that refer to a given 'Component' node,
+            etc. Simply select the entry &raquo;<em>Locate references...</em>&laquo; from the context
+            menu of a node that can be called or referred to. This will show
+            a new frame showing all available references of it. You can reach the node
+            in the test-suite via a double click at the row in the list.
+          </p>
+          
+<a name="figure_2.6"></a><a name="figure_2.6"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/dlg_StepReferences.png" target="_blank"><img src="images/dlg_StepReferences.png" alt="References list" width="600" height="500" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;2.6</a>:&nbsp;&nbsp;Result list for 'Locate references'</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+<span class="margin"><a name="new_N68283"></a><span class="note">3.1+</span></span>It is also possible to get a list of
+            all found nodes via pressing the "Show result list" button in the
+            search dialog. From this dialog you can then reach any single node
+            in your test-suite.
+          </p>
+        
+
+        
+        
+
+        
+<a name="usec_incsearch"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_incsearch">2.3.1.2</a></span>
+</div>
+<a href="contents.html#toc_usec_incsearch">Incremental text search</a>
+</h5>
+          
+<p>
+            
+<span class="margin"><a name="new_N68301"></a><span class="note">3.1+</span></span>
+            In addition to searching the tree, components containing text like terminal areas or
+            respective attributes in the details view can be searched independently by use of
+            QF-Test's incremental search feature. This feature can be invoked either by selecting
+            &raquo;<em>Search...</em>&laquo; from the component's context menu or by pressing
+            [Ctrl-F] when the component is selected and owns the
+            keyboard focus. Then the incremental search popup dialog appears at the upper right
+            corner of the respective component. The figure below shows an incremental search for
+            the terminal with highlighted search hits.
+          </p>
+          
+<a name="figure_2.7"></a><a name="figure_2.7"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/Incsearch.png" target="_blank"><img src="images/Incsearch.png" alt="The incremantal search" width="872" height="627" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;2.7</a>:&nbsp;&nbsp;Incremental search</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            The search can be limited to a certain part of the contained text by selecting the
+            region to be searched and invoking &raquo;<em>Search in selection...</em>&laquo; from
+            the component's context menu or pressing [Ctrl-Shift-F].
+          </p>
+          
+<p>
+            Beside this, the way the incremental search works as well as the available options
+            should be self-explanatory.
+          </p>
+        
+
+        
+
+      
+
+      
+      
+      
+      
+      
+<a name="usec_replace"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_replace">2.3.2</a></span>
+</div>
+<a href="contents.html#toc_usec_replace">Replacing</a>
+</h5>
+        
+<a name="parameter_search_replace"></a>
+<p id="parameter_search_replace">
+          Once you understand how the scope of the replace operation differs
+          from searching, the replace dialog should be just as intuitive to
+          use as the search dialog. When the replace operation is in progress,
+          you have a choice of replacing one match at a time or all matches at
+          once. To avoid unexpected results when selecting the latter, there
+          needs to be a way to limit the nodes that will possibly be affected.
+          To that end, replace operations can be limited to the currently
+          selected nodes and their direct or indirect child nodes. For a
+          replace operation that covers the whole tree, either select the root
+          node or choose the respective "Scope of replace operation" option in the
+          dialog.
+        </p>
+        
+<a name="figure_2.8"></a><a name="figure_2.8"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/dlg_Replace.png" target="_blank"><img src="images/dlg_Replace.png" alt="The replace dialog" width="697" height="686" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;2.8</a>:&nbsp;&nbsp;The replace dialog</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          The options are identical to the ones for searching. When "Match
+          whole attribute" is turned off, multiple replacements within one
+          attribute are possible. When replacing "a" with "b" for example,
+          "banana" would change to "bbnbnb". Be sure to read <a href="tech_regexp.html#sec_regexp">section 45.3</a> about how to use regular expressions for
+          replacing.
+        </p>
+        
+<p>
+          If the search is successful, the resultant node is selected and a
+          confirmation dialog is brought up that shows the target attribute
+          and its value before and after the change.
+        </p>
+        
+<a name="figure_2.9"></a><a name="figure_2.9"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/dlg_ReplaceQuery.png" target="_blank"><img src="images/dlg_ReplaceQuery.png" alt="The replace query dialog" width="382" height="233" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;2.9</a>:&nbsp;&nbsp;The replace query dialog</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          It offers the following choices:
+        </p>
+        
+<ul>
+          
+<li>
+            When <em>Replace</em> is selected, the attribute's value is
+            changed and the search carries on, showing the query again for the
+            next match.
+          </li>
+          
+<li>
+            
+<em>Replace all</em> means change this value and all the rest of
+            the matches in one go without asking again.
+          </li>
+          
+<li>
+            
+<em>Skip</em> leaves this attribute unchanged. The search
+            continues and the query dialog is shown again in case of another
+            match.
+          </li>
+          
+<li>
+            Obviously <em>Cancel</em> ends the replace operation.
+          </li>
+        
+</ul>
+        
+<p>
+          If you know what to expect you can skip the query entirely by
+          selecting <em>Replace all</em> in the replace dialog. After the
+          attributes have been changed, the number of affected nodes is shown
+          in a message dialog.
+        </p>
+        
+<p>
+<span class="margin"><a name="new_N68439"></a><span class="note">3.1+</span></span>After performing the actual replacement
+          QF-Test will show a list of all touched nodes. You can also open a list
+          of all nodes, which will be touched before the actual replacement
+          pressing the "Show result list" button in the
+          replace dialog.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Note</span></span> Whether values are replaced one by one or all
+          at once also affects the way the undo function will take these
+          changes back. All changes of a <em>Replace all</em> operation are
+          taken back in one step, while single changes are undone one at a
+          time.
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_tunesearch"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_tunesearch">2.3.3</a></span>
+</div>
+<a href="contents.html#toc_usec_tunesearch">Complex searches and replace operations</a>
+</h5>
+        
+<p>
+          
+<span class="margin"><a name="new_N68465"></a><span class="note">3.3+</span></span>
+
+          Sometimes a simple search is not enough. Imagine, for example, that you want to set a
+          'Timeout' of 3000 milliseconds for all text checks on a certain component. You know
+          the component's 'QF-Test ID', but if you search for that 'QF-Test ID' you will also find events
+          and other kinds of checks referencing it. And if you search for the node text 'Check
+          text' you will find all 'Check text' nodes, not just those for the given component.
+        </p>
+        
+<p>
+          Instead of providing several combinable levels of search criteria QF-Test offers complete
+          flexibility through its marks. First perform a search for your first criterion, e.g. the
+          node text and select 'Show result list'. In the resulting dialog select all entries in
+          the table by pressing [Ctrl-A], press 'Set mark' to
+          assign the blue mark to all result nodes and close the dialog. You can now perform a
+          second search or a replacement with the scope limited to nodes with a given mark. In our
+          example you would perform a replacement of the empty string with '3000' on all
+          'Timeout' attributes with the search scope set the all nodes with the blue mark in
+          the whole tree.
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_N68496"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N68496">2.3.4</a></span>
+</div>
+<a href="contents.html#toc_sec_N68496">Multiple views</a>
+</h5>
+        
+<p>
+          It is possible to open multiple views that show different parts of
+          the same tree structure simultaneously. This can be useful when
+          managing large test-suites or to compare the attributes of different
+          nodes.
+        </p>
+        
+<p>
+          Additional views are opened via the &raquo;<em>View</em>&laquo;-&raquo;<em>New&nbsp;window...</em>&laquo; menu
+          item. The current node will be the root node for the new view.
+          Additional views are similar to the primary views, but with a
+          limited range of menus.
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_N68520"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N68520">2.3.5</a></span>
+</div>
+<a href="contents.html#toc_sec_N68520">Hiding toolbar buttons</a>
+</h5>
+        
+<p>
+          You can reduce the number of buttons shown in the toolbar by right-clicking
+          the button you want to hide and selecting &raquo;<em>Hide toolbar button</em>&laquo;
+          from the popup menu.
+        </p>
+        
+<p>
+          In order to restore the original toolbar right-click it somewhere and select
+          &raquo;<em>Show all tooolbar buttons</em>&laquo;.
+          In case you hid all toolbar buttons, please select &raquo;<em>View</em>&laquo;-&raquo;<em>Show toolbar</em>&laquo;.
+        </p>
+      
+
+      
+  
+    
+  
+  
+  
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_installation.html#usec_installation"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 1&nbsp;Installation and startup" title="Previous Chapter: 1&nbsp;Installation and startup"></a></td><td class="navicon"><a href="user_quickstart.html#usec_quickstart"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 3&nbsp;Quickstart your application" title="Next Page: 3&nbsp;Quickstart your application"></a></td><td class="navicon"><a href="user_quickstart.html#usec_quickstart"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 3&nbsp;Quickstart your application" title="Next Chapter: 3&nbsp;Quickstart your application"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;User manual" title="Chapter Overview: I&nbsp;User manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,480 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Wie beginnt man in einem Testprojekt?</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_bpHowToStart"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="bp_intro.html#sec_bpIntro"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 31&nbsp;Einf&uuml;hrung" title="Vorheriges Kapitel: 31&nbsp;Einf&uuml;hrung"></a></td><td class="navicon"><a href="bp_organize.html#sec_bpOrganize"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 33&nbsp;Organisation von Testsuiten" title="N&auml;chste Seite: 33&nbsp;Organisation von Testsuiten"></a></td><td class="navicon"><a href="bp_organize.html#sec_bpOrganize"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 33&nbsp;Organisation von Testsuiten" title="N&auml;chstes Kapitel: 33&nbsp;Organisation von Testsuiten"></a></td><td class="navicon"><a href="bp_bestpractices.html#sec_BestP"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: II&nbsp;Best Practices" title="Kapitel-&Uuml;bersicht: II&nbsp;Best Practices"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpHowToStart">32</a></span>
+</div>
+<a href="contents.html#toc_sec_bpHowToStart">Wie beginnt man in einem Testprojekt?</a>
+</h3>
+      
+<p>
+        Dieses Kapitel beschreibt die wichtigsten Aspekte, welche
+        ber&uuml;cksichtigt werden sollten, <strong>bevor</strong> Sie QF-Test gro&szlig;fl&auml;chig in einem
+        Testprojekt einsetzen. Es wirft Fragen auf und versucht allgemeine
+        Antworten mit Referenzen auf detaillierte Beschreibungen zu geben.
+      </p>
+      
+<p>
+        Ziel des Kapitels ist es Ihnen einige Hinweise zu geben, worauf Sie
+        achten sollten, um Ihre
+        GUI-Tests verl&auml;sslich, stabil, einfach wiederholbar und vor allem
+        wartbar zu gestalten.
+      </p>
+
+      
+      
+
+      
+<a name="sec_bpInfrastructure"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpInfrastructure">32.1</a></span>
+</div>
+<a href="contents.html#toc_sec_bpInfrastructure">Infrastruktur und Testumgebung</a>
+</h4>
+        
+<p>
+          Bevor Sie beginnen automatisierte Tests zu erstellen und
+          auszuf&uuml;hren, sollten Sie sich ein paar Gedanken &uuml;ber die zu verwendende Testumgebung
+          machen. Damit Sie Tests verl&auml;sslich und wiederholbar abspielen
+          k&ouml;nnen, m&uuml;ssen Sie bedenken, dass Sie hierf&uuml;r das SUT in einen
+          definierten Zustand bringen sollten, inklusive dem
+          Backend, z.B. einen Server und/oder eine Datenbank. Wenn Sie sich
+          dessen nicht bewusst sind, kann es unter Umst&auml;nden ziemlich schwierig
+          werden, Tests wiederholbar abzuspielen oder einfach nur die
+          Testresultate zu analysieren. Au&szlig;erdem kann die Wartung der Tests zu
+          einem Albtraum werden.
+        </p>
+        
+<p>
+          Bitte bedenken Sie zus&auml;tzlich noch folgende Themen:
+        </p>
+        
+<ol>
+          
+<li>Wie sieht der Initialzustand des SUT aus?
+            <ul>
+              
+<li>
+                Welcher Benutzer wird verwendet um die Tests in der SUT
+                abzuspielen? Die meisten Projekte arbeiten mit dedizierten
+                Testbenutzern. Ein anderer Ansatz ist, dass jeder Tester
+                mit seinen eigenen Testbenutzer arbeitet.
+              </li>
+              
+<li>
+                Welche Spracheinstellung des SUT wird haupts&auml;chlich verwendet?
+                Ist es wirklich notwendig eine volle Sprachabdeckung &uuml;ber alle
+                unterst&uuml;tzten Sprachen zu erreichen? Oder gen&uuml;gt es, die gesamten Testf&auml;lle
+                auf einer speziellen Sprache auszuf&uuml;hren und nur ein paar
+                ausgesuchte f&uuml;r die Lokalisierungstests zu verwenden? In
+                den meisten F&auml;llen deckt das Wiederholen der Testf&auml;lle in
+                unterschiedlichen Sprachen dieselbe Funktionalit&auml;t ab und
+                Sie erlangen dadurch keine neuen Informationen &uuml;ber das
+                SUT. Wenn Sie sich trotzdem entschlie&szlig;en mit mehreren
+                Spracheinstellungen zu testen, k&ouml;nnte dies die
+                Wiedererkennung der grafischen Komponenten beeinflussen, siehe <a href="bp_componentrecognition.html#sec_bpComponentRecognition">Abschnitt 5.3</a>.
+              </li>
+            
+</ul>
+          
+</li>
+          
+<li>Wie sieht der Initialzustand der Datenbank aus?
+            <ul>
+              
+<li>
+                K&ouml;nnen Sie mit einer separaten Testdatenbank arbeiten oder
+                benutzen Sie eine Produktionsdatenbank? Testdatenbanken k&ouml;nnen
+                geplante Testdaten beinhalten, wohingegen
+                Produktionsdatenbanken wirkliche Daten aus der realen Umgebung
+                beinhalten. Sind diese Daten vorhersagbar und verl&auml;sslich? Was
+                passiert, wenn Ihre Daten durcheinander kommen oder gar
+                zerst&ouml;rt werden? Sie sollten in jedem Fall keine
+                automatisierten Tests auf der Produktionsumgebung ausf&uuml;hren.
+              </li>
+              
+<li>
+                K&ouml;nnen Sie Ihre Testumgebung nach einem Testlauf wieder auf
+                den Ausgangszustand zur&uuml;cksetzen, um den Testlauf zu
+                wiederholen? Ist es m&ouml;glich, &Auml;nderungen in der Datenbank
+                zur&uuml;ckzunehmen oder ben&ouml;tigt jeder neue Testlauf neue Testdaten?
+              </li>
+              
+<li>
+                Wie k&ouml;nnen Testdaten gelesen bzw. geschrieben werden? K&ouml;nnen
+                Sie hierf&uuml;r Standard SQL-Skripte verwenden oder gibt es
+                Bibliotheken von der Entwicklung? Einige Projekte setzen sogar
+                die Datenbank vor jedem Testlauf komplett neu auf, weil sie
+                weder Testdaten wiederverwenden noch die Datenbank korrekt
+                s&auml;ubern k&ouml;nnen.
+              </li>
+            
+</ul>
+          
+</li>
+          
+<li>
+            Wollen Sie QF-Test mit anderen Werkzeugen, z.B. Build- oder
+            Testverwaltungswerkzeuge, integrieren?
+            <ul>
+              
+<li>
+                Wie integriert man QF-Test in eine Testverwaltung? Wenn Sie
+                bereits geplante Testschritte wiederverwenden k&ouml;nnen, dann
+                vermeiden Sie redundante Arbeit in der
+                Testplanungsphase. Einige Standardintegrationen sind unter
+                <a href="user_testmanagement.html#usec_testmanagement">Kapitel 25</a> beschrieben.
+              </li>
+              
+<li>
+                Sollen Tests von einem Buildtool gestartet werden? Nachdem
+                Sie Tests erstellt haben, k&ouml;nnen Sie diese unbeaufsichtigt
+                ausf&uuml;hren und diesen Testlauf von einem Buildtool, z.B. Ant
+                oder CruiseControl, ansto&szlig;en. F&uuml;r Details &uuml;ber Testausf&uuml;hrung, siehe <a href="user_testexecution.html#usec_testexecution">Kapitel 22</a>.
+              </li>
+              
+<li>
+                Sollen Testresultate in ein Reporting- oder Testverwaltungssystem hochgeladen werden oder reicht es den
+                erzeugten HTML-Report und die Protokolle auf einen zentralen
+                HTTP-Server zu legen?
+              </li>
+            
+</ul>
+          
+</li>
+          
+<li>Wer wird mit QF-Test arbeiten?
+          <ul>
+            
+<li>
+                Arbeiten nur ein oder zwei Tester mit QF-Test oder werden auch
+                mehrere Entwickler und Fachtester in die Testentwicklung miteinbezogen?
+                Im Abschnitt <a href="bp_organize.html#sec_bpRoles">Abschnitt 33.5</a> finden Sie einige
+                Tipps f&uuml;r das Arbeiten im Team.
+              </li>
+              
+<li>
+                Wie sind die Kenntnisse der Tester? Sie sollten mindestens
+                eine dedizierte Person mit guten QF-Test Kenntnissen im Team
+                haben, welche auch in der Lage ist, Skripte zu implementieren
+                und Softwareentwicklungsprinzipien versteht.
+              </li>
+            
+</ul>
+          
+</li>
+        
+</ol>
+        
+<p>
+          Nat&uuml;rlich werden in Ihrem Projekt noch weitere Punkte
+          auftauchen. Denken Sie einmal dar&uuml;ber nach.
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_bpLoc"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpLoc">32.2</a></span>
+</div>
+<a href="contents.html#toc_sec_bpLoc">Speicherorte</a>
+</h4>
+        
+<p>
+          Sie sollten sich &uuml;berlegen, wohin Sie bestimmte Dateien legen
+          bzw. installieren wollen:
+        </p>
+        
+<ol>
+          
+<li>
+            Wo soll QF-Test installiert werden?
+
+            QF-Test kann lokal auf jedem Rechner installiert werden. Dieses
+            Vorgehen zwingt Sie allerdings wiederum, neue Versionen auf jedem Rechner
+            einzeln zu installieren. Alternativ k&ouml;nnen Sie QF-Test auf einem
+            Netzlaufwerk installieren, wenn Ihr Netzwerk verl&auml;sslich
+            funktionieren sollte. Details hierzu finden Sie unter <a href="#sec_bpNetworkInstallation">Abschnitt 32.2.1</a>.
+          </li>
+          
+<li>
+            Wo soll die Konfigurationsdatei <code>qftest.cfg</code> abgelegt werden?
+
+            Diese Datei beinhaltet u.a. wie QF-Test die grafischen Komponenten
+            wiedererkennt oder was im Protokoll gespeichert werden soll.
+            Diese Einstellungen m&uuml;ssen f&uuml;r jeden QF-Test Benutzer dieselben
+            sein, sonst k&ouml;nnen keine Tests im Team geteilt werden.
+            Damit Sie dieselbe Datei verwenden, k&ouml;nnen Sie QF-Test entweder
+            zentral auf einem Netzlaufwerk installieren oder Sie geben den
+            Pfad zur Konfigurationsdatei als Kommandozeilenparameter beim
+            Start von QF-Test mit. Wenn Sie mit einer Datei auf einem
+            Netzlaufwerk arbeiten, dann stellen Sie sicher, dass diese Datei
+            schreibgesch&uuml;tzt ist und nur bestimmte Benutzer diese &auml;ndern
+            k&ouml;nnen. Details finden Sie unter <a href="user_installation.html#usec_configfile">Abschnitt 1.6</a>.
+          </li>
+          
+<li>
+            Wo soll die Lizenzdatei <code>license</code> liegen?
+
+            Sie sollten die Lizenzdatei an einer zentralen Stelle ablegen,
+            damit Sie die Lizenz nur einmal aktualisieren m&uuml;ssen, wenn Sie ein Update
+            erhalten. Hier k&ouml;nnen Sie ebenfalls entweder an eine zentrale
+            Netzwerkinstallation von QF-Test denken oder einen
+            Kommandozeilenparameter beim Start von QF-Test verwenden. Details
+            finden Sie unter <a href="user_installation.html#usec_licensefile">Abschnitt 1.5</a>.
+          </li>
+          
+<li>
+            Wo sollen Testsuiten gespeichert werden?
+
+            Der beste Speicherort f&uuml;r Testsuiten ist ein
+            Versionsmanagementsystem, womit Sie &Auml;nderungen verfolgen und auf jede
+            Version der Datei zugreifen k&ouml;nnen. Wenn dies nicht m&ouml;glich sein
+            sollte, dann sollten die Dateien auf einem zentralen Netzlaufwerk
+            installiert werden.
+          </li>
+          
+<li>
+            Wo sollen die Testdatendateien gespeichert werden?
+
+            Testdatendateien geh&ouml;ren immer zu Testsuiten und sollten daher
+            nahe an diesen abgelegt werden, d.h. im selben
+            Versionsmanagementsystem oder Netzlaufwerk.
+          </li>
+          
+<li>
+            Wo sollen die HTML Reports und Protokolle abgelegt werden?
+
+            Diese Dateien sollten an einer zentralen Stelle liegen, auf die
+            jeder Tester zugreifen und die Testresultate auswerten kann. Die
+            meisten Kunden legen diese auf einen zentralen HTTP Server oder
+            einen Netzlaufwerk ab.
+          </li>
+        
+</ol>
+
+        
+<a name="sec_bpNetworkInstallation"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpNetworkInstallation">32.2.1</a></span>
+</div>
+<a href="contents.html#toc_sec_bpNetworkInstallation">Netzwerkinstallation</a>
+</h5>
+          
+<p>
+            Wenn Sie planen QF-Test auf einem Netzlaufwerk zu installieren,
+            m&uuml;ssen Sie einige Dinge beachten.
+          </p>
+          
+<p>
+            Der kritische Punkt ist die Konfigurationsdatei
+            <code>qftest.cfg</code>. Es ist empfehlenswert (und notwendig),
+            dass alle Tester dieselben Einstellungen verwenden, besonders f&uuml;r
+            die Wiedererkennung. Dies erreichen Sie durch Sharen dieser Datei.
+            Jedoch sollten Sie darauf achten, dass sie
+            schreibgesch&uuml;tzt ist, damit ein Benutzer nicht unabsichtlich die
+            Einstellungen ver&auml;ndert. Da QF-Test vorgenommene &Auml;nderungen so
+            nicht beim Beenden speichern kann. Jede gewollte &Auml;nderung sollte durchgef&uuml;hrt werden,
+            in dem Sie die Datei explizit mit Schreibrechten versehen, dann QF-Test
+            beenden, und danach die Schreibrechte
+            wieder entziehen. Eine andere M&ouml;glichkeit ist, dass jeder Benutzer, seine
+            eigene Konfigurationsdatei benutzt, z.B. mittels dem
+            Kommandozeilenparameter <a href="tech_execution.html#arg_systemcfg" shape="rect"><code>-systemcfg &lt;Datei&gt;</code></a>, aber das ist
+            nicht empfehlenswert.
+          </p>
+         
+          
+<p>
+            Die laufenden QF-Test Instanzen teilen sich auch das Logverzeichnis
+            (internes Logging, das kein Problem darstellt) und den Jython Package
+            Cache, welcher gelegentlich Probleme verursacht. In diesem Fall kann QF-Test
+            den Jythoninterpreter nicht mehr initialisieren. Das passiert
+            sehr selten und kann mit S&auml;uberung (nicht kompletten L&ouml;schens) des
+            Jython Cache Verzeichnisses behoben werden.
+          </p>
+          
+<p>
+            Auf Windows sollte jeder Benutzer die Datei <code>setup.exe</code>
+            ausf&uuml;hren, damit die aktuelle QF-Test Version, die sich im
+            installierten qftest-x.y.z. Verzeichnis befindet, mit den entsprechenden
+            Windowseinstellungen in der Registry verkn&uuml;pft wird.
+          </p>
+          
+<p>
+            In sehr seltenen F&auml;llen kann das &Uuml;berschreiben von Jar Dateien von
+            QF-Test beim Einspielen eines QF-Test Patches, bereits laufende
+            Instanzen auf Windows zum Absturz bringen.
+          </p>
+        
+
+      
+
+    
+      
+
+      
+<a name="sec_bpComponentRec"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpComponentRec">32.3</a></span>
+</div>
+<a href="contents.html#toc_sec_bpComponentRec">Wiedererkennung von Komponenten</a>
+</h4>
+        
+<p>
+          Der wichtigste Aspekt eines GUI Testtools ist eine stabile und
+          verl&auml;ssliche Wiedererkennung der grafischen Komponenten. In diesem
+          Bereich ist QF-Test sehr flexibel und bietet unterschiedliche
+          Konfigurationsm&ouml;glichkeiten.
+          In den meisten F&auml;llen reicht die Standardkonfiguration der
+          Komponentenerkennung aus, allerdings m&uuml;ssen Sie diese manchmal anpassen.
+        </p>
+        
+<p>
+          Wenn Sie die Komponentenerkennungseinstellungen nach Erstellen
+          mehrerer Testf&auml;lle &auml;ndern, laufen Sie Gefahr, dass diese Testf&auml;lle nicht
+          mehr lauff&auml;hig sind. Deshalb sollten Sie so fr&uuml;h wie m&ouml;glich versuchen eine
+          angemessene Erkennungsstrategie f&uuml;r Ihr Testprojekt zu finden. Sie
+          sollten sich diese Zeit in jedem Fall nehmen und diesen Bereich wirklich genau
+          ansehen, bevor Sie viele Testf&auml;lle kreieren. Im schlimmsten Fall
+          m&uuml;ssen Sie alle bereits erstellten Testf&auml;lle neu erstellen, nachdem
+          Sie die Erkennungseinstellungen ver&auml;ndert haben.
+        </p>
+        
+<p>
+          Am besten erstellen Sie einige Demotestf&auml;lle und versuchen
+          herauszufinden, wie QF-Test die Komponenten Ihres SUT erkennt. Der
+          Wiedererkennungsmechanismus ist in den Kapiteln <a href="user_components.html#usec_components">Kapitel 5</a> und <a href="user_subitems.html#usec_subitems">Abschnitt 5.9</a>
+          beschrieben. Wenn Sie die Demotestf&auml;lle, im Idealfall mit einer
+          anderen SUT Version, ausf&uuml;hren und auf Wiedererkennungsprobleme
+          sto&szlig;en, versuchen Sie folgende Punkte zu kl&auml;ren:
+        </p>
+        
+<ol>
+          
+<li>
+            Gibt es gen&uuml;gend Synchronisationspunkte, wie 'Warten auf Komponente'
+            oder 'Check' Knoten mit Wartezeiten, um die Testschritte
+            nur dann auszuf&uuml;hren, wenn das SUT wirklich bereit dazu ist?
+            <ol>
+              
+<li>
+                Beispiel 1: Nach &Ouml;ffnen eines Fenster k&ouml;nnen Sie Aktionen nur
+                dann darin ausf&uuml;hren, wenn es wirklich schon vorhanden ist  -&gt;
+                Verwenden Sie einen 'Warten auf Komponente' Knoten.
+              </li>
+              
+<li>
+                Beispiel 2: Nachdem Sie auf einen "Suchen" Knopf geklickt
+                haben, k&ouml;nnen Sie erst dann fortfahren, wenn die Suche
+                wirklich beendet ist -&gt; Verwenden Sie einen 'Check'
+                Knoten mit Wartezeit.
+              </li>
+            
+</ol>
+          
+</li>
+        
+</ol>
+        
+<p>
+          Ein weiterer Punkt neben Synchronisationspunkten ist die richtige
+          Einstellung f&uuml;r die Komponentenerkennung. Sie sollten folgende
+          Punkte vorab kl&auml;ren, um herauszufinden, welche Einstellung f&uuml;r Sie
+          die geeignetste ist:
+        </p>
+        
+<ol>
+          
+<li>
+            Werden eindeutige und stabile Namen f&uuml;r die Komponenten von den
+            Entwicklern vergeben? Siehe <a href="components.html#sec_windows">Abschnitt 38.13</a> f&uuml;r Details.
+          </li>
+          
+<li>
+            Vielleicht reicht es aus, einen regul&auml;ren Ausdruck im
+            'Merkmal' Attribut der Komponente des Hauptfensters unter des
+            'Fenster und Komponenten' Knotens zu setzen?
+            Siehe <a href="usec_components_feature.html#sec_bpCRRegex">Abschnitt 5.4.3.1</a> f&uuml;r Details.
+          </li>
+          
+<li>
+            Wenn die Entwicklung keine benutzbaren oder sogar dynamische Namen
+            vergeben haben, dann k&ouml;nnten Sie dies mit einem NameResolver l&ouml;sen.
+            Siehe <a href="bp_componentrecognition.html#sec_bpComponentRecognition">Abschnitt 5.3</a>.
+          </li>
+          
+<li>
+            M&uuml;ssen Sie vielleicht die QF-Test Wiedererkennungsoptionen &auml;ndern?
+            Diese sind im Kapitel <a href="bp_componentrecognition.html#sec_bpComponentRecognition">Abschnitt 5.3</a> beschrieben.
+          </li>
+          
+<li>
+            Ist es denkbar, generische Komponente einzusetzen? Siehe <a href="sec_bpCRGeneric.html#sec_bpCRGeneric">Abschnitt 5.8</a>.
+          </li>
+        
+</ol>
+        
+<p>
+          In einigen F&auml;llen reicht es aus, einfach die Standardkonfiguration
+          zu &auml;ndern. Angenommen die Entwicklung hat eindeutige und stabile
+          Namen f&uuml;r die Zielkomponenten vergeben, d.h. f&uuml;r Buttons,
+          Textfelder, Checkboxen etc., dann k&ouml;nnen Sie einfach
+          die 'Gewichtung von Namen' Option von QF-Test auf 'Name &uuml;bertrifft alles' setzen. Diese
+          Einstellung teilt QF-Test mit, &Auml;nderungen in der Komponentenhierarchie
+          zu ignorieren und nur mit der eigentlichen Zielkomponente und
+          deren Fenster zu arbeiten.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span>
+
+          Sie m&uuml;ssen diese Option an zwei Stellen &auml;ndern. Einmal unter
+          'Aufnahme' -&gt; 'Komponenten' -&gt; 'Gewichtung von Namen' und einmal unter
+          'Wiedergabe' -&gt; ' Wiedererkennung' -&gt; 'Gewichtung von Namen'. Siehe <a href="bp_componentrecognition.html#sec_bpComponentRecognition">Abschnitt 5.3</a> f&uuml;r mehr Informationen.
+        </p>
+        
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="bp_intro.html#sec_bpIntro"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 31&nbsp;Einf&uuml;hrung" title="Vorheriges Kapitel: 31&nbsp;Einf&uuml;hrung"></a></td><td class="navicon"><a href="bp_organize.html#sec_bpOrganize"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 33&nbsp;Organisation von Testsuiten" title="N&auml;chste Seite: 33&nbsp;Organisation von Testsuiten"></a></td><td class="navicon"><a href="bp_organize.html#sec_bpOrganize"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 33&nbsp;Organisation von Testsuiten" title="N&auml;chstes Kapitel: 33&nbsp;Organisation von Testsuiten"></a></td><td class="navicon"><a href="bp_bestpractices.html#sec_BestP"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: II&nbsp;Best Practices" title="Kapitel-&Uuml;bersicht: II&nbsp;Best Practices"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

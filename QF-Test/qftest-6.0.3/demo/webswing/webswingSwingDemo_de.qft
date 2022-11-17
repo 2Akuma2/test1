@@ -1,0 +1,1688 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="Webswing SwingSet Demo"
+          signature="302E021500C0A1304B8568093C997D14B0A87A19D29C9811B5021500AE84C018FEBBB923A94C72A8B501A9B365C02F89"
+          version="6.0.3">
+  <include>qfs.qft</include>
+  <variable name="browser"/>
+  <variable name="webswingversion">22.1</variable>
+  <variable name="webswingdir">${default:webswingdir:${qftest:dir.user}/webswing-$(webswingversion)}</variable>
+  <variable name="javaexe">${qftest:java}</variable>
+  <variable name="executable">webswing-server.war</variable>
+  <variable name="client">swingClient</variable>
+  <variable name="webClient">webClient</variable>
+  <comment>@param 	browser	Sie können hiermit explizit den gewünschten Browser festlegen. Wenn diese Variable nicht gesetzt ist, ermittelt und benutzt QF-Test den bestmöglichen Browser.</comment>
+  <CommentStep id="_2YSp">
+    <heading>&lt;font style="color:blue"&gt;Hinweis: &lt;font style="color:green"&gt;Eine Beschreibung des JiB ("Java im Browser") Konzepts finden Sie</heading>
+  </CommentStep>
+  <CommentStep id="_2YSq">
+    <heading>&lt;font style="color:green"&gt;        in Kapitel 18 des QF-Test Anwenderhandbuchs</heading>
+  </CommentStep>
+  <CommentStep id="_2YRv">
+    <heading>&lt;font style="color:green"&gt;Diese Demo-Testsuite zeigt den Start einer Webswing Demo-Anwendung</heading>
+  </CommentStep>
+  <CommentStep id="_2YRx">
+    <heading>&lt;font style="color:green"&gt;        und das Herstellen der Verbindung zwischen den beiden Clients.</heading>
+  </CommentStep>
+  <CommentStep id="_2YRy">
+    <heading>&lt;font style="color:green"&gt;Sie erklärt außerdem die Unterschiede der verschiedenen Einstellungen</heading>
+  </CommentStep>
+  <CommentStep id="_2YRz">
+    <heading>&lt;font style="color:green"&gt;        für die Wiedergabe von Events.</heading>
+  </CommentStep>
+  <CommentStep id="_2YR-">
+    <heading>&lt;font style="color:blue"&gt;Hinweis: &lt;font style="color:green"&gt;Diese Testsuite arbeitet mit zwei SUT Clients:</heading>
+  </CommentStep>
+  <CommentStep id="_2YS0">
+    <heading>&lt;font style="color:green"&gt;- Der Swing Client, Name "swingClient", Variable $(client)</heading>
+  </CommentStep>
+  <CommentStep id="_2YS1">
+    <heading>&lt;font style="color:green"&gt;- Der Web Client, Name "webClient", Variable $(webClient)</heading>
+  </CommentStep>
+  <DependencyReference id="_2YLC"
+                       reference="dependencies.webswingDemoGestartet"/>
+  <TestSet id="_1" name="Webswing tests">
+    <TestSet id="_2YLD" name="Webswing Klicktest">
+      <CommentStep id="_2YSO">
+        <heading>&lt;font style="color:green"&gt;Bei Swing gibt es normale ("softe") und "harte" Events.</heading>
+      </CommentStep>
+      <CommentStep id="_2YSa">
+        <heading>&lt;font style="color:green"&gt;Für beide lässt sich getrennt festlegen, wie diese bei Webswing abgespielt werden sollen:</heading>
+      </CommentStep>
+      <CommentStep id="_2YSb">
+        <heading>&lt;font style="color:green"&gt;- swing - der Standarwert - hält den Event komplett innerhalb der Swing Anwendung</heading>
+      </CommentStep>
+      <CommentStep id="_2YSi">
+        <heading>&lt;font style="color:green"&gt;- semihard - Richtet auf Swing Ebene alles her und spielt den Event dann semihart über den Browser ab,</heading>
+      </CommentStep>
+      <CommentStep id="_2YSc">
+        <heading>&lt;font style="color:green"&gt;        der Mauszeiger wird also nicht über den Desktop bewegt</heading>
+      </CommentStep>
+      <CommentStep id="_2YSe">
+        <heading>&lt;font style="color:green"&gt;- hard - Richtet auf Swing Ebene alles her und spielt den Event dann hart über den Browser ab</heading>
+      </CommentStep>
+      <CommentStep id="_2YSj">
+        <heading>&lt;font style="color:green"&gt;        der Mauszeiger wird dabei über den Desktop bewegt</heading>
+      </CommentStep>
+      <CommentStep id="_2YSZ">
+        <heading>&lt;font style="color:green"&gt;Die folgende Datentabelle beinhaltet die sinnvollen Variationen der Event-Optionen</heading>
+      </CommentStep>
+      <DataDriver id="_2YLE"
+                  loopreportname="clickstream swing: $(swingEvent) web: $(webEvent)">
+        <TableDataBinder id="_2YNv" name="Swing event type">
+          <TableBinderColumn title="swingEvent" width="149">
+            <data>soft</data>
+            <data>soft</data>
+            <data>hard</data>
+            <data>hard</data>
+          </TableBinderColumn>
+          <TableBinderColumn title="webEvent" width="482">
+            <data>swing</data>
+            <data>semihard</data>
+            <data>swing</data>
+            <data>hard</data>
+          </TableBinderColumn>
+        </TableDataBinder>
+      </DataDriver>
+      <TestCase id="_2" name="Webswing Klicks">
+        <discriminator>browser.name</discriminator>
+        <BasicSequence id="_2YLK" name="Setze Event-Optionen">
+          <ProcedureCall id="_2YLI"
+                         procedure="qfs.jib.options.replaySwingHardMouseEventAs">
+            <variable name="clicktype">${default:webEvent:semihard}</variable>
+          </ProcedureCall>
+          <ProcedureCall id="_2YLJ"
+                         procedure="qfs.jib.options.replaySwingSoftMouseEventAs">
+            <variable name="clicktype">${default:webEvent:semihard}</variable>
+          </ProcedureCall>
+        </BasicSequence>
+        <BasicSequence id="_2YRf" name="Klicke Swing-Komponente">
+          <BasicSequence id="_2YUE" name="BasicComponentsPanel">
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="frameWebswing_Demo.labelBasicComponentsPanel"
+                            event="MOUSE_MPRC"
+                            hardevent="&#34;${default:swingEvent:soft}&#34; == &#34;hard&#34;"
+                            id="_2YU0" modifiers="16"/>
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="frameWebswing_Demo.buttonEnabled"
+                            event="MOUSE_MPRC"
+                            hardevent="&#34;${default:swingEvent:soft}&#34; == &#34;hard&#34;"
+                            id="_2YU1" modifiers="16"/>
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="frameWebswing_Demo.button"
+                            event="MOUSE_MPRC"
+                            hardevent="&#34;${default:swingEvent:soft}&#34; == &#34;hard&#34;"
+                            id="_2YU2" modifiers="16"/>
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="frameWebswing_Demo.comboJComboBox:@bb"
+                            event="MOUSE_MPRC"
+                            hardevent="&#34;${default:swingEvent:soft}&#34; == &#34;hard&#34;"
+                            id="_2YU3" modifiers="16"/>
+            <CheckStringStep client="$(client)"
+                             component="frameWebswing_Demo.textJComboBox:"
+                             id="_2YU5">
+              <text>bb</text>
+            </CheckStringStep>
+          </BasicSequence>
+          <BasicSequence id="_2YUF" name="DataComponentsPanel">
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="frameWebswing_Demo.labelDataComponentsPanel"
+                            event="MOUSE_MPRC"
+                            hardevent="&#34;${default:swingEvent:soft}&#34; == &#34;hard&#34;"
+                            id="_2YU8" modifiers="16"/>
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="frameWebswing_Demo.treeJTree:@/JTree/sports/soccer"
+                            event="MOUSE_MPRC"
+                            hardevent="&#34;${default:swingEvent:soft}&#34; == &#34;hard&#34;"
+                            id="_2YUB" modifiers="16"/>
+            <CheckSelectableItemsStep checktype="items_with_selection"
+                                      client="$(client)"
+                                      component="frameWebswing_Demo.treeJTree:"
+                                      id="_2YUD">
+              <item>JTree</item>
+              <item>colors</item>
+              <item>sports</item>
+              <item>basketball</item>
+              <item selected="true">soccer</item>
+              <item>football</item>
+              <item>hockey</item>
+              <item>food</item>
+            </CheckSelectableItemsStep>
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="frameWebswing_Demo.tableJTable:@Combo&amp;0"
+                            event="MOUSE_MPRC"
+                            hardevent="&#34;${default:swingEvent:soft}&#34; == &#34;hard&#34;"
+                            id="_2YUK" modifiers="16"/>
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="frameWebswing_Demo.combo@June"
+                            event="MOUSE_MPRC"
+                            hardevent="&#34;${default:swingEvent:soft}&#34; == &#34;hard&#34;"
+                            id="_2YUL" modifiers="16"/>
+            <CheckItemsStep checktype="row" client="$(client)"
+                            component="frameWebswing_Demo.tableJTable:@Not editable&amp;0"
+                            id="_2YUM">
+              <item>item 1</item>
+              <item>item 1b</item>
+              <item>June</item>
+              <item>July</item>
+              <item>123</item>
+              <item></item>
+            </CheckItemsStep>
+          </BasicSequence>
+        </BasicSequence>
+        <BasicSequence id="_2YRq" name="Klicke HTML Elemente">
+          <CommentStep id="_2YSQ">
+            <heading>&lt;font style="color:green"&gt;Aktionen auf Html Elemente werden unabhänging von den Optionen immer im Web-Client abgespielt.</heading>
+          </CommentStep>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="frameWebswing_Demo.labelWeb_View"
+                          event="MOUSE_MPRC"
+                          hardevent="&#34;${default:swingEvent:soft}&#34; == &#34;hard&#34;"
+                          id="_2YUO" modifiers="16" x="62" y="13"/>
+          <ComponentWaiter client="$(webClient)"
+                           component="localhost:8080.buttonThis_is_HTML_button._Click_me!"
+                           id="_2YRm"/>
+          <MouseEventStep clicks="1" client="$(webClient)"
+                          component="localhost:8080.buttonThis_is_HTML_button._Click_me!"
+                          event="MOUSE_MPRC"
+                          hardevent="&#34;${default:swingEvent:soft}&#34; == &#34;hard&#34;"
+                          id="_2YTn" modifiers="16"/>
+          <ComponentWaiter client="$(client)"
+                           component="dialogOption_auswählen" id="_2YRn"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="dialogOption_auswählen.buttonJa"
+                          event="MOUSE_MPRC"
+                          hardevent="&#34;${default:swingEvent:soft}&#34; == &#34;hard&#34;"
+                          id="_2YRo" modifiers="16"/>
+          <CheckStringStep client="$(webClient)"
+                           component="localhost:8080.confirmDialogResult"
+                           id="_2YRp">
+            <text>You have selected: "yes"</text>
+          </CheckStringStep>
+        </BasicSequence>
+      </TestCase>
+    </TestSet>
+    <TestSet id="_2YLc" name="Webswing Text eingabe">
+      <CommentStep id="_2YSS">
+        <heading>&lt;font style="color:green"&gt;Für Texteingaben mit Einzelevents kann per Option festgelegt werden,</heading>
+      </CommentStep>
+      <CommentStep id="_2YSk">
+        <heading>&lt;font style="color:green"&gt;        ob die Events via Swing (Standard) oder web abgespielt werden</heading>
+      </CommentStep>
+      <DataDriver id="_2YLd"
+                  loopreportname="single events: $(singleEvent) web: $(webEvent)">
+        <TableDataBinder id="_2YLf" name="singleEvents">
+          <TableBinderColumn title="singleEvent" width="634">
+            <data>false</data>
+            <data>true</data>
+          </TableBinderColumn>
+        </TableDataBinder>
+        <TableDataBinder id="_2YMB" name="Key event type">
+          <TableBinderColumn title="webEvent" width="631">
+            <data>web</data>
+            <data>swing</data>
+          </TableBinderColumn>
+        </TableDataBinder>
+      </DataDriver>
+      <TestCase id="_2YLg" name="Webswing Eingabe">
+        <discriminator>browser.name</discriminator>
+        <BasicSequence id="_2YMC" name="Setze Event-Optionen">
+          <ProcedureCall id="_2YMD"
+                         procedure="qfs.jib.options.replaySwingKeyEventAs">
+            <variable name="type">${default:webEvent:web}</variable>
+          </ProcedureCall>
+          <ProcedureCall id="_2YME"
+                         procedure="qfs.jib.options.replaySwingTextInputAs">
+            <variable name="type">${default:webEvent:web}</variable>
+          </ProcedureCall>
+        </BasicSequence>
+        <BasicSequence id="_2YMI" name="Einfaches Textfeld">
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="frameWebswing_Demo.labelBasicComponentsPanel"
+                          event="MOUSE_MPRC" id="_2YUQ" modifiers="16"/>
+          <TextInputStep clear="true" client="$(client)"
+                         component="frameWebswing_Demo.textJTextField:"
+                         id="_2YLr" single="$(singleEvent)">
+            <text>Üben von Xylophon und Querflöte ist ja zweckmäßig</text>
+          </TextInputStep>
+          <CheckStringStep client="$(client)"
+                           component="frameWebswing_Demo.textJTextField:"
+                           id="_2YLt">
+            <text>Üben von Xylophon und Querflöte ist ja zweckmäßig</text>
+          </CheckStringStep>
+        </BasicSequence>
+        <BasicSequence id="_2YMJ" name="Mehrzeiliges Feld mit einer Zeile">
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="frameWebswing_Demo.labelWebswing_API"
+                          event="MOUSE_MPRC" id="_2YUY" modifiers="16" x="81"
+                          y="11"/>
+          <TextInputStep clear="true" client="$(client)"
+                         component="frameWebswing_Demo.textWebswing_API"
+                         id="_2YL+" single="$(singleEvent)">
+            <text>Üben von Xylophon und Querflöte ist ja zweckmäßig</text>
+          </TextInputStep>
+          <CheckStringStep client="$(client)"
+                           component="frameWebswing_Demo.textWebswing_API"
+                           id="_2YL-">
+            <text>Üben von Xylophon und Querflöte ist ja zweckmäßig</text>
+          </CheckStringStep>
+        </BasicSequence>
+        <BasicSequence id="_2YMK"
+                       name="Mehrzeiliges Feld mit mehreren Zeilen und spezielle Zeichen">
+          <SetGlobalStep id="_2YMF" local="true" varname="text">
+            <default>Üben von Xylophon
+und Querflöte
+ist ja zweckmäßig
+Nyúlfülvágó térközs&#369;rít&#337;
+1²³456@~#</default>
+          </SetGlobalStep>
+          <TextInputStep clear="true" client="$(client)"
+                         component="frameWebswing_Demo.textWebswing_API"
+                         id="_2YMG" single="$(singleEvent)">
+            <text>$(text)</text>
+          </TextInputStep>
+          <CheckStringStep client="$(client)"
+                           component="frameWebswing_Demo.textWebswing_API"
+                           id="_2YMH">
+            <text>$(text)</text>
+          </CheckStringStep>
+        </BasicSequence>
+      </TestCase>
+    </TestSet>
+    <TestSet id="_2YML" name="Webswing drag and drop">
+      <CommentStep id="_2YSU">
+        <heading>&lt;font style="color:green"&gt;Drag and Drop Aktionen werden immer mit harten Events abgespielt. </heading>
+      </CommentStep>
+      <CommentStep id="_2YSW">
+        <heading>&lt;font style="color:green"&gt;Auch hier kann zwischen Swing und Web gewählt werden</heading>
+      </CommentStep>
+      <DataDriver id="_2YMM" loopreportname="DnD web: $(webEvent)">
+        <TableDataBinder id="_2YMf" name="Web event type">
+          <TableBinderColumn title="webEvent" width="644">
+            <data>web</data>
+            <data>swing</data>
+          </TableBinderColumn>
+        </TableDataBinder>
+      </DataDriver>
+      <TestCase id="_2YMP" name="Webswing DnD">
+        <discriminator>browser.name</discriminator>
+        <BasicSequence id="_2YMQ" name="Setze Event-Optionen">
+          <ProcedureCall id="_2YMR"
+                         procedure="qfs.jib.options.replaySwingDnDEventAs">
+            <variable name="type">${default:webEvent:web}</variable>
+          </ProcedureCall>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameWebswing_Demo.labelBasic_DnD"
+                        event="MOUSE_MPRC" id="_2YUc" modifiers="16" x="65"
+                        y="14"/>
+        <BasicSequence id="_2YM-" name="Ziehe Element auf jList">
+          <MouseEventStep clicks="0" client="$(client)"
+                          component="frameWebswing_Demo.tree@/Mia Familia/Sharon/Anya/Winky"
+                          event="MOUSE_DRAG_FROM" id="_2YMs" modifiers="0"/>
+          <MouseEventStep clicks="0" client="$(client)"
+                          component="frameWebswing_Demo.list@Dolley Madison"
+                          event="MOUSE_DROP_TO" id="_2YMw" modifiers="0"/>
+          <ComponentWaiter client="$(client)" component="dialogMeldung"
+                           id="_2YMx"/>
+          <CheckStringStep client="$(client)"
+                           component="dialogMeldung.label&#34;Winky&#34;_dropped_on_top_of_&#34;Dolley_Madison&#34;"
+                           id="_2YMz">
+            <text>"Winky" dropped on top of "Dolley Madison"</text>
+          </CheckStringStep>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="dialogMeldung.buttonOK"
+                          event="MOUSE_MPRC" id="_2YM+" modifiers="16"/>
+        </BasicSequence>
+        <BasicSequence id="_2YN3" name="Ziehe Element auf JTextArea">
+          <BasicSequence id="_2YNH" name="aus jTree">
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="frameWebswing_Demo.tree@/Mia Familia/Sharon/Bongo"
+                            event="MOUSE_DRAG_FROM" id="_2YN0"
+                            modifiers="16"/>
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="frameWebswing_Demo.text"
+                            event="MOUSE_DROP_TO" id="_2YN1" modifiers="18"
+                            x="123" y="40"/>
+            <CheckStringStep client="$(client)"
+                             component="frameWebswing_Demo.text" id="_2YN2"
+                             postdelay="1000">
+              <text>Favorite shows:
+Buffy, Alias, AngelBongo</text>
+            </CheckStringStep>
+            <KeyEventStep client="$(client)"
+                          component="frameWebswing_Demo.text" event="KEY_PTR"
+                          id="_2YNG" keychar="127" keycode="127"
+                          modifiers="0"/>
+          </BasicSequence>
+          <BasicSequence id="_2YNM" name="aus JList">
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="frameWebswing_Demo.list@Abigail Adams"
+                            event="MOUSE_DRAG_FROM" id="_2YNI"
+                            modifiers="16"/>
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="frameWebswing_Demo.text"
+                            event="MOUSE_DROP_TO" id="_2YNJ" modifiers="18"
+                            x="124" y="43"/>
+            <CheckStringStep client="$(client)"
+                             component="frameWebswing_Demo.text" id="_2YNK">
+              <text>Favorite shows:
+Buffy, Alias, AngelAbigail Adams</text>
+            </CheckStringStep>
+            <KeyEventStep client="$(client)"
+                          component="frameWebswing_Demo.text" event="KEY_PTR"
+                          id="_2YNL" keychar="127" keycode="127"
+                          modifiers="0"/>
+          </BasicSequence>
+        </BasicSequence>
+      </TestCase>
+    </TestSet>
+    <TestSet id="_2YNN" name="Webswing Abbildcheck">
+      <CommentStep id="_2YSX">
+        <heading>&lt;font style="color:green"&gt;Abbilder für Checks können sowohl im Swing als auch im Web Client erstellt werden</heading>
+      </CommentStep>
+      <CommentStep id="_2YSg">
+        <heading>&lt;font style="color:green"&gt;Im Swing Client (Standard) wird das Bild in einen Speicherbereich gemalt</heading>
+      </CommentStep>
+      <CommentStep id="_2YSh">
+        <heading>&lt;font style="color:green"&gt;Im Web Client wird ein Screenshot vom passenden Ausschnitt des Browserfensters gemacht</heading>
+      </CommentStep>
+      <DataDriver id="_2YNO" loopreportname="Imagecheck web: $(webEvent)">
+        <TableDataBinder id="_2YNP" name="Web event type">
+          <TableBinderColumn title="webEvent" width="631">
+            <data>web</data>
+            <data>swing</data>
+          </TableBinderColumn>
+        </TableDataBinder>
+      </DataDriver>
+      <TestCase id="_2YNQ" name="Webswing Abbildcheck">
+        <discriminator>browser.name</discriminator>
+        <BasicSequence id="_2YNR" name="Setze Event-Optionen">
+          <ProcedureCall id="_2YNS"
+                         procedure="qfs.jib.options.replaySwingImageCheckAs">
+            <variable name="type">${default:webEvent:web}</variable>
+          </ProcedureCall>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameWebswing_Demo.labelFonts"
+                        event="MOUSE_MPRC" id="_2YUu" modifiers="16" x="39"
+                        y="8"/>
+        <BasicSequence id="_2YNU" name="Prüfe Abbild aufgenommen in Swing">
+          <CheckImageStep algorithm="algorithm=similarity;expected=0.99"
+                          client="$(client)"
+                          component="frameWebswing_Demo.labelColor_and_font_test:"
+                          id="_2YV4"
+                          notcheck="&#34;${default:webEvent:web}&#34;==&#34;web&#34;"
+                          xoffset="66" yoffset="55">
+            <ImageNode height="159" name="checkimage" width="479">
+              <webp size="1826">UaRzrSOAv(*wpBQPT?'+rCAA1*8tnALD]OQmhhm-i#v~dGZl!WDHLKH_eVwA9F+uE+vreFNt`sDHAK'^s!
+rGH9d)*cr#8(t`Q=UJAGTA$;.x~--Z9PozF=H~$m34n8[XU~SX36v`x*hpsTtOH^Jw"swW%!NgP="k`s
+vSh+(BB%eny4}2V|!x`E@u#WHU-_McPOBs{.B'K|D5X44}~=QqIVJ(4$B{Z5Yuhrx=3*!"qK)#=fnm,:
+DNXJ~/GueCgrzkKmEYfMUG58aJpm48X-9'B8zpCyq2_F,j0)24Ax.jN^-hVV]jCu|^95jlXK\I\I?JMM
+J)!-c=/~\~ULA#FkYhS".n~`K"qM7*ByBn]9SqzWo%A@s7C=o4!_-qLI)SWu,F;OkS}I`WjX_7%wx1Z4
++zcGL-bArti)m%c4@/1"[QU3R/,w1[qDx7MvM3oaMv%$%dt0v%YE*q^KblZ=4,L}77K6sx1v!CtCa/t/
+46s]tXI,=c16I)*dU3gY77BNdgk:.%Fv8Ap6jPXpL,33+hI{c4aCwAbdP]ltR72k/yUtV;)rTfdJCUKC
+69qS,yTpw7W2[7?[B8OxyYn.fPiQe*mqal~(a7ySOlA@POcyC:"t(,LPOlbMb%1K6b7HIf8KV{`[aLBB
+2GrRK;q@dR.q9ybd,e3T{/yZrd8zBmn@]bP]4k{!ie)zDBHX0l!,FBCPrH_TKr{QS7HCf2h-Gu_t3d4j
+|h)+1n%dM6aQ'/O]Ff=/8.QuMOI35.3JnYK-rDP#37T/uBNX02[H/V$A0B|9_Q=Z.o)W`Ol+?Trb?ZrJ
+m_+WrH,P8.EC*G)S`?EDbO9X?yJ0-4XEul{t!LfC1#JF{OP]O-wg$74`L}uU,#L~P]o?]b8BUua\"#w$
+{~?1TsnrG@p'tGC/^K9+W~}b'jQ(9zX};0'@A/C|(CU[33rsHVY|GpW]]z@zt[W~4eX.6|UP[XG;f}E|
+Fl{KoI3zPv?M@RvUaE+|:0o[xoWXRG|5d4diX*u6r:MS=fdu,#~Z)G?wdfk8Dxcw7]0i18#CHf}xqRd2
+)Z{FU:q.`6rKa2]P|nK,x$NH0'C@\}m@_6wni+o_=pY8AkCg6/lb`6}zT5]ZcaDeSf}7[nToJj%K0}dt
+y=0/hVdAz.4fD(:j!3f]qBEt[8D\xM(q.1VS"VU8MUhi^6LJ%Zgihu+%`H%3qX;,I[y`h|9rZk,6Q(~k
+70PAg._U_2TDtT/5lKQU-3=bQU*qkvXtYC2Q81#4}%}gKV(@Y,}8tf7Ppp)`9am[Se0h:79jaIfhk-M'
+p?W~?0L_)Vq;2;qF0hML+ch:#^Zf*wp8;9w|?XJ;B8)-"_]UM6i7l{A`0uUJqTO+^xv-{jl5_pY125k@
+%PO+F-DoS?"*9K]k~4AUV7#:skyJQJLK[4wz9XMa:d)SpRG8@0X5Iekj+da0t%BMAU\DS?i{Yy;YSlX#
+fJVKHU}O:5kKL6jld`"MzO7uMzd*;+\b#_O?0nm(z0JeAM.8*#Ra#SHdYJP8o;H-e8+:f-JUz!L_j}/^
+XVZnFlRpxdsVv]BeP0Jrj"B'W/Y[HJG,udTZvhGg6w@E;@Fs%Vn?FiBK9exrd@XJmcx7VFK)a@Zjk=!8
+6HT_B|UqHK%q\)TeB`7|V7?VxOgv=#9crl_c^5*d(gKdt7\yM6B8|,wG;{h%-,v5?oQ_y_0-(EM(P_!|
+!\"Vi}Pg~f-hG|Dg7]OGSR,%z9T/b'TMout)i{9:;xHahS9EDlhwr;0i'x01aJZ!N\A.Vf$x66~IAGc=
+4,STrfB]gQEv^*~)pvL{%VzH}Av%0/c7b1+2Kx!0`j2/[*^f58ix\#MfP_lyc:TJUPDuIEalqwfvSo={
+Zm+-|S|?%rbXQ=~f('(ex\#x)1ADg5q0VRTu~%IuOG+x-xLm|?_u*EXb)=5gFtb\*#c!{v.6$2{zj)|9
+5YD!#?-ay%~kQV}TbRv1}k!)z'|qV7b27x#-F-JjBS!YKXpw[=;=9+YjGHMVuUTK35%[J?I+V*-2hmo0
+q0VJQSLFK5Lm{i[SASepL0B\:Ur7'/S:yd@SN!pv3F,=v~6pP]r78S{5YTeB%Cz"H!LGY3zX16FaYxU^
+KC1)AMrRgZ'5(z_\[*k'ZMOWMe)l/8Q`nbNnty}+0B7zG\O*q2}$($zvxt.BA3q!h.FS}Q"YmEQvNb`W
+]y4CgarWLQcMYc!XoHx7Da)J*(rfcd4x:*Tf)1`YG"dkI?pv5#)ap^u@gmIH5:O.n7MT)NY158^*ziDr
+pCA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <BasicSequence id="_2YNu" name="Prüfe Abbild aufgenommen im Browser">
+          <CheckImageStep algorithm="algorithm=similarity;expected=0.99"
+                          client="$(client)"
+                          component="frameWebswing_Demo.labelColor_and_font_test:"
+                          id="_2YV5"
+                          notcheck="&#34;${default:webEvent:web}&#34;==&#34;swing&#34;"
+                          xoffset="66" yoffset="47">
+            <ImageNode height="166" name="checkimage" width="472">
+              <webp size="5678">UaRz^asAv(*wpBQPT?2O+HAA\@NXpAhJ*'B";=(/e.kBA0m/5Sq+-q\ug.LS%_|,AkASb[2Olc.m[?nkSl
+NT5\iO{n#j}KuNcz8.~@^gx'@#,@J9Y3Q$5zI=.%k'whH8y+20]cp\`gSn=0703pJ_"PB\0m-d)b`ZYJ
+/MgSToG#`pH=Ep0/fm+_I[X1=UAqB-Y~4w+l[!G=.TW/!+Ez]-@-7rT|BzYC@w-kLzA_*;`G#^4'B_I]
+Yl3!4vO=zL}]:Cb]F,*K.AgO6'mN7l-oW4*'2_{e?:h==,DM'}25.Li2ZuzKjEg.eKAEpkQUC=CHWOTn
+~_w^96HTo_AXOz|K\f?Bo]zHHQ~xdR5c5dV9]V;0kxlC}OmGuLwBjFDFH2R//)V@_'UF}xTWo4D,Z6%U
+{C@'P;.u$7*aQta"9L37Xz'O3buxOM\Pme1)ixG_.H;hUc@@jzv?r)3(wNPb7FnHpzI\:lpLXYW[gLQn
+m*p4}4[WBG~xzoK+dYt7rBBwf+AKj$-^$1v#+xH^^#51S:`jgYU"#{^u\9{$;G/0$W1X),8If5+U.SJ!
+5`.Hh3C%-R.S{JhA3''-Gw|Kh_zBhZ[MpB'wU!"A{k!{h`.7viErr~o[qW^0)FC65wB%S=hECUGzu*\"
+xKgCe#N$UDyu\O'?wYU0}@H#^Xo4EH#Nj|=c@Vfl*0.V@y~kAwazcvTsH^gKAGeJhS'G^P\bcF}L35WC
+7:sM2J:dnZf7,2!Dwa{NHBK3iG+XEt1nY|H7*$YEz6k='}4uA[WoVf]hCgSg_)tQ0wuT.t+vjjcB.QcC
+_w]~_I*[etx"=1_*M?#6-MDJl2KYr%!(8(;,1xOQ"8[+I*OX,2T=k0qMJ2/h{|nnd+(D2#41:DIB?K-1
+@ZXPTRfn3pm$Rd\(VD#4"*@fci`N2O}0.!7.22;'+oAg@1_QFPvo;"~8vcZZsM6;z$2epHMx`0$Kp,cL
+\an#QfhrEtu"|E1yX2K/[(qNT6,I52F0KMLuNr{EA1UBQWT!2g|v":t^2!vN;S6NaqPM*ghuSDH}ToQl
+a@{(8qUR|M,Q;aTrMK.o#$~Ziyvm#^7DRJ+Cz?+y2j2f_`8M=9]qsN[we'-6$zEIycek.:@@IYAdb#6Z
+/lpr/1ayi()meno_x{py(7O2lG\fr:*`[cw%GLGy9K2R@+?(MNXECyJm'j0A:2:IF3eblxrr9|@Lv/_\
+*Ddu[ie8,2(C69DS)F+[!_T/%vk0AKG2MY#f2{8#lVOi/(l.@W~7$.~hdjo}PTuc4[F};(K=z6=r7=*a
+]\7)x"p1%^|Q#L1[~!"("tUmy('^?%[;v$O2,}A6w_f*@k2eabc_Z``-%P'oI]4NMK~r9Yh`Fwa]TySf
+y}F5JEPe$Et,B?RX'}|){y~P:z.ZaLgu.sb*@twZ}"dk.nXG1O(QE:q!X%IR{}3niO?mBg|;3fR|%+|%
+5CDkEn[v2Lp,?)!DfY`$Er7rvWp4jC'T1nDXLuK8OQn)P[}0\X=XlLiD1yB41JT=rvL{\8APBT1=/\=a
+,[C7fk@+c}VlDLzJ#jc-7q9Qbp62robaTbYCr0{Gb:M@t{K,/`9j;C'`MQeC3?[8blqi:Hk,v}dzGJ/N
+fFNb_1gtQZJa(u`1KnwL'}]i-^dmAYqw,ZmbeKYCBPI.SLe{0\ZZ^DYE*V[h@;W@d5-A}X;7Dsp=3d7*
+@YPh3:03x#Z|tybz54ct~XPhcDdGCE8e^u3e[=wFRHGKy,mG%$\}VUeSk)CkF9E13FYhc-0xC%!R?^+K
+"X3I8J#c!_P)*M:]jXt8A=u*3i}+dj}RpE`VM2VukOLs}RI+HC)kd\K^8YpIoj3|H$Pxu^@z@w6P{FMQ
+%G7PO^2i}05yS=98R85N_i.BuQjD)GZzw:)YuO}i'2Ph|@@FcV@^XdLC9?6z$;L4\-yK'p20%.h/UV*M
+y#BeQZg2-pMTvX{w3F{H*)a=*~0Z$LT6ozr'@R~rY*NgRX4J*VD7sQ?1b9_DW%"D_U;U\R]/A/`z\G5C
+3wsFvU#(h\=ilb+i%tW;2afj9UzWOCs"40jz':rCLNPT-HOb?{GF7+Xk?c?Sd|Z%k=jNuU$1%5T,'an3
+D)DNlWUL/#t"uA9tbjo+@q6L/S7St}bECbK5h-d|_$jcEM~FzT:'XDb=csO'nnb!}T:P6y~+-Y{E3QF7
+CKS#{[w6VJSdS%%1V)4mI!?1"ypfotfzww2kL"hcRwiCG4J?WR`$@aP^Q"z@r_H!RUKVbJ"aI4~r!cW1
+\0|GTVl-NK!3:'oUV0,pmD!1dRVw2RJ8;*oiIChj\D!KV_hE.@._LR`*#}Go6UbB=G2mg7sH/!8tK/Ko
+E\txd#Xc[,#Wo{MjoEs)eDy+5@`zvMb)yw4;yJySZVG6:2lfoUrv:c6$-]0Zn`5o.PGM9n1!iEycl]2[
+1[6Al8gz)]axan9K{D.'M#0($ZCbA(!D~Il8PCDBb}=Z;G\u'bL$q1E$(TncFZ_aKncSy|2vD*ef6?'?
+4)=pAWm6\iO{[tmx2[vXDhQe2dW]']E"f|Y?*/;v{w}jpd3(qv*Gf/LD:z`ceidOC%(!"U{NpaB^ZNrA
+5UMoq/E*O?{/Rf'QR1SY1E}N@z2J%sjZ,nuR"$uy_{bl=p4hU;c"dzX+5KzP$q8)6T(snZtduy$c#Wz4
+'t}sBT(TRg1B?{1.%,`B)(MF;j=TogcH!x;XVTSHzVs(uq8JYBMIG'`6P6PYE^x%1WYU3,11-m|X/ywt
+'!RLP1~L1fY@;/%U\GY'/q:G%y41+N?[RvmbsX}CW,EF0({.ciXQ.3x9Jz1*6I-1VQ.6@zPe+:+aOB{i
+[7mnKev~LKMWt[s#Ew$}r|2[BGxoOx"0@Xj`5oHOtroLbS$QigcVTjZ*/[-L]Fv.uF{OStdtgih?a3;C
+"Nw'g*VkMfR`fBM-Sw{*=anre]_Pmv76{zcHXvmcP|6aRu8'x1,H~S|V'Du$,0ex1aLHJmD"39|zFJ*l
+.C%B.W2Wm2%RjtIZGt~I4G#|Zjb*eQV(Qq)P;=v@8gM7,G\?cC(gy\x};p\KtIyS1\'Mt,7)qvYZmCM1
+p#~XWnTm]E}[isrSzXEy{;)N%4JrEJ?'1W9m,hbn$goXI3j+2u__Om'JE]xu1{G2^j~;M$f*J[)Wdlrw
+!--8a9F,I\nB4v3pz\{X!/OzeJug5^ouLTh1Fh3;b1bQz2A0hR+B`-ZV$Lcq1ES46r0EhPiE0'FlcbmH
+qsxbYk]zil5|!ZDO{:}qZTLW2I_ROtyEANu!5#|/D6;:S=wN(iqEGvfl[mS)4)vpmk;5I43fH4UWi;!N
+.|YV*YOu+1oJ`j++(z(o,5%Ti+hE\QU+K/'vuF-u(za9!CJHX%]bu@fbP]:aVz+=`lmTk=cpk3O^BW'/
+GGW}$3WUrhs$[^t|-3Y-)\~2!LLoH;/M_QSQxM7{hLbusERGqopEz5Ju@+jD`55^Ci|j35w"Pk-FyfJM
+1F.:_N,`Ob8:[0qp``eZucx20nTKE#_-Y0EWv]^nro!Xw$X;[{vf"=YADb`zGQ4i*IEA{qM_Bae#AXqp
+IBESOy%yKy3z-*Z[%}IcZ-_]/qSI"EYQe)F:L15T/cxSxs`6l;~P}:_6b7gfv62oxnf\DpnBWj=4%%O{
+L~3K^]J%|F0-_O+dB6:2ESCF@d/)=x|GF3ie[S}yJ1;0F*h\Cz`/8:R}4W6BweosT2)/F)K9)H]Fgx$.
+ffLXhR%I2CV+OGePjw?mk4U^!F9y`4;GE?y6E4F:kS6LqX:L,'Qpwy0}C'|6p]C/pZBc|w|X]cv:Clp[
+q}sj,xMEtCc)WoxoK;1fhCf*D/g/IU;D)eC9qX-\UVaM?38Fz?0u}\Dt8PCz08\=]uT.D.${KwIDor21
+HY!e,Ld"xOgQ'4VFR!njF$6/.Ru?d,Y3v'z;!OwH'#JMsR44]Fgx^305!bekvU}j%tN]7*$T~MV(Wx.y
+iNa9FW=mQd2]3]v#yWmb5|z+Zp52!Lv94YojmkqK#GZ=Sp@l.Djio+u1%eO.gxgJyaG*z;lB2]BkYvRB
+{\YFI5xQSdP7WRaHnc?Q}1{m-4Jf6i#S?3d~^qp-M2-aej-y.d|cXS,bL"Z)'+jaMR9("8d51XR9#Nyp
+@+ffNt[k4:d(JP8$eXyc8=YZ+nU5P[$WgtLnepzJ)H*qd@d;yu%zGOE51E#aZwz]$*%*iSGy+hj3v/[I
+4bdBY@=X~w^!x|5qevxgNwpN|'@y^aFdhUaMM=@YR`vJyS~+bH8IWW*4+8;GR.P@(x2+YPo=R@G@tHz.
+r`8IJwn6D6lK9=3ZsZ?j28t]Na6r`bt@P}+U/!a)4R3I-D@]HJ@f8T#ws[|Ldkr2l=;!%zp/2AMW3MYi
+XvTu(lUeIM;1JuHi8,0'\QH6nKN-yt3NL\xt_i4S^:m$qUMO^T@L2%`aou=$$Uui1l,;HuJzfCL{m;~P
+xL^@GB`+X=+0!/;23\KIGs*+Fl7c73lz}cME;2bdOKwP;lZF{QUsV6UTmlF89}4?:#z//%+{nL2/IM;L
+Jn\C9.?~m7}:r(5|}02@hJ*'40A"q)$tmz\~XqyYZczMTVAao6_.FqAx/tY)$:(P73y%$yBQeQ-3^sX2
+,XP1AFi_3}h-V}~.z'SO%h,`?.e$YT}'f~`-|lD@$8^~uZP+jQ1nbmCLz0W@Z,MNQcK1carY](rimgeC
+L6;:Pf~chjG0`arh+St`i|Zn!mUN3DS|c~E`x#p%Q4XlgbMKSpiL,2.W@+FT4n=8vf7e3g,~O`\Q..E`
+nGMQe{%V|iQNwn1j\j$*@bHeBt:6b.:UN7:|g"e0s=(oJ^m[SZ]0^_Dsz9^[H-urzO:Ok,wHX58Kxauy
+@|"bNx[?(q]0Sriyb\|slEynRdHOBCHrv}ZnhRF$IKH~~NbRCN7e"(3Ye-,Mp~m_@Ew.$Sp*w+hGn[SN
+l@FKgY#ZKK/7R/vVIm{YI;{3*d}+M{ff_OofLXGrh5WMV+9/d-u6*+ld"RiBl3.-RcF}*Mm-zZ~3k/pZ
+T|b35M!j^!5t0j.a9xQxXNgO*ajNu.hZ2'(y[kBJ+g8n^iYW#9FB)=!tyMj8k4jO)=iIy1(o-"3|pzyF
+IAefJzGm9^2S_1Vu[$8E--/,DMfPMU5WPd$gG]fo1aRZ$iTpdkI[d,Y3uhu[tY.*~ftX:L#1,c?h=.VN
+zQ{H:Ltn1jii1HXCqUKaz/tPR86SS9Jv}bsga4%6!cNN3A*eGu11TRaat5sd+^vSGK\uCump`AO."@7k
+-i3(b'j;H3cL(2I5tRcv9u$Lfvu@S^7qo']yQKBo"xxw,:nrV|8['04ORz?W#Njb@I__tfZx$u;0ci\i
+!i3(b'zjz349+1:W82.W^=GVS,[;cDd9ZaTBIMQ+q2="$"LnUfGVOOyUQ%V\el-KKtuM{M`-:@US)2I5
+$VWJ\1MHQYRGs|ZxSCft6_/?`HN!yeDIb~;QCP[2LkfOBrJt?YzV0ZEc`/x0_51*{Q6pnRxWj:t02dX\
+NQay`S~z`V~EcBqh(7r{(*0{|/7R]w`avwO-vl/Q#P`R3Kz)^s/S=^w+$\mEW;U5;+SSZ;sy5i8g0DeJ
+@fe-EZ%/M!Sj1n+DSsKCD|I(e`9v~I^Q(#rhmNBz*cMz1QXs)9T%)w36c`2o4(saIN?fy*@uZr`w5^eB
+uJ%o{F_n]ZgK+@*(Q#+^s(/9JTuc!2UIy!hx0'xx|AGs[Poa[SQh\2Y[?q]f:`HPcC/(aYvnTkV8RkQL
+QvzK!;SgfSPy\ll%]L_cy08k;,$B/7pKf\}-/.~v'd8`kEp$/V.uGU(9+Ud]VUDy-W;nCYFXbTOk*xYd
+.-y`OA;CV,bl:imot~oB$E:)LmdCH8%u{9'$-\TQ'?WVVa3ukb{H5*%e!NCZeM]*PlB9BcBBzHDTHPl2
+F2k^FwXmK2Z;0%3ULDqqJ8}5LDE\-S@vhfjBveU#TbI\Q'*F/:8kyVX)GcodBQ;?h8=zv5X7.w+=gI=$
+'lPF2[z,Df4[fJ!~bTQjTB:G4D%2+R.xYdQ}S1\?h83`*X{Q]wC=!42GJ!`+0,x]=E"_g)~D9RW-F;Sh
+s+W_]P7!5\--]:HneMtNC%8DG3;dSLi#{9ykFmU6AEOcVOblk:5+OBb7S9DgW5-U!ot4ExZLdL}#%}=t
+gK:Y#?+_20kLEl,I@cs-5PAB_TG6t@Lzp;Wc{O68OKm*0t1HE,AoeJMc%UaCt]MFCGAMetJOT./k%##d
+/sH\8mPUdEIEMH@c!UfDmH;ECsZN)CrHIqN(`v|5?^@BbezDAw!U5F"e{C7Por?tMCgj__?s/R|~HyIb
+,dbpQkvbF$%h}S0-u5LtgKI(Cm.)oklj-F|(U%oZdm,?oK,wY0}g(tCD+ZN^^#(w$|'rR05r)KX/^e+5
+jZHc!io~qhmH/tCM?xjvTW0/$IDo6ZZvB%GxET,"5+Zc@$xlJ,$}I!StCM$yr2Pz*6ci7$feIy7;0y(T
+pEAGK*y3)on/UWqx(fP@nk|3;Yx1-Y`9zjUU21'dCMuA-(g4W[2"-(,r]I(:F*bdOibJDh(DWdJw8$sS
+osv?JYU#b{$VnhU*kuE+K[?vlCR/gC;+=70DwMYX@8X30XJB?w"4.u$CgODa,?TwlCyWbU*UG5%aFxeZ
+I%g\8m9/FM@Chy{ujI_Kl5yW4DwYCoD2}e`LWoZH3#kuQ@cIzve\9^__~-p)%^#kn4vG+qeBUU0lZ|@D
+t/TVu'uYw_3#mMQE)Tl`e_#kn4cv4}P6HTu(;v6:d*l:P9SCf#U/MUgKNSO6w6RQ)WtoKSuF$~O|F3!{
+NJ(IF$e=Au[*%)SDu4!)MLGU*_bSUGS.x.;*ggBsf$SMLUQ(W^mT)Gk.\S3p9i2p[qXQg+jXjLQ_pF\0
+]n\agKKsxg'YnK6nFrWK1ma[]"xa!6pF,$d9xp"x.@09Vt`|4W,"xa*m8R:9w(2Vk6LjY9UDR!1}CYF0
+G[Kn@;X[{CGT6EMO{$:MnE[$9utB!dz3^"9DT~8XTf##Ex|X0W\CU!wIg[*YrnH\u5`(X+JO!pZ\cPzh
+W|QNCn1?}TTBE`p*QAA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+      </TestCase>
+    </TestSet>
+  </TestSet>
+  <PackageRoot id="_3">
+    <Package id="_2YHr" name="dependencies">
+      <Dependency id="_2YO5" name="webswingServerGestartet">
+        <variable name="webswingServer">Webswing</variable>
+        <variable name="webswingServerStartupMessage"/>
+        <SetupSequence id="_2YO6" name="Start webswingServer">
+          <BasicSequence id="_7" name="Globale Variablen setzen">
+            <SetGlobalStep id="_8" varname="client">
+              <default>$(client)</default>
+            </SetGlobalStep>
+          </BasicSequence>
+          <BasicSequence id="_2YO8"
+                         name="Webswing Demo bei Bedarf herunterladen">
+            <ProcedureCall id="_1pPF" local="true"
+                           procedure="qfs.shellutils.exists"
+                           retvarname="webswingExists">
+              <variable name="file">$(webswingdir)/$(executable)</variable>
+            </ProcedureCall>
+            <IfSequence id="_2YQz" test="not $(webswingExists)">
+              <ProcedureCall id="_2YRL" local="true"
+                             procedure="qfs.dialogs.showYes_No_Cancel_Dialog"
+                             retvarname="ret">
+                <variable name="title">Webswing Demo herunterladen?</variable>
+                <variable name="msg">Das Webswing Demo wurde im Verzeichnis
+$(webswingdir)
+nicht gefunden. 
+
+Soll das Webswing Demo heruntergeladen und dort installiert werden?</variable>
+                <variable name="timeout">20000</variable>
+                <variable name="alwaysOnTop">True</variable>
+                <variable name="wraplength">160</variable>
+              </ProcedureCall>
+              <IfSequence id="_2YR1" test="$(ret)&lt;=0">
+                <ProcedureCall id="_2YQ+"
+                               procedure="startstop.downloadWebswingLocal"/>
+                <ElseSequence id="_2YR2">
+                  <ServerScriptStep id="_1jxI">
+                    <code>rc.logError("Es ist kein Webswing-Demo verfügbar.\n\n" +
+            "Setzen Sie bitte im Wurzelknoten dieser Testsuite die Variable \"webswingdir\"\n" +
+            "auf das korrekte Verzeichnis und starten Sie den Test neu.")</code>
+                  </ServerScriptStep>
+                  <ProcedureCall id="_2YR4"
+                                 procedure="qfs.utils.testrun.stop.stopTestRun"/>
+                </ElseSequence>
+              </IfSequence>
+            </IfSequence>
+          </BasicSequence>
+          <BasicSequence id="_2YS2" name="Webswing Server lokal starten">
+            <ProcedureCall id="_2YQC"
+                           procedure="startstop.startWebswingServerLocal">
+              <variable name="webswingdir">$(webswingdir)</variable>
+            </ProcedureCall>
+          </BasicSequence>
+        </SetupSequence>
+        <CleanupSequence id="_2YRQ">
+          <TryStep id="_2YS3" name="Webswing Server beenden">
+            <ClientStopper client="webswingServer" id="_2YS4"/>
+            <ProcessWaiter client="webswingServer" id="_2YS6"
+                           timeout="15000"/>
+            <CatchSequence exception="TestException" id="_2YS5" maxerror="0"/>
+          </TryStep>
+          <TryStep id="_2YTf"
+                   name="Sicher stellen, dass der Webswing Client ebenfalls beendet ist">
+            <ClientStopper client="$(client)" id="_2YTg"/>
+            <ProcessWaiter client="$(client)" id="_2YTh" timeout="15000"/>
+            <CatchSequence exception="TestException" id="_2YTi" maxerror="0"/>
+          </TryStep>
+        </CleanupSequence>
+      </Dependency>
+      <Dependency id="_2YOR" name="webswingClientGestartet">
+        <variable name="url">http://localhost:8080</variable>
+        <CommentStep id="_2YRF">
+          <heading>&lt;font style="color:green"&gt;Zunächst muss der Webswing Server gestartet werden</heading>
+        </CommentStep>
+        <DependencyReference id="_2YTe"
+                             reference="dependencies.webswingServerGestartet"/>
+        <SetupSequence id="_2YPI" name="Browser bei Bedarf starten">
+          <BasicSequence id="_2YRS" name="Globale Variablen setzen">
+            <SetGlobalStep id="_2YRT" varname="webClient">
+              <default>$(webClient)</default>
+            </SetGlobalStep>
+          </BasicSequence>
+          <TryStep id="_2YPq" name="Client gestartet?">
+            <ClientWaiter client="$(webClient)" id="_2YPp" timeout="1"/>
+            <CatchSequence exception="ClientNotConnectedException" id="_2YPr"
+                           maxerror="0"
+                           name="Client noch nicht gestartet -&gt; starten">
+              <IfSequence id="_1pHi" name="Besten Browser bestimmen"
+                          test="&#34;$(browser)&#34;==&#34;&#34;">
+                <ProcedureCall id="_1pIL"
+                               procedure="qfs.web.browser.general.getBestBrowser"
+                               retvarname="browser"/>
+              </IfSequence>
+              <BasicSequence id="_3NC" name="Web-Engine starten">
+                <BrowserClientStarter browser="$(browser)"
+                                      client="$(webClient)"
+                                      connectionmode="${default:connectionMode:$[&#34;Prefer WebDriver&#34; if ${default:preferwebdriver:false} else &#34;Prefer QF-Driver&#34;]}"
+                                      executable="${qftest:java}" id="_3ND"
+                                      openwindow="false"/>
+                <ClientWaiter client="$(webClient)" id="_3NE"/>
+              </BasicSequence>
+              <BasicSequence id="_1pHV"
+                             name="Einstellungen für Browser setzen">
+                <ProcedureCall id="_1pHW"
+                               procedure="qfs.web.browser.settings.doStartupSettings">
+                  <variable name="client">$(webClient)</variable>
+                  <variable name="browser">$(browser)</variable>
+                  <variable name="emptyCache">true</variable>
+                  <variable name="enableCookies">true</variable>
+                  <variable name="deleteCookies">true</variable>
+                  <variable name="locale">de</variable>
+                  <variable name="enableProxy">false</variable>
+                  <variable name="proxyAddress"/>
+                  <variable name="proxyPort"/>
+                  <variable name="proxyAutoconfigurl"/>
+                  <variable name="enableProxyBypass">false</variable>
+                  <variable name="proxyBypass"/>
+                  <variable name="mozprofile"/>
+                  <variable name="compatibilitymode">no</variable>
+                </ProcedureCall>
+              </BasicSequence>
+              <BasicSequence id="_1pHX" name="Browserfenster öffnen">
+                <BrowserClientStarter browser="${default:browser:chrome}"
+                                      client="$(webClient)"
+                                      executable="${qftest:java}" height="900"
+                                      id="_1pHY" openwindow="true"
+                                      url="$(url)"/>
+                <DocumentWaiter client="$(webClient)"
+                                component="genericDocument" id="_1pHZ"
+                                timeout="60000"/>
+              </BasicSequence>
+              <BasicSequence id="_1pHa" name="CustomWebResolver installieren">
+                <ProcedureCall id="_2YPJ"
+                               procedure="qfs.web.ajax.installCustomWebResolver">
+                  <variable name="client">$(webClient)</variable>
+                  <variable name="resolver">custom</variable>
+                  <variable name="version"/>
+                  <variable name="genericClasses"/>
+                  <variable name="attributesToGenericClasses"/>
+                  <variable name="tagsToGenericClasses"/>
+                  <variable name="ignoreTags">DIV,SPAN,</variable>
+                  <variable name="ignoreByAttributes"/>
+                  <variable name="autoIdPatterns"/>
+                  <variable name="customIdAttributes"/>
+                  <variable name="interestingByAttributes"/>
+                  <variable name="attributesToQftFeature"/>
+                  <variable name="documentJS"/>
+                  <comment>Dieser Aufruf installiert einen CustomWebResolver für AJAX Toolkits.
+Ein CustomWebResolver erlaubt es Ihnen die Spezifika Ihrer Webanwendung nach generischen Klassen von QF-Test zu übersetzen. Dieser Ansatz verbessert die Komponentenerkennung und erweitert die angebotenen Checkvarianten. Ihre Testfälle werden dadurch stabiler, robuster und lesbarer.
+Der wichtigste Parameter ist 'genericClasses'. Damit können Sie Werte des 'class' Attributes einer Komponente, z.B. 'btn', in einen QF-Test Button übersetzen. Dies geschieht mittels Angabe von btn=Button. Weitere Übersetzungen können sie kommasepariert angeben.
+Sie finden weitere Informationen im Kommentar der Prozedur selbst, hierfür einfach doppelt auf den Prozeduraufruf klicken.
+Im Handbuch finden Sie ein vollständiges Beispiel.
+</comment>
+                </ProcedureCall>
+              </BasicSequence>
+            </CatchSequence>
+          </TryStep>
+        </SetupSequence>
+        <CleanupSequence id="_2YOT" name="Webswing Client beenden">
+          <TryStep id="_2YOU"
+                   name="Verbindung zwischen Web und Swing Clients lösen">
+            <ClientWaiter client="$(client)" engine="awt" id="_2YOV"
+                          timeout="0"/>
+            <ClientScriptStep client="$(client)" engine="awt" id="_2YOW">
+              <code>from de.qfs.apps.qftest.client import Client
+Client.instance().setForeignPlayback(None)</code>
+            </ClientScriptStep>
+            <CatchSequence exception="ClientNotConnectedException" id="_2YOX"
+                           maxerror="0"/>
+          </TryStep>
+          <TryStep id="_2YS7" name="Browser schließen">
+            <WindowEventStep client="$(webClient)" component="localhost:8080"
+                             event="WINDOW_CLOSING" id="_2YS8"/>
+            <TryStep id="_2YS9" name="Browser beendet?">
+              <ProcessWaiter client="$(webClient)" id="_2YSB"
+                             timeout="10000"/>
+              <CatchSequence exception="ClientNotTerminatedException"
+                             id="_2YSC" maxerror="0">
+                <TryStep id="_2YSD" name="Browser hart beenden">
+                  <ClientStopper client="$(webClient)" id="_2YSE"/>
+                  <ProcessWaiter client="$(webClient)" id="_2YSF"
+                                 timeout="10000"/>
+                  <CatchSequence exception="TestException" id="_2YSG"
+                                 maxerror="0"/>
+                </TryStep>
+              </CatchSequence>
+            </TryStep>
+            <CatchSequence exception="TestException" id="_2YSH" maxerror="0"/>
+          </TryStep>
+        </CleanupSequence>
+      </Dependency>
+      <Dependency id="_2YOY" name="webswingDemoGestartet">
+        <discriminator>engine</discriminator>
+        <variable name="engine">awt</variable>
+        <variable name="webswingServer">Webswing</variable>
+        <CommentStep id="_2YR+">
+          <heading>&lt;font style="color:green"&gt;Zunächst müssen der Webswing server und der Browser gestartet sein</heading>
+        </CommentStep>
+        <DependencyReference id="_2YL6"
+                             reference="dependencies.webswingClientGestartet">
+          <variable name="height">900</variable>
+        </DependencyReference>
+        <SetupSequence id="_2YOZ"
+                       name="Beim Webswing Server einloggen und das Demo auswählen">
+          <variable name="connected">false</variable>
+          <variable name="newclient">false</variable>
+          <TryStep id="_2YOa"
+                   name="Prüfen, ob bereits eine Verbindung zwischen Swing und Web Client besteht">
+            <ClientWaiter client="$(client)" engine="$(engine)" id="_2YOb"
+                          timeout="0"/>
+            <ClientScriptStep client="$(client)" engine="$(engine)"
+                              id="_2YOc">
+              <code>from de.qfs.apps.qftest.client import Client
+webClient = Client.instance().getForeignPlayback()
+rc.logMessage("webClient: %s" % webClient)
+rc.setLocal("_webclientInfo", str(webClient))
+</code>
+            </ClientScriptStep>
+            <ServerScriptStep id="_2YOd">
+              <code>from de.qfs.apps.qftest.run import TestServerImpl
+ts = TestServerImpl.instance()
+webClient = ts.getPlayback(rc.lookup("webClient"))
+rc.logMessage("webClient: %s" % webClient)
+rc.setLocal("connected", str(webClient) == rc.lookup("_webclientInfo"))
+</code>
+            </ServerScriptStep>
+            <CatchSequence exception="ClientNotConnectedException" id="_2YOe"
+                           maxerror="0">
+              <SetGlobalStep id="_2YQs" local="true" varname="newclient">
+                <default>true</default>
+              </SetGlobalStep>
+            </CatchSequence>
+          </TryStep>
+          <IfSequence id="_2YOg" test="not $(connected)">
+            <BasicSequence id="_2YOh"
+                           name="Anmelden beim Webswing Server über den Browser">
+              <ComponentWaiter client="$(webClient)"
+                               component="localhost:8080.nameInput&amp;0"
+                               id="_2YOj"/>
+              <MouseEventStep clicks="1" client="$(webClient)"
+                              component="localhost:8080.nameInput&amp;0"
+                              event="MOUSE_MPRC" id="_2YOk" modifiers="16"/>
+              <TextInputStep clear="true" client="$(webClient)"
+                             component="localhost:8080.nameInput" id="_2YOl"
+                             single="false">
+                <text>admin</text>
+              </TextInputStep>
+              <KeyEventStep client="$(webClient)"
+                            component="localhost:8080.nameInput"
+                            event="KEY_PTR" id="_2YOm" keychar="0" keycode="9"
+                            modifiers="0"/>
+              <TextInputStep clear="true" client="$(webClient)"
+                             component="localhost:8080.passwordInput"
+                             id="_2YOn" single="false">
+                <text>pwd</text>
+              </TextInputStep>
+              <MouseEventStep clicks="1" client="$(webClient)"
+                              component="localhost:8080.webswingLginForm.buttonSign_in"
+                              event="MOUSE_MPRC" id="_2YOo" modifiers="16"/>
+            </BasicSequence>
+            <BasicSequence id="_2YSI" name="Auswählen des WebSwing Demos">
+              <MouseEventStep clicks="1" client="$(webClient)"
+                              component="localhost:8080.linkWebswing_Demo"
+                              event="MOUSE_MPRC" id="_2YTu" modifiers="16"/>
+              <DocumentWaiter client="$(webClient)" component="localhost:8080"
+                              id="_2YTv" timeout="60000"/>
+            </BasicSequence>
+            <BasicSequence id="_2YOw"
+                           name="Swing und Web Client miteinander verbinden">
+              <CommentStep id="_2YSJ">
+                <heading>&lt;font style="color:green"&gt;Warten, bis Swing Client bereit ist</heading>
+              </CommentStep>
+              <ClientWaiter client="$(client)" engine="$(engine)" id="_2YOy"/>
+              <IfSequence id="_2YO+" name="Neue Verbindung herstellen?"
+                          test="not $(newclient)">
+                <TryStep id="_2YO-"
+                         name="Falls ein alter Swing Client durch einen neuen ersetzt wurde, den neuen Client umbenennen">
+                  <ClientWaiter client="$(client):2" engine="$(engine)"
+                                id="_2YP0" timeout="10000"/>
+                  <ServerScriptStep id="_2YP2" postdelay="3000">
+                    <code>from de.qfs.apps.qftest.run import TestServerImpl
+ts = TestServerImpl.instance()
+ts.exitClient(rc.lookup("client"), rc.context)
+</code>
+                  </ServerScriptStep>
+                  <ProcedureCall id="_2YP3"
+                                 procedure="qfs.client.renameClient">
+                    <variable name="oldName">$(client):2</variable>
+                    <variable name="newName">$(client)</variable>
+                    <variable name="trueName">$$(client)</variable>
+                  </ProcedureCall>
+                  <CatchSequence exception="ClientNotConnectedException"
+                                 id="_2YP4" maxerror="0"/>
+                </TryStep>
+                <ElseSequence id="_2YTl">
+                  <CommentStep id="_2YTk">
+                    <heading>&lt;font style="color:green"&gt;Technisches Detail - Sicher stellen, dass Events für $(client) aufgenommen werden</heading>
+                  </CommentStep>
+                  <ProcedureCall id="_2YTm"
+                                 procedure="qfs.client.renameClient">
+                    <variable name="oldName">$(client)</variable>
+                    <variable name="newName">$(client)</variable>
+                    <variable name="trueName">$$(client)</variable>
+                  </ProcedureCall>
+                </ElseSequence>
+              </IfSequence>
+              <BasicSequence id="_2YSK" name="Verbinden der beiden Clients">
+                <ServerScriptStep id="_2YP7"
+                                  name="Verknüpfen der beiden Engines">
+                  <code>from de.qfs.apps.qftest.run import TestServerImpl
+ts = TestServerImpl.instance()
+swingClient = ts.getPlayback(rc.lookup("client"))
+webClient = ts.getPlayback(rc.lookup("webClient"))
+swingClient.setForeignPlayback(webClient)
+rc.logMessage("Swing client: %s, Web client: %s" % (swingClient, webClient))</code>
+                </ServerScriptStep>
+                <ClientScriptStep client="$(client)" engine="awt" id="_2YSV"
+                                  interpreter="groovy"
+                                  name="Spezielle interne Einstellungen für den Swing Client">
+                  <code>rc.setOption(Options.OPT_PLAY_FORCED_RAISE_WITH_CONTROL, false)
+rc.setOption(Options.OPT_PLAY_LINUX_FORCED_RAISE_WITH_TOPMOST, false)</code>
+                </ClientScriptStep>
+                <ClientScriptStep client="$(webClient)" engine="web"
+                                  id="_2YPB" interpreter="groovy"
+                                  name="Spezielle interne Einstellungen für den Web Client">
+                  <code>import de.qfs.lib.log.Log
+import de.qfs.lib.log.QFLogger
+
+def logger = new QFLogger ("de.qfs.apps.qftest.client.web.webswingRedirect")
+
+def shouldRedirect = {node, pos -&gt;
+    if (node != null) {
+        if (logger.level &gt;= Log.MTD) {
+            logger.build("shouldRedirect()").add("node: ").add(node).add(", pos:").add(pos).log(Log.MTD);
+        }
+        def canvases = node.getElementsByTagName("CANVAS")
+        if (logger.level &gt;= Log.DBG) {
+            logger.build("shouldRedirect()").add("canvases: ").add(canvases).log(Log.DBG);
+        }
+        if (canvases != null) {
+            def hloc = node.getLocationOnScreen()
+            if (logger.level &gt;= Log.DBG) {
+                logger.build("shouldRedirect()").add("hloc: ").add(hloc).log(Log.DBG);
+            }
+            def list = new TreeMap ()
+            for(def canvas: canvases) {
+                def zIndex = -1;
+                try {
+                    zIndex = canvas.getZIndex();
+                    if (zIndex == null || zindex.equals("null")) {
+                        zIndex = -1;
+                    }
+                } catch (Throwable ex) {
+                    if (logger.level &gt;= Log.MSG) {
+                        logger.log(Log.MSG, "shouldRedirect()", ex)
+                    }
+                }
+                if (logger.level &gt;= Log.DBG) {
+                    logger.build("shouldRedirect()").add("canvas: ").add(canvas)
+                        .add(", zIndex: ").add(zIndex).log(Log.DBG);
+                }
+                if (zIndex &gt; 0 || canvases.length == 1) {
+                    def cloc = canvas.getLocationOnScreen()
+                    if (logger.level &gt;= Log.DBG) {
+                        logger.build("shouldRedirect()").add("cloc: ").add(cloc).log(Log.DBG);
+                    }
+                    if (cloc[2] &gt; 0 &amp;&amp; cloc[3] &gt; 0 /* positive size */) {
+                        if (pos[0] &gt;= cloc[0] - hloc[0]
+                            &amp;&amp; pos[1] &gt;= cloc[1] - hloc[1]
+                            &amp;&amp; pos[0] &lt; cloc[0] - hloc[0] + cloc[2]
+                            &amp;&amp; pos[1] &lt; cloc[1] - hloc[1] + cloc[3]) {
+                            list.put(zIndex, canvas)
+                        }
+                    }
+                }
+            }
+            // qf.println(list)
+            if (logger.level &gt;= Log.DBG) {
+                logger.build("shouldRedirect()").add("list: ").add(list).log(Log.DBG);
+            }
+            if (list.size() &gt; 0) {
+                // list.sort({x, y -&gt; return x.getZIndex() - y.getZIndex()} as Comparator);
+                // qf.println(list)
+                canvas = list.lastEntry().getValue()
+                def cloc = canvas.getLocationOnScreen()
+                pos[0] -= cloc[0] - hloc[0]
+                pos[1] -= cloc[1] - hloc[1]
+                // qf.println(canvas, cloc, hloc, pos)
+            if (logger.level &gt;= Log.DBG) {
+                logger.build("shouldRedirect()").add("pos: ").add(pos).log(Log.DBG);
+            }
+                return canvas
+            }
+        }
+    }
+    return null
+}
+resolvers.addRedirectResolver("redirectHTMLtoCANVAS", shouldRedirect, "HTML")
+
+rc.setOption(Options.OPT_JIB_RECORD_WEB_FILTER_JIB_COMPONENTS, true)
+rc.setOption(Options.OPT_PLAY_WEB_AUTO_SCROLL, false)
+</code>
+                </ClientScriptStep>
+              </BasicSequence>
+            </BasicSequence>
+          </IfSequence>
+        </SetupSequence>
+      </Dependency>
+    </Package>
+    <Package id="_2YQE" name="startstop">
+      <Procedure id="_2YQA" name="startWebswingServerLocal">
+        <variable name="webswingdir"/>
+        <comment>Start the Webswing server locally.
+
+@param webswingdir 	the directory path of Webswing
+
+@author qfs
+@since 5.2.0 </comment>
+        <TryStep id="_2YOA">
+          <CommentStep id="_2YTd">
+            <heading>&lt;font style="color:green"&gt;Zunächst prüfen, ob noch ein Webswing Server Prozess läuft</heading>
+          </CommentStep>
+          <ShellClientStarter client="webswingServer" command="echo"
+                              id="_2YTb"/>
+          <ProcessWaiter client="webswingServer" id="_2YTc"/>
+          <CommentStep id="_2YTY">
+            <heading>&lt;font style="color:green"&gt;Webswing Server zunächst als "$(client)" starten</heading>
+          </CommentStep>
+          <CommentStep id="_2YTZ">
+            <heading>&lt;font style="color:green"&gt;Unterprozesse des Webswing Servers verbinden sich dann unter diesem Namen</heading>
+          </CommentStep>
+          <SUTClientStarter client="$(client)" directory="$(webswingdir)"
+                            executable="${default:javaexe:${qftest:java}}"
+                            id="_2YOD">
+            <parameter>-jar</parameter>
+            <parameter>$(executable)</parameter>
+            <parameter>-j</parameter>
+            <parameter>jetty.properties</parameter>
+            <extraarg>webswing=true</extraarg>
+          </SUTClientStarter>
+          <CommentStep id="_2YTa">
+            <heading>&lt;font style="color:green"&gt;Den Webswing Server Prozess dann in "webswingServer" umbenennen</heading>
+          </CommentStep>
+          <ProcedureCall id="_2YSs" procedure="qfs.client.renameClient">
+            <variable name="oldName">$(client)</variable>
+            <variable name="newName">webswingServer</variable>
+            <variable name="trueName">webswingServer</variable>
+          </ProcedureCall>
+          <IfSequence id="_2YOJ" name="Wait for server startup"
+                      test="rc.lookup(&#34;webswingServerStartupMessage&#34;)">
+            <ProcedureCall id="_2YOK"
+                           procedure="qfs.utils.waitForClientOutput">
+              <variable name="client">webswingServer</variable>
+              <variable name="expectedOutput">$(webswingServerStartupMessage)</variable>
+              <variable name="timeout">${default:timeout:30000}</variable>
+              <variable name="polling">1000</variable>
+            </ProcedureCall>
+            <ElseSequence id="_2YOL">
+              <ProcedureCall id="_2YOM" procedure="qfs.utils.sleep">
+                <variable name="sleeptime">10000</variable>
+              </ProcedureCall>
+            </ElseSequence>
+          </IfSequence>
+          <CatchSequence exception="DuplicateClientException" id="_2YON"
+                         maxerror="0">
+            <CommentStep id="_2YOO">
+              <heading>Process already runnig</heading>
+            </CommentStep>
+          </CatchSequence>
+        </TryStep>
+      </Procedure>
+      <Procedure id="_3N6" name="downloadWebswingLocal">
+        <comment>Startet die Electron-App</comment>
+        <BasicSequence id="_1pPC" name="downloadWebswing">
+          <SetGlobalStep id="_2YR8" local="true" varname="demoSource">
+            <default>https://www.qfs.de/webswing-demo-$(webswingversion)</default>
+          </SetGlobalStep>
+          <ProcedureCall id="_1pO+" procedure="util.download">
+            <variable name="fileURL">$(demoSource)</variable>
+            <variable name="targetDir">$(webswingdir)</variable>
+            <variable name="targetName">webswing.zip</variable>
+          </ProcedureCall>
+          <ProcedureCall id="_1pP2" procedure="util.entpacken">
+            <variable name="file">webswing.zip</variable>
+            <variable name="destination">$(webswingdir)</variable>
+          </ProcedureCall>
+          <ProcedureCall id="_1pPJ" procedure="qfs.shellutils.deleteFile">
+            <variable name="file">$(webswingdir)/webswing.zip</variable>
+          </ProcedureCall>
+        </BasicSequence>
+      </Procedure>
+    </Package>
+    <Package id="_1pOK" name="util">
+      <comment>Hilfsmethoden für Dateioperationen.</comment>
+      <Procedure id="_q" name="download">
+        <variable name="fileURL"/>
+        <variable name="targetDir"/>
+        <variable name="targetName"/>
+        <ServerScriptStep id="_1pPT">
+          <code>print("Lade die Webswing Anwendung herunter. Dies kann etwas Zeit in Anspruch nehmen...")</code>
+        </ServerScriptStep>
+        <RequestStep id="_1pPS" requestmethod="GET"
+                     responsefile="$(targetDir)${system:file.separator}$(targetName)"
+                     url="$(fileURL)"/>
+      </Procedure>
+      <Procedure id="_1pO-" name="entpacken">
+        <variable name="file">$(file)</variable>
+        <variable name="destination">$(destination)</variable>
+        <ServerScriptStep id="_1pPI" name="Archiv entpacken">
+          <code>import zipfile
+
+destination = rc.lookup("destination")
+zipFile = "%s/%s" % (destination,rc.lookup("file"))
+
+try:
+    zip_ref = zipfile.ZipFile(zipFile, 'r')
+    fnam = zip_ref.filelist[0].filename
+    rc.setLocal("wsdir", fnam.split("/")[0])
+    zip_ref.extractall(rc.lookup("destination"))
+finally :
+    zip_ref.close()
+</code>
+        </ServerScriptStep>
+        <CommentStep id="_2YSN">
+          <heading>&lt;font style="color:green"&gt;Dateien eine Ebene hoch schieben</heading>
+        </CommentStep>
+        <IfSequence id="_1pP7" name="Windows" test="${qftest:windows}">
+          <ShellClientStarter client="move"
+                              command="powershell move $(destination)\$(wsdir)\* $(destination)"
+                              directory="$(webswingdir)" id="_2YR9"/>
+          <ProcessWaiter client="move" id="_2YUw" timeout="30000"/>
+          <ElseSequence id="_1pP9" name="macOS, Linux">
+            <ShellClientStarter client="mv" command="mv $(wsdir)/* ."
+                                directory="$(destination)" id="_1pPA"/>
+            <ProcessWaiter client="mv" id="_1pPB" timeout="30000"/>
+          </ElseSequence>
+        </IfSequence>
+        <ProcedureCall id="_2YRB" procedure="qfs.shellutils.deleteFile">
+          <variable name="file">$(destination)/$(wsdir)</variable>
+        </ProcedureCall>
+      </Procedure>
+    </Package>
+  </PackageRoot>
+  <ExtraSequence id="_4">
+    <ProcedureCall id="_2YTs"
+                   procedure="qfs.jib.options.replaySwingHardMouseEventAs">
+      <variable name="clicktype">hard</variable>
+    </ProcedureCall>
+  </ExtraSequence>
+  <WindowList id="_5">
+    <WebPageStep class="Window" feature="localhost:8080" height="648"
+                 id="localhost:8080" uid="_2YPK" width="1007">
+      <extrafeature name="baseurl" negate="false" regexp="false" state="0">http://localhost:8080/</extrafeature>
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">DOCUMENT</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Window</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">DOCUMENT</extrafeature>
+      <extrafeature name="title" negate="false" regexp="false" state="0">Webswing</extrafeature>
+      <extrafeature name="url" negate="false" regexp="false" state="0">http://localhost:8080/</extrafeature>
+      <ComponentStep class="HTML" classcount="1" classindex="0"
+                     id="localhost:8080.html" uid="_2YPL">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">HTML</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">HTML</extrafeature>
+        <extrafeature name="tag" negate="false" regexp="false" state="0">HTML</extrafeature>
+        <ComponentStep class="BODY" classcount="1" classindex="0"
+                       id="localhost:8080.body" uid="_2YPM">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">BODY</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">BODY</extrafeature>
+          <extrafeature name="tag" negate="false" regexp="false" state="0">BODY</extrafeature>
+          <ComponentStep class="FORM" classcount="1" classindex="0"
+                         feature="webswingLginForm" height="296"
+                         id="localhost:8080.webswingLginForm"
+                         name="webswingLginForm" uid="_2YPN" width="280"
+                         x="364" y="196">
+            <extrafeature name="class" negate="false" regexp="false"
+                          state="0">ws-login-form</extrafeature>
+            <extrafeature name="id" negate="false" regexp="false" state="1">webswingLginForm</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">FORM</extrafeature>
+            <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                          state="0">webswingLginForm</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">FORM</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">FORM</extrafeature>
+            <ComponentStep class="TextField" classcount="2" classindex="0"
+                           feature="username" height="48"
+                           id="localhost:8080.nameInput" name="nameInput"
+                           uid="_2YPS" width="280" x="0" y="106">
+              <extrafeature name="class" negate="false" regexp="false"
+                            state="0">ws-form-field ws-form-addon</extrafeature>
+              <extrafeature name="id" negate="false" regexp="false" state="1">nameInput</extrafeature>
+              <extrafeature name="name" negate="false" regexp="false"
+                            state="1">username</extrafeature>
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">INPUT:TEXT</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">TextField</extrafeature>
+              <extrafeature name="qfs:label" negate="false" regexp="false"
+                            state="1">Username</extrafeature>
+              <extrafeature name="qfs:originalid" negate="false"
+                            regexp="false" state="0">nameInput</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">INPUT:TEXT</extrafeature>
+              <extrafeature name="tag" negate="false" regexp="false"
+                            state="0">INPUT:TEXT</extrafeature>
+            </ComponentStep>
+            <ComponentStep class="PasswordField" classcount="1" classindex="0"
+                           feature="password" height="48"
+                           id="localhost:8080.passwordInput"
+                           name="passwordInput" uid="_2YPU" width="280" x="0"
+                           y="169">
+              <extrafeature name="class" negate="false" regexp="false"
+                            state="0">ws-form-field ws-form-addon</extrafeature>
+              <extrafeature name="id" negate="false" regexp="false" state="1">passwordInput</extrafeature>
+              <extrafeature name="name" negate="false" regexp="false"
+                            state="1">password</extrafeature>
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">INPUT:PASSWORD</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">PasswordField</extrafeature>
+              <extrafeature name="qfs:label" negate="false" regexp="false"
+                            state="1">Password</extrafeature>
+              <extrafeature name="qfs:originalid" negate="false"
+                            regexp="false" state="0">passwordInput</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">INPUT:PASSWORD</extrafeature>
+              <extrafeature name="qfs:type" negate="false" regexp="false"
+                            state="0">TextField:PasswordField</extrafeature>
+              <extrafeature name="tag" negate="false" regexp="false"
+                            state="0">INPUT:PASSWORD</extrafeature>
+            </ComponentStep>
+            <ComponentStep class="Button" classcount="1" classindex="0"
+                           feature="Sign in" height="60"
+                           id="localhost:8080.webswingLginForm.buttonSign_in"
+                           uid="_2YPW" width="320" x="-20" y="256">
+              <extrafeature name="class" negate="false" regexp="false"
+                            state="0">ws-btn-submit</extrafeature>
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">BUTTON:SUBMIT</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">Button</extrafeature>
+              <extrafeature name="qfs:label" negate="false" regexp="false"
+                            state="1">Sign in</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">BUTTON:SUBMIT</extrafeature>
+              <extrafeature name="tag" negate="false" regexp="false"
+                            state="0">BUTTON:SUBMIT</extrafeature>
+              <extrafeature name="value" negate="false" regexp="false"
+                            state="1">Submit</extrafeature>
+            </ComponentStep>
+          </ComponentStep>
+          <ComponentStep class="Button" classcount="1" classindex="0"
+                         feature="This is HTML button. Click me!" height="28"
+                         id="localhost:8080.buttonThis_is_HTML_button._Click_me!"
+                         uid="_2YRh" width="240" x="308" y="154">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">BUTTON:BUTTON</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Button</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">This is HTML button. Click me!</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">BUTTON:BUTTON</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">BUTTON:BUTTON</extrafeature>
+          </ComponentStep>
+          <ComponentStep class="DIV" classcount="30" classindex="28"
+                         feature="confirmDialogResult" height="22"
+                         id="localhost:8080.confirmDialogResult"
+                         name="confirmDialogResult" uid="_2YRk" width="336"
+                         x="260" y="192">
+            <extrafeature name="id" negate="false" regexp="false" state="1">confirmDialogResult</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">DIV</extrafeature>
+            <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                          state="0">confirmDialogResult</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">DIV</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">DIV</extrafeature>
+          </ComponentStep>
+          <ComponentStep class="Link" classcount="5" classindex="2"
+                         feature="Webswing Demo" height="41"
+                         id="localhost:8080.linkWebswing_Demo" uid="_2YTt"
+                         width="128" x="142" y="447">
+            <extrafeature name="href" negate="false" regexp="false" state="0">http://localhost:8080/webswing-demo</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">A</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Link</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Webswing Demo</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">A</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">A</extrafeature>
+          </ComponentStep>
+        </ComponentStep>
+      </ComponentStep>
+    </WebPageStep>
+    <WindowStep class="Window" feature="Webswing Demo" height="700"
+                id="frameWebswing_Demo" uid="_2YTw" width="1000" x="3" y="49">
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">org.webswing.demo.DemoAppFrame</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Window</extrafeature>
+      <extrafeature name="qfs:label" negate="false" regexp="false" state="1">Webswing Demo</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">javax.swing.JFrame</extrafeature>
+      <ComponentStep class="Panel" id="frameWebswing_Demo.scroll" uid="_2YTx"
+                     x="-" y="-">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="2">javax.swing.JScrollPane</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Panel</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JScrollPane</extrafeature>
+        <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Panel:ScrollPanel</extrafeature>
+        <ComponentStep class="Label" classcount="23" classindex="17"
+                       feature="BasicComponentsPanel" height="35"
+                       id="frameWebswing_Demo.labelBasicComponentsPanel"
+                       uid="_2YTy" width="200" x="1" y="391">
+          <extrafeature name="imagehash" negate="false" regexp="false"
+                        state="1">-639495499</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javax.swing.JLabel</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Label</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">BasicComponentsPanel</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JLabel</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Label" classcount="23" classindex="0"
+                       feature="Webswing API" height="35"
+                       id="frameWebswing_Demo.labelWebswing_API" uid="_2YUX"
+                       width="200" x="1" y="6">
+          <extrafeature name="imagehash" negate="false" regexp="false"
+                        state="1">-9026954</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javax.swing.JLabel</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Label</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">Webswing API</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JLabel</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Label" classcount="23" classindex="6"
+                       feature="Basic DnD" height="35"
+                       id="frameWebswing_Demo.labelBasic_DnD" uid="_2YUb"
+                       width="200" x="1" y="205">
+          <extrafeature name="imagehash" negate="false" regexp="false"
+                        state="1">-9026954</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javax.swing.JLabel</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Label</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">Basic DnD</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JLabel</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Label" classcount="23" classindex="18"
+                       feature="DataComponentsPanel" height="35"
+                       id="frameWebswing_Demo.labelDataComponentsPanel"
+                       uid="_2YU7" width="200" x="1" y="426">
+          <extrafeature name="imagehash" negate="false" regexp="false"
+                        state="1">-639495499</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javax.swing.JLabel</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Label</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">DataComponentsPanel</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JLabel</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Label" classcount="23" classindex="12"
+                       feature="Web View" height="35"
+                       id="frameWebswing_Demo.labelWeb_View" uid="_2YUN"
+                       width="200" x="1" y="216">
+          <extrafeature name="imagehash" negate="false" regexp="false"
+                        state="1">-9026954</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javax.swing.JLabel</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Label</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">Web View</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JLabel</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Tree" classcount="1" classindex="0"
+                       id="frameWebswing_Demo.treeJTree:" uid="_2YUA">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javax.swing.JTree</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Tree</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">JTree:</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTree</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameWebswing_Demo.tableJTable:" uid="_2YUH">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">JTable:</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="ComboBox" classcount="1" classindex="0"
+                       height="20" id="frameWebswing_Demo.combo" uid="_2YUJ"
+                       width="66" x="133" y="86">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javax.swing.JComboBox</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">ComboBox</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JComboBox</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="TextArea" classcount="1" classindex="0"
+                       id="frameWebswing_Demo.textWebswing_API" uid="_2YUa">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javax.swing.JTextArea</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">TextArea</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">Webswing API</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTextArea</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Label" classcount="23" classindex="2"
+                       feature="Fonts" height="35"
+                       id="frameWebswing_Demo.labelFonts" uid="_2YUt"
+                       width="200" x="1" y="65">
+          <extrafeature name="imagehash" negate="false" regexp="false"
+                        state="1">-9026954</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javax.swing.JLabel</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Label</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">Fonts</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JLabel</extrafeature>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="Button" classcount="77" classindex="0"
+                     feature="Enabled" height="22"
+                     id="frameWebswing_Demo.buttonEnabled" uid="_2YTz"
+                     width="76" x="341" y="107">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Button</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Enabled</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="ComboBox" classcount="8" classindex="0"
+                     feature="Label: JComboBox:" height="22"
+                     id="frameWebswing_Demo.comboJComboBox:" uid="_2YT+"
+                     width="114" x="341" y="190">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JComboBox</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">ComboBox</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">JComboBox:</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JComboBox</extrafeature>
+        <ComponentStep class="Button" classcount="1" classindex="0"
+                       id="frameWebswing_Demo.button" uid="_2YT-">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">com.formdev.flatlaf.ui.FlatComboBoxUI$$FlatComboBoxButton</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Button</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.plaf.basic.BasicArrowButton</extrafeature>
+          <extrafeature name="qfs:type" negate="false" regexp="false"
+                        state="0">Button:ComboBoxButton</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="TextField" classcount="1" classindex="0"
+                       height="16" id="frameWebswing_Demo.textJComboBox:"
+                       uid="_2YU4" width="80" x="7" y="3">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javax.swing.plaf.basic.BasicComboBoxEditor$$BorderlessTextField</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">TextField</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">JComboBox:</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.plaf.basic.BasicComboBoxEditor$$BorderlessTextField</extrafeature>
+          <extrafeature name="qfs:type" negate="false" regexp="false"
+                        state="0">TextField:ComboBoxTextField</extrafeature>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="TextField" classcount="25" classindex="5"
+                     feature="Label: JTextField:" height="22"
+                     id="frameWebswing_Demo.textJTextField:" uid="_2YUV"
+                     width="114" x="341" y="248">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JTextField</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">TextField</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">JTextField:</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JTextField</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="SplitPanel" classcount="1" classindex="0"
+                     height="572" id="frameWebswing_Demo.split" uid="_2YUd"
+                     width="772" x="214" y="78">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JSplitPane</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">SplitPanel</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JSplitPane</extrafeature>
+        <ComponentStep class="Panel" classcount="12" classindex="5"
+                       feature="Split: Right"
+                       id="frameWebswing_Demo.panelRight" uid="_2YUe">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javax.swing.JPanel</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Panel</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JPanel</extrafeature>
+          <extrafeature name="qfs:type" negate="false" regexp="false"
+                        state="0">Panel:SplitPanelContent</extrafeature>
+          <ComponentStep class="Panel" classcount="6" classindex="3"
+                         feature="JTree" height="288"
+                         id="frameWebswing_Demo.panelJTree" uid="_2YUf"
+                         width="457" x="5" y="279">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">javax.swing.JPanel</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Panel</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">javax.swing.JPanel</extrafeature>
+            <extrafeature name="qfs:type" negate="false" regexp="false"
+                          state="0">Panel:TitledPanel</extrafeature>
+            <ComponentStep class="Panel" classcount="2" classindex="0"
+                           height="265" id="frameWebswing_Demo.scroll7"
+                           uid="_2YUg" width="447" x="5" y="18">
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">javax.swing.JScrollPane</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">Panel</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">javax.swing.JScrollPane</extrafeature>
+              <extrafeature name="qfs:type" negate="false" regexp="false"
+                            state="0">Panel:ScrollPanel</extrafeature>
+              <ComponentStep class="Tree" classcount="1" classindex="0"
+                             id="frameWebswing_Demo.tree" uid="_2YUh">
+                <extrafeature name="qfs:class" negate="false" regexp="false"
+                              state="0">javax.swing.JTree</extrafeature>
+                <extrafeature name="qfs:genericclass" negate="false"
+                              regexp="false" state="0">Tree</extrafeature>
+                <extrafeature name="qfs:systemclass" negate="false"
+                              regexp="false" state="0">javax.swing.JTree</extrafeature>
+              </ComponentStep>
+            </ComponentStep>
+          </ComponentStep>
+          <ComponentStep class="Panel" classcount="6" classindex="0"
+                         feature="JTextArea" height="274"
+                         id="frameWebswing_Demo.panelJTextArea" uid="_2YUo"
+                         width="457" x="5" y="5">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">javax.swing.JPanel</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Panel</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">javax.swing.JPanel</extrafeature>
+            <extrafeature name="qfs:type" negate="false" regexp="false"
+                          state="0">Panel:TitledPanel</extrafeature>
+            <ComponentStep class="Panel" classcount="2" classindex="0"
+                           height="251" id="frameWebswing_Demo.scroll9"
+                           uid="_2YUp" width="447" x="5" y="18">
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">javax.swing.JScrollPane</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">Panel</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">javax.swing.JScrollPane</extrafeature>
+              <extrafeature name="qfs:type" negate="false" regexp="false"
+                            state="0">Panel:ScrollPanel</extrafeature>
+              <ComponentStep class="TextArea" classcount="1" classindex="0"
+                             id="frameWebswing_Demo.text" uid="_2YUq">
+                <extrafeature name="qfs:class" negate="false" regexp="false"
+                              state="0">javax.swing.JTextArea</extrafeature>
+                <extrafeature name="qfs:genericclass" negate="false"
+                              regexp="false" state="0">TextArea</extrafeature>
+                <extrafeature name="qfs:systemclass" negate="false"
+                              regexp="false" state="0">javax.swing.JTextArea</extrafeature>
+              </ComponentStep>
+            </ComponentStep>
+          </ComponentStep>
+        </ComponentStep>
+        <ComponentStep class="Panel" classcount="12" classindex="0"
+                       feature="Split: Left" id="frameWebswing_Demo.panelLeft"
+                       uid="_2YUj" x="0" y="0">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javax.swing.JPanel</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Panel</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JPanel</extrafeature>
+          <extrafeature name="qfs:type" negate="false" regexp="false"
+                        state="0">Panel:SplitPanelContent</extrafeature>
+          <ComponentStep class="Panel" classcount="4" classindex="1"
+                         feature="JList" height="291"
+                         id="frameWebswing_Demo.panelJList" uid="_2YUk"
+                         width="290" x="5" y="276">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">javax.swing.JPanel</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Panel</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">javax.swing.JPanel</extrafeature>
+            <extrafeature name="qfs:type" negate="false" regexp="false"
+                          state="0">Panel:TitledPanel</extrafeature>
+            <ComponentStep class="Panel" classcount="2" classindex="0"
+                           height="268" id="frameWebswing_Demo.scroll8"
+                           uid="_2YUl" width="280" x="5" y="18">
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">javax.swing.JScrollPane</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">Panel</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">javax.swing.JScrollPane</extrafeature>
+              <extrafeature name="qfs:type" negate="false" regexp="false"
+                            state="0">Panel:ScrollPanel</extrafeature>
+              <ComponentStep class="List" classcount="1" classindex="0"
+                             id="frameWebswing_Demo.list" uid="_2YUm">
+                <extrafeature name="qfs:class" negate="false" regexp="false"
+                              state="0">javax.swing.JList</extrafeature>
+                <extrafeature name="qfs:genericclass" negate="false"
+                              regexp="false" state="0">List</extrafeature>
+                <extrafeature name="qfs:systemclass" negate="false"
+                              regexp="false" state="0">javax.swing.JList</extrafeature>
+              </ComponentStep>
+            </ComponentStep>
+          </ComponentStep>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="Label" classcount="27" classindex="2"
+                     feature="Color and font test:" height="300"
+                     id="frameWebswing_Demo.labelColor_and_font_test:"
+                     uid="_2YUv" width="600" x="300" y="115">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JLabel</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Label</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Color and font test:
+The Quick Brown Fox Jumps Over The Lazy Dog test 
+The Quick Brown Fox Jumps Over The Lazy Dog 
+The Quick Brown Fox Jumps Over The Lazy Dog 
+underline line-through 
+superscript Normal Subscript 
+normal bold italic 
+1234567890
+¡¢£½¦&#8364;©«®°±²´¨</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JLabel</extrafeature>
+      </ComponentStep>
+    </WindowStep>
+    <WindowStep class="Dialog" feature="Option auswählen" height="142"
+                id="dialogOption_auswählen" modal="true" uid="_2YRi"
+                width="268" x="369" y="328">
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JDialog</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Dialog</extrafeature>
+      <extrafeature name="qfs:label" negate="false" regexp="false" state="1">Option auswählen</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">javax.swing.JDialog</extrafeature>
+      <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Window:Dialog</extrafeature>
+      <ComponentStep class="Button" classcount="3" classindex="0" feature="Ja"
+                     height="27" id="dialogOption_auswählen.buttonJa"
+                     uid="_2YRj" width="42" x="57" y="97">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Button</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Ja</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+      </ComponentStep>
+    </WindowStep>
+    <WindowStep class="Dialog" feature="Meldung" height="142"
+                id="dialogMeldung" modal="true" uid="_2YRr" width="334"
+                x="336" y="328">
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JDialog</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Dialog</extrafeature>
+      <extrafeature name="qfs:label" negate="false" regexp="false" state="1">Meldung</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">javax.swing.JDialog</extrafeature>
+      <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Window:Dialog</extrafeature>
+      <ComponentStep class="Button" classcount="1" classindex="0" feature="OK"
+                     height="27" id="dialogMeldung.buttonOK" uid="_2YRs"
+                     width="44" x="272" y="97">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Button</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">OK</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="Label" classcount="2" classindex="0"
+                     feature="&#34;Winky&#34; dropped on top of &#34;Dolley Madison&#34;"
+                     height="15"
+                     id="dialogMeldung.label&#34;Winky&#34;_dropped_on_top_of_&#34;Dolley_Madison&#34;"
+                     uid="_2YRu" width="235" x="81" y="51">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JLabel</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Label</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">"Winky" dropped on top of "Dolley Madison"</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JLabel</extrafeature>
+      </ComponentStep>
+    </WindowStep>
+  </WindowList>
+</RootStep>

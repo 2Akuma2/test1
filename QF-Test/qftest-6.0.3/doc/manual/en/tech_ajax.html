@@ -1,0 +1,622 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Special support for various web frameworks</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_ajax"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_customajax.html#sec_customajax"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 47.1&nbsp;Improving component recognition with a CustomWebResolver" title="Previous Chapter: 47.1&nbsp;Improving component recognition with a CustomWebResolver"></a></td><td class="navicon"><a href="tech_webconnectionmode.html#sec_webconnectionmodes"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 47.3&nbsp;Browser connection mode" title="Next Page: 47.3&nbsp;Browser connection mode"></a></td><td class="navicon"><a href="tech_webconnectionmode.html#sec_webconnectionmodes"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 47.3&nbsp;Browser connection mode" title="Next Chapter: 47.3&nbsp;Browser connection mode"></a></td><td class="navicon"><a href="tech_web.html#sec_web"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 47&nbsp;Web" title="Chapter Overview: 47&nbsp;Web"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_ajax">47.2</a></span>
+</div>
+<a href="contents.html#toc_sec_ajax">Special support for various web frameworks</a>
+</h4>
+        
+        
+<p>
+          The acronym <em>AJAX</em> for "Asynchronous JavaScript and XML" is generally associated
+          with modern web applications that provide a more interactive look and feel than
+          classical &lt;FORM&gt; based applications, almost comparable to
+          desktop applications. Behind this common acronym there is a whole zoo of web frameworks that
+          drive those applications, each with different key aspects and unique widget sets. Such
+          frameworks pose a problem for QF-Test and in fact any automated testing tool for several
+          reasons:
+        </p>
+        
+<ul>
+          
+<li>
+            The actual component hierarchy is created automatically from abstract widgets like
+            Buttons or Lists. Often each widget is implemented as a number of
+            &lt;DIV&gt; nodes. This leads to very deeply nested hierarchies
+            with very little structure.
+          </li>
+          
+<li>
+            IDs are either not assigned at all or automatically created and thus with
+            regression tests worse than
+            useless.
+          </li>
+          
+<li>
+            The asynchronous communication with the web server and dynamic creation of DOM nodes
+            may cause timing-related problems.
+          </li>
+        
+</ul>
+        
+<p>
+          There is no panacea to address these problems in a generic way. In most cases QF-Test can
+          interact with AJAX applications out-of-the-box, but component recognition and
+          performance are not ideal. Optimal testability can only be achieved with special case
+          handling that exactly fits a given framework and takes advantage of its peculiarities.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+          The video <a href="https://www.qfs.de/en/yt/web-test-automation-40.html" class="videolink" target="_blank">'Dealing with the
+          explosion of complexity in web test automation'</a> gives you a good idea of how QF-Test handles a
+          deeply nested DOM structure.
+        </p>
+        
+<p>
+          For the following list of frameworks QF-Test provides resolvers for optimized handling:
+        </p>
+        
+<a name="table_toolkits"></a><a name="table_47.6"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" textwidth="\linewidth">
+            
+<tr>
+              
+<th align="center" rowspan="1" colspan="1">Framework name </th>
+              <th align="center" rowspan="1" colspan="1">Homepage</th>
+              <th align="center" rowspan="1" colspan="1">Short name</th>
+            
+</tr>
+            
+<tr>
+              
+<td align="left" rowspan="1" colspan="1">Angular</td>
+              <td align="left" rowspan="1" colspan="1"><a href="https://angular.io" shape="rect">angular.io</a></td>
+              <td rowspan="1" colspan="1"><code>angular</code></td>
+            
+</tr>
+            
+<tr>
+              
+<td align="left" rowspan="1" colspan="1">Ext JS</td>
+              <td align="left" rowspan="1" colspan="1"><a href="https://www.sencha.com/products/extjs/" shape="rect">sencha.com/products/extjs</a></td>
+              <td rowspan="1" colspan="1"><code>extjs</code></td>
+            
+</tr>
+            
+<tr>
+              
+<td align="left" rowspan="1" colspan="1">Google Web Toolkit (GWT)</td>
+              <td align="left" rowspan="1" colspan="1"><a href="http://www.gwtproject.org" shape="rect">gwtproject.org</a></td>
+              <td rowspan="1" colspan="1"><code>gwt</code></td>
+            
+</tr>
+            
+<tr>
+              
+<td align="left" rowspan="1" colspan="1">ICEfaces</td>
+              <td align="left" rowspan="1" colspan="1"><a href="http://icesoft.org" shape="rect">icesoft.org</a></td>
+              <td rowspan="1" colspan="1"><code>icefaces</code></td>
+            
+</tr>
+            
+<tr>
+              
+<td align="left" rowspan="1" colspan="1">jQuery UI</td>
+              <td align="left" rowspan="1" colspan="1"><a href="https://jqueryui.com" shape="rect">jqueryui.com</a></td>
+              <td rowspan="1" colspan="1"><code>jqueryui</code></td>
+            
+</tr>
+            
+<tr>
+              
+<td align="left" rowspan="1" colspan="1">jQuery EasyUI</td>
+              <td align="left" rowspan="1" colspan="1"><a href="https://jeasyui.com" shape="rect">jeasyui.com</a></td>
+              <td rowspan="1" colspan="1"><code>jeasyui</code></td>
+            
+</tr>
+            
+<tr>
+              
+<td align="left" rowspan="1" colspan="1">Kendo UI</td>
+              <td align="left" rowspan="1" colspan="1"><a href="https://www.telerik.com/kendo-ui" shape="rect">telerik.com/kendo-ui</a></td>
+              <td rowspan="1" colspan="1"><code>kendoui</code></td>
+            
+</tr>
+            
+<tr>
+              
+<td align="left" rowspan="1" colspan="1">Prime Faces</td>
+              <td align="left" rowspan="1" colspan="1"><a href="https://www.primefaces.org" shape="rect">primefaces.org</a></td>
+              <td rowspan="1" colspan="1"><code>primefaces</code></td>
+            
+</tr>
+            
+<tr>
+              
+<td align="left" rowspan="1" colspan="1">Qooxdoo</td>
+              <td align="left" rowspan="1" colspan="1"><a href="https://qooxdoo.org" shape="rect">qooxdoo.org</a></td>
+              <td rowspan="1" colspan="1"><code>qooxdoo</code></td>
+            
+</tr>
+            
+<tr>
+              
+<td align="left" rowspan="1" colspan="1">Rich Ajax Platform (RAP)</td>
+              <td align="left" rowspan="1" colspan="1"><a href="https://www.eclipse.org/rap/" shape="rect">eclipse.org/rap</a></td>
+              <td rowspan="1" colspan="1"><code>rap</code></td>
+            
+</tr>
+            
+<tr>
+              
+<td align="left" rowspan="1" colspan="1">RichFaces</td>
+              <td align="left" rowspan="1" colspan="1"><a href="https://richfaces.jboss.org" shape="rect">jboss.org/richfaces</a></td>
+              <td rowspan="1" colspan="1"><code>richfaces</code></td>
+            
+</tr>
+            
+<tr>
+              
+<td align="left" rowspan="1" colspan="1">Smart GWT</td>
+              <td align="left" rowspan="1" colspan="1"><a href="https://smartclient.com" shape="rect">smartclient.com</a></td>
+              <td rowspan="1" colspan="1"><code>smartgwt</code></td>
+            
+</tr>
+            
+<tr>
+              
+<td align="left" rowspan="1" colspan="1">Vaadin</td>
+              <td align="left" rowspan="1" colspan="1"><a href="https://vaadin.com" shape="rect">vaadin.com</a></td>
+              <td rowspan="1" colspan="1"><code>vaadin</code></td>
+            
+</tr>
+            
+<tr>
+              
+<td align="left" rowspan="1" colspan="1">ZK</td>
+              <td align="left" rowspan="1" colspan="1"><a href="https://www.zkoss.org" shape="rect">zkoss.org</a></td>
+              <td rowspan="1" colspan="1"><code>zk</code></td>
+            
+</tr>
+          
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;47.6</a>:&nbsp;&nbsp;Supported web frameworks</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          QF-Test is even able to automatically detect whether one of those frameworks is used in your
+          web application and to install the respective resolver.
+        </p>
+
+        
+        
+
+        
+<a name="sec_N171576"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N171576">47.2.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N171576">AJAX resolver concepts</a>
+</h5>
+          
+<p>
+            A web framework resolver is a set of resolvers and other methods implemented specifically for
+            a given web framework. Most notably QF-Test tries to assign individual classes matching
+            the high-level widgets to DOM nodes and remove intermediate nodes that are just an
+            implementation detail. 'Name', 'Feature' and 'Extra feature' attributes are
+            determined in a way suitable for the framework and events are simulated on the correct
+            DOM node in a way that most closely matches user interaction. These measures
+            drastically reduce the component hierarchy and increase the reliability and
+            performance of component recognition and replay. Timing and synchronization are also
+            addressed.
+          </p>
+          
+<p>
+            As a necessary consequence the components and events recorded for a given web
+            application vary drastically with and without an active web framework resolver and are not
+            compatible with each other. Thus the decision whether or not to use an web framework resolver
+            should be made as early as possible, otherwise tests will either need to be
+            reimplemented after activating the resolver or tests with and without resolver must be
+            cleanly separated. If a resolver is available for your application you should
+            practically always use it. The only exception is if the existing test-base is already
+            too large, mostly complete and stable.
+          </p>
+          
+<p>
+            Implementing web framework resolvers is an ongoing process. As changes to a resolver can have
+            consequences in terms of how components are recorded and recognized we need to make
+            sure that you can update your QF-Test version without losing backwards compatibility with
+            existing tests. To that end, web framework resolvers have their own three-digit versioning
+            scheme, starting with version 1.0.0, with the following meaning:
+          </p>
+          
+<ul>
+            
+<li>
+              A change in the minor version, e.g. 1.0.1, means that compatibility is not affected.
+            </li>
+            
+<li>
+              Medium version changes, e.g. 1.1.0, imply that tests recorded with a lower medium
+              version should still replay, but recording additional sequences may record
+              components in a different way. This is not critical, but you may want to avoid it in
+              case the benefits of the newer version don't outweigh it.
+            </li>
+            
+<li>
+              A major version change, e.g. 2.0.0, can be incompatible even for replay so that
+              manual updates or new recording of the affected components may be required.
+            </li>
+          
+</ul>
+          
+<p>
+            Web framework resolvers are activated via the procedure <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.ajax.installCustomWebResolver"><code>qfs.web.ajax.installCustomWebResolver</code></a> in the standard library
+            <code>qfs.qft</code> where you have to provide the version to use. You can choose to
+            specify only the major version, in which case QF-Test uses the latest medium.minor
+            version available for this major version. This is normally the best option and used in
+            the SUT startup sequences created with QF-Test's Quickstart Wizard (see <a href="user_quickstart.html#usec_quickstart">chapter 3</a>). Alternatively you can specify major.medium version or even
+            major.medium.minor to use an exact version and thus run your tests with the resolver
+            version with which they were created.
+          </p>
+        
+
+        
+         
+
+        
+<a name="sec_ajax_ids"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_ajax_ids">47.2.2</a></span>
+</div>
+<a href="contents.html#toc_sec_ajax_ids">Setting unique IDs</a>
+</h5>
+          
+<p>
+            Any web framework has its custom way of setting unique IDs.
+            Please find details about the supported ones in the following chapter:
+          </p>
+
+          
+<a name="sec_N171639"></a>
+            
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N171639">47.2.2.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N171639">Angular</a>
+</h5>
+            
+<p>
+              The simplest solution is to set the 'ID' attribute <code> &lt;div id="myId"/&gt; </code>
+              for any required component.
+            </p>
+          
+
+          
+<a name="sec_N171652"></a>
+            
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N171652">47.2.2.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N171652">Ext JS</a>
+</h5>
+            
+<p>
+              You can set IDs like <code>
+<br>
+                var container = Ext.create('Ext.container.Container', {<br>
+                id: 'MyContainerId',<br>
+                ...
+                });</code>.
+            </p>
+            
+<p>
+              As alternative you can also call
+              <code>container.getEl().set({ 'qfs-id': 'myId' });</code>. In
+              this case you will need to implement a NameResolver for reading
+              'qfs-id' as name for QF-Test.
+            </p>
+          
+
+          
+<a name="sec_N171676"></a>
+            
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N171676">47.2.2.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N171676">GWT</a>
+</h5>
+            
+<p>
+              The simplest way is calling the method
+              <code>widget.getElement().setId("myId");</code>
+              for the required widgets.
+            </p>
+            
+<p>
+              As an alternative you can also call
+              <code>widget.ensureDebugId("myId")</code>. But if you want to
+              use that method you need to modify your <code>xxx.gwt.xml</code>
+              file to enable debug IDs. Add <code> &lt;inherits
+                name="com.google.gwt.user.Debug"/&gt;</code> to the file.
+            </p>
+            
+<p>
+              It's also possible to set a custom identifier which can then be used via a
+              NameResolver.For example call <code>setAttribute("qfs-id", "myId")</code> to set an
+              'qfs-id' attribute.
+            </p>
+          
+
+      
+<a name="sec_N171707"></a>
+            
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N171707">47.2.2.4</a></span>
+</div>
+<a href="contents.html#toc_sec_N171707">ICEfaces</a>
+</h5>
+            
+<p>
+              The simplest solution is to set the 'ID' attribute <code> &lt;p:inputText id="myId"/&gt; </code>
+              for any required component in the xhtml definition.
+            </p>
+          
+
+
+      
+<a name="sec_N171720"></a>
+            
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N171720">47.2.2.5</a></span>
+</div>
+<a href="contents.html#toc_sec_N171720">jQuery UI</a>
+</h5>
+            
+<p>
+              The simplest solution is to set the 'ID' attribute <code> &lt;p:inputText id="myId"/&gt; </code>
+              for any required component. Additionally, you can give an existing element an id with:
+              <code> $(element).attr("id","myId"); </code>
+            
+</p>
+          
+
+        
+<a name="sec_N171736"></a>
+            
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N171736">47.2.2.6</a></span>
+</div>
+<a href="contents.html#toc_sec_N171736">jQuery EasyUI</a>
+</h5>
+            
+<p>
+              The simplest solution is to set the 'ID' attribute <code> &lt;p:inputText id="myId"/&gt; </code>
+              for any required component.
+            </p>
+          
+
+                    
+<a name="sec_N171749"></a>
+            
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N171749">47.2.2.7</a></span>
+</div>
+<a href="contents.html#toc_sec_N171749">Kendo UI</a>
+</h5>
+            
+<p>
+              You need to set the 'ID' attribute in your source
+              code or graphical editor.
+            </p>
+          
+
+      
+<a name="sec_N171759"></a>
+            
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N171759">47.2.2.8</a></span>
+</div>
+<a href="contents.html#toc_sec_N171759">PrimeFaces</a>
+</h5>
+            
+<p>
+              The simplest solution is to set the 'ID' attribute <code> &lt;p:inputText id="myId"/&gt; </code>
+              for any required component in the xhtml definition.
+            </p>
+          
+
+        
+<a name="sec_N171772"></a>
+            
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N171772">47.2.2.9</a></span>
+</div>
+<a href="contents.html#toc_sec_N171772">Qooxdoo</a>
+</h5>
+            
+<p>
+            There is no default mechanism. You can either apply a custom attribute to the
+            generated DOM nodes or add a custom attribute to the <code>setData</code> method
+            of the widget. You can evaluate those attributes in a resolver.
+            </p>
+          
+
+          
+<a name="sec_N171785"></a>
+            
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N171785">47.2.2.10</a></span>
+</div>
+<a href="contents.html#toc_sec_N171785">RAP</a>
+</h5>
+            
+<p>
+              Starting with RAP version 2.2 a name set via <code>widget.setData("name", "myId")</code>
+              is retrieved automatically by QF-Test, just as for SWT. This field can only be used if it is registered with <code>WidgetUtil.registerDataKeys("name");</code> before.
+            </p>
+            
+<p>
+              For RAP versions older than  3.0.0 the following technique is also available. It is
+              discouraged because it deviates from the SWT standard and requires additional
+              settings for the webserver:
+            </p>
+            
+<p>
+              Call the method <code>widget.setData(WidgetUtil.CUSTOM_WIDGET_ID, "myId");</code>
+              for the required widgets.
+            </p>
+            
+<p>
+              After applying IDs to components you need to modify your
+              webserver environment and specify the following
+              parameter <code> -Dorg.eclipse.rap.rwt.enableUITests=true</code>
+              before launching the webserver.
+            </p>
+            
+<p>
+              Note: The VM argument was renamed in RAP 2.0. For RAP versions older than 2.0 its
+              name is <code>-Dorg.eclipse.rap.rwt.enableUITests=true</code>.
+            </p>
+          
+
+          
+<a name="sec_N171822"></a>
+            
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N171822">47.2.2.11</a></span>
+</div>
+<a href="contents.html#toc_sec_N171822">RichFaces</a>
+</h5>
+            
+<p>
+              You need to set the 'ID' attribute in your source
+              code or graphical editor.
+            </p>
+          
+
+          
+<a name="sec_N171832"></a>
+            
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N171832">47.2.2.12</a></span>
+</div>
+<a href="contents.html#toc_sec_N171832">Smart GWT</a>
+</h5>
+            
+<p>
+              The simplest solution is to call <code>widget.setID("id")</code>
+              for any required component.
+            </p>
+          
+
+          
+<a name="sec_N171845"></a>
+            
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N171845">47.2.2.13</a></span>
+</div>
+<a href="contents.html#toc_sec_N171845">Vaadin</a>
+</h5>
+            
+<p>
+              The simplest solution is to call <code>widget.setId("id")</code>
+              (<code>widget.setDebugId("id")</code> for Vaadin version &lt; 7)
+              for any required component.
+            </p>
+            
+<p>
+              You can also set a custom stylesheet class, which you could read with a
+              NameResolver. Therefore call
+              <code>widget.setStyleName("qfs-id=myId")</code>.
+            </p>
+          
+
+      
+<a name="sec_N171867"></a>
+            
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N171867">47.2.2.14</a></span>
+</div>
+<a href="contents.html#toc_sec_N171867">ZK</a>
+</h5>
+            
+<p>
+          QF-Test uses the widget ID, which is also used in the
+          <code>zul</code> files, so you should get meaningful IDs for
+          most of the objects.
+        </p>
+        
+<p>
+          The ZK framework also offers a custom IDGenerator to set such IDs.
+          But implementing this could be quite exhaustive. In this case it
+              might be a better choice to rely on the default mechanism of QF-Test.
+            </p>
+          
+
+        
+
+        
+
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_customajax.html#sec_customajax"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 47.1&nbsp;Improving component recognition with a CustomWebResolver" title="Previous Chapter: 47.1&nbsp;Improving component recognition with a CustomWebResolver"></a></td><td class="navicon"><a href="tech_webconnectionmode.html#sec_webconnectionmodes"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 47.3&nbsp;Browser connection mode" title="Next Page: 47.3&nbsp;Browser connection mode"></a></td><td class="navicon"><a href="tech_webconnectionmode.html#sec_webconnectionmodes"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 47.3&nbsp;Browser connection mode" title="Next Chapter: 47.3&nbsp;Browser connection mode"></a></td><td class="navicon"><a href="tech_web.html#sec_web"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 47&nbsp;Web" title="Chapter Overview: 47&nbsp;Web"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

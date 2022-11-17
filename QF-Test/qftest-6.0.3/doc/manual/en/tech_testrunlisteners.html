@@ -1,0 +1,588 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Test run listeners</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_testrunlisteners"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_gef.html#sec_gef"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 50.6&nbsp;
+          Working with the Eclipse Graphical Editing Framework (GEF)
+        " title="Previous Chapter: 50.6&nbsp;
+          Working with the Eclipse Graphical Editing Framework (GEF)
+        "></a></td><td class="navicon"><a href="tech_miscellaneouslisteners.html#sec_miscellaneouslisteners"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 50.8&nbsp;ResetListener" title="Next Page: 50.8&nbsp;ResetListener"></a></td><td class="navicon"><a href="tech_miscellaneouslisteners.html#sec_miscellaneouslisteners"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 50.8&nbsp;ResetListener" title="Next Chapter: 50.8&nbsp;ResetListener"></a></td><td class="navicon"><a href="tech_extensions.html#sec_extensions"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 50&nbsp;Extension APIs" title="Chapter Overview: 50&nbsp;Extension APIs"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="margin"><a name="new_N181445"></a><span class="note">3.1+</span></span><span class="numtitle"><a href="contents.html#toc_sec_testrunlisteners">50.7</a></span>
+</div>
+<a href="contents.html#toc_sec_testrunlisteners">Test run listeners</a>
+</h4>
+        
+
+        
+<p>
+          Once registered with the current run-context via <code>rc.addTestRunListener</code>, an
+          implementation of the <code>TestRunListener</code> interface will get notified whenever
+          test execution enters or exits a node and when a problem occurs. An illustrative example
+          is provided in the test-suite <code>TestRunListener.qft</code>, located in the directory
+          <code>demo/runlistener</code> in your QF-Test installation. Best deactivate the debugger
+          before running the whole test-suite.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Note</span></span> A variant of the <code>TestRunListener</code> interface called
+          <code>DaemonTestRunLister</code> can be used to monitor a test-run remotely via the
+          daemon API. It is described in <a href="tech_daemon_api.html#sec_daemontestrunlistener">subsection 51.2.5</a>.
+        </p>
+        
+<p>
+          The run listener API consists of the following classes:
+        </p>
+
+        
+        
+
+        
+<a name="sec_N181487"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N181487">50.7.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N181487">The <code class="interfacedef">TestRunListener</code> interface</a>
+</h5>
+          
+<p>
+            The interface <code>de.qfs.apps.qftest.extensions.qftest.TestRunListener</code> has
+            to be implemented and registered with a run-context via
+            <code>rc.addTestRunListener()</code>.
+          </p>
+          
+<p>
+            
+<span class="margin"><span class="note">Note</span></span>
+            To implement the interface you can also derive from the class
+            <code>de.qfs.apps.qftest.extensions.qftest.AbstractTestRunListener</code>
+            which provides empty implementations of all methods so you only need to implement
+            those methods you are interested in.
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void nodeEntered(TestRunEvent event)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Notify the listener that a node is being entered.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>event</code></strong></td><td class="paramdesc">The event containing the details.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void nodeExited(TestRunEvent event)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Notify the listener that a node was just exited.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>event</code></strong></td><td class="paramdesc">The event containing the details.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void problemOccurred(TestRunEvent event)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Notify the listener that a problem occurred.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>event</code></strong></td><td class="paramdesc">The event containing the details.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void runStarted(TestRunEvent event)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Notify the listener that a test-run was started.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>event</code></strong></td><td class="paramdesc">The event containing the details, irrelevant in this case.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void runStopped(TestRunEvent event)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Notify the listener that a test-run was stopped.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>event</code></strong></td><td class="paramdesc">The event containing the details, irrelevant in this case.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+
+        
+        
+
+        
+<a name="sec_N181607"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N181607">50.7.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N181607">The class <code class="classdef">TestRunEvent</code></a>
+</h5>
+          
+<p>
+            The class <code>de.qfs.apps.qftest.extensions.qftest.TestRunEvent</code> holds
+            information about the currently executed nodes and the current error state. It defines
+            the following constants for execution states and error levels:
+            <code>STATE_NOT_IMPLEMENTED</code>, <code>STATE_SKIPPED</code>, <code>STATE_OK</code>,
+            <code>STATE_WARNING</code>, <code>STATE_ERROR</code> and <code>STATE_EXCEPTION</code>.
+            The first two states apply only to <a href="sequences.html#step_TestSet" shape="rect">'Test-set'</a> and <a href="sequences.html#step_TestCase" shape="rect">'Test-case'</a> nodes.
+          </p>
+          
+<p>
+            In the <code>runStopped</code> method you can also check whether
+            the test run has been interrupted or completed normally. Therefore
+            the constants
+            <code>STATE_RUN_INTERRUPTED</code> and
+            <code>STATE_RUN_TERMINATED</code> are defined.
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>JsonObject asJsonValue()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Serializes the event object as <code>JsonObject</code>. This can be used to simplify
+              the interaction of TestRunListeners with Json-based tools like web services or databases. The API
+              of the Json library embedded in QF-Test is documented in the file <code>doc/javadoc/json.zip</code> in
+              your QF-Test installation</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+                The object as <code>JsonObject</code>.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int getErrors()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get the error count for the exited node.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+                The total error count for the node just exited. Only available for
+                <code>nodeExited</code>.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int getExceptions()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get the exception count for the exited node.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+                The total exception count for the node just exited. Only available for
+                <code>nodeExited</code>.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int getLocalState()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get the execution state for the current node.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+                The local execution state for the current node, the highest error level of this
+                node and its children regardless of whether this state propagates to the top.
+                Available only for <code>nodeExited</code> and <code>problemOccurred</code>. For
+                'Test-set' and 'Test-case' nodes the local state can also be one of
+                <code>STATE_SKIPPED</code> or <code>STATE_NOT_IMPLEMENTED</code>.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getMessage()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get the current error message.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+                The message for the current warning, error or exception. Only available for
+                <code>problemOccurred</code>.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>TestSuiteNode getNode()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get the current node</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+                The current node or null for <code>runStarted</code> and <code>runStopped</code>.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>TestSuiteNode[] getPath()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get the whole tree path for the current node.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+                The path for the current node as seen from the run-log, equivalent to the
+                execution stack, or null for <code>runStarted</code> and <code>runStopped</code>.
+                The last node in the array is the current node.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int getState()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get the overall execution state for the current node.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+                The overall propagating state for the current node, the highest error level of
+                this node and its children, possibly limited by <a href="sequences.html#att_BasicSequence_maxerror" shape="rect">'Maximum error level'</a>
+                attributes. Available only for <code>nodeExited</code> and
+                <code>problemOccurred</code>.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int getWarnings()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get the warning count for the exited node.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+                The total warning count for the node just exited. Only available for
+                <code>nodeExited</code>.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+
+        
+        
+
+        
+<a name="sec_N181879"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N181879">50.7.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N181879">The class <code class="classdef">TestSuiteNode</code></a>
+</h5>
+          
+<p>
+            A <code>de.qfs.apps.qftest.extensions.qftest.TestSuiteNode</code> is a representation
+            of a QF-Test node that is currently being executed, including information about the type
+            of node, its name, comment, etc.
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>JsonObject asJsonValue()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Serializes the node as <code>JsonObject</code>.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+                The object as <code>JsonObject</code>.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getComment()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get the comment of the node.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">Get the expanded comment of the node.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getComponentId()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get the QF-Test ID of the component of the node, if available.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">Get the expanded QF-Test ID of the component of the node.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getExpandedTreeName()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Get the expanded tree name of the node.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+                The name of the node as displayed in the test-suite tree wth expanded variables.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getId()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get the ID of the node.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The ID of the node.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getName()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get the name of the node.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+                The name of the node or null if that type of node does not have a 'Name'
+                attribute.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getReportName()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get the report name of the node.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+                The expanded report name for <a href="sequences.html#step_TestSet" shape="rect">'Test-set'</a> and <a href="sequences.html#step_TestCase" shape="rect">'Test-case'</a> nodes. The normal
+                name for other nodes or null if undefined.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getSuite()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Get the test-suite to which the node belongs.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The full path of the test-suite to which the node belongs.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getTreeName()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Get the tree name of the node.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+                The name of the node as displayed in the test-suite tree.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getType()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get the type of the node.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+                The type of node, the last part of the name of the class implementing the node's
+                behavior.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getVerboseReportName()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get the expanded report name or expanded name of the node.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+                The expanded report name for <a href="sequences.html#step_TestSet" shape="rect">'Test-set'</a> and <a href="sequences.html#step_TestCase" shape="rect">'Test-case'</a> nodes.
+                As fallback, the expanded name of the node is returned.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+
+        
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_gef.html#sec_gef"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 50.6&nbsp;
+          Working with the Eclipse Graphical Editing Framework (GEF)
+        " title="Previous Chapter: 50.6&nbsp;
+          Working with the Eclipse Graphical Editing Framework (GEF)
+        "></a></td><td class="navicon"><a href="tech_miscellaneouslisteners.html#sec_miscellaneouslisteners"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 50.8&nbsp;ResetListener" title="Next Page: 50.8&nbsp;ResetListener"></a></td><td class="navicon"><a href="tech_miscellaneouslisteners.html#sec_miscellaneouslisteners"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 50.8&nbsp;ResetListener" title="Next Chapter: 50.8&nbsp;ResetListener"></a></td><td class="navicon"><a href="tech_extensions.html#sec_extensions"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 50&nbsp;Extension APIs" title="Chapter Overview: 50&nbsp;Extension APIs"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

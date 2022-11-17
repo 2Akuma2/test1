@@ -1,0 +1,1133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Dependencies</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_dependencies"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="sequences.html#sec_sequences"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 38.2&nbsp;Test and Sequence nodes" title="Previous Chapter: 38.2&nbsp;Test and Sequence nodes"></a></td><td class="navicon"><a href="datadriver.html#sec_datadriver"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 38.4&nbsp;Data driver" title="Next Page: 38.4&nbsp;Data driver"></a></td><td class="navicon"><a href="datadriver.html#sec_datadriver"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 38.4&nbsp;Data driver" title="Next Chapter: 38.4&nbsp;Data driver"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 38&nbsp;Elements of a test-suite" title="Chapter Overview: 38&nbsp;Elements of a test-suite"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_dependencies">38.3</a></span>
+</div>
+<a href="contents.html#toc_sec_dependencies">Dependencies</a>
+</h4>
+    
+<p>
+      Dependencies are a very powerful feature for handling setup and cleanup requirements for
+      test-cases automatically. The goal is to isolate test-cases so that each one can be run
+      independently without interfering with others. This is a very important requirement for
+      things like testing arbitrary sub-sets of test-cases, for example to re-test only failed
+      tests, or during test-development where it must be possible to quickly run and debug any
+      given test-case.
+    </p>
+    
+
+    
+<a name="step_Dependency"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_Dependency">38.3.1</a></span>
+</div>
+<a href="contents.html#toc_step_Dependency">'Dependency'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/dependency.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            'Dependency' nodes are used to implement advanced, automatic handling of setup
+            and cleanup requirements for <a href="sequences.html#step_TestSet" shape="rect">'Test-sets'</a> and <a href="sequences.html#step_TestCase" shape="rect">'Test-cases'</a>. A detailed
+            description of the 'Dependency' mechanism is given in <a href="user_organization.html#usec_dependencies">section 8.6</a>. This section focuses on formal requirements for the
+            'Dependency' node and its attributes.
+          </p>
+          
+<p>
+            As 'Dependencies' are complex, they should be reused as much as possible. This can be
+            done by grouping 'Test-cases' with identical dependencies in a 'Test-set' and have them
+            inherit the 'Dependency' of the 'Test-set'. However, this mechanism alone is not
+            flexible enough, so a 'Dependency' can also be implemented just like a <a href="procedures.html#step_Procedure" shape="rect">'Procedure'</a>
+            and placed among the <a href="procedures.html#step_PackageRoot" shape="rect">'Procedures'</a> of a test-suite to be referenced from a
+            'Dependency reference' node. For this to work, the <a href="sequences.html#att_TestCase_name" shape="rect">'Name'</a> attribute is
+            mandatory and it also has a list of <a href="#att_Dependency_fallback" shape="rect">'Parameter default values'</a> that can be overridden
+            in the referencing node.
+          </p>
+          
+<p>
+            The <a href="#att_Dependency_discriminator" shape="rect">'Characteristic variables'</a> of a 'Dependency' are part of its identity and play
+            an important role in the dependency resolution mechanism.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> 
+          <a href="rootnode.html#step_RootStep" shape="rect">'Test-suite'</a>, <a href="sequences.html#step_TestSet" shape="rect">'Test-set'</a>, <a href="sequences.html#step_TestCase" shape="rect">'Test-case'</a>, <a href="procedures.html#step_PackageRoot" shape="rect">'Procedures'</a>, <a href="procedures.html#step_Package" shape="rect">'Package'</a>.
+        </p>
+<p>
+<strong>Children:</strong> 
+          Zero or more <a href="#step_DependencyReference" shape="rect">'Dependency references'</a> on which the 'Dependency' is
+          based, optional <a href="#step_SetupSequence" shape="rect">'Setup'</a> and <a href="#step_CleanupSequence" shape="rect">'Cleanup'</a> nodes and an optional
+          <a href="#step_ErrorHandler" shape="rect">'Error handler'</a> followed by zero or more <a href="control.html#step_CatchSequence" shape="rect">'Catch'</a> nodes.
+        </p>
+<p>
+<strong>Execution:</strong> 
+          Normally 'Dependencies' are executed only indirectly in the setup phase of a 'Test-set'
+          or 'Test-case'. If a 'Dependency' node is executed interactively, the dependency stack
+          is resolved as described in <a href="user_organization.html#usec_dependencies">section 8.6</a>.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.9"></a><a name="figure_38.9"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_Dependency.png" target="_blank"><img src="images/att_Dependency.png" alt="Dependency attributes" texscale=".66" width="393" height="506"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.9</a>:&nbsp;&nbsp;'Dependency' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_Dependency_name"></a>
+<dt>'Name'</dt>
+<dd>
+            
+            
+<p>
+              A 'Dependency' is identified by its name, so you should assign a name with a
+              meaning that is easy to recognize and remember.
+            </p>
+          
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty or contain
+          the characters '.' or '#'.</p>
+</dd>
+<a name="att_Dependency_reportname"></a>
+<dt>'Name for run-log and report'</dt>
+<dd>
+      
+<p>
+        A separate name to be used for run-log and report. This is useful to differentiate between
+        multiple executions with potentially different values for the 'Characteristic variables'.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_Dependency_discriminator"></a>
+<dt>'Characteristic variables'</dt>
+<dd>
+      
+<p>
+        These variables are part of a 'Dependency's' identity. During 'Dependency' resolution as
+        described in <a href="user_organization.html#usec_dependencies">section 8.6</a> two 'Dependencies' are considered equal
+        only if they are one and the same node and the run-time values of all their
+        'Characteristic variables' are identical. Additionally, the values of the 'Characteristic variables' are
+        stored during the setup phase of the 'Dependency'. Later, when the 'Dependency' is rolled
+        back, these settings will be temporarily restored for the cleanup phase.
+      </p>
+      
+<p>
+        'Characteristic variables' have the same value at a 'Cleanup' node as during the 
+        execution of the corresponding 'Setup' node - regardless of the value
+        of the variables in the current test-case. 
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_Dependency_forcedexec"></a>
+<dt>'Always execute, even in test-suite and test-set nodes'</dt>
+<dd>
+      
+<p>
+        Normally a 'Dependency' is only executed if it belongs to a 'Test-case' node.
+        'Dependencies' in 'Test-suite' or 'Test-set' nodes are simply inherited by the
+        'Test-case' descendants of these nodes. However, in some cases it is useful to
+        resolve a 'Dependency' early, for example when the 'Dependency' provides parameters
+        for a test-run that are required to evaluate a <a href="sequences.html#att_TestCase_condition" shape="rect">'Condition'</a> of a
+        subsequent 'Test-case'. This can be achieved by activating this option.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_Dependency_forcedcleanup"></a>
+<dt>'Forced cleanup'</dt>
+<dd>
+            
+            
+<p>
+              Normally 'Dependencies' are only rolled back and their cleanup code executed as
+              required by the dependency resolution mechanism described in <a href="user_organization.html#usec_dependencies">section 8.6</a>. In some cases it makes sense to force partial cleanup of
+              the dependency stack immediately after a 'Test-case' finishes. This is what the
+              'Forced cleanup' attribute is for. If this option is activated, the dependency
+              stack will be rolled back at least up to and including this 'Dependency' .
+            </p>
+          
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_Dependency_fallback"></a>
+<dt>'Parameter default values'</dt>
+<dd>
+            
+            
+<p>
+              Here you can define default or fallback values for the
+              'Dependency's' parameters (see <a href="user_variables.html#usec_variables">chapter 6</a>).
+              Defining these values also serves as documentation and is a
+              valuable time-saver when using the dialog to select the
+              'Dependency' for the <a href="#att_DependencyReference_reference" shape="rect">'Referenced dependency'</a> attribute of a
+              <a href="#step_DependencyReference" shape="rect">'Dependency reference'</a>. See <a href="user_gui.html#usec_tables">subsection 2.2.5</a> about how
+              to work with the table.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Variable names no, values yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_Dependency_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_Dependency_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_Dependency_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_DependencyReference"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_DependencyReference">38.3.2</a></span>
+</div>
+<a href="contents.html#toc_step_DependencyReference">'Dependency reference'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/depref.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            A 'Dependency reference' is simply a stand-in for a <a href="#step_Dependency" shape="rect">'Dependency'</a> defined in some
+            other place, typically a <a href="procedures.html#step_Package" shape="rect">'Package'</a>. The name of the referenced 'Dependency' is
+            determined by its <a href="#att_Dependency_name" shape="rect">'Name'</a> and the <a href="procedures.html#att_Package_name" shape="rect">'Names'</a> of its 'Package'
+            parents. These are concatenated with a dot ('.') as separator, starting with the
+            outermost 'Package' and ending in the 'Dependency's' name. Thus to reference a
+            'Dependency' named <code>demoStarted</code> in a 'Package' named <code>Demo</code>
+            that is itself a child of a 'Package' named <code>Main</code>, set the
+            <a href="#att_DependencyReference_reference" shape="rect">'Referenced dependency'</a> attribute to '<code>Main.Demo.demoStarted</code>'.
+          </p>
+          
+<p>
+            See <a href="user_distributed.html#usec_suitereference">section 23.1</a> about how to reference a 'Dependency' in a
+            different test-suite.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> 
+          <a href="rootnode.html#step_RootStep" shape="rect">'Test-suite'</a>, <a href="sequences.html#step_TestSet" shape="rect">'Test-set'</a>, <a href="sequences.html#step_TestCase" shape="rect">'Test-case'</a> and <a href="#step_Dependency" shape="rect">'Dependency'</a>
+        
+</p>
+<p>
+<strong>Children:</strong> None</p>
+<p>
+<strong>Execution:</strong> 
+          Normally 'Dependency references' are executed only indirectly in the setup phase of a
+          'Test-set' or 'Test-case'. If a 'Dependency reference' node is executed interactively, the
+          referenced 'Dependency' is determined and the dependency stack resolved accordingly as
+          described in <a href="user_organization.html#usec_dependencies">section 8.6</a>.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.10"></a><a name="figure_38.10"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_DependencyReference.png" target="_blank"><img src="images/att_DependencyReference.png" alt="Test attributes" texscale=".66" width="393" height="396"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.10</a>:&nbsp;&nbsp;'Dependency reference' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_DependencyReference_reference"></a>
+<dt>'Referenced dependency'</dt>
+<dd>
+            
+            
+<p>
+              The full name of the <a href="#step_Dependency" shape="rect">'Dependency'</a>, created from the <a href="procedures.html#att_Package_name" shape="rect">'Names'</a> of its
+              <a href="procedures.html#step_Package" shape="rect">'Package'</a> parents and its own <a href="#att_Dependency_name" shape="rect">'Name'</a>, joined by a dot.
+	      The "Select dependency" button
+              <img src="../icons/select_dependency.png" style="vertical-align: text-bottom" alt="[Select dependency]" title="Select dependency" width="20" height="20" texscale=".66">
+	      above the attribute brings up a dialog in which you can select the 'Dependency'
+              interactively. By selecting the "Copy parameters" checkbox you can adopt the
+              'Dependency's' <a href="#att_Dependency_fallback" shape="rect">'Parameter default values'</a> as parameters for the 'Dependency reference'
+              node to save typing.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_DependencyReference_namespace"></a>
+<dt>'Dependency namespace'</dt>
+<dd>
+            
+            
+<p>
+              Normally there is only a single stack of dependencies, but in some cases, e.g. when
+              mixing tests for independent SUT clients, it can be useful to have independent sets
+              of dependencies for different parts of the test, so that resolving the dependencies
+              for one part doesn't necessarily tear down everything required for a different part.
+            </p>
+            
+<p>
+              By setting the 'Dependency namespace' attribute of a 'Dependency reference' node you can tell
+              QF-Test to resolve the target dependency in that namespace. The default dependency
+              stack will be completely ignored in that case. If there is a dependency stack
+              remaining from a previous dependency resolution in the same namespace it will be
+              used for comparison instead, otherwise a new stack will be created.
+              For an example please refer to <a href="user_organization.html#usec_dependency_namespaces">Name spaces for Dependencies</a>.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_DependencyReference_forcedexec"></a>
+<dt>'Always execute, even in test-suite and test-set nodes'</dt>
+<dd>
+      
+<p>
+        Normally a 'Dependency' is only executed if it belongs to a 'Test-case' node.
+        'Dependencies' in 'Test-suite' or 'Test-set' nodes are simply inherited by the
+        'Test-case' descendants of these nodes. However, in some cases it is useful to
+        resolve a 'Dependency' early, for example when the 'Dependency' provides parameters
+        for a test-run that are required to evaluate a <a href="sequences.html#att_TestCase_condition" shape="rect">'Condition'</a> of a
+        subsequent 'Test-case'. This can be achieved by activating this option.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_DependencyReference_variable"></a>
+<dt>'Variable definitions'</dt>
+<dd>
+            
+            
+<p>
+              These variables override the <a href="#att_Dependency_fallback" shape="rect">'Parameter default values'</a> of the 'Dependency'
+              referenced by this 'Dependency reference'. See <a href="user_gui.html#usec_tables">subsection 2.2.5</a> about how
+              to work with the table.
+            </p>
+            
+<p>
+<span class="margin"><a name="new_N114759"></a><span class="note">4.2+</span></span>
+            In case you want to re-set the order of the parameters like they are sorted in
+            the called dependency, you can select &raquo;<em>Re-set parameter order</em>&laquo;.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Variable names no, values yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_DependencyReference_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_DependencyReference_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_DependencyReference_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_SetupSequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_SetupSequence">38.3.3</a></span>
+</div>
+<a href="contents.html#toc_step_SetupSequence">'Setup'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/setup.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            This node is just like a <a href="sequences.html#step_BasicSequence" shape="rect">'Sequence'</a> except for its special place in a
+            <a href="#step_Dependency" shape="rect">'Dependency'</a>, <a href="sequences.html#step_TestSet" shape="rect">'Test-set'</a> or <a href="sequences.html#step_TestCase" shape="rect">'Test-case'</a> node.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> 
+          <a href="#step_Dependency" shape="rect">'Dependency'</a>, <a href="sequences.html#step_TestSet" shape="rect">'Test-set'</a> or <a href="sequences.html#step_TestCase" shape="rect">'Test-case'</a>
+        
+</p>
+<p>
+<strong>Children:</strong> Any</p>
+<p>
+<strong>Execution:</strong> 
+          The <a href="#att_SetupSequence_variable" shape="rect">'Variable definitions'</a> of the 'Setup' are bound
+          and its child nodes executed one by one. After the execution of the
+          last child is complete, the variables are unbound again.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.11"></a><a name="figure_38.11"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_SetupSequence.png" target="_blank"><img src="images/att_SetupSequence.png" alt="Setup attributes" texscale=".66" width="393" height="367"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.11</a>:&nbsp;&nbsp;'Setup' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_SetupSequence_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        The name of a sequence is a kind of short description. It is displayed
+        in the tree view, so it should be concise and tell something about the
+        function of the sequence.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_SetupSequence_variable"></a>
+<dt>'Variable definitions'</dt>
+<dd>
+      
+<p>
+        This is where you define the values of the variables that remain bound
+        during the execution of the sequence's child nodes (see <a href="user_variables.html#usec_variables">chapter 6</a>).  See <a href="user_gui.html#usec_tables">subsection 2.2.5</a> about how to
+        work with the table.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Variable names no, values yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_SetupSequence_maxerror"></a>
+<dt>'Maximum error level'</dt>
+<dd>
+      
+<p>
+        When a warning, error or exception occurs during a test run, the state
+        of the corresponding node of the run-log is set accordingly. This
+        state is normally propagated to the parent node in a way that ensures
+        that the error state of a run-log node represents the worst of its
+        child nodes' states. Using this attribute, the maximum error state
+        that the run-log node for a sequence will propagate, can be limited.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> This value has no effect on the way exceptions
+        are handled. It only affects the error states of the run-log nodes and
+        by that the exit code of QF-Test when run in batch mode
+        (see. <a href="user_installation.html#usec_execution">section 1.7</a>). It also has no effect on the
+        creation of compact run-logs (see command line argument
+        <a href="tech_execution.html#arg_compact" shape="rect"><code>-compact</code></a>).  The node for a sequence in which a warning, error
+        or exception occurs is never removed from a compact log, even if the
+        error is not propagated due to the setting of this attribute.
+      </p>
+      
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_SetupSequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_SetupSequence_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_SetupSequence_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_CleanupSequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_CleanupSequence">38.3.4</a></span>
+</div>
+<a href="contents.html#toc_step_CleanupSequence">'Cleanup'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/cleanup.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            This node is just like a <a href="sequences.html#step_BasicSequence" shape="rect">'Sequence'</a> except for its special place in a
+            <a href="#step_Dependency" shape="rect">'Dependency'</a>, <a href="sequences.html#step_TestSet" shape="rect">'Test-set'</a> or <a href="sequences.html#step_TestCase" shape="rect">'Test-case'</a> node.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> 
+          <a href="#step_Dependency" shape="rect">'Dependency'</a>, <a href="sequences.html#step_TestSet" shape="rect">'Test-set'</a> or <a href="sequences.html#step_TestCase" shape="rect">'Test-case'</a>
+        
+</p>
+<p>
+<strong>Children:</strong> Any</p>
+<p>
+<strong>Execution:</strong> 
+          The <a href="#att_CleanupSequence_variable" shape="rect">'Variable definitions'</a> of the 'Cleanup' are bound
+          and its child nodes executed one by one. After the execution of the
+          last child is complete, the variables are unbound again.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.12"></a><a name="figure_38.12"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_CleanupSequence.png" target="_blank"><img src="images/att_CleanupSequence.png" alt="Cleanup attributes" texscale=".66" width="393" height="367"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.12</a>:&nbsp;&nbsp;'Cleanup' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_CleanupSequence_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        The name of a sequence is a kind of short description. It is displayed
+        in the tree view, so it should be concise and tell something about the
+        function of the sequence.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_CleanupSequence_variable"></a>
+<dt>'Variable definitions'</dt>
+<dd>
+      
+<p>
+        This is where you define the values of the variables that remain bound
+        during the execution of the sequence's child nodes (see <a href="user_variables.html#usec_variables">chapter 6</a>).  See <a href="user_gui.html#usec_tables">subsection 2.2.5</a> about how to
+        work with the table.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Variable names no, values yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_CleanupSequence_maxerror"></a>
+<dt>'Maximum error level'</dt>
+<dd>
+      
+<p>
+        When a warning, error or exception occurs during a test run, the state
+        of the corresponding node of the run-log is set accordingly. This
+        state is normally propagated to the parent node in a way that ensures
+        that the error state of a run-log node represents the worst of its
+        child nodes' states. Using this attribute, the maximum error state
+        that the run-log node for a sequence will propagate, can be limited.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> This value has no effect on the way exceptions
+        are handled. It only affects the error states of the run-log nodes and
+        by that the exit code of QF-Test when run in batch mode
+        (see. <a href="user_installation.html#usec_execution">section 1.7</a>). It also has no effect on the
+        creation of compact run-logs (see command line argument
+        <a href="tech_execution.html#arg_compact" shape="rect"><code>-compact</code></a>).  The node for a sequence in which a warning, error
+        or exception occurs is never removed from a compact log, even if the
+        error is not propagated due to the setting of this attribute.
+      </p>
+      
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_CleanupSequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_CleanupSequence_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_CleanupSequence_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ErrorHandler"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ErrorHandler">38.3.5</a></span>
+</div>
+<a href="contents.html#toc_step_ErrorHandler">'Error handler'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/errorhandler.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            This node is just like a <a href="sequences.html#step_BasicSequence" shape="rect">'Sequence'</a> except for its special place in a
+            <a href="#step_Dependency" shape="rect">'Dependency'</a> (see <a href="user_organization.html#usec_dependencies">section 8.6</a>).
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> <a href="#step_Dependency" shape="rect">'Dependency'</a>
+</p>
+<p>
+<strong>Children:</strong> Any</p>
+<p>
+<strong>Execution:</strong> 
+          The <a href="#att_ErrorHandler_variable" shape="rect">'Variable definitions'</a> of the 'Error handler' are bound
+          and its child nodes executed one by one. After the execution of the
+          last child is complete, the variables are unbound again.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.13"></a><a name="figure_38.13"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ErrorHandler.png" target="_blank"><img src="images/att_ErrorHandler.png" alt="Cleanup attributes" texscale=".66" width="393" height="367"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.13</a>:&nbsp;&nbsp;'Error handler' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ErrorHandler_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        The name of a sequence is a kind of short description. It is displayed
+        in the tree view, so it should be concise and tell something about the
+        function of the sequence.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_ErrorHandler_variable"></a>
+<dt>'Variable definitions'</dt>
+<dd>
+      
+<p>
+        This is where you define the values of the variables that remain bound
+        during the execution of the sequence's child nodes (see <a href="user_variables.html#usec_variables">chapter 6</a>).  See <a href="user_gui.html#usec_tables">subsection 2.2.5</a> about how to
+        work with the table.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Variable names no, values yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_ErrorHandler_maxerror"></a>
+<dt>'Maximum error level'</dt>
+<dd>
+      
+<p>
+        When a warning, error or exception occurs during a test run, the state
+        of the corresponding node of the run-log is set accordingly. This
+        state is normally propagated to the parent node in a way that ensures
+        that the error state of a run-log node represents the worst of its
+        child nodes' states. Using this attribute, the maximum error state
+        that the run-log node for a sequence will propagate, can be limited.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> This value has no effect on the way exceptions
+        are handled. It only affects the error states of the run-log nodes and
+        by that the exit code of QF-Test when run in batch mode
+        (see. <a href="user_installation.html#usec_execution">section 1.7</a>). It also has no effect on the
+        creation of compact run-logs (see command line argument
+        <a href="tech_execution.html#arg_compact" shape="rect"><code>-compact</code></a>).  The node for a sequence in which a warning, error
+        or exception occurs is never removed from a compact log, even if the
+        error is not propagated due to the setting of this attribute.
+      </p>
+      
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_ErrorHandler_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_ErrorHandler_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_ErrorHandler_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="sequences.html#sec_sequences"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 38.2&nbsp;Test and Sequence nodes" title="Previous Chapter: 38.2&nbsp;Test and Sequence nodes"></a></td><td class="navicon"><a href="datadriver.html#sec_datadriver"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 38.4&nbsp;Data driver" title="Next Page: 38.4&nbsp;Data driver"></a></td><td class="navicon"><a href="datadriver.html#sec_datadriver"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 38.4&nbsp;Data driver" title="Next Chapter: 38.4&nbsp;Data driver"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 38&nbsp;Elements of a test-suite" title="Chapter Overview: 38&nbsp;Elements of a test-suite"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

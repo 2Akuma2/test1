@@ -1,0 +1,786 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="root"
+          signature="302C02147A2887367CC5509B2142686629E328C0023B3DA402143E3CDA5DBAA123C141A1C3F00443A18ED0EAABE2"
+          version="6.0.3">
+  <include>qfs.qft</include>
+  <TestSet id="_2" name="Discount Tests">
+    <SetupSequence id="_7" name="start application">
+      <ProcedureCall id="_5j" procedure="startStop.startApplication"/>
+    </SetupSequence>
+    <TestCase id="_3" name="Discount 0">
+      <ProcedureCall id="_4A" procedure="menu.file.reset"/>
+      <ProcedureCall id="_4I" procedure="vehiclesPanel.selectCard"/>
+      <ProcedureCall id="_4J" procedure="vehiclesPanel.selectVehicle">
+        <variable name="model">Minigolf</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_4Y" procedure="specialsPanel.selectCard"/>
+      <ProcedureCall id="_4Z" procedure="specialsPanel.selectSpecial">
+        <variable name="special">Gomera</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_4a" procedure="accessoryPanel.selectCard"/>
+      <ProcedureCall id="_4s" procedure="accessoryPanel.selectAccessory">
+        <variable name="accessory">Anti-skid system</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_4t" procedure="accessoryPanel.selectAccessory">
+        <variable name="accessory">Centralized door locking</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_52" procedure="accessoryPanel.setDiscount">
+        <variable name="discount">0</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_56" procedure="accessoryPanel.checkFinalPrice">
+        <variable name="finalprice">17,403.00</variable>
+      </ProcedureCall>
+    </TestCase>
+    <TestCase id="_57" name="Discount 10">
+      <ProcedureCall id="_58" procedure="menu.file.reset"/>
+      <ProcedureCall id="_59" procedure="vehiclesPanel.selectCard"/>
+      <ProcedureCall id="_5A" procedure="vehiclesPanel.selectVehicle">
+        <variable name="model">Minigolf</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_5B" procedure="specialsPanel.selectCard"/>
+      <ProcedureCall id="_5C" procedure="specialsPanel.selectSpecial">
+        <variable name="special">Gomera</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_5D" procedure="accessoryPanel.selectCard"/>
+      <ProcedureCall id="_5E" procedure="accessoryPanel.selectAccessory">
+        <variable name="accessory">Anti-skid system</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_5F" procedure="accessoryPanel.selectAccessory">
+        <variable name="accessory">Centralized door locking</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_5G" procedure="accessoryPanel.setDiscount">
+        <variable name="discount">10</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_5H" procedure="accessoryPanel.checkFinalPrice">
+        <variable name="finalprice">15,804.00</variable>
+      </ProcedureCall>
+    </TestCase>
+    <TestCase id="_5I" name="Discount 15">
+      <ProcedureCall id="_5J" procedure="menu.file.reset"/>
+      <ProcedureCall id="_5K" procedure="vehiclesPanel.selectCard"/>
+      <ProcedureCall id="_5L" procedure="vehiclesPanel.selectVehicle">
+        <variable name="model">Minigolf</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_5M" procedure="specialsPanel.selectCard"/>
+      <ProcedureCall id="_5N" procedure="specialsPanel.selectSpecial">
+        <variable name="special">Gomera</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_5O" procedure="accessoryPanel.selectCard"/>
+      <ProcedureCall id="_5P" procedure="accessoryPanel.selectAccessory">
+        <variable name="accessory">Anti-skid system</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_5Q" procedure="accessoryPanel.selectAccessory">
+        <variable name="accessory">Centralized door locking</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_5R" procedure="accessoryPanel.setDiscount">
+        <variable name="discount">15</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_5S" procedure="accessoryPanel.checkFinalPrice">
+        <variable name="finalprice">15,004.50</variable>
+      </ProcedureCall>
+    </TestCase>
+    <CleanupSequence id="_Y" name="stop application">
+      <ProcedureCall id="_5c" procedure="startStop.stopApplication"/>
+    </CleanupSequence>
+  </TestSet>
+  <TestSet id="_3EZ" name="Discount Tests with SUT stop">
+    <DependencyReference id="_3F9"
+                         reference="sample-dependencies.SUT started"/>
+    <TestCase id="_3Ec" name="Discount 0">
+      <ProcedureCall id="_3Ed" procedure="menu.file.reset"/>
+      <ProcedureCall id="_3Ee" procedure="vehiclesPanel.selectCard"/>
+      <ProcedureCall id="_3Ef" procedure="vehiclesPanel.selectVehicle">
+        <variable name="model">Minigolf</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_3Eg" procedure="specialsPanel.selectCard"/>
+      <ProcedureCall id="_3Eh" procedure="specialsPanel.selectSpecial">
+        <variable name="special">Gomera</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_3Ei" procedure="accessoryPanel.selectCard"/>
+      <ProcedureCall id="_3Ej" procedure="accessoryPanel.selectAccessory">
+        <variable name="accessory">Anti-skid system</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_3Ek" procedure="accessoryPanel.selectAccessory">
+        <variable name="accessory">Centralized door locking</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_3El" procedure="accessoryPanel.setDiscount">
+        <variable name="discount">0</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_3Em" procedure="accessoryPanel.checkFinalPrice">
+        <variable name="finalprice">17,403.00</variable>
+      </ProcedureCall>
+    </TestCase>
+    <TestCase id="_3En" name="Discount 10">
+      <ProcedureCall id="_3Eo" procedure="menu.file.reset"/>
+      <ProcedureCall id="_3Ep" procedure="vehiclesPanel.selectCard"/>
+      <ProcedureCall id="_3Eq" procedure="vehiclesPanel.selectVehicle">
+        <variable name="model">Minigolf</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_3Er" procedure="specialsPanel.selectCard"/>
+      <ProcedureCall id="_3Es" procedure="specialsPanel.selectSpecial">
+        <variable name="special">Gomera</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_3Et" procedure="accessoryPanel.selectCard"/>
+      <ProcedureCall id="_3Eu" procedure="accessoryPanel.selectAccessory">
+        <variable name="accessory">Anti-skid system</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_3Ev" procedure="accessoryPanel.selectAccessory">
+        <variable name="accessory">Centralized door locking</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_3Ew" procedure="accessoryPanel.setDiscount">
+        <variable name="discount">10</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_3Ex" procedure="accessoryPanel.checkFinalPrice">
+        <variable name="finalprice">15,804.00</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_3FA" procedure="startStop.stopApplication"/>
+    </TestCase>
+    <TestCase id="_3Ey" name="Discount 15">
+      <ProcedureCall id="_3Ez" procedure="menu.file.reset"/>
+      <ProcedureCall id="_3E+" procedure="vehiclesPanel.selectCard"/>
+      <ProcedureCall id="_3E-" procedure="vehiclesPanel.selectVehicle">
+        <variable name="model">Minigolf</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_3F0" procedure="specialsPanel.selectCard"/>
+      <ProcedureCall id="_3F1" procedure="specialsPanel.selectSpecial">
+        <variable name="special">Gomera</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_3F2" procedure="accessoryPanel.selectCard"/>
+      <ProcedureCall id="_3F3" procedure="accessoryPanel.selectAccessory">
+        <variable name="accessory">Anti-skid system</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_3F4" procedure="accessoryPanel.selectAccessory">
+        <variable name="accessory">Centralized door locking</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_3F5" procedure="accessoryPanel.setDiscount">
+        <variable name="discount">15</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_3F6" procedure="accessoryPanel.checkFinalPrice">
+        <variable name="finalprice">15,004.50</variable>
+      </ProcedureCall>
+    </TestCase>
+  </TestSet>
+  <TestSet id="_9e" name="Tests with error">
+    <DependencyReference id="_AG"
+                         reference="sample-dependencies.SUT started"/>
+    <TestCase id="_9h" name="Discount 0">
+      <ProcedureCall id="_9i" procedure="menu.file.reset"/>
+      <ProcedureCall id="_9j" procedure="vehiclesPanel.selectCard"/>
+      <ProcedureCall id="_9k" procedure="vehiclesPanel.selectVehicle">
+        <variable name="model">Minigolf</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_9l" procedure="specialsPanel.selectCard"/>
+      <ProcedureCall id="_9m" procedure="specialsPanel.selectSpecial">
+        <variable name="special">Gomera</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_9n" procedure="accessoryPanel.selectCard"/>
+      <ProcedureCall id="_9o" procedure="accessoryPanel.selectAccessory">
+        <variable name="accessory">Anti-skid system</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_9p" procedure="accessoryPanel.selectAccessory">
+        <variable name="accessory">Centralized door locking</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_9q" procedure="accessoryPanel.setDiscount">
+        <variable name="discount">0</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_9r" procedure="accessoryPanel.checkFinalPrice">
+        <variable name="finalprice">17,403.00</variable>
+      </ProcedureCall>
+    </TestCase>
+    <TestCase id="_9s" name="Discount 10">
+      <ProcedureCall id="_9t" procedure="menu.file.reset"/>
+      <ProcedureCall id="_9u" procedure="vehiclesPanel.selectCard"/>
+      <ProcedureCall id="_9v" procedure="vehiclesPanel.selectVehicle">
+        <variable name="model">Minigolf</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_9w" procedure="specialsPanel.selectCard"/>
+      <ProcedureCall id="_9x" procedure="specialsPanel.selectSpecial">
+        <variable name="special">Gomera</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_9y" procedure="accessoryPanel.selectCard"/>
+      <ProcedureCall id="_9z" procedure="accessoryPanel.selectAccessory">
+        <variable name="accessory">Anti-skid system</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_9+" procedure="accessoryPanel.selectAccessory">
+        <variable name="accessory">Centralized door locking</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_9-" procedure="accessoryPanel.setDiscount">
+        <variable name="discount">10</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_A0" procedure="accessoryPanel.checkFinalPrice">
+        <variable name="finalprice">15,904.00</variable>
+      </ProcedureCall>
+    </TestCase>
+    <TestCase id="_A1" name="Discount 15">
+      <ProcedureCall id="_A2" procedure="menu.file.reset"/>
+      <ProcedureCall id="_A3" procedure="vehiclesPanel.selectCard"/>
+      <ProcedureCall id="_A4" procedure="vehiclesPanel.selectVehicle">
+        <variable name="model">Minigolf</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_A5" procedure="specialsPanel.selectCard"/>
+      <ProcedureCall id="_A6" procedure="specialsPanel.selectSpecial">
+        <variable name="special">Gomera</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_A7" procedure="accessoryPanel.selectCard"/>
+      <ProcedureCall id="_A8" procedure="accessoryPanel.selectAccessory">
+        <variable name="accessory">Anti-skid system</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_A9" procedure="accessoryPanel.selectAccessory">
+        <variable name="accessory">Centralized door locking</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_AA" procedure="accessoryPanel.setDiscount">
+        <variable name="discount">15</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_AB" procedure="accessoryPanel.checkFinalPrice">
+        <variable name="finalprice">15,004.50</variable>
+      </ProcedureCall>
+    </TestCase>
+  </TestSet>
+  <TestSet id="_AH" name="Tests with exception">
+    <DependencyReference id="_AI"
+                         reference="sample-dependencies.SUT started"/>
+    <TestCase id="_AJ" name="Discount 0">
+      <TryStep id="_Aq">
+        <ProcedureCall id="_AK" procedure="menu.file.reset"/>
+        <ProcedureCall id="_AL" procedure="vehiclesPanel.selectCard"/>
+        <ProcedureCall id="_AM" procedure="vehiclesPanel.selectVehicle">
+          <variable name="model">Minigolf</variable>
+        </ProcedureCall>
+        <ProcedureCall id="_AN" procedure="specialsPanel.selectCard"/>
+        <ProcedureCall id="_AO" procedure="specialsPanel.selectSpecial">
+          <variable name="special">Gomera</variable>
+        </ProcedureCall>
+        <ProcedureCall id="_AP" procedure="accessoryPanel.selectCard"/>
+        <ProcedureCall id="_AQ" procedure="accessoryPanel.selectAccessory">
+          <variable name="accessory">Anti-skid system</variable>
+        </ProcedureCall>
+        <ProcedureCall id="_AR" procedure="accessoryPanel.selectAccessory">
+          <variable name="accessory">Centralized door locking</variable>
+        </ProcedureCall>
+        <ProcedureCall id="_AS" procedure="accessoryPanel.setDiscount">
+          <variable name="discount">0</variable>
+        </ProcedureCall>
+        <ProcedureCall id="_AT" procedure="accessoryPanel.checkFinalPrice">
+          <variable name="finalprice">17,403.00</variable>
+        </ProcedureCall>
+        <CatchSequence exception="TestException" id="_Ar" maxerror="0">
+          <ProcedureCall id="_As"
+                         procedure="qfs.swing.cleanup.closeAllModalDialogs">
+            <variable name="maxDialogs">5</variable>
+          </ProcedureCall>
+          <ProcedureCall id="_At" procedure="startStop.stopApplication"/>
+        </CatchSequence>
+      </TryStep>
+    </TestCase>
+    <TestCase id="_AU" name="Discount 10">
+      <TryStep id="_Au">
+        <ProcedureCall id="_AV" procedure="menu.file.reset"/>
+        <ProcedureCall id="_AW" procedure="vehiclesPanel.selectCard"/>
+        <ProcedureCall id="_AX" procedure="vehiclesPanel.selectVehicle">
+          <variable name="model">Maxigolf</variable>
+        </ProcedureCall>
+        <ProcedureCall id="_AY" procedure="specialsPanel.selectCard"/>
+        <ProcedureCall id="_AZ" procedure="specialsPanel.selectSpecial">
+          <variable name="special">Gomera</variable>
+        </ProcedureCall>
+        <ProcedureCall id="_Aa" procedure="accessoryPanel.selectCard"/>
+        <ProcedureCall id="_Ab" procedure="accessoryPanel.selectAccessory">
+          <variable name="accessory">Anti-skid system</variable>
+        </ProcedureCall>
+        <ProcedureCall id="_Ac" procedure="accessoryPanel.selectAccessory">
+          <variable name="accessory">Centralized door locking</variable>
+        </ProcedureCall>
+        <ProcedureCall id="_Ad" procedure="accessoryPanel.setDiscount">
+          <variable name="discount">10</variable>
+        </ProcedureCall>
+        <ProcedureCall id="_Ae" procedure="accessoryPanel.checkFinalPrice">
+          <variable name="finalprice">15,804.00</variable>
+        </ProcedureCall>
+        <CatchSequence exception="TestException" id="_Av" maxerror="0">
+          <ProcedureCall id="_A+"
+                         procedure="qfs.swing.cleanup.closeAllModalDialogs">
+            <variable name="maxDialogs">5</variable>
+          </ProcedureCall>
+          <ProcedureCall id="_A-" procedure="startStop.stopApplication"/>
+        </CatchSequence>
+      </TryStep>
+    </TestCase>
+    <TestCase id="_Af" name="Discount 15">
+      <TryStep id="_Aw">
+        <ProcedureCall id="_Ag" procedure="menu.file.reset"/>
+        <ProcedureCall id="_Ah" procedure="vehiclesPanel.selectCard"/>
+        <ProcedureCall id="_Ai" procedure="vehiclesPanel.selectVehicle">
+          <variable name="model">Minigolf</variable>
+        </ProcedureCall>
+        <ProcedureCall id="_Aj" procedure="specialsPanel.selectCard"/>
+        <ProcedureCall id="_Ak" procedure="specialsPanel.selectSpecial">
+          <variable name="special">Gomera</variable>
+        </ProcedureCall>
+        <ProcedureCall id="_Al" procedure="accessoryPanel.selectCard"/>
+        <ProcedureCall id="_Am" procedure="accessoryPanel.selectAccessory">
+          <variable name="accessory">Anti-skid system</variable>
+        </ProcedureCall>
+        <ProcedureCall id="_An" procedure="accessoryPanel.selectAccessory">
+          <variable name="accessory">Centralized door locking</variable>
+        </ProcedureCall>
+        <ProcedureCall id="_Ao" procedure="accessoryPanel.setDiscount">
+          <variable name="discount">15</variable>
+        </ProcedureCall>
+        <ProcedureCall id="_Ap" procedure="accessoryPanel.checkFinalPrice">
+          <variable name="finalprice">15,004.50</variable>
+        </ProcedureCall>
+        <CatchSequence exception="TestException" id="_Ax" maxerror="0">
+          <ProcedureCall id="_Ay"
+                         procedure="qfs.swing.cleanup.closeAllModalDialogs">
+            <variable name="maxDialogs">5</variable>
+          </ProcedureCall>
+          <ProcedureCall id="_Az" procedure="startStop.stopApplication"/>
+        </CatchSequence>
+      </TryStep>
+    </TestCase>
+  </TestSet>
+  <PackageRoot id="_4">
+    <Package id="_AE" name="sample-dependencies">
+      <Dependency id="_AF" name="SUT started">
+        <SetupSequence id="_7c" name="start application">
+          <ProcedureCall id="_1p6I" procedure="startStop.startApplication"/>
+        </SetupSequence>
+        <CleanupSequence id="_AC" name="stop application">
+          <TryStep id="_3FC" name="SUT already stopped?">
+            <ProcessWaiter client="$(client)" id="_3FB" timeout="1"/>
+            <CatchSequence exception="TestException" id="_3FG" maxerror="0"
+                           name="SUT not stopped -&gt; stop it">
+              <ProcedureCall id="_AD" procedure="startStop.stopApplication"/>
+            </CatchSequence>
+          </TryStep>
+        </CleanupSequence>
+      </Dependency>
+    </Package>
+    <Package id="_5i" name="startStop">
+      <Procedure id="_47" name="startApplication">
+        <SetGlobalStep id="_1p6F" varname="client">
+          <default>carconfig</default>
+        </SetGlobalStep>
+        <ClientWaiter client="$(client)" id="_1p6G" local="true" raise="false"
+                      resvarname="isSUTRunning" timeout="1">
+          <comment>This node checks whether the SUT is already running. The result of this check will be stored in the variable isSUTRunning. The variable itself can contain true if SUT is already running or false if SUT is not running. This variable will be used in the following 'If' node.</comment>
+        </ClientWaiter>
+        <IfSequence id="_1p6H" name="Launch SUT if not running"
+                    test="not $(isSUTRunning)">
+          <IfSequence id="_9Z" name="on windows" test="${qftest:windows}">
+            <SUTClientStarter client="$(client)"
+                              directory="${qftest:dir.version}/demo/carconfig"
+                              executable="${qftest:dir.version}/demo/carconfig/CarConfig.cmd"
+                              id="_9a">
+              <parameter>en</parameter>
+            </SUTClientStarter>
+            <ElseSequence id="_9b" name="run on unix systems">
+              <SUTClientStarter client="$(client)"
+                                directory="${qftest:dir.version}/demo/carconfig"
+                                executable="${qftest:dir.version}/demo/carconfig/CarConfig.sh"
+                                id="_9c">
+                <parameter>en</parameter>
+              </SUTClientStarter>
+            </ElseSequence>
+          </IfSequence>
+          <ClientWaiter client="$(client)" id="_49"/>
+          <ComponentWaiter client="$(client)" component="JCarConfigurator"
+                           id="_68" timeout="30000"/>
+        </IfSequence>
+      </Procedure>
+      <Procedure id="_5d" name="stopApplication">
+        <TryStep id="_3FE" name="try to close SUT normally">
+          <ProcedureCall id="_5g" procedure="menu.file.exit"/>
+          <CatchSequence exception="TestException" id="_3FH" maxerror="0"
+                         name="SUT can't be closed normally -&gt; kill SUT">
+            <ClientStopper client="$(client)" id="_3FF"/>
+          </CatchSequence>
+        </TryStep>
+        <ProcessWaiter client="$(client)" id="_5h"/>
+      </Procedure>
+    </Package>
+    <Package id="_32" name="menu">
+      <Package id="_3H" name="file">
+        <Procedure id="_3I" name="reset">
+          <MouseEventStep clicks="1" client="$(client)" component="mFile"
+                          event="MOUSE_MPRC" id="_3J" modifiers="16" x="1"
+                          y="1"/>
+          <MouseEventStep clicks="1" client="$(client)" component="miReset"
+                          event="MOUSE_MPRC" id="_3K" modifiers="16" x="1"
+                          y="1"/>
+        </Procedure>
+        <Procedure id="_5Z" name="exit">
+          <MouseEventStep clicks="1" client="$(client)" component="mFile"
+                          event="MOUSE_MPRC" id="_5a" modifiers="16" x="1"
+                          y="1"/>
+          <MouseEventStep clicks="1" client="$(client)" component="miExit"
+                          event="MOUSE_MPRC" id="_5b" modifiers="16" x="1"
+                          y="1"/>
+        </Procedure>
+      </Package>
+      <Package id="_3DN" name="options">
+        <Procedure id="_3DJ" name="open vehicles dialog">
+          <MouseEventStep clicks="1" client="$(client)" component="mOptions"
+                          event="MOUSE_MPRC" id="_3DK" modifiers="16" x="1"
+                          y="1"/>
+          <MouseEventStep clicks="1" client="$(client)" component="miVehicles"
+                          event="MOUSE_MPRC" id="_3DL" modifiers="16" x="1"
+                          y="1"/>
+          <ComponentWaiter client="$(client)" component="VehiclesDialog"
+                           id="_3DM"/>
+        </Procedure>
+        <Procedure id="_3DO" name="open accessories dialog">
+          <MouseEventStep clicks="1" client="$(client)" component="mOptions"
+                          event="MOUSE_MPRC" id="_3DP" modifiers="16" x="1"
+                          y="1"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="miAccessories" event="MOUSE_MPRC"
+                          id="_3DQ" modifiers="16" x="1" y="1"/>
+          <ComponentWaiter client="$(client)" component="AccessoryDialog"
+                           id="_3DR"/>
+        </Procedure>
+      </Package>
+    </Package>
+    <Package id="_4B" name="vehiclesPanel">
+      <Procedure id="_4C" name="selectCard">
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="TabbedPane.Vehicles" event="MOUSE_MPRC"
+                        id="_4H" modifiers="16" x="1" y="1"/>
+      </Procedure>
+      <Procedure id="_4E" name="selectVehicle">
+        <variable name="model"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="VehicleTable@Model@$(model)"
+                        event="MOUSE_MPRC" id="_4F" modifiers="16" x="1"
+                        y="0"/>
+      </Procedure>
+    </Package>
+    <Package id="_4L" name="specialsPanel">
+      <Procedure id="_4M" name="selectCard">
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="TabbedPane.Specials" event="MOUSE_MPRC"
+                        id="_4S" modifiers="16" x="1" y="1"/>
+      </Procedure>
+      <Procedure id="_4O" name="selectSpecial">
+        <variable name="special"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="SpecialsPanel.button" event="MOUSE_MPRC"
+                        id="_4W" modifiers="16" x="1" y="1"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="listInvokerName:_SpecialsCombo@$(special)"
+                        event="MOUSE_MPRC" id="_1p7S" modifiers="16" x="1"
+                        y="1"/>
+      </Procedure>
+    </Package>
+    <Package id="_4b" name="accessoryPanel">
+      <Procedure id="_4c" name="selectCard">
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="TabbedPane.Accessories" event="MOUSE_MPRC"
+                        id="_4j" modifiers="16" x="1" y="0"/>
+      </Procedure>
+      <Procedure id="_4u" name="setDiscount">
+        <variable name="discount">0</variable>
+        <TextInputStep clear="true" client="$(client)"
+                       component="DiscountValue" id="_51">
+          <text>$(discount)</text>
+        </TextInputStep>
+      </Procedure>
+      <Procedure id="_4e" name="selectAccessory">
+        <variable name="accessory"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="AccessoryTable.Description@$(accessory)"
+                        event="MOUSE_MPRC" id="_4o" modifiers="16" x="1"
+                        y="1"/>
+        <FetchIndexStep client="$(client)"
+                        component="AccessoryTable.Description@$(accessory)"
+                        id="_4p" local="true" varname="rowIndex"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="AccessoryTable._&amp;$(rowIndex)"
+                        event="MOUSE_MPRC" id="_4q" modifiers="16" x="1"
+                        y="1"/>
+      </Procedure>
+      <Procedure id="_53" name="checkFinalPrice">
+        <variable name="finalprice"/>
+        <CheckStringStep client="$(client)" component="CalculatedPrice"
+                         id="_55" regexp="true">
+          <text>.*$(finalprice).*</text>
+          <comment>Use a regular expression, because of different currencies.
+e.g. EUR in Europe, $ in US etc.</comment>
+        </CheckStringStep>
+      </Procedure>
+    </Package>
+    <Package id="_3DX" name="vehiclesDialog">
+      <Procedure id="_3Dm" name="fillDialog">
+        <variable name="name"/>
+        <variable name="price"/>
+        <TextInputStep clear="true" client="$(client)" component="VehicleName"
+                       id="_3Dr">
+          <text>$(name)</text>
+        </TextInputStep>
+        <TextInputStep clear="true" client="$(client)"
+                       component="VehiclePrice" id="_3Dt">
+          <text>$(price)</text>
+        </TextInputStep>
+      </Procedure>
+      <Procedure id="_3Du" name="pressNew">
+        <MouseEventStep clicks="1" client="$(client)" component="NewButton"
+                        event="MOUSE_MPRC" id="_3Dv" modifiers="16" x="1"
+                        y="1"/>
+      </Procedure>
+      <Procedure id="_3Dw" name="pressOK">
+        <MouseEventStep clicks="1" client="$(client)" component="OkButton"
+                        event="MOUSE_MPRC" id="_3Dx" modifiers="16" x="1"
+                        y="1"/>
+      </Procedure>
+      <Procedure id="_3DV" name="pressCancel">
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="CancelButton2" event="MOUSE_MPRC" id="_3DW"
+                        modifiers="16" x="1" y="1"/>
+      </Procedure>
+    </Package>
+    <Package id="_3DY" name="accessoriesDialog">
+      <Procedure id="_3EQ" name="fillDialog">
+        <variable name="accessory"/>
+        <variable name="price"/>
+        <TextInputStep clear="true" client="$(client)"
+                       component="AccessoryName" id="_3ES">
+          <text>$(accessory)</text>
+        </TextInputStep>
+        <TextInputStep clear="true" client="$(client)"
+                       component="AccessoryPrice" id="_3EU">
+          <text>$(price)</text>
+        </TextInputStep>
+      </Procedure>
+      <Procedure id="_3EV" name="pressNew">
+        <MouseEventStep clicks="1" client="$(client)" component="NewButton2"
+                        event="MOUSE_MPRC" id="_3EW" modifiers="16" x="1"
+                        y="1"/>
+      </Procedure>
+      <Procedure id="_3EX" name="pressOK">
+        <MouseEventStep clicks="1" client="$(client)" component="OkButton2"
+                        event="MOUSE_MPRC" id="_3EY" modifiers="16" x="1"
+                        y="1"/>
+      </Procedure>
+      <Procedure id="_3DT" name="pressCancel">
+        <MouseEventStep clicks="1" client="$(client)" component="CancelButton"
+                        event="MOUSE_MPRC" id="_3DU" modifiers="16" x="1"
+                        y="1"/>
+      </Procedure>
+    </Package>
+  </PackageRoot>
+  <ExtraSequence id="_5"/>
+  <WindowList id="_6">
+    <WindowStep class="javax.swing.JFrame" feature="JCarConfigurator"
+                height="400" id="JCarConfigurator" name="JCarConfigurator"
+                uid="_3FI" width="350" x="0" y="0">
+      <ComponentStep class="javax.swing.JTabbedPane" classcount="1"
+                     classindex="0" height="235" id="TabbedPane"
+                     name="TabbedPane" uid="_3FJ" width="342" x="0" y="0">
+        <ComponentStep class="Panel" classcount="1" classindex="0"
+                       feature="Tab: Vehicles" height="209"
+                       id="VehicleTablePanel" name="VehicleTablePanel"
+                       uid="_3FK" width="337" x="2" y="23">
+          <ComponentStep class="javax.swing.JScrollPane" classcount="1"
+                         classindex="0" height="187" id="VehicleScrollPane"
+                         name="VehicleScrollPane" uid="_3FL" width="329" x="4"
+                         y="18">
+            <ComponentStep class="javax.swing.JTable" classcount="1"
+                           classindex="0" id="VehicleTable"
+                           name="VehicleTable" uid="_3FM">
+              <SubItemStep id="VehicleTable.Model" uid="_3FN">
+                <primary>Model</primary>
+              </SubItemStep>
+            </ComponentStep>
+          </ComponentStep>
+        </ComponentStep>
+        <SubItemStep id="TabbedPane.Vehicles" uid="_3FO">
+          <primary>Vehicles</primary>
+        </SubItemStep>
+        <SubItemStep id="TabbedPane.Specials" uid="_3FP">
+          <primary>Specials</primary>
+        </SubItemStep>
+        <ComponentStep class="Panel" classcount="1" classindex="0"
+                       feature="Tab: Specials" height="209" id="SpecialsPanel"
+                       name="SpecialsPanel" uid="_3FQ" width="337" x="2"
+                       y="23">
+          <ComponentStep class="javax.swing.JComboBox" classcount="1"
+                         classindex="0" height="21" id="SpecialsPanel.combo"
+                         uid="_3FR" width="329" x="4" y="18">
+            <ComponentStep class="com.jgoodies.looks.plastic.PlasticComboBoxButton"
+                           classcount="1" classindex="0"
+                           id="SpecialsPanel.button" uid="_3FS"/>
+          </ComponentStep>
+        </ComponentStep>
+        <SubItemStep id="TabbedPane.Accessories" uid="_3FT">
+          <primary>Accessories</primary>
+        </SubItemStep>
+        <ComponentStep class="Panel" classcount="1" classindex="0"
+                       feature="Tab: Accessories" height="209"
+                       id="AccessoryTablePanel" name="AccessoryTablePanel"
+                       uid="_3FU" width="337" x="2" y="23">
+          <ComponentStep class="javax.swing.JScrollPane" classcount="1"
+                         classindex="0" height="187" id="AccessoryScrollPane"
+                         name="AccessoryScrollPane" uid="_3FV" width="329"
+                         x="4" y="18">
+            <ComponentStep class="javax.swing.JTable" classcount="1"
+                           classindex="0" id="AccessoryTable"
+                           name="AccessoryTable" uid="_3FW">
+              <SubItemStep id="AccessoryTable.Description" uid="_3FX">
+                <primary>Description</primary>
+              </SubItemStep>
+              <SubItemStep id="AccessoryTable._" uid="_3FY">
+                <primary> </primary>
+              </SubItemStep>
+            </ComponentStep>
+          </ComponentStep>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="Panel" classcount="1" classindex="0" height="104"
+                     id="CalculatorPanel" name="CalculatorPanel" uid="_3FZ"
+                     width="342" x="0" y="235">
+        <ComponentStep class="javax.swing.JPanel" classcount="7"
+                       classindex="3" height="24" id="CalculatorPanel.com"
+                       uid="_3Fa" width="314" x="14" y="4"/>
+        <ComponentStep class="javax.swing.JTextField" classcount="4"
+                       classindex="3" feature="Label: Final price" height="14"
+                       id="CalculatedPrice" name="CalculatedPrice" uid="_3Fb"
+                       width="110" x="218" y="81"/>
+        <ComponentStep class="javax.swing.JPanel" classcount="7"
+                       classindex="5" height="24" id="CalculatorPanel.com2"
+                       uid="_3Fc" width="314" x="14" y="52"/>
+        <ComponentStep class="javax.swing.JTextField" classcount="4"
+                       classindex="2" feature="Label: Discount" height="24"
+                       id="DiscountValue" name="DiscountValue" uid="_3Fd"
+                       width="32" x="296" y="52"/>
+      </ComponentStep>
+      <ComponentStep class="javax.swing.JMenuBar" classcount="1"
+                     classindex="0" height="27" id="MenuBar" name="MenuBar"
+                     uid="_3Fe" width="342" x="4" y="30">
+        <ComponentStep class="javax.swing.JMenu" classcount="3" classindex="0"
+                       feature="File" height="23" id="mFile" name="mFile"
+                       uid="_3Ff" width="33" x="2" y="2">
+          <ComponentStep class="javax.swing.JMenuItem" classcount="2"
+                         classindex="0" feature="Reset" height="20"
+                         id="miReset" name="miReset" uid="_3Fg" width="86"/>
+          <ComponentStep class="javax.swing.JMenuItem" classcount="2"
+                         classindex="1" feature="Exit" height="20" id="miExit"
+                         name="miExit" uid="_3Fh" width="122"/>
+        </ComponentStep>
+        <ComponentStep class="javax.swing.JMenu" classcount="3" classindex="1"
+                       feature="Options" height="23" id="mOptions"
+                       name="mOptions" uid="_3Fi" width="53" x="35" y="2">
+          <ComponentStep class="javax.swing.JMenuItem" classcount="3"
+                         classindex="0" feature="Vehicles..." height="20"
+                         id="miVehicles" name="miVehicles" uid="_3Fj"
+                         width="140"/>
+          <ComponentStep class="javax.swing.JMenuItem" classcount="3"
+                         classindex="2" feature="Accessories..." height="22"
+                         id="miAccessories" name="miAccessories" uid="_3Fk"
+                         width="137"/>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="Popup" feature="InvokerName: SpecialsCombo"
+                     height="94" id="popupInvokerName:_SpecialsCombo"
+                     uid="_1p6c" width="319" x="15" y="149">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">com.jgoodies.looks.plastic.PlasticComboBoxUI$$PlasticComboPopup</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Popup</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.plaf.basic.BasicComboPopup</extrafeature>
+        <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Popup:ComboBoxPopup</extrafeature>
+        <ComponentStep class="Panel" classcount="2" classindex="0" height="92"
+                       id="popupInvokerName:_SpecialsCombo.scroll" uid="_1p6d"
+                       width="317" x="1" y="1">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javax.swing.JScrollPane</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Panel</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JScrollPane</extrafeature>
+          <extrafeature name="qfs:type" negate="false" regexp="false"
+                        state="0">Panel:ScrollPanel</extrafeature>
+          <ComponentStep class="List" classcount="1" classindex="0"
+                         feature="InvokerName: SpecialsCombo"
+                         id="listInvokerName:_SpecialsCombo" uid="_1p6e">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">javax.swing.JList</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">List</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">javax.swing.JList</extrafeature>
+            <extrafeature name="qfs:type" negate="false" regexp="false"
+                          state="0">List:ComboBoxList</extrafeature>
+            <SubItemStep id="popupInvokerClass:_JComboBox.list.Gomera"
+                         uid="_6W2">
+              <primary>Gomera</primary>
+            </SubItemStep>
+          </ComponentStep>
+        </ComponentStep>
+      </ComponentStep>
+    </WindowStep>
+    <WindowStep class="Dialog" feature="Edit vehicles" height="300"
+                id="VehiclesDialog" modal="true" name="VehiclesDialog"
+                uid="_3Fp" width="420" x="0" y="0">
+      <ComponentStep class="Panel" classcount="1" classindex="0" height="53"
+                     id="VehicleDialogEditPanel" name="VehicleDialogEditPanel"
+                     uid="_3Fq" width="363" x="4" y="243">
+        <ComponentStep class="javax.swing.JTextField" classcount="2"
+                       classindex="0" height="21" id="VehicleName"
+                       name="VehicleName" uid="_3Fr" width="150" x="9"
+                       y="23"/>
+        <ComponentStep class="javax.swing.JTextField" classcount="2"
+                       classindex="1" height="21" id="VehiclePrice"
+                       name="VehiclePrice" uid="_3Fs" width="54" x="300"
+                       y="23"/>
+      </ComponentStep>
+      <ComponentStep class="Panel" classcount="1" classindex="0" height="266"
+                     id="changeButtonPanel" name="changeButtonPanel"
+                     uid="_3Ft" width="49" x="367" y="30">
+        <ComponentStep class="javax.swing.JButton" classcount="5"
+                       classindex="0" feature="New" height="21" id="NewButton"
+                       name="NewButton" uid="_3Fu" width="49" x="0" y="0"/>
+        <ComponentStep class="javax.swing.JButton" classcount="5"
+                       classindex="4" feature="OK" height="21" id="OkButton"
+                       name="OkButton" uid="_3Fv" width="49" x="0" y="245"/>
+        <ComponentStep class="javax.swing.JButton" classcount="5"
+                       classindex="3" feature="Cancel" height="22"
+                       id="CancelButton2" name="CancelButton" uid="_3Fw"
+                       width="55" x="0" y="220"/>
+      </ComponentStep>
+    </WindowStep>
+    <WindowStep class="Dialog" feature="Edit accessories" height="300"
+                id="AccessoryDialog" modal="true" name="AccessoryDialog"
+                uid="_3Fx" width="420" x="0" y="0">
+      <ComponentStep class="Panel" classcount="1" classindex="0" height="264"
+                     id="changeButtonPanel2" name="changeButtonPanel"
+                     uid="_3Fy" width="55" x="361" y="32">
+        <ComponentStep class="javax.swing.JButton" classcount="5"
+                       classindex="3" feature="Cancel" height="22"
+                       id="CancelButton" name="CancelButton" uid="_3Fz"
+                       width="55" x="0" y="220"/>
+        <ComponentStep class="javax.swing.JButton" classcount="5"
+                       classindex="0" feature="New" height="22"
+                       id="NewButton2" name="NewButton" uid="_3F+" width="55"
+                       x="0" y="0"/>
+        <ComponentStep class="javax.swing.JButton" classcount="5"
+                       classindex="4" feature="OK" height="22" id="OkButton2"
+                       name="OkButton" uid="_3F-" width="55" x="0" y="242"/>
+      </ComponentStep>
+      <ComponentStep class="Panel" classcount="1" classindex="0" height="55"
+                     id="AccessoryDialogEditPanel"
+                     name="AccessoryDialogEditPanel" uid="_3G0" width="357"
+                     x="4" y="241">
+        <ComponentStep class="javax.swing.JTextField" classcount="3"
+                       classindex="0" height="22" id="AccessoryName"
+                       name="AccessoryName" uid="_3G1" width="171" x="9"
+                       y="24"/>
+        <ComponentStep class="javax.swing.JTextField" classcount="3"
+                       classindex="2" height="22" id="AccessoryPrice"
+                       name="AccessoryPrice" uid="_3G2" width="72" x="276"
+                       y="24"/>
+      </ComponentStep>
+    </WindowStep>
+  </WindowList>
+</RootStep>

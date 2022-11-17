@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="root"
+          signature="302D02143B4A58317ACECA66E7682A67C2D89ACD627E7D90021500C1A895AA0F2188C81943650918F61B9599B57D31"
+          version="6.0.3">
+  <include>qfs.qft</include>
+  <comment>This is a demo test-suite for demonstrating how PDF documents can be tested.
+
+@author	QFS</comment>
+  <TestSet id="_1" name="CarConfigPDF">
+    <DependencyReference id="_1mgl"
+                         reference="dependencies.PDF_Document_Opened"/>
+    <TestCase id="_2" name="Check content of invoice">
+      <comment>Open an invoice document of the CarConfigurator generated as PDF.
+On the first page the test-case check the address data and the signature part including its image.
+On the second page it checks the paragraphs of the terms and conditions.
+
+@author	QFS</comment>
+      <TestStep id="_1p6N" name="Check adresses">
+        <CheckStringStep checktype="text_positioned" client="$(client)"
+                         component="PDFPage.text" id="_1p6O">
+          <text>QF-Test CarConfigurator Company
+Car Street 54
+99999 Car-City</text>
+        </CheckStringStep>
+        <CheckStringStep checktype="text_positioned" client="$(client)"
+                         component="PDFPage.text2" id="_1p6P">
+          <text>Testy QF-Tester
+QFS Street 6
+8888 Test Village</text>
+        </CheckStringStep>
+      </TestStep>
+      <TestStep id="_1p6R" name="Check signature and company image">
+        <CheckStringStep checktype="text_positioned" client="$(client)"
+                         component="PDFPage.text3" id="_1p6S">
+          <text>Yours sincerely,
+CarConfigurator Company Team.</text>
+        </CheckStringStep>
+        <CheckImageStep checktype="image_scaled" client="$(client)"
+                        component="PDFPage.graphics" id="_1p6V">
+          <ImageNode height="21" name="checkimage" width="21">
+            <png size="352">iVBORw1KGgoAAAANSUhEUgAAABUAAAAVCAIAAAAmdTLBAAABJ1lEQVR5nGN52qhJCWIY2U0t/a+m+nzYUo+J
+Xk4zIUr/v6/f/mMDQHEC+l0N0f88/eOV71+kdAsEVLKQkaROweXrT5CyQNfh2P//83+gPSIaOWiaIQgo
+DnLG40/o+n90uQhxYcekre1TtwCRpE5+mmYJnXyIFFANRPGvJ6cQ+rfuvghUlFY9X16OjoGB5fnz69Lq
+CFcA3S0evACKy9rKppcsAIps3X1BRf+0B7/ULCqWLFnCAANT6u8pn8Fz9pzdE3buApJw9cWLF7talN00
+9Aqh/9fdo4+/fXDxrV32dCETExNQkaCg5MzZm86/fAMU//Hx8cxZG5EiQHGg8MolC2x9akDid50hhP0k
+j1Wzp17fPv4Vpib1RLGpCSgOlAWqGeTpd1TpBwBNublYTk74HwAAAABJRU6ErkJggg==</png>
+          </ImageNode>
+        </CheckImageStep>
+      </TestStep>
+      <TestStep id="_1p6W" name="Change to second page">
+        <SelectionEventStep client="$(client)" component="QF-Test_PDF_Client"
+                            detail="goto:2" event="SELECTION" id="_1p6X"/>
+      </TestStep>
+      <TestStep id="_1p6Z"
+                name="Check the text of the first, second and third paragraph">
+        <CheckStringStep checktype="text_positioned" client="$(client)"
+                         component="PDFPage.text4" id="_1p6a">
+          <text>All data mentioned in this document are virtual test-data.
+The QF-Test CarConfigurator Company is a virtual company which doesn&#8216;t exist, but is used as 
+seller company in this testing example. All items which are ordered don&#8216;t exist in real life, so there 
+is no kind of physical or real delivery under any circumstances. 
+As the company doesn&#8216;t exist no product which is stated on this document exists. That&#8216;s just pure 
+test-data and has no use in real life.</text>
+        </CheckStringStep>
+        <CheckStringStep checktype="text_positioned" client="$(client)"
+                         component="PDFPage.text5" id="_1p6f">
+          <text>As all test items sold by this virtual company are test items which don&#8216;t exist in reality. Those 
+items simply don&#8216;t exist.</text>
+        </CheckStringStep>
+        <CheckStringStep checktype="text_positioned" client="$(client)"
+                         component="PDFPage.text6" id="_1p6g">
+          <text>The original JCarConfigurator demo provided in the QF-Test installation folder was inspired by 
+the early C++ CarConfigurator demo provided by the company imbus.
+All rights reserved.</text>
+        </CheckStringStep>
+      </TestStep>
+    </TestCase>
+  </TestSet>
+  <PackageRoot id="_3">
+    <Package id="_3Cr" name="dependencies">
+      <comment>Package for dependencies.</comment>
+      <Dependency id="_3Cs" name="PDF_Document_Opened">
+        <comment>Ensure to open the PDF document and that the first page is being opened.</comment>
+        <SetupSequence id="_3Ac" name="Open PDF document if necessary">
+          <SetGlobalStep id="_3dt" varname="client">
+            <default>carconfigPDF</default>
+          </SetGlobalStep>
+          <ClientWaiter client="$(client)" id="_1p6G" local="true"
+                        raise="false" resvarname="isSUTRunning" timeout="1">
+            <comment>Dieser Knoten prüft, ob das SUT bereits läuft. Das Ergebnis der Prüfung wird in der Variable isSUTRunning gespeichert. Diese Variable enthält entweder true, wenn das SUT läuft oder false, wenn das SUT nicht läuft. Im folgenden IF-Knoten wird diese Variable ausgewertet.</comment>
+          </ClientWaiter>
+          <IfSequence id="_1p6H" name="Open PDF document if necessary"
+                      test="not $(isSUTRunning)">
+            <ProcedureCall id="_1p6I" procedure="startStop.open"/>
+          </IfSequence>
+          <BasicSequence id="_1p6j" name="Switch to first page in any case">
+            <SelectionEventStep client="$(client)"
+                                component="QF-Test_PDF_Client" detail="goto:1"
+                                event="SELECTION" id="_1p6i"/>
+          </BasicSequence>
+        </SetupSequence>
+        <CleanupSequence id="_3Cm" name="Close PDF document">
+          <ProcedureCall id="_3D0" procedure="startStop.close"/>
+        </CleanupSequence>
+      </Dependency>
+    </Package>
+    <Package id="_3Fr" name="startStop">
+      <comment>Package for opening and closing the PDF document.</comment>
+      <Procedure id="_33x" name="open">
+        <comment>Open PDF document.</comment>
+        <PDFClientStarter class="de.qfs.apps.qfpdf.PDFMain" client="$(client)"
+                          executable="${qftest:java}" id="_D"
+                          pdffile="${qftest:suite.dir}/CarConfig_Invoice.pdf"/>
+        <ClientWaiter client="$(client)" id="_1mgA"/>
+        <ComponentWaiter client="$(client)" component="genericPDFMainStage"
+                         id="_1p6m" timeout="60000"/>
+      </Procedure>
+      <Procedure id="_3C-" name="close">
+        <comment>Close PDF document.</comment>
+        <TryStep id="_3DH" name="PDF Dokument geöffnet?">
+          <ClientWaiter client="$(client)" id="_3DI" timeout="500"/>
+          <WindowEventStep client="$(client)" component="QF-Test_PDF_Client"
+                           event="WINDOW_CLOSING" id="_1p6l"/>
+          <TryStep id="_3Fs" name="warten auf auf programmende">
+            <ProcessWaiter client="$(client)" id="_3Cp"/>
+            <CatchSequence exception="TestException" id="_3Ft" maxerror="0"
+                           name="programm wurde nicht beendet">
+              <ClientStopper client="$(client)" id="_3Cq"/>
+              <ProcessWaiter client="$(client)" id="_3Fu"/>
+            </CatchSequence>
+          </TryStep>
+          <CatchSequence exception="ClientNotConnectedException" id="_3DJ"
+                         maxerror="0"/>
+        </TryStep>
+      </Procedure>
+    </Package>
+  </PackageRoot>
+  <ExtraSequence id="_4"/>
+  <WindowList id="_5">
+    <WindowStep class="Window"
+                feature="[C:\qfs\nprj\qftest\demo\carconfigPDF\CarConfig_Invoice.pdf] QF-Test PDF Client"
+                height="1020" id="QF-Test_PDF_Client"
+                name="QF-Test PDF Client" uid="_1p6n" width="1200" x="20"
+                y="20">
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">de.qfs.apps.qfpdf.PDFApp</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Window</extrafeature>
+      <extrafeature name="qfs:label" negate="false" regexp="false" state="1">[C:\qfs\nprj\qftest\demo\carconfigPDF\CarConfig_Invoice.pdf] QF-Test PDF Client</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">javax.swing.JFrame</extrafeature>
+      <ComponentStep class="Panel" height="-" id="PDFPage" name="PDFPage"
+                     uid="_1p6o" width="-" x="-" y="-">
+        <ComponentStep class="Text" classcount="16" classindex="0" height="41"
+                       id="PDFPage.text" uid="_1p6p" width="184" x="97"
+                       y="183">
+          <extrafeature name="primaryfont" negate="false" regexp="false"
+                        state="1">SyntaxLTStd-Roman</extrafeature>
+          <extrafeature name="primaryfontsize" negate="false" regexp="false"
+                        state="1">12</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.qfs.apps.qfpdf.ui.Text</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Text</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JPanel</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Text" classcount="16" classindex="11"
+                       height="40" id="PDFPage.text2" uid="_1p6q" width="90"
+                       x="97" y="260">
+          <extrafeature name="primaryfont" negate="false" regexp="false"
+                        state="1">SyntaxLTStd-Roman</extrafeature>
+          <extrafeature name="primaryfontsize" negate="false" regexp="false"
+                        state="1">12</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.qfs.apps.qfpdf.ui.Text</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Text</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JPanel</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Text" classcount="16" classindex="7" height="59"
+                       id="PDFPage.text3" uid="_1p6r" width="174" x="98"
+                       y="745">
+          <extrafeature name="primaryfont" negate="false" regexp="false"
+                        state="1">SyntaxLTStd-Bold</extrafeature>
+          <extrafeature name="primaryfontsize" negate="false" regexp="false"
+                        state="1">12</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.qfs.apps.qfpdf.ui.Text</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Text</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JPanel</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Graphics" classcount="85" classindex="0"
+                       height="21" id="PDFPage.graphics" uid="_1p6s"
+                       width="21" x="127" y="763">
+          <extrafeature name="imagehash" negate="false" regexp="false"
+                        state="1">-1480079487</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.qfs.apps.qfpdf.ui.Image</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Graphics</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JPanel</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Text" classcount="8" classindex="3" height="131"
+                       id="PDFPage.text4" uid="_1p6y" width="508" x="96"
+                       y="244">
+          <extrafeature name="primaryfont" negate="false" regexp="false"
+                        state="1">SyntaxLTStd-Roman</extrafeature>
+          <extrafeature name="primaryfontsize" negate="false" regexp="false"
+                        state="1">12</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.qfs.apps.qfpdf.ui.Text</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Text</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JPanel</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Text" classcount="8" classindex="5" height="33"
+                       id="PDFPage.text5" uid="_1p6z" width="480" x="97"
+                       y="419">
+          <extrafeature name="primaryfont" negate="false" regexp="false"
+                        state="1">SyntaxLTStd-Roman</extrafeature>
+          <extrafeature name="primaryfontsize" negate="false" regexp="false"
+                        state="1">12</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.qfs.apps.qfpdf.ui.Text</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Text</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JPanel</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Text" classcount="8" classindex="7" height="54"
+                       id="PDFPage.text6" uid="_1p6+" width="491" x="98"
+                       y="567">
+          <extrafeature name="primaryfont" negate="false" regexp="false"
+                        state="1">SyntaxLTStd-Roman</extrafeature>
+          <extrafeature name="primaryfontsize" negate="false" regexp="false"
+                        state="1">12</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.qfs.apps.qfpdf.ui.Text</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Text</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JPanel</extrafeature>
+        </ComponentStep>
+      </ComponentStep>
+    </WindowStep>
+  </WindowList>
+</RootStep>

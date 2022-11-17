@@ -1,0 +1,487 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Data driven Testing: Running one Test-case with different test
+    data</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2002-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_DataDriven"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="dependencies.html#sec_AdvDeps"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 29&nbsp;Dependencies: Automatically ensuring correct prerequisites for
+    each 'Test-case'" title="Next Page: 29&nbsp;Dependencies: Automatically ensuring correct prerequisites for
+    each 'Test-case'"></a></td><td class="navicon"><a href="dependencies.html#sec_AdvDeps"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 29&nbsp;Dependencies: Automatically ensuring correct prerequisites for
+    each 'Test-case'" title="Next Chapter: 29&nbsp;Dependencies: Automatically ensuring correct prerequisites for
+    each 'Test-case'"></a></td><td class="navicon"><a href="advanced.html#sec_advanced"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: V&nbsp;Advanced features of QF-Test" title="Chapter Overview: V&nbsp;Advanced features of QF-Test"></a></td><td class="navicon"><a href="../../tutorial_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_DataDriven">28</a></span>
+</div>
+<a href="contents.html#toc_sec_DataDriven">Data driven Testing: Running one 'Test-case' with different test
+    data</a>
+</h3>
+
+    
+<p>
+      This chapter explains how data driven testing can be achieved using
+      QF-Test.
+    </p>
+    
+<p>
+      You can find the implementation of the following examples in the demo test-suite <code>qftest-6.0.3/doc/tutorial/advanced-demos/en/datadrivenTesting.qft</code>.
+    </p>
+    
+<p>
+    The second provided test-suite
+    <code>qftest-6.0.3/doc/tutorial/datadriver.qft</code>
+    contains further samples like reading an Excel file or creating an iteration over test-cases.
+      </p>
+      
+<p>
+    Please take care to copy all test-suites to a project-related folder first and modify them there.
+      </p>
+    
+
+    
+<a name="sec_dataDriven"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_dataDriven">28.1</a></span>
+</div>
+<a href="contents.html#toc_sec_dataDriven">Situation</a>
+</h4>
+      
+<p>
+        The users of the JCarConfigurator can grant several discount levels
+        to their customers. Thus the test designers have figured out three discount
+        levels which have to be tested.
+      </p>
+      
+<p>
+        Those discount levels are 0%, 10% and 15%.
+      </p>
+      
+<p>
+        As the workflow of granting discounts is the same for each discount
+        level, we can use the same test-case for testing them.
+        The only difference between the test-cases is the input of
+        the actual discount level and the price to check. A major advantage of
+        using the same test-case is that this avoids side effects caused by several implementations of a 'Test-case', which could have
+        different bugs. Additionally we can reduce the implementation effort.
+      </p>
+      
+<p>
+        The logical test-case, i.e. the steps of the test, for granting a discount will look like
+        this:
+      </p>
+      
+<ol>
+        
+<li>Start the SUT.</li>
+        
+<li>Select a vehicle.</li>
+        
+<li>Specify the discount.</li>
+        
+<li>Check whether the discount has been used for price calculation.</li>
+        
+<li>Stop the SUT.</li>
+      
+</ol>
+      
+<p>
+        The following paragraphs demonstrate how to implement such a scenario.
+      </p>
+    
+
+    
+    
+
+    
+<a name="sec_dataDrivenTrad"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_dataDrivenTrad">28.2</a></span>
+</div>
+<a href="contents.html#toc_sec_dataDrivenTrad">Traditional way of implementing data driven testing</a>
+</h4>
+      
+<p>
+        The QF-Test definition of a 'Test-case' node says that a 'Test-case' is
+        a workflow together with a specific set of test data. If you have two sets of
+        test data, you have to use two different 'Test-case' nodes. Those
+        nodes can be organized within a 'Test-set' node.
+      </p>
+      
+<p>
+        So the conventional way to solve the issue is to implement one 'Test-case' per
+        discount level, like depicted below:
+      </p>
+      
+<a name="fig_dataDrivenTrad1"></a><a name="figure_28.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DatadriverOldStyle.png" target="_blank"><img texscale=".66" src="images/DatadriverOldStyle.png" width="267" height="98"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;28.1</a>:&nbsp;&nbsp;Traditional way of data driven testing</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Those three nodes are grouped within a 'Test-set' node. The 'Test-set' node
+        also contains the 'Setup' and the 'Cleanup' sequences, which will launch
+        the SUT before each 'Test-case' and will stop the SUT after it. This is to
+        ensure that each test-case has the same pre-conditions. If you do not
+        want to re-start the SUT between the single test runs, you could add a
+        new 'Test-set' to the 'Test-set' 'Discount levels' and move the
+        three 'Test-case' nodes into that 'Test-set' like this:
+      </p>
+      
+<a name="fig_dataDrivenTrad2"></a><a name="figure_28.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DatadriverOldStyleTestSet.png" target="_blank"><img texscale=".66" src="images/DatadriverOldStyleTestSet.png" width="351" height="114"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;28.2</a>:&nbsp;&nbsp;Traditional way with a nested 'Test-set'</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        The chapter <a href="dependencies.html#sec_AdvDeps">Dependencies: Automatically ensuring correct prerequisites for
+    each 'Test-case'</a> will show up
+        a more elegant and more efficient way of organizing pre-requisites
+        of test-cases.
+      </p>
+      
+<p>
+        As you can imagine this approach could be very exhausting with regards to
+        maintaining test-data, especially if we have to add or remove discount
+        levels. Another disadvantage is that we keep the test-data
+        within QF-Test.
+      </p>
+      
+<p>
+        The next section <a href="#sec_dataDriver20">Data driver concept</a> demonstrates how
+        to organize the test-suite to implement the 'Test-case' only once and to
+        keep the test-data separated from the test-case.
+      </p>
+    
+
+    
+    
+
+  
+<a name="sec_dataDriver20"></a>
+    
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_dataDriver20">28.3</a></span>
+</div>
+<a href="contents.html#toc_sec_dataDriver20">Data driver concept</a>
+</h4>
+    
+<p>
+      If we want to run one test-case using different test data sets, we have to
+      define the test data in a data source first. The data source has to be
+      part of a 'Data driver' node. QF-Test offers built-in data source nodes
+	  for database tables, CSV files, Excel files and QF-Test data tables. 
+	  A QF-Test data table will store the data in the test-suite itself.
+	  This is what we will use for the following example. You can use any other
+      type of data sources, e.g. XML files, too, by implementing your
+      own script for reading the data.
+    </p>
+  
+<p>
+    Insert a 'Test-set' to the test-suite first. You can choose whatever name
+    you want.
+    </p>
+      
+<p>
+        A 'Data driver' node can be inserted into a 'Test-set' via right mouse
+        click and then selecting &raquo;<em>Insert node</em>&laquo;-&raquo;<em>Data drivers</em>&laquo;-&raquo;<em>Data driver</em>&laquo;. You have just to specify a name for this node. The actual
+        data source will then be inserted as child node to that 'Data driver'
+        node. For our example we insert a 'Data table' via a right mouse click
+        at the opened 'Data driver' node and select &raquo;<em>Insert node</em>&laquo;-&raquo;<em>Data drivers</em>&laquo;-&raquo;<em>Data table</em>&laquo;. Now we should detect this dialog:
+        </p>
+      
+<a name="fig_dataDriver20Dt1"></a><a name="figure_28.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DataTableDialog.png" target="_blank"><img texscale=".66" src="images/DataTableDialog.png" width="436" height="543"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;28.3</a>:&nbsp;&nbsp;Data table dialog</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        First we have to specify a name for this data source. We should also
+        define a name for the 'Iteration counter' variable. The iteration counter
+        contains the index of the currently executed test data in the test run
+      </p>
+      
+<p>
+        The next step is to define the test data. Therefore click on the
+        'Insert column' button, which is the first button of the 'Data bindings'
+        section. Then you have to define a name for the column, let us set it
+        to 'discount'. After pressing 'OK' you will see that the column has
+        been inserted in the 'Data bindings' area. This column heading will
+        stand for the variable name in the tests later.
+      </p>
+      
+<p>
+        Now you can use the 'Insert row' button to insert a new row. Each row
+        will stand for one test data set, i.e. you have to insert three
+        rows by now, where the first row contains 0%, the second 10% and the
+        third 15%.
+      </p>
+      
+<p>
+        The table should look like this:
+      </p>
+      
+<a name="fig_dataDriver20Dt2"></a><a name="figure_28.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DatatableDiscount.png" target="_blank"><img texscale=".66" src="images/DatatableDiscount.png" width="944" height="476"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;28.4</a>:&nbsp;&nbsp;The filled data table</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        The next part is the implementation of the test-case. Therefore
+        we just insert one 'Test-case' node to the
+        'Test-set'.
+  </p>
+  
+<p>
+<span class="margin"><span class="note">Note</span></span> If you want to insert a 'Test-case'
+        to a 'Test-set' which already contains a 'Data driver' node, you have
+        to select the closed 'Data driver' node to insert it.
+      </p>
+      
+<p>
+        The 'Test-case' will contain the procedure calls for the
+        required test steps. The 'Setup' and 'Cleanup' nodes of the previous
+        example can also be copied to the 'Test-set'. The whole 'Test-set'
+        will look like this now:
+      </p>
+      
+<a name="fig_dataDriver20TestSet"></a><a name="figure_28.5"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DatadriverTestSet.png" target="_blank"><img texscale=".66" src="images/DatadriverTestSet.png" width="487" height="98"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;28.5</a>:&nbsp;&nbsp;'Test-set' with 'Data driver'</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        The following step is to make use of the variable 'discount' which has
+        been defined at the 'Data table' node before. We will add that
+        variable as parameter to the 'setDiscount' procedure call.
+        Once we have done this, we have following result:
+        </p>
+      
+<a name="fig_dataDriver20ParamTree"></a><a name="figure_28.6"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DatadriverSetDiscountParam.png" target="_blank"><img texscale=".66" src="images/DatadriverSetDiscountParam.png" width="944" height="476"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;28.6</a>:&nbsp;&nbsp;Using the <code>$(discount)</code> parameter</td><td class="captionglue"></td>
+</tr>
+</table>
+  
+<p>
+        Now we are ready to launch the 'Test-set'.
+        </p>
+      
+<p>
+        After running the tests we should get at least two errors. Those
+        errors come from the different values of the 'Final price' text-field,
+        but our test always verifies the same value.
+        In our case we should also put the expected values for the 'Final
+        price' fields to our test data via adding a second column to the
+        'Data table' node.
+      </p>
+      
+<a name="fig_dataDriver20Full"></a><a name="figure_28.7"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DatatableDiscountPrice.png" target="_blank"><img texscale=".66" src="images/DatatableDiscountPrice.png" width="944" height="476"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;28.7</a>:&nbsp;&nbsp;Full data table</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Another drawback is, that we see the same test-case name in the
+        HTML overview report and in the run-logs for each test run. To avoid
+        this we can edit the 'Name for reports and run-logs' attribute of the
+        'Test-case' node. In that attribute we have to make use of at least one of
+        the test-case specific data, i.e. in our case 'discount'. So let us set
+        that attribute to 'Discount $(discount)'.
+      </p>
+      
+<a name="fig_dataDriver20NRR"></a><a name="figure_28.8"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DatadriverRunlog.png" target="_blank"><img texscale=".66" src="images/DatadriverRunlog.png" width="944" height="476"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;28.8</a>:&nbsp;&nbsp;Name for run-log and report attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        If we re-run the tests now, we should get no error anymore and the
+        run-log as well as the HTML report contain three different test-case
+        names.
+    Here you can see the created run-log file:
+      </p>
+      
+<a name="fig_dataDriver20HTML"></a><a name="figure_28.9"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DatadriverRunlogWithRunLogAttr.png" target="_blank"><img texscale=".66" src="images/DatadriverRunlogWithRunLogAttr.png" width="507" height="242"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;28.9</a>:&nbsp;&nbsp;Run-log with different names per 'Test-case'</td><td class="captionglue"></td>
+</tr>
+</table>
+  
+<p>
+    If you want to run one 'Test-case' only without the whole 'Test-set' and its
+    'Data driver', it is recommended
+    to set default values for the variables as global ones at 'Test-suite'.
+  </p>
+  
+<p>
+    
+<span class="margin"><span class="note">Note</span></span> If the name of the variable in the 'Data driver' is
+    the same like the name of the procedure, you can also skip the variable
+    definition of the 'Procedure call'. This can be done because the variable of
+    the 'Data driver' will be put at QF-Test's variable stack and so any step
+  within the 'Test-case' can access that variable. You can see this behavior in
+    the demo test-suite
+    <code>qftest-6.0.3/doc/tutorial/advanced-demos/en/datadrivenTesting.qft</code>
+    in the 'Test-set' "data driven tests with optimized
+    procedure calls".
+  </p>
+      
+<p>
+    In the demo test-suite
+    <code>qftest-6.0.3/doc/tutorial/advanced-demos/en/datadrivenTesting.qft</code>
+    you can also find an additional 'Test-set' using a CSV file as data source.
+      </p>
+    
+
+    
+    
+
+    
+<a name="dataDrivenSummary"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_dataDrivenSummary">28.4</a></span>
+</div>
+<a href="contents.html#toc_dataDrivenSummary">Summary</a>
+</h4>
+      
+<p>
+        The 'Data driver' concept of QF-Test allows the user to create logical
+        test-cases and to keep the test data separated from the test flow itself.
+      </p>
+  
+<p>It is even possible to use nested 'Data driver' nodes in a 'Test-case'. This can be
+  achieved by creating a 'Test-step' in a 'Test-case'. This 'Test-step' can contain the nested
+  'Data driver'.
+  </p>
+  
+<p>
+    You can find a more detailed explanation about data driven testing within QF-Test
+    in the manual in the chapter <a href="../../manual/en/datadriver.html#sec_datadriver" shape="rect">Data-driven
+      testing</a>.
+  </p>
+  
+<p>
+    The second provided test-suite
+    <code>qftest-6.0.3/doc/tutorial/datadriver.qft</code>
+    contains further samples like reading an Excel file or creating an iteration over test-cases.
+      </p>
+    
+
+    
+
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="dependencies.html#sec_AdvDeps"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 29&nbsp;Dependencies: Automatically ensuring correct prerequisites for
+    each 'Test-case'" title="Next Page: 29&nbsp;Dependencies: Automatically ensuring correct prerequisites for
+    each 'Test-case'"></a></td><td class="navicon"><a href="dependencies.html#sec_AdvDeps"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 29&nbsp;Dependencies: Automatically ensuring correct prerequisites for
+    each 'Test-case'" title="Next Chapter: 29&nbsp;Dependencies: Automatically ensuring correct prerequisites for
+    each 'Test-case'"></a></td><td class="navicon"><a href="advanced.html#sec_advanced"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: V&nbsp;Advanced features of QF-Test" title="Chapter Overview: V&nbsp;Advanced features of QF-Test"></a></td><td class="navicon"><a href="../../tutorial_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 2002-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

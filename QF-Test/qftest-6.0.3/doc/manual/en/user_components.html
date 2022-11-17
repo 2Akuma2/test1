@@ -1,0 +1,379 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Components</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_components"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_capture.html#usec_capturereplay"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 4&nbsp;Capture and replay" title="Previous Chapter: 4&nbsp;Capture and replay"></a></td><td class="navicon"><a href="user_components_gui.html#usec_components_gui"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 5.1&nbsp;Components of a GUI" title="Next Page: 5.1&nbsp;Components of a GUI"></a></td><td class="navicon"><a href="user_variables.html#usec_variables"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 6&nbsp;Variables" title="Next Chapter: 6&nbsp;Variables"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;User manual" title="Chapter Overview: I&nbsp;User manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_components">5</a></span>
+</div>
+<a href="contents.html#toc_usec_components">Components</a>
+</h3>
+
+    
+
+    
+<p>
+      Though they often go unnoticed,
+      at least until the first <a href="exceptions.html#ex_ComponentNotFoundException" shape="rect"><code>ComponentNotFoundException</code></a> occurs,
+      the <a href="components.html#step_ComponentStep" shape="rect">'Component'</a> nodes are the heart of a test-suite,
+      since stable component recognition is the central challenge of a good GUI testing tool.
+      QF-Test takes care of it most of the time,
+      but some special situations require manual definitions or interventions.
+      Thus it is important to understand components and their handling in QF-Test and
+      this chapter aims to explain the fundamentals.
+    </p>
+
+    
+<dl>
+      
+<dt>Videos</dt>
+      
+<dd>
+        
+<p>
+          
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+          The video <a href="https://www.qfs.de/en/yt/component-recognition.html" class="videolink" target="_blank">'Component
+          recognition'</a> first explains the criteria for component recognition, then (starting at min
+          13:07) the use of generic components using regular expressions, followed by generic components using variables
+          in component recognition attributes.
+        </p>
+        
+<p>
+          There are two videos available explaining in detail how to deal with a
+          <code>ComponentNotFoundException</code>:
+        </p>
+        
+<ul>
+          
+<li>
+            
+<a href="https://www.qfs.de/en/yt/componentnotfoundexception-simple-40.html" class="videolink" target="_blank">'ComponentNotFoundException - Simple case'</a>
+          
+</li>
+          
+<li>
+            
+<a href="https://www.qfs.de/en/yt/componentnotfoundexception-complex-40.html" class="videolink" target="_blank">'ComponentNotFoundException - Complex case'</a>
+          
+</li>
+        
+</ul>
+        
+<p>
+          The video <a href="https://www.qfs.de/en/yt/web-test-automation-40.html" class="videolink" target="_blank">'Dealing with the
+          explosion of complexity in web test automation'</a> gives you a good idea of how QF-Test handles a
+          deeply nested DOM structure.
+        </p>
+        
+<p>
+          Live recording of the special webinar <a href="https://www.qfs.de/en/yt/component-recognition-51.html" class="videolink" target="_blank">
+          'Component recognition'</a>.
+        </p>
+      
+</dd>
+
+      
+
+      
+<dt>GUI actions and components</dt>
+      
+<dd>
+        
+<p>
+          Actions by the end-user of an application are transformed into <em>events</em> by QF-Test.
+          Every event has a target component. For a mouse click this is the component
+          under the mouse cursor, for a key press it is the component that has <em>keyboard
+          focus</em>. When an event is recorded by QF-Test, additional information about the target component is recorded as
+          well, so that the event can later be replayed for the same component.
+        </p>
+      
+</dd>
+
+      
+<dt>Recognition</dt>
+      
+<dd>
+        
+<p>
+          Component recognition is one of the most complex part of QF-Test. The reason is the
+          need to allow for some degree of change. QF-Test is a tool designed for regression
+          testing, so when a new version of the SUT is tested, tests should continue to run,
+          ideally unchanged. So when the GUI of the SUT
+          changes, QF-Test needs to adapt. If, for example, the "OK" and "Cancel"
+          buttons were moved from the bottom of the detail view to its top, QF-Test
+          would still be able to replay events for these buttons correctly. The
+          extent to which QF-Test is able to adapt depends on the available recognition criteria.
+          In this area software developers often can, with relatively low effort, make a great contribution
+          to the creation of robust regression tests.
+        </p>
+        
+
+        
+<a name="usec_components_criteria"></a>
+<p id="usec_components_criteria">
+          The following criteria are availabe for component recognition:
+        </p>
+        
+<ul>
+          
+<li>
+            
+<a href="usec_componentclass.html#usec_componentclass">Class</a>, correlates with the component's function
+          </li>
+          
+<li>
+            
+<a href="usec_components_name.html#usec_components_name">Name</a>, based on the <a href="usec_components_name.html#usec_components_identifier">Component identifiers</a>
+          
+</li>
+          
+<li>
+            
+<a href="usec_components_feature.html#usec_components_feature">Feature</a>, a piece of text belonging to the component
+          </li>
+          
+<li>
+            
+<a href="usec_components_extrafeatures.html#usec_components_extrafeatures">Extra features</a>, further recognition features like a description or tooltip
+          </li>
+          
+<li>
+            
+<a href="usec_components_index.html#usec_components_index">Index</a>
+          
+</li>
+          
+<li>
+            
+<a href="usec_components_geometry.html#usec_components_geometry">Geometry</a>
+          
+</li>
+          
+<li>
+            
+<a href="usec_components_hierarchy.html#usec_components_hierarchy">Component hierarchy</a>
+          
+</li>
+        
+</ul>
+        
+<p>
+          These criteria figure into recognition with varying importance.
+          Especially important are a component's class and <a href="usec_components_name.html#usec_components_identifier">Component identifiers</a>. With the latter,
+          developers can make a great contribution to test stability (see <a href="bp_componentrecognition.html#sec_bpComponentRecognition">How to achieve robust component recognition</a>).
+          For more information, see <a href="tech_recognition.html#sec_recognition">Weighting of recognition features for recorded components</a>.
+        </p>
+
+        
+      
+</dd>
+
+      
+
+      
+<dt>Storing recognition information</dt>
+      
+<dd>
+        
+<p>
+          Information about recognition can be stored by QF-Test either in
+          a <a href="user_componentstep.html#usec_componentstep">'Component' node</a> or directly in the event nodes as a <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a>.
+          In <a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">'Component' nodes versus SmartID</a> you will learn which option is preferrable for which
+          use case.
+        </p>
+        
+<p>
+          By default, QF-Test will record 'Component' nodes.
+        </p>
+      
+</dd>
+
+      
+
+      
+<dt>Child elements and nested components</dt>
+      
+<dd>
+        
+<p>
+          There are some components that QF-Test addresses relative to a parent component.
+          Among these are table cells, list entries, tree nodes, button icons,
+          or a checkbox inside a table cell.
+        </p>
+        
+<p>
+          QF-Test has special ways of addressing these components. This topic is explained in detail in
+          <a href="user_subitems.html#usec_subitems">Sub-items: Addressing relative to a parent component</a>.
+        </p>
+        
+<p>
+          Also, QF-Test offers the ability to define <a href="usec_scope.html#usec_scope">Scope (Preview)</a>
+          to limit actions (clicks, text entry, checks) to components contained within.
+        </p>
+      
+</dd>
+
+      
+
+    
+</dl>
+
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="user_components_gui.html#usec_components_gui"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="user_components_gui.html#usec_components_gui">5.1</a></span>
+</div>
+<a href="user_components_gui.html#usec_components_gui">Components of a GUI</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">5.2</a></span>
+</div>
+<a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">'Component' nodes versus SmartID</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="bp_componentrecognition.html#sec_bpComponentRecognition"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="bp_componentrecognition.html#sec_bpComponentRecognition">5.3</a></span>
+</div>
+<a href="bp_componentrecognition.html#sec_bpComponentRecognition">How to achieve robust component recognition</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="user_component_recognition_criteria.html#usec_component_recognition_criteria"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="user_component_recognition_criteria.html#usec_component_recognition_criteria">5.4</a></span>
+</div>
+<a href="user_component_recognition_criteria.html#usec_component_recognition_criteria">Recognition criteria</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="user_componentstep.html#usec_componentstep"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="user_componentstep.html#usec_componentstep">5.5</a></span>
+</div>
+<a href="user_componentstep.html#usec_componentstep">'Component' node</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="user_smartid.html#usec_smartid"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="user_smartid.html#usec_smartid">5.6</a></span>
+</div>
+<a href="user_smartid.html#usec_smartid">SmartID (Preview)</a>
+</h4>
+    
+    
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="usec_scope.html#usec_scope"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="usec_scope.html#usec_scope">5.7</a></span>
+</div>
+<a href="usec_scope.html#usec_scope">Scope (Preview)</a>
+</h4>
+
+      
+      
+
+      
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="sec_bpCRGeneric.html#sec_bpCRGeneric"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="sec_bpCRGeneric.html#sec_bpCRGeneric">5.8</a></span>
+</div>
+<a href="sec_bpCRGeneric.html#sec_bpCRGeneric">Generic components</a>
+</h4>
+
+      
+      
+
+      
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="user_subitems.html#usec_subitems"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="user_subitems.html#usec_subitems">5.9</a></span>
+</div>
+<a href="user_subitems.html#usec_subitems">Sub-items: Addressing relative to a parent component</a>
+</h4>
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="user_troubleshooting.html#usec_troubleshooting"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="user_troubleshooting.html#usec_troubleshooting">5.10</a></span>
+</div>
+<a href="user_troubleshooting.html#usec_troubleshooting">Troubleshooting component recognition problems</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="usec_component_maintenance.html#usec_component_maintenance"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="usec_component_maintenance.html#usec_component_maintenance">5.11</a></span>
+</div>
+<a href="usec_component_maintenance.html#usec_component_maintenance">Component tree maintenance</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="user_componentinspection.html#usec_componentinspection"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="user_componentinspection.html#usec_componentinspection">5.12</a></span>
+</div>
+<a href="user_componentinspection.html#usec_componentinspection"> Inspecting components</a>
+</h4>
+
+    
+
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_capture.html#usec_capturereplay"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 4&nbsp;Capture and replay" title="Previous Chapter: 4&nbsp;Capture and replay"></a></td><td class="navicon"><a href="user_components_gui.html#usec_components_gui"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 5.1&nbsp;Components of a GUI" title="Next Page: 5.1&nbsp;Components of a GUI"></a></td><td class="navicon"><a href="user_variables.html#usec_variables"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 6&nbsp;Variables" title="Next Chapter: 6&nbsp;Variables"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;User manual" title="Chapter Overview: I&nbsp;User manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

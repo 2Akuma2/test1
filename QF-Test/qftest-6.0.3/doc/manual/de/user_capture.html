@@ -1,0 +1,608 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Aufnahme und Wiedergabe</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_capturereplay"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_quickstart.html#usec_quickstart"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 3&nbsp;Schnellstart Ihrer Anwendung" title="Vorheriges Kapitel: 3&nbsp;Schnellstart Ihrer Anwendung"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 5&nbsp;Komponenten" title="N&auml;chste Seite: 5&nbsp;Komponenten"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 5&nbsp;Komponenten" title="N&auml;chstes Kapitel: 5&nbsp;Komponenten"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch" title="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_capturereplay">4</a></span>
+</div>
+<a href="contents.html#toc_usec_capturereplay">Aufnahme und Wiedergabe</a>
+</h3>
+    
+<p>
+      Wenn das SUT erst einmal unter QF-Test l&auml;uft, ist der n&auml;chste Schritt,
+      Testsequenzen aufzunehmen und wieder abzuspielen.
+    </p>
+    
+<p>
+      
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+      Die Aufnahme und das Abspielen von Sequenzen ist auch in dem Video <a href="https://www.qfs.de/de/yt/capture-replay-40.html" class="videolink" target="_blank">'Capture und Replay'</a> erl&auml;utert.
+    </p>
+    
+<p>
+      Im Video <a href="https://www.qfs.de/de/yt/testfall-40.html" class="videolink" target="_blank">'Erstellung eines
+      Testfalls'</a> sehen Sie wie ein Testfall erstellt wird.
+    </p>
+    
+
+    
+<a name="usec_recording"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_recording">4.1</a></span>
+</div>
+<a href="contents.html#toc_usec_recording">Aufnahme von Testsequenzen</a>
+</h4>
+      
+<p>
+        Um eine Sequenz von Events im SUT aufnehmen zu k&ouml;nnen, muss das
+        SUT aus QF-Test heraus gestartet worden sein (vgl.<a href="tech_startsut.html#sec_runningyourapp">Kapitel 42</a>) und die Verbindung zum SUT muss
+        bestehen. Letzteres ist an Hand des Aufnahmeknopfs zu erkennen, der rot
+        dargestellt wird, wenn er aktivierbar ist.
+      </p>
+      
+<a name="figure_4.1"></a><a name="figure_4.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="" target="_blank">
+<table border="0" cellspacing="20" cellpadding="0">
+          
+<tr>
+            
+<td rowspan="1" colspan="1"><img src="../icons/record_disabled_tb.png" alt="Gesperrter Aufnahmeknopf" title="Gesperrter Aufnahmeknopf" width="26" height="26" texscale="1"></td>
+            <td rowspan="1" colspan="1"><img src="../icons/record_tb.png" alt="Aktivierbarer Aufnahmeknopf" title="Aktivierbarer Aufnahmeknopf" width="26" height="26" texscale="1"></td>
+          
+</tr>
+        
+</table>
+</a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;4.1</a>:&nbsp;&nbsp;Gesperrter und aktivierbarer Aufnahmeknopf</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Um eine Sequenz aufzunehmen, starten Sie die Aufnahme einfach mittels
+        des Aufnahmeknopfs <img src="../icons/record_tb.png" style="vertical-align: text-bottom" alt="Aufnahme" title="Aufnahme" width="26" height="26" texscale=".66">
+        oder &raquo;<em>Aufnahme</em>&laquo;-&raquo;<em>Start</em>&laquo;. Wechseln Sie dann zum SUT und f&uuml;hren
+        Sie einige Kommandos aus. Schalten Sie dann zur&uuml;ck zu QF-Test und beenden
+        Sie die Aufnahme mit dem Stopknopf <img src="../icons/stop_tb.png" style="vertical-align: text-bottom" alt="Stop" title="Stop" width="26" height="26" texscale=".66"> oder &raquo;<em>Aufnahme</em>&laquo;-&raquo;<em>Stop</em>&laquo;.  Die aufgezeichneten Events werden in
+        die Testsuite eingef&uuml;gt, entweder direkt an der <a href="user_gui.html#usec_insert" shape="rect">Einf&uuml;gemarkierung</a>, oder als neue
+        <a href="sequences.html#step_BasicSequence" shape="rect">'Sequenz'</a> unterhalb des <a href="sequences.html#step_ExtraSequence" shape="rect">'Extrasequenzen'</a> Knotens,
+        je nach Einstellung der Option <a href="opt_record.html#opt_insertatselection">Aufnahme bei aktueller Selektion einf&uuml;gen</a>.
+        Sie k&ouml;nnen die Aufnahme mit
+        &raquo;<em>Aufnahme</em>&laquo;-&raquo;<em>Pause</em>&laquo; oder dem Pausenknopf <img src="../icons/pause_tb.png" style="vertical-align: text-bottom" alt="Stop" title="Stop" width="26" height="26" texscale=".66"> unterbrechen, wenn Sie
+        einige Schritte im SUT ausf&uuml;hren wollen, die nicht aufgezeichnet
+        werden sollen.
+      </p>
+      
+<p>
+        Der Aufnahmemodus kann auch direkt im SUT &uuml;ber den <a href="opt_record.html#opt_hotkeyrecord">Hotkey f&uuml;r Aufnahme</a>
+        gestartet und gestoppt werden. Standardm&auml;&szlig;ig ist diese Taste [F11].
+      </p>
+      
+<p>
+        Alle <a href="components.html#step_ComponentStep" shape="rect">'Komponenten'</a>, auf die sich die aufgezeichneten Events
+        beziehen, werden automatisch unterhalb des <a href="components.html#step_WindowList" shape="rect">'Fenster und Komponenten'</a> Knotens
+        in die Testsuite integriert, falls sie dort noch nicht vorhanden sind.
+      </p>
+      
+<p>
+        Es gibt viele Optionen, die die Aufnahme von Events und die Verwaltung
+        von GUI Komponenten beeinflussen. Diese werden ausf&uuml;hrlich in
+        <a href="opt_record.html#sec_opt_record">Abschnitt 37.2</a> des Referenzteils erl&auml;utert.
+        Wenn Sie sich mit QF-Test vertraut gemacht haben, sollten Sie
+        sich die Zeit nehmen und sich zumindest einen &Uuml;berblick &uuml;ber diese
+        Optionen verschaffen.
+      </p>
+      
+<p>
+        Es folgen einige allgemeine Tipps zum Aufnehmen:
+      </p>
+      
+<ul>
+        
+<li>
+          Nehmen Sie nur kurze Sequenzen am St&uuml;ck auf.
+        </li>
+        
+<li>
+          Sehen Sie sich jede neu aufgenommene Sequenz an, versuchen Sie zu
+          verstehen, was Sie erhalten haben und ob es Ihren Aktionen im SUT
+          entspricht.
+        </li>
+        
+<li>
+          Bearbeiten Sie die Sequenz, um &uuml;berfl&uuml;ssige Events zu entfernen,
+          insbesondere solche, die von den Wechseln zwischen dem SUT und
+          QF-Test stammen. QF-Test hat ausgezeichnete Filter f&uuml;r solche
+          Events. Dennoch k&ouml;nnen einzelne Events &uuml;brigbleiben, die von Hand
+          entfernt werden m&uuml;ssen.
+        </li>
+        
+<li>
+          Schlie&szlig;lich sollten Sie ausprobieren, ob die neue Sequenz
+          korrekt abgespielt wird. Anschlie&szlig;end k&ouml;nnen Sie diese
+          weiterbearbeiten und zu gr&ouml;&szlig;eren Tests zusammensetzen.
+        </li>
+      
+</ul>
+      
+<p>
+        
+<span class="margin"><a name="mac_N69220"></a><span class="note">Mac</span></span>F&uuml;r SUTs, die auf Mac OS X laufen, wird die Benutzung der
+        Bildschirm-Men&uuml;leiste unterdr&uuml;ckt und die normale Men&uuml;leiste aktiviert, &auml;quivalent wie auf
+        anderen Plattformen. Grund daf&uuml;r ist, dass QF-Test die Bildschirm-Men&uuml;leiste nicht
+        vollst&auml;ndig ansprechen kann, was sauberes Aufnehmen/Wiedergeben von Men&uuml;aktionen
+        verhindert. Falls das typische Mac Verhalten der Bildschirm-Men&uuml;leiste aus irgendwelchen
+        Gr&uuml;nden erforderlich sein sollte, kann es durch das Hinzuf&uuml;gen der Zeile
+        <code>qfs.apple.noScreenMenuBar=false</code> in der Datei <code>qfconnect.properties</code>, die
+        sich im Wurzelverzeichnis von QF-Test befindet, erzwungen werden. Nach einem Neustart zeigt
+        das SUT dann das f&uuml;r den Mac &uuml;bliche Verhalten.
+      </p>
+    
+
+    
+    
+
+    
+<a name="usec_executing"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_executing">4.2</a></span>
+</div>
+<a href="contents.html#toc_usec_executing">Abspielen von Tests</a>
+</h4>
+      
+<p>
+        Um einen oder mehrere Test abzuspielen, markieren Sie den oder die
+        entsprechenden Knoten und dr&uuml;cken Sie [Return]
+        oder den Start Knopf <img src="../icons/play_tb.png" style="vertical-align: text-bottom" alt="Start" title="Start" width="26" height="26" texscale=".66"> oder
+        w&auml;hlen Sie &raquo;<em>Wiedergabe</em>&laquo;-&raquo;<em>Start</em>&laquo;. QF-Test hebt Knoten, die gerade
+        ausgef&uuml;hrt werden, durch einen kleinen Pfeil hervor. Au&szlig;erdem werden
+        Meldungen &uuml;ber den Fortschritt des Tests in der Statuszeile
+        ausgegeben. Beides kann die Geschwindigkeit der Testausf&uuml;hrung leicht
+        verringern und ist &uuml;ber die Optionen <a href="opt_play.html#opt_markrunningsteps">Aktive Schritte markieren</a> und <a href="opt_play.html#opt_printrunningsteps">Aktive Schritte in der Statuszeile anzeigen</a> abschaltbar.
+      </p>
+      
+<p>
+        Nach dem Ende des Tests wird das Ergebnis in der Statuszeile
+        angezeigt. Im Idealfall steht dort "Wiedergabe beendet - keine
+        Fehler". Andernfalls wird die Zahl der Warnungen, Fehler und
+        Exceptions angezeigt. Im Fehlerfall wird zus&auml;tzlich ein entsprechender
+        Meldungsdialog ge&ouml;ffnet.
+      </p>
+      
+<p>
+        Auch das Abspielen von Tests wird von zahlreichen Optionen
+        gesteuert. Einige dienen lediglich zur Anpassung an pers&ouml;nliche
+        Vorlieben, w&auml;hrend andere starken Einfluss auf den Ausgang von Tests
+        haben. Bitte lesen Sie <a href="opt_play.html#sec_opt_play">Abschnitt 37.3</a>, um sich mit
+        diesen Optionen vertraut zu machen.
+      </p>
+      
+<p>
+        Um einen Testlauf vorzeitig Abzubrechen, dr&uuml;cken Sie den Stop Button
+        <img src="../icons/stop_tb.png" style="vertical-align: text-bottom" alt="Stop" title="Stop" width="26" height="26" texscale=".66"> oder w&auml;hlen Sie &raquo;<em>Wiedergabe</em>&laquo;-&raquo;<em>Stop</em>&laquo;. Sie
+        k&ouml;nnen den Test auch mittels des Pause Buttons <img src="../icons/pause_tb.png" style="vertical-align: text-bottom" alt="Pause" title="Pause" width="26" height="26" texscale=".66"> oder &raquo;<em>Wiedergabe</em>&laquo;-&raquo;<em>Pause</em>&laquo;
+        vor&uuml;bergehend unterbrechen, wodurch auch der Debugger aktiviert wird
+        (vgl. <a href="user_debugging.html#usec_debugging">Problemanalyse und Debugging</a>). Zum Fortsetzen dr&uuml;cken Sie
+        erneut den Pause Button.
+      </p>
+      
+<p>
+        Wenn ein Test in vollem Tempo abl&auml;uft, kann es schwierig werden ihn
+        anzuhalten, insbesondere wenn der Mauszeiger &uuml;ber den Bildschirm
+        mitbewegt wird oder die Fenster des SUT st&auml;ndig nach vorne gebracht
+        werden. Mit Hilfe der <a href="opt_play.html#opt_panickey">(Keine) Panik Taste</a> (Standard ist
+        [Alt-F12]) k&ouml;nnen Sie die Kontrolle
+        wiedererlangen. Alle laufenden Tests werden sofort unterbrochen. Zum
+        Fortsetzen dr&uuml;cken Sie die selbe Kombination ein weiteres mal.
+      </p>
+      
+<p>
+        Beim Zusammenstellen einer Testsuite m&uuml;ssen immer wieder Teile von
+        Tests ausgef&uuml;hrt werden, um das SUT in den richtigen Zustand f&uuml;r die
+        n&auml;chste Aufnahme zu bringen. Dabei k&ouml;nnen andere Teile eher hinderlich
+        sein. Ebenso gibt es oft langwierige Sequenzen, die beim Ausprobieren
+        eher im Weg sind. Mittels
+        &raquo;<em>Bearbeiten</em>&laquo;-&raquo;<em>Ein-/Ausschalten</em>&laquo; k&ouml;nnen Sie solche Knoten deaktivieren und sp&auml;ter f&uuml;r
+        den eigentlichen Testlauf wieder einschalten.
+      </p>
+      
+<p>
+        Den aktuellen Fehlerstatus w&auml;hrend des Ablaufs eines Tests wie auch das abschlie&szlig;ende
+        Resultat zeigt QF-Test in der Statusleiste am unteren Rand des Hauptfensters an. Letztere
+        kann &uuml;ber das Men&uuml; &raquo;<em>Ansicht</em>&laquo;-&raquo;<em>Statuszeile         anzeigen</em>&laquo; ein- bzw. ausgeblendet werden. Bei der Wiedergabe von
+        <a href="sequences.html#step_TestSet" shape="rect">'Testfallsatz'</a> oder <a href="sequences.html#step_TestCase" shape="rect">'Testfall'</a> Knoten, deren Bedeutung in <a href="user_organization.html#usec_testcase">Abschnitt 8.2</a> erkl&auml;rt wird, enth&auml;lt die Statuszeile auch relevante Ergebniswerte
+        aus folgender Liste:
+      </p>
+      
+<a name="table_4.1"></a><a name="table_4.1"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdcenterleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth" valign="center">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Z&auml;hlersymbol</th>
+            <th rowspan="1" colspan="1">Beschreibung</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1"> <img src="../icons/sctests.png" alt="" title="Anzahl der Testf&auml;lle insgesamt" texscale=".5" width="16" height="16">
+            </td>
+            <td rowspan="1" colspan="1">Anzahl der Testf&auml;lle insgesamt. Diese Z&auml;hlerwert beginnt mit einem '&gt;' Zeichen im
+            Fall von &uuml;bersprungenen Testfalls&auml;tzen.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1"><img src="../icons/scexc.png" alt="" title="Anzahl Testf&auml;lle mit Exceptions" texscale=".5" width="16" height="16">
+            </td>
+            <td rowspan="1" colspan="1">Anzahl Testf&auml;lle mit Exceptions.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1"><img src="../icons/scerr.png" alt="" title="Anzahl Testf&auml;lle mit Fehlern" texscale=".5" width="16" height="16">
+            </td>
+            <td rowspan="1" colspan="1">Anzahl Testf&auml;lle mit Fehlern.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1"><img src="../icons/scexpfail.png" alt="" title="Anzahl Testf&auml;lle mit erwarteten Fehlern" texscale=".5" width="16" height="16">
+            </td>
+            <td rowspan="1" colspan="1">Anzahl Testf&auml;lle mit erwarteten Fehlern. <a href="sequences.html#att_TestCase_expectedfail" shape="rect">'Fehlschlagen erwartet wenn...'</a> markiert
+              einen Testfall als erwartet fehlerhaft.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1"><img src="../icons/scok.png" alt="" title="Anzahl erfolgreicher Testf&auml;lle" texscale=".5" width="16" height="16">
+            </td>
+            <td rowspan="1" colspan="1">Anzahl erfolgreicher Testf&auml;lle.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1"><img src="../icons/scskip.png" alt="" title="Anzahl &uuml;bersprungene Testf&auml;lle" texscale=".5" width="16" height="16">
+            </td>
+            <td rowspan="1" colspan="1">Anzahl &uuml;bersprungene Testf&auml;lle. Ein Testfall wird &uuml;bersprungen, wenn seine
+              (optionale) <a href="sequences.html#att_TestCase_condition" shape="rect">'Bedingung'</a> fehlschl&auml;gt. Diese Z&auml;hlerwert beginnt mit
+              einem '&gt;' Zeichen im Fall von &uuml;bersprungenen Testfalls&auml;tzen.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1"><img src="../icons/scskipset.png" alt="" title="Anzahl &uuml;bersprungene Testfalls&auml;tze" texscale=".5" width="16" height="16">
+            </td>
+            <td rowspan="1" colspan="1">Anzahl &uuml;bersprungene Testfalls&auml;tze. Ein Testfallsatz wird &uuml;bersprungen, wenn seine
+              (optionale) <a href="sequences.html#att_TestSet_condition" shape="rect">'Bedingung'</a> fehlschl&auml;gt.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1"><img src="../icons/scnotimpl.png" alt="" title="Anzahl nicht implementierter Testf&auml;lle" texscale=".5" width="16" height="16">
+            </td>
+            <td rowspan="1" colspan="1">Anzahl nicht implementierter Testf&auml;lle. Ein Testfall gilt als nicht implementiert,
+            wenn er keine Knoten enth&auml;lt, die w&auml;hrend des Testlaufs aufgef&uuml;hrt wurden.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1"><img src="../icons/scrun.png" alt="" title="Anzahl ausgef&uuml;hrter Testf&auml;lle" texscale=".5" width="16" height="16">
+            </td>
+            <td rowspan="1" colspan="1">Anzahl ausgef&uuml;hrter Testf&auml;lle.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1"><img src="../icons/scpercent.png" alt="" title="Prozent Testf&auml;lle erfolgreich" texscale=".5" width="16" height="16">
+            </td>
+            <td rowspan="1" colspan="1">Prozent Testf&auml;lle erfolgreich.</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;4.1</a>:&nbsp;&nbsp;Testresultate in der Statusleiste</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Die finalen Z&auml;hlerst&auml;nde finden sich auch im Report wieder, der f&uuml;r jeden Testlauf
+        generiert werden kann. Reports sind Thema von <a href="user_report.html#usec_report">Kapitel 21</a>.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span>Die Z&auml;hlerwerte von oben stehen auch als <a href="user_variables.html#usec_externaldata">Variablen</a> w&auml;hrend dem Testlauf zur Verf&uuml;gung. Ein
+        <a href="tech_testrunlisteners.html#sec_testrunlisteners">TestRunListener</a> kann hilfreich sein, um
+        die Z&auml;hlerwerte w&auml;hrend des Testlaufs auszuwerten und entsprechende Aktionen anzusto&szlig;en.
+      </p>
+    
+
+    
+    
+
+    
+<a name="usec_recordchecks"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_recordchecks">4.3</a></span>
+</div>
+<a href="contents.html#toc_usec_recordchecks">Aufnehmen von Checks</a>
+</h4>
+      
+<p>
+        Auch wenn es ganz unterhaltsam sein kann, Sequenzen aufzuzeichnen und
+        dem Spiel der Fenster des SUT beim Wiederabspielen zuzusehen, geht
+        es doch eigentlich darum herauszufinden, ob sich das SUT dabei auch
+        korrekt verh&auml;lt. Diese Aufgabe &uuml;bernehmen <a href="checks.html#sec_checks" shape="rect">Checks</a>. Der <a href="checks.html#step_CheckStringStep" shape="rect">'Check Text'</a> Knoten zum
+        Beispiel, liest den Text aus einer Komponente aus und vergleicht ihn
+        mit einem vorgegebenen Wert. Stimmen diese nicht &uuml;berein, wird ein
+        Fehler signalisiert.
+      </p>
+      
+<p>
+        Eine Aufstellung aller m&ouml;glichen Checks und ihrer Funktionsweisen findet sich im <a href="checks.html#sec_checks" shape="rect">Referenzteil</a>. Die Palette reicht vom einfachen Text-Check bis zum m&auml;chtigen
+        <a href="checks.html#step_CheckImageStep" shape="rect">'Check Abbild'</a> mit Suchalgorithmen bis hin zur M&ouml;glichkeit <a href="tech_checkers.html#sec_checkers">eigene
+        Check-Typen</a> zu implementieren. Im Weiteren werden wir uns darauf konzentrieren, wie man Checks am
+        einfachsten erstellt, n&auml;mlich indem man sie aufnimmt.
+      </p>
+      
+<p>
+        W&auml;hrend der Aufnahme befindet sich das SUT im
+        <em>Aufnahmemodus</em>, in dem alle Events gesammelt und an QF-Test
+        geschickt werden. &Uuml;ber den Check Button <img src="../icons/check_tb.png" style="vertical-align: text-bottom" alt="Check" title="Check" width="26" height="26" texscale=".66"> oder mittels &raquo;<em>Aufnahme</em>&laquo;-&raquo;<em>Check</em>&laquo;
+        schalten Sie das SUT in den <em>Checkmodus</em>, zu erkennen am
+        ge&auml;nderten Mauszeiger. In diesem Modus werden Events nicht weiter
+        aufgezeichnet. Stattdessen wird die Komponente unter dem Mauszeiger
+        hervorgehoben. Wenn Sie auf eine Komponente klicken, wird ein Check
+        f&uuml;r diese aufgezeichnet. Der aktuelle Wert der Komponente wird dabei
+        als Ma&szlig;gabe verwendet. Um zur&uuml;ck in den Aufnahmemodus zu gelangen,
+        verwenden Sie ebenfalls den Check Button oder den Men&uuml;eintrag.
+      </p>
+      
+<p>
+        Es gibt verschiedene Arten von <a href="checks.html#sec_checks" shape="rect">Checks</a>, die man f&uuml;r eine Komponente
+        vornehmen kann. Welche davon in Frage kommen, h&auml;ngt von der jeweiligen
+        Komponente ab. So stellen manche Komponenten keinen Text dar, so dass
+        z.B. ein <a href="checks.html#step_CheckStringStep" shape="rect">'Check Text'</a> Knoten f&uuml;r einen Scrollbar keinen
+        Sinn ergibt. Wenn Sie im Checkmodus mit der rechten Maustaste auf eine
+        Komponente klicken, erhalten Sie ein Men&uuml; mit allen f&uuml;r diese
+        Komponente zur Verf&uuml;gung stehenden Arten von Checks. In diesem k&ouml;nnen
+        Sie den gew&uuml;nschten Check ausw&auml;hlen.  Ein Klick mit der linken
+        Maustaste zeichnet dagegen direkt den ersten Check aus dieser Liste
+        auf.
+      </p>
+      
+<p>
+        Wenn Sie die [Shift] oder [Strg] Taste gedr&uuml;ckt halten, w&auml;hrend Sie mit der rechten
+        Maustaste klicken, bleibt das Auswahlmen&uuml; f&uuml;r die Checks auch nach
+        einer Selektion offen. Dadurch k&ouml;nnen Sie sehr einfach mehrere
+        verschiedene Checks f&uuml;r die selbe Komponente aufnehmen.
+      </p>
+      
+<p>
+        Checks und Events lassen sich sehr gut mischen und Sie werden bald
+        einen Aufnahmestil ala <em>klick, klick, tipp, check, klick, klick,
+        check...</em> entwickeln. Dabei st&auml;ndig zwischen dem SUT und QF-Test
+        hin- und herzuschalten um den Checkmodus zu (de)aktivieren, ist mehr
+        als m&uuml;hsam. Stattdessen k&ouml;nnen Sie mittels einer Tastenkombination
+        direkt im SUT zwischen Aufnahmemodus und Checkmodus hin- und
+        herzuschalten. Standardm&auml;&szlig;ig ist diese Taste [F12]. Ist diese Taste anderweitig belegt, oder l&auml;sst Ihr
+        Windowmanager diese gar nicht erst bis zur Applikation durch, k&ouml;nnen
+        Sie &uuml;ber die Option <a href="opt_record.html#opt_hotkeycheck">Hotkey f&uuml;r Checks</a> eine beliebige
+        andere Tastenkombination daf&uuml;r w&auml;hlen. Um eine Sequenz mit
+        eingestreuten Checks aufzunehmen, m&uuml;ssen Sie nun nur noch die Aufnahme
+        starten, zum SUT wechseln und die Sequenz aufnehmen. Wann immer Sie
+        einen Check einbauen wollen, dr&uuml;cken Sie [F12]
+        (oder was immer Sie konfiguriert haben) und nehmen Sie den Check (oder
+        die Checks) auf. Schalten Sie dann mit [F12]
+        wieder zur&uuml;ck, um mit der Aufnahme fortzufahren. Auf diese Weise
+        k&ouml;nnen Sie komplett im SUT arbeiten und m&uuml;ssen lediglich zu QF-Test
+        zur&uuml;ckschalten, um die Aufnahme zu beenden.
+      </p>
+      
+<p>
+        
+<em>Achtung:</em> Lassen Sie sich durch diese Annehmlichkeiten nicht
+        dazu verf&uuml;hren, allzu lange Sequenzen aufzunehmen. Wenn sich am SUT
+        etwas &auml;ndert, das dazu f&uuml;hrt dass eine solche Sequenz nicht mehr
+        durchl&auml;uft, kann es sehr m&uuml;hsam werden, herauszufinden was
+        schiefgegangen ist und die Sequenz entsprechend anzupassen.
+      </p>
+    
+
+    
+    
+
+    
+<a name="usec_componentrecording"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_componentrecording">4.4</a></span>
+</div>
+<a href="contents.html#toc_usec_componentrecording">Komponenten aufnehmen</a>
+</h4>
+      
+<p>
+        Wie bereits erw&auml;hnt wird Komponenteninformation automatisch mitgespeichert wenn Events
+        oder Checks aufgenommen werden. Trotzdem gibt es Situationen in denen die Aufnahme von
+        Komponenten alleine hilfreich ist.
+      </p>
+      
+<p>
+        Um den <em>Modus zum Komponentenaufnehmen</em> zu starten, braucht nur der
+        Komponentenaufnahme-Knopf <img src="../icons/component_tb.png" style="vertical-align: text-bottom" alt="Record         components" title="Komponenten aufnehmen" width="26" height="26" texscale=".66"> gedr&uuml;ckt
+        oder &raquo;<em>Aufnahme</em>&laquo;-&raquo;<em>Komponenten         aufnehmen</em>&laquo; gew&auml;hlt werden. Bei dem anschlie&szlig;enden Wechsel zum Fenster des
+        SUT zeigt sich dort ein besonderes Verhalten, in welchem die Komponente unter dem
+        Mauszeiger hervorgehoben wird.
+      </p>
+      
+<p>
+        Ein Klick mit der linken Maustaste auf eine Komponente zeichnet diese auf, w&auml;hrend bei
+        einem Klick mit der rechten Maustaste ein Men&uuml; mit weiteren M&ouml;glichkeiten ge&ouml;ffnet wird,
+        z.B. um eine Komponente mit seinen Kinder oder auch alle Komponenten eines Fensters
+        aufzunehmen. In dieser Weise k&ouml;nnen mehrere Komponenten erfasst werden. Als n&auml;chstes
+        wechselt man zur&uuml;ck zu QF-Test und deaktiviert den Komponentenaufnahme-Knopf <img src="../icons/component_tb.png" style="vertical-align: text-bottom" title="Komponenten aufnehmen" width="26" height="26" texscale=".66"> oder den &raquo;<em>Aufnahme</em>&laquo;-&raquo;<em>Komponenten aufnehmen</em>&laquo; Men&uuml;eintrag. Nun werden die gespeicherten
+        Komponenteninformationen in Form von <a href="components.html#step_ComponentStep" shape="rect">'Komponente'</a> Knoten unter dem
+        <a href="components.html#step_WindowList" shape="rect">'Fenster und Komponenten'</a> Knoten abgelegt.
+      </p>
+      
+<p>
+        Die Aufnahme von Komponenten kann alternativ mit einer konfigurierbaren Tastenkombination
+        gesteuert werden. Durch Dr&uuml;cken von [Shift-F11] (Standardeinstellung) <em>
+        im Fenster des SUTs</em> wird die Komponentenaufnahme aktiviert. Weitere Informationen
+        finden Sie in der Dokumentation zur Option <a href="opt_record.html#opt_hotkeycomponent">Hotkey f&uuml;r Komponenten</a>.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Nur jeweils eine Testsuite kann die aufgezeichneten Komponenten
+        in Empfang nehmen. Haben Sie mehrere Testsuiten in individuellen Fenster ge&ouml;ffnet, wenn
+        also die Workbench-Ansicht deaktiviert ist, so erh&auml;lt die Suite die Komponenten, in der die
+        Komponentenaufnahme (mittels Knopf oder Men&uuml;) gestoppt wird oder - falls [Shift-F11] verwendet wurde, die Suite, die &uuml;ber den Men&uuml;eintrag
+        &raquo;<em>Aufnahme</em>&laquo;-&raquo;<em>Suite ist Empf&auml;nger f&uuml;r Aufnahmen</em>&laquo;
+        festgelegt werden kann.
+      </p>
+      
+<p>
+        Das Feature der Komponentenaufnahme kann auch dazu verwendet werden, schnell eine
+        Komponente aufzufinden, egal ob sie schon aufgezeichnet wurde oder
+        nicht. Beim Anlegen von Event- oder Checkknoten von Hand oder beim
+        &Auml;ndern der Zielkomponente, muss diese im Attribut
+        <a href="events.html#att_MouseEventStep_component" shape="rect">'QF-Test ID der Komponente'</a> angegeben werden. Wird eine Komponente
+        aufgezeichnet, steht ihre 'QF-Test ID'
+        anschlie&szlig;end im Clipboard und kann mittels [Strg-V] direkt in das Feld f&uuml;r die
+        'QF-Test ID der Komponente' eingef&uuml;gt werden. Au&szlig;erdem k&ouml;nnen Sie mittels
+        [Strg-Umschalt-Backspace] oder &uuml;ber den
+        Men&uuml;eintrag
+        &raquo;<em>Bearbeiten</em>&laquo;-&raquo;<em>N&auml;chsten Knoten anw&auml;hlen</em>&laquo;
+        oder den entsprechenden Button in der Werkzeugleiste direkt zum aufgenommenen
+        'Komponente' Knoten springen.
+      </p>
+      
+<p>
+        Das Popup-Men&uuml;, das erscheint, wenn man mit der rechten Maustaste auf eine Komponente
+        klickt, enth&auml;lt auch einen Eintrag &raquo;<em>Methoden anzeigen</em>&laquo;, der es
+        erlaubt, eine Art von Komponenten-Untersuchung durchzuf&uuml;hren (siehe
+        <a href="user_componentinspection.html#usec_componentinspection">Abschnitt 5.12</a>).
+      </p>
+      
+<p>
+        Komponenten spielen in der Struktur einer Testsuite eine zentrale
+        Rolle, auf die in <a href="user_components.html#usec_components">Kapitel 5</a> n&auml;her eingegangen
+        wird.
+      </p>
+    
+
+    
+    
+
+    
+<a name="usec_requestrecording"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="margin"><a name="web_N69895"></a><span class="note">Web</span></span><span class="numtitle"><a href="contents.html#toc_usec_requestrecording">4.5</a></span>
+</div>
+<a href="contents.html#toc_usec_requestrecording">HTTP Requests aufnehmen (GET/POST)</a>
+</h4>
+      
+<p>
+        Um einen vom SUT gesendeten (GET/POST) Request aufnehmen zu k&ouml;nnen, muss das SUT aus QF-Test
+        heraus gestartet worden sein (vgl.<a href="tech_startsut.html#sec_runningyourapp">Kapitel 42</a>) und die Verbindung zum SUT
+        muss bestehen.
+      </p>
+      
+<p>
+        W&auml;hrend der Aufnahme befindet sich das SUT im
+        <em>Aufnahmemodus</em>, in dem alle Events gesammelt und an QF-Test
+        geschickt werden. &Uuml;ber den HTTP-Request Button <img src="../icons/request_tb.png" style="vertical-align: text-bottom" alt="HTTP Requests aufnehmen" title="HTTP Requests aufnehmen" width="26" height="26" texscale=".66"> oder mittels &raquo;<em>Aufnahme</em>&laquo;-&raquo;<em>HTTP Requests aufnehmen</em>&laquo;
+        schalten Sie das SUT in den <em>Request Aufnahme Modus</em>.
+        In diesem speziellen Aufnahme-Modus werden im Gegensatz zum bereits beschriebenen
+        <a href="#usec_recording" shape="rect">Aufnehmen von Testsequenzen</a> alle vom Webbrowser
+        gesendeten GET bzw. POST Request als spezielle Knoten gespeichert.
+        Um zur&uuml;ck in den Aufnahmemodus zu gelangen, verwenden Sie ebenfalls den HTTP-Request Button oder den Men&uuml;eintrag.
+      </p>
+      
+<p>
+        Im Abschnitt <a href="opt_web.html#sec_opt_web" shape="rect">Web Optionen</a> wird beschrieben wie der Typ des aufgenommenen Requests
+        beeinflusst werden kann. Standardm&auml;&szlig;ig wird ein <a href="requests.html#step_ClientRequestStep" shape="rect">'Browser HTTP Request'</a> erzeugt. Dieser eignet sich zum Automatisieren
+        gr&ouml;&szlig;erer Formulareingaben, da keine separaten Eingabeknoten verwendet werden m&uuml;ssen. Die Formulardaten
+        werden direkt im Browser abgesendet und der erhaltene Response dargestellt. An dieser Stelle kann der
+        Testablauf direkt im Browser weitergef&uuml;hrt werden. Der <a href="requests.html#step_RequestStep" shape="rect">'Server HTTP Request'</a> wird hingegen direkt durch QF-Test
+        abgesendet. Der Response steht nur in QF-Test zur Verf&uuml;gung und beeinflusst den Browser nicht.
+      </p>
+      
+<p>
+        Die Attribute eines entsprechend aufgezeichneten HTTP-Request Knotens oder auch die Parametrisierung von
+        Requests sind ausf&uuml;hrlich im Abschnitt <a href="requests.html#sec_requests" shape="rect">HTTP Requests</a> des Referenzteils erl&auml;utert.
+      </p>
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_quickstart.html#usec_quickstart"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 3&nbsp;Schnellstart Ihrer Anwendung" title="Vorheriges Kapitel: 3&nbsp;Schnellstart Ihrer Anwendung"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 5&nbsp;Komponenten" title="N&auml;chste Seite: 5&nbsp;Komponenten"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 5&nbsp;Komponenten" title="N&auml;chstes Kapitel: 5&nbsp;Komponenten"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch" title="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,593 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>How to achieve robust component recognition</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_bpComponentRecognition"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 5.2&nbsp;'Component' nodes versus SmartID" title="Previous Chapter: 5.2&nbsp;'Component' nodes versus SmartID"></a></td><td class="navicon"><a href="user_component_recognition_criteria.html#usec_component_recognition_criteria"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 5.4&nbsp;Recognition criteria" title="Next Page: 5.4&nbsp;Recognition criteria"></a></td><td class="navicon"><a href="user_component_recognition_criteria.html#usec_component_recognition_criteria"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 5.4&nbsp;Recognition criteria" title="Next Chapter: 5.4&nbsp;Recognition criteria"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 5&nbsp;Components" title="Chapter Overview: 5&nbsp;Components"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpComponentRecognition">5.3</a></span>
+</div>
+<a href="contents.html#toc_sec_bpComponentRecognition">How to achieve robust component recognition</a>
+</h4>
+      
+<p>
+        The most important feature of a GUI test tool is the recognition of the graphical components.
+        QF-Test offers a lot of configuration options for this.
+        This section presents an overview over the most common strategies and settings
+        to make component recognition as stable as possible.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+        You should define a component recognition strategy for your project
+        <strong>before</strong> starting to implement tests in QF-Test.
+        Otherwise, test maintenance can create larger expenses.
+      </p>
+      
+<p>
+        The recognition of components in the SUT during test playback is very complex.
+        The challenge lies in the changes the interface of the SUT
+        can go through all the time even during normal use.
+        Windows are opened and closed or varied in size,
+        changing the position and size of components within.
+        Menus and combo boxes are opened and closed,
+        components are added or removed, made visible or inisible, activated or disabled.
+        In addition, the application under test itself will develop over time,
+        which will reflect in changes to its interface.
+        All these changes must be handled flexibly by QF-Test
+        to be able to match components as reliably as possible.
+      </p>
+      
+<p>
+        In many cases, QF-Test can manage this with the default settings.
+        QF-Test uses an intelligent, probability-based algorithm
+        to achieve a stable and fault tolerant component recognition.
+        It assesses the attributes described in <a href="user_components.html#usec_components_criteria">
+          The following criteria are availabe for component recognition:
+        </a>
+        and weights them.
+        However, if no good recognition attributes are available,
+        even the best algorithm will struggle.
+        For this case, there are possiblilites for configuration and optimization
+        which are described in <a href="#usec_components_optimization">Opportunities for optimization</a>.
+      </p>
+      
+<p>
+        The first question is whether the default settings are already sufficient, so:
+      </p>
+
+      
+<a name="components_robust_recognition_judge"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_components_robust_recognition_judge">5.3.1</a></span>
+</div>
+<a href="contents.html#toc_components_robust_recognition_judge">How to judge robust component recognition</a>
+</h5>
+        
+<p>
+          This section is intended to enable you to assess
+          whether the current component recognition will, in all likelihood, be robust.
+        </p>
+        
+<p>
+          The following are important elements of robust component recognition:
+        </p>
+        
+<ul>
+          
+<li>
+            
+<a href="usec_componentclass.html#usec_componentclass">Class</a> of the component
+          </li>
+          
+<li>
+            
+<a href="usec_components_name.html#usec_components_name">Name</a>
+          
+</li>
+          
+<li>
+            label (<a href="usec_components_feature.html#usec_components_feature">Feature</a> or
+            <a href="usec_components_extrafeatures.html#usec_components_qfslabel">qfs:label</a>)
+          </li>
+          
+<li>
+            moderate hierarchy depth of the component tree
+          </li>
+        
+</ul>
+        
+<p>
+          In most cases, the class and the name are the most robust criteria
+          for recognition.
+          (In rare cases, however, they change from one version of the application to the next.
+          We consider this messy case in <a href="#usec_components_optimization">Opportunities for optimization</a>, item 2.)
+          Usually the label of the component also rarely changes and is thus
+          also well suited. Detailed information on all the detection features
+          can be found in <a href="user_component_recognition_criteria.html#usec_component_recognition_criteria">Recognition criteria</a>.
+        </p>
+        
+<p>
+          With the class, QF-Test tries to derive which functionality a component has
+          from the class used by the developer.
+          Based on this generic class, QF-Test optimizes the inclusion
+          and provides function-specific checks
+          (for example, checking an entire row for a table).
+        </p>
+        
+<p>
+          First, let's show you how to quickly see if generic classes have been detected
+          and if names or labels are present based on the recorded <a href="components.html#step_ComponentStep" shape="rect">'Component'</a> nodes.
+        </p>
+        
+<a name="figure_5.5"></a><a name="figure_5.5"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/componentsIdentifier.png" target="_blank"><img src="images/componentsIdentifier.png" alt="Component tree 1" width="248" height="130" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;5.5</a>:&nbsp;&nbsp;Component tree 1</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          The class is the black text of the 'Component' nodes.
+          If the class starts with an uppercase letter followed by a lowercase letter,
+          it is generally one of the <a href="tech_genericclasses.html#sec_genericclasses">Generic classes</a>,
+          for example <code>Button</code>. For browser elements,
+          if the class consists only of uppercase letters,
+          QF-Test could not determine the functionality.
+          In the example <code>HTML</code> and <code>BODY</code>.
+        </p>
+        
+<p>
+          Whether names or labels are present can be seen from the brown texts.
+          This is the 'QF-Test component ID',
+          which allows the following conclusions to be drawn:
+        </p>
+        
+<ul>
+          
+<li>
+            If the class does not show up in the 'QF-Test ID',
+            it means that either a <a href="usec_components_name.html#usec_components_name">Name</a> is present
+            (in the example, <code>CalculatorPanel</code> and <code>CalculatedPrice</code>)
+            or, if no generic class was recognized, a label
+            (<a href="usec_components_feature.html#usec_components_feature">Feature</a> or <a href="usec_components_extrafeatures.html#usec_components_qfslabel">qfs:label</a>)
+            is present. In the example, <code>CarConfigWeb</code>.
+          </li>
+          
+<li>
+            If the 'QF-Test ID' starts with the class,
+            no <a href="usec_components_name.html#usec_components_name">Name</a> could be determined
+            and the following part is the label of the component
+            (<a href="usec_components_feature.html#usec_components_feature">Feature</a> or
+            <a href="usec_components_extrafeatures.html#usec_components_qfslabel">qfs:label</a>).
+            In the example <code>labelTotal</code> and <code>buttonOK</code>.
+          </li>
+          
+<li>
+            If neither name nor label are found, the 'QF-Test ID' repeats the class in lowercase letters.
+            In the example <code>html</code>.
+          </li>
+          
+<li>
+            If multiple components would be assigned the same 'QF-Test ID' with the described algorithm,
+            an ongoing number will be appended.
+            In the example <code>buttonOK2</code>
+          
+</li>
+        
+</ul>
+        
+<p>
+          
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+          A certain hierarchy for components is helpful for recognition.
+          Only deep nestings are problematic.
+          For component recognition, only few hierarchy levels are actually relevant.
+          The others can be ignored.
+          The video
+          <a href="https://www.qfs.de/en/yt/web-test-automation-40.html" class="videolink" target="_blank">
+          'Dealing with the explosion of complexity in web test automation'</a>
+          visualizes the problem of deep nestings - and also the solutions.
+          The example above only has a shallow hierarchy depth. This is optimal.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Note</span></span>
+          The component tree in the example above was created
+          with the following settings
+          in the section &raquo;<em>Record</em>&laquo;-&raquo;<em>Components</em>&laquo;:
+        </p>
+        
+<ul>
+          
+<li>
+            
+<a href="opt_record.html#opt_addwindowid">Prepend QF-Test ID of window parent to component QF-Test ID</a>
+            disabled, which corresponds to the default setting.
+          </li>
+          
+<li>
+            
+<a href="opt_record.html#opt_addparentid">Prepend parent QF-Test ID to component QF-Test ID</a> set to <code>Never</code>, which also corresponds to the default setting.
+          </li>
+        
+</ul>
+        
+<p>
+          Access these settings via the menu item &raquo;<em>Edit</em>&laquo;-&raquo;<em>Settings</em>&laquo;
+        </p>
+        
+<p>
+          As an alternative to evaluating the 'QF-Test ID' in the component tree you can get a list of all components with their names via the QF-Test search.
+          To do this, in the search dialog, set
+          <code>In Attribute</code> to <code>Name</code>
+          and <code>Node type</code> to <code>Component</code>
+          and click on <code>Show Result List</code>.
+        </p>
+        
+<p>
+          If you record something, the components you interact with will automatically be recorded.
+          To record all components at once for analysis, choose &raquo;<em>Record</em>&laquo;-&raquo;<em>Record components</em>&laquo;.
+          Then right-click in the GUI and select <code>Whole window</code>.
+          (After the analysis it makes sense to delete the components to avoid unnecessary ballast.)
+        </p>
+        
+<p>
+          Here are two more example component trees
+          with evaluation of how robust the component recognition is.
+        </p>
+
+        
+<a name="sec_N70862"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N70862">5.3.1.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N70862">Example 1</a>
+</h5>
+          
+<a name="figure_5.6"></a><a name="figure_5.6"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/componentsRecognition1.png" target="_blank"><img src="images/componentsRecognition1.png" alt="Component recognition 1" width="274" height="290" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;5.6</a>:&nbsp;&nbsp;Stable component recognition - Example 1</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            Positive: <a href="tech_genericclasses.html#sec_genericclasses">Generic classes</a> are recognized: <code>MenuBar</code>,
+            <code>TabPanel</code>, <code>Panel</code>, <code>Label</code>, and <code>TextField</code>.
+          </p>
+          
+<p>
+            Positive: Names were determined for the text fields marked green,
+            identifiable by the 'QF-Test ID' (brown text) not starting with the class,
+            for example <code>BasePrice</code>.
+          </p>
+          
+<p>
+            Positive: For the text fields and buttons marked yellow, no names were determined,
+            identifiable by the 'QF-Test ID' (brown text) starting with the class
+            (<code>textfield</code>, <code>button</code>).
+            But the second part of the 'QF-Test ID' shows that at least a label was found.
+          </p>
+          
+<p>
+            Not important: the labels don't have names. However, they are rarely relevant for testing.
+          </p>
+          
+<p>
+            Not important: the containers 'HTML' and 'BODY' don't have a generic class.
+            They could be mapped to 'Panel'.
+            In this case, this would neither improve recognition
+            nor unlock additional functionality in QF-Test
+            (such as additional checks for check recording).
+          </p>
+          
+<p>
+            Positive: No superfluous containers except for <code>BODY</code>.
+          </p>
+        
+
+        
+<a name="sec_N70939"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N70939">5.3.1.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N70939">Example 2</a>
+</h5>
+          
+<a name="figure_5.7"></a><a name="figure_5.7"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/componentsRecognition2.png" target="_blank"><img src="images/componentsRecognition2.png" alt="Component recognition 2" width="376" height="322" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;5.7</a>:&nbsp;&nbsp;Stable component recognition - Example 2</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            Positive: Names or labels could be determined for test-relevant components,
+            identifiable by the 'QF-Test ID' (brown text) not starting with the class,
+            for example <code>BasePrice</code> and <code>DiscountValue_input</code>.
+          </p>
+          
+<p>
+            Negative: Generic classes were only recognized for few components.
+            A component mapping with a Custom Web Resolver is missing here,
+            see <a href="tech_customajax.html#sec_customajax">Improving component recognition with a <code>CustomWebResolver</code></a>.
+          </p>
+          
+<p>
+            Negative: Superfluous hierarchy levels. The <code>DIV</code>, <code>TR</code>
+            <code>TD</code>, <code>CENTER</code>, and <code>TABLE</code> components
+            should be mapped to <code>Panel</code>
+            (see <a href="tech_custom_web_resolver.html#sec_custom_web_resolver">The procedure <code>installCustomWebResolver</code></a>)
+            or ignored
+            (see <a href="tech_custom_web_resolver.html#sec_custom_web_resolver_parameters"><code>installCustomWebResolver</code> - Parameters</a>, parameter <code>ignoreTags</code>).
+          </p>
+        
+      
+
+      
+      
+
+      
+<a name="usec_components_optimization"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_components_optimization">5.3.2</a></span>
+</div>
+<a href="contents.html#toc_usec_components_optimization">Opportunities for optimization</a>
+</h5>
+        
+<p>
+          If generic classes and names are available for the relevant components,
+          you can assume that component detection is robust in the vast majority of cases
+          and skip the rest of this section.
+        </p>
+        
+<p>
+          If there are problems with recognition,
+          there are two fundamentally different cases to consider:
+        </p>
+        
+<dl>
+          
+<dt>Is the component displayed (in time)?</dt>
+          
+<dd>
+            This case is unrelated to component recognition itself.
+            It occurs if QF-Test is too fast for the application, so to speak.
+            In this case, you should explicitly wait for the appearance of the component in your test case.
+            Find more information at <a href="user_troubleshooting.html#usec_components_sync">Timing synchronisation</a>.
+          </dd>
+
+          
+<dt>Is the displayed component recognized?</dt>
+          
+<dd>
+            
+<p>
+              There are several options here:
+            </p>
+            
+<dl>
+              
+<dt>Web: Assignment of generic classes to GUI element classes</dt>
+              
+<dd>
+                For web applications, please first perform component assignment as described in
+                <a href="tech_custom_web_resolver.html#sec_custom_web_resolver">The procedure <code>installCustomWebResolver</code></a>.
+                If this does not lead to sufficient stability,
+                then continue reading in this section.
+              </dd>
+
+              
+<dt>Unstable Component Identifiers</dt>
+              
+<dd>
+                
+<p>
+                  
+<a href="usec_components_name.html#usec_components_identifier">Component identifiers</a> have been assigned,
+                  but they are not stable across application versions.
+                  In this case, it is better to remove the identifiers using resolvers
+                  and work with the remaining detection criteria
+                  if stable identifiers cannot be set by the developers.
+                </p>
+                
+<p>
+                  In the case of web tests, a corresponding setting in CWR parameter 'customIdAttributes' (see <a href="tech_custom_web_resolver.html#sec_custom_web_resolver_parameters"><code>installCustomWebResolver</code> - Parameters</a>) can help.
+                </p>
+              
+</dd>
+
+              
+<dt>No component identifiers</dt>
+              
+<dd>
+                
+<p>
+                  No <a href="usec_components_name.html#usec_components_identifier">Component identifiers</a> has been assigned
+                  and the other criteria are not sufficiently stable.
+                  Here it is also often worthwhile to contact development
+                  and explain to them the relevance of component identifiers
+                  for regression tests - or to convince the person who is responsible for development and testing in terms of budget that a small amount of additional work in development for entering the identifiers can mean a significant reduction in effort in the test department.
+                </p>
+                
+<p>
+                  If this is not possible, there may be other stable recognition criteria
+                  which QF-Test does not use by default.
+                  These can be announced via a name resolver
+                  (see <a href="tech_resolversmodule.html#sec_nameresolver">subsection 50.1.6</a>).
+                </p>
+              
+</dd>
+
+              
+<dt>Component identifiers contain stable parts</dt>
+              
+<dd>
+                Only parts of the <a href="usec_components_name.html#usec_components_identifier">Component identifiers</a> are stable.
+                If a computer-readable schema is available, this may be a case for a name resolver
+                (see <a href="tech_resolversmodule.html#sec_nameresolver">subsection 50.1.6</a>).
+                For a web application, this can also be defined via the CWR parameter 'autoIdPatterns'
+                (see <a href="tech_custom_web_resolver.html#sec_custom_web_resolver_parameters"><code>installCustomWebResolver</code> - Parameters</a>).
+              </dd>
+
+              
+<dt>The components have labels wich QF-Test does not recognize out of the box</dt>
+              
+<dd>
+                
+<p>
+                  There is no name and the default QF-Test algorithm
+                  does not detect a feature or extra feature 'qfs:label',
+                  even though there are possible candidates available.
+                  In this case you can announce the labels through a FeatureResolver
+                  (see <a href="tech_resolversmodule.html#sec_featureresolver">subsection 50.1.9</a>) or
+                  ExtraFeatureResolver (see <a href="tech_resolversmodule.html#sec_extrafeatureresolver">subsection 50.1.10</a>).
+                </p>
+                
+<p>
+                  Web components sometimes have an attribute which can be used as a label.
+                  This can be announced through the Custom Web Resolver parameter 'attributesToQftFeature'
+                  (see <a href="tech_custom_web_resolver.html#sec_custom_web_resolver_parameters"><code>installCustomWebResolver</code> - Parameters</a>).
+                </p>
+              
+</dd>
+
+              
+<dt>Parts of the feature or extra feature 'qfs:label' are stable</dt>
+              
+<dd>
+                In this case you can either use regular expressions
+                directly in the 'Component' node
+                or in the SmartIDs.
+                But the solution could also be a FeatureResolver
+                (see <a href="tech_resolversmodule.html#sec_featureresolver">subsection 50.1.9</a>)
+                or ExtraFeatureResolver
+                (see <a href="tech_resolversmodule.html#sec_extrafeatureresolver">subsection 50.1.10</a>).
+              </dd>
+
+              
+<dt>Parent components are unstable</dt>
+              
+<dd>
+                
+<p>
+                  The component itself is stable, but one of its parent containers is not stable.
+                  Here, regular expressions or resolvers for the affected containers can help.
+                  If all test-relevant components have names,
+                  the option <a href="opt_record.html#opt_nameoverriderec">Name override mode (record)</a>
+                  in section &raquo;<em>Record</em>&laquo;-&raquo;<em>Components</em>&laquo;-&raquo;<em>Name override mode</em>&laquo;
+                  can also be set to "Override everything".
+                </p>
+                
+<p>
+                  The use of SmartIDs is also an option here.
+                </p>
+              
+</dd>
+
+              
+<dt>Additional or missing parent components</dt>
+              
+<dd>
+                
+<p>
+                  The component itself is stable, but its containing hierarchy is not stable
+                  because containers can appear or disappear.
+                  If all test-relevant components have names,
+                  the option <a href="opt_record.html#opt_nameoverriderec">Name override mode (record)</a>
+                  in section &raquo;<em>Record</em>&laquo;-&raquo;<em>Components</em>&laquo;-&raquo;<em>Name override mode</em>&laquo;
+                  can be set to "Override everything".
+                </p>
+                
+<p>
+                  Alternatively, the component can be moved up in the component tree hierarchy,
+                  so it is no longer influenced by the unstable containers.
+                </p>
+                
+<p>
+                  The use of SmartIDs is an option here as well.
+                </p>
+              
+</dd>
+
+              
+<dt>Component structure or index</dt>
+              
+<dd>
+                The attribute <a href="components.html#att_ComponentStep_structure" shape="rect">'Class index'</a> plays a subordinate role,
+                but comes to effect if the component recognition must do without name and feature or the extra feature 'qfs:label'.
+                If the 'Class index' is unstable as well,
+                it can be deleted so the geometry comes to effect.
+                In this case the window size of the application to be tested
+                should always be set to the same value after lauch
+                (see <a href="events.html#step_ComponentEventStep" shape="rect">'Component event'</a>).
+              </dd>
+            
+</dl>
+          
+</dd>
+        
+</dl>
+      
+
+      
+
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 5.2&nbsp;'Component' nodes versus SmartID" title="Previous Chapter: 5.2&nbsp;'Component' nodes versus SmartID"></a></td><td class="navicon"><a href="user_component_recognition_criteria.html#usec_component_recognition_criteria"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 5.4&nbsp;Recognition criteria" title="Next Page: 5.4&nbsp;Recognition criteria"></a></td><td class="navicon"><a href="user_component_recognition_criteria.html#usec_component_recognition_criteria"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 5.4&nbsp;Recognition criteria" title="Next Chapter: 5.4&nbsp;Recognition criteria"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 5&nbsp;Components" title="Chapter Overview: 5&nbsp;Components"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

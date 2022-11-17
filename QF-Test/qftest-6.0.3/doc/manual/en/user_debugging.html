@@ -1,0 +1,969 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Problem analysis and debugging</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_debugging"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_variables.html#usec_variables"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 6&nbsp;Variables" title="Previous Chapter: 6&nbsp;Variables"></a></td><td class="navicon"><a href="user_organization.html#usec_organization"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 8&nbsp;Organizing the test-suite" title="Next Page: 8&nbsp;Organizing the test-suite"></a></td><td class="navicon"><a href="user_organization.html#usec_organization"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 8&nbsp;Organizing the test-suite" title="Next Chapter: 8&nbsp;Organizing the test-suite"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;User manual" title="Chapter Overview: I&nbsp;User manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_debugging">7</a></span>
+</div>
+<a href="contents.html#toc_usec_debugging">Problem analysis and debugging</a>
+</h3>
+    
+<p>
+      The whole point of creating automated tests is to uncover problems in the SUT. Therefore
+      we can justifiably expect the tests to fail occasionally.
+    </p>
+    
+<p>
+      After the execution of a test has finished, a message will appear in the
+      status line that will hopefully say "No errors". If something went
+      wrong, the numbers of warnings, errors and exceptions that occurred is
+      shown. Additionally an error dialog may pop up. In that case you will need to find out
+      what went wrong.
+    </p>
+    
+<p>
+      For some problems the cause may be obvious, but very often it is not. First and foremost in
+      this case is the need to determine whether the test failed due to a bug in the SUT or
+      whether the SUT behaved correctly but the logic of the tests was wrong. The dilemma here
+      is that any potential problem in the SUT must be duly reported as soon as possible, yet
+      every false bug report is a waste of time and will cause resentment among the developers.
+      Therefore, each problem needs to be thoroughly analyzed and every alleged bug in the SUT
+      should ideally be reproducible before a report is submitted.
+    </p>
+    
+<p>
+      QF-Test supports testers in this crucial task in two ways. A detailed log is created for each
+      test-run that holds all the relevant information for post mortem error analysis, including
+      screenshots taken at the time that an error occurred. The integrated test debugger helps with
+      analyzing and understanding the flow of control and information during a test-run.
+    </p>
+    
+<p>
+      
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+      The video <a href="https://www.qfs.de/en/yt/error-analysis-40-html" class="videolink" target="_blank">'Error analysis'</a>
+      shows a brief example for error handling.
+    </p>
+    
+
+    
+<a name="usec_runlog"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_runlog">7.1</a></span>
+</div>
+<a href="contents.html#toc_usec_runlog">The run-log</a>
+</h4>
+      
+
+      
+<p>
+        During test replay QF-Test creates a run-log that records everything that is going on. The
+        run-logs for recent tests are accessible from the &raquo;<em>Run</em>&laquo; menu, the
+        current or most recent run-log can also be opened by typing [Ctrl-L] or the respective <img src="../icons/lastlog_tb.png" style="vertical-align: text-bottom" alt="Open last run-log" title="Open last run-log" width="26" height="26" texscale=".66"> button in the toolbar. See <a href="#usec_logoptions">subsection 7.1.6</a> for information about options influencing
+        run-log creation.
+      </p>
+      
+<p>
+        The structure of a run-log is similar to that of a
+        test-suite, but there are subtle differences. Nodes are added to the
+        run-log when they are executed. <a href="dependencies.html#step_SetupSequence" shape="rect">'Setup'</a> and
+        <a href="dependencies.html#step_CleanupSequence" shape="rect">'Cleanup'</a> nodes, for example, are typically executed more
+        than once, in which case multiple copies will be recored in the
+        run-log as shown below:
+      </p>
+      
+<a name="figure_7.1"></a><a name="figure_7.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="" target="_blank">
+<table border="0" cellspacing="10" cellpadding="0">
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1"><img src="images/SimpleTest.png" alt="Simple test" texscale=".66" width="198" height="114"></td>
+            <td align="center" rowspan="1" colspan="1"><img src="images/SimpleTestLog.png" alt="Run-log for simple test" texscale=".66" width="198" height="178"></td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">Test-suite</td>
+            <td align="center" rowspan="1" colspan="1">Run-log</td>
+          
+</tr>
+        
+</table>
+</a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;7.1</a>:&nbsp;&nbsp;A simple test and its run-log</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        A run-log is the essential resource for determining
+        <strong>what</strong> went wrong in a test, <strong>where</strong> it
+        went wrong and maybe even get an idea about <strong>why</strong> it
+        went wrong. Therefore the emphasis is on completeness of information
+        rather than readability and a run-log should not be confused with a
+        report or summary. Report generation is covered in <a href="user_report.html#usec_report">chapter 21</a>.
+      </p>
+      
+<p>
+        In addition to the nodes copied from the test-suite, a run-log contains failure information, optional
+        annotations, various kinds of messages as well as information about variable expansion and run-time behavior.
+      </p>
+      
+<p>
+        The information gathered from a long test-run accumulates and can eat up enormous amounts of memory and QF-Test
+        has several means to cope with that. The best one, which is also the default, is to create split run-logs as
+        described in <a href="#usec_splitlogs">subsection 7.1.5</a>. The resulting <code>*.qzp</code> files in ZIP format not only
+        preserve memory on disk - partial run-logs can be saved during test execution and removed from memory to free
+        up necessary space. The same applies when processing logs, e.g. for report creation. The older option
+        <a href="opt_log.html#opt_compactlog">Create compact run-log</a> as well as the alternative file formats <code>*.qrz</code> and
+        <code>*.qrl</code> add flexibility but are mostly retained for compatibility reasons.
+      </p>
+
+      
+      
+
+      
+<a name="sec_N77846"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N77846">7.1.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N77846">Error states</a>
+</h5>
+        
+<p>
+          There are three kinds of failures differing in the level
+          of severity:
+        </p>
+        
+<dl>
+          
+<dt>Warnings</dt>
+          
+<dd>
+            Warnings indicate problems that are typically not serious, but
+            might lead to trouble in the future and may need looking at. For
+            example, QF-Test issues a warning, if the best match for a
+            component barely meets the requirements and differs in some
+            significant way.
+          </dd>
+          
+<dt>Errors</dt>
+          
+<dd>
+            Errors are considered to be serious defects that require closer
+            inspection. They indicate that the SUT does not fulfill some
+            requirement. A typical cause for an error is a mismatch in a
+            <a href="checks.html#step_CheckStringStep" shape="rect">'Check text'</a> node.
+          </dd>
+          
+<dt>Exceptions</dt>
+          
+<dd>
+            Exceptions are the most serious kinds of errors. An exception is
+            thrown when a situation occurs in which QF-Test cannot simply
+            continue with the execution of the test. Most exceptions indicate
+            problems with the logic of the test, though they can just as well
+            be caused by the SUT. A <a href="exceptions.html#ex_ComponentNotFoundException" shape="rect"><code>ComponentNotFoundException</code></a>, for
+            example, is thrown when no component in the SUT matches the
+            intended target for an event. A list of all possible exceptions is
+            available in <a href="exceptions.html#sec_exceptions">chapter 39</a>.
+          </dd>
+        
+</dl>
+        
+<p>
+          Each node of a run-log has an associated state which can be one of
+          <em>normal</em>, <em>warning</em>, <em>error</em> or
+          <em>exception</em>. This state is visually represented by a frame
+          around the node's icon which is orange for <em>warning</em>, red for
+          <em>error</em> and bold red for <em>exception</em>.
+        </p>
+        
+<a name="figure_7.2"></a><a name="figure_7.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/StatePropagation.png" target="_blank"><img src="images/StatePropagation.png" alt="Error states in a run-log" width="493" height="290" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;7.2</a>:&nbsp;&nbsp;Error states in a run-log</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          As shown in the (somewhat reduced) screenshot above, error states
+          propagate from bottom to top. The <em>exception</em> state takes
+          precedence over the <em>error</em> state, which in turn overrides
+          <em>warning</em>. The most severe kind of error that propagates to
+          the top of the tree determines the final result of a test and
+            QF-Test's exit code when run in batch mode (see <a href="tech_execution.html#sec_exitcodes">section 40.3</a>).
+        </p>
+        
+<p>
+          If necessary, the propagation of errors can be restricted for all
+          kinds of <a href="sequences.html#step_BasicSequence" shape="rect">'Sequence'</a> nodes with the help of the
+          <a href="sequences.html#att_BasicSequence_maxerror" shape="rect">'Maximum error level'</a> attribute. This can be useful for
+          sequences which are known to contain errors that should not be taken
+          into account just yet. Exceptions can be handled with the help of
+          the <a href="control.html#step_TryStep" shape="rect">'Try'</a> and <a href="control.html#step_CatchSequence" shape="rect">'Catch'</a> nodes. The
+          <a href="control.html#att_CatchSequence_maxerror" shape="rect">'Maximum error level'</a> attribute of the 'Catch' node
+          determines the state to propagate for a caught exception.
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_N77984"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N77984">7.1.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N77984">Navigating the run-log tree</a>
+</h5>
+        
+<p>
+          All of the basic editing methods for a run-log are similar to those
+          for a test-suite. One significant difference is that can neither add
+          or remove any nodes nor edit the attributes of the nodes copied from
+          the test-suite. You can add annotations though, for
+          example to document the reason for an error if it is known.
+        </p>
+        
+<p>
+          The first question to answer when looking at a run-log is <strong>"What happened"?
+          </strong>
+        
+</p>
+        
+<p>
+          The <img src="../icons/next_error_tb.png" style="vertical-align: text-bottom" alt="Find next error" title="Find next error" width="26" height="26" texscale=".66"> Button, or
+          &raquo;<em>Edit</em>&laquo;-&raquo;<em>Find&nbsp;next&nbsp;error</em>&laquo;, [Ctrl-N] for short, moves the
+          selection to the next place at which an error actually occurred.
+        </p>
+        
+<p>
+          Respectively, <img src="../icons/prev_error_tb.png" style="vertical-align: text-bottom" alt="Find previous error" title="Find previous error" width="26" height="26" texscale=".66"> or &raquo;<em>Edit</em>&laquo;-&raquo;<em>Find&nbsp;previous&nbsp;error</em>&laquo;
+          ([Ctrl-P]) moves backwards.
+        </p>
+        
+<p>
+          The option <a href="opt_log.html#opt_finderrorskip">Skip suppressed errors</a> determines whether to ignore errors
+          that didn't propagate up to the root
+          node. There's a menu item shortcut &raquo;<em>Edit</em>&laquo;-&raquo;<em>Skip&nbsp;suppressed&nbsp;errors</em>&laquo; to quickly toggle the latter
+          option.
+        </p>
+        
+<p>
+          The next question might be <strong>"Where did this happen?".</strong>
+        
+</p>
+        
+<p>
+          Though a run-log
+          is similar in many ways to a test-suite, the connection isn't always
+          obvious. The function &raquo;<em>Edit</em>&laquo;-&raquo;<em>Find&nbsp;node&nbsp;in&nbsp;test-suite</em>&laquo;
+          ([Ctrl-T]) will take you to the
+          exact node in the test-suite that is represented by the selected
+          node in the run-log, always provided that the test-suite can be
+          located and hasn't changed in a way that prevents this. If the
+          run-log is loaded from a file, the corresponding test-suite may not
+          be located at the same place as when the test was executed. If the
+          test-suite cannot be found, a dialog will pop up that lets you
+          select a different file. In case you select a wrong file or some
+          other test-suite is found instead of the one the run-log was created
+          from, you may end up at some totally different node, or none at
+          all. In that case you can use the menu item &raquo;<em>Edit</em>&laquo;-&raquo;<em>Locate&nbsp;corresponding&nbsp;test-suite</em>&laquo;
+          to explicitly change the test-suite.
+        </p>
+        
+<p>
+          If you want to set the link between the file path of the executed
+          test-suite and the file path where you develop the test-suite permanently you
+          can do so in the options menu for the log-file as explained in
+          <a href="opt_log.html#opt_suitedirectorymap">Directory map for test-suites</a>.
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_runtimebehavior"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_runtimebehavior">7.1.3</a></span>
+</div>
+<a href="contents.html#toc_usec_runtimebehavior">Run-time behavior</a>
+</h5>
+	
+<p>
+	  QF-Test tracks the start time and the time spent for each node executed during a test, the latter in two forms:
+	  'Real time spent' is the wall time elapsed between entry and exit of the respective node. It includes
+	  explicit delays introduced in nodes via the 'Delay before/after' attribute, user interrupts when debugging
+	  tests or other overhead like taking screenshots. The actual time spent testing is collected
+	  in the 'Duration' attribute, making it a better indicator for the performance of the SUT.
+        </p>
+	
+<p>
+	  To get a better understanding of the run-time behavior of a test-run you can activate display of duration
+	  indicators via the toolbar button <img src="../icons/duration_tb.png" style="vertical-align: text-bottom" alt="Show relative duration indicators" title="Show relative duration indicators" width="26" height="26" texscale=".66">, the menu &raquo;<em>View</em>&laquo;-&raquo;<em>Show relative duration    indicators</em>&laquo; or the option <a href="opt_log.html#opt_logdurationindicators">Show relative duration indicators</a>. A colored bar is
+	  shown for each node with the length based on the percentage of time spent in the node relative to the time
+	  of its parent node. Bottlenecks in the performance of a test-run can be located by drilling down into the
+	  nodes with the longest bars:
+	</p>
+        
+<a name="figure_7.3"></a><a name="figure_7.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DurationIndicators.png" target="_blank"><img src="images/DurationIndicators.png" alt="Error states in a run-log" width="595" height="258" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;7.3</a>:&nbsp;&nbsp;Display of duration indicators in the run-log</td><td class="captionglue"></td>
+</tr>
+</table>
+	
+<p>
+	  Via the option <a href="opt_log.html#opt_logdurationindicatorskind">Duration indicator kind</a> or the sub-menu &raquo;<em>View</em>&laquo;-&raquo;<em>Duration indicator kind</em>&laquo; the display can be toggled to
+	  show the relative duration, real time or both. The latter is especially helpful but takes a bit of getting
+	  used to.
+	</p>
+      
+
+      
+      
+
+      
+<a name="usec_acceptcheck"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_acceptcheck">7.1.4</a></span>
+</div>
+<a href="contents.html#toc_usec_acceptcheck">Accepting values of failed checks as good</a>
+</h5>
+        
+<p>
+          A noteworthy feature of QF-Test's run-log is the ability to quickly accept the actual
+          values of a failed 'Check' node as good. When QF-Test logs a failed 'Check' it
+          includes the complete current state of the 'Check' node's target component in the
+          SUT. This is much more useful than the failure message alone, which, for example, might
+          just tell you that a table column has 10 rows instead of the expected 9, but not what
+          its contents are.
+        </p>
+        
+<p>
+          If you are analyzing a failed 'Check' and see that the value in the SUT was actually
+          correct and the expected value stored in the test-suite wrong, you can press
+          [Ctrl-U] or select &raquo;<em>Update check           node with current data</em>&laquo; from the context menu to accept the data from the failed
+          'Check' as the new correct value for the 'Check' node.
+        </p>
+        
+<p>
+          
+<strong>Warning:</strong> QF-Test currently doesn't preserve regular expressions in
+          <a href="checks.html#step_CheckStringStep" shape="rect">'Check text'</a> or <a href="checks.html#step_CheckItemsStep" shape="rect">'Check items'</a> nodes, they will simply get overwritten.
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_splitlogs"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N78221"></a><span class="note">3.0+</span></span><span class="numtitle"><a href="contents.html#toc_usec_splitlogs">7.1.5</a></span>
+</div>
+<a href="contents.html#toc_usec_splitlogs">Split run-logs</a>
+</h5>
+        
+<p>
+          Run-logs for long-running tests can get very large and consume an enormous amount of
+          memory, even more so in case many screenshots are kept. Compact run-logs can help, but not
+          enough to make tests that run for days on end possible without turning off the run-log
+          entirely. The best way to overcome the memory problem are split run-logs.
+        </p>
+        
+<p>
+          For split run-logs, whenever a certain part of a test has finished, QF-Test takes the
+          run-log for that part, removes it from the main run-log, saves it to a separate file and
+          replaces it with a single node that references that file. The partial logs are complete
+          run-logs in themselves and can be viewed and archived independently, though normally
+          they are accessed through the main run-log. When navigating the main run-log or when
+          creating reports, QF-Test transparently loads the partial run-logs from the separate files
+          as required and removes them from memory when no longer needed. This makes it possible
+          to navigate huge run-logs while still retaining a relatively small memory footprint. Of
+          course operations like searching or report creation that need to traverse the whole
+          run-log become slower, but jumping from error to error remains quite fast and loading
+          the main run-log is sped up drastically.
+        </p>
+        
+<p>
+          There are two ways for storing a main run-log and its partial logs: All combined
+          together in a single ZIP file with the extension <code>.qzp</code> or with the partial
+          logs in a separate directory. The latter is named after the main run-log with the
+          extension <code>.qrl</code> or <code>.qrz</code> removed and the suffix
+          <code>_logs</code> appended. Inside a <code>.qzp</code> ZIP file the same layout is used
+          so that it is possible to zip or unzip files manually without breaking the internal
+          references in the run-log. This compatibility is also the reason why by default partial
+          logs inside the ZIP are are stored compressed with the extension <code>.qrz</code>. This
+          is slightly less efficient than storing uncompressed <code>.qrl</code> files, but that
+          way a <code>.qzp</code> run-log can be unzipped without its overall size exploding.
+        </p>
+        
+<p>
+          To make use of split run-logs you can explicitly define points at which a run-log is
+          broken and split into parts. This is done via the <a href="datadriver.html#att_DataDriver_externalizename" shape="rect">'Name for separate run-log'</a>
+          attribute of <a href="datadriver.html#step_DataDriver" shape="rect">'Data driver'</a>, <a href="sequences.html#step_TestCase" shape="rect">'Test-case'</a>, <a href="sequences.html#step_TestSet" shape="rect">'Test-set'</a>, <a href="sequences.html#step_TestCall" shape="rect">'Test call'</a> or
+          <a href="sequences.html#step_TestStep" shape="rect">'Test-step'</a> nodes. When used with a 'Data driver', the logs for each iteration are saved
+          separately, in the other cases the node with the 'Name for separate run-log' attribute is split
+          off. Otherwise partial run-logs are split off automatically when they reach a certain
+          size. This functionality can be configured via the option <a href="opt_log.html#opt_autosplitlogthreshold">Minimum size for automatic splitting (kB)</a>.
+        </p>
+        
+<p>
+          When working with split run-logs it is advisable to turn <a href="opt_log.html#opt_compactlog">Create compact run-log</a> off,
+          in order to keep all details in the run-log.
+          This will consume a bit more disc space, but is very helpful when analyzing errors.
+        </p>
+        
+<p>
+          Split run-logs are also very handy for tracking the progress of a test in batch mode. In
+          that context it is extremely useful that the file names for the partial logs can be
+          created using the same placeholders as when specifying the name of the main run-log on
+          the command line. In particular the error state of the partial log can be made part of
+          its filename. Please see the documentation for the attribute
+          <a href="datadriver.html#att_DataDriver_externalizename" shape="rect">'Name for separate run-log'</a> for details.
+        </p>
+
+      
+
+      
+      
+
+      
+<a name="usec_logoptions"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_logoptions">7.1.6</a></span>
+</div>
+<a href="contents.html#toc_usec_logoptions">Run-log options</a>
+</h5>
+        
+<p>
+          There are several options affecting the creation of run-logs and their content.
+          Among others, you can choose whether to create compact or detailed run-logs,
+          whether to log screenshots of the whole screen and/or the client windows
+          or whether to suppress run-logs altogether.
+          All options are explained in detail in <a href="opt_log.html#sec_opt_log">section 37.8</a>.
+        </p>
+      
+
+    
+      
+
+      
+<a name="usec_logcreatetestsuite"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N78349"></a><span class="note">3.3+</span></span><span class="numtitle"><a href="contents.html#toc_usec_logcreatetestsuite">7.1.7</a></span>
+</div>
+<a href="contents.html#toc_usec_logcreatetestsuite">Creating a test-suite from the run-log</a>
+</h5>
+        
+<p>
+          If several people are involved in the test development process,
+          it might be useful to generate a test-suite from the run-log
+          directly. The generated test-suite could be used to reproduce a
+          test-run on-the-fly without having the entire structure of test-suites.
+        </p>
+        
+<p>
+          You can create a test-suite from the run-log via performing
+          a right mouse click at any node in the run-log and selecting
+          &raquo;<em>Create test-suite</em>&laquo; from the context menu.
+        </p>
+        
+<p>
+          QF-Test creates a new file containing all executed steps of the
+          respective tests under <a href="sequences.html#step_ExtraSequence" shape="rect">'Extras'</a> as well as the used components.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Note</span></span> QF-Test only adds the executed steps to the new
+          test-suite. Variables will be expanded immediately, so you can only
+          see their value in the new file. Organizational nodes like procedures
+          or control structures will not become created.
+        </p>
+        
+<p>
+          You have to set a couple of options in order to get this feature
+          properly working (Under Run-log -&gt; Content):
+        <ul>
+          
+<li>
+<a href="opt_log.html#opt_compactlog">Create compact run-log</a> needs to be switched off.</li>
+          
+<li>
+<a href="opt_log.html#opt_logexpansion">Log variable expansion</a> needs to be switched on.</li>
+          
+<li>
+<a href="opt_log.html#opt_logparent">Log parent nodes of components</a> needs to be switched on.</li>
+        
+</ul>
+      
+</p>
+        
+<p>
+          If you have access to all test-suites, you can use also use
+          information from them for creating the new one.
+          Therefore select &raquo;<em>Create test-suite from existing           structure</em>&laquo; from the context menu.
+          In contrast to the approach described above, it is not required to
+          switch on the option <a href="opt_log.html#opt_logparent">Log parent nodes of components</a>.
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_mergerunlogs"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N78416"></a><span class="note">4.1+</span></span><span class="numtitle"><a href="contents.html#toc_usec_mergerunlogs">7.1.8</a></span>
+</div>
+<a href="contents.html#toc_usec_mergerunlogs">Merging run-logs</a>
+</h5>
+            
+<p>
+            During test development you might face the requirement, that you have a run-log with the
+            test-results for your test-cycle. But in several cases you might need to re-run one test-case
+            which was failing due to subtle reasons during the previous test-run. Once that re-run has taken place
+            you would like to update your test-report to have that new execution in that test-report instead the
+            previous one. For this purpose it's possible to merge run-logs via command line.
+            </p>
+            
+<p>
+                A typical merge command looks like this:
+            </p>
+            
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>qftest -batch -mergelogs -mergelogs.mode=replace -mergelogs.masterlog full_log.qzp -mergelogs.resultlog newresult_log.qzp rerun.qzp</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;7.1:&nbsp;&nbsp;Sample call of merging run-logs for update</td><td class="captionglue"></td>
+</tr>
+</table>
+            
+<p>
+            The command above takes the result of the re-run from the run-log <code>rerun.qzp</code>, searches for the test-case in the
+            run-log <code>full_log.qzp</code> and store the updated run-log to <code>newresult_log.qzp</code>. If you set the
+            parameter <code>mergelogs.mode</code> to <code>merge</code> the new test-cases will be added to the existing structure
+            and the original test-cases will remain in the run-log.
+        </p>
+        
+<p>Another case might be to add run-logs of several test-runs into one large run-log in order to get a more readable report.
+        This kind of merging is also implemented and can be achieved by another command line call like this:
+        </p>
+            
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>qftest -batch -mergelogs -mergelogs.mode=append -mergelogs.resultlog newresult_log.qzp run1.qzp run2.qzp</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;7.2:&nbsp;&nbsp;Sample call of merging run-logs for adding</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+        The call above takes the run-logs <code>run1.qzp</code> and <code>run2.qzp</code> and creates a run-log <code>newresult_log.qzp</code>
+        which contains the results from both run-logs. In this mode the parameter <code>mergelogs.masterlog</code> is optional.
+        If the parameter is set, the corresponding run-log will be used as a root for a resulting run-log.
+        </p>
+    
+
+    
+    
+
+    
+    
+
+    
+<a name="usec_debugger"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_debugger">7.2</a></span>
+</div>
+<a href="contents.html#toc_usec_debugger">The debugger</a>
+</h4>
+      
+<p>
+        As in any development environment, at some point the need will arise to
+        debug problems introduced into a test-suite which cannot readily be
+        solved by a straight-forward analysis of the elements and structure of
+        the suite. To this end, QF-Test includes an intuitive debugger. Those of you
+        familiar with debugging programs in Java or other
+        programming languages will find this debugger similar in function
+        and usefulness.
+      </p>
+      
+
+      
+<a name="sec_N78500"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N78500">7.2.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N78500">Entering the debugger</a>
+</h5>
+        
+<p>
+          The QF-Test debugger can be started directly by selecting a node (or some
+          nodes) to execute and pressing the step-in <img src="../icons/step_in_tb.png" style="vertical-align: text-bottom" alt="Step in" title="Step           in" width="26" height="26" texscale=".66"> or step-over <img src="../icons/step_over_tb.png" style="vertical-align: text-bottom" alt="Step over" title="Step over" width="26" height="26" texscale=".66"> buttons, or
+          by using the menu operations
+          &raquo;<em>Debugger</em>&laquo;-&raquo;<em>Step in</em>&laquo;
+          and
+          &raquo;<em>Debugger</em>&laquo;-&raquo;<em>Step over</em>&laquo; or the keyboard
+          shortcuts [F7] and [F8]. See
+          <a href="#usec_dbgcommands">subsection 7.2.3</a> for a detailed explanation of these
+          operations.
+         </p>
+        
+<p>
+          If you are running tests on your test-suite and use the play button to
+          start execution (see <a href="user_capture.html#usec_executing">section 4.2</a>), the debugger
+          will normally not be entered. However, the debugger will be activated
+          automatically when any one of the following occur:
+        </p>
+        
+<ul>
+          
+<li>
+            A user-defined breakpoint is reached (see <a href="#usec_dbgbreak">subsection 7.2.4</a> on turning on/off breakpoints).
+          </li>
+          
+<li>
+            Execution is interrupted manually by pressing the pause button or
+            [F9] or selecting the &raquo;<em>Run</em>&laquo;-&raquo;<em>Pause</em>&laquo; menu
+            item.
+          </li>
+          
+<li>
+            A caught or uncaught exception is thrown, an error happens or a
+            warning is logged and the respective option to break under that
+            condition is set (see option <a href="opt_debugger.html#opt_automaticbreaks">Automatic breaks</a>).
+          </li>
+        
+</ul>
+        
+<p>
+          When the debugger suspends execution of the test, the node about to be
+          executed will be shown with a colored frame around its icon that
+          reflects the cause for the break. If the debugger is stopped due to
+          manual intervention, a user breakpoint or when stepping, the frame
+          will be black. When stopping due to a warning, error or exception the
+          frame will be orange, red or thick red respectively, exactly like the
+          error indicators in the run-log.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Note</span></span> When the debugger is entered due to a warning,
+          error or exception it will move execution back to the beginning of the
+          node that caused it, giving you a chance to fix the cause of the
+          problem and re-execute that node. If this is undesirable or
+          impossible you can simply skip the node (see <a href="#usec_dbgcommands">subsection 7.2.3</a>).
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_debuggerwindow"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_debuggerwindow">7.2.2</a></span>
+</div>
+<a href="contents.html#toc_usec_debuggerwindow">The debugger window</a>
+</h5>
+        
+<p>
+          The debugger can be run either from within the normal test-suite view,
+          or by opening a dedicated debugger window by selecting
+          &raquo;<em>Debugger</em>&laquo;-&raquo;<em>Show debugger window</em>&laquo;
+          once the debugger has been entered.
+        </p>
+        
+<p>
+          You can also cause the debugger window to open automatically whenever
+          the debugger is entered by setting the option <a href="opt_debugger.html#opt_alwaysshowdebugger">Always open debugger window</a> in the global options dialog or under
+          the
+          &raquo;<em>Debugger</em>&laquo;-&raquo;<em>Options</em>&laquo;
+          menu. If you open or close the debugger window explicitly, this is
+          considered a "manual override" and this option will be ignored for the
+          rest of the test-run.
+        </p>
+        
+<p>
+          The debugger window is similar to a normal test-suite window. You can
+          select nodes and edit their attributes, but you cannot delete or
+          insert nodes, there are no file operations and no recorder. For the
+          more complex operations you can quickly jump from the debugger window
+          to the same node in the respective test-suite window by pressing
+          [Ctrl-T] or selecting
+          &raquo;<em>Find node in test-suite</em>&laquo; from the &raquo;<em>Edit</em>&laquo; menu or the context menu.
+        </p>
+        
+<p>
+          The lower half of the debugger window shows the nodes that are binding variables on the
+          primary and fallback variable stacks (see <a href="user_variables.html#usec_variables">chapter 6</a>). For the
+          primary stack all nodes are shown, even if they are not binding any variables. This is
+          useful because it serves as a kind of stack-trace for the current point of execution of
+          the test-run. You can double-click on any node to quickly navigate to the node in its
+          associated test-suite.
+        </p>
+        
+<p>
+          A single click on a node brings up its variable bindings in the right half of the
+          variable display. There the variable values can be edited, new variables can be added or
+          existing ones removed. These changes immediately affect the current test-run, but are of
+          a temporary nature. They are not propagated to the nodes in which the variables were
+          bound in the first place.
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_dbgcommands"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_dbgcommands">7.2.3</a></span>
+</div>
+<a href="contents.html#toc_usec_dbgcommands">Debugger commands</a>
+</h5>
+        
+<p>
+          Most of the debugger commands are similar to those of any other
+          debugger. However, some additional commands are included that deal with
+          special situations.
+        </p>
+        
+<p>
+          Step-wise debugging of a test-suite is available through three
+          operations:
+        </p>
+        
+<ul>
+          
+<li>
+            The step-in button <img src="../icons/step_in_tb.png" style="vertical-align: text-bottom" alt="Step in" title="Step in" width="26" height="26" texscale=".66"> ([F7], &raquo;<em>Debugger</em>&laquo;-&raquo;<em>Step in</em>&laquo;)
+            executes the currently selected node and will set the execution mark
+            to the next deepest node, regardless of how deep that node may lie
+            in the node structure. This operation is useful, for example, to
+            step into and debug a 'Procedure' or 'Sequence'.
+          </li>
+          
+<li>
+            The step-over button <img src="../icons/step_over_tb.png" style="vertical-align: text-bottom" alt="Step over" title="Step over" width="26" height="26" texscale=".66"> ([F8],
+            &raquo;<em>Debugger</em>&laquo;-&raquo;<em>Step over</em>&laquo;) executes the currently
+            selected node as well as any child nodes that lie under it and then
+            sets the execution mark to the next node at the same level. This is
+            helpful for being able to execute an entire 'Procedure' or
+            'Sequence' without stepping through each step individually.
+          </li>
+          
+<li>
+            The step-out button <img src="../icons/step_out_tb.png" style="vertical-align: text-bottom" alt="Step out" title="Step out" width="26" height="26" texscale=".66"> ([Ctrl-F7],
+            &raquo;<em>Debugger</em>&laquo;-&raquo;<em>Step out</em>&laquo;) executes the currently selected node as well as any
+            other nodes at the same level (including any child nodes of these
+            nodes) and then sets the execution mark to the next node at the next
+            higher level. This type of operation is useful when, for example,
+            you are debugging a 'Procedure' or 'Sequence' and don't want to
+            step through the rest of the nodes in it. By simply using step-out,
+            you can execute the rest of the nodes and return.
+          </li>
+        
+</ul>
+        
+<p>
+          The <em>skip</em> functions expand the QF-Test debugger in a
+          powerful way which is not typically possible for a debugger in a
+          standard programming environment. In short, they allow you to jump
+          over one or more nodes without having to execute those nodes at all.
+        </p>
+        
+<ul>
+          
+<li>
+            The skip-over button <img src="../icons/skip_over_tb.png" style="vertical-align: text-bottom" alt="Skip over" title="Skip over" width="26" height="26" texscale=".66"> ([Shift-F9], &raquo;<em>Debugger</em>&laquo;-&raquo;<em>Skip over</em>&laquo;) jumps over the current node
+            without executing it, moving the execution mark to the next node.
+          </li>
+          
+<li>
+            The skip-out button <img src="../icons/skip_out_tb.png" style="vertical-align: text-bottom" alt="Skip out" title="Skip out" width="26" height="26" texscale=".66"> ([Ctrl-F9], &raquo;<em>Debugger</em>&laquo;-&raquo;<em>Skip out</em>&laquo;) ends the execution of the
+            current 'Procedure' or 'Sequence' and jumps to the next node at
+            the next higher level.
+          </li>
+        
+</ul>
+        
+<p>
+          Even more powerful is the ability to continue the test-run at any arbitrary node, even
+          in a completely different test-suite. QF-Test will keep as much of the current execution
+          context as possible, including variable bindings. The closer the new target location is
+          to the current point of execution, the more information can be salvaged.
+        </p>
+        
+<p>
+          You can switch execution to a different node by pressing [Ctrl-,] or by selecting the menu item &raquo;<em>Run</em>&laquo;-&raquo;<em>Continue execution from here</em>&laquo; or the respective item in the
+          context menu. When you do so, execution will not continue immediately, only the next
+          node to be executed will change. You can continue the test as usual by single-stepping
+          or resuming the test-run.
+        </p>
+        
+<p>
+          The following additional commands are available:
+        </p>
+        
+<ul>
+          
+<li>
+            The rethrow-exception button <img src="../icons/rethrow_tb.png" style="vertical-align: text-bottom" alt="Rethrow exception" title="Rethrow exception" width="26" height="26" texscale=".66"> (&raquo;<em>Debugger</em>&laquo;-&raquo;<em>Rethrow exception</em>&laquo;) is only active when the debugger was entered due to
+            an exception. It lets you rethrow the exception to be handled by the
+            test-suite just as if the debugger had never caught it in the first
+            place.
+          </li>
+          
+<li>
+            The locate-current-node button <img src="../icons/locate_tb.png" style="vertical-align: text-bottom" alt="Locate current node" title="Locate current node" width="26" height="26" texscale=".66"> (&raquo;<em>Debugger</em>&laquo;-&raquo;<em>Locate current node</em>&laquo;) quickly moves the selection in the tree-view to the
+            node that is about to be executed. It is a useful shortcut in case
+            you get lost while moving around the test-suite.
+          </li>
+        
+</ul>
+      
+
+      
+      
+
+      
+<a name="usec_dbgbreak"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_dbgbreak">7.2.4</a></span>
+</div>
+<a href="contents.html#toc_usec_dbgbreak">Manipulating breakpoints</a>
+</h5>
+        
+<p>
+          Setting a breakpoint on a node will tell the debugger to suspend
+          execution just before it enters that node. Breakpoints are displayed
+          in the tree-view by prepending "(B)" to the name of a node.
+        </p>
+        
+<p>
+          Breakpoints can be set or removed individually with [Ctrl-F8] or with the &raquo;<em>Debugger</em>&laquo;-&raquo;<em>Breakpoint on/off</em>&laquo; menu item. After finishing a debugging session you can
+          use &raquo;<em>Debugger</em>&laquo;-&raquo;<em>Clear all           breakpoints</em>&laquo; to remove any breakpoints that might
+          have been left hanging around. This command will remove all
+          breakpoints from <em>all</em> test-suites.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Note</span></span> Breakpoints are transient and will not be saved
+          with the test-suite.
+        </p>
+
+      
+
+      
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_variables.html#usec_variables"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 6&nbsp;Variables" title="Previous Chapter: 6&nbsp;Variables"></a></td><td class="navicon"><a href="user_organization.html#usec_organization"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 8&nbsp;Organizing the test-suite" title="Next Page: 8&nbsp;Organizing the test-suite"></a></td><td class="navicon"><a href="user_organization.html#usec_organization"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 8&nbsp;Organizing the test-suite" title="Next Chapter: 8&nbsp;Organizing the test-suite"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;User manual" title="Chapter Overview: I&nbsp;User manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

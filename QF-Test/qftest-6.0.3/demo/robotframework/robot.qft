@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="root"
+          signature="302C02144F82D5E783BB51AC451F316CA1B11BBD8A62274802142022855CDB5802F6DC6EABE8970B4DB9FEEF9838"
+          version="6.0.3">
+  <include>qfs.qft</include>
+  <PackageRoot id="_3">
+    <Dependency id="_2YNk" name="SUT started">
+      <discriminator>language</discriminator>
+      <variable name="language">${default:language:de}</variable>
+      <SetupSequence id="_2YNl">
+        <SetGlobalStep id="_1p6F" varname="client">
+          <default>carconfig</default>
+        </SetGlobalStep>
+        <ClientWaiter client="$(client)" id="_1p6G" local="true" raise="false"
+                      resvarname="isSUTRunning" timeout="1">
+          <comment>This node checks whether the SUT is already running. The result of this check will be stored in the variable isSUTRunning. The variable itself can contain true if SUT is already running or false if SUT is not running. This variable will be used in the following 'If' node.</comment>
+        </ClientWaiter>
+        <ProcedureCall id="_2YOC"
+                       procedure="keyword helper.use smartids without marker"/>
+        <IfSequence id="_1p6H"
+                    name="Launch SUT if not running / SUT starten wenn notwendig"
+                    test="not $(isSUTRunning)">
+          <ProcedureCall id="_2YNm" procedure="startStop.start"/>
+        </IfSequence>
+      </SetupSequence>
+      <CleanupSequence id="_2YO7">
+        <ProcedureCall id="_2YO8" procedure="startStop.stop"/>
+      </CleanupSequence>
+    </Dependency>
+    <Dependency id="_2YNn" name="SUT started and reset">
+      <DependencyReference id="_2YNq" reference="SUT started"/>
+      <SetupSequence id="_2YNo">
+        <ProcedureCall id="_2YNr" procedure="qfs.swing.menu.selectItem">
+          <variable name="menu">mFile</variable>
+          <variable name="item">miReset</variable>
+        </ProcedureCall>
+      </SetupSequence>
+    </Dependency>
+    <Package id="_2YO9" name="keyword helper">
+      <Procedure id="_2YOA" name="use smartids without marker">
+        <CommentStep id="_2YOD">
+          <heading>Enable Smartids without marker(#)</heading>
+        </CommentStep>
+        <CommentStep id="_2YOE">
+          <heading>SmartIDs ohne Marker(#) erlauben</heading>
+        </CommentStep>
+        <ServerScriptStep id="_2YOB">
+          <code>rc.setOption(Options.OPT_SMARTID_WITHOUT_MARKER, true)</code>
+        </ServerScriptStep>
+      </Procedure>
+    </Package>
+    <Package id="_I" name="startStop">
+      <Procedure id="_8" name="start">
+        <comment>Start the SUT / Startet die SUT</comment>
+        <IfSequence id="_33z" test="${qftest:windows}">
+          <SUTClientStarter client="$(client)"
+                            directory="${qftest:dir.version}/demo/carconfig"
+                            executable="${qftest:dir.version}/demo/carconfig/CarConfig.cmd"
+                            id="_33+">
+            <parameter>$(language)</parameter>
+          </SUTClientStarter>
+          <ElseSequence id="_33-">
+            <SUTClientStarter client="$(client)"
+                              directory="${qftest:dir.version}/demo/carconfig"
+                              executable="${qftest:dir.version}/demo/carconfig/CarConfig.sh"
+                              id="_3E2">
+              <parameter>$(language)</parameter>
+            </SUTClientStarter>
+          </ElseSequence>
+        </IfSequence>
+        <ClientWaiter client="$(client)" id="_E" timeout="30000"/>
+        <ComponentWaiter client="$(client)" component="JCarConfigurator"
+                         id="_3Fm" timeout="30000"/>
+      </Procedure>
+      <Procedure id="_3C-" name="stop">
+        <comment>Terminate the SUT. /Stoppt die SUT</comment>
+        <TryStep id="_3DH" name="SUT running? / SUT ist gestartet?">
+          <ClientWaiter client="$(client)" id="_3DI" timeout="500"/>
+          <MouseEventStep clicks="1" client="$(client)" component="mFile"
+                          event="MOUSE_MPRC" id="_2YO2" modifiers="16"/>
+          <MouseEventStep clicks="1" client="$(client)" component="miExit"
+                          event="MOUSE_MPRC" id="_2YO3" modifiers="16"/>
+          <TryStep id="_3G8" name="wait for termination / warten auf Beenden">
+            <ProcessWaiter client="$(client)" id="_2YO4"/>
+            <CatchSequence exception="TestException" id="_3G9" maxerror="0"
+                           name="SUT not terminated / SUT wurde nicht beendet">
+              <ClientStopper client="$(client)" id="_2YO5"/>
+              <ProcessWaiter client="$(client)" id="_3GA"/>
+            </CatchSequence>
+          </TryStep>
+          <CatchSequence exception="ClientNotConnectedException" id="_3DJ"
+                         maxerror="0"/>
+        </TryStep>
+      </Procedure>
+    </Package>
+    <Package id="_2YNx" name="robotframework">
+      <comment>Procedures to use as Robot Framework keywords
+Prozeduren, die als Robot Framwork Keywords benutzt werden können
+@keyword</comment>
+      <Procedure id="_1lbJ" name="resolveDependency">
+        <variable name="dependency"/>
+        <comment>Registriert eine Abhängigkeit
+Resolve a dependency
+
+@keyword	require dependency
+@keyword	dependency reference
+@keyword       bezug auf abhaengigkeit
+
+@author 	QFS
+@since 	6.0.0.</comment>
+        <ServerScriptStep id="_1lbK">
+          <code>try:
+    rc.resolveDependency(rc.lookup("dependency"))
+except:
+    rc.resolveDependency("dependencies." + rc.lookup("dependency"))
+    
+</code>
+        </ServerScriptStep>
+      </Procedure>
+      <Procedure id="_4pT" name="doClick">
+        <variable name="id"/>
+        <variable name="position_x"/>
+        <variable name="position_y"/>
+        <comment>Click on the given component
+Klick auf die angegebene Komponente
+
+@param	id                 The component-id of the table. / Die id der Komponente	
+@param 	position_x     Position X of the mouse click / Die X Position des Mausklicks	
+@param 	position_y     Position Y of the mouse click / Die Y Position des Mausklicks
+@param 	hard             true or false / True oder False 
+
+@author 	QFS
+@since 	6.0.0.
+
+@keyword mausklick
+@keyword mouse click
+</comment>
+        <MouseEventStep clicks="1" client="$(client)" component="$(id)"
+                        event="MOUSE_MPRC" hardevent="${default:hard:false}"
+                        id="_2YNt" modifiers="16" x="$(position_x)"
+                        y="$(position_y)"/>
+      </Procedure>
+      <Procedure id="_2YNu" name="doDoubleClick">
+        <variable name="id"/>
+        <comment>Double click on the given component
+Doppelklick auf die angegebene Komponente
+
+@param	id                 The component-id of the table. / Die id der Komponente
+@param 	position_x     Position X of the mouse click / Die X Position des Mausklicks	
+@param 	position_y     Position Y of the mouse click / Die Y Position des Mausklicks
+@param 	hard             true or false / True oder False 
+
+@author 	QFS
+@since 	6.0.0.
+
+@keyword doppelklick
+@keyword double click
+</comment>
+        <MouseEventStep clicks="2" client="$(client)" component="$(id)"
+                        event="MOUSE_DBLCLK" hardevent="${default:hard:false}"
+                        id="_2YNw" modifiers="16" x="$(posistion_x)"
+                        y="$(position_y)"/>
+      </Procedure>
+      <Procedure id="_2YNy" name="doRightClick">
+        <variable name="id"/>
+        <comment>Right click on the given component
+Rechtsklick auf die angegebene Komponente
+
+@param	id                 The component-id of the table. / Die id der Komponente
+@param 	position_x     Position X of the mouse click / Die X Position des Mausklicks	
+@param 	position_y     Position Y of the mouse click / Die Y Position des Mausklicks
+@param 	hard             true or false / True oder False 
+
+@author 	QFS
+@since 	6.0.0.
+
+
+@keyword rechtsklick
+@keyword right click
+</comment>
+        <MouseEventStep clicks="1" client="$(client)" component="$(id)"
+                        event="MOUSE_MPRC" hardevent="${default:hard:false}"
+                        id="_2YNz" modifiers="4" popup="true"
+                        x="$(posistion_x)" y="$(position_y)"/>
+      </Procedure>
+      <Procedure id="_3EP" name="getRowCount">
+        <variable name="id">${id:tableid}</variable>
+        <comment>Return the number of rows of a given table.
+Gibt die Anzahl Zeilen in der angegebene Tabelle zurück.
+
+@param id 		The component-id of the table. / Die id der Komponente 
+@return rowCount
+
+@author 	QFS
+@since 	6.0.0.
+
+@keyword anzahl zeilen</comment>
+        <ComponentWaiter client="$(client)" component="$(id)" id="_1oGV"
+                         timeout="$[rc.getOption(Options.OPT_PLAY_TIMEOUT_COMPONENT)]">
+          <comment>Compensation for the fact that rc.getComponent cannot be used with a timeout and thus has timeout 0 instead of the default option value.</comment>
+        </ComponentWaiter>
+        <ClientScriptStep client="$(client)" engine="${default:guiengine:awt}"
+                          id="_3EQ">
+          <code>table = rc.getComponent(rc.lookup("id"))
+
+rowCount = table.getRowCount()
+
+rc.setLocal("rowCount", rowCount)</code>
+        </ClientScriptStep>
+        <ReturnStep id="_3ER" retval="$(rowCount)"/>
+      </Procedure>
+      <Procedure id="_2YN-" name="getText">
+        <variable name="id">${id:aTextField}</variable>
+        <comment>Return the text of a given textfield.
+Gibt den Text des angegebenen Textfeldes.
+
+@param	id	The id of the textfield. / Die id der Textfeld-Komponente
+@return  The text of the textfield.
+
+@author	QFS
+@since 	6.0.0.
+@keyword        fetch text
+@keyword        text auslesen</comment>
+        <FetchTextStep client="$(client)" component="$(id)" id="_2YO0"
+                       local="true" varname="currentText"/>
+        <ReturnStep id="_2YO1" retval="$(currentText)"/>
+      </Procedure>
+      <Procedure id="_1n53" name="selectMenuItem">
+        <variable name="menu">${id:aMenu}</variable>
+        <variable name="item">${id:anItem}</variable>
+        <comment>Select an item from a menu.
+
+For example: for the File -&gt; Open action, the component ID of  "File" is the menu, and the ID for "Open" is the item.
+
+@param	menu	The id of the menu. / Die id des Hauptmenüs
+@param	item	The id of menu item. / Die id des Untermenüs
+
+
+@author	QFS
+@since 	6.0.0.
+
+
+@keyword waehle menue item
+</comment>
+        <ProcedureCall id="_1n54"
+                       procedure="qfs.swing.cleanup.closeAllMenus"/>
+        <MouseEventStep clicks="1" client="$(client)" component="$(menu)"
+                        event="MOUSE_MPRC" id="_1n55" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)" component="$(item)"
+                        event="MOUSE_MPRC" id="_1n56" modifiers="16"/>
+      </Procedure>
+    </Package>
+  </PackageRoot>
+  <ExtraSequence id="_4"/>
+  <WindowList id="_5"/>
+</RootStep>

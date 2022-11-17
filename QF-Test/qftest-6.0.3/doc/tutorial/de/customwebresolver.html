@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Web-Komponentenerkennung</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2002-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="tut_custemwebresolver"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="complex_components_web.html#sec_addressing_complex_components_web"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 13.1&nbsp;Adressierung von Unterelementen von Tabellen, B&auml;umen und Listen" title="Vorheriges Kapitel: 13.1&nbsp;Adressierung von Unterelementen von Tabellen, B&auml;umen und Listen"></a></td><td class="navicon"><a href="components_section_web.html#sec_componentsteps_web"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 13.3&nbsp;Der Bereich 'Fenster und Komponenten'" title="N&auml;chste Seite: 13.3&nbsp;Der Bereich 'Fenster und Komponenten'"></a></td><td class="navicon"><a href="components_section_web.html#sec_componentsteps_web"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 13.3&nbsp;Der Bereich 'Fenster und Komponenten'" title="N&auml;chstes Kapitel: 13.3&nbsp;Der Bereich 'Fenster und Komponenten'"></a></td><td class="navicon"><a href="componentsweb.html#sec_ComplexComponentsWeb"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 13&nbsp;Komponenten (Web)" title="Kapitel-&Uuml;bersicht: 13&nbsp;Komponenten (Web)"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_tut_custemwebresolver">13.2</a></span>
+</div>
+<a href="contents.html#toc_tut_custemwebresolver">Web-Komponentenerkennung</a>
+</h4>
+      
+<p>
+        Die Adressierung von Unterelementen komplexer Komponenten wie Listen, Tabellen und B&auml;umen,
+        via Index, wie im letzten Abschnitt beschrieben, ist nur m&ouml;glich, weil im Rahmen der erzeugten 
+        'Vorbereitung' eine Konfiguration der Komponentenerkennung erfolgt. Damit
+        wird QF-Test mitgeteilt, wie bestimmte Funktionalit&auml;ten wie Textfelder, Buttons, Checkboxen,
+        Datentabellen, B&auml;ume etc. im HTML-Code der Applikation implementiert sind.
+      </p>
+      
+<p>
+        Wenn die Funktionalit&auml;t einer Komponente bekannt ist, hat dies bei der Aufnahme
+        folgende Vorteile:
+        <ul>
+          
+<li>
+            Unterelemente werden, wie bereits bekannt, &uuml;ber Index angesprochen und nicht
+            als Einzelkomponente aufgenommen.
+          </li>
+          
+<li>
+            Bei Mausklicks wird die Stelle, an die sp&auml;ter der Klick abgespielt werden soll, 
+            hinterlegt. So zum Beispiel Buttons am besten mittig, Textfelder hingegen genau an der gleichen Stelle
+            wie bei der Aufnahme, damit Text bei Bedarf passend eingef&uuml;gt wird.
+          </li>
+          
+<li>
+            F&uuml;r die Aufnahme von Checks passt QF-Test das Popup-Men&uuml; entsprechend an. So k&ouml;nnen
+            zum Beispiel f&uuml;r Tabellen Checks f&uuml;r ganze Spalten oder Zeilen aufgenommen werden.
+            Bei Textfeldern hingegen wird ein zus&auml;tzlicher Check bez&uuml;glich Editierbarkeit angeboten.
+          </li>
+          
+<li>
+            Auch bei der Speicherung von Merkmalen f&uuml;r die Komponentenerkennung ber&uuml;cksichtigt
+            QF-Test die Funktionalit&auml;t. Beim Button ist zum Beispiel die Beschriftung des Buttons
+            selbst ein wichtiges Wiedererkennungsmerkmal. Bei Textfeldern hingegen ist es
+            wenig sinnvoll, den jeweiligen Text abzuspeichern. Hier sucht QF-Test nach einer
+            passenden Beschriftung und speichert diese ab.
+          </li>
+        
+</ul>
+      
+</p>
+      
+<p>
+        Au&szlig;erdem wirken sich die Informationen, die auf Grund
+        der bekannten Funktionalit&auml;t zus&auml;tzlich abgespeichert wurden, positiv auf die
+        Stabilit&auml;t der Tests aus.
+      </p>
+      
+<p>
+        Die Konfiguration der Komponentenerkennung ist notwendig, da
+        Web-Anwendungen einen begrenzten Satz von Basiskomponenten haben, die in sehr flexibler
+        Weise genutzt werden k&ouml;nnen, um komplexe Komponenten und Designs aufzubauen. Ein
+        Beispiel sind HTML Tabellen, die sowohl f&uuml;r das Seitenlayout genutzt werden als auch f&uuml;r die
+        Darstellung logischer Tabellen wie der Fahrzeugtabelle. Ohne zus&auml;tzliche Informationen kann
+        QF-Test nicht wissen, wo genau die Layout-Tabelle endet und die logische Tabelle
+        beginnt. Die Tabellenzelle w&uuml;rde nicht als solche erkannt und als eigene Komponente, z.B.
+        <code>VehicleTable.td</code>, aufgezeichnet.
+        Das "td" kommt vom HTML Table Data Element "TD", das im vorliegenden HTML-Code die Tabellenzelle
+        darstellt.
+      </p>
+      
+<p>
+        In der 'Vorbereitung' in der Demosuite <code>ErsteWebTests.qft</code> aus dem ersten Kapitel
+        oder auch in der &uuml;ber den Schnellstart-Assisten im zweiten Kapitel erstellte, erfolgt die
+        Konfiguration direkt nach dem Browser-Start.
+        Das folgende Bild zeigt den Knoten f&uuml;r die Registrierung der Resolver in der Testsuite
+        <code>ErsteWebTests.qft</code> mit einigen Konfigurationsparametern.
+      </p>
+      
+<a name="figure_13.2"></a><a name="figure_13.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/WebResolver.png" target="_blank"><img src="images/WebResolver.png" alt="Web resolver" texscale=".5" width="884" height="50"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;13.2</a>:&nbsp;&nbsp;Web Resolver Registrierung in der ErsteWebTests.qft</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        &Uuml;ber die Parameter erh&auml;lt QF-Test z.B. die Information, welches HTML-Element eine  
+        Datentabelle enth&auml;lt und welche HTML-Elemente darin dann die Zeilen und Datenzellen
+        darstellen. Diese Konfiguration wurde speziell f&uuml;r den WebCarConfigurator erstellt.
+      </p>
+      
+<p>
+<span class="margin"><span class="note">Hinweis</span></span>
+        An dieser Stelle ist es nur wichtig, dass Sie wissen, dass es verschiedene M&ouml;glichkeiten
+        gibt, die Komponentenerkennung durch Resolver zu verbessern.
+      </p>
+      
+<p>
+        QF-Test analysiert automatisch die Struktur von Webanwendungen, erkennt die meistverwendeten
+        Web GUI Toolkits (wie Angular, ExtJS, GWT, SmartGWT, Vaadin,...) und installiert passende
+        vordefinierte Resolver.
+      </p>
+      
+<p>
+        Offensichtlich sind aber nicht alle Webanwendungen ausschlie&szlig;lich mit solch einem Toolkit
+        entwickelt und nicht f&uuml;r alle Toolkits gibt es vordefinierte Resolver in QF-Test.
+        Sie k&ouml;nnen durchaus auch auf selbstentwickelte Komponenten sto&szlig;en.
+      </p>
+      
+<p>
+        Wenn Sie also mit dem Testen Ihrer eignen Webanwendung beginnen und auf Schwierigkeiten
+        sto&szlig;en, dass Komponenten beim Abspielen von Aktionen nicht verl&auml;sslich wieder erkannt
+        werden, dann kann es Zeit sein, &uuml;ber einen Resolver nachzudenken.
+        Sollten Sie f&uuml;r die Resolvererstellung Hilfe ben&ouml;tigen, kontaktieren Sie bitte
+        unseren Support (support@qfs.de) f&uuml;r Unterst&uuml;tzung.
+      </p>
+      
+<p>
+        Es gibt ein Kapitel in der <a href="../../manual/de/tech_customajax.html" shape="rect"> Technischen
+        Referenz</a> des Handbuchs, das tiefergehende Informationen zu CustomWebResolvern enth&auml;lt
+        und auch wie man bei der Implementierung eines solchen vorgeht, wenn Sie dies probieren
+        m&ouml;chten.
+      </p>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="complex_components_web.html#sec_addressing_complex_components_web"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 13.1&nbsp;Adressierung von Unterelementen von Tabellen, B&auml;umen und Listen" title="Vorheriges Kapitel: 13.1&nbsp;Adressierung von Unterelementen von Tabellen, B&auml;umen und Listen"></a></td><td class="navicon"><a href="components_section_web.html#sec_componentsteps_web"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 13.3&nbsp;Der Bereich 'Fenster und Komponenten'" title="N&auml;chste Seite: 13.3&nbsp;Der Bereich 'Fenster und Komponenten'"></a></td><td class="navicon"><a href="components_section_web.html#sec_componentsteps_web"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 13.3&nbsp;Der Bereich 'Fenster und Komponenten'" title="N&auml;chstes Kapitel: 13.3&nbsp;Der Bereich 'Fenster und Komponenten'"></a></td><td class="navicon"><a href="componentsweb.html#sec_ComplexComponentsWeb"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 13&nbsp;Komponenten (Web)" title="Kapitel-&Uuml;bersicht: 13&nbsp;Komponenten (Web)"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 2002-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

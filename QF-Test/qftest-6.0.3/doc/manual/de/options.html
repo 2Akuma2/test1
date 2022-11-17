@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Einstellungen</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_options"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="opt_general.html#sec_opt_general"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 37.1&nbsp;Allgemeine Optionen" title="N&auml;chste Seite: 37.1&nbsp;Allgemeine Optionen"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 38&nbsp;Bestandteile einer Testsuite" title="N&auml;chstes Kapitel: 38&nbsp;Bestandteile einer Testsuite"></a></td><td class="navicon"><a href="reference.html#sec_reference"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: III&nbsp;Referenzteil" title="Kapitel-&Uuml;bersicht: III&nbsp;Referenzteil"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_options">37</a></span>
+</div>
+<a href="contents.html#toc_sec_options">Einstellungen</a>
+</h3>
+    
+    
+<p>
+      Es gibt diverse M&ouml;glichkeiten, das Verhalten von QF-Test zu
+      beeinflussen. Insbesondere f&uuml;r das Aufnehmen und Abspielen von Tests
+      gibt es viele Einstellm&ouml;glichkeiten.
+    </p>
+    
+<p>
+      QF-Test unterscheidet zwischen <em>User</em> und <em>System</em> Optionen.
+      Useroptionen sind Einstellungen, die das Verhalten der Oberfl&auml;che von
+      QF-Test beeinflussen. Sie haben im Gegensatz zu den Systemoptionen keinen
+      Einfluss auf die Aufnahme und das Abspielen von Tests. Useroption werden
+      f&uuml;r jeden Anwender getrennt gespeichert, w&auml;hrend Systemoptionen in einer
+      gemeinsamen Systemdatei abgelegt werden. N&auml;heres hierzu finden Sie in
+      <a href="user_installation.html#usec_configfile">Abschnitt 1.6</a>.
+    </p>
+    
+<p>
+<span class="margin"><a name="new_N99399"></a><span class="note">3.1+</span></span>
+      Bei vielen Option kann deren Wert zur Laufzeit, wie in <a href="tech_scripting.html#sec_api_rc">Abschnitt 46.5</a>
+      beschrieben, per Skript mittels <code>rc.setOption</code> ver&auml;ndert werden. Abh&auml;ngig davon,
+      ob die jeweilige Option in QF-Test selbst oder im SUT ausgewertet wird, ist bei der Beschreibung
+      der Option ein "Server Skript Name" oder ein "SUT Skript Name" angegeben, welcher der
+      Konstante aus der <code>Options</code> Klasse entspricht. Nat&uuml;rlich muss die Option
+      in einem passenden <a href="control.html#step_ServerScriptStep" shape="rect">'Server Skript'</a> oder <a href="control.html#step_ClientScriptStep" shape="rect">'SUT Skript'</a> Knoten gesetzt
+      werden. Falls der Wert der Option aus einer Liste ausgew&auml;hlt werden kann, f&uuml;hrt die
+      Beschreibung auch die Konstanten f&uuml;r die m&ouml;glichen Werte auf.
+    </p>
+    
+<p>
+      Auch wenn die Anzahl der Optionen entmutigend erscheinen mag, lassen Sie sich davon nicht
+      abhalten. Alle Optionen haben vern&uuml;nftige Standardwerte, sodass QF-Test in den meisten F&auml;llen
+      problemlos funktioniert. Wenn Sie dennoch feststellen, dass Sie etwas &auml;ndern m&uuml;ssen oder
+      wenn Sie einfach den Bereich von QF-Test's F&auml;higkeiten kennenlernen wollen, so ist dieses
+      Kapitel etwas f&uuml;r Sie.
+    </p>
+    
+<p>
+      Sie k&ouml;nnen die Optionen mit Hilfe des Dialogs, den Sie &uuml;ber
+      &raquo;<em>Bearbeiten</em>&laquo;-&raquo;<em>Optionen...</em>&laquo;
+      erreichen, ansehen und manipulieren. Die Einstellungen werden (mit
+      kleinen Ausnahmen, s.u.) beim Beenden von QF-Test gespeichert
+      (siehe <a href="user_installation.html#usec_configfile">Abschnitt 1.6</a>).
+    </p>
+    
+<a name="figure_37.1"></a><a name="figure_37.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_tree.png" target="_blank"><img src="images/opt_tree.png" alt="Optionen Baumstruktur" width="193" height="798" texscale=".8"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;37.1</a>:&nbsp;&nbsp;Optionen Baumstruktur</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+      Um zu den gew&uuml;nschten Optionen zu gelangen, selektieren Sie zun&auml;chst im
+      Baum den entsprechenden Ast. Im rechten Teil k&ouml;nnen Sie dann die Optionen
+      einstellen. Beim Wechsel von einer Gruppe zur anderen werden die
+      Optionen zwar auf G&uuml;ltigkeit &uuml;berpr&uuml;ft, aber noch nicht &uuml;bernommen. Dies
+      geschieht erst bei Best&auml;tigung mit dem OK Button.
+    </p>
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="opt_general.html#sec_opt_general"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="opt_general.html#sec_opt_general">37.1</a></span>
+</div>
+<a href="opt_general.html#sec_opt_general">Allgemeine Optionen</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="opt_record.html#sec_opt_record"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="opt_record.html#sec_opt_record">37.2</a></span>
+</div>
+<a href="opt_record.html#sec_opt_record">Aufnahme</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="opt_play.html#sec_opt_play"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="opt_play.html#sec_opt_play">37.3</a></span>
+</div>
+<a href="opt_play.html#sec_opt_play">Wiedergabe</a>
+</h4>
+
+    
+    
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="opt_android.html#sec_opt_android"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="opt_android.html#sec_opt_android">37.4</a></span>
+</div>
+<a href="opt_android.html#sec_opt_android">Android</a>
+</h4>
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="opt_web.html#sec_opt_web"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="opt_web.html#sec_opt_web">37.5</a></span>
+</div>
+<a href="opt_web.html#sec_opt_web">Web Optionen</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="opt_swt.html#sec_opt_swt"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="opt_swt.html#sec_opt_swt">37.6</a></span>
+</div>
+<a href="opt_swt.html#sec_opt_swt">SWT Optionen</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="opt_debugger.html#sec_opt_debugger"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="opt_debugger.html#sec_opt_debugger">37.7</a></span>
+</div>
+<a href="opt_debugger.html#sec_opt_debugger">Debugger Optionen</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="opt_log.html#sec_opt_log"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="opt_log.html#sec_opt_log">37.8</a></span>
+</div>
+<a href="opt_log.html#sec_opt_log">Protokoll</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="opt_vars.html#sec_opt_vars"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="opt_vars.html#sec_opt_vars">37.9</a></span>
+</div>
+<a href="opt_vars.html#sec_opt_vars">Variablen</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="opt_runtime.html#sec_opt_runtime"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="opt_runtime.html#sec_opt_runtime">37.10</a></span>
+</div>
+<a href="opt_runtime.html#sec_opt_runtime">Nur zur Laufzeit</a>
+</h4>
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="opt_general.html#sec_opt_general"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 37.1&nbsp;Allgemeine Optionen" title="N&auml;chste Seite: 37.1&nbsp;Allgemeine Optionen"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 38&nbsp;Bestandteile einer Testsuite" title="N&auml;chstes Kapitel: 38&nbsp;Bestandteile einer Testsuite"></a></td><td class="navicon"><a href="reference.html#sec_reference"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: III&nbsp;Referenzteil" title="Kapitel-&Uuml;bersicht: III&nbsp;Referenzteil"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

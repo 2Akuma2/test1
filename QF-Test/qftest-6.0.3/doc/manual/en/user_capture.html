@@ -1,0 +1,599 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Capture and replay</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_capturereplay"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_quickstart.html#usec_quickstart"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 3&nbsp;Quickstart your application" title="Previous Chapter: 3&nbsp;Quickstart your application"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 5&nbsp;Components" title="Next Page: 5&nbsp;Components"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 5&nbsp;Components" title="Next Chapter: 5&nbsp;Components"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;User manual" title="Chapter Overview: I&nbsp;User manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_capturereplay">4</a></span>
+</div>
+<a href="contents.html#toc_usec_capturereplay">Capture and replay</a>
+</h3>
+    
+<p>
+      Once the SUT is up and running under QF-Test, the next step is to record sequences of events
+      and play them back.
+    </p>
+    
+<p>
+      
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+      The video <a href="https://www.qfs.de/en/yt/capture-replay-40.html" class="videolink" target="_blank">'Capture and
+      Replay'</a> explains capturing and replaying of sequences.
+    </p>
+    
+<p>
+      The video <a href="https://www.qfs.de/en/yt/test-case-40.html" class="videolink" target="_blank">'Creating a test
+      case'</a> shows how to create a test-case.
+    </p>
+    
+
+    
+<a name="usec_recording"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_recording">4.1</a></span>
+</div>
+<a href="contents.html#toc_usec_recording">Recording sequences</a>
+</h4>
+      
+<p>
+        In order to record a sequence of events in the SUT, the SUT must
+        have been run from QF-Test (see <a href="user_quickstart.html#usec_quickstart">chapter 3</a>)
+        and the connection between QF-Test and the SUT must be
+        established. A visual indicator of this is the color of the record
+        button which turns red when it is enabled.
+      </p>
+      
+<a name="figure_4.1"></a><a name="figure_4.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="" target="_blank">
+<table border="0" cellspacing="20" cellpadding="0">
+          
+<tr>
+            
+<td rowspan="1" colspan="1"><img src="../icons/record_disabled_tb.png" alt="Disabled Record button" title="Disabled Record button" width="26" height="26" texscale="1"></td>
+            <td rowspan="1" colspan="1"><img src="../icons/record_tb.png" alt="Enabled Record button" title="Enabled Record button" width="26" height="26" texscale="1"></td>
+          
+</tr>
+        
+</table>
+</a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;4.1</a>:&nbsp;&nbsp;Disabled and enabled Record button</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        To record a sequence, simply start recording be pressing the record
+        button <img src="../icons/record_tb.png" style="vertical-align: text-bottom" alt="Record" title="Record" width="26" height="26" texscale=".66"> or selecting
+        &raquo;<em>Record</em>&laquo;-&raquo;<em>Start</em>&laquo;. Then switch to the SUT, execute a
+        few commands, switch back to QF-Test and stop the recording with the
+        stop button <img src="../icons/stop_tb.png" style="vertical-align: text-bottom" alt="Stop" title="Stop" width="26" height="26" texscale=".66"> or &raquo;<em>Record</em>&laquo;-&raquo;<em>Stop</em>&laquo;.  The
+        recorded events will be added to the test-suite, either directly at
+        the position indicated by the <a href="user_gui.html#usec_insert" shape="rect">insertion
+        marker</a> or as a new <a href="sequences.html#step_BasicSequence" shape="rect">'Sequence'</a> under the
+        <a href="sequences.html#step_ExtraSequence" shape="rect">'Extras'</a> node, depending on the setting of the <a href="opt_record.html#opt_insertatselection">Insert recording at current selection</a> option. Pause the recording with
+        &raquo;<em>Record</em>&laquo;-&raquo;<em>Pause</em>&laquo; or the pause button <img src="../icons/pause_tb.png" style="vertical-align: text-bottom" alt="Pause recording" title="Pause recording" width="26" height="26" texscale=".66"> if you need to execute some
+        steps in the SUT that should not be recorded and you don't want to
+        stop and restart the recording.
+      </p>
+      
+<p>
+        Recording mode can be started and stopped directly in the SUT by use of the <a href="opt_record.html#opt_hotkeyrecord">Hotkey for recording</a>.
+        Default key is [F11].
+      </p>
+      
+<p>
+        Any <a href="components.html#step_ComponentStep" shape="rect">'Components'</a> referred to by the newly recorded events are
+        added automatically to the <a href="components.html#step_WindowList" shape="rect">'Windows and components'</a> node if they are not there
+        already.
+      </p>
+      
+<p>
+        There are many options that influence the way QF-Test records events
+        and how it treats the components of the GUI. All of these are explained
+        in detail in <a href="opt_record.html#sec_opt_record">section 37.2</a> of the reference
+        manual. Once you are familiar with QF-Test you should take the time to
+        skim through it.
+      </p>
+      
+<p>
+        Here's some general advice for recording:
+      </p>
+      
+<ul>
+        
+<li>
+          Record short sequences at a time.
+        </li>
+        
+<li>
+          After recording, take a look at the sequence, try to understand
+          what you got and whether it represents the actions you took.
+        </li>
+        
+<li>
+          Edit the sequence to remove unnecessary events, especially those at
+          the beginning and end caused by switching windows. QF-Test has
+          excellent filters that should catch nearly all of these, but some
+          might remain and have to be removed manually.
+        </li>
+        
+<li>
+          Finally, try out the new sequence to see whether it replays OK. Then
+          you can cut/copy/paste as needed to integrate it into larger parts.
+        </li>
+      
+</ul>
+      
+<p>
+        
+<span class="margin"><a name="mac_N69209"></a><span class="note">Mac</span></span>For SUT's running on macOS QF-Test disables use of the screen menu bar and
+        activates normal menu bar behavior like on other platforms.
+        This is due to the fact that QF-Test cannot fully access the screen menu
+        bar which prevents proper capture/replay of menu actions. In case the typical Mac screen
+        menu bar behavior is necessary for any reason, this can be forced by adding the line
+        <code>qfs.apple.noScreenMenuBar=false</code> to the file <code>qfconnect.properties</code> that
+        is located in QF-Test's root directory. After restarting the SUT the screen menu bar is
+        supposed to work as normal on Mac.
+      </p>
+    
+
+    
+    
+
+    
+<a name="usec_executing"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_executing">4.2</a></span>
+</div>
+<a href="contents.html#toc_usec_executing">Running tests</a>
+</h4>
+      
+<p>
+        To run some tests, select the node or nodes to execute and press
+        [Return] or the
+        play button <img src="../icons/play_tb.png" style="vertical-align: text-bottom" alt="Play" title="Play" width="26" height="26" texscale=".66"> or select
+        &raquo;<em>Run</em>&laquo;-&raquo;<em>Start</em>&laquo;. QF-Test will mark each node with a
+        small arrow as it is executed and also show progress messages in the
+        status bar. This can slow down execution a little and can be turned
+        off with the options <a href="opt_play.html#opt_markrunningsteps">Mark nodes during replay</a> and
+        <a href="opt_play.html#opt_printrunningsteps">Show replay messages in status line</a>.
+      </p>
+      
+<p>
+        When the test is finished, the result is shown in the status bar. If
+        things are fine you should see "No errors", otherwise the number of
+        warnings, errors and exceptions is shown. Additionally, a message
+        dialog is shown in case of errors or exceptions to make sure you don't
+        miss these.
+      </p>
+      
+<p>
+        As for recording there are many options that influence the replay of
+        tests. Some of these are only for convenience while others have a
+        major impact on the outcome of the tests. Be sure to read <a href="opt_play.html#sec_opt_play">section 37.3</a> some time to familiarize yourself with these.
+      </p>
+      
+<p>
+        To abort execution before the test is finished, press the stop button
+        <img src="../icons/stop_tb.png" style="vertical-align: text-bottom" alt="Stop" title="Stop" width="26" height="26" texscale=".66"> or select &raquo;<em>Run</em>&laquo;-&raquo;<em>Stop</em>&laquo;. You can also
+        suspend execution temporarily via the pause button <img src="../icons/pause_tb.png" style="vertical-align: text-bottom" alt="Pause" title="Pause" width="26" height="26" texscale=".66"> or by selecting &raquo;<em>Run</em>&laquo;-&raquo;<em>Pause</em>&laquo;. This will
+        also enable the debugger (see <a href="user_debugging.html#usec_debugging">chapter 7</a>). To
+        continue, press pause again.
+      </p>
+      
+<p>
+        While a test is run at full speed it can be tricky to stop or
+        interrupt it, especially when the mouse cursor is actually moved
+        across the screen or the SUT's windows are raised on every event.
+        To regain control, press the <a href="opt_play.html#opt_panickey">(Don't) Panic key</a> (the
+        default is [Alt-F12]). This
+        will pause all running tests immediately. To continue, press the same
+        combination again.
+      </p>
+      
+<p>
+        While building a test-suite you will often want to execute some
+        sequences to get the SUT to a point where you can continue
+        recording. Sometimes you may want to skip certain nodes at this stage
+        because they don't get you where you want, but you don't want to
+        delete them or move them to some other place. In that case use the
+        &raquo;<em>Edit</em>&laquo;-&raquo;<em>Toggle&nbsp;disabled&nbsp;state</em>&laquo; menu item to disable the node(s). When you want to use
+        them again later you can re-enable them.
+      </p>
+      
+<p>
+        The current error state during replay as well as the final result is shown in the status
+        line at the bottom of the QF-Test main window. The visibility of this status line can be
+        controlled via &raquo;<em>View</em>&laquo;-&raquo;<em>Show status         line</em>&laquo;.
+      </p>
+      
+<p>
+        In case <a href="sequences.html#step_TestSet" shape="rect">'Test-set'</a> or <a href="sequences.html#step_TestCase" shape="rect">'Test-case'</a> nodes (<a href="user_organization.html#usec_testcase">section 8.2</a> describes
+        their usage) are executed the status line also contains relevant result counters from the
+        following list.
+      </p>
+      
+<a name="table_4.1"></a><a name="table_4.1"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdcenterleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth" valign="center">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Counter Icon</th>
+            <th rowspan="1" colspan="1">Description</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1"> <img src="../icons/sctests.png" alt="" title="Total number of test-cases" texscale=".5" width="16" height="16">
+            </td>
+            <td rowspan="1" colspan="1">Total number of test-cases. This counter value starts with a '&gt;' symbol in case
+              there are skipped test-sets.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1"><img src="../icons/scexc.png" alt="" title="Number of test-cases with exceptions" texscale=".5" width="16" height="16">
+            </td>
+            <td rowspan="1" colspan="1">Number of test-cases with exceptions.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1"><img src="../icons/scerr.png" alt="" title="Number of test-cases with errors" texscale=".5" width="16" height="16">
+            </td>
+            <td rowspan="1" colspan="1">Number of test-cases with errors.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1"><img src="../icons/scexpfail.png" alt="" title="Number of test-cases with expected errors" texscale=".5" width="16" height="16">
+            </td>
+            <td rowspan="1" colspan="1">Number of test-cases with expected errors. <a href="sequences.html#att_TestCase_expectedfail" shape="rect">'Expected to fail if...'</a> marks a
+              test-case expected to fail.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1"><img src="../icons/scok.png" alt="" title="Number of successful test-cases" texscale=".5" width="16" height="16">
+            </td>
+            <td rowspan="1" colspan="1">Number of successful test-cases.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1"><img src="../icons/scskip.png" alt="" title="Number of skipped test-cases" texscale=".5" width="16" height="16">
+            </td>
+            <td rowspan="1" colspan="1">Number of skipped test-cases. A test-case is skipped when its (optional)
+              <a href="sequences.html#att_TestCase_condition" shape="rect">'Condition'</a> fails. This counter value starts with a '&gt;' symbol in case
+              there are skipped test-sets.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1"><img src="../icons/scskipset.png" alt="" title="Number of skipped test-sets" texscale=".5" width="16" height="16">
+            </td>
+            <td rowspan="1" colspan="1">Number of skipped test-sets. A test-set is skipped when its (optional)
+              <a href="sequences.html#att_TestSet_condition" shape="rect">'Condition'</a> fails.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1"><img src="../icons/scnotimpl.png" alt="" title="Number of not implemented test-cases" texscale=".5" width="16" height="16">
+            </td>
+            <td rowspan="1" colspan="1">Number of not implemented test-cases. A test-case is not implemented when it
+              doesn't contain nodes that were executed during the test-run.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1"><img src="../icons/scrun.png" alt="" title="Number of executed test-cases" texscale=".5" width="16" height="16">
+            </td>
+            <td rowspan="1" colspan="1">Number of executed test-cases.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1"><img src="../icons/scpercent.png" alt="" title="Percent test-cases passed" texscale=".5" width="16" height="16">
+            </td>
+            <td rowspan="1" colspan="1">Percent test-cases passed.</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;4.1</a>:&nbsp;&nbsp;Test result counter in the status line</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        The final test result counts also appear in the report which can be created for any test
+        run. Reports are discussed in <a href="user_report.html#usec_report">chapter 21</a>.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>The counter values above can also be accessed as <a href="user_variables.html#usec_externaldata">variables</a> during the test-run. A <a href="tech_testrunlisteners.html#sec_testrunlisteners">TestRunListener</a> can help to keep track of counter
+        values and trigger dependent actions.
+      </p>
+
+    
+
+    
+    
+
+    
+<a name="usec_recordchecks"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_recordchecks">4.3</a></span>
+</div>
+<a href="contents.html#toc_usec_recordchecks">Recording checks</a>
+</h4>
+      
+<p>
+        Though it can be quite entertaining to record sequences and watch the
+        magic dance of the SUT as they are played back, the task at hand is
+        to find out whether the SUT actually works as expected. This is
+        where <a href="checks.html#sec_checks" shape="rect">checks</a> come into play. The most common
+        check, the <a href="checks.html#step_CheckStringStep" shape="rect">'Check text'</a> node, reads the text displayed by a
+        component, e.g. a text field, and compares it to a given value. If the
+        values differ, an error is signaled.
+      </p>
+      
+<p>
+        How checks work is explained in detail in the <a href="checks.html#sec_checks" shape="rect">Reference manual</a>.
+        There is a range available from simple text check to advance <a href="checks.html#step_CheckImageStep" shape="rect">'Check image'</a> and even
+        <a href="tech_checkers.html#sec_checkers">custom check types</a> can be implemented.
+        Here we are going to concentrate on the most convenient way to create checks, which is to
+        record them.
+      </p>
+      
+<p>
+        While recording, the SUT is in <em>record mode</em>, which means
+        that all events are collected and sent to QF-Test. With the help of the
+        check button <img src="../icons/check_tb.png" style="vertical-align: text-bottom" alt="Check" title="Check" width="26" height="26" texscale=".66"> or by selecting
+        &raquo;<em>Record</em>&laquo;-&raquo;<em>Check</em>&laquo; you can bring it into <em>check mode</em>,
+        recognizable through the different mouse cursor. In this mode,
+        recording events is suspended. Instead, the mouse cursor is tracked
+        and the component under it is highlighted. When you click on the
+        component, a check for the component is recorded using the value that
+        is currently displayed. To get back to record mode, select the check
+        button or menu item again.
+      </p>
+      
+<p>
+        There are different kinds of <a href="checks.html#sec_checks" shape="rect">checks</a> that can be performed. Which kinds
+        of checks are applicable depends on the selected component. Some
+        components don't display any text, so a <a href="checks.html#step_CheckStringStep" shape="rect">'Check text'</a> node
+        doesn't make sense for, say, a scroll bar. Clicking on a component
+        with the right mouse button while in check mode brings up a menu of
+        applicable checks for this component. Select one of the items to
+        create the respective check node. Clicking with the left mouse button
+        always records the default check, which is the topmost one in the
+        popup menu.
+      </p>
+      
+<p>
+        If you hold down the [Shift] or [Ctrl] key while clicking with the right mouse button, the
+        check menu will stay open after making a selection. That way, you can
+        easily record multiple kinds of checks for the same component.
+      </p>
+      
+<p>
+        Checks integrate well with events and you'll soon develop a recording
+        style a'la <em>click, click, type, click, check, click, click,
+        check...</em> Having to switch back and forth between QF-Test and the
+        SUT every time you want to create a check can be a real pain. That
+        is where the <a href="opt_record.html#opt_hotkeycheck">Hotkey for checks</a> option comes into
+        play. It defines a key which toggles the SUT between record mode and
+        check mode. The default value is [F12], but if
+        this key has some defined meaning for your application you can change
+        it to whatever you like. To record a sequence of interspersed events
+        and checks, simply start recording, switch to the SUT and record the
+        sequence. Whenever you want to add some checks, just press
+        [F12] (or whatever you defined), record the
+        checks, then switch back to record mode by pressing [F12] again and continue. This way you can work with the SUT
+        for the whole sequence and need to switch back to QF-Test only to stop
+        the recording.
+      </p>
+      
+<p>
+        One word of warning should be repeated: Don't let this convenience
+        tempt you into recording extremely long sequences. When something
+        changes that causes such a sequence to fail you will be hard put to
+        find out what went wrong and how to cope.
+      </p>
+    
+
+    
+    
+
+    
+<a name="usec_componentrecording"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_componentrecording">4.4</a></span>
+</div>
+<a href="contents.html#toc_usec_componentrecording">Recording components</a>
+</h4>
+      
+<p>
+        As already described component information is automatically stored when recording events
+        or checks. Nevertheless there are situations where capturing of just components proves
+        useful.
+      </p>
+      
+<p>
+        To activate <em>component recording mode</em> you simply need to press the record
+        components button <img src="../icons/component_tb.png" style="vertical-align: text-bottom" alt="Record         components" title="Record components" width="26" height="26" texscale=".66"> or select
+        &raquo;<em>Record</em>&laquo;-&raquo;<em>Record components</em>&laquo; from
+        the menu. Then switch to the SUT window where you will notice a special behavior in
+        which the component below the mouse cursor is highlighted.
+      </p>
+      
+<p>
+        Clicking with the left mouse button on a component will record the single component while
+        pushing the right button instead will pop up a menu with choices to record the nested
+        components as well or all components in the window. Multiple components can be captured in
+        this way. Then switch back to QF-Test and release the record components button <img src="../icons/component_tb.png" style="vertical-align: text-bottom" title="Record components" width="26" height="26" texscale=".66"> or deactivate &raquo;<em>Record</em>&laquo;-&raquo;<em>Record components</em>&laquo;. Now the recorded component information is
+        stored in shape of respective <a href="components.html#step_ComponentStep" shape="rect">'Component'</a> nodes under the <a href="components.html#step_WindowList" shape="rect">'Windows and components'</a> node.
+      </p>
+      
+<p>
+        Component recording mode can be alternatively controlled by a configurable hotkey. Default
+        binding is [F11], the option that configures it is <a href="opt_record.html#opt_hotkeycomponent">Hotkey for components</a>.
+      </p>
+      
+<p>
+        Pressing [F11] (default setting) <em>in the SUT window</em> starts
+        component recording. Further details can be found in the documentation for the option
+        <a href="opt_record.html#opt_hotkeycomponent">Hotkey for components</a>.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> Only one test-suite at a time can receive the recorded components. If more
+        than one test-suite is open and each is shown in an individual window, i.e. workbench mode
+        is deactivated, either the test-suite in which the recording is stopped (toolbar button or
+        menu) or - when using [F11], the test-suite that can be selected via
+        the menu item
+        &raquo;<em>Record</em>&laquo;-&raquo;<em>Suite is receiver for recording</em>&laquo;
+        will receive the components.
+      </p>
+      
+<p>
+        The component recording feature can also be used to quickly locate a component
+        independent of whether it has been recorded before. When creating
+        event or checks by hand or changing the target component, the
+        <a href="events.html#att_MouseEventStep_component" shape="rect">'QF-Test component ID'</a> attribute needs to be specified. When a
+        component is recorded, its
+        'QF-Test ID' is saved in the clipboard and can be pasted directly into the
+        'QF-Test component ID' field with [Ctrl-V]. You can also jump directly to the 'Component' node with
+        [Shift-Ctrl-Backspace] or by choosing
+        the
+        &raquo;<em>Edit</em>&laquo;-&raquo;<em>Select next node</em>&laquo;
+        menu item or clicking the respective toolbar button.
+      </p>
+      
+<p>
+        The context menu which appears when clicking with the right mouse button on a component
+        also contains an entry &raquo;<em>Show methods</em>&laquo; which allows of some kind of
+        component inspection (see <a href="user_componentinspection.html#usec_componentinspection">section 5.12</a>).
+      </p>
+      
+<p>
+        Components play a central role in the structure of a test-suite which is explained
+        further in <a href="user_components.html#usec_components">chapter 5</a>.
+      </p>
+    
+
+    
+    
+
+    
+<a name="usec_requestrecording"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="margin"><a name="web_N69891"></a><span class="note">Web</span></span><span class="numtitle"><a href="contents.html#toc_usec_requestrecording">4.5</a></span>
+</div>
+<a href="contents.html#toc_usec_requestrecording">Recording of HTTP requests (GET/POST)</a>
+</h4>
+      
+<p>
+        In order to record a (GET/POST) request sent by the SUT, the SUT must have been launched from QF-Test
+        (see <a href="user_quickstart.html#usec_quickstart">chapter 3</a>) and the connection between QF-Test and the SUT must be
+        established.
+      </p>
+      
+<p>
+        While recording, the SUT is in <em>record mode</em>, which means
+        that all events are collected and sent to QF-Test. With the help of the
+        HTTP-request button <img src="../icons/request_tb.png" style="vertical-align: text-bottom" alt="Record HTTP Requests" title="Record HTTP Requests" width="26" height="26" texscale=".66"> or by selecting
+        &raquo;<em>Record</em>&laquo;-&raquo;<em>Record HTTP Requests</em>&laquo; you can bring it into <em>request recording mode</em>.
+        In contrast to <a href="#usec_recording" shape="rect">Recording sequences</a> all GET/POST-request send by the web
+        browser are saved as http-request nodes in this special recording mode.
+        To get back to record mode, select the HTTP-request button or menu item again.
+      </p>
+      
+<p>
+         In section <a href="opt_web.html#sec_opt_web" shape="rect">Web options</a> the ability to change the type of the recorded request
+         is described. By default <a href="requests.html#step_ClientRequestStep" shape="rect">'Browser HTTP request'</a> is recorded. This Request type is likely used to automate
+         large web form inputs, the use of separate input nodes will be avoided. The form data will be submitted
+         within the browser, so that the response will be shown as well. At this point the test execution could be
+         continued.  In opposition to this the <a href="requests.html#step_RequestStep" shape="rect">'Server HTTP request'</a> will be directly submitted through QF-Test without
+         the need of a  running browser. The response is also only available in QF-Test and a eventually running
+         browser will not be affected.
+      </p>
+      
+<p>
+         All attributes of an accordingly recorded request node as well as the parametrization of requests are
+         explained in detail in the <a href="requests.html#sec_requests" shape="rect">HTTP Requests</a> section of the reference part
+         of this manual.
+      </p>
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_quickstart.html#usec_quickstart"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 3&nbsp;Quickstart your application" title="Previous Chapter: 3&nbsp;Quickstart your application"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 5&nbsp;Components" title="Next Page: 5&nbsp;Components"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 5&nbsp;Components" title="Next Chapter: 5&nbsp;Components"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;User manual" title="Chapter Overview: I&nbsp;User manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

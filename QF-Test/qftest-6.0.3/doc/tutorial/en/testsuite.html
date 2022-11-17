@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Creating your own Test-suite (Java)
+    </title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2002-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_testsuite"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="demojava.html#sec_demojava"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 1&nbsp;Working with a Sample Test-suite (Java)" title="Previous Chapter: 1&nbsp;Working with a Sample Test-suite (Java)"></a></td><td class="navicon"><a href="quickstartjava.html#tut_quickstartjava"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 2.1&nbsp;Starting the Application" title="Next Page: 2.1&nbsp;Starting the Application"></a></td><td class="navicon"><a href="firstproc.html#sec_FirstProcedure"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 3&nbsp;Writing a Procedure (Java)" title="Next Chapter: 3&nbsp;Writing a Procedure (Java)"></a></td><td class="navicon"><a href="java.html#sec_java"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;Java UI testing with QF-Test" title="Chapter Overview: I&nbsp;Java UI testing with QF-Test"></a></td><td class="navicon"><a href="../../tutorial_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_testsuite">2</a></span>
+</div>
+<a href="contents.html#toc_sec_testsuite">Creating your own Test-suite (Java)
+    </a>
+</h3>
+    
+<p>
+        In the second chapter of the Java tutorial we will create our own sequences for starting
+        and stopping an SUT from QF-Test. Furthermore we are going to record actions and checks and
+        use those to build up a simple test-case.
+    </p>
+    
+<p>
+      
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+      This chapter is also available as a video tutorial at <a href="http://www.qfs.de/en/yt/tutorial-2.html" class="videolink" target="_blank">"Creating your own Test-suite"</a>.
+    </p>
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="quickstartjava.html#tut_quickstartjava"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="quickstartjava.html#tut_quickstartjava">2.1</a></span>
+</div>
+<a href="quickstartjava.html#tut_quickstartjava">Starting the Application</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="recactionsjava.html#tut_recactionsjava"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="recactionsjava.html#tut_recactionsjava">2.2</a></span>
+</div>
+<a href="recactionsjava.html#tut_recactionsjava">Recording Actions</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="recchecksjava.html#tut_recchecksjava"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="recchecksjava.html#tut_recchecksjava">2.3</a></span>
+</div>
+<a href="recchecksjava.html#tut_recchecksjava">Recording Checks</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="buildtestjava.html#tut_buildtestjava"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="buildtestjava.html#tut_buildtestjava">2.4</a></span>
+</div>
+<a href="buildtestjava.html#tut_buildtestjava">Setting up a Test-suite</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="cleanupjava.html#tut_cleanupjava"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="cleanupjava.html#tut_cleanupjava">2.5</a></span>
+</div>
+<a href="cleanupjava.html#tut_cleanupjava">Stopping the Demo</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="runownsuitejava.html#tut_runownsuitejava"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="runownsuitejava.html#tut_runownsuitejava">2.6</a></span>
+</div>
+<a href="runownsuitejava.html#tut_runownsuitejava">Running the whole Test-suite</a>
+</h4>
+
+    
+
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="demojava.html#sec_demojava"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 1&nbsp;Working with a Sample Test-suite (Java)" title="Previous Chapter: 1&nbsp;Working with a Sample Test-suite (Java)"></a></td><td class="navicon"><a href="quickstartjava.html#tut_quickstartjava"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 2.1&nbsp;Starting the Application" title="Next Page: 2.1&nbsp;Starting the Application"></a></td><td class="navicon"><a href="firstproc.html#sec_FirstProcedure"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 3&nbsp;Writing a Procedure (Java)" title="Next Chapter: 3&nbsp;Writing a Procedure (Java)"></a></td><td class="navicon"><a href="java.html#sec_java"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;Java UI testing with QF-Test" title="Chapter Overview: I&nbsp;Java UI testing with QF-Test"></a></td><td class="navicon"><a href="../../tutorial_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 2002-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,2485 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Events</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_events"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="processes.html#sec_processes"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 38.7&nbsp;Prozesse" title="Vorheriges Kapitel: 38.7&nbsp;Prozesse"></a></td><td class="navicon"><a href="checks.html#sec_checks"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 38.9&nbsp;Checks" title="N&auml;chste Seite: 38.9&nbsp;Checks"></a></td><td class="navicon"><a href="checks.html#sec_checks"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 38.9&nbsp;Checks" title="N&auml;chstes Kapitel: 38.9&nbsp;Checks"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite" title="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_events">38.8</a></span>
+</div>
+<a href="contents.html#toc_sec_events">Events</a>
+</h4>
+    
+<p>
+      In diesem Abschnitt sind alle Arten von Knoten zusammengefasst, die
+      Aktionen im SUT ausl&ouml;sen. Neben den reinen Java Events gibt es
+      auch Pseudoevents mit besonderer Bedeutung.
+    </p>
+    
+
+    
+<a name="step_MouseEventStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_MouseEventStep">38.8.1</a></span>
+</div>
+<a href="contents.html#toc_step_MouseEventStep">'Mausevent'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/mouse.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            'Mausevents' simulieren Mausbewegungen und -klicks, sowie Drag&amp;Drop Operationen.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die Koordinaten und weiteren Attribute des Events werden
+          zusammen mit den Daten der Zielkomponente an das SUT
+          geschickt. Die <code>TestEventQueue</code> ermittelt daraus im SUT die
+          passende Komponente und rechnet die Koordinaten entsprechend
+          um. Der so gebildete Event wird dann im SUT ausgel&ouml;st.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.54"></a><a name="figure_38.54"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_MouseEventStep.png" target="_blank"><img src="images/att_MouseEventStep.png" alt="Mausevent Attribute" texscale=".66" width="393" height="486"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.54</a>:&nbsp;&nbsp;'Mausevent' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_MouseEventStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Der Name unter dem der Java Prozess des SUT gestartet wurde,
+        an den der Event geschickt werden soll.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_MouseEventStep_component"></a>
+<dt>'QF-Test ID der Komponente'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID des <a href="components.html#step_WindowStep" shape="rect">'Fenster'</a>, <a href="components.html#step_ComponentStep" shape="rect">'Komponente'</a> oder
+        <a href="components.html#step_SubItemStep" shape="rect">'Element'</a> Knotens, auf den sich der Event bezieht.
+      </p>
+      
+<p>
+        Der "Komponente ausw&auml;hlen" Button
+	<img src="../icons/select_component.png" style="vertical-align: text-bottom" alt="[Komponente ausw&auml;hlen]" title="Komponente ausw&auml;hlen" width="20" height="20" texscale=".66">
+        &ouml;ffnet einen Dialog, in dem Sie die Komponente (siehe <a href="user_components.html#usec_components">Kapitel 5</a>) direkt ausw&auml;hlen
+        k&ouml;nnen. Diesen erreichen Sie auch mittels [Shift-Return] oder [Alt-Return], sofern sich der Fokus im Textfeld befindet. Alternativ
+        k&ouml;nnen Sie den gew&uuml;nschten Knoten mittels [Strg-C] bzw.
+        &raquo;<em>Bearbeiten</em>&laquo;-&raquo;<em>Kopieren</em>&laquo;
+        kopieren und seine QF-Test ID durch dr&uuml;cken von
+        [Strg-V] in das Textfeld
+        einf&uuml;gen.
+      </p>
+      
+<p>
+        Dieses Attribut unterst&uuml;tzt ein spezielles Format, das es erlaubt,
+        Komponenten in anderen Testsuiten zu referenzieren (siehe 
+        <a href="user_distributed.html#usec_suitereference">Abschnitt 23.1</a>).  Des weiteren
+        k&ouml;nnen Unterelemente von Knoten direkt angegeben werden, ohne dass ein
+        eigener Knoten daf&uuml;r vorhanden sein muss (siehe <a href="user_subitems.html#usec_subitems">Abschnitt 5.9</a>). 
+        Bei der Verwendung
+        von SmartIDs k&ouml;nnen Sie ein GUI-Element direkt
+        &uuml;ber seine Wiedererkennungsmerkmale adressieren. Weitere Informationen
+        hierzu finden Sie in <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a> und 
+        <a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">'Komponente' Knoten versus SmartID</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_MouseEventStep_event"></a>
+<dt>'Event'</dt>
+<dd>
+            
+            
+<p>
+              In dieser <em>ComboBox</em> k&ouml;nnen Sie die Art des Events
+              festlegen. <code>MOUSE_MOVED</code>, <code>MOUSE_PRESSED</code>, <code>MOUSE_RELEASED</code>,
+              <code>MOUSE_CLICKED</code> und <code>MOUSE_DRAGGED</code> entsprechen den Event IDs
+              der Java Klasse <code>MouseEvent</code>.
+            </p>
+            
+<p>
+              Der abstrakte 'Mausklick' Event fasst die Events <code>MOUSE_MOVED</code>,
+              <code>MOUSE_PRESSED</code>, <code>MOUSE_RELEASED</code> und <code>MOUSE_CLICKED</code> zusammen,
+              d.h. bei der Wiedergabe wird der Pseudoevent durch vier
+              Einzelevents simuliert. Hierdurch verbessert sich die
+              &Uuml;bersicht und die Bearbeitung der Suite wird
+              vereinfacht.
+            </p>
+            
+<p>
+              
+<span class="margin"><a name="new_N133103"></a><span class="note">4.1.3+</span></span>
+
+              Der spezielle 'Doppelklick' Event ist noch umfassender und beinhaltet alle
+              Einzelevents, um einen kompletten Doppelklick zu simulieren.
+            </p>
+            
+<p>
+              
+<code>MOUSE_DRAG_FROM</code>, <code>MOUSE_DRAG_OVER</code> und
+              <code>MOUSE_DROP_TO</code> dienen zur Simulation von Drag&amp;Drop im SUT. N&auml;heres zu
+              diesem Thema finden Sie in <a href="tech_draganddop.html#sec_draganddrop">Abschnitt 45.1</a>.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_MouseEventStep_xy"></a>
+<dt>X/Y</dt>
+<dd>
+            
+            
+            
+<p>
+              Dies sind die Koordinaten des <em>MouseEvents</em>. Sie sind
+              relativ zur linken oberen Ecke des <a href="components.html#step_WindowStep" shape="rect">'Fensters'</a>, der <a href="components.html#step_ComponentStep" shape="rect">'Komponente'</a>
+              oder des <a href="components.html#step_SubItemStep" shape="rect">'Elements'</a>, auf das sich der Event bezieht. Sie
+              k&ouml;nnen negativ sein, z.B. um einen Ast in einem <code>JTree</code>
+              mittels eines Klicks auf seinen Schalter ein- oder
+              auszuklappen.
+            </p>
+            
+<p>
+              Meist sind die genauen Koordinaten f&uuml;r einen <em>MouseEvent</em> egal, so lange sie
+              innerhalb des Ziels liegen. In solchen f&auml;llen sollten Sie die Werte f&uuml;r 'X' und
+              'Y' leer lassen woraufhin QF-Test die Mitte des Ziels ansteuert. Wenn m&ouml;glich
+              bel&auml;sst QF-Test die Werte auch bei der Aufnahme leer, sofern die Option <a href="opt_record.html#opt_repositionmouseevents">
+              Mausevents ohne Koordinaten aufnehmen wo m&ouml;glich
+            </a> gesetzt ist.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Zahl oder leer</p>
+</dd>
+<a name="att_MouseEventStep_modifiers"></a>
+<dt>'Modifiers'</dt>
+<dd>
+      
+<p>
+        Bei Tastatur- und Mausevents wird mit diesem Attribut der Zustand der Tasten
+        Shift, Strg und Alt sowie der Maustasten festgelegt. Jeder
+        Taste ist dabei ein Wert zugeordnet, Kombinationen erh&auml;lt man durch
+        Addition.
+      </p>
+      
+<p>Die Werte im Einzelnen:</p>
+      
+<a name="table_38.16"></a><a name="table_38.16"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdrightleft" border="1" cellspacing="0" cellpadding="3">
+          
+<tr>
+            
+<th align="right" rowspan="1" colspan="1">Wert</th>
+            <th align="left" rowspan="1" colspan="1">Taste</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="right" rowspan="1" colspan="1">1</td>
+            <td rowspan="1" colspan="1">Shift</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="right" rowspan="1" colspan="1">2</td>
+            <td rowspan="1" colspan="1">Strg</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="right" rowspan="1" colspan="1">4</td>
+            <td rowspan="1" colspan="1">Meta bzw. rechte Maustaste (Langer Klick bei Android)</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="right" rowspan="1" colspan="1">8</td>
+            <td rowspan="1" colspan="1">Alt bzw. mittlere Maustaste</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="right" rowspan="1" colspan="1">16</td>
+            <td rowspan="1" colspan="1">Linke Maustaste</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.16</a>:&nbsp;&nbsp;Modifier Werte</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Zahl</p>
+</dd>
+<a name="att_MouseEventStep_clicks"></a>
+<dt>'Anzahl Klicks'</dt>
+<dd>
+            
+            
+<p>
+              Durch dieses Attribut unterscheidet Java, ob es sich bei
+              einem Mausklick um einen einfachen, oder einen Doppelklick
+              handelt.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Zahl</p>
+</dd>
+<a name="att_MouseEventStep_popup"></a>
+<dt>'Popup Trigger'</dt>
+<dd>
+            
+            
+<p>
+              Ist dieses Attribut gesetzt, kann der Event das &Ouml;ffnen eines
+              <em>PopupMenus</em> ausl&ouml;sen. Dieser etwas eigenwillige
+              Mechanismus dient in Java dazu, die unterschiedlichen
+              Konventionen zum Aufruf eines <em>PopupMenus</em> auf verschiedenen
+              <em>native Systems</em> zu unterst&uuml;tzen.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_MouseEventStep_hardevent"></a>
+<dt>'Als "harten" Event wiedergeben'</dt>
+<dd>
+            
+            
+<p>
+              Wenn dieses Attribut gesetzt ist, wird der Event als "harter" Event abgespielt. Dies
+              bedeutet, dass er als echter Systemevent wiedergegeben wird, inklusive Mausbewegung
+              und nicht nur als "weicher" Event in die <code>TestEventQueue</code> eingespeist wird. "Weiche"
+              Events sind typischerweise besser, weil sie eine Beeinflussung durch gleichzeitige
+              Mausaktionen des Benutzers vermeiden. Auch sind sie zuverl&auml;ssiger gegen&uuml;ber
+              Beeintr&auml;chtigungen durch &uuml;berlappende Fenster. Trotzdem gibt es spezielle
+              Situationen, in denen "harte" Events hilfreich sind.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_MouseEventStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_MouseEventStep_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_MouseEventStep_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_KeyEventStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_KeyEventStep">38.8.2</a></span>
+</div>
+<a href="contents.html#toc_step_KeyEventStep">'Tastaturevent'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/key.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Tastaturevents spielen dem SUT Eingaben &uuml;ber die Tastatur
+            vor. Mehrere Tastatureingaben in Folge k&ouml;nnen automatisch zu
+            einer <a href="#step_TextInputStep" shape="rect">'Texteingabe'</a> zusammengefasst werden.
+          </p>
+          
+<p>
+            Ein <code>InputMethodEvent</code> ist eine spezielle Form von Tastaturevent, der die
+            Eingabe von Zeichen aus internationalen Zeichens&auml;tzen erlaubt. QF-Test
+            unterst&uuml;tzt <code>InputMethodEvents</code> nicht direkt, sondern konvertiert Events
+            vom Typ <code>INPUT_METHOD_TEXT_CHANGED</code> automatisch in 'Tastaturevents' vom
+            Typ <code>KEY_TYPED</code>.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die Tastaturcodes des Events werden zusammen mit den Daten der
+          Zielkomponente an das SUT geschickt. Die <code>TestEventQueue</code>
+          ermittelt daraus im SUT die passende Komponente. Der so
+          gebildete Event wird dann im SUT ausgel&ouml;st.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.55"></a><a name="figure_38.55"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_KeyEventStep.png" target="_blank"><img src="images/att_KeyEventStep.png" alt="Tastaturevent Attribute" texscale=".66" width="393" height="417"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.55</a>:&nbsp;&nbsp;'Tastaturevent' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_KeyEventStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Der Name unter dem der Java Prozess des SUT gestartet wurde,
+        an den der Event geschickt werden soll.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_KeyEventStep_component"></a>
+<dt>'QF-Test ID der Komponente'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID des <a href="components.html#step_WindowStep" shape="rect">'Fenster'</a>, <a href="components.html#step_ComponentStep" shape="rect">'Komponente'</a> oder
+        <a href="components.html#step_SubItemStep" shape="rect">'Element'</a> Knotens, auf den sich der Event bezieht.
+      </p>
+      
+<p>
+        Der "Komponente ausw&auml;hlen" Button
+	<img src="../icons/select_component.png" style="vertical-align: text-bottom" alt="[Komponente ausw&auml;hlen]" title="Komponente ausw&auml;hlen" width="20" height="20" texscale=".66">
+        &ouml;ffnet einen Dialog, in dem Sie die Komponente (siehe <a href="user_components.html#usec_components">Kapitel 5</a>) direkt ausw&auml;hlen
+        k&ouml;nnen. Diesen erreichen Sie auch mittels [Shift-Return] oder [Alt-Return], sofern sich der Fokus im Textfeld befindet. Alternativ
+        k&ouml;nnen Sie den gew&uuml;nschten Knoten mittels [Strg-C] bzw.
+        &raquo;<em>Bearbeiten</em>&laquo;-&raquo;<em>Kopieren</em>&laquo;
+        kopieren und seine QF-Test ID durch dr&uuml;cken von
+        [Strg-V] in das Textfeld
+        einf&uuml;gen.
+      </p>
+      
+<p>
+        Dieses Attribut unterst&uuml;tzt ein spezielles Format, das es erlaubt,
+        Komponenten in anderen Testsuiten zu referenzieren (siehe 
+        <a href="user_distributed.html#usec_suitereference">Abschnitt 23.1</a>).  Des weiteren
+        k&ouml;nnen Unterelemente von Knoten direkt angegeben werden, ohne dass ein
+        eigener Knoten daf&uuml;r vorhanden sein muss (siehe <a href="user_subitems.html#usec_subitems">Abschnitt 5.9</a>). 
+        Bei der Verwendung
+        von SmartIDs k&ouml;nnen Sie ein GUI-Element direkt
+        &uuml;ber seine Wiedererkennungsmerkmale adressieren. Weitere Informationen
+        hierzu finden Sie in <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a> und 
+        <a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">'Komponente' Knoten versus SmartID</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_KeyEventStep_event"></a>
+<dt>'Event'</dt>
+<dd>
+            
+            
+<p>
+              In dieser <em>ComboBox</em> k&ouml;nnen Sie die Art des Events
+              festlegen. Die m&ouml;glichen Werte sind <code>KEY_PRESSED</code>, <code>KEY_TYPED</code>
+              und <code>KEY_RELEASED</code>, entsprechend den Event IDs der Java
+              Klasse <code>KeyEvent</code>.
+            </p>
+            
+<p>
+              Zus&auml;tzlich k&ouml;nnen Sie den Pseudoevent 'Tastendruck' w&auml;hlen, der
+              bei der Wiedergabe durch eine entsprechende Abfolge von
+              <code>KEY_PRESSED</code>, <code>KEY_TYPED</code> und <code>KEY_RELEASED</code> Events simuliert
+              wird, wobei der <code>KEY_TYPED</code> Event nur generiert wird, wenn <a href="#att_KeyEventStep_keychar" shape="rect">keyChar</a> nicht 65535
+              ist, d.h. wenn es sich nicht um eine Sonder- oder
+              Funktionstaste handelt.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_KeyEventStep_key"></a>
+<dt>'Taste'</dt>
+<dd>
+            
+            
+<p>
+              Hiermit k&ouml;nnen Sie die Taste f&uuml;r den KeyEvent direkt
+              festlegen und sich damit die Eingabe von <a href="#att_KeyEventStep_keycode" shape="rect">KeyCode</a>, <a href="#att_KeyEventStep_keychar" shape="rect">KeyChar</a> und <a href="#att_KeyEventStep_modifiers" shape="rect">Modifiers</a>
+              sparen. Wenn diese Komponente den Eingabefokus besitzt,
+              werden die Werte der zuletzt gedr&uuml;ckten Taste &uuml;bernommen.
+              F&uuml;r KEY_TYPED Events wird der keyCode automatisch auf 0
+              gesetzt.
+            </p>
+            
+<p>
+              Dabei ist eine kleine Besonderheiten zu beachten: Sie
+              k&ouml;nnen die Tabulator Taste nicht auf diesem Weg w&auml;hlen, da
+              sie zum Wechsel des Fokus f&uuml;hrt. KeyCode und KeyChar f&uuml;r
+              diese Taste sind jeweils 9.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_KeyEventStep_keycode"></a>
+<dt>'Key Code'</dt>
+<dd>
+            
+            
+<p>
+              Dieser Code entspricht der Taste, die gedr&uuml;ckt oder
+              losgelassen wurde. Bei einem <code>KEY_TYPED</code> Event ist dieser
+              Wert 0.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Zahl</p>
+</dd>
+<a name="att_KeyEventStep_keychar"></a>
+<dt>'Key Char'</dt>
+<dd>
+            
+            
+<p>
+              Dies ist das Zeichen, das durch den letzten Tastendruck
+              gebildet wurde. Hierin ist der Zustand der Shifttaste
+              ber&uuml;cksichtigt. Sonder- und Funktionstasten haben keinen
+              individuellen 'Key Char', sondern alle den Wert 65535.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Zahl</p>
+</dd>
+<a name="att_KeyEventStep_modifiers"></a>
+<dt>'Modifiers'</dt>
+<dd>
+      
+<p>
+        Bei Tastatur- und Mausevents wird mit diesem Attribut der Zustand der Tasten
+        Shift, Strg und Alt sowie der Maustasten festgelegt. Jeder
+        Taste ist dabei ein Wert zugeordnet, Kombinationen erh&auml;lt man durch
+        Addition.
+      </p>
+      
+<p>Die Werte im Einzelnen:</p>
+      
+<a name="table_38.17"></a><a name="table_38.17"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdrightleft" border="1" cellspacing="0" cellpadding="3">
+          
+<tr>
+            
+<th align="right" rowspan="1" colspan="1">Wert</th>
+            <th align="left" rowspan="1" colspan="1">Taste</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="right" rowspan="1" colspan="1">1</td>
+            <td rowspan="1" colspan="1">Shift</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="right" rowspan="1" colspan="1">2</td>
+            <td rowspan="1" colspan="1">Strg</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="right" rowspan="1" colspan="1">4</td>
+            <td rowspan="1" colspan="1">Meta bzw. rechte Maustaste (Langer Klick bei Android)</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="right" rowspan="1" colspan="1">8</td>
+            <td rowspan="1" colspan="1">Alt bzw. mittlere Maustaste</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="right" rowspan="1" colspan="1">16</td>
+            <td rowspan="1" colspan="1">Linke Maustaste</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.17</a>:&nbsp;&nbsp;Modifier Werte</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Zahl</p>
+</dd>
+<a name="att_KeyEventStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_KeyEventStep_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_KeyEventStep_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_TextInputStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_TextInputStep">38.8.3</a></span>
+</div>
+<a href="contents.html#toc_step_TextInputStep">'Texteingabe'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/text.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Hierbei handelt es sich um einen Pseudoevent, mit dessen Hilfe
+            die Eingabe von Text im SUT vereinfacht wird. Anstatt f&uuml;r
+            jedes Zeichen des einzugebenden Textes drei 'Tastaturevent'
+            Knoten anzulegen (<code>KEY_PRESSED</code>, <code>KEY_TYPED</code> und <code>KEY_RELEASED</code>),
+            k&ouml;nnen Sie beinahe den selben Effekt mit einem
+            'Texteingabe' Knoten erreichen.
+          </p>
+          
+<p>
+            Hierbei macht sich QF-Test zu Nutze, dass Java f&uuml;r
+            Texteingaben in ein Feld nur die <code>KEY_TYPED</code> Events
+            auswertet. Beim Abspielen einer 'Texteingabe' werden im
+            SUT daher nur <code>KEY_TYPED</code> Events simuliert, keine
+            <code>KEY_PRESSED</code> oder <code>KEY_RELEASED</code> Events.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die Zeichenfolge des Events wird zusammen mit den Daten der
+          Zielkomponente an das SUT geschickt. Die <code>TestEventQueue</code>
+          ermittelt daraus im SUT die passende Komponente und l&ouml;st f&uuml;r
+          jedes Zeichen einen <code>KEY_TYPED</code> Event im SUT aus.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.56"></a><a name="figure_38.56"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_TextInputStep.png" target="_blank"><img src="images/att_TextInputStep.png" alt="Texteingabe Attribute" texscale=".66" width="393" height="384"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.56</a>:&nbsp;&nbsp;'Texteingabe' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_TextInputStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Der Name unter dem der Java Prozess des SUT gestartet wurde,
+        an den der Event geschickt werden soll.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_TextInputStep_component"></a>
+<dt>'QF-Test ID der Komponente'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID des <a href="components.html#step_WindowStep" shape="rect">'Fenster'</a>, <a href="components.html#step_ComponentStep" shape="rect">'Komponente'</a> oder
+        <a href="components.html#step_SubItemStep" shape="rect">'Element'</a> Knotens, auf den sich der Event bezieht.
+      </p>
+      
+<p>
+        Der "Komponente ausw&auml;hlen" Button
+	<img src="../icons/select_component.png" style="vertical-align: text-bottom" alt="[Komponente ausw&auml;hlen]" title="Komponente ausw&auml;hlen" width="20" height="20" texscale=".66">
+        &ouml;ffnet einen Dialog, in dem Sie die Komponente (siehe <a href="user_components.html#usec_components">Kapitel 5</a>) direkt ausw&auml;hlen
+        k&ouml;nnen. Diesen erreichen Sie auch mittels [Shift-Return] oder [Alt-Return], sofern sich der Fokus im Textfeld befindet. Alternativ
+        k&ouml;nnen Sie den gew&uuml;nschten Knoten mittels [Strg-C] bzw.
+        &raquo;<em>Bearbeiten</em>&laquo;-&raquo;<em>Kopieren</em>&laquo;
+        kopieren und seine QF-Test ID durch dr&uuml;cken von
+        [Strg-V] in das Textfeld
+        einf&uuml;gen.
+      </p>
+      
+<p>
+        Dieses Attribut unterst&uuml;tzt ein spezielles Format, das es erlaubt,
+        Komponenten in anderen Testsuiten zu referenzieren (siehe 
+        <a href="user_distributed.html#usec_suitereference">Abschnitt 23.1</a>).  Des weiteren
+        k&ouml;nnen Unterelemente von Knoten direkt angegeben werden, ohne dass ein
+        eigener Knoten daf&uuml;r vorhanden sein muss (siehe <a href="user_subitems.html#usec_subitems">Abschnitt 5.9</a>). 
+        Bei der Verwendung
+        von SmartIDs k&ouml;nnen Sie ein GUI-Element direkt
+        &uuml;ber seine Wiedererkennungsmerkmale adressieren. Weitere Informationen
+        hierzu finden Sie in <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a> und 
+        <a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">'Komponente' Knoten versus SmartID</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_TextInputStep_text"></a>
+<dt>'Text'</dt>
+<dd>
+            
+            
+<p>
+              Der Text, der im SUT in ein Feld eingegeben werden soll.
+            </p>
+            
+<p>
+              
+<span class="margin"><span class="note">Hinweis</span></span> Bei der Eingabe von Text in ein Kennwort-Feld ist es eventuell
+              unerw&uuml;nscht, das Kennwort im Klartext in der Testsuite oder dem Protokoll abzulegen.
+              Um das Kennwort nach Eingabe in dieses Feld zu verschl&uuml;sseln, w&auml;hlen Sie nach einem
+              Rechts-Klick &raquo;<em>Kennwort verschl&uuml;sseln</em>&laquo; aus dem resultierenden
+              Popupmen&uuml;. Geben Sie auf jeden Fall vor der Verschl&uuml;sselung einen Salt in der Option
+              <a href="opt_play.html#opt_passwordsalt">Salt f&uuml;r Verschl&uuml;sselung von Kennw&ouml;rtern</a> an.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine Zeilenumbr&uuml;che
+            m&ouml;glich.</p>
+</dd>
+<a name="att_TextInputStep_clear"></a>
+<dt>'Zielkomponente zun&auml;chst leeren'</dt>
+<dd>
+            
+            
+<p>
+              Ist dieses Attribut gesetzt und handelt es sich bei der
+              Zielkomponente um ein Textfeld, wird der Inhalt des Feldes
+              automatisch gel&ouml;scht, bevor der neue Text eingegeben wird.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TextInputStep_single"></a>
+<dt>'Einzelne Events wiedergeben'</dt>
+<dd>
+            
+            
+<p>
+              Handelt es sich bei der Zielkomponente um ein Textfeld, kann der
+              Text auch direkt &uuml;ber das API der Komponente eingegeben werden,
+              ohne einzelne Events zu simulieren. Dies ist wesentlich
+              schneller, hat aber den Nachteil, dass eventuell vorhandene
+              KeyListener des SUT nicht benachrichtigt werden. Ist dieses
+              Attribut gesetzt, werden f&uuml;r jedes einzelne Zeichen Events
+              generiert.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TextInputStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_TextInputStep_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_TextInputStep_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_WindowEventStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_WindowEventStep">38.8.4</a></span>
+</div>
+<a href="contents.html#toc_step_WindowEventStep">'Fensterevent'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/window.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            
+<em>WindowEvents</em> sind nur begrenzt f&uuml;r eine Testsuite interessant,
+            da die meisten von ihnen als Folge von Programmabl&auml;ufen im Client
+            generiert werden und nicht vom Anwender direkt. Eine Ausnahme ist
+            der Event <code>WINDOW_CLOSING</code>, der dem Schlie&szlig;en eines Fensters durch den
+            Anwender entspricht. Au&szlig;erdem k&ouml;nnen auch <code>WINDOW_ICONIFIED</code> und
+            <code>WINDOW_DEICONIFIED</code> Events ausgef&uuml;hrt werden.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Der Event wird zusammen mit den Daten des Zielfensters an das
+          SUT geschickt. Die <code>TestEventQueue</code> ermittelt daraus im SUT
+          das passende Fenster und l&ouml;st den Event im SUT aus.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.57"></a><a name="figure_38.57"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_WindowEventStep.png" target="_blank"><img src="images/att_WindowEventStep.png" alt="Fensterevent Attribute" texscale=".66" width="393" height="340"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.57</a>:&nbsp;&nbsp;'Fensterevent' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_WindowEventStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Der Name unter dem der Java Prozess des SUT gestartet wurde,
+        an den der Event geschickt werden soll.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_WindowEventStep_component"></a>
+<dt>'QF-Test ID der Komponente'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID des <a href="components.html#step_WindowStep" shape="rect">'Fenster'</a>, <a href="components.html#step_ComponentStep" shape="rect">'Komponente'</a> oder
+        <a href="components.html#step_SubItemStep" shape="rect">'Element'</a> Knotens, auf den sich der Event bezieht.
+      </p>
+      
+<p>
+        Der "Komponente ausw&auml;hlen" Button
+	<img src="../icons/select_component.png" style="vertical-align: text-bottom" alt="[Komponente ausw&auml;hlen]" title="Komponente ausw&auml;hlen" width="20" height="20" texscale=".66">
+        &ouml;ffnet einen Dialog, in dem Sie die Komponente (siehe <a href="user_components.html#usec_components">Kapitel 5</a>) direkt ausw&auml;hlen
+        k&ouml;nnen. Diesen erreichen Sie auch mittels [Shift-Return] oder [Alt-Return], sofern sich der Fokus im Textfeld befindet. Alternativ
+        k&ouml;nnen Sie den gew&uuml;nschten Knoten mittels [Strg-C] bzw.
+        &raquo;<em>Bearbeiten</em>&laquo;-&raquo;<em>Kopieren</em>&laquo;
+        kopieren und seine QF-Test ID durch dr&uuml;cken von
+        [Strg-V] in das Textfeld
+        einf&uuml;gen.
+      </p>
+      
+<p>
+        Dieses Attribut unterst&uuml;tzt ein spezielles Format, das es erlaubt,
+        Komponenten in anderen Testsuiten zu referenzieren (siehe 
+        <a href="user_distributed.html#usec_suitereference">Abschnitt 23.1</a>).  Des weiteren
+        k&ouml;nnen Unterelemente von Knoten direkt angegeben werden, ohne dass ein
+        eigener Knoten daf&uuml;r vorhanden sein muss (siehe <a href="user_subitems.html#usec_subitems">Abschnitt 5.9</a>). 
+        Bei der Verwendung
+        von SmartIDs k&ouml;nnen Sie ein GUI-Element direkt
+        &uuml;ber seine Wiedererkennungsmerkmale adressieren. Weitere Informationen
+        hierzu finden Sie in <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a> und 
+        <a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">'Komponente' Knoten versus SmartID</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_WindowEventStep_event"></a>
+<dt>'Event'</dt>
+<dd>
+            
+            
+<p>
+              In dieser <em>ComboBox</em> k&ouml;nnen Sie die Art des Events
+              festlegen. Die m&ouml;glichen Werte sind <code>WINDOW_OPENED</code>,
+              <code>WINDOW_CLOSING</code>, <code>WINDOW_CLOSED</code>, <code>WINDOW_ACTIVATED</code>, <code>WINDOW_DEACTIVATED</code>,
+              <code>WINDOW_ICONIFIED</code> und <code>WINDOW_DEICONIFIED</code>, entsprechend den
+              Event IDs der Java Klasse <code>WindowEvent</code>.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_WindowEventStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_WindowEventStep_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_WindowEventStep_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ComponentEventStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ComponentEventStep">38.8.5</a></span>
+</div>
+<a href="contents.html#toc_step_ComponentEventStep">'Komponentenevent'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/window.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            F&uuml;r QF-Test sind <em>ComponentEvents</em> eigentlich auch
+            <em>WindowEvents</em>, da es alle <em>ComponentEvents</em> herausfiltert,
+            die sich nicht auf Fenster beziehen. &Uuml;brig bleiben die Events
+            <code>COMPONENT_MOVED</code> und <code>COMPONENT_SIZED</code>, die &uuml;ber den WindowManager an das SUT
+            gelangen.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Der Event wird zusammen mit den Daten des Zielfensters an das
+          SUT geschickt. Die <code>TestEventQueue</code> ermittelt daraus im SUT
+          das passende Fenster und l&ouml;st den Event im SUT aus.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.58"></a><a name="figure_38.58"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ComponentEventStep.png" target="_blank"><img src="images/att_ComponentEventStep.png" alt="Komponentenevent Attribute" texscale=".66" width="393" height="386"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.58</a>:&nbsp;&nbsp;'Komponentenevent' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ComponentEventStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Der Name unter dem der Java Prozess des SUT gestartet wurde,
+        an den der Event geschickt werden soll.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_ComponentEventStep_component"></a>
+<dt>'QF-Test ID der Komponente'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID des <a href="components.html#step_WindowStep" shape="rect">'Fenster'</a>, <a href="components.html#step_ComponentStep" shape="rect">'Komponente'</a> oder
+        <a href="components.html#step_SubItemStep" shape="rect">'Element'</a> Knotens, auf den sich der Event bezieht.
+      </p>
+      
+<p>
+        Der "Komponente ausw&auml;hlen" Button
+	<img src="../icons/select_component.png" style="vertical-align: text-bottom" alt="[Komponente ausw&auml;hlen]" title="Komponente ausw&auml;hlen" width="20" height="20" texscale=".66">
+        &ouml;ffnet einen Dialog, in dem Sie die Komponente (siehe <a href="user_components.html#usec_components">Kapitel 5</a>) direkt ausw&auml;hlen
+        k&ouml;nnen. Diesen erreichen Sie auch mittels [Shift-Return] oder [Alt-Return], sofern sich der Fokus im Textfeld befindet. Alternativ
+        k&ouml;nnen Sie den gew&uuml;nschten Knoten mittels [Strg-C] bzw.
+        &raquo;<em>Bearbeiten</em>&laquo;-&raquo;<em>Kopieren</em>&laquo;
+        kopieren und seine QF-Test ID durch dr&uuml;cken von
+        [Strg-V] in das Textfeld
+        einf&uuml;gen.
+      </p>
+      
+<p>
+        Dieses Attribut unterst&uuml;tzt ein spezielles Format, das es erlaubt,
+        Komponenten in anderen Testsuiten zu referenzieren (siehe 
+        <a href="user_distributed.html#usec_suitereference">Abschnitt 23.1</a>).  Des weiteren
+        k&ouml;nnen Unterelemente von Knoten direkt angegeben werden, ohne dass ein
+        eigener Knoten daf&uuml;r vorhanden sein muss (siehe <a href="user_subitems.html#usec_subitems">Abschnitt 5.9</a>). 
+        Bei der Verwendung
+        von SmartIDs k&ouml;nnen Sie ein GUI-Element direkt
+        &uuml;ber seine Wiedererkennungsmerkmale adressieren. Weitere Informationen
+        hierzu finden Sie in <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a> und 
+        <a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">'Komponente' Knoten versus SmartID</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_ComponentEventStep_event"></a>
+<dt>'Event'</dt>
+<dd>
+            
+            
+<p>
+              In dieser <em>ComboBox</em> k&ouml;nnen Sie die Art des Events
+              festlegen. Die m&ouml;glichen Werte sind <code>COMPONENT_SIZED</code>
+              und <code>COMPONENT_MOVED</code>, entsprechend den
+              Event IDs der Java Klasse <code>ComponentEvent</code>.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ComponentEventStep_param1"></a>
+<dt>'X/Breite'</dt>
+<dd>
+            
+            
+<p>
+              F&uuml;r einen <code>COMPONENT_MOVED</code> Event geben Sie hier die neue
+              X-Koordinate des Fensters an, f&uuml;r einen <code>COMPONENT_SIZED</code> Event die
+              neue Breite.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Zahl, Breite &gt;
+            0</p>
+</dd>
+<a name="att_ComponentEventStep_param2"></a>
+<dt>'Y/H&ouml;he'</dt>
+<dd>
+            
+            
+<p>
+              F&uuml;r einen <code>COMPONENT_MOVED</code> Event geben Sie hier die neue
+              Y-Koordinate des Fensters an, f&uuml;r einen <code>COMPONENT_SIZED</code> Event die
+              neue H&ouml;he.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Zahl, H&ouml;he &gt;
+            0</p>
+</dd>
+<a name="att_ComponentEventStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_ComponentEventStep_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_ComponentEventStep_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_SelectionEventStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_SelectionEventStep">38.8.6</a></span>
+</div>
+<a href="contents.html#toc_step_SelectionEventStep">'Auswahl'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/selection.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Ein 'Auswahl' Knoten repr&auml;sentiert einen abstrakten Event, wie das
+            Selektieren eines Men&uuml;punktes, das Ausw&auml;hlen eines Eintrags in einer <em>ComboBox</em>
+            oder eine Auswahl in oder das Schlie&szlig;en von einem System-Dialog. Aktuell wird dieser
+            Event-Knoten nur f&uuml;r SWT, Web und Electron SUTs verwendet, wo einige Aktionen nicht &uuml;ber
+            "weiche" Mausevents angesto&szlig;en werden k&ouml;nnen. Die Alternative des Verwendens von
+            "harten" Mausevents hat einige Nachteile, wie sie beim <a href="#att_MouseEventStep_hardevent" shape="rect">'Als "harten" Event wiedergeben'</a>
+            Attribut des <a href="#step_MouseEventStep" shape="rect">'Mausevent'</a> Knotens beschrieben werden.
+          </p>
+          
+<p>
+            Das <a href="#att_SelectionEventStep_detail" shape="rect">'Detail'</a> Attribut bestimmt den Typ der Aktion oder den zu
+            selektierenden Wert, je nach Zielkomponente.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Der Event wird an das SUT geschickt, zusammen mit den Daten &uuml;ber die Zielkomponente.
+          Die Komponente wird aufgel&ouml;st und eine Aktion durchgef&uuml;hrt, die vom Typ der Komponente
+          abh&auml;ngt, wie es die Tabelle oben zeigt.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.59"></a><a name="figure_38.59"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_Selection.png" target="_blank"><img src="images/att_Selection.png" alt="Mouse event attributes" texscale=".66" width="393" height="330"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.59</a>:&nbsp;&nbsp;'Auswahl' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_SelectionEventStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Der Name unter dem der Java Prozess des SUT gestartet wurde,
+        an den der Event geschickt werden soll.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_SelectionEventStep_component"></a>
+<dt>'QF-Test ID der Komponente'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID des <a href="components.html#step_WindowStep" shape="rect">'Fenster'</a>, <a href="components.html#step_ComponentStep" shape="rect">'Komponente'</a> oder
+        <a href="components.html#step_SubItemStep" shape="rect">'Element'</a> Knotens, auf den sich der Event bezieht.
+      </p>
+      
+<p>
+        Der "Komponente ausw&auml;hlen" Button
+	<img src="../icons/select_component.png" style="vertical-align: text-bottom" alt="[Komponente ausw&auml;hlen]" title="Komponente ausw&auml;hlen" width="20" height="20" texscale=".66">
+        &ouml;ffnet einen Dialog, in dem Sie die Komponente (siehe <a href="user_components.html#usec_components">Kapitel 5</a>) direkt ausw&auml;hlen
+        k&ouml;nnen. Diesen erreichen Sie auch mittels [Shift-Return] oder [Alt-Return], sofern sich der Fokus im Textfeld befindet. Alternativ
+        k&ouml;nnen Sie den gew&uuml;nschten Knoten mittels [Strg-C] bzw.
+        &raquo;<em>Bearbeiten</em>&laquo;-&raquo;<em>Kopieren</em>&laquo;
+        kopieren und seine QF-Test ID durch dr&uuml;cken von
+        [Strg-V] in das Textfeld
+        einf&uuml;gen.
+      </p>
+      
+<p>
+        Dieses Attribut unterst&uuml;tzt ein spezielles Format, das es erlaubt,
+        Komponenten in anderen Testsuiten zu referenzieren (siehe 
+        <a href="user_distributed.html#usec_suitereference">Abschnitt 23.1</a>).  Des weiteren
+        k&ouml;nnen Unterelemente von Knoten direkt angegeben werden, ohne dass ein
+        eigener Knoten daf&uuml;r vorhanden sein muss (siehe <a href="user_subitems.html#usec_subitems">Abschnitt 5.9</a>). 
+        Bei der Verwendung
+        von SmartIDs k&ouml;nnen Sie ein GUI-Element direkt
+        &uuml;ber seine Wiedererkennungsmerkmale adressieren. Weitere Informationen
+        hierzu finden Sie in <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a> und 
+        <a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">'Komponente' Knoten versus SmartID</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_SelectionEventStep_detail"></a>
+<dt>'Detail'</dt>
+<dd>
+            
+            
+<p>
+              Dieses Attribut bestimmt den Typ der Aktion oder den zu
+              selektierenden Wert, je nach Zielkomponente. Die m&ouml;glichen Kombinationen sind nachfolgend
+              im Detail aufgef&uuml;hrt.
+            </p>
+          
+<p>
+            
+<span class="margin"><a name="swt_N135699"></a><span class="note">SWT</span></span> Die folgenden Kombinationen von SWT Komponenten (Widgets) und
+            'Detail' Attribut werden aktuell f&uuml;r SWT unterst&uuml;tzt:
+          </p>
+          
+<a name="table_38.18"></a><a name="table_38.18"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table border="1" cellspacing="0" cellpadding="3" texwidth="\linewidth">
+              
+<tr>
+                
+<th align="left" rowspan="1" colspan="1">Klasse</th>
+                <th align="left" rowspan="1" colspan="1">'Detail' Attribut</th>
+                <th align="left" rowspan="1" colspan="1">Aktion</th>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>CCombo</code> Unterelement</td>
+                <td rowspan="1" colspan="1">Leer</td>
+                <td rowspan="1" colspan="1">Unterelement als aktuellen Wert ausw&auml;hlen</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>ColorDialog</code></td>
+                <td rowspan="1" colspan="1">Farbwert in hexadezimalem #rrggbb Format</td>
+                <td rowspan="1" colspan="1">Angegebene Farbe ausw&auml;hlen</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>ColorDialog</code></td>
+                <td rowspan="1" colspan="1"><code>CANCEL</code></td>
+                <td rowspan="1" colspan="1">Farbauswahl abbrechen</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Combo</code> Unterelement</td>
+                <td rowspan="1" colspan="1">Leer</td>
+                <td rowspan="1" colspan="1">Unterelement als aktuellen Wert ausw&auml;hlen</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>CTabFolder</code> Unterelement</td>
+                <td rowspan="1" colspan="1">Leer</td>
+                <td rowspan="1" colspan="1">Reiter ausw&auml;hlen</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>CTabFolder</code> Unterelement</td>
+                <td rowspan="1" colspan="1"><code>close</code></td>
+                <td rowspan="1" colspan="1">Reiter schlie&szlig;en</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>DirectoryDialog</code></td>
+                <td rowspan="1" colspan="1">Verzeichnis</td>
+                <td rowspan="1" colspan="1">Angegebenes Verzeichnis ausw&auml;hlen</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>DirectoryDialog</code></td>
+                <td rowspan="1" colspan="1"><code>CANCEL</code></td>
+                <td rowspan="1" colspan="1">Verzeichnisauswahl abbrechen</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>FileDialog</code></td>
+                <td rowspan="1" colspan="1">Dateiname, inklusive Verzeichnis</td>
+                <td rowspan="1" colspan="1">Angegebene Datei ausw&auml;hlen</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>FileDialog</code></td>
+                <td rowspan="1" colspan="1"><code>CANCEL</code></td>
+                <td rowspan="1" colspan="1">Dateiauswahl abbrechen</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>FontDialog</code></td>
+                <td rowspan="1" colspan="1">Font-Beschreibung, systemspezifisch</td>
+                <td rowspan="1" colspan="1">Angegebenen Font ausw&auml;hlen</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>FontDialog</code></td>
+                <td rowspan="1" colspan="1"><code>CANCEL</code></td>
+                <td rowspan="1" colspan="1">Fontauswahl abbrechen</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Menu</code></td>
+                <td rowspan="1" colspan="1"><code>close</code></td>
+                <td rowspan="1" colspan="1">Men&uuml; abbrechen (Schlie&szlig;en ohne Selektion)</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>MenuItem</code></td>
+                <td rowspan="1" colspan="1">Leer</td>
+                <td rowspan="1" colspan="1">Men&uuml;eintrag ausw&auml;hlen</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>MessageBox</code></td>
+                <td rowspan="1" colspan="1">
+                  Einer der Werte
+                  <code>OK</code>
+                  <code>YES</code>
+                  <code>NO</code>
+                  <code>CANCEL</code>
+                  <code>ABORT</code>
+                  <code>RETRY</code>
+                  <code>IGNORE</code>
+                  <code>OPEN</code>
+                  <code>SAVE</code>
+                </td>
+                <td rowspan="1" colspan="1">Mit dem angegebenen Wert als Auswahl schlie&szlig;en</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>ProgressBar</code></td>
+                <td rowspan="1" colspan="1">Wert f&uuml;r <code>ProgressBar</code></td>
+                <td rowspan="1" colspan="1">Angegebenen Wert setzen</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Scale</code></td>
+                <td rowspan="1" colspan="1">Wert f&uuml;r <code>Scale</code></td>
+                <td rowspan="1" colspan="1">Angegebenen Wert setzen</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Slider</code></td>
+                <td rowspan="1" colspan="1">Wert f&uuml;r <code>Slider</code></td>
+                <td rowspan="1" colspan="1">Angegebenen Wert setzen</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Spinner</code></td>
+                <td rowspan="1" colspan="1">Wert f&uuml;r <code>Spinner</code></td>
+                <td rowspan="1" colspan="1">Angegebenen Wert setzen</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>TabFolder</code> Unterelement</td>
+                <td rowspan="1" colspan="1">Leer</td>
+                <td rowspan="1" colspan="1">Reiter ausw&auml;hlen</td>
+              
+</tr>
+            
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.18</a>:&nbsp;&nbsp;Unterst&uuml;tzte SWT Widgets f&uuml;r einen 'Auswahl' Event</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            
+<span class="margin"><span class="note">Hinweis</span></span> Eclipse/RCP verwendet viele dynamische
+            <code>CTabFolder</code> bei denen die Unterelemente, also die Reiter, zwischen den
+            Foldern verschoben werden k&ouml;nnen. Die Reiter repr&auml;sentieren die eigentlichen
+            Business Objects, w&auml;hrend die Folder nur ein Ger&uuml;st bilden um diese aufzunehmen. Zudem
+            kann sich die Anordnung der Reiter und Folder bei einem Wechsel der Perspektive
+            drastisch ver&auml;ndern. Daher ist es oft w&uuml;nschenswert, einen Reiter direkt selektieren
+            oder schlie&szlig;en zu k&ouml;nnen, unabh&auml;ngig davon in welchem <code>CTabFolder</code> er sich
+            gerade befindet. Dies kann mit Hilfe der <a href="procedures.html#step_Procedure" shape="rect">'Prozeduren'</a>
+            <code>qfs.qft#qfs.swt.ctabfolder.selectTab</code> und
+            <code>qfs.qft#qfs.swt.ctabfolder.closeTab</code> erreicht werden, die mit der
+            Standardbibliothek <code>qfs.qft</code> bereitgestellt werden. Neben dem
+            allgegenw&auml;rtigen <code>client</code> Parameter muss nur der Parameter
+            <code>tabname</code> mit dem Namen des gew&uuml;nschten Reiters angegeben werden.
+          </p>
+          
+<p>
+            
+<span class="margin"><a name="web_N136205"></a><span class="note">Web</span></span> Die folgenden Kombinationen von DOM Knoten und
+            'Detail' Attribut werden aktuell f&uuml;r Web SUTs unterst&uuml;tzt:
+          </p>
+          
+<a name="table_38.19"></a><a name="table_38.19"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table border="1" cellspacing="0" cellpadding="3" texwidth="\linewidth">
+              
+<tr>
+                
+<th align="left" rowspan="1" colspan="1">Knotentyp</th>
+                <th align="left" rowspan="1" colspan="1">'Detail' Attribut</th>
+                <th align="left" rowspan="1" colspan="1">Aktion</th>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Best&auml;tigungsdialog</td>
+                <td rowspan="1" colspan="1">
+                  Einer der Werte
+                  <code>OK</code>
+                  <code>YES</code>
+                  <code>NO</code>
+                  <code>CANCEL</code>
+                  <code>RETRY</code>
+                </td>
+                <td rowspan="1" colspan="1">Dialog mit dem angegebenen Wert als Auswahl schlie&szlig;en</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Dateiauswahldialog f&uuml;r Download</td>
+                <td rowspan="1" colspan="1">
+                  Die zu speichernde Datei oder <code>CANCEL</code>
+                </td>
+                <td rowspan="1" colspan="1">
+                  Schlie&szlig;t den Dialog und speichert die gew&auml;hlte Datei oder bricht den Download ab
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Anmeldungsdialog</td>
+                <td rowspan="1" colspan="1">
+                  Name|Kennwort oder <code>CANCEL</code>
+                </td>
+                <td rowspan="1" colspan="1">
+                  Schlie&szlig;t den Dialog zur Anmeldung mit den angegebenen Daten oder bricht die
+                  Anmeldung ab. Das Kennwort kann durch Rechts-Klick und Auswahl von &raquo;<em>Kennwort verschl&uuml;sseln</em>&laquo; im resultierenden Popupmen&uuml; verschl&uuml;sselt
+                  werden. Geben Sie auf jeden Fall vor der Verschl&uuml;sselung einen Salt in der
+                  Option <a href="opt_play.html#opt_passwordsalt">Salt f&uuml;r Verschl&uuml;sselung von Kennw&ouml;rtern</a> an.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Eingabedialog</td>
+                <td rowspan="1" colspan="1">
+                  Der einzugebende Text oder <code>CANCEL</code>
+                </td>
+                <td rowspan="1" colspan="1">
+                  Schlie&szlig;t den Dialog liefert den eingegebenen Text oder bricht die Eingabe ab
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">&lt;DOCUMENT&gt; auf oberster Ebene</td>
+                <td rowspan="1" colspan="1"><code>back</code></td>
+                <td rowspan="1" colspan="1">Navigiert zur&uuml;ck zur vorhergehenden Seite</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">&lt;DOCUMENT&gt; auf oberster Ebene</td>
+                <td rowspan="1" colspan="1"><code>forward</code></td>
+                <td rowspan="1" colspan="1">Navigiert vorw&auml;rts zur n&auml;chsten Seite</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">&lt;DOCUMENT&gt; auf oberster Ebene</td>
+                <td rowspan="1" colspan="1"><code>goto</code>:URL</td>
+                <td rowspan="1" colspan="1">Navigiert zur angegebenen URL</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">&lt;DOCUMENT&gt; auf oberster Ebene</td>
+                <td rowspan="1" colspan="1"><code>refresh</code></td>
+                <td rowspan="1" colspan="1">L&auml;dt die aktuelle Seite neu</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">&lt;DOCUMENT&gt; auf oberster Ebene</td>
+                <td rowspan="1" colspan="1"><code>stop</code></td>
+                <td rowspan="1" colspan="1">Beendet das Laden der aktuelle Seite</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">
+                  &lt;OPTION&gt; oder Unterelement von
+                  &lt;SELECT&gt;
+                </td>
+                <td rowspan="1" colspan="1"><code>0</code></td>
+                <td rowspan="1" colspan="1">W&auml;hlt die &lt;OPTION&gt; als aktuellen Wert</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">
+                  &lt;OPTION&gt; oder Unterelement von
+                  &lt;SELECT&gt;
+                </td>
+                <td rowspan="1" colspan="1"><code>1</code></td>
+                <td rowspan="1" colspan="1">F&uuml;gt die &lt;OPTION&gt; zur Selektion hinzu</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">
+                  &lt;OPTION&gt; oder Unterelement von
+                  &lt;SELECT&gt;
+                </td>
+                <td rowspan="1" colspan="1"><code>-1</code></td>
+                <td rowspan="1" colspan="1">Entfernt die &lt;OPTION&gt; aus der Selektion</td>
+              
+</tr>
+            
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.19</a>:&nbsp;&nbsp;Unterst&uuml;tzte DOM Knoten f&uuml;r einen 'Auswahl' Event</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            
+<span class="margin"><a name="electron_N136545"></a><span class="note">Electron</span></span> Die folgenden Kombinationen von DOM Knoten und
+            'Detail' Attribut werden aktuell f&uuml;r Electron Anwendungen
+            (siehe <a href="web_electron.html#usec_electron">Kapitel 18</a>) unterst&uuml;tzt,
+            zus&auml;tzlich zu den oben f&uuml;r Web genannten:
+          </p>
+          
+<a name="selection_step_electron_table"></a><a name="table_38.20"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table border="1" cellspacing="0" cellpadding="3" texwidth="\linewidth">
+              
+<tr>
+                
+<th align="left" rowspan="1" colspan="1">Knotentyp</th>
+                <th align="left" rowspan="1" colspan="1">'Detail' Attribut</th>
+                <th align="left" rowspan="1" colspan="1">Aktion</th>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Men&uuml;</td>
+                <td rowspan="1" colspan="1">
+                  <code>clickmenu:@/&lt;Men&uuml;pfad&gt;</code>
+                </td>
+                <td rowspan="1" colspan="1">
+                  Wobei <code>&lt;Men&uuml;pfad&gt;</code> das Men&uuml; und den oder die
+                  Untermen&uuml;punkte, getrennt durch <code>/</code> bezeichnet. Wenn Sie zum
+                  Beispiel im Men&uuml; <code>Datei</code> den Unterpunkt <code>Speichern unter</code>
+                  aktivieren wollen, lautet der Eintrag <code>clickmenu:@Datei/Speichern unter</code>.
+                  Im Attribut 'QF-Test ID der Komponente' ist die 'QF-Test ID' des Knotens <code>Webseite</code>
+                  des SUT einzutragen.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Dialog</td>
+                <td rowspan="1" colspan="1">
+                  <code>select:@/&lt;R&uuml;ckgabewert&gt;</code>
+                </td>
+                <td rowspan="1" colspan="1">
+                  <a href="opt_play.html#opt_passwordsalt">Salt f&uuml;r Verschl&uuml;sselung von Kennw&ouml;rtern</a>
+                  Schlie&szlig;t einen ge&ouml;ffneten Dialog.
+                  Weitere Informationen zu R&uuml;ckgabewerten finden Sie in
+                  <a href="web_electron.html#sec_electron_native_dialogs">Native Dialoge</a>.
+                  Im Attribut 'QF-Test ID der Komponente' muss die 'QF-Test ID' des Knotens <code>Web page</code>
+                  des SUTs angegeben werden.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Error-Dialog</td>
+                <td rowspan="1" colspan="1">select:1</td>
+                <td rowspan="1" colspan="1">Schlie&szlig;t den Error-Dialog.</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Message-Box</td>
+                <td rowspan="1" colspan="1">select:2:true</td>
+                <td rowspan="1" colspan="1">W&auml;hlt den Button mit der Id 2 aus und setzt den Wert der Checkbox auf "true". </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Speichern-Dialog</td>
+                <td rowspan="1" colspan="1">select:"C:\path\to\my.file"</td>
+                <td rowspan="1" colspan="1">Schlie&szlig;t den Speichern-Dialog und gibt den angegebenen Pfad zur&uuml;ck.</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">&Ouml;ffnen-Dialog</td>
+                <td rowspan="1" colspan="1">select:["C:\path\to\my.file"]</td>
+                <td rowspan="1" colspan="1">Schlie&szlig;t den &Ouml;ffnen-Dialog und gibt den angegebenen Pfad zur&uuml;ck.</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">&Ouml;ffnen-Dialog</td>
+                <td rowspan="1" colspan="1">select:["C:\path\to\my\first.file", "C:\path\to\my\second.file"]</td>
+                <td rowspan="1" colspan="1">Schlie&szlig;t den &Ouml;ffnen-Dialog und gibt die angegebenen Pfade zur&uuml;ck.</td>
+              
+</tr>
+            
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.20</a>:&nbsp;&nbsp;Unterst&uuml;tzte DOM Knoten bei Electron SUTs f&uuml;r einen 'Auswahl' Event</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+            
+<p>
+              
+<span class="margin"><a name="android_N136768"></a><span class="note">Android</span></span> Die folgenden Kombinationen von DOM Knoten und
+              'Detail' Attribut werden aktuell f&uuml;r Android Anwendungen
+              (siehe <a href="user_androidtesting.html#usec_androidtesting">Kapitel 15</a>) unterst&uuml;tzt:
+            </p>
+            
+<a name="selection_step_android_table"></a><a name="table_38.21"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table border="1" cellspacing="0" cellpadding="3" texwidth="\linewidth">
+                
+<tr>
+                  
+<th align="left" rowspan="1" colspan="1">Knotentyp</th>
+                  <th align="left" rowspan="1" colspan="1">'Detail' Attribut</th>
+                  <th align="left" rowspan="1" colspan="1">Aktion</th>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">Alle (wird ignoriert)</td>
+                  <td rowspan="1" colspan="1">
+                    <code>HOME</code>
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    Klick auf den Home-Button des Emulators.
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">Alle (wird ignoriert)</td>
+                  <td rowspan="1" colspan="1">
+                    <code>BACK</code>
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    Klick auf den Back-Button des Emulators.
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">Alle (wird ignoriert)</td>
+                  <td rowspan="1" colspan="1">
+                    <code>APP_SWITCH</code>
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    Klick auf den App-Switch-Button des Emulators.
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">Alle</td>
+                  <td rowspan="1" colspan="1">
+                    <code>swipe: &lt;Richtung&gt;</code>
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    Swipe auf einer Komponente in eine bestimmte Richtung. M&ouml;gliche Angaben sind: "right", "&rarr;", "go_left", "prevPage", "⭢",
+                    "left", "&larr;", "go_right", "nextPage", "⭠", "up", "&uarr;", "go_down", "scrollDown", "⭡",
+                    "down", "&darr;", "go_up", "scrollUp", "⭣", "down_right", "↘", "go_up_left", "⭨",
+                    "up_left", "↖", "go_down_right", "⭦", ""down_left", "↙", "go_up_right", "⭩",
+                    "up_right", "↗", "go_down_left" und "⭧" (jeweils ohne Anf&uuml;hrungszeichen).
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">Alle</td>
+                  <td rowspan="1" colspan="1">
+                    <code>swipe: &lt;Start Koordinate X&gt; &lt;Start Koordinate Y&gt; &lt;End Koordinate X&gt; &lt;End Koordinate X&gt;</code>
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    Swipe auf einer Komponente wobei der Swipe-Anfang und das Swipe-Ende durch die angegebenen Koordinaten spezifiziert wird.
+                    Anstatt von Integer-Zahlen kann man hier auch "W", "E", "S", "N", "C", "CH" oder "CW" angeben. Hierbei steht "W" f&uuml;r den
+                    "Westen" der Komponente, "E" (englisch East) f&uuml;r den Osten, "S" f&uuml;r den S&uuml;den, "N" f&uuml;r den Norden und "C" f&uuml;r die Mitte der
+                    Komponente. <code>swipe: W C E C</code> swipped also mittig vom Westen (links) der Komponente in den Osten (rechts)
+                    der Komponente und <code>swipe: C N C S</code> von oben nach unten.
+                  </td>
+                
+</tr>
+              
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.21</a>:&nbsp;&nbsp;</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_SelectionEventStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_SelectionEventStep_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_SelectionEventStep_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_FileSelection"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_FileSelection">38.8.7</a></span>
+</div>
+<a href="contents.html#toc_step_FileSelection">'Dateiauswahl'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/file.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Eine Dateiauswahl nimmt unter den Ereignissen eine Sonderstellung ein, da es sich
+            nicht um ein einfaches, sondern ein komplexes Pseudo-Ereignis handelt.
+          </p>
+          
+<p>
+            Der Hintergrund ist, dass Java bei der Dateiauswahl mit Hilfe eines
+            <code>java.awt.FileDialog</code> die Kontrolle &uuml;ber den Dialog komplett an das
+            Betriebssystem abgibt. Damit lassen sich w&auml;hrend der Dateiauswahl keine Maus- und
+            Tastaturevents aufzeichnen und ebenso wenig simulieren. Dieses Problem tritt nicht bei
+            Verwendung eines eigenen Dateiauswahldialogs, oder des Swing
+            <code>javax.swing.JFileChooser</code> auf.
+          </p>
+          
+<p>
+            Daher nimmt QF-Test nur das Ergebnis der Dateiauswahl auf und legt es in Form dieses
+            Knotens ab. Bei der Wiedergabe werden die Daten entsprechend an den Dialog &uuml;bergeben,
+            bevor er geschlossen wird. F&uuml;r das SUT ist das im Endeffekt nicht von einer
+            Dateiauswahl durch den Anwender zu unterscheiden.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Datei und Verzeichnis werden an einen ge&ouml;ffneten <code>java.awt.FileDialog</code>
+          &uuml;bergeben und dieser wird geschlossen. Ist kein FileDialog ge&ouml;ffnet, wird eine
+          <a href="exceptions.html#ex_ComponentNotFoundException" shape="rect"><code>ComponentNotFoundException</code></a> geworfen.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.60"></a><a name="figure_38.60"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_FileSelection.png" target="_blank"><img src="images/att_FileSelection.png" alt="Dateiauswahl Attribute" texscale=".66" width="393" height="376"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.60</a>:&nbsp;&nbsp;'Dateiauswahl' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_FileSelection_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Der Name unter dem der Java Prozess des SUT gestartet wurde,
+        an den der Event geschickt werden soll.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_FileSelection_file"></a>
+<dt>'Datei'</dt>
+<dd>
+            
+            
+<p>
+              Der Name der Datei (ohne Verzeichnispfad), die im Dialog
+              ausgew&auml;hlt werden soll.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_FileSelection_directory"></a>
+<dt>'Verzeichnis'</dt>
+<dd>
+            
+            
+<p>
+              Das Verzeichnis der Datei, die im Dialog
+              ausgew&auml;hlt werden soll.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf
+          nicht leer sein</p>
+</dd>
+<a name="att_FileSelection_engine"></a>
+<dt>'GUI Engine'</dt>
+<dd>
+            
+            
+<p>
+              Die GUI Engine zu der der Dateiauswahl Dialog geh&ouml;rt. Nur relevant f&uuml;r SUTs mit mehr
+              als einer GUI Engine wie in <a href="tech_engines.html#sec_engines">Kapitel 41</a> beschrieben.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Siehe <a href="tech_engines.html#sec_engines">Kapitel 41</a>
+</p>
+</dd>
+<a name="att_FileSelection_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_FileSelection_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_FileSelection_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="processes.html#sec_processes"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 38.7&nbsp;Prozesse" title="Vorheriges Kapitel: 38.7&nbsp;Prozesse"></a></td><td class="navicon"><a href="checks.html#sec_checks"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 38.9&nbsp;Checks" title="N&auml;chste Seite: 38.9&nbsp;Checks"></a></td><td class="navicon"><a href="checks.html#sec_checks"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 38.9&nbsp;Checks" title="N&auml;chstes Kapitel: 38.9&nbsp;Checks"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite" title="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

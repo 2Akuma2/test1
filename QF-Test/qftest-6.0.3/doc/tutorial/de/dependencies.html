@@ -1,0 +1,986 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Abh&auml;ngigkeiten: Automatisches Sicherstellen der korrekten
+    Vorbedingungen jedes Testfalles</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2002-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_AdvDeps"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="datadriven.html#sec_DataDriven"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 28&nbsp;Datengetriebenes Testen: Einen 'Test-case' mit unterschiedlichen
+    Testdatens&auml;tzen starten" title="Vorheriges Kapitel: 28&nbsp;Datengetriebenes Testen: Einen 'Test-case' mit unterschiedlichen
+    Testdatens&auml;tzen starten"></a></td><td class="navicon"><a href="tut_procbuilder.html#sec_AdvProcbuilder"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 30&nbsp;Automatische Erstellung von Basisprozeduren" title="N&auml;chste Seite: 30&nbsp;Automatische Erstellung von Basisprozeduren"></a></td><td class="navicon"><a href="tut_procbuilder.html#sec_AdvProcbuilder"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 30&nbsp;Automatische Erstellung von Basisprozeduren" title="N&auml;chstes Kapitel: 30&nbsp;Automatische Erstellung von Basisprozeduren"></a></td><td class="navicon"><a href="advanced.html#sec_advanced"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: V&nbsp;Weiterf&uuml;hrende Features von QF-Test" title="Kapitel-&Uuml;bersicht: V&nbsp;Weiterf&uuml;hrende Features von QF-Test"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_AdvDeps">29</a></span>
+</div>
+<a href="contents.html#toc_sec_AdvDeps">Abh&auml;ngigkeiten: Automatisches Sicherstellen der korrekten
+    Vorbedingungen jedes Testfalles</a>
+</h3>
+
+    
+<p>
+      
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+      Video: <a href="https://www.qfs.de/de/yt/abhaengigkeiten-basics-45.html" class="videolink" target="_blank"> Abh&auml;ngigkeiten</a>
+    
+</p>
+    
+<p>
+      Dieses Kapitel erkl&auml;rt das Abh&auml;ngigkeiten Konzept von QF-Test. Dieses
+      Konzept ist f&uuml;r die Erstellung robuster Testf&auml;lle sowie f&uuml;r das
+      Recovery Management sehr wichtig. Abh&auml;ngigkeiten wurden
+      eingef&uuml;hrt, um sicherzustellen, dass jeder Testfall mit erf&uuml;llten
+      Vorbedingungen laufen kann.
+    </p>
+    
+<p>
+      Die Beispiele aus diesem Kapitel finden Sie in der Testsuite
+      <code>qftest-6.0.3/doc/tutorial/advanced-demos/de/dependencies.qft</code>.
+      Des weiteren gibt es noch eine zweite Testsuite
+      <code>qftest-6.0.3/doc/tutorial/advanced-demos/de/dependencies_work.qft</code>,
+      die Sie f&uuml;r die Erstellung der Beispiele verwenden k&ouml;nnen.
+    Bitte achten Sie darauf, dass Sie alle Testsuiten vorher in einen projektspezifischen Ordner kopieren und diese dort modifizieren.
+    </p>
+
+    
+
+    
+<a name="sec_depsGeneral"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_depsGeneral">29.1</a></span>
+</div>
+<a href="contents.html#toc_sec_depsGeneral">Einf&uuml;hrung</a>
+</h4>
+   
+<p>
+        Bitte kopieren Sie die Testsuite 
+        <code>qftest-6.0.3/doc/tutorial/advanced-demos/de/dependencies_work.qft</code> 
+        in ein projektspezifisches Verzeichnis und &ouml;ffnen diese.
+        Werfen Sie einen Blick auf den ersten 'Testfallsatz' 'Rabattstufen
+        Tests'. Dieser enth&auml;lt drei 'Testfall' Knoten und eine
+        'Vorbereitung', sowie einmal 'Aufr&auml;umen', um das SUT vor
+        jedem 'Testfall' zu starten bzw. zu stoppen. Das ist ein typisches
+        Beispiel, wie Testsuiten in Projekten aussehen k&ouml;nnen.
+      </p>
+      
+<a name="fig_depWorkTestSuite"></a><a name="figure_29.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DependencyWorkSuite.png" target="_blank"><img texscale=".66" src="images/DependencyWorkSuite.png" width="192" height="98"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;29.1</a>:&nbsp;&nbsp;Erster 'Testfallsatz' von dependencies_work.qft</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+       Angenommen, wir wollen nur einen speziellen 'Testfall' starten,
+        weil genau dieser einen Defekt verifiziert oder dieser beim
+        letzten Lauf fehlerhaft war. Daf&uuml;r m&uuml;ssten wir
+        entweder den gesamten 'Testfallsatz' ausf&uuml;hren oder daf&uuml;r sorgen, dass
+        alle Vorbedingungen erf&uuml;llt sind, d.h. die
+        einzelnen 'Vorbereitung' Knoten m&uuml;ssten manuell ausgef&uuml;hrt werden.
+      </p>
+      
+<p>
+    Diese Situation passiert sehr h&auml;ufig, ist allerdings nicht einfach
+        aufzul&ouml;sen mit den jetzt bekannten Mitteln. F&uuml;r solche F&auml;lle liefert QF-Test das
+        'Abh&auml;ngigkeiten' Konzept. Es erleichtert die Verwaltung von
+        Vorbedingungen und erlaubt es einen 'Testfall' einzeln zu
+        starten. In diesem Fall wird QF-Test die Kontrolle &uuml;ber die
+        Sicherstellung der Vorbedingungen &uuml;bernehmen, also z.B. das SUT
+        starten oder ein Fahrzeugmodell selektieren.
+      </p>
+    
+<p>Eine 'Abh&auml;ngigkeit' kann einen 'Vorbereitung', einen 'Aufr&auml;umen', einen
+   'Fehlerbehandlung' und einen 'Catch' Knoten beinhalten.
+  Die 'Vorbereitung' einer 'Abh&auml;ngigkeit' wird vor jedem 'Testfall'
+   ausgef&uuml;hrt, damit immer sichergestellt ist, dass die Vorbedingungen des
+   jeweiligen Testfalles erf&uuml;llt sind. Das Sicherstellen der Vorbedingungen
+   ist ein sehr wichtiger Aspekt f&uuml;r eine robuste und stabile Testausf&uuml;hrung.
+  Sie k&ouml;nnen sich eine Situation vorstellen, in der ein 'Testfall' das SUT
+   beendet und daher der darauffolgende 'Testfall' das SUT wieder
+   starten muss. Genau f&uuml;r diese Situationen liefert das 'Abh&auml;ngigkeit' Konzept
+   eine stabile und attraktive L&ouml;sung.
+      </p>
+      
+<p>Der zweite Aspekt des 'Abh&auml;ngigkeiten' Konzeptes ist die Optimierung
+        der Testausf&uuml;hrung. Mit den bisherigen Mitteln mussten wir das SUT vor
+        jedem Testfall starten und nach jedem Testfall stoppen. Dies ist f&uuml;r
+        kleinere Applikationen wie dem JCarConfigurator auch kein Problem,
+        aber stellen Sie sich das f&uuml;r eine gro&szlig;e Applikation, wie eine
+        Eclipse/RCP Anwendung oder ein ERP System, vor. Hier k&ouml;nnte dieses
+        Vorgehen ziemlich ineffizient werden. Genau deshalb wird bei
+        'Abh&auml;ngigkeiten' die 'Aufr&auml;umen' nur bei Bedarf ausgef&uuml;hrt.
+      </p>
+      
+<p>
+    Ein weiterer Vorteil von 'Abh&auml;ngigkeiten' sind globale 'Fehlerbehandlung'
+        und 'Catch' Knoten f&uuml;r die Implementierung von Recovery
+        Management Schritten. Dieses Feature ist besonders dann wichtig, wenn
+        Sie viele Testf&auml;lle hintereinander ausf&uuml;hren und ein fehlerhafter die
+        Ausf&uuml;hrung der darauffolgenden behindern kann, z.B. durch das
+        Erscheinen eines modalen Fehlerdialoges wie 'OutOfMemoryException'.
+      </p>
+
+  
+<p>Zusammengefasst sind 'Abh&auml;ngigkeiten':
+      </p>
+      
+<ol>
+        
+<li>eine Stelle, um Vorbedingungen eines 'Testfall' zu definieren.</li>
+        
+<li>sehr n&uuml;tzlich, um Testf&auml;lle unabh&auml;ngiger voneinander zu gestalten.</li>
+        
+<li>ein besserer Ansatz, um 'Vorbereitung' und 'Aufr&auml;umen'
+        Schritte zu implementieren.</li>
+        
+<li>eine Stelle, um Recoveryschritte im Fehlerfall bzw. beim Auftreten
+        von Exceptions zu definieren.</li>
+        
+<li>eine Optimierungsm&ouml;glichkeit f&uuml;r die Testausf&uuml;hrung.</li>
+        
+<li>wiederverwendbar, da sie im 'Prozeduren' Bereich abgelegt
+        werden k&ouml;nnen.</li>
+      
+</ol>
+      
+<p>
+        Die folgenden Abschnitte zeigen, wie man 'Abh&auml;ngigkeiten' anlegt und benutzt.
+      </p>
+    
+
+    
+    
+
+  
+<a name="sec_firstDep"></a>
+    
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_firstDep">29.2</a></span>
+</div>
+<a href="contents.html#toc_sec_firstDep">Sicherstellen von Vorbedingungen</a>
+</h4>
+    
+<p>
+        Bitte kopieren Sie die Testsuite 
+        <code>qftest-6.0.3/doc/tutorial/advanced-demos/de/dependencies_work.qft</code> 
+        in ein projektspezifisches Verzeichnis und &ouml;ffnen diese, falls Sie das nicht ohnehin schon getan haben sollten.
+    </p>
+    
+<p>Diese Datei enth&auml;lt einen 'Testfallsatz' 'Rabatt-Tests' mit drei
+  'Testf&auml;lle' und der herk&ouml;mmlichen Implementierung von 'Vorbereitung'
+  und 'Aufr&auml;umen' Knoten. Wir werden nun in diesen 'Testfallsatz' eine 'Abh&auml;ngigkeit' einbauen.
+    </p>
+  
+<a name="fig_depFirstDepWorkTestSuite"></a><a name="figure_29.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DependencyWorkSuite.png" target="_blank"><img texscale=".66" src="images/DependencyWorkSuite.png" width="192" height="98"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;29.2</a>:&nbsp;&nbsp;Erster 'Testfallsatz' von dependencies_work.qft</td><td class="captionglue"></td>
+</tr>
+</table>
+  
+<p>
+    Zuerst m&uuml;ssen wir einen 'Abh&auml;ngigkeit' Knoten einf&uuml;gen. Dies macht man
+    mittels Rechtsklick auf den 'Testfallsatz' und Auswahl von &raquo;<em>Knoten einf&uuml;gen</em>&laquo;-&raquo;<em>Abh&auml;ngigkeiten</em>&laquo;-&raquo;<em>Abh&auml;ngigkeit</em>&laquo;. Geben Sie der 'Abh&auml;ngigkeit' einen
+    Namen, z.B. "SUT gestartet".
+      </p>
+  
+<p>
+    Der n&auml;chste Schritt ist das Verschieben der 'Vorbereitung' und
+  'Aufr&auml;umen' Sequenzen in diese 'Abh&auml;ngigkeit'.
+  Hierf&uuml;r m&uuml;ssen Sie den 'Abh&auml;ngigkeit' Knoten &ouml;ffnen und die entsprechenden
+  Knoten hineinschieben. Das k&ouml;nnen Sie entweder via Drag and Drop oder
+  Rechtsklick &raquo;<em>Ausschneiden</em>&laquo; und &raquo;<em>Einf&uuml;gen</em>&laquo; oder mittels [Ctrl-X] und [Ctrl-V].
+      </p>
+  
+<p>
+    Die Testsuite sollte nun so aussehen:
+  </p>
+  
+<a name="fig_firstDependencySample"></a><a name="figure_29.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/FirstDependency.png" target="_blank"><img texscale=".66" src="images/FirstDependency.png" width="212" height="114"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;29.3</a>:&nbsp;&nbsp;Beispiel Testsuite mit der ersten 'Abh&auml;ngigkeit'</td><td class="captionglue"></td>
+</tr>
+</table>
+  
+<p>
+    Jetzt wollen wir die 'Abh&auml;ngigkeit' testen. Stoppen Sie bitte vorher alle
+        laufenden SUTs. Dann selektieren Sie einen 'Testfall',
+        z.B. 'Rabattstufe 10' und starten diesen.
+      </p>
+      
+<p>
+        Sie sollten nun sehen, dass der 'Testfall' ausgef&uuml;hrt wurde und das
+        SUT am Ende des Testlaufes nicht gestoppt wurde. Bitte &ouml;ffnen Sie das
+        Protokoll um nachzusehen, was genau passiert ist.
+      </p>
+      
+<a name="fig_firstDepSampleRunLog"></a><a name="figure_29.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/FirstDependencyRunLog.png" target="_blank"><img texscale=".66" src="images/FirstDependencyRunLog.png" width="466" height="258"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;29.4</a>:&nbsp;&nbsp;Das Protokoll der Ausf&uuml;hrung</td><td class="captionglue"></td>
+</tr>
+</table>
+ 
+<p>
+        Wenn Sie im Protokoll den 'Testfall' &ouml;ffnen, dann sehen Sie einen
+        'Abh&auml;ngigkeiten aufl&ouml;sen' Knoten. Wenn Sie diesen &ouml;ffnen, werden Sie
+        zwei weitere Knoten sehen. Der letzte der beiden Knoten zeigt Ihnen,
+        dass die 'Vorbereitung' Sequenz ausgef&uuml;hrt wurde. Der erste Knoten
+        wird im n&auml;chsten Beispiel erkl&auml;rt.
+      </p>
+      
+<p>
+    Bis jetzt haben wir gesehen, dass die 'Vorbereitung' Sequenz
+        automatisch vor dem 'Testfall' ausgef&uuml;hrt wird. Jedoch wurde
+        'Aufr&auml;umen' noch nicht ausgef&uuml;hrt. Wenn Sie jetzt einen
+        weiteren 'Testfall' starten, z.B. 'Rabattstufe 15', wird dieser
+        auf der bereits gestarteten Anwendung ausgef&uuml;hrt.
+      </p>
+      
+<p>
+        Die 'Vorbereitung' einer 'Abh&auml;ngigkeit' wird auf jeden
+        Fall vor jedem 'Testfall' ausgef&uuml;hrt. Dies geschieht um die
+        Vorbedingungen jedes einzelnen 'Testfall''s sicherzustellen. Das
+        'Aufr&auml;umen' einer 'Abh&auml;ngigkeit' wird nur bei Bedarf
+        ausgef&uuml;hrt, d.h. nur dann, wenn die Schritte der 'Vorbereitung'
+        nicht mehr ben&ouml;tigt werden. In unserem Fall wurde das
+        'Aufr&auml;umen' nicht ausgef&uuml;hrt, weil beide Testf&auml;lle dieselbe
+        'Abh&auml;ngigkeit' haben. Die Testausf&uuml;hrung liefert allerdings keine Fehler, 
+        weil die 'Prozedur' <code>startStop.starteApplikation</code> bereits pr&uuml;ft, 
+        ob das SUT &uuml;berhaupt gestartet werden 
+        soll.
+        </p>
+      
+<a name="fig_firstDepSampleStart"></a><a name="figure_29.5"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DependencyTryCatch.png" target="_blank"><img texscale=".66" src="images/DependencyTryCatch.png" width="402" height="146"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;29.5</a>:&nbsp;&nbsp;'Prozedur' startStop.starteApplikation</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+    Der n&auml;chste Schritt ist, den gesamten 'Testfallsatz' mittels Klick auf
+        'Wiedergabe starten' auszuf&uuml;hren.
+      </p>
+ 
+<p>Alle drei Testf&auml;lle sollten erfolgreich durchgelaufen sein und das SUT
+        sollte auch nicht zwischen den Ausf&uuml;hrungen gestoppt worden sein. Wir
+        haben also auch die Testausf&uuml;hrung optimiert. Die 'Aufr&auml;umen'
+        wurde nicht ausgef&uuml;hrt, da alle drei Testf&auml;lle auf dieselbe
+        'Abh&auml;ngigkeit' verweisen. Somit sieht unsere Testumgebung auch mehr
+        nach einer realen Umgebung aus, da die wenigsten Benutzer das SUT nach
+        jeder Aktion neu starten werden.
+      </p>
+      
+<p>
+    Das n&auml;chste Ziel ist, unsere 'Abh&auml;ngigkeit' f&uuml;r andere 'Testfalls&auml;tze'
+        unseres Projektes verf&uuml;gbar zu machen.  Hierf&uuml;r m&uuml;ssen wir die
+        'Abh&auml;ngigkeit' in den 'Prozeduren' Bereich verschieben. Danach
+        m&uuml;ssen wir auf den 'Testfallsatz' klicken und eine
+        'Bezug auf Abh&auml;ngigkeit' einf&uuml;gen. Dies macht man mittels Rechtsklick
+        und Auswahl von &raquo;<em>Knoten einf&uuml;gen</em>&laquo;-&raquo;<em>Abh&auml;ngigkeiten</em>&laquo;-&raquo;<em>Bezug auf Abh&auml;ngigkeit</em>&laquo;. Der erscheinende Dialog sieht dann dem
+        'Prozeduraufruf' Dialog ziemlich &auml;hnlich. W&auml;hlen Sie die
+        gerade verschobene 'Abh&auml;ngigkeit' aus. Die Testsuite sollte nun wie
+        folgt aussehen:
+      </p>
+      
+<a name="fig_firstDepSampleDepRef"></a><a name="figure_29.6"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DependencyReference.png" target="_blank"><img texscale=".66" src="images/DependencyReference.png" width="306" height="162"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;29.6</a>:&nbsp;&nbsp;Die Testsuite mit 'Bezug auf Abh&auml;ngigkeit'</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>Wir empfehlen alle 'Abh&auml;ngigkeiten' in ein separates 'Package'
+      'abh&auml;ngigkeiten' zu schieben.
+      </p>
+     
+<p>
+    Wenn Sie nun den 'Testfallsatz' ausf&uuml;hren, wird bei der ersten Ausf&uuml;hrung
+        nach Verschieben der 'Abh&auml;ngigkeit' das SUT gestoppt und das SUT
+        wiederum gestartet. Das passiert, weil die 'Abh&auml;ngigkeit' in den
+        'Prozeduren' Bereich verschoben wurde und es deshalb eine andere
+        'Abh&auml;ngigkeit' ist als vorher.
+      </p>
+       
+<p>
+    Werfen Sie nun einen Blick auf den zweiten 'Testfallsatz' der Demotestsuite
+    'Rabatt-Tests mit Stoppen des SUT'. Der zweite 'Testfall' 'Rabattstufe
+    10' stoppt das SUT, jedoch ben&ouml;tigt der dritte 'Testfall' 'Rabattstufe
+    15' auch ein laufendes SUT. Wie wir in diesem Abschnitt gelernt haben,
+    wird das 'Abh&auml;ngigkeiten' Konzept daf&uuml;r Sorge tragen, dass das SUT vor
+    dem dritten 'Testfall' ausgef&uuml;hrt wird. Dieses Beispiel sollte noch
+    einmal die Vorteile von 'Abh&auml;ngigkeiten' verdeutlichen.
+  </p>
+     
+<a name="fig_firstDepEnsuringPreReqs"></a><a name="figure_29.7"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DependencyPreReqs.png" target="_blank"><img texscale=".66" src="images/DependencyPreReqs.png" width="492" height="530"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;29.7</a>:&nbsp;&nbsp;Sicherstellen der Vorbedingungen f&uuml;r 'Testfall'
+          'Rabattstufe 15'</td><td class="captionglue"></td>
+</tr>
+</table>
+
+    
+
+    
+    
+
+  
+<a name="sec_depCombine"></a>
+    
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_depCombine">29.3</a></span>
+</div>
+<a href="contents.html#toc_sec_depCombine">Verschachtelte Abh&auml;ngigkeiten</a>
+</h4>
+   
+<p>
+      Verwalten von Vorbedingungen kann ein durchaus komplexeres Thema werden,
+      als dass wir nur Sicherstellen, ob das SUT gestartet wurde oder nicht.
+      In vielen Projekten gibt es verschiedene Gruppen von Testf&auml;llen mit unterschiedlichen Vorbedingungen.
+    </p>
+    
+<p>
+      Nehmen wir an, dass wir ein gro&szlig;es ERP System mit mehreren Perspektiven,
+      wie 'Anbieter' und 'Artikel' testen m&ouml;chten. Jeder Testfall f&uuml;r die
+      'Anbieter' Perspektive bezieht sich darauf, dass die 'Anbieter'
+      Perspektive auch ge&ouml;ffnet ist. Genauso verh&auml;lt es sich bei allen Tests
+      f&uuml;r die 'Artikel' Perspektive. Das &Ouml;ffnen der jeweiligen Perspektive
+      h&auml;ngt wiederum vom eingeloggten Benutzer ab, und das Einloggen basiert
+      auf einem gestarteten SUT. Sie sehen also, es gibt so etwas wie einen
+      Baum von Vorbedingungen.
+    </p>
+    
+<p>
+      QF-Test erm&ouml;glicht es dem Benutzer, solch verschachtelte 'Abh&auml;ngigkeit'
+      Knoten zu erstellen. Hierf&uuml;r muss man 'Bezug auf Abh&auml;ngigkeit' Knoten zu
+      einer 'Abh&auml;ngigkeit' hinzuf&uuml;gen. Wir werden nun ein kleines Beispiel
+      mit zwei verschachtelten 'Abh&auml;ngigkeiten' f&uuml;r den JCarConfigurator bauen.
+    </p>
+    
+<p>
+    Im JCarConfigurator k&ouml;nnen Sie den 'Fahrzeuge' Dialog mittels der
+      Men&uuml;aktion 'Einstellungen' -&gt; 'Fahrzeuge' &ouml;ffnen. Wir wollten jetzt Tests f&uuml;r
+      diesen Dialog erstellen. Sp&auml;ter werden wir auch Tests f&uuml;r den 'Zubeh&ouml;r'
+      Dialog erstellen, welcher auch &uuml;ber das Men&uuml; mittels 'Einstellungen' -&gt;
+      'Zubeh&ouml;r' ge&ouml;ffnet werden kann.
+    </p>
+    
+<p>
+      Zuerst definieren wir die Tests, welche wir erstellen wollen.
+    </p>
+  
+<p>Testfall 1: Anlegen des Modells 'test1' mit Preis '100'.</p>
+    
+<ul>
+      
+<li>Starten des SUT, falls notwendig.</li>
+      
+<li>Fahrzeugdialog &ouml;ffnen.</li>
+      
+<li>Name 'test1' und Preis '100' setzen.</li>
+      
+<li>'Neu' klicken.</li>
+      
+<li>Den Dialog mittels 'OK' schlie&szlig;en.</li>
+      
+<li>Den Fahrzeugdialog nochmal &ouml;ffnen.</li>
+      
+<li>Das angelegte Modell 'test1' selektieren.</li>
+      
+<li>Den Dialog mit 'Abbrechen' schlie&szlig;en.</li>
+      
+<li>Das SUT stoppen, falls notwendig.</li>
+    
+</ul>
+    
+<p>Testfall 2: Anlegen des Modells 'test2' mit Preis '99999'.</p>
+    
+<ul>
+      
+<li>Start des SUT, falls notwendig.</li>
+      
+<li>Fahrzeugdialog &ouml;ffnen.</li>
+      
+<li>Name 'test2' und Preis '99999' setzen.</li>
+      
+<li>'Neu' klicken.</li>
+      
+<li>Den Dialog mittels 'OK' schlie&szlig;en.</li>
+      
+<li>Den Fahrzeugdialog nochmal &ouml;ffnen.</li>
+      
+<li>Das angelegte Modell 'test2' selektieren.</li>
+      
+<li>Den Dialog mit 'Abbrechen' schlie&szlig;en.</li>
+      
+<li>Das SUT stoppen, falls notwendig.</li>
+    
+</ul>
+    
+<p>Testfall 3: Anlegen des Zubeh&ouml;res 'testzubeh&ouml;r' mit Preis '12'.</p>
+    
+<ul>
+      
+<li>Start des SUT, falls notwendig.</li>
+      
+<li>Zubeh&ouml;rdialog &ouml;ffnen.</li>
+      
+<li>Name 'testzubeh&ouml;r' und Preis '12' setzen.</li>
+      
+<li>'Neu' klicken.</li>
+      
+<li>Den Dialog mittels 'OK' schlie&szlig;en.</li>
+      
+<li>Den Zubeh&ouml;rdialog nochmal &ouml;ffnen.</li>
+      
+<li>Das angelegte Zubeh&ouml;rteil 'testzubeh&ouml;r' selektieren.</li>
+      
+<li>Den Dialog mit 'Abbrechen' schlie&szlig;en.</li>
+      
+<li>Das SUT stoppen, falls notwendig.</li>
+    
+</ul>
+      
+<p>
+    Wenn wir uns nun die Testschritte der oben definierten Testf&auml;lle genauer
+      anschauen, sehen wir, dass jeder Testfall ein laufendes SUT
+      ben&ouml;tigt. Daher sollten wir eine 'Abh&auml;ngigkeit' 'SUT gestartet'
+      implementieren. Das Stoppen des SUT ist ein optionaler Schritt, der
+      innerhalb des 'Aufr&auml;umen' Knotens dieser 'Abh&auml;ngigkeit' implementiert
+      werden kann. Diese 'Abh&auml;ngigkeit' haben wir schon im vorigen Beispiel
+      erstellt und k&ouml;nnen diese also wiederverwenden.
+    </p>
+    
+<p>
+      Der n&auml;chste Punkt ist, dass sowohl Testfall 1 wie auch Testfall 2 einen
+      ge&ouml;ffneten Fahrzeugdialog ben&ouml;tigen. Da wir weitere Tests in diesem
+      Bereich planen, sollten wir eine 'Abh&auml;ngigkeit' 'Fahrzeugdialog ge&ouml;ffnet'
+      erstellen. Diese sollte in der 'Vorbereitung' das &Ouml;ffnen des Dialoges
+      und in der 'Aufr&auml;umen' das Schlie&szlig;en mittels 'Abbrechen'
+      beinhalten. Wir k&ouml;nnen diesen Dialog nur dann &ouml;ffnen, wenn das SUT
+      bereits l&auml;uft, deshalb ist diese 'Abh&auml;ngigkeit' auch von der
+      'Abh&auml;ngigkeit' 'SUT gestartet' abh&auml;ngig. Die Implementierung der
+      'Fahrzeugdialog ge&ouml;ffnet' 'Abh&auml;ngigkeit' sieht wie folgt aus:
+    </p>
+      
+<a name="fig_depVehicleDialog"></a><a name="figure_29.8"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/OpenVehiclesDialogDependency.png" target="_blank"><img texscale=".66" src="images/OpenVehiclesDialogDependency.png" width="446" height="194"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;29.8</a>:&nbsp;&nbsp;'Fahrzeugdialog ge&ouml;ffnet' 'Abh&auml;ngigkeit'</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> In der 'Vorbereitung' m&uuml;ssen wir pr&uuml;fen,
+        ob der Dialog bereits ge&ouml;ffnet wurde. Es k&ouml;nnte n&auml;mlich sein, dass ein
+        voriger Testfall den Dialog bereits ge&ouml;ffnet und nicht mehr
+        geschlossen hat. Das Attribut 'Wartezeit' des 'Warten auf Komponente'
+        Knotens steht hier auf '0', weil wir erwarten, dass der Dialog offen
+        sein soll, wenn nicht, dann muss dieser ohnehin ge&ouml;ffnet werden.
+        </p>
+      
+<p>
+    Wir sollten auch eine 'Abh&auml;ngigkeit' 'Zubeh&ouml;rdialog ge&ouml;ffnet' erstellen,
+        welche &auml;hnlich zur 'Fahrzeugdialog ge&ouml;ffnet' 'Abh&auml;ngigkeit', den
+        Zubeh&ouml;rdialog &ouml;ffnet.
+        </p>
+      
+<p>
+    Nach Erstellen der Abh&auml;ngigkeiten m&uuml;ssen wir nun die entsprechenden
+        Testschritte aufzeichnen und die Testf&auml;lle erstellen. Die Testschritte
+        wurden schon erstellt und k&ouml;nnen als 'Prozeduren' in der
+        entsprechenden Dialog 'Packages' Struktur gefunden werden.
+  </p>
+      
+<p>Die Testf&auml;lle sollten in einem 'Testfallsatz' namens 'Verschachtelte
+    Abh&auml;ngigkeiten' zusammengefasst erstellt werden. Dieser 'Testfallsatz'
+    sollte zwei weitere 'Testfallsatz' beinhalten. Das erste ist 'Tests f&uuml;r den
+    Fahrzeugdialog', das zweite 'Tests f&uuml;r den Zubeh&ouml;rdialog'. Der 'Testfallsatz'
+  'Tests f&uuml;r den Fahrzeugdialog' beinhaltet die Implementierungen der
+    Testf&auml;lle 1 und 2, sowie eine 'Bezug auf Abh&auml;ngigkeit' auf die
+    'Fahrzeugdialog ge&ouml;ffnet' 'Abh&auml;ngigkeit'. Der zweite 'Testfallsatz' 'Tests f&uuml;r den
+    Zubeh&ouml;rdialog' beinhaltet die Implementierung des Testfalles 3 und
+    eine 'Bezug auf Abh&auml;ngigkeit' auf die 'Abh&auml;ngigkeit' 'Zubeh&ouml;rdialog ge&ouml;ffnet'.
+      </p>
+      
+<a name="fig_depVehiclesAccessoriesTest"></a><a name="figure_29.9"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/VehiclesAccessoriesTestSet.png" target="_blank"><img texscale=".66" src="images/VehiclesAccessoriesTestSet.png" width="469" height="130"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;29.9</a>:&nbsp;&nbsp;Implementierung der Testf&auml;lle</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+    Wenn Sie nun den obersten 'Testfallsatz' starten, werden Sie sehen, dass
+        QF-Test das SUT zuerst stoppt, das kommt von der 'Abh&auml;ngigkeit' des
+        vorherigen Beispieles. Danach wird das SUT gestartet und es werden die
+        Schritte von Testfall 1 und Testfall 2 ausgef&uuml;hrt und schlussendlich
+        die Schritte von Testfall 3. Wenn Sie im Protokoll einen genaueren
+        Blick auf den Anfang von Testfall 3 werfen, dann werden Sie sehen,
+        dass auch die 'Aufr&auml;umen' der 'Fahrzeugdialog ge&ouml;ffnet'
+        'Abh&auml;ngigkeit' ausgef&uuml;hrt wurde. Dies passierte, weil die
+        'Abh&auml;ngigkeit' 'Fahrzeugdialog ge&ouml;ffnet' nicht mehr ben&ouml;tigt
+        wurde. Testfall 3 hat allerdings die 'Zubeh&ouml;rdialog ge&ouml;ffnet'
+        'Abh&auml;ngigkeit' ben&ouml;tigt und hat deshalb deren 'Vorbereitung'
+        durchlaufen. Da diese beiden 'Abh&auml;ngigkeiten' auf der 'SUT gestartet'
+        'Abh&auml;ngigkeit' aufbauen, wurde deren 'Aufr&auml;umen' Sequenz
+        nicht ausgef&uuml;hrt.
+  </p>
+      
+<a name="fig_depRunLogDepCombine"></a><a name="figure_29.10"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/VehiclesAccessoriesRunLog.png" target="_blank"><img texscale=".66" src="images/VehiclesAccessoriesRunLog.png" width="577" height="450"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;29.10</a>:&nbsp;&nbsp;Protokoll von verschachtelten 'Abh&auml;ngigkeiten'</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+    Das Verschachteln von Abh&auml;ngigkeiten und die M&ouml;glichkeit, eine
+        'Aufr&auml;umen' Sequenz nur bei Bedarf aufzurufen, erm&ouml;glichen
+        Ihnen relativ viele vor- und nachbereitende Schritte in eine
+        'Abh&auml;ngigkeit' zu packen. Ein anderer Anwendungsfall f&uuml;r den
+        JCarConfigurator k&ouml;nnte eine 'Abh&auml;ngigkeit' 'Fahrzeug angelegt' sein,
+        welche sicherstellt, dass das verwendete Fahrzeug vorher angelegt wird.
+      </p>
+    
+
+    
+    
+
+    
+<a name="sec_depErrorAndCatch"></a>
+            
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_depErrorAndCatch">29.4</a></span>
+</div>
+<a href="contents.html#toc_sec_depErrorAndCatch">Fehler- und Exceptionbehandlung</a>
+</h4>
+
+            
+<a name="sec_depErrorHandler"></a>
+                    
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_depErrorHandler">29.4.1</a></span>
+</div>
+<a href="contents.html#toc_sec_depErrorHandler">Fehlerbehandlung</a>
+</h5>
+                    
+<p>
+        Bitte kopieren Sie die Testsuite 
+        <code>qftest-6.0.3/doc/tutorial/advanced-demos/de/dependencies_work.qft</code> 
+        in ein projektspezifisches Verzeichnis und &ouml;ffnen diese, falls Sie das nicht ohnehin schon getan haben sollten. Dort finden Sie einen 'Testfallsatz' 'Tests mit
+                            Fehlerbehandlung'. Der zweite 'Testfall' ist fehlerhaft.
+                    </p>
+
+                    
+<a name="fig_depErrorTestSuite"></a><a name="figure_29.11"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DependencyTestSuiteErrorHandler.png" target="_blank"><img texscale=".66" src="images/DependencyTestSuiteErrorHandler.png" width="280" height="82"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;29.11</a>:&nbsp;&nbsp;Testsuite f&uuml;r 'Fehlerbehandlung'</td><td class="captionglue"></td>
+</tr>
+</table>
+
+                            
+<p>
+    Angenommen wir wollen bestimmte Aktionen ausl&ouml;sen, die nach einem fehlerhaften
+                            Testfall ausgef&uuml;hrt werden sollen. In unserem Fall
+                            k&ouml;nnten wir im Fehlerfall einfach das SUT
+                            stoppen. Dies k&ouml;nnte notwendig sein, um zu
+                            garantieren, dass die folgenden Testf&auml;lle auf
+                            einer sauberen Umgebung aufsetzen k&ouml;nnen. Wir
+                            wissen bis jetzt, dass die 'Vorbereitung'
+                            Sequenz vor jedem 'Testfall' ausgef&uuml;hrt wird
+                            und die 'Aufr&auml;umen' nur bei Bedarf
+                            ausgef&uuml;hrt wird. Aber wie k&ouml;nnen wir jetzt diese
+                            spezielle Fehlerbehandlung implementieren?
+                    </p>
+                    
+<p>
+    Die L&ouml;sung ist der so genannte 'Fehlerbehandlung' Knoten f&uuml;r eine
+    'Abh&auml;ngigkeit'. Wenn Sie auf die geschlossene 'Aufr&auml;umen' Sequenz klicken, k&ouml;nnen
+    Sie mit Rechtsklick &raquo;<em>Knoten einf&uuml;gen</em>&laquo;-&raquo;<em>Abh&auml;ngigkeiten</em>&laquo;-&raquo;<em>Fehlerbehandlung</em>&laquo;.
+                                    </p>
+                                    
+<p>
+                                            Im 'Fehlerbehandlung' Knoten k&ouml;nnen
+                                            Sie die Schritte f&uuml;r das Stoppen
+                                            des SUT aufrufen. Die
+                                            'Abh&auml;ngigkeit' <code>SUT gestartet</code> sollte nun wie folgt aussehen:
+                                    </p>
+                                    
+<a name="fig_depErrorHandlerSample"></a><a name="figure_29.12"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DependencyErrorHandler.png" target="_blank"><img texscale=".66" src="images/DependencyErrorHandler.png" width="341" height="82"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;29.12</a>:&nbsp;&nbsp;'Abh&auml;ngigkeit' mit 'Fehlerbehandlung'</td><td class="captionglue"></td>
+</tr>
+</table>
+                                    
+<p>
+    F&uuml;hren Sie nun den gesamten 'Testfallsatz' 'Tests mit Fehler' aus und &ouml;ffnen
+                                            Sie das Protokoll nachdem die
+                                            Ausf&uuml;hrung abgeschlossen ist.
+                                    </p>
+                                    
+<p>
+    Im Protokoll k&ouml;nnen Sie sehen, dass der 'Fehlerbehandlung' Knoten nach dem
+                                            zweiten 'Testfall' ausgef&uuml;hrt wurde.
+                                    </p>
+                                    
+<a name="fig_depErrorHandlerSample2"></a><a name="figure_29.13"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DependencyRunLogErrorHandler.png" target="_blank"><img texscale=".66" src="images/DependencyRunLogErrorHandler.png" width="446" height="226"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;29.13</a>:&nbsp;&nbsp;Protokoll einer 'Abh&auml;ngigkeit' mit 'Fehlerbehandlung'</td><td class="captionglue"></td>
+</tr>
+</table>
+
+                            
+
+                            
+<a name="sec_depCatch"></a>
+                                    
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_depCatch">29.4.2</a></span>
+</div>
+<a href="contents.html#toc_sec_depCatch">Exception Behandlung</a>
+</h5>
+                                    
+<p>
+Im vorigen Abschnitt haben wir gelernt, dass man mit 'Fehlerbehandlung' Knoten
+      Schritte definieren kann, welche bei fehlerhaften 'Testf&auml;lle'
+      ausgef&uuml;hrt werden. Neben Fehlern k&ouml;nnen allerdings auch Exceptions beim
+      Testlauf auftreten. Eine Exception ist ein unerwartetes Verhalten
+      w&auml;hrend der Testausf&uuml;hrung, z.B. ein Dialog erscheint und blockiert die
+      Ausf&uuml;hrung oder eine Komponente konnte nicht gefunden werden. Wie soll
+      man mit solchen Exceptions umgehen?
+                                    </p>
+                                    
+<p>
+                                        In der Demotestsuite
+                                    <code>dependencies_work.qft</code>
+                                    finden Sie ein Beispiel 'Testfallsatz'
+                                    namens 'Tests mit Exception'.
+                                    </p>
+                                    
+<p>
+                                        Nat&uuml;rlich k&ouml;nnen Sie entsprechende Testschritte mit einem Try-Catch
+                                            umrunden und eine dedizierte Exceptionbehandlung in jedem
+                                            'Testfall' implementieren. Im
+                                            Beispiel 'Testfallsatz' wurde dies
+                                            so implementiert. Dieser Ansatz
+                                            kann jedoch zu viel Redundanz f&uuml;hren
+                                            und die 'Testf&auml;lle' werden noch unleserlicher.
+                                    </p>
+                                    
+<a name="fig_depCatchTryEachTest"></a><a name="figure_29.14"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DependencyTestCaseTryCatch.png" target="_blank"><img texscale=".66" src="images/DependencyTestCaseTryCatch.png" width="486" height="514"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;29.14</a>:&nbsp;&nbsp;Try-Catch Knoten in 'Testf&auml;lle'</td><td class="captionglue"></td>
+</tr>
+</table>
+                                    
+<p>
+    Unser Ziel ist es nun, die Redundanz in den Testf&auml;llen zu reduzieren und
+                                            die einheitliche
+                                            Exceptionbehandlung an eine
+                                            zentrale Stelle zu
+                                            verschieben. Diese zentrale Stelle
+                                            wird unsere 'Abh&auml;ngigkeit' sein.
+                                    </p>
+                                    
+<p>Der erste Schritt hierf&uuml;r ist das
+                                            Einf&uuml;gen des 'Catch'
+                                            Knotens in eine
+                                            'Abh&auml;ngigkeit'. Hierzu m&uuml;ssen Sie
+                                            auf dem geschlossenen
+                                            'Fehlerbehandlung' Knoten einen
+                                            Rechtsklick ausf&uuml;hren und &raquo;<em>Knoten einf&uuml;gen</em>&laquo;-&raquo;<em>Ablaufsteuerung</em>&laquo;-&raquo;<em>Catch</em>&laquo; einf&uuml;gen. Danach k&ouml;nnen
+                                            wir die Schritte aus einem der
+                                            'Catch' Knoten in den
+                                            neuen Knoten verschieben und in
+                                            den 'Testf&auml;lle' die
+                                            Prozeduraufrufe aus dem Try Block
+                                            herausziehen und den Try Block
+                                            dann l&ouml;schen.
+                                    </p>
+                                    
+<p>
+                                           Die Testsuite sieht nun so aus:
+                                    </p>
+                                    
+<a name="fig_depCatchTestSuite"></a><a name="figure_29.15"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DependencyWithException.png" target="_blank"><img texscale=".66" src="images/DependencyWithException.png" width="466" height="530"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;29.15</a>:&nbsp;&nbsp;Testsuite mit 'Catch'</td><td class="captionglue"></td>
+</tr>
+</table>
+                                    
+<p>
+    Nun k&ouml;nnen Sie den 'Testfallsatz' 'Tests mit Exception' starten. Der zweite
+                                            'Testfall' wirft eine
+                                            IndexNotFoundException, weil das
+                                            ausgew&auml;hlte Modell nicht
+                                            existiert. Diese Exception sollte
+                                            nun vom globalen
+                                            'Catch' Knoten der
+                                            'Abh&auml;ngigkeit' behandelt werden.
+  </p>
+  
+<p>
+                                            
+<span class="margin"><span class="note">Hinweis</span></span> Wenn Sie
+                                            den Debugger aktiviert haben, wird
+                                            QF-Test den Testlauf an der Stelle
+                                            unterbrechen, wo die Exception auftritt. In
+                                            unserem Fall k&ouml;nnen Sie dann die
+                                            Exception mit dem Knopf
+                                            'Exception erneut werfen'
+                                            weiterwerfen oder den Debugger
+                                            mittels dem Men&uuml;eintrag &raquo;<em>Debugger</em>&laquo;-&raquo;<em>Debugger                                             aktivieren</em>&laquo; deaktivieren.
+                                    </p>
+                                    
+<p>
+                                           &Ouml;ffnen Sie nach der Ausf&uuml;hrung das
+                                           Protokoll um nachzusehen, was
+                                           passiert ist.
+                                    </p>
+                                    
+<a name="fig_depRunLogCatchDep"></a><a name="figure_29.16"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DependencyRunLogException.png" target="_blank"><img texscale=".66" src="images/DependencyRunLogException.png" width="429" height="178"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;29.16</a>:&nbsp;&nbsp;Protokoll der
+                                            Ausf&uuml;hrung 'Abh&auml;ngigkeit' mit 'Catch'</td><td class="captionglue"></td>
+</tr>
+</table>
+                                    
+<p>In einem normalen Projekt sollten Sie
+                                            mindestens einen solchen global
+                                            'Catch' Knoten f&uuml;r
+                                            'TestException' erstellen. Dieser
+                                            Knoten sollte dann auch entweder
+                                            die Prozedur <code>qfs.swing.cleanup.closeAllModalDialogs</code>
+                                            oder die Prozedur
+                                            <code>qfs.swt.cleanup.closeAllModalDialogsAndModalShells</code>
+                                            aufrufen. Diese Prozeduren
+                                            schlie&szlig;en jeglichen modalen
+                                            Dialog, d.h. jedes Fenster, das
+                                            die Ausf&uuml;hrung der Tests
+                                            blockieren k&ouml;nnte.
+                                    </p>
+                            
+
+                            
+<a name="sec_depErrorCatchSum"></a>
+                                    
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_depErrorCatchSum">29.4.3</a></span>
+</div>
+<a href="contents.html#toc_sec_depErrorCatchSum">Zusammenfassung</a>
+</h5>
+                                    
+<p>
+                                            Sie haben nun gesehen, dass man
+                                            ein robustes Recovery Management
+                                            f&uuml;r Testf&auml;lle mittels
+                                            'Fehlerbehandlung' und noch mehr
+                                            mittels 'Catch' Knoten
+                                            f&uuml;r eine 'Abh&auml;ngigkeit'
+                                            implementieren kann.
+                                    </p>
+                                    
+<p>In den meisten Projekten ist ein
+                                            globaler 'Catch' Knoten
+                                            sehr wichtig, besonders im Falle von
+                                            ComponentNotFoundExceptions und ModalDialogExceptions.
+                                    </p>
+                            
+                    
+
+    
+    
+
+    
+<a name="sec_depMoreDep"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_depMoreDep">29.5</a></span>
+</div>
+<a href="contents.html#toc_sec_depMoreDep">Mehr zu Abh&auml;ngigkeiten</a>
+</h4>
+      
+<p>
+      Im oberen Bereich haben wir gesehen, dass man verschiedene
+        Abh&auml;ngigkeiten verschachteln kann und dass die 'Aufr&auml;umen'
+        Sequenz einer 'Abh&auml;ngigkeit' nur dann ausgef&uuml;hrt wird, wenn die
+        entsprechende Abh&auml;ngigkeit nicht mehr ben&ouml;tigt wird. Wir k&ouml;nnen eine
+        'Abh&auml;ngigkeit' auch so konfigurieren, dass die 'Aufr&auml;umen'
+        jedes mal ausgef&uuml;hrt wird. Das kann mittels Setzens der Option
+        'Aufr&auml;umen erzwingen' der 'Abh&auml;ngigkeit' bewerkstelligt werden.
+      </p>
+      
+<p>
+    Es gibt noch viel mehr Interessantes &uuml;ber Abh&auml;ngigkeiten zu entdecken,
+        z.B. kann man die Ausf&uuml;hrung der 'Aufr&auml;umen' auch mittels
+        Variablen steuern. Diese Variable hei&szlig;t charakteristische
+        Variable. Diese und mehr Details finden Sie im Handbuch im Kapitel <a href="../../manual/de/dependencies.html#sec_dependencies" shape="rect">Abh&auml;ngigkeiten</a>.
+  Dieser Ansatz k&ouml;nnte verwendet werden, um eine 'Abh&auml;ngigkeit' 'Login' zu
+        erstellen, deren 'Aufr&auml;umen', d.h. das Ausloggen, nur dann ausgef&uuml;hrt wird, wenn
+        sich der Inhalt der Variable Benutzer &auml;ndert.
+      </p>
+      
+<p>
+    Eine detaillierte Beschreibung von Abh&auml;ngigkeiten finden Sie im Handbuch
+        im Kapitel <a href="../../manual/de/dependencies.html#sec_dependencies" shape="rect">Abh&auml;ngigkeiten</a>.
+      </p>
+    
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="datadriven.html#sec_DataDriven"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 28&nbsp;Datengetriebenes Testen: Einen 'Test-case' mit unterschiedlichen
+    Testdatens&auml;tzen starten" title="Vorheriges Kapitel: 28&nbsp;Datengetriebenes Testen: Einen 'Test-case' mit unterschiedlichen
+    Testdatens&auml;tzen starten"></a></td><td class="navicon"><a href="tut_procbuilder.html#sec_AdvProcbuilder"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 30&nbsp;Automatische Erstellung von Basisprozeduren" title="N&auml;chste Seite: 30&nbsp;Automatische Erstellung von Basisprozeduren"></a></td><td class="navicon"><a href="tut_procbuilder.html#sec_AdvProcbuilder"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 30&nbsp;Automatische Erstellung von Basisprozeduren" title="N&auml;chstes Kapitel: 30&nbsp;Automatische Erstellung von Basisprozeduren"></a></td><td class="navicon"><a href="advanced.html#sec_advanced"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: V&nbsp;Weiterf&uuml;hrende Features von QF-Test" title="Kapitel-&Uuml;bersicht: V&nbsp;Weiterf&uuml;hrende Features von QF-Test"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 2002-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>installCustomWebResolver - Combobox</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_customajax_combobox"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_customajax_list.html#sec_customajax_list"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 47.1.7&nbsp;installCustomWebResolver - Liste" title="Vorheriges Kapitel: 47.1.7&nbsp;installCustomWebResolver - Liste"></a></td><td class="navicon"><a href="tech_customajax_tabpanel.html#sec_customajax_tabpanel"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 47.1.9&nbsp;installCustomWebResolver - TabPanel und Accordion" title="N&auml;chste Seite: 47.1.9&nbsp;installCustomWebResolver - TabPanel und Accordion"></a></td><td class="navicon"><a href="tech_customajax_tabpanel.html#sec_customajax_tabpanel"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 47.1.9&nbsp;installCustomWebResolver - TabPanel und Accordion" title="N&auml;chstes Kapitel: 47.1.9&nbsp;installCustomWebResolver - TabPanel und Accordion"></a></td><td class="navicon"><a href="tech_customajax.html#sec_customajax"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 47.1&nbsp;Verbesserte Komponentenerkennung mittels CustomWebResolver" title="Kapitel-&Uuml;bersicht: 47.1&nbsp;Verbesserte Komponentenerkennung mittels CustomWebResolver"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_customajax_combobox">47.1.8</a></span>
+</div>
+<a href="contents.html#toc_sec_customajax_combobox"><code>installCustomWebResolver</code> - Combobox</a>
+</h5>
+          
+<p>
+            Comboboxen bieten die Herausforderung, dass es einen Teil f&uuml;r die Texteingabe bzw.
+            das &Ouml;ffnen einer Auswahlliste
+            gibt sowie die angezeigte Liste mitsamt ihren Eintr&auml;gen.
+            Eine Listauswahl wird entsprechend immer mit zwei Mausklicks aufgezeichnet.
+            Der erste Klick, der die Liste &ouml;ffnet, und der zweite Klick, der den Listeneintrag ausw&auml;hlt.
+          </p>
+          
+<p>
+            Ein HTML <code>SELECT</code> Knoten wird automatisch zu einer ComboBox gemappt
+            und die Listenauswahl wird als ein 'Auswahl' Knoten aufzeichnet.
+          </p>
+          
+<a name="table_47.4"></a><a name="table_47.4"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth" valign="center">
+              
+<tr>
+                
+<th rowspan="1" colspan="1">Klasse</th>
+                <th rowspan="1" colspan="1">Notwendige Komponenten / Unterelemente</th>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">ComboBox</td>
+                <td rowspan="1" colspan="1">Container Element, das sowohl das Textfeld der ComboBox wie auch den Button beinhaltet.</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">List:ComboBoxList</td>
+                <td rowspan="1" colspan="1">Stellt die Liste dar, beinhaltet alle Listeneintr&auml;ge.</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Item:ComboBoxListItem</td>
+                <td rowspan="1" colspan="1">Stellt einen Listeneintrag dar.</td>
+              
+</tr>
+              
+<tr>
+                
+<th rowspan="1" colspan="1">&nbsp;</th>
+                <th rowspan="1" colspan="1">Optionale Unterelemente</th>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Button:ComboBoxButton</td>
+                <td rowspan="1" colspan="1">(Optional) Stellt den Button dar, der die Liste &ouml;ffnet.</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">TextField:ComboBoxTextField</td>
+                <td rowspan="1" colspan="1">(Optional) Stellt das TextField dar, das Texteingaben empf&auml;ngt.</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">CheckBox:ComboBoxListItemCheckBox</td>
+                <td rowspan="1" colspan="1">(Optional) Stellt eine CheckBox unter einem Listeneintrag dar.</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Icon:ComboBoxListItemIcon</td>
+                <td rowspan="1" colspan="1">(Optional) Stellt ein Icon unter einem Listeneintrag dar.</td>
+              
+</tr>
+            
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;47.4</a>:&nbsp;&nbsp;Mapping von ComboBoxen</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+           F&uuml;r die Liste w&uuml;rde es auch ausreichen reine Listen und Listeneintr&auml;ge zu mappen,
+           also <code>List</code> und <code>Item:ListItem</code>, siehe <a href="tech_customajax_list.html#sec_customajax_list">Abschnitt 47.1.7</a>.
+          </p>
+          
+<p>
+            
+<strong>Beispiel:</strong>
+          
+</p>
+          
+<p>
+            HTML Code f&uuml;r eine ComboBox:
+          </p>
+
+          
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>&lt;div class="combobox-wrapper"&gt;
+  &lt;div role="combobox" aria-expanded="true" aria-owns="ex1-listbox" aria-haspopup="listbox" id="ex1-combobox"&gt;
+    &lt;input type="text" aria-autocomplete="list" aria-controls="ex1-listbox" id="ex1-input" aria-activedescendant=""&gt;
+  &lt;/div&gt;
+  &lt;ul aria-labelledby="ex1-label" role="listbox" id="ex1-listbox" class="listbox"&gt;
+    &lt;li class="result" role="option" id="result-item-0"&gt;Leek&lt;/li&gt;
+    &lt;li class="result" role="option" id="result-item-1"&gt;Lemon&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;47.4:&nbsp;&nbsp;HTML ComboBox</td><td class="captionglue"></td>
+</tr>
+</table>
+
+          
+<p>
+            Eine <code>ComboBox</code> besteht aus dem Container Element, in dem die
+            aktuelle Auswahl angezeigt wird, sowie aus einer Liste, die die ausw&auml;hlbaren
+            Werte enth&auml;lt. In unserem Beispiel ist diese Liste im dem <code>div</code>-Objekt
+            enthalten, das auch die <code>ComboBox</code> selbst enth&auml;lt. Oft ist die Liste
+            jedoch an einer ganz anderen Stelle im DOM definiert. Diese finden Sie, indem
+            Sie die Liste &ouml;ffnen und sie dann im Analyse-Tool des Browsers betrachten. Die
+            css-Klassen des Listenobjekte und der Listeneintr&auml;ge k&ouml;nnen Sie auch herausfinden,
+            indem Sie mit QF-Test einen Klick auf die Liste aufnehmen und die <code>qfs:class</code>
+            Informationen in der 'Weitere Merkmale' Tabelle der aufgenommenen Komponente
+            auswerten.
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>installCustomWebResolver</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Zuweisungen f&uuml;r eine ComboBox.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>resolver</code></strong></td><td class="paramdesc">
+                custom
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>version</code></strong></td><td class="paramdesc">
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>genericClasses</code></strong></td><td class="paramdesc">
+                listbox=List:ComboBoxList,<br>
+                result=Item:ComboBoxListItem@::ancestor=
+                
+                List:ComboBoxList
+                &nbsp;<br>
+<br>
+              
+<tr>
+<td class="paramname"><strong><code>attributesToGenericClasses</code></strong></td><td class="paramdesc">
+                
+                role=combobox=ComboBox
+                &nbsp;<br>
+<br>
+              
+</td>
+</tr>
+              
+</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+          
+<p>
+            Bei dieser <code>ComboBox</code> haben wir verschiedene M&ouml;glichkeiten,
+            diese in QF-Test zu definieren. Wenn man Kontakt zu den Anwendungsentwicklern
+            hat, ist es am sichersten, bei diesen nachzufragen, welches Kriterium
+            eine bestimmte Komponentenklasse identifiziert. Ist dies nicht der Fall,
+            sollte man sich f&uuml;r ein aller Wahrscheinlichkeit nach eindeutiges Kennzeichen
+            entscheiden und dieses bei anderen Komponenten der gleichen Klasse gegenpr&uuml;fen.
+            Au&szlig;erdem sollte man bei &auml;hnlichen Komponentenklassen nachsehen, ob diese nicht
+            dummerweise ebenfalls das ausgew&auml;hlte Kennzeichen verwenden. In diesem Fall
+            w&auml;hlt man dann ein anderes, hoffentlich eindeutiges Kennzeichen
+            oder konkretisiert die Zuweisung durch Anh&auml;ngen von <code>@::ancestor=...</code>
+          
+</p>
+          
+<p>
+            Konkret bei diesem Beispiel ist <code>role=combobox</code> f&uuml;r die ComboBox
+            selbst vermutlich eindeutig. Ebenso <code>role=listbox</code> oder alternativ
+            <code>class=listbox</code> f&uuml;r die Liste. F&uuml;r welches der beiden man sich entscheidet,
+            d&uuml;rfte gleichg&uuml;ltig sein. Bei &Uuml;berschneidungen mit normalen Listen
+            kann auch der Klassentyp weggelassen werden. D.h. die Zuweisungen w&auml;ren nur
+            <code>listbox=List</code> und <code>result=Item:ListItem@::ancestor=List</code>.
+            Auf die Funktionalit&auml;t innerhalb QF-Test hat dies keinen Einfluss.
+          </p>
+          
+<p>
+            Bei dem Listeneintrag k&ouml;nnten jedoch sowohl
+            <code>class=result</code> als auch <code>role=option</code> bei anderen
+            Klassen eingesetzt sein. Daher wird sicherheitshalber
+            <code>@::ancestor=List:ComboBoxList</code> angeh&auml;ngt, um eine Eindeutigkeit
+            herzustellen.
+          </p>
+        
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_customajax_list.html#sec_customajax_list"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 47.1.7&nbsp;installCustomWebResolver - Liste" title="Vorheriges Kapitel: 47.1.7&nbsp;installCustomWebResolver - Liste"></a></td><td class="navicon"><a href="tech_customajax_tabpanel.html#sec_customajax_tabpanel"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 47.1.9&nbsp;installCustomWebResolver - TabPanel und Accordion" title="N&auml;chste Seite: 47.1.9&nbsp;installCustomWebResolver - TabPanel und Accordion"></a></td><td class="navicon"><a href="tech_customajax_tabpanel.html#sec_customajax_tabpanel"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 47.1.9&nbsp;installCustomWebResolver - TabPanel und Accordion" title="N&auml;chstes Kapitel: 47.1.9&nbsp;installCustomWebResolver - TabPanel und Accordion"></a></td><td class="navicon"><a href="tech_customajax.html#sec_customajax"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 47.1&nbsp;Verbesserte Komponentenerkennung mittels CustomWebResolver" title="Kapitel-&Uuml;bersicht: 47.1&nbsp;Verbesserte Komponentenerkennung mittels CustomWebResolver"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

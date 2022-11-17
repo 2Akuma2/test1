@@ -1,0 +1,387 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Eine QF-Test Startsequenz f&uuml;r Android Tests erzeugen</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_android_test_setup"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_android_real_device.html#sec_android_real_device"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 15.4&nbsp;Verbinden mit einem echten Android Ger&auml;t" title="Vorheriges Kapitel: 15.4&nbsp;Verbinden mit einem echten Android Ger&auml;t"></a></td><td class="navicon"><a href="user_android_recording.html#sec_android_recording"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 15.6&nbsp;Aktionen und Checks auf der Android App aufnehmen" title="N&auml;chste Seite: 15.6&nbsp;Aktionen und Checks auf der Android App aufnehmen"></a></td><td class="navicon"><a href="user_android_recording.html#sec_android_recording"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 15.6&nbsp;Aktionen und Checks auf der Android App aufnehmen" title="N&auml;chstes Kapitel: 15.6&nbsp;Aktionen und Checks auf der Android App aufnehmen"></a></td><td class="navicon"><a href="user_androidtesting.html#usec_androidtesting"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 15&nbsp;Testen von Android Anwendungen" title="Kapitel-&Uuml;bersicht: 15&nbsp;Testen von Android Anwendungen"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_android_test_setup">15.5</a></span>
+</div>
+<a href="contents.html#toc_sec_android_test_setup">Eine QF-Test Startsequenz f&uuml;r Android Tests erzeugen</a>
+</h4>
+      
+<ul>
+        
+<li>
+          Wie immer, &ouml;ffnen Sie den Schnellstart-Assistenten &uuml;ber das &raquo;<em>Extras</em>&laquo; Men&uuml; oder &uuml;ber den <img src="../icons/quickstart_tb.png" style="vertical-align: text-bottom" alt="Schnellstart-Assistent" title="Schnellstart-Assistent" width="26" height="26" texscale=".66"> Knopf in der Werkzeugleiste.
+        </li>
+        
+<li>
+          
+<p>
+            W&auml;hlen Sie "Eine Android Anwendung".
+          </p>
+          
+<a name="fig_android_quickstart_type"></a><a name="figure_15.7"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_1_type.png" target="_blank"><img texscale=".66" src="images/android_quickstart_1_type.png" width="686" height="393"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;15.7</a>:&nbsp;&nbsp;Auswahl des Anwendungstyps im Schnellstart-Assistenten</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+</li>
+      
+</ul>
+      
+
+      
+<a name="sec_android_test_setup_emulator"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_android_test_setup_emulator">15.5.1</a></span>
+</div>
+<a href="contents.html#toc_sec_android_test_setup_emulator">Nutzung eines Android Emulators</a>
+</h5>
+        
+<ul>
+          
+<li>
+            
+<p>
+              W&auml;hlen Sie die erste Auswahl "Einen Emulator starten und mit virtuellem Ger&auml;t verbinden".
+            </p>
+            
+<a name="fig_android_quickstart_emulator"></a><a name="figure_15.8"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_2_emulator.png" target="_blank"><img texscale=".66" src="images/android_quickstart_2_emulator.png" width="686" height="393"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;15.8</a>:&nbsp;&nbsp;Auswahl des Emulators als genutztes Testger&auml;t im Schnellstart-Assistenten</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              W&auml;hlen Sie das virtuelle Ger&auml;t aus der Auswahlliste oben. Dr&uuml;cken Sie
+              "Aktualisieren", falls kein virtuelles Ger&auml;t angezeigt werden sollte. Falls dann
+              immer noch keines sichtbar ist, starten Sie ggf. QF-Test neu, um neu hinzugekommene
+              Ger&auml;te einzulesen. Klicken Sie dann "Weiter".
+            </p>
+            
+<a name="fig_android_quickstart_avd"></a><a name="figure_15.9"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_3_avd.png" target="_blank"><img texscale=".66" src="images/android_quickstart_3_avd.png" width="686" height="393"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;15.9</a>:&nbsp;&nbsp;Auswahl des AVDs im Schnellstart-Assistenten</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              Als n&auml;chsten Schritt k&ouml;nnen Sie die Android .apk Datei der zu testenden App
+              angeben. Falls Sie eine App testen wollen, die bereits auf dem Android Ger&auml;t
+              installiert ist, so &uuml;berspringen Sie diesen Schritt.
+            </p>
+            
+<a name="fig_android_quickstart_apk"></a><a name="figure_15.10"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_4_apk.png" target="_blank"><img texscale=".66" src="images/android_quickstart_4_apk.png" width="686" height="393"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;15.10</a>:&nbsp;&nbsp;Auswahl der .apk Datei im Schnellstart-Assistenten</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              Im n&auml;chsten Schritt k&ouml;nnen Sie einen Client-Namen angeben. Klicken Sie dann "Weiter" und zum Schluss "Fertig".
+            </p>
+            
+<a name="fig_android_quickstart_client"></a><a name="figure_15.11"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_5_client.png" target="_blank"><img texscale=".66" src="images/android_quickstart_5_client.png" width="686" height="393"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;15.11</a>:&nbsp;&nbsp;Auswahl des Client-Namens im Schnellstart-Assistenten</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              Nun wird in der aktuellen Testsuite im Knoten "Extrasequenzen" eine
+              Vorbereitungssequenz erzeugt. Sie sollte selbsterkl&auml;rend sein.
+            </p>
+            
+<a name="fig_android_quickstart_setup_sequence"></a><a name="figure_15.12"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_6_setup_sequence.png" target="_blank"><img texscale=".66" src="images/android_quickstart_6_setup_sequence.png" width="376" height="114"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;15.12</a>:&nbsp;&nbsp;Vom Schnellstart-Assistenten erzeugte Startsquenz f&uuml;r den Android Emulator</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              Wenn Sie die Vorbereitungssequenz ausf&uuml;hren, sollte das Emulatorfenster erscheinen
+              und nach kurzer Zeit auch die App, falls Sie eine .apk Datei angegeben haben. Der Aufnahmeknopf <img src="../icons/record_tb.png" style="vertical-align: text-bottom" alt="Aufnahme starten" title="Aufnahme starten" width="26" height="26" texscale=".66"> sollte aktiviert sein, was anzeigt, dass die
+              Verbindung erfolgreich aufgebaut wurde.
+            </p>
+            
+<a name="fig_android_emulator"></a><a name="figure_15.13"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_emulator.png" target="_blank"><img texscale=".66" src="images/android_emulator.png" width="195" height="328"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;15.13</a>:&nbsp;&nbsp;Fenster des Android Emulators</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+        
+</ul>
+      
+
+      
+
+    
+<p>
+      
+      &nbsp;
+    </p>
+
+    
+
+      
+<a name="sec_android_test_setup_real_device"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_android_test_setup_real_device">15.5.2</a></span>
+</div>
+<a href="contents.html#toc_sec_android_test_setup_real_device">Nutzung eines echten Android Ger&auml;tes</a>
+</h5>
+        
+<ul>
+          
+<li>
+            
+<p>
+              W&auml;hlen Sie die zweite Option "Mit echtem Android Ger&auml;t oder laufendem virtuellen Android Ger&auml;t verbinden".
+            </p>
+            
+<a name="fig_android_quickstart_real_type"></a><a name="figure_15.14"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_real_1_type.png" target="_blank"><img texscale=".66" src="images/android_quickstart_real_1_type.png" width="736" height="393"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;15.14</a>:&nbsp;&nbsp;Auswahl eines echten Ger&auml;tes als Typ im Schnellstart-Assistenten</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              W&auml;hlen Sie aus der Auswahllist den angegebenen Eintrag, die die ID des verbundenen
+              Ger&auml;ts darstellt. Klicken Sie "Aktualisieren" falls kein Ger&auml;t sichtbar ist. Falls
+              immer noch kein Ger&auml;t angezeigt wird, starten Sie QF-Test neu, damit neu
+              angeschlossenen Ger&auml;te erkannt werden. Klicken Sie nun "Weiter".
+            </p>
+            
+<a name="fig_android_quickstart_real_device"></a><a name="figure_15.15"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_real_2_device.png" target="_blank"><img texscale=".66" src="images/android_quickstart_real_2_device.png" width="736" height="393"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;15.15</a>:&nbsp;&nbsp;Auswahl des Ger&auml;tes im Schnellstart-Assistenten</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              Als n&auml;chsten Schritt k&ouml;nnen Sie die Android .apk Datei der zu testenden App
+              angeben. Falls Sie eine App testen wollen, die bereits auf dem Android Ger&auml;t
+              installiert ist, so &uuml;berspringen Sie diesen Schritt.
+            </p>
+            
+<a name="fig_android_quickstart_real_apk"></a><a name="figure_15.16"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_real_3_apk.png" target="_blank"><img texscale=".66" src="images/android_quickstart_real_3_apk.png" width="736" height="393"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;15.16</a>:&nbsp;&nbsp;Auswahl der App im Schnellstart-Assistenten</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              Im n&auml;chsten Schritt k&ouml;nnen Sie einen Client-Namen angeben. Klicken Sie dann "Weiter" und zum Schluss "Fertig".
+            </p>
+            
+<a name="fig_android_quickstart_real_client"></a><a name="figure_15.17"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_real_4_client.png" target="_blank"><img texscale=".66" src="images/android_quickstart_real_4_client.png" width="736" height="393"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;15.17</a>:&nbsp;&nbsp;Festlegung des Client-Names im Schnellstart-Assistenten</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              
+              Nun wird in der aktuellen Testsuite im Knoten "Extrasequenzen" eine
+              Vorbereitungssequenz erzeugt. Sie sollte selbsterkl&auml;rend sein und enth&auml;lt den
+              Hinweis, dass in dieser Fr&uuml;htesterphase die qfsandroid.qft Testsuite f&uuml;r die
+              Ausf&uuml;hrung der Vorbereitungssequenz ben&ouml;tigt wird und automatisch inkludiert wurde.
+            </p>
+            
+<a name="fig_android_quickstart_real_setup_sequence"></a><a name="figure_15.18"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_real_5_setup_sequence.png" target="_blank"><img texscale=".66" src="images/android_quickstart_real_5_setup_sequence.png" width="420" height="114"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;15.18</a>:&nbsp;&nbsp;Vom Schnellstart-Assistenten erzeugte Startsequenz f&uuml;r das echte Android Ger&auml;t</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              Wenn Sie die Vorbereitungssequenz ausf&uuml;hren, sollte der Aufnahmeknopf <img src="../icons/record_tb.png" style="vertical-align: text-bottom" alt="Aufnahme starten" title="Aufnahme starten" width="26" height="26" texscale=".66"> aktiviert
+              werden, was anzeigt, dass die Verbindung erfolgreich zustande gekommen ist. Falls
+              Sie eine .apk Datei angegeben haben, sollte die App nun auf dem Android Ger&auml;t
+              sichtbar werden.
+            </p>
+          
+</li>
+        
+</ul>
+      
+
+      
+    
+<p>
+      
+      &nbsp;
+    </p>
+
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_android_real_device.html#sec_android_real_device"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 15.4&nbsp;Verbinden mit einem echten Android Ger&auml;t" title="Vorheriges Kapitel: 15.4&nbsp;Verbinden mit einem echten Android Ger&auml;t"></a></td><td class="navicon"><a href="user_android_recording.html#sec_android_recording"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 15.6&nbsp;Aktionen und Checks auf der Android App aufnehmen" title="N&auml;chste Seite: 15.6&nbsp;Aktionen und Checks auf der Android App aufnehmen"></a></td><td class="navicon"><a href="user_android_recording.html#sec_android_recording"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 15.6&nbsp;Aktionen und Checks auf der Android App aufnehmen" title="N&auml;chstes Kapitel: 15.6&nbsp;Aktionen und Checks auf der Android App aufnehmen"></a></td><td class="navicon"><a href="user_androidtesting.html#usec_androidtesting"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 15&nbsp;Testen von Android Anwendungen" title="Kapitel-&Uuml;bersicht: 15&nbsp;Testen von Android Anwendungen"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

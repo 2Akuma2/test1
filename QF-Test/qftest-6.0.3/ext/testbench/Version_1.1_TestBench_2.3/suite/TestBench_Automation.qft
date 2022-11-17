@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="root"
+          signature="302C02145C1A50CA9BF563334EB511E562C1C422CE7A594E021423229D243AB901F2220493B3629B444C678A3151"
+          version="6.0.3">
+  <include>qfs.qft</include>
+  <include>TestBench_TestCaseExecutor.qft</include>
+  <comment>(c) 2014 imbus AG
+Version 1.1</comment>
+  <TestSet id="_1nlZ" name="Standalone test executor">
+    <TestCase id="_1nlP" name="Load automation properties">
+      <comment>@noreport node;errorlevel&gt;=MESSAGE</comment>
+      <ServerScriptStep id="_1nlY" interpreter="groovy"
+                        name="load automation properties">
+        <code>// Note on loading properties: This can also be done with
+// a load properties node; however, the testaut.properties
+// and user.properties as defaults mechanism cannot be
+// implemented that way.
+
+def loadPropertyFileIntoGroup(file, group) {
+    def properties = new java.util.Properties()
+    file.withReader("UTF-8") { reader -&gt; properties.load(reader) }
+    for (entry in properties)
+        rc.setProperty(group, entry.key, entry.value)
+}
+
+def automationBaseDir = new File(rc.lookup("qftest", "suite.dir")).parentFile
+def automationProperties = new File(automationBaseDir, "testaut.properties")
+def userProperties = new File(automationBaseDir, "user.properties")
+
+// Log error and exit if automationProperties not found.
+loadPropertyFileIntoGroup(automationProperties, "itepAutomation")
+
+// Settings from userProperties override settings from automationProperties.
+// Log warning if userProperties not found.
+try {
+    loadPropertyFileIntoGroup(userProperties, "itepAutomation")
+} catch (e) {
+    rc.logWarning("failed to load user properties from ${userProperties}")
+}</code>
+      </ServerScriptStep>
+    </TestCase>
+    <TestCase id="_6" name="TestBench test">
+      <comment>@noreport node;errorlevel&gt;=MESSAGE</comment>
+      <ServerScriptStep id="_1nlQ" interpreter="groovy"
+                        name="configure automation properties accessors">
+        <code>// defined as global function (without "def")
+automationProperty = { name, defaultValue -&gt;
+    rc.getProperties("itepAutomation").getProperty(name, defaultValue)
+}
+// defined as global function (without "def")
+requiredAutomationProperty = {
+    rc.lookup("itepAutomation", it)
+}</code>
+      </ServerScriptStep>
+      <ServerScriptStep id="_1ni+" interpreter="groovy"
+                        name="configure QF-Test">
+        <code>import de.qfs.apps.qftest.log.LogSplitter
+
+rc.setOption(Options.OPT_LOG_CONTENT_COMPACT, false)
+
+def qfLogDir = requiredAutomationProperty("qfLogDir")
+
+def qfTestLog = qfLogDir + "/QFTestReport.qrz"
+def splitter = new LogSplitter(qfTestLog)
+splitter.setRunLogAndStart(rc.context.runLog)
+rc.context.setLogSplitter(splitter)
+</code>
+      </ServerScriptStep>
+      <ServerScriptStep id="_1nis" interpreter="groovy"
+                        name="add test run listener">
+        <code>import de.qfs.apps.qftest.extensions.qftest.AbstractTestRunListener
+import de.qfs.apps.qftest.extensions.qftest.TestRunEvent
+
+// For normal operation and error handling, the TestResultsCollector is used.
+class TestResultsCollector extends AbstractTestRunListener {
+    private def problems = []
+    private def gravestProblem = new TestRunEvent()
+    def reset() {
+        gravestProblem = new TestRunEvent()
+        problems.clear()
+    }
+    def getProblems() {
+        return problems
+    }
+    def getGravestProblem() {
+        return gravestProblem
+    }
+    // override
+    void problemOccurred(TestRunEvent event) {
+        // note: "rc" and "println" are not available here.
+        problems.add(event)
+        if (gravestProblem.state &lt; event.state) gravestProblem = event
+    }
+}
+
+// defined as global variable (without "def")
+testResultsCollector = new TestResultsCollector()
+
+rc.clearTestRunListeners()
+rc.addTestRunListener(testResultsCollector)</code>
+      </ServerScriptStep>
+      <ServerScriptStep id="_3H0" interpreter="groovy" name="start iTEP">
+        <code>import de.imbus.itep.Itep
+import static de.imbus.itep.ItepConstant.ITEP_OK
+import de.qfs.apps.qftest.shared.exceptions.UserException
+
+// defined as global variable (without "def")
+itep = new Itep()
+
+// defined as global function (without "def")
+expectOK = { result, message -&gt;
+    if (result != ITEP_OK) throw new UserException(message.replaceAll("%result", "$result"))
+}
+// defined as global function (without "def")
+checkOK = { value -&gt;
+    if (value.result != ITEP_OK) rc.logError("an iTEP call has unexpectedly returned ${value.result}")
+    return value
+}
+
+def reportToExecute = requiredAutomationProperty("reportFileToExecute")
+def resultFileToWrite = requiredAutomationProperty("resultFileToWrite")
+expectOK( itep.init(reportToExecute, resultFileToWrite),
+    "itep.init($reportToExecute, $resultFileToWrite) failed with %result.")
+
+// itep options are normally taken from the properties files,
+// the values below are defaults.
+def setItepOption(name, defaultValue) {
+    def value = automationProperty(name, defaultValue)
+    expectOK( itep.setVariable(name, value),
+        "itep.setVariable($name, $value) failed with %result.")
+}
+setItepOption('$FailBehavior', 'Ignore')
+setItepOption('$MinorFailBehavior', '2')
+setItepOption('$MinorErrorLevel', '3')
+setItepOption('$MinorFailBehaviorMode', '1')
+</code>
+      </ServerScriptStep>
+      <ServerScriptStep id="_1nlO" interpreter="groovy"
+                        name="initialize plugins">
+        <code>import java.text.SimpleDateFormat
+
+// screenshot mechanism variables
+def imageWrapper = new de.qfs.ImageWrapper(rc)
+def timeFormat = new SimpleDateFormat("HH.mm_ss.SSSS")
+def enableScreenshots = automationProperty("screenshotDir", "") != ""
+def screenshotDir = automationProperty("screenshotDir", "") + "/" +
+    (new SimpleDateFormat("YYYY.MM.dd_HH.mm_ss")).format(System.currentTimeMillis())
+
+// plugin defaults - defined as global functions (without "def")
+startupPlugin = { -&gt; }
+testCaseSetStartPlugin = { -&gt; }
+testCaseStartPlugin = { -&gt; }
+parameterPlugin = { name, value -&gt; return [name, value] }
+beforeInteractionPlugin = { -&gt; }
+screenshotPlugin = { returnCode, comment -&gt;
+    if (enableScreenshots &amp;&amp; returnCode != 0) {
+        def testCaseUID = checkOK(itep.getVariable('$TestCaseUID')).value
+        def directory = screenshotDir + "/" + testCaseUID
+        def filename = timeFormat.format(System.currentTimeMillis()) + ".png"
+        new File(directory).mkdirs()
+        imageWrapper.savePng(directory + "/" + filename, imageWrapper.grabScreenshot())
+        expectOK( itep.addReference(directory + "/" + filename),
+            "itep.addReference(${directory + '/' + filename}) failed with %result")
+    }
+}
+interactionResultPlugin = { returnCode, comment -&gt; returnCode }
+afterInteractionPlugin = { returnCode, comment -&gt; }
+cleanupPlugin = { -&gt; }
+
+try {
+    rc.callTest("set up automation plugins")
+} catch (de.qfs.apps.qftest.shared.exceptions.TestNotFoundException e) {
+    rc.logMessage("no plugins found, using plugin defaults")
+}
+
+startupPlugin()
+</code>
+      </ServerScriptStep>
+      <ServerScriptStep id="_1niz" interpreter="groovy"
+                        name="set up iTEP functions">
+        <code>import de.qfs.apps.qftest.shared.exceptions.UserException
+import static de.imbus.itep.ItepConstant.ITEP_OK
+import static de.imbus.itep.ItepConstant.ITEP_E_END
+
+// nextItepCommand() provides as global Groovy variables:
+// currentCommand, currentProcedureName, currentParameters, currentTestCaseUID
+// nextItepCommand() provides as global QF-Test parameters:
+// currentTestCaseUID
+
+// defined as global variable (without "def")
+currentTestCaseUID = ""
+
+// defined as global function (without "def")
+setItepResult = { returnCode, comment -&gt;
+    if (comment != "") {
+        def result = itep.setExecComment(comment ?: "'null' comment")
+        if (result != ITEP_OK)
+            rc.logWarning("itep.setExecComment() returned $result.")
+    }
+    screenshotPlugin(returnCode, comment)
+    def result = itep.sendReturnCode(interactionResultPlugin(returnCode, comment))
+    if (result != ITEP_OK)
+        rc.logWarning("itep.sendReturnCode($returnCode) returned $result.")
+    afterInteractionPlugin(returnCode, comment)
+}
+
+// defined as global function (without "def")
+nextItepCommand = { -&gt;
+    def nc = itep.nextCommand
+    if (nc.result != ITEP_E_END &amp;&amp; nc.result.number &lt; 0)
+        throw new UserException("itep.getNextCommand failed with ${nc.result}.")
+
+    try {
+        if (nc.result != ITEP_E_END) {
+            if (nc.result != ITEP_OK)
+                rc.logWarning("itep.getNextCommand: ${nc.result} for command ${nc.command} ${nc.result != ITEP_E_END}.")
+
+            currentCommand = nc.command
+            currentProcedureName = checkOK(itep.getVariable('$InteractionPath')).value + "." + currentCommand
+            
+            currentParameters = nc.parameterNames.collectEntries {
+                def param = checkOK(itep.getParameter(it))
+                return parameterPlugin(param.nameFromTE, param.value)
+            }
+
+            def newTestCaseUID = itep.getVariable('$TestCaseUID').value
+            if (newTestCaseUID != currentTestCaseUID) {
+                currentTestCaseUID = newTestCaseUID
+                // set currentTestCaseUID as global QF-Test parameters, so it can be
+                // used by the log splitting mechanism in "execute next test case".
+                rc.setGlobal("currentTestCaseUID", currentTestCaseUID)
+            }
+        }
+        return nc.result
+    } catch (Exception e) {
+        rc.logError("Exception while fetching details of command ${nc.command}: " + e)
+        setItepResult(-1, "Exception while fetching details of command: " + e)
+        return nextItepCommand()
+    }
+}
+</code>
+      </ServerScriptStep>
+      <ServerScriptStep id="_3H2" interpreter="groovy"
+                        name="EXECUTE TEST CASES">
+        <code>import de.qfs.apps.qftest.shared.exceptions.UserException
+import static de.imbus.itep.ItepConstant.ITEP_OK
+import static de.imbus.itep.ItepConstant.ITEP_E_END
+
+def timestamp = { new Date().dateTimeString }
+
+println()
+println("${timestamp()}: starting itep execution...")  
+
+try {
+    def loopDetectionValue = ""
+    currentCommandResult = nextItepCommand()
+    while(currentCommandResult != ITEP_E_END) {
+        if (currentTestCaseUID == loopDetectionValue) {
+            setItepResult(-1, "Execution loop detected. Please check the QF-Test logs for details.")
+            throw new UserException("execution loop in test case $currentTestCaseUID detected")
+        }
+        loopDetectionValue = currentTestCaseUID
+
+        println("${timestamp()}: executing test case $currentTestCaseUID")
+        
+        if (itep.hasStartedANewTestCaseSet()) testCaseSetStartPlugin()
+        if (itep.hasStartedANewTestCase()) testCaseStartPlugin()
+        else rc.logWarning("expected itep.hasStartedANewTestCase() to return true")
+        rc.callTest("execute next test case")
+    }
+} finally {
+    println("${timestamp()}: shutting down itep...")
+    itep.shutdown()
+}
+</code>
+      </ServerScriptStep>
+      <ServerScriptStep id="_3H1" interpreter="groovy" name="clean up">
+        <code>cleanupPlugin()</code>
+      </ServerScriptStep>
+    </TestCase>
+  </TestSet>
+  <PackageRoot id="_3"/>
+  <ExtraSequence id="_4"/>
+  <WindowList id="_5"/>
+</RootStep>

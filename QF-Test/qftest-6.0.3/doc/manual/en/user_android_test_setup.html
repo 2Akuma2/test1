@@ -1,0 +1,384 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Create a QF-Test setup sequence for Android testing</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_android_test_setup"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_android_real_device.html#sec_android_real_device"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 15.4&nbsp;Connecting to a real Android device" title="Previous Chapter: 15.4&nbsp;Connecting to a real Android device"></a></td><td class="navicon"><a href="user_android_recording.html#sec_android_recording"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 15.6&nbsp;Record actions and checks for Android" title="Next Page: 15.6&nbsp;Record actions and checks for Android"></a></td><td class="navicon"><a href="user_android_recording.html#sec_android_recording"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 15.6&nbsp;Record actions and checks for Android" title="Next Chapter: 15.6&nbsp;Record actions and checks for Android"></a></td><td class="navicon"><a href="user_androidtesting.html#usec_androidtesting"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 15&nbsp;Testing Android applications" title="Chapter Overview: 15&nbsp;Testing Android applications"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_android_test_setup">15.5</a></span>
+</div>
+<a href="contents.html#toc_sec_android_test_setup">Create a QF-Test setup sequence for Android testing</a>
+</h4>
+      
+<ul>
+        
+<li>
+          As always when creating a setup sequence, open the Quickstart Wizard via the &raquo;<em>Extras</em>&laquo; menu or the <img src="../icons/quickstart_tb.png" style="vertical-align: text-bottom" alt="Quickstart Wizard" title="Quickstart Wizard" width="26" height="26" texscale=".66"> toolbar button.
+        </li>
+        
+<li>
+          
+<p>
+            Select "An Android application".
+          </p>
+          
+<a name="fig_android_quickstart_type"></a><a name="figure_15.7"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_1_type.png" target="_blank"><img texscale=".66" src="images/android_quickstart_1_type.png" width="686" height="393"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;15.7</a>:&nbsp;&nbsp;Quickstart wizard screen to select the application type</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+</li>
+      
+</ul>
+      
+
+      
+<a name="sec_android_test_setup_emulator"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_android_test_setup_emulator">15.5.1</a></span>
+</div>
+<a href="contents.html#toc_sec_android_test_setup_emulator">Usage of an Android emulator</a>
+</h5>
+        
+<ul>
+          
+<li>
+            
+<p>
+              Select first option "Launch emulator and connect to an Android virtual device".
+            </p>
+            
+<a name="fig_android_quickstart_emulator"></a><a name="figure_15.8"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_2_emulator.png" target="_blank"><img texscale=".66" src="images/android_quickstart_2_emulator.png" width="686" height="393"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;15.8</a>:&nbsp;&nbsp;Quickstart wizard screen to select the emulate as test device</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              Select the virtial device from the drop-down list. Press "Refresh" in case no AVD is
+              visible. If it is still not visible also try to restart QF-Test in order to make the
+              virtual device visible. Then press "Next".
+            </p>
+            
+<a name="fig_android_quickstart_avd"></a><a name="figure_15.9"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_3_avd.png" target="_blank"><img texscale=".66" src="images/android_quickstart_3_avd.png" width="686" height="393"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;15.9</a>:&nbsp;&nbsp;Quickstart wizard screen to select the AVD</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              As the next step you may want to specify the Android .apk file you want to test. If
+              you want to test an App already installed, leave it empty.
+            </p>
+            
+<a name="fig_android_quickstart_apk"></a><a name="figure_15.10"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_4_apk.png" target="_blank"><img texscale=".66" src="images/android_quickstart_4_apk.png" width="686" height="393"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;15.10</a>:&nbsp;&nbsp;Quickstart wizard screen to select an APK</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              In the next step you can specify a client name and press "Next" or "Finish" to finalize the Wizard.
+            </p>
+            
+<a name="fig_android_quickstart_client"></a><a name="figure_15.11"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_5_client.png" target="_blank"><img texscale=".66" src="images/android_quickstart_5_client.png" width="686" height="393"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;15.11</a>:&nbsp;&nbsp;Quickstart wizard screen to specify the client name</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              
+              As a result, a Setup sequence will be created in the "Extras" node of your
+              test-suite. It should be pretty much self explanatory and also contains the hint,
+              that in this early access phase the qfsandroid.qft suite is needed for this setup
+              sequence to run successfully. A resepective include has been added automatically.
+            </p>
+            
+<a name="fig_android_quickstart_setup_sequence"></a><a name="figure_15.12"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_6_setup_sequence.png" target="_blank"><img texscale=".66" src="images/android_quickstart_6_setup_sequence.png" width="376" height="114"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;15.12</a>:&nbsp;&nbsp;Android setup sequence created by the quickstart wizard</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              When executing the Setup sequence, the emulator window is supposed to appear and in
+              case you have provided an .apk file to be started, the same should be visible
+              there. Also the Record button <img src="../icons/record_tb.png" style="vertical-align: text-bottom" alt="Record" title="Record" width="26" height="26" texscale=".66"> is supposed to become active in order to indicate an
+              established connection.
+            </p>
+            
+<a name="fig_android_emulator"></a><a name="figure_15.13"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_emulator.png" target="_blank"><img texscale=".66" src="images/android_emulator.png" width="195" height="328"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;15.13</a>:&nbsp;&nbsp;Android emulator window</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+        
+</ul>
+      
+      
+<p>
+        
+        &nbsp;
+      </p>
+
+      
+      
+
+      
+<a name="sec_android_test_setup_real_device"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_android_test_setup_real_device">15.5.2</a></span>
+</div>
+<a href="contents.html#toc_sec_android_test_setup_real_device">Usage of a real Android device</a>
+</h5>
+        
+<ul>
+          
+<li>
+            
+<p>
+              Select "Connect to a real Android device or running Android virtual device".
+            </p>
+            
+<a name="fig_android_quickstart_real_type"></a><a name="figure_15.14"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_real_1_type.png" target="_blank"><img texscale=".66" src="images/android_quickstart_real_1_type.png" width="736" height="393"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;15.14</a>:&nbsp;&nbsp;Quickstart wizard screen to select the application type</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              From the Combo box select the shown entry, which is the id of your connected
+              device. Press "Refresh" in case no device is visible. If it is still not visible
+              also try to restart QF-Test in order to make the device visible. Then press "Next".
+            </p>
+            
+<a name="fig_android_quickstart_real_device"></a><a name="figure_15.15"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_real_2_device.png" target="_blank"><img texscale=".66" src="images/android_quickstart_real_2_device.png" width="736" height="393"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;15.15</a>:&nbsp;&nbsp;Quickstart wizard screen to select the real device</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              As the next step you may want to specify an Android .apk file you want to test. If
+              you want to test an App already installed, leave it empty.
+            </p>
+            
+<a name="fig_android_quickstart_real_apk"></a><a name="figure_15.16"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_real_3_apk.png" target="_blank"><img texscale=".66" src="images/android_quickstart_real_3_apk.png" width="736" height="393"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;15.16</a>:&nbsp;&nbsp;Quickstart wizard screen to select a .apk file</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              In the next step you can specify a client name and press "Next" or "Finish" to finalize the Wizard.
+            </p>
+            
+<a name="fig_android_quickstart_real_client"></a><a name="figure_15.17"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_real_4_client.png" target="_blank"><img texscale=".66" src="images/android_quickstart_real_4_client.png" width="736" height="393"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;15.17</a>:&nbsp;&nbsp;Quickstart wizard screen to specify the client name</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              
+              As a result, a Setup sequence will be created in the "Extras" node of your
+              test-suite. It should be pretty much self explanatory and also contains the hint,
+              that in this early access phase the qfsandroid.qft suite is needed for this setup
+              sequence to run successfully. A resepective include has been added automatically.
+            </p>
+            
+<a name="fig_android_quickstart_real_setup_sequence"></a><a name="figure_15.18"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/android_quickstart_real_5_setup_sequence.png" target="_blank"><img texscale=".66" src="images/android_quickstart_real_5_setup_sequence.png" width="407" height="114"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;15.18</a>:&nbsp;&nbsp;Android setup sequence created by the quickstart wizard</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              When executing this Setup sequence the Record button <img src="../icons/record_tb.png" style="vertical-align: text-bottom" alt="Record" title="Record" width="26" height="26" texscale=".66"> is supposed to become active in
+              order to indicate an established connection. Also in case you have provided an .apk
+              file to be started, the same should get visible on you real device.
+            </p>
+          
+</li>
+        
+</ul>
+      
+
+      
+      
+<p>
+          
+          &nbsp;
+      </p>
+
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_android_real_device.html#sec_android_real_device"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 15.4&nbsp;Connecting to a real Android device" title="Previous Chapter: 15.4&nbsp;Connecting to a real Android device"></a></td><td class="navicon"><a href="user_android_recording.html#sec_android_recording"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 15.6&nbsp;Record actions and checks for Android" title="Next Page: 15.6&nbsp;Record actions and checks for Android"></a></td><td class="navicon"><a href="user_android_recording.html#sec_android_recording"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 15.6&nbsp;Record actions and checks for Android" title="Next Chapter: 15.6&nbsp;Record actions and checks for Android"></a></td><td class="navicon"><a href="user_androidtesting.html#usec_androidtesting"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 15&nbsp;Testing Android applications" title="Chapter Overview: 15&nbsp;Testing Android applications"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

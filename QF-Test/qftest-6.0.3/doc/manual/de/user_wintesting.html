@@ -1,0 +1,906 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Testen nativer Windows Anwendungen</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_wintesting"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_webtesting.html#usec_webtesting"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 13&nbsp;Testen von Webseiten" title="Vorheriges Kapitel: 13&nbsp;Testen von Webseiten"></a></td><td class="navicon"><a href="user_androidtesting.html#usec_androidtesting"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 15&nbsp;Testen von Android Anwendungen" title="N&auml;chste Seite: 15&nbsp;Testen von Android Anwendungen"></a></td><td class="navicon"><a href="user_androidtesting.html#usec_androidtesting"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 15&nbsp;Testen von Android Anwendungen" title="N&auml;chstes Kapitel: 15&nbsp;Testen von Android Anwendungen"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch" title="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="margin"><a name="new_N85188"></a><span class="note">5.0+</span></span><span class="numtitle"><a href="contents.html#toc_usec_wintesting">14</a></span>
+</div>
+<a href="contents.html#toc_usec_wintesting">Testen nativer Windows Anwendungen</a>
+</h3>
+    
+
+    
+<a name="usec_wintesting_start"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_wintesting_start">14.1</a></span>
+</div>
+<a href="contents.html#toc_usec_wintesting_start">Einstieg</a>
+</h4>
+      
+<p>
+        
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+        Video &uuml;ber das Testen von Native Windows Desktop Applicationen: <a href="https://www.qfs.de/de/yt/version-50-windows-anwendungen-testen-50.html" class="videolink" target="_blank">'QF-Test Version 5.0 - Windows
+        Anwendungen testen'</a>.
+      </p>
+      
+<p>
+        Dieses Kapitel behandelt das automatisierte Testen von Windows Desktop Anwendungen,
+        insbesondere
+      </p>
+      
+<ul>
+        
+<li>den Klassischer Win32 Anwendungen,</li>
+        
+<li>.NET Anwendungen, welche auf den Frameworks Windows Presentation Foundation (WPF)
+        oder Windows Forms basieren und</li>
+        
+<li>Universal Windows Platform (UWP) Anwendungen, welche XAML Steuerelemente verwenden.</li>
+      
+</ul>
+      
+<p>
+        Die genannten Anwendungstypen unterst&uuml;tzen die Microsoft UI Automation oder die Microsoft
+        Active Accessibility (MSAA) Schnittstellen. Weiterf&uuml;hrende Informationen zu diesen, unter
+        dem Namen Windows Automation API zusammengefassten Schnittstellen, wurden im
+        <a href="#usec_wintesting_general">Abschnitt 14.2</a> zusammengetragen.
+      </p>
+      
+<p>
+        F&uuml;r die Testausf&uuml;hrung ben&ouml;tigt QF-Test eine Verbindung zu dem Prozess der zu testenden
+        Anwendung. Zur Erstellung einer 'Vorbereitung', welche eine solche Verbindung herstellt,
+        bietet sich der <a href="user_quickstart.html#usec_quickstart_wizard">Erzeugung der Startsequenz - Schnellstart-Assistent</a> an, welcher &uuml;ber das Men&uuml;
+        &raquo;<em>Extras</em>&laquo; aufgerufen werden kann. W&auml;hlen Sie
+        'Eine native Windows-Anwendung' als Anwendungstyp. Weiterf&uuml;hrende Informationen zur
+        Benutzung des Schnellstart-Assistenten k&ouml;nnen Sie <a href="#usec_wintesting_launch">Abschnitt 14.3</a> und
+        <a href="user_quickstart.html#usec_quickstart_wizard">Abschnitt 3.1</a> entnehmen.
+      </p>
+      
+<p>
+        Um sich mit einer bereits laufenden Anwendung zu verbinden, k&ouml;nnen Sie den 'Windows Anwendung verbinden'
+        Knoten verwenden. Hierbei reicht es den Titel des (Haupt-)Fensters anzugeben. Hierbei k&ouml;nnen Sie
+        auch regul&auml;re Ausdr&uuml;cke verwenden. Falls dies der Fall ist, m&uuml;ssen Sie zus&auml;tzlich die CheckBox
+        'Als Regexp' aktivieren.
+        F&uuml;r den Windows Editor (Notepad) w&auml;re dies zum Beispiel
+        <code>.*- Editor</code>. Hierbei sollte allerdings darauf geachtet werden, dass der
+        angegebene regul&auml;re Ausdruck nicht zuf&auml;llig mit dem Titel eines anderes Fenster &uuml;bereinstimmt.
+        Wenn die Anwendung durch QF-Test gestartet werden soll, verwenden Sie bitte den 'Windows Anwendung starten'
+        Knoten und geben Sie die ausf&uuml;hrbare Datei (.exe) Ihrer Anwendung inklusive Pfad an,
+        vgl. <a href="#usec_wintesting_launch">Start/Anbindung einer Applikation</a>.
+      </p>
+      
+<p>
+        Wenn sich QF-Test zu der Anwendung (als <a href="control.html#att_ClientScriptStep_engine" shape="rect">'GUI Engine'</a> <code>win</code>) verbunden hat,
+        k&ouml;nnen Tests aufgenommen und abgespielt werden wie in <a href="user_capture.html#usec_capturereplay">Kapitel 4</a>
+        beschrieben. Auf Grund der Eigenschaften der Microsoft UI Automation sind allerdings
+        die in <a href="#usec_wintesting_record">Abschnitt 14.4</a> aufgef&uuml;hrten Aufnahmeregeln zu beachten.
+      </p>
+      
+<p>
+        Die Installation von QF-Test liefert folgende Beispiel-Testsuiten mit:
+        <ul>
+          
+<li>
+<code>qftest-6.0.3/demo/carconfigForms/winDemoForms_de.qft</code>
+</li>
+          
+<li>
+<code>qftest-6.0.3/demo/carconfigWpf/winDemoWPF_de.qft</code>
+</li>
+		  
+<li>
+<code>qftest-6.0.3/demo/windows/Win10Calculator_de.qft</code>
+</li>
+        
+</ul>
+      
+</p>
+      
+<p>
+        Bitte beachten Sie auch die (aktuellen) Einschr&auml;nkungen, <a href="#usec_wintesting_limits">Abschnitt 14.9</a>, von denen
+        zu erwarten ist, dass die meisten in zuk&uuml;nftigen QF-Test Releases behoben oder
+        verbessert werden.
+      </p>
+    
+
+    
+    
+
+    
+<a name="usec_wintesting_general"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_wintesting_general">14.2</a></span>
+</div>
+<a href="contents.html#toc_usec_wintesting_general">Technischer Hintergrund</a>
+</h4>
+      
+<p>
+        Ein verbreitetes Framework f&uuml;r Windows basierte Applikationen ist die Windows Automation API,
+        bestehend aus der Microsoft Active Accessibility und dessen Nachfolger, der Microsoft UI
+        Automation. Dies ist das Kernst&uuml;ck der <code>win</code> Engine, wodurch QF-Test in der Lage
+        ist, fast alle Arten von Windows Applikationen zu steuern.
+      </p>
+      
+<p>
+        Eine Windows Anwendung muss
+        sogenannte <code>Provider</code> zur Verf&uuml;gung stellen, um die Regeln der
+        UI Automation einzuhalten. Dies geschieht bei der Verwendung eines Frameworks wie WPF
+        automatisch, bei Win32 Applikationen &uuml;ber Proxy Provider. Wie gut eine Applikation
+        gestestet werden kann, h&auml;ngt somit von der Qualit&auml;t der jeweiligen <code>Provider</code>
+        ab, d.h. dem Framework, welches f&uuml;r die Entwicklung verwendet wurde. Da die UI Automation
+        zusammen mit dem WPF Framework eingef&uuml;hrt wurde, sollten Anwendungen, die damit
+        entwickelt wurden, gut testbar sein. Bei Entwicklungsplattformen ohne Integration
+        der UI Automation sieht die Sache anders aus, wie zum Beispiel bei Java Swing. Aber
+        daf&uuml;r f&uuml;r Java Anwendungen stellt QF-Test auch einen ziemlich guten anderen Verbindungsmodus
+        bereit ...
+      </p>
+      
+<p>
+        Wenn ein Programm &uuml;ber UI Automation getestet werden soll, so stehen sogenannte
+        <code>Automation Elements</code> zur Verf&uuml;gung, die die eigentlichen UI Elemente
+        der zu testenden Anwendung darstellen.
+        Obwohl jedes <code>Automation Element</code> einen <code>Control Type</code> hat
+        (<code>Button</code>, <code>MenuItem</code> etc.), wird seine tats&auml;chliche
+        Funktionalit&auml;t - zum Beispiel das Setzen eines Wertes in einem Textfeld -
+        &uuml;ber <code>Control Patterns</code> bestimmt, die &uuml;ber den
+        jeweiligen <code>Provider</code> implementiert sind.
+      </p>
+      
+<p>
+        Zur Bedienung des UI Automation Frameworks startet QF-Test ein spezielles Java
+        Programm, das als UI Automation Client Applikation dient. Dieses Programm
+        kann alle UI Automation Elemente eines bestimmten Prozesses ansprechen und
+        diese entsprechend der QF-Test Regeln bedienen (zum Beispiel zum Erstellen eines
+        Abbildes eines Elements als <a href="components.html#step_ComponentStep" shape="rect">'Komponente'</a>).
+      </p>
+    
+
+    
+    
+
+    
+<a name="usec_wintesting_launch"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_wintesting_launch">14.3</a></span>
+</div>
+<a href="contents.html#toc_usec_wintesting_launch">Start/Anbindung einer Applikation</a>
+</h4>
+      
+<p>
+        Um eine native Windows Anwendung zu testen ist es nicht zwingend notwendig, diese
+        Anwendung &uuml;ber QF-Test zu starten. Man kann QF-Test auch mit einem bereits laufenden
+        Prozess verbinden. Dadurch ist es auch m&ouml;glich, Bereiche des Betriebssystems zu
+        steuern, zum Beispiel die Windows Taskbar.
+      </p>
+      
+<p>
+        Die Anbindung an einen bereits laufenden Prozess erfolgt entweder &uuml;ber den Fenstertitel
+        (wahlweise mit regul&auml;rem Ausdruck), die Prozess-Id oder den Klassennamen des Fensters, der &uuml;ber
+        die UI Automation bereitgestellt wird. Die Anbindung ist f&uuml;r ein <code>Window</code>
+        im Sinne eines UI Automation <code>Control Types</code> m&ouml;glich, aber auch f&uuml;r
+        ein <code>Pane</code> oder <code>Menu</code> Element. Unabh&auml;ngig von der gew&auml;hlten
+        Verbindungsmethode, ermittelt QF-Test die jeweilige Prozess-Id und wird genau diesen Prozess
+        als System Under Test (SUT) behandeln.
+      </p>
+      
+<p>
+        Der <a href="processes.html#step_WinClientStarterAttach" shape="rect">'Windows Anwendung verbinden'</a> Knoten stellt die Verbindung her. Dabei muss
+        f&uuml;r die Verbindung zu einer bereits laufenden Anwendung im
+        Attribut <a href="processes.html#att_WinClientStarterAttach_windowtitle" shape="rect">'Fenstertitel'</a> einer der folgenden Werte
+        eingetragen werden (wie bereits oben erw&auml;hnt):
+      </p>
+      
+<ul>
+        
+<li>
+          ein regul&auml;rer Ausdr&uuml;ck f&uuml;r den Fenstertitel
+        </li>
+        
+<li>
+          -pid <code>&lt;Prozess-Id&gt;</code>
+        
+</li>
+        
+<li>
+          -class <code>&lt;class name&gt;</code>
+        
+</li>
+      
+</ul>
+      
+<p>
+        Beispiele:
+      </p>
+      
+<p>
+        
+<code>.*- Editor</code>: zur Anbindung an einen laufenden Windows Notepad Prozess,
+      </p>
+      
+<p>
+        
+<code>-class Shell_TrayWnd</code>: Anbindung der Windows Taskbar verbinden.
+      </p>
+      
+<p>
+        F&uuml;r die Ermittlung des Fenstertitels, der Prozess-Id oder des <code>Class Name</code>
+        des laufenden Programms steht die Prozedur <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.logUIAToplevels"><code>qfs.autowin.logUIAToplevels</code></a>
+        in der <a href="user_stdlib.html#usec_stdlib">Standardbibliothek</a> <code>qfs.qft</code> zur Verf&uuml;gung.
+      </p>
+      
+<p>
+        Man kann die zu testende Anwendung aber auch direkt &uuml;ber den <a href="processes.html#step_WinClientStarterStart" shape="rect">'Windows Anwendung starten'</a>
+        Knoten starten. In diesem Fall geben Sie den Dateinamen der ausf&uuml;hrbaren Datei, inklusive
+        Pfad, im Attribut <a href="processes.html#att_WinClientStarterStart_windowsprogram" shape="rect">'Windows Anwendung'</a> an.
+      </p>
+      
+<p>
+        Sie k&ouml;nnen auch das Attribut 'Windows Anwendung' zusammen mit dem 'Fenstertitel' Attribut
+        angeben. Dies ist n&uuml;tzlich, wenn die Anwendung gestartet werden soll, falls sie
+        nicht bereits l&auml;uft. QF-Test pr&uuml;ft dann zuerst, ob es sich an einen laufenden Prozess,
+        der dem 'Fenstertitel' Attribut entspricht, anbinden kann. Falls nicht,
+        wird das angegebene Programm gestartet und &uuml;ber seine Prozess-Id verbunden.
+        Es kann vorkommen, dass dieser Prozess einen weiteren Prozess startet, der das
+        eigentliche Programm darstellt, wobei ersterer selbst aber keine (grafische) Benutzeroberfl&auml;che hat oder sich
+        sogar beendet. In diesem Fall wird ein weiterer Versuch durchgef&uuml;hrt um eine
+        Verbindung zu dem zweiten Prozess zu erlangen.
+      </p>
+      
+<p>
+        Wenn Sie in QF-Test einen <code>win</code> Client beenden (entweder mittels des <a href="processes.html#step_ClientStopper" shape="rect">'Programm beenden'</a>
+        Knotens oder &uuml;ber das &raquo;<em>Clients</em>&laquo; Men&uuml;), wird der entsprechende
+        UI Automation Client Prozess mitsamt seiner Unterprozesse gestoppt. Das hei&szlig;t, dass
+        die zu testende Anwendung nur dann beendet wird, wenn sie aus QF-Test heraus gestartet
+        wurde, nicht aber, wenn sie bereits vor der Verbindung mit QF-Test gelaufen ist.
+     </p>
+      
+<p>
+        Wenn sie die zu testende Anwendung beenden, wird in jedem Fall auch der
+        UI Automation Client beendet.
+      </p>
+      
+<p>
+        Um sich mit einem heraufgestuften Prozess verbinden zu k&ouml;nnen, muss QF-Test als
+        Administrator gestartet werden.
+      </p>
+    
+
+    
+    
+
+    
+<a name="usec_wintesting_record"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_wintesting_record">14.4</a></span>
+</div>
+<a href="contents.html#toc_usec_wintesting_record">Aufnahme</a>
+</h4>
+      
+<p>
+        Nach erfolgreicher Verbindung von QF-Test mit der zu testenden Anwendung k&ouml;nnen
+        Sie mit der Aufnahme von Aktionen (<a href="user_capture.html#usec_recording">Abschnitt 4.1</a>), Checks (<a href="user_capture.html#usec_recordchecks">Abschnitt 4.3</a>) und Komponenten
+        (<a href="user_capture.html#usec_componentrecording">Abschnitt 4.4</a>) beginnen.
+      </p>
+      
+<p>
+        Da die Kommunikation zwischen dem QF-Test UI Automation Client und der zu testenden
+        Anwendung &uuml;ber Windows (konkret, den UI Automation Core) l&auml;uft, ist der Zugriff
+        auf die Komponenten nicht ganz so schnell wie Sie dies vielleicht von der
+        QF-Test Java Automatisierung kennen. Au&szlig;erdem werden Events im Gegensatz zu
+        Java- oder Web-Tests (QF-Driver) asynchron verarbeitet.
+        Das bedeutet, dass Sie nicht davon ausgehen k&ouml;nnen, dass der Dispatch Thread
+        der Applikation geblockt wird w&auml;hrend QF-Test ein Ereignis bearbeitet.
+      </p>
+      
+<p>
+        Dies macht Aufnahmen schwieriger, wenn die Zielkomponente in Folge der aufzunehmenden Aktion
+        verschwindet bevor QF-Test die Komponentenidentifizierung abgeschlossen hat.
+        Zum Beispiel bei der Aufnahme eines Combobox-Eintrags, der die Liste nach dem
+        Klick sofort schlie&szlig;t, oder eines Buttons, der das Fenster, in dem er liegt,
+        beendet.
+      </p>
+      
+<p>
+        Daher ist es sinnvoll, wenn Sie folgende Vorgehensweise beachten:
+      </p>
+      
+<ul>
+        
+<li>
+          Aktivieren Sie den Aufnahmemodus und bewegen Sie die Maus zu dem Element,
+          f&uuml;r das Sie eine Aktion aufnehmen wollen.
+        </li>
+        
+<li>
+          Da QF-Test etwas Zeit ben&ouml;tigt um das Element unter dem Mauszeiger zu identifizieren,
+          wird ein rotes Panel angezeigt bis der Vorgang abgeschlossen ist. In dem kleinen
+          'QF-Test Element Information' Fenster sehen Sie dann, welche Komponente
+          erkannt wurde.
+        </li>
+        
+<li>
+          F&uuml;hren Sie nun die aufzunehmende Aktion aus.
+        </li>
+        
+<li>
+          Wenn Sie einen Mausklick aufnehmen, der einen Dialog oder ein Fenster schlie&szlig;t
+          (auch Popup-Listen), halten Sie die Maustaste ein wenig l&auml;nger gedr&uuml;ckt, so dass
+          QF-Test die M&ouml;glichkeit hat, die n&ouml;tigen Informationen auszulesen bevor das
+          Fenster verschwindet, was h&auml;ufig fast zeitgleich mit dem Loslassen der
+          Maustaste geschieht.
+        </li>
+        
+<li>
+          Bei der Aufnahme von Checks oder Komponenten erscheint ein Rahmen um das Element
+          sobald der Mauszeiger dar&uuml;ber f&auml;hrt. Bitte warten Sie mit der Aufnahme bis
+          der Rahmen wieder verschwunden ist.
+        </li>
+      
+</ul>
+      
+<p>
+        Wenn Sie bei der Aufnahme einer Aktion Probleme haben, weil diese zum Beispiel
+        das entsprechende Fenster schlie&szlig;t (Klick auf OK oder Abbrechen Button),
+        kann es hilfreich sein, einen Check auf die entsprechende Komponente aufzunehmen
+        und diesen dann in die gew&uuml;nschte Aktion zu konvertieren. Manchmal kann das
+        Dr&uuml;cken der Maustaste auch dazu f&uuml;hren, dass ein Element neu generiert wird
+        (zum Beispiel bei der Zubeh&ouml;rtabelle im CarConfiguratorNet WPF Demo). Auch hier
+        kann die Check-Aufnahme helfen. Im Check-Aufnahmemodus legt QF-Test ein (fast)
+        unsichtbares Fenster &uuml;ber die zu testende Anwendung um so zu verhindern, dass
+        Mausklicks eine Aktion in der Anwendung bewirken.
+      </p>
+    
+
+    
+    
+
+    
+<a name="usec_wintesting_comps"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_wintesting_comps">14.5</a></span>
+</div>
+<a href="contents.html#toc_usec_wintesting_comps">Komponenten</a>
+</h4>
+      
+<p>
+        Ein UI Automation Element wird von QF-Test als <a href="components.html#step_WindowStep" shape="rect">'Fenster'</a> beziehungsweise
+        <a href="components.html#step_ComponentStep" shape="rect">'Komponente'</a> innerhalb des <a href="components.html#step_WindowList" shape="rect">'Fenster und Komponenten'</a> Knotens aufgenommen. Ein
+        manuelles Einf&uuml;gen von Knoten ist nat&uuml;rlich auch m&ouml;glich. Die (generische) QF-Test
+        'Klasse' entspricht h&auml;ufig dem <code>Type</code> des UI Automation Elements, zum
+        Beispiel bei <code>Button</code>. Um den <code>Type</code> vom Klassennamen
+        unterscheiden zu k&ouml;nnen, setzt QF-Test das Pr&auml;fix <code>Uia.</code> vor den
+        <code>Type</code>. Analog wird der Kurzname des UI Automation Frameworks als Pr&auml;fix f&uuml;r
+        die UI Automation <code>Class</code> des Elements verwendet. Zum Beispiel w&uuml;rde QF-Test bei
+        einer Tabelle einer WPF Anwendung in 'Weitere Merkmale' des 'Komponente' Knotens
+        einen Eintrag mit <code>classname: WPF.DataGrid</code> anlegen.
+      </p>
+      
+<p>
+        QF-Test bildet die Hierarchie der UI Automation Elemente unter Umst&auml;nden nicht eins zu eins
+        im Komponentenbaum ab. Dies geschieht h&auml;ufig bei Dialogen (wie zum Beispiel dem
+        Schriftart-Dialog von Notepad), die &uuml;blicherweise in der Komponentenhierarchie der UI
+        Automation unter dem Hauptfenster aufgef&uuml;hrt werden. Aus der Sicht von Win32, genauso
+        wie das auch QF-Test Anwender erwarten w&uuml;rden, sind diese Dialoge top-level Windows und
+        damit in 'Fenster und Komponenten' parallel zum Hauptfenster angeordnet. Andererseits kann ein
+        Kontextmen&uuml;, das ganz oben in der UI Automation Hierarchie angesiedelt ist, in QF-Test
+        innerhalb eines Fensters zu finden sein.
+      </p>
+    
+
+    
+    
+
+    
+<a name="usec_wintesting_play"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_wintesting_play">14.6</a></span>
+</div>
+<a href="contents.html#toc_usec_wintesting_play">Wiedergabe und Patterns</a>
+</h4>
+      
+<p>
+        Die <code>win</code> Engine unterst&uuml;tzt neben den bereits aus anderen Engines bekannten Mausklicks
+        auch verschiedene Spezialaktionen die nicht auf Mausklicks basieren.
+      </p>
+      
+<p>
+        Zum Beispiel kann die Aktion einer Schaltfl&auml;che
+        mittels
+      </p>
+      
+<p>
+        &nbsp;&nbsp;<code>+Auswahl: invoke [myButtonID]</code>
+      
+</p>
+      
+<p>
+        ausgel&ouml;st werden. Die Wirkung sollte die gleiche sein wie bei
+      </p>
+      
+<p>
+        &nbsp;&nbsp;<code>+Mausklick [myButtonID]</code>
+      
+</p>
+      
+<p>
+        Bei einem 'Auswahl' wird die Maus nicht verwendet. Stattdessen
+        l&ouml;st der UI Automation Prozess die Ausf&uuml;hrung einer <code>Invoke()</code> Methode
+        des <code>Providers</code> im SUT aus.
+      </p>
+      
+<p>
+        Der 'Auswahl' Knoten unterst&uuml;tzt die folgenden Aktionen im Attribut
+        'Detail': <code>invoke</code>, <code>expand</code>, <code>collapse</code>, <code>select</code>,
+        <code>toggle</code> und <code>scroll</code>. In der nachfolgenden Tabelle werden sie detailiert beschrieben:
+      </p>
+      
+<a name="table_14.1"></a><a name="table_14.1"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth">
+            
+<tr>
+              
+<th width="25%" rowspan="1" colspan="1">'Detail'</th>
+              <th rowspan="1" colspan="1">Beschreibung</th>
+              <th width="25%" rowspan="1" colspan="1">Pattern</th>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1"><code>invoke</code></td>
+              <td rowspan="1" colspan="1">Meist gleichwertig mit einem Mausklick.</td>
+              <td rowspan="1" colspan="1">InvokePattern</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1"><code>expand, collapse</code></td>
+              <td rowspan="1" colspan="1">Dies sollte eine Combobox, ein MenuItem oder ein
+                  TreeItem aus- beziehungsweise einklappen.</td>
+              <td rowspan="1" colspan="1">ExpandCollapsePattern</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1"><code>select[:0|-1|1]</code></td>
+              <td rowspan="1" colspan="1">W&auml;hlt einen Listeneintrag aus. Wenn als Detail -1 bzw. 1 angegeben wird,
+              so wird eine Mehrfachauswahll erweitert oder verringert.</td>
+              <td rowspan="1" colspan="1">SelectionItemPattern</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1"><code>toggle[:on|off]</code></td>
+              <td rowspan="1" colspan="1">&Auml;ndert den Zustand einer CheckBox.</td>
+              <td rowspan="1" colspan="1">TogglePattern</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1"><code>scroll:horiz%,vert%</code></td>
+              <td rowspan="1" colspan="1">Erlaubt Werte zwischen 0 und 100, die die
+          Scroll-Position in Prozent angeben. -1, wenn die Position (Horizontal oder vertikal)
+          nicht ver&auml;ndert werden soll.</td>
+              <td rowspan="1" colspan="1">ScrollPattern</td>
+            
+</tr>
+          
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;14.1</a>:&nbsp;&nbsp;Unterst&uuml;tzte Details f&uuml;r 'Auswahl'</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Welche Aktionen tats&auml;chlich auf einem Control abgespielt werden k&ouml;nnen, h&auml;ngt davon ab,
+        welche Pattern das entsprechende UI Automation Elements implementiert. Die verf&uuml;gbaren Patterns
+        werden unter 'Weitere Merkmale' einer Komponente abgespeichert oder k&ouml;nnen in einem 'SUT Skript'
+        mit dem Befehl <code>print rc.getComponent(<i>id</i>).getPatterns()</code> ermittelt werden.
+      </p>
+      
+<p>
+        Die genaue Bedeutung eines Patterns kann sich von Anwendung zu
+        Anwendung unterscheiden. Wenn sowohl das <code>SelectionItem</code>-Pattern als
+        auch das <code>Invoke</code>-Pattern unterst&uuml;tzt werden, sollte
+        <code>invoke</code> bevorzugt werden, da
+      </p>
+      
+<p>
+        &nbsp;&nbsp;<code>+Select [list@item]</code>
+      
+</p>
+      
+<p>
+        eventuell nur das Element markiert, nicht jedoch die entsprechende Aktion
+        ausl&ouml;st. (Ein Beispiel hierf&uuml;r ist die Schriftartenauswahl bei Notepad.)
+      </p>
+      
+<p>
+        Die formale Unterst&uuml;tzung eines Patterns bedeutet leider
+        noch lange nicht, dass der Aufruf des entsprechenden Auswahl-Events irgendeine Wirkung zeigt.
+        Dies ist zum Beispiel in der Rechner-Applikation von Windows der Fall, wenn man zu einem
+        (nicht sichtbaren) Eintrag der Modus-Auswahlliste bl&auml;ttern m&ouml;chte
+        (<code>ScrollItem pattern</code>). Um dieses
+        Problem zu umgehen, kann in diesem Fall ein <code>select</code> abgespielt werden,
+        unabh&auml;ngig davon, ob der Eintrag gerade sichtbar ist.
+      </p>
+      
+<p>
+        Weil das "weiche" Abspielen von Aktionen h&auml;ufig im <code>provider</code> nicht
+        implementiert ist funktionieren diese Spezialaktionen nur bedingt.
+      </p>
+      
+<p>
+        Bei 'Tastaturevents' kann ein Text nur dann direkt &uuml;ber einen  'Texteingabe'
+        Knoten gesetzt werden, wenn das <code>Value pattern</code> unterst&uuml;tzt wird.
+        Ansonsten muss der Text &uuml;ber einzelne Tastaturevents eingegeben werden.
+      </p>
+    
+
+    
+    
+
+    
+<a name="usec_wintesting_script"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_wintesting_script">14.7</a></span>
+</div>
+<a href="contents.html#toc_usec_wintesting_script">Skripting</a>
+</h4>
+      
+<p>
+        Intern stellt die <code>win</code> Engine ein UI Automation Element mit der
+        Klasse <code>WinControl</code> dar. Um auf ein Element in einem Groovy
+        <a href="control.html#step_ClientScriptStep" shape="rect">'SUT Skript'</a> Knoten zuzugreifen, f&uuml;hren Sie folgendes Skript
+        mit der passenden 'QF-Test ID der Komponente' aus:
+      </p>
+      
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def winc = rc.getComponent("myComponentID")
+println winc</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;14.1:&nbsp;&nbsp;Zugriff auf ein <code>WinControl</code> in einem Groovy 'SUT Skript'</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Die Methoden der Klasse <code>WinControl</code> sind in <a href="tech_wincontrolapi.html#sec_win_api_winc">Abschnitt 50.13.1</a> detailliert beschrieben:
+      </p>
+      
+<ul>
+        
+<li>
+          
+<code>getUiaType(), getUiaClassName(), getFramework(), getUiaName(), getUiaId(),
+          getUiaDescription(), getUiaHelp(), getHwnd(), getLocation(), getSize(),
+          getLocationOnScreen(), getPatterns(), hasPattern()</code>
+          um die UI Automation Eigenschaften eines Elements zu erhalten
+        </li>
+        
+<li>
+          
+<code>getChildren(), getParent(), getChildrenOfType(), getAncestorOfType(),
+          getElementsByClassName()</code> f&uuml;r die Elementhierarchie
+        </li>
+        
+<li>
+          
+<code>getUiaControl()</code> um ein <code>AutomationBase</code> zu erhalten,
+                welches dann mit der <code>uiauto</code>-Skriptbibliothek verwendet werden kann (<a href="tech_uiauto.html#usec_uiauto">Kapitel 48</a>).
+        </li>
+      
+</ul>
+    
+
+    
+    
+
+    
+<a name="usec_wintesting_options"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_wintesting_options">14.8</a></span>
+</div>
+<a href="contents.html#toc_usec_wintesting_options">Optionen</a>
+</h4>
+      
+<p>
+        Das Verhalten der <code>win</code> Engine kann &uuml;ber die QF-Test Optionen beeinflusst
+        werden. Dar&uuml;ber hinaus k&ouml;nnen noch Properties gesetzt werden, die den nativen Teil
+        des UI Automation Clients beeinflussen. Diese Optionen und Properties k&ouml;nnen in
+        einem 'SUT Skript' Knoten gesetzt werden via:
+        </p>
+        
+<p>
+        &nbsp;&nbsp;<code>rc.setOption(&lt;name&gt;, &lt;value&gt;)</code>
+        
+</p>
+        
+<p>
+          bzw.
+        </p>
+        
+<p>
+          &nbsp;&nbsp;<code>rc.engine.preferences().setPref(&lt;name&gt;, &lt;value&gt;)</code>
+        
+</p>
+        
+<p>
+         Um die gesetzte Option zur&uuml;ckzusetzen gen&uuml;gt:
+        </p>
+        
+<p>
+          &nbsp;&nbsp;<code>rc.unsetOption(&lt;name&gt;)</code>
+        
+</p>
+        
+<a name="sec_N86038"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N86038">14.8.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N86038">Windows Skalierung</a>
+</h5>
+        
+<p>
+          Auf Grund stetig wachsender Bildschirmaufl&ouml;sungen in den letzten Jahren gibt es in
+          Windows die M&ouml;glichkeit die Skalierungseinstellungen anzupassen. Windows Anwendungen sowie
+          ihre Komponenten und die darin dargestellte Schrift werden an diesen Skalierungsfaktor
+          angepasst. UWP, WPF und Windows Forms Anwendungen skalieren normalerweise automatisch
+          aber Win32 Anwendungen und deren Steuerelemente im Besonderen behalten teilweise ihre Gr&ouml;&szlig;e
+          oder skalieren auf andere Weise.
+        </p>
+        
+<p>
+          QF-Test arbeitet standardm&auml;&szlig;ig mit physischen Bildschirmkoordinaten. Angenommen die Skalierung ist auf
+          125% gesetzt und eine Schaltfl&auml;che w&uuml;rde bei 100% Skalierung an der Position (24,40)
+          mit einer Gr&ouml;&szlig;e von (100,20) existieren, so w&auml;re diese bei dieser Skalierung an Position (30,50)
+          und h&auml;tte eine Gr&ouml;&szlig;e von (125,25).
+          Daraus ergeben sich folgende Konsequenzen:
+          <ul>
+            
+<li>unterschiedliche Geometrie wenn die Komponente erneut aufgenommen wird</li>
+            
+<li>Unterschiede bei der Geometrie, wenn QF-Test versucht eine Komponente zu identifizieren, die mit 100% Skalierung
+            aufgenommen wurde.</li>
+            
+<li>Ein (harter) Mauklick auf einen bestimmten Bereich innerhalb eines Elementes kann fehlschlagen, weil der
+            skalierte Bereich weiter von der oberen-rechten Ecke des Elementes entfernt ist.
+            </li>
+          
+</ul>
+        
+</p>
+        
+<p>
+          Damit QF-Test mit logischen anstelle von physischen Koordinaten arbeitet, kann
+          <code>Options.OPT_WIN_USE_SCALING</code> auf <code>true</code> gesetzt werden. QF-Test verwendet dann den
+          Skalierungsfaktor des prim&auml;ren Monitors um die Geometrie f&uuml;r Komponenten und die Koordinaten f&uuml;r Maus-Events
+          anzupassen. Bei dieser Anpassung kann es je nach eingestelltem Skalierungsfaktor zu Rundungsfehlern
+          kommen, wenn die Koordinaten neu berechnet werden, da diese als Integerwerte gespeichert sind. Das kann dazu
+          f&uuml;hren, dass Koordinaten um 1 Pixel abweichen.
+        </p>
+      
+      
+<a name="sec_N86072"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N86072">14.8.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N86072">Sichtbarkeit</a>
+</h5>
+        
+<p>
+          Es kann vorkommen, dass ein Ereignis auf eine Komponente ausgel&ouml;st werden soll, die gerade nicht sichtbar ist
+          (da sie gerade au&szlig;erhalb des sichtbaren Bereiches gescrollt ist). Um auf diese Komponente ein <code>invoke</code>
+          Event abzuspielen, muss vorher die Pr&uuml;fung auf Sichtbarkeit deaktiviert werden, die normalerweise ein
+          Bestandteil der Objekterkennung ist.
+        </p>
+        
+<p>
+          Das kann durch das Setzen von <code>Options.OPT_WIN_TEST_VISIBILITY</code> auf
+          <code>false</code> erreicht werden. Nach der Wiedergabe des jeweiligen Events sollte die Sichtbarkeitspr&uuml;fung wieder
+          aktiviert werden.
+        </p>
+      
+      
+<a name="sec_N86094"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N86094">14.8.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N86094">Verbinden zu einem Fenster einer bestimmten Klasse</a>
+</h5>
+        
+<p>
+          Wenn eine Anwendung via <code>-class &lt;class name&gt;</code> verbunden wird, ignoriert QF-Test standardm&auml;&szlig;ig alle
+          Haupt-Fenster der Anwendung, die nicht dieser Klasse entsprechen. Auf diesem Weg kann man QF-Test zum Beispiel
+          lediglich mit der Windows Taskbar verbinden und den Desktop und die darauf liegenden Icons komplett ignorieren,
+          obwohl sie im gleichen Prozess laufen.
+        </p>
+        
+<p>
+          Um dennoch alle Haupt-Fenster (toplevels) eines Prozesses zugreifbar zu machen, kann die Pr&auml;ferenz
+          <code>"windriver.restrict.tops.to.class"</code> auf <code>"false"</code> gesetzt werden.
+        </p>
+      
+      
+<a name="sec_N86116"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N86116">14.8.4</a></span>
+</div>
+<a href="contents.html#toc_sec_N86116">Begrenzung der Anzahl von Kind-Elementen</a>
+</h5>
+        
+<p>
+          Gro&szlig;e Hierarchien von UI Automation Elementen k&ouml;nnen Aufnahme und Wiedergabe
+          deutlich verlangsamen. Um dem entgegenzuwirken, begrenzt QF-Test die Anzahl der
+          Kind-Elemente, wenn diese vom Client abgerufen werden.
+        </p>
+        
+<p>
+          Der vorgegebene Wert betr&auml;gt 100 und kann &uuml;ber
+          <code>Options.OPT_WIN_MAX_CHILDREN</code> angepasst werden.
+        </p>
+      
+    
+
+    
+    
+
+    
+<a name="usec_wintesting_limits"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_wintesting_limits">14.9</a></span>
+</div>
+<a href="contents.html#toc_usec_wintesting_limits">(Aktuelle) Einschr&auml;nkungen</a>
+</h4>
+      
+<p>
+        Die aktuelle Implementierung des Windows-Testens enth&auml;lt noch eine Reihe von
+        Einschr&auml;nkungen. Wir werden versuchen, die Funktionalit&auml;t laufend zu verbessern, doch
+        mag die eine oder andere Einschr&auml;nkung noch eine Weile bestehen.
+      </p>
+      
+<p>
+        Da die Unterst&uuml;tzung der UI Automation vom Framework abh&auml;ngt, mit dem die
+        Anwendung entwickelt wurde, ist die Aufnahme in QF-Test eventuell nicht
+        konsistent. Zum Beispiel kann beim &Ouml;ffnen eines Dialogs ein 'Warten auf Komponente'
+        aufgezeichnet werden oder auch nicht.
+      </p>
+      
+<p>
+        Das Testen von Anwendungen, die aus mehreren Prozessen bestehen, ist komplex und erfordert
+        mehrere <code>win</code> Clients.
+      </p>
+      
+<p>
+        Weitere Einschr&auml;nkungen und noch nicht implementierte Funktionalit&auml;ten (Stand Januar 2020) sind
+        unter anderem:
+      </p>
+      
+<ul>
+        
+<li>
+          Die unterst&uuml;tzten Check-Arten sind so gut wie vollst&auml;ndig. Es fehlen aber noch einige
+          speziellere Checks. Dies sollen in einer zuk&uuml;nftigen QF-Test Version vervollst&auml;ndigt werden.
+        </li>
+        
+<li>
+          Elemente einer Titelleiste einer Windows App k&ouml;nnen nicht (einfach) angesprochen
+          werden, weil diese in einem anderen Prozess liegen. Dies k&ouml;nnte in einer
+          zuk&uuml;nftigen QF-Test Version behoben werden.
+        </li>
+        
+<li>
+          Die Event-Weiterleitung vom Textelement einer Schaltfl&auml;che auf das Schaltfl&auml;chenelement
+          selbst erfolgt bei der Aufnahme eines Mausklicks, kann aber an anderer Stelle fehlen. Dies
+          sollte in einer zuk&uuml;nftigen QF-Test Version behoben sein.
+        </li>
+      
+</ul>
+    
+
+    
+    
+
+    
+<a name="usec_wintesting_links"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_wintesting_links">14.10</a></span>
+</div>
+<a href="contents.html#toc_usec_wintesting_links">Links</a>
+</h4>
+      
+<p>
+        Das Windows Automation API ist beschrieben unter:
+        <a href="https://docs.microsoft.com/en-US/windows/desktop/WinAuto/windows-automation-api-portal" shape="rect">
+        https://docs.microsoft.com/en-US/windows/desktop/WinAuto/windows-automation-api-portal</a>.
+      </p>
+      
+<p>
+        Weitere Informationen zu Mark Humphreys ui-automation Java Bibliothek finden Sie unter
+        <a href="https://github.com/mmarquee" shape="rect">https://github.com/mmarquee</a>.
+      </p>
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_webtesting.html#usec_webtesting"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 13&nbsp;Testen von Webseiten" title="Vorheriges Kapitel: 13&nbsp;Testen von Webseiten"></a></td><td class="navicon"><a href="user_androidtesting.html#usec_androidtesting"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 15&nbsp;Testen von Android Anwendungen" title="N&auml;chste Seite: 15&nbsp;Testen von Android Anwendungen"></a></td><td class="navicon"><a href="user_androidtesting.html#usec_androidtesting"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 15&nbsp;Testen von Android Anwendungen" title="N&auml;chstes Kapitel: 15&nbsp;Testen von Android Anwendungen"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch" title="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

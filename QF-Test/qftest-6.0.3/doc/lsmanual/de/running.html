@@ -1,0 +1,691 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>QF-Test Startoptionen f&uuml;r den Betrieb und die Administration des Lizenzservers</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2014-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="ls_startoptions"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="lsmanual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="installation.html#ls_installation"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 2&nbsp;Lizenzserver-Installation" title="Vorheriges Kapitel: 2&nbsp;Lizenzserver-Installation"></a></td><td class="navicon"><a href="administration.html#ls_gui"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 4&nbsp;Interaktive Administration des Lizenzservers" title="N&auml;chste Seite: 4&nbsp;Interaktive Administration des Lizenzservers"></a></td><td class="navicon"><a href="administration.html#ls_gui"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 4&nbsp;Interaktive Administration des Lizenzservers" title="N&auml;chstes Kapitel: 4&nbsp;Interaktive Administration des Lizenzservers"></a></td><td class="navicon"><a href="lsmanual.html#all"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: QF-Test - Das Lizenzserver Handbuch" title="Kapitel-&Uuml;bersicht: QF-Test - Das Lizenzserver Handbuch"></a></td><td class="navicon"><a href="../../lsmanual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_ls_startoptions">3</a></span>
+</div>
+<a href="contents.html#toc_ls_startoptions">QF-Test Startoptionen f&uuml;r den Betrieb und die Administration des Lizenzservers</a>
+</h3>
+      
+<p>
+	
+<span class="margin"><a name="new_N65970"></a><span class="note">5.2+</span></span>
+	F&uuml;r maximale Flexibilit&auml;t wird bei den Namen der QF-Test Kommandozeilenargumente Gro&szlig;-/Kleinschreibung ebenso
+	ignoriert, wie enthaltene '-', '_', '.' oder ':' Zeichen. Somit ist <code>-licenseserver.logfile</code>
+	&auml;quivalent zu <code>--licenseserverLogfile</code> oder <code>-licenseserver-logfile</code>. Letzteres ist die
+	offiziell dokumentierte Form, da sie Konflikte mit der Windows PowerShell vermeidet.
+      </p>
+      
+<p>
+        
+<span class="margin"><a name="windows_N65985"></a><span class="note">Windows</span></span>Das Programm <code>qftest.exe</code> ist eine Windows
+        GUI-Anwendung. Wird diese von der Eingabeaufforderung gestartet, wartet sie nicht darauf,
+        dass QF-Test beendet wird, sondern kehrt sofort zur&uuml;ck, so dass keine Ausgaben von QF-Test auf
+        der Konsole angezeigt werden. F&uuml;r den Betrieb des QF-Test Lizenzservers als Windows service
+        oder Autostart-Programm ist dies irrelevant. F&uuml;r die Ausf&uuml;hrung von der
+        Eingabeaufforderung ist aber die Konsolen-Anwendung <code>qftestc.exe</code> besser
+        geeignet. Sie wartet, bis QF-Test sich beendet, Ausgaben werden im Konsolenfenster
+        angezeigt. Ansonsten gilt das, was in diesem Handbuch &uuml;ber <code>qftest.exe</code> gesagt wird
+        auch f&uuml;r <code>qftestc.exe</code>.
+      </p>
+      
+
+      
+<a name="sec_callsyntax"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_callsyntax">3.1</a></span>
+</div>
+<a href="contents.html#toc_sec_callsyntax">Aufrufsyntax</a>
+</h4>
+        
+
+        
+<a name="ls_servercommands"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_ls_servercommands">3.1.1</a></span>
+</div>
+<a href="contents.html#toc_ls_servercommands">Serverseitige Befehle</a>
+</h5>
+          
+<p>
+            Die folgenden Befehle beziehen sich auf den Lizenzserver. Sie m&uuml;ssen auf dem Rechner des
+            Lizenzservers ausgef&uuml;hrt werden und ben&ouml;tigen eine Server-Lizenz.
+          </p>
+          
+<dl>
+            
+<dt>Lizenzserver starten</dt>
+            
+<dd>
+              
+<p>
+                Der Lizenzserver wird wie folgt gestartet:
+              </p>
+
+              
+<p>
+                
+<code>
+                  qftest <a href="#arg_batch" shape="rect"><code>-batch</code></a> [<a href="#arg_dbg" shape="rect"><code>-dbg</code></a>]
+                  [<a href="#arg_java" shape="rect"><code>-java &lt;Programm&gt;</code></a>] [<a href="#arg_noconsole" shape="rect"><code>-noconsole</code></a>]
+                  [-J&lt;java-argument&gt;]*
+                  [<a href="#arg_license" shape="rect"><code>-license &lt;Datei&gt;</code></a>]
+                  [<a href="#arg_licenseserver.logfile" shape="rect"><code>-licenseserver-logfile &lt;Datei&gt;</code></a>]
+                  [<a href="#arg_licenseserver.verbose" shape="rect"><code>-licenseserver-verbose &lt;Wert&gt;</code></a>]
+                  [<a href="#arg_option" shape="rect"><code>-option &lt;Name&gt;=&lt;Wert&gt;</code></a>]
+                  [<a href="#arg_options" shape="rect"><code>-options &lt;Datei&gt;</code></a>]
+                  <a href="#arg_licenseserver" shape="rect"><code>-licenseserver</code></a>
+                </code>
+              
+</p>
+            
+</dd>
+
+            
+<dt>Administratorkennwort f&uuml;r den Lizenzserver setzen</dt>
+            
+<dd>
+              
+<p>
+                Um das Administratorkennwort f&uuml;r den Lizenzserver selbst zu setzen, wird
+                der folgende Befehl f&uuml;r &lt;user&gt; <code>admin</code> verwendet:
+              </p>
+
+              
+<p>
+                
+<code>
+                  qftest <a href="#arg_batch" shape="rect"><code>-batch</code></a> [<a href="#arg_dbg" shape="rect"><code>-dbg</code></a>]
+                  [<a href="#arg_java" shape="rect"><code>-java &lt;Programm&gt;</code></a>] [<a href="#arg_noconsole" shape="rect"><code>-noconsole</code></a>]
+                  [-J&lt;java-argument&gt;]*
+                  [<a href="#arg_license" shape="rect"><code>-license &lt;Datei&gt;</code></a>]
+                  [<a href="#arg_licenseserver.logfile" shape="rect"><code>-licenseserver-logfile &lt;Datei&gt;</code></a>]
+                  [<a href="#arg_licenseserver.verbose" shape="rect"><code>-licenseserver-verbose &lt;Wert&gt;</code></a>]
+                  [<a href="#arg_option" shape="rect"><code>-option &lt;Name&gt;=&lt;Wert&gt;</code></a>]
+                  [<a href="#arg_options" shape="rect"><code>-options &lt;Datei&gt;</code></a>]
+                  <a href="#arg_licenseserver" shape="rect"><code>-licenseserver</code></a>
+                  <a href="#arg_licenseserver.setpwd" shape="rect"><code>-licenseserver-setpwd admin=&lt;Passwort&gt;</code></a>
+                </code>
+              
+</p>
+            
+</dd>
+          
+</dl>
+        
+
+        
+        
+
+        
+<a name="ls_clientcommands"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_ls_clientcommands">3.1.2</a></span>
+</div>
+<a href="contents.html#toc_ls_clientcommands">Clientseitige Befehle</a>
+</h5>
+          
+<p>
+            Die folgenden Befehle k&ouml;nnen mit QF-Test entweder auf dem Rechner des Lizenzservers
+            oder auf einem Client-Rechner ausgef&uuml;hrt werden. Es wird daf&uuml;r eine zum Server passende
+            Client-Lizenz ben&ouml;tigt.
+          </p>
+          
+<dl>
+            
+<dt>Lizenzserver stoppen</dt>
+            
+<dd>
+              
+<p>
+                Mit dem folgenden Befehl kann der Lizenzserver sauber heruntergefahren werden:
+              </p>
+
+              
+<p>
+                
+<code>
+                  qftest <a href="#arg_batch" shape="rect"><code>-batch</code></a> [<a href="#arg_dbg" shape="rect"><code>-dbg</code></a>]
+                  [<a href="#arg_java" shape="rect"><code>-java &lt;Programm&gt;</code></a>] [<a href="#arg_noconsole" shape="rect"><code>-noconsole</code></a>]
+                  [-J&lt;java-argument&gt;]*
+                  [<a href="#arg_license" shape="rect"><code>-license &lt;Datei&gt;</code></a>]
+                  [<a href="#arg_option" shape="rect"><code>-option &lt;Name&gt;=&lt;Wert&gt;</code></a>]
+                  [<a href="#arg_options" shape="rect"><code>-options &lt;Datei&gt;</code></a>]
+                  [<a href="#arg_licenseserver.password" shape="rect"><code>-licenseserver-password &lt;Password&gt;</code></a>]
+                  <a href="#arg_licenseserver.shutdown" shape="rect"><code>-licenseserver-shutdown</code></a>
+                </code>
+              
+</p>
+            
+</dd>
+
+            
+<dt>Benutzer-Kennwort f&uuml;r den Lizenzserver sichern</dt>
+            
+<dd>
+              
+<p>
+                
+
+                Nach einmaliger Ausf&uuml;hrung dieses Befehls ist das Administrationskennwort f&uuml;r den
+                aktuell angemeldeten Anwender gespeichert, so dass zuk&uuml;nftig das
+                Befehlszeilenargument <a href="#arg_licenseserver.password" shape="rect"><code>-licenseserver-password &lt;Password&gt;</code></a> nicht angegeben werden muss:
+              </p>
+
+              
+<p>
+                
+<code>
+                  qftest <a href="#arg_batch" shape="rect"><code>-batch</code></a> [<a href="#arg_dbg" shape="rect"><code>-dbg</code></a>]
+                  [<a href="#arg_java" shape="rect"><code>-java &lt;Programm&gt;</code></a>] [<a href="#arg_noconsole" shape="rect"><code>-noconsole</code></a>]
+                  [-J&lt;java-argument&gt;]*
+                  [<a href="#arg_license" shape="rect"><code>-license &lt;Datei&gt;</code></a>]
+                  [<a href="#arg_option" shape="rect"><code>-option &lt;Name&gt;=&lt;Wert&gt;</code></a>]
+                  [<a href="#arg_options" shape="rect"><code>-options &lt;Datei&gt;</code></a>]
+                  <a href="#arg_licenseserver.setpwd" shape="rect"><code>-licenseserver-setpwd admin=&lt;Passwort&gt;</code></a>
+                </code>
+              
+</p>
+
+              
+<p>
+                Aktuell wird nur der Anwender <code>admin</code> unterst&uuml;tzt.
+              </p>
+            
+</dd>
+            
+<dt>Aktueller Lizenzverbrauch - Detaillierte Informationen</dt>
+            
+<dd>
+              
+<p>
+                Eine Liste der aktuell verwendeten Lizenzen erh&auml;lt man mittels folgenden Befehls:
+              </p>
+
+              
+<p>
+                
+<code>
+                  qftest <a href="#arg_batch" shape="rect"><code>-batch</code></a> [<a href="#arg_dbg" shape="rect"><code>-dbg</code></a>]
+                  [<a href="#arg_java" shape="rect"><code>-java &lt;Programm&gt;</code></a>] [<a href="#arg_noconsole" shape="rect"><code>-noconsole</code></a>]
+                  [-J&lt;java-argument&gt;]*
+                  [<a href="#arg_license" shape="rect"><code>-license &lt;Datei&gt;</code></a>]
+                  [<a href="#arg_option" shape="rect"><code>-option &lt;Name&gt;=&lt;Wert&gt;</code></a>]
+                  [<a href="#arg_options" shape="rect"><code>-options &lt;Datei&gt;</code></a>]
+                  [<a href="#arg_licenseserver.password" shape="rect"><code>-licenseserver-password &lt;Password&gt;</code></a>]
+                  <a href="#arg_licenseserver.dump" shape="rect"><code>-licenseserver-dump</code></a>
+                </code>
+              
+</p>
+
+              
+<p>
+                Das Ergebnis wird als kommaseparierte Liste (CSV Format) mit Titelzeile auf stdout
+                ausgegeben.
+              </p>
+            
+</dd>
+            
+<dt>Aktueller Lizenzverbrauch - &Uuml;berblick</dt>
+            
+<dd>
+              
+<p>
+                Eine &Uuml;bersicht &uuml;ber die aktuell verwendeten Lizenzen bietet folgender Befehl:
+              </p>
+
+              
+<p>
+                
+<code>
+                  qftest <a href="#arg_batch" shape="rect"><code>-batch</code></a> [<a href="#arg_dbg" shape="rect"><code>-dbg</code></a>]
+                  [<a href="#arg_java" shape="rect"><code>-java &lt;Programm&gt;</code></a>] [<a href="#arg_noconsole" shape="rect"><code>-noconsole</code></a>]
+                  [-J&lt;java-argument&gt;]*
+                  [<a href="#arg_license" shape="rect"><code>-license &lt;Datei&gt;</code></a>]
+                  [<a href="#arg_option" shape="rect"><code>-option &lt;Name&gt;=&lt;Wert&gt;</code></a>]
+                  [<a href="#arg_options" shape="rect"><code>-options &lt;Datei&gt;</code></a>]
+                  [<a href="#arg_licenseserver.password" shape="rect"><code>-licenseserver-password &lt;Password&gt;</code></a>]
+                  <a href="#arg_licenseserver.dumptotal" shape="rect"><code>-licenseserver-dumptotal</code></a>
+                </code>
+              
+</p>
+
+              
+<p>
+                Das Ergebnis wird als kommaseparierte Liste (CSV Format) mit Titelzeile auf stdout
+                ausgegeben. Die Zeilen spiegeln den aktuellen Lizenzverbrauch, die verbleibenden
+                freien Lizenzen und die Gesamtzahl der verf&uuml;gbaren Lizenzen wieder.
+              </p>
+            
+</dd>
+            
+<dt>Spitzenverbrauch - &Uuml;berblick</dt>
+            
+<dd>
+              
+<p>
+                Der QF-Test Lizenzserver hat einen internen Z&auml;hler f&uuml;r den Spitzenverbrauch.
+                Die Werte k&ouml;nnen &uuml;ber den folgenden Befehl angezeigt werden:
+              </p>
+
+              
+<p>
+                
+<code>
+                  qftest <a href="#arg_batch" shape="rect"><code>-batch</code></a> [<a href="#arg_dbg" shape="rect"><code>-dbg</code></a>]
+                  [<a href="#arg_java" shape="rect"><code>-java &lt;Programm&gt;</code></a>] [<a href="#arg_noconsole" shape="rect"><code>-noconsole</code></a>]
+                  [-J&lt;java-argument&gt;]*
+                  [<a href="#arg_license" shape="rect"><code>-license &lt;Datei&gt;</code></a>]
+                  [<a href="#arg_option" shape="rect"><code>-option &lt;Name&gt;=&lt;Wert&gt;</code></a>]
+                  [<a href="#arg_options" shape="rect"><code>-options &lt;Datei&gt;</code></a>]
+                  [<a href="#arg_licenseserver.password" shape="rect"><code>-licenseserver-password &lt;Password&gt;</code></a>]
+                  [<a href="#arg_licenseserver.verbose" shape="rect"><code>-licenseserver-verbose &lt;Wert&gt;</code></a>]
+                  <a href="#arg_licenseserver.dumppeak" shape="rect"><code>-licenseserver-dumppeak</code></a>
+                </code>
+              
+</p>
+
+              
+<p>
+                Das Ergebnis wird auf stdout ausgegeben. Wenn die Einstellung f&uuml;r die Protokollierung
+                <a href="#arg_licenseserver.verbose" shape="rect"><code>-licenseserver-verbose &lt;Wert&gt;</code></a> gleich <code>VERBOSE</code> oder mehr ist, wird die
+                Uhrzeit, zu der der Spitzenwert erreicht wurde, mit angegeben. Wenn die Einstellung auf
+                <code>DETAIL</code> gesetzt wird, werden zus&auml;tzlich die einzelnen Lizenzzuweisungen, die zu
+                der Spitze f&uuml;hrten, mit ausgegeben.
+              </p>
+            
+</dd>
+
+            
+<dt>Interaktive Lizenzserveradministration</dt>
+            
+<dd>
+              
+<p>
+                Der folgende Befehl started das zugeh&ouml;rige interaktive GUI f&uuml;r die Administration des
+                Lizenzservers. Man kann dieses Fenster auch aus einer interaktiven QF-Test Instanz heraus
+                &uuml;ber das Men&uuml; &raquo;<em>Extras</em>&laquo;-&raquo;<em>Administrate                                                              Lizenzserver</em>&laquo; starten.
+              </p>
+
+              
+<p>
+                
+<code>
+                  qftest [<a href="#arg_dbg" shape="rect"><code>-dbg</code></a>] [<a href="#arg_java" shape="rect"><code>-java &lt;Programm&gt;</code></a>]
+                  [-J&lt;java-argument&gt;]*
+                  [<a href="#arg_license" shape="rect"><code>-license &lt;Datei&gt;</code></a>]
+                  [<a href="#arg_option" shape="rect"><code>-option &lt;Name&gt;=&lt;Wert&gt;</code></a>]
+                  [<a href="#arg_options" shape="rect"><code>-options &lt;Datei&gt;</code></a>]
+                  <a href="#arg_licenseserver.admin" shape="rect"><code>-licenseserver-admin</code></a>
+                </code>
+              
+</p>
+            
+</dd>
+          
+</dl>
+        
+
+        
+      
+
+      
+      
+
+      
+<a name="sec_commandline"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_commandline">3.2</a></span>
+</div>
+<a href="contents.html#toc_sec_commandline">Kommandozeilenargumente</a>
+</h4>
+        
+<p>
+          Die Kommandozeilenargumente f&uuml;r QF-Test gliedern sich in drei Kategorien.
+        </p>
+        
+
+        
+<a name="ls_startscriptargs"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_ls_startscriptargs">3.2.1</a></span>
+</div>
+<a href="contents.html#toc_ls_startscriptargs">Kommandozeilenargumente f&uuml;r das Startskript</a>
+</h5>
+          
+<p>
+            Diese Argumente werden vom <code>qftest</code> Skript bzw. Programm ausgewertet und
+            heben die Werte auf, die w&auml;hrend der Installation gesetzt wurden. Unter Unix werden
+            diese Einstellungen in der Datei <code>launcher.cfg</code> im QF-Test Wurzelverzeichnis
+            abgespeichert, unter Windows in der Registry.
+          </p>
+          
+<dl>
+            
+<a name="arg_batch"></a>
+<dt id="arg_batch">
+<code>-batch</code>
+</dt>
+            
+<dd>
+              Startet QF-Test im Batchmodus. Dieses Argument ist zwingend f&uuml;r
+              den Lizenzserver.
+            </dd>
+
+            
+<a name="arg_dbg"></a>
+<dt id="arg_dbg">
+<code>-dbg</code>
+</dt>
+            
+<dd>
+              Schaltet Debug-Ausgaben f&uuml;r das Startskript ein. Den selben Effekt erreichen Sie,
+              wenn Sie die Umgebungsvariable <code>QFTEST_DEBUG</code> auf einen nichtleeren Wert
+              setzen. Sofern nicht zus&auml;tzlich <a href="#arg_noconsole" shape="rect"><code>-noconsole</code></a> angegeben ist, &ouml;ffnet QF-Test unter
+              Windows in diesem Fall ein Konsolenfenster, da die Ausgaben ansonsten nicht sichtbar
+              w&auml;ren.
+            </dd>
+
+            
+<a name="arg_java"></a>
+<dt id="arg_java">
+<code>-java &lt;Programm&gt;</code>
+</dt>
+            
+<dd>
+              Das Java Programm, das die Ausf&uuml;hrung von QF-Test &uuml;bernimmt. Standard sind
+              <code>java</code> unter Unix und <code>javaw.exe</code> unter Windows, sofern
+              w&auml;hrend der Installation nichts anderes angegeben wurde.
+            </dd>
+
+            
+<a name="arg_noconsole"></a>
+<dt id="arg_noconsole">
+<code>-noconsole</code> (Windows only)</dt>
+            
+<dd>
+              Verhindert das &Ouml;ffnen eines Konsolenfensters unter Windows f&uuml;r den Fall, dass
+              <a href="#arg_dbg" shape="rect"><code>-dbg</code></a> ebenfalls angegeben ist.
+            </dd>
+
+          
+</dl>
+        
+
+        
+        
+
+        
+<a name="ls_javaargs"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_ls_javaargs">3.2.2</a></span>
+</div>
+<a href="contents.html#toc_ls_javaargs">Argumente f&uuml;r die Java VM</a>
+</h5>
+          
+<p>
+            Sie k&ouml;nnen durch das Startskript Argumente an die Java VM weiterreichen, indem Sie
+            diesen <code>-J</code> voranstellen, z.B. <code>-J-Duser.language=en</code>, um eine
+            Systemvariable zu setzen.
+          </p>
+        
+
+        
+        
+
+        
+<a name="ls_qftestargs"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_ls_qftestargs">3.2.3</a></span>
+</div>
+<a href="contents.html#toc_ls_qftestargs">Argumente f&uuml;r QF-Test</a>
+</h5>
+          
+<p>
+            Die restlichen Argumente werden von QF-Test selbst ausgewertet, wenn es von der Java VM
+            ausgef&uuml;hrt wird. Diese Argumente k&ouml;nnen auch in eine Datei geschrieben werden. Das
+            Format lautet <code>&lt;name&gt;=&lt;value&gt;</code> f&uuml;r Argumente mit Parametern und
+            <code>&lt;name&gt;=true</code> oder <code>&lt;name&gt;=false</code> um ein einfaches
+            Argument ein- oder auszuschalten. Normalerweise heisst diese Datei
+            <code>qftest.options</code>, liegt im <code>bin</code> Verzeichnis von QF-Test und wird
+            nur f&uuml;r interne Zwecke verwendet. Wenn Sie &Auml;nderungen an dieser Datei vornehmen, ist
+            es sinnvoll, sie in das Wurzelverzeichnis von QF-Test zu kopieren, da diese &Auml;nderungen
+            dadurch auch nach einem Update g&uuml;ltig bleiben. Alternativ k&ouml;nnen Sie &uuml;ber das
+            <a href="#arg_options" shape="rect"><code>-options &lt;Datei&gt;</code></a> Argument eine andere Datei angeben. Argumente auf der Kommandozeile
+            haben Vorrang vor Argumenten aus der Datei. F&uuml;r Argumente, die mehrfach angegeben
+            werden k&ouml;nnen, werden sowohl Angaben von der Kommandozeile, als auch aus der Datei
+            &uuml;bernommen.
+          </p>
+          
+<dl>
+            
+<a name="arg_license"></a>
+<dt id="arg_license">
+<code>-license &lt;Datei&gt;</code>
+</dt>
+            
+<dd>
+              Gibt den Speicherort der Lizenzdatei an.
+            </dd>
+
+            
+<a name="arg_licenseserver"></a>
+<dt id="arg_licenseserver">
+<code>-licenseserver</code>
+</dt>
+            
+<dd>
+              Startet QF-Test im Lizenzservermodus.
+            </dd>
+
+            
+<a name="arg_licenseserver.admin"></a>
+<dt id="arg_licenseserver.admin">
+<code>-licenseserver-admin</code>
+</dt>
+            
+<dd>
+              &Ouml;ffnet die Bedienoberfl&auml;che f&uuml;r den Lizenzserver.
+            </dd>
+
+            
+<a name="arg_licenseserver.dump"></a>
+<dt id="arg_licenseserver.dump">
+<code>-licenseserver-dump</code>
+</dt>
+            
+<dd>
+              Gibt detaillierte Informationen &uuml;ber die aktuell verwendeten Lizenzen aus.
+            </dd>
+
+            
+<a name="arg_licenseserver.dumptotal"></a>
+<dt id="arg_licenseserver.dumptotal">
+<code>-licenseserver-dumptotal</code>
+</dt>
+            
+<dd>
+              Gibt einen &Uuml;berblick &uuml;ber die aktuell verwendeten Lizenzen aus.
+            </dd>
+
+            
+<a name="arg_licenseserver.dumppeak"></a>
+<dt id="arg_licenseserver.dumppeak">
+<code>-licenseserver-dumppeak</code>
+</dt>
+            
+<dd>
+              Gibt Informatinen zum Spitzenverbrauch an Lizenzen aus. Falls die Detailtiefe f&uuml;r
+              die Protokollierung mittels <a href="#arg_licenseserver.verbose" shape="rect"><code>-licenseserver-verbose &lt;Wert&gt;</code></a> auf DETAIL gesetzt ist,
+              werden auch die einzelnen Lizenzzuweisungen, die zu der Spitze f&uuml;hrten, aufgelistet.
+            </dd>
+
+            
+<a name="arg_licenseserver.logfile"></a>
+<dt id="arg_licenseserver.logfile">
+<code>-licenseserver-logfile &lt;Datei&gt;</code>
+</dt>
+            
+<dd>
+              Protokolleintr&auml;ge werden in die angegebene Datei geschrieben. Die
+              Standardprotokolldatei ist <code>licenseserver.log</code> im Verzeichnis
+              <code>log</code> unter dem QF-Test Systemverzeichnis oder dem Anwenderverzeichnis.
+	      Um die Protokollierung auszuschalten,
+              geben Sie dieses Argument mit einem leeren Wert an:
+              <code>-licenseserver.logfile=</code>.
+            </dd>
+
+            
+<a name="arg_licenseserver.password"></a>
+<dt id="arg_licenseserver.password">
+<code>-licenseserver-password &lt;Password&gt;</code>
+</dt>
+            
+<dd>
+              Das Kennwort f&uuml;r die Anmeldung am Lizenzserver als Benutzer <code>admin</code>. Es
+              kann weggelassen werden, wenn das Kennwort zuvor f&uuml;r den aktuellen Benutzer beim
+              Start der Bedienoberfl&auml;che oder &uuml;ber das Kommandozeilenargument
+              <a href="#arg_licenseserver.setpwd" shape="rect"><code>-licenseserver-setpwd admin=&lt;Passwort&gt;</code></a> gesetzt wurde.
+            </dd>
+
+            
+<a name="arg_licenseserver.setpwd"></a>
+<dt id="arg_licenseserver.setpwd">
+<code>-licenseserver-setpwd admin=&lt;Passwort&gt;</code>
+</dt>
+            
+<dd>
+              Legt das Kennwort f&uuml;r die Lizenzserveradministration fest. Aktuell wird nur der
+              Benutzer <code>admin</code> unterst&uuml;tzt. Wenn das Argument im Lizenzservermodus,
+              d.h. Kombination mit <a href="#arg_licenseserver" shape="rect"><code>-licenseserver</code></a> ausgef&uuml;hrt wird, wird das Kennwort f&uuml;r
+              den Lizenzserver neu gesetzt. Im Client-Modus wird das Kennwort f&uuml;r den aktuellen
+              Benutzer gespeichert, so dass er sich beim Start der Lizenzserver-Bedienoberfl&auml;che
+              nicht explizit anmelden muss und das Kennwort bei clientseitigen Operationen nicht
+              &uuml;ber <a href="#arg_licenseserver.password" shape="rect"><code>-licenseserver-password &lt;Password&gt;</code></a> angegeben werden muss.
+            </dd>
+
+            
+<a name="arg_licenseserver.shutdown"></a>
+<dt id="arg_licenseserver.shutdown">
+<code>-licenseserver-shutdown</code>
+</dt>
+            
+<dd>
+              F&auml;hrt den Lizenzserver ordnungsgem&auml;&szlig; herunter.
+            </dd>
+
+            
+<a name="arg_licenseserver.verbose"></a>
+<dt id="arg_licenseserver.verbose">
+<code>-licenseserver-verbose &lt;Wert&gt;</code>
+</dt>
+            
+<dd>
+              Legt die Detailtiefe der Protokollierung f&uuml;r den Lizenzserver fest. Serverseitig
+              wird damit festgelegt, welche Informationen in die mittels
+              <a href="#arg_licenseserver.logfile" shape="rect"><code>-licenseserver-logfile &lt;Datei&gt;</code></a> spezifizierte Protokolldatei geschrieben werden.
+              Clientseitig gibt dies den Detaillierungsgrad f&uuml;r die Ausgabe von Befehlen wie
+              <a href="#arg_licenseserver.dumppeak" shape="rect"><code>-licenseserver-dumppeak</code></a> an. Es kann die Zahlenwerte 0 bis 4, beziehungsweise
+              die entsprechenden Konstanten <code>NOTHING</code>, <code>ERRORS</code>,
+              <code>TERSE</code>, <code>VERBOSE</code>, <code>DETAIL</code>, annehmen. Der
+              Standardwert ist <code>TERSE</code>.
+            </dd>
+
+            
+<a name="arg_nomessagewindow"></a>
+<dt id="arg_nomessagewindow">
+<code>-nomessagewindow</code>
+</dt>
+            
+<dd>
+              Wenn schwere Fehler im Batchmodus auftreten, gibt QF-Test eine Fehlermeldung in der
+              Konsole aus und &ouml;ffnet zur besseren Sichtbarkeit zus&auml;tzlich f&uuml;r ca. 30 Sekunden
+              einen Fehlerdialog. Das &Ouml;ffnen des Dialogs kann mit diesem Argument verhindert
+              werden.
+            </dd>
+
+            
+<a name="arg_option"></a>
+<dt id="arg_option">
+<code>-option &lt;Name&gt;=&lt;Wert&gt;</code>
+</dt>
+            
+<dd>
+              Setzt Optionen. Mit <code>-option &lt;Name&gt;=&lt;Wert&gt;</code>
+              wird die Option mit dem Name <code>&lt;Name&gt;</code> auf den Wert
+              <code>&lt;Wert&gt;</code> gesetzt. Dieses Argument kann mehrfach angegeben werden, um
+              mehrere Optionen zu setzen.
+            </dd>
+
+            
+<a name="arg_options"></a>
+<dt id="arg_options">
+<code>-options &lt;Datei&gt;</code>
+</dt>
+            
+<dd>
+              Legt die Datei fest, aus der weitere Argumente gelesen werden. Dieses Argument kann
+              mehrfach angegeben werden, um Argumente aus mehreren Dateien zu lesen.
+            </dd>
+
+            
+<a name="arg_version"></a>
+<dt id="arg_version">
+<code>-version</code>
+</dt>
+            
+<dd>
+              Hiermit gibt QF-Test Versionsinformationen aus und beendet sich dann.
+            </dd>
+          
+</dl>
+        
+
+        
+      
+
+      
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="lsmanual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="installation.html#ls_installation"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 2&nbsp;Lizenzserver-Installation" title="Vorheriges Kapitel: 2&nbsp;Lizenzserver-Installation"></a></td><td class="navicon"><a href="administration.html#ls_gui"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 4&nbsp;Interaktive Administration des Lizenzservers" title="N&auml;chste Seite: 4&nbsp;Interaktive Administration des Lizenzservers"></a></td><td class="navicon"><a href="administration.html#ls_gui"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 4&nbsp;Interaktive Administration des Lizenzservers" title="N&auml;chstes Kapitel: 4&nbsp;Interaktive Administration des Lizenzservers"></a></td><td class="navicon"><a href="lsmanual.html#all"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: QF-Test - Das Lizenzserver Handbuch" title="Kapitel-&Uuml;bersicht: QF-Test - Das Lizenzserver Handbuch"></a></td><td class="navicon"><a href="../../lsmanual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 2014-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

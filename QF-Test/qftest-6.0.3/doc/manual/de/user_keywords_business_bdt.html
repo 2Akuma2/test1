@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Behavior-Driven Testing (BDT) mit fachlicher Beschreibung</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="user_keywords_business_bdt"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_keywords_tech_bdt.html#user_keywords_tech_bdt"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 27.4.1&nbsp;Behavior-Driven Testing (BDT) mit technischer Beschreibung" title="Vorheriges Kapitel: 27.4.1&nbsp;Behavior-Driven Testing (BDT) mit technischer Beschreibung"></a></td><td class="navicon"><a href="user_keywords_scenarios.html#usec_keywords_scenarios"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 27.5&nbsp;Szenariodateien" title="N&auml;chste Seite: 27.5&nbsp;Szenariodateien"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="user_keywords_bdt.html#usec_keywords_bdt"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 27.4&nbsp;Behavior-Driven Testing (BDT)" title="Kapitel-&Uuml;bersicht: 27.4&nbsp;Behavior-Driven Testing (BDT)"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_user_keywords_business_bdt">27.4.2</a></span>
+</div>
+<a href="contents.html#toc_user_keywords_business_bdt">Behavior-Driven Testing (BDT) mit fachlicher Beschreibung</a>
+</h5>
+        
+<p>
+        Eine fachliche Beschreibung eines Testfalles mit Behavior-Driven Testing (BDT) orientiert sich
+        an aus Benutzersicht notwendigen Aktionen eines Testfalles.
+        Diese Aktionen umfassen daher mehrere Interaktionen wie Mausklicks oder Texteingaben.
+        Das dazugeh&ouml;rige Beispiel finden Sie unter <code>qftest-6.0.3/demo/keywords/behaviordriven_business/</code>
+        <code>BehaviorDrivenTesting-Business.qft</code>. 
+        Der dazugeh&ouml;rige Testplan liegt unter <code>qftest-6.0.3/demo/keywords/behaviordriven_business/</code>
+        <code>createvehicle-business.xlsx</code>.
+    Bitte achten Sie darauf, dass Sie den Ordner in ein projektspezifisches Verzeichnis kopieren und diese dort modifizieren.
+        </p>      
+        
+<p>
+        Nach BDT mit fachlicher Sicht wird unser "Fahrzeug anlegen" Testfall nun wie folgt beschrieben:
+        </p>
+        
+<ol>
+            
+<li>Gegeben Anwendung ist bereit, um neue Fahrzeugdaten einzugeben</li>
+            
+<li>Wenn ein Fahrzeug mit dem Namen &lt;name&gt; und &lt;preis&gt; angelegt wurde</li>
+            
+<li>Dann erscheint das Fahrzeug mit den Werten &lt;name&gt; und &lt;formatierter-preis&gt; in der Fahrzeug&uuml;bersicht</li>
+        
+</ol>
+        
+<p>
+        Wie auch im technischen Ansatz werden die Schl&uuml;sselw&ouml;rter
+        <code>Gegeben</code>, <code>Wenn</code>, <code>Und</code> und <code>Dann</code> verwendet und daher 
+        finden Sie auch hier entsprechende Packages in der mitgelieferten Testsuite. Dort sind diese Packages
+        in englischer Sprache also <code>Given</code>, <code>When_And</code> und <code>Then</code>.
+        </p>
+        
+<a name="fig_keywords_bdt_business"></a><a name="figure_27.7"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/keywords_bdt_business.png" target="_blank"><img texscale=".66" src="images/keywords_bdt_business.png" width="966" height="753"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;27.7</a>:&nbsp;&nbsp;Testsuite Behavior-Driven Testing fachlich</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+        Um Fl&uuml;chtigkeitsfehler bei der Beschreibung zu vermeiden wird vor dem Prozeduraufruf <code>$(teststep)</code> ein Server-Skript <code>read test-steps and fix typos</code> eingef&uuml;hrt, dass die gsamte
+        Beschreibung in Kleinbuchstaben formatiert und mehrfache Leerzeichen durch eines ersetzt.
+        </p>
+        
+<p>
+        Damit der selbe Testfall mit unterschiedlichen Testdaten abgespielt werden kann, wurde dieses Beispiel erweitert.
+        </p>
+        
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_keywords_tech_bdt.html#user_keywords_tech_bdt"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 27.4.1&nbsp;Behavior-Driven Testing (BDT) mit technischer Beschreibung" title="Vorheriges Kapitel: 27.4.1&nbsp;Behavior-Driven Testing (BDT) mit technischer Beschreibung"></a></td><td class="navicon"><a href="user_keywords_scenarios.html#usec_keywords_scenarios"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 27.5&nbsp;Szenariodateien" title="N&auml;chste Seite: 27.5&nbsp;Szenariodateien"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="user_keywords_bdt.html#usec_keywords_bdt"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 27.4&nbsp;Behavior-Driven Testing (BDT)" title="Kapitel-&Uuml;bersicht: 27.4&nbsp;Behavior-Driven Testing (BDT)"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

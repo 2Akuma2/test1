@@ -1,0 +1,2089 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Daemon API</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_daemon_api"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_daemon_concepts.html#sec_N185607"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 51.1&nbsp;Daemon Konzepte" title="Vorheriges Kapitel: 51.1&nbsp;Daemon Konzepte"></a></td><td class="navicon"><a href="tech_daemon_security.html#sec_daemon_security"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 51.3&nbsp;Absicherung des QF-Test Daemon" title="N&auml;chste Seite: 51.3&nbsp;Absicherung des QF-Test Daemon"></a></td><td class="navicon"><a href="tech_daemon_security.html#sec_daemon_security"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 51.3&nbsp;Absicherung des QF-Test Daemon" title="N&auml;chstes Kapitel: 51.3&nbsp;Absicherung des QF-Test Daemon"></a></td><td class="navicon"><a href="tech_daemon.html#sec_daemon"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 51&nbsp;Daemon Modus" title="Kapitel-&Uuml;bersicht: 51&nbsp;Daemon Modus"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_daemon_api">51.2</a></span>
+</div>
+<a href="contents.html#toc_sec_daemon_api">Daemon API</a>
+</h4>
+        
+<p>
+          Um QF-Test im Daemon Modus von einer weiteren QF-Test Instanz oder einem anderen Werkzeug zur
+          Durchf&uuml;hrung von QF-Test basierten Tests einzusetzen m&uuml;ssen folgende relativ einfache
+          Schritte implementiert werden:
+        </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span>
+
+        Wen Sie eine auf dem Daemon API basierende Anwendung schreiben, m&uuml;ssen Sie sich &uuml;ber
+        Sicherheitsthemen Gedanken machen und Sicherheit entweder deaktivieren, oder einige
+        RMI-spezifische Properties setzen. N&auml;heres hierzu finden Sie in <a href="tech_daemon_security.html#sec_daemon_security">Abschnitt 51.3</a>.
+      </p>
+        
+<ul>
+          
+<li>
+            Nutzen Sie den <code>DaemonLocator</code>, um damit Zugriff auf einen
+            <code>Daemon</code> zu erhalten.
+          </li>
+          
+<li>
+            Holen Sie sich entweder den gemeinsamen <code>TestRunDaemon</code> oder weisen Sie den
+            <code>Daemon</code> an, einen <code>TestRunDaemon</code> zu erzeugen. &Uuml;ber diesen
+            <code>TestRunDaemon</code> k&ouml;nnen Sie globale Variablen und das Wurzelverzeichnis der
+            Testsuiten f&uuml;r die kommenden Testl&auml;ufe definieren.
+          </li>
+          
+<li>
+            Holen Sie sich entweder den gemeinsamen <code>DaemonRunContext</code> des
+            <code>TestRunDaemon</code> oder lassen Sie diesen eine oder mehrere Instanzen von
+            <code>DaemonRunContext</code> erzeugen. Ein <code>DaemonRunContext</code> repr&auml;sentiert
+            den Ausf&uuml;hrungs-Kontext f&uuml;r einen funktionalen Test oder Lasttest. Jeder
+            <code>DaemonRunContext</code> ist eigenst&auml;ndig, mit Ausnahme von Gruppen die mittels
+            <code>TestRunDaemon.createContexts(int threads)</code> erstellt wurden. Diese bilden
+            einen gemeinsamen Kontext f&uuml;r Lasttests, analog zum Start von QF-Test mit dem
+            Kommandozeilenargument <a href="tech_execution.html#arg_threads" shape="rect"><code>-threads &lt;Anzahl&gt;</code></a>. Jeder <code>DaemonRunContext</code> belegt eine
+            QF-Test Entwickler- oder Runtime Lizenz f&uuml;r die Dauer seines Bestehens.
+          </li>
+          
+<li>
+            Nun k&ouml;nnen Sie den <code>DaemonRunContext</code> anweisen, Tests in Ihrem Namen
+            durchzuf&uuml;hren, wahlweise ganze Testsuiten oder spezifische <a href="sequences.html#step_TestSet" shape="rect">'Testfallsatz'</a> oder
+            <a href="sequences.html#step_TestCase" shape="rect">'Testfall'</a> Knoten. Mit richtig implementierten <a href="dependencies.html#step_Dependency" shape="rect">'Abh&auml;ngigkeiten'</a> k&ouml;nnen Sie im
+            Daemon Modus einzelne 'Testf&auml;lle' in beliebiger Reihenfolge ausf&uuml;hren, ohne sich um
+            die n&ouml;tigen Vorbereitungs- und Aufr&auml;umarbeiten k&uuml;mmern zu m&uuml;ssen.
+          </li>
+          
+<li>
+            Der <code>DaemonRunContext</code> bietet auch Methoden zur Abfrage des aktuellen Status
+            eines Tests oder zum Warten auf sein Ende an.
+          </li>
+          
+<li>
+            Schlie&szlig;lich k&ouml;nnen Sie noch das Protokoll des Testlauf vom Daemon abholen. Im Moment
+            k&ouml;nnen Sie dieses lediglich in eine Datei speichern. Sp&auml;ter planen wir das API weiter
+            zu &ouml;ffnen, um zum Beispiel Protokolle von verschiedenen Testl&auml;ufen aus potenziell
+            verschiedenen Daemons in einem Protokoll zusammenzufassen.
+          </li>
+        
+</ul>
+        
+<p>
+          Beim &Uuml;bergang von einem 'Testfall' zum n&auml;chsten kann die korrekte Abarbeitung der
+          Abh&auml;ngigkeiten - inklusive das Auf&ouml;sen der nicht mehr ben&ouml;tigten Abh&auml;ngigkeiten auf dem
+          Stapel - nur dann funktionieren, wenn immer der selbe <code>DaemonRunContext</code>
+          verwendet wird. Dies erreichen Sie am einfachsten durch Verwendung der gemeinsamen
+          <code>TestRunDaemon</code> und <code>DaemonRunContext</code> Objekte. Das Erzeugen von
+          eigenen Objekten macht nur in Spezialf&auml;llen Sinn.
+        </p>
+        
+<p>
+          Die folgenden Abschnitte enthalten eine komplette Referenz der gesamten Daemon API.
+          Erl&auml;uterungen und Beispiele zu deren Verwendung finden Sie in <a href="user_execdaemon.html#usec_execdaemon">Abschnitt 22.2</a>.
+        </p>
+      
+
+      
+<a name="sec_N185817"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N185817">51.2.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N185817">Der <code class="classdef">DaemonLocator</code></a>
+</h5>
+        
+<p>
+          &Uuml;ber die Singleton Klasse <code>de.qfs.apps.qftest.daemon.DaemonLocator</code> kann auf
+          <code>Daemon</code> Instanzen zugegriffen werden.
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>static DaemonLocator instance()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Es gibt immer nur ein einziges <code>DaemonLocator</code>
+                Objekt und diese Methode ist der einzige Weg, Zugriff auf
+                diese Singleton Instanz zu erlangen.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Die <code>DaemonLocator</code> Singleton Instanz.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Daemon locateDaemon(String host, int port)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Liefert einen Daemon f&uuml;r einen spezifischen Host und Port.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>host</code></strong></td><td class="paramdesc">
+              Der Ziel-Host, Name oder IP-Adresse als String.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>port</code></strong></td><td class="paramdesc">
+              Der Ziel-Port.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Der Daemon oder null falls kein Daemon gefunden wurde.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Daemon[] locateDaemons(long timeout)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Alle bekannten Daemons lokalisieren.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>timeout</code></strong></td><td class="paramdesc">
+              Die Zeit in Millisekunden, um auf Reaktionen von Daemons zu warten.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Die bekannten Daemons.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setKeystore(String keystoreFile)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Legt den Keystore fest, welcher f&uuml;r die Sicherung der Daemon-Kommunikation verwendet werden soll.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>keystoreFile</code></strong></td><td class="paramdesc">
+              Der Pfad zur Datei, welche den Keystore zur Verschl&uuml;sselung der Daemon-Kommunikation enth&auml;lt.
+            </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setKeystorePassword(String password)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Legt das Passwort f&uuml;r den Keystore fest, der mit <code>setKeystore</code> gesetzt wurde.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>password</code></strong></td><td class="paramdesc">
+              Das Passwort.
+            </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setTruststore(String truststoreFile)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Legt den Truststore fest, welcher f&uuml;r die Sicherung der Daemon-Kommunikation verwendet werden soll.
+              Wenn dieser nicht gesetzt ist dann wird der Keystore verwendet, der mit <code>setKeystore</code> gesetzt wurde.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>truststoreFile</code></strong></td><td class="paramdesc">
+              Der Pfad zur Datei, welche den Truststore zur Verschl&uuml;sselung der Daemon-Kommunikation enth&auml;lt.
+            </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setTruststorePassword(String password)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Legt das Passwort f&uuml;r den Truststore fest, der mit <code>setTruststore</code> gesetzt wurde.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>password</code></strong></td><td class="paramdesc">
+              Das Passwort.
+            </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_N185986"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N185986">51.2.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N185986">Der <code class="classdef">Daemon</code></a>
+</h5>
+        
+<p>
+          Das <code>de.qfs.apps.qftest.daemon.Daemon</code> Interface bietet einen Rahmen f&uuml;r
+          verschiedene Arten von QF-Test Daemons. Aktuell ist nur der <code>TestRunDaemon</code>
+          verf&uuml;gbar, weitere Klassen wie ein <code>SUTClientStarterDaemon</code> sind bereits in
+          Planung und weitere werden eventuell folgen.
+        </p>
+
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void cleanup()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              R&auml;umt alle TestRunDaemons dieses Daemons und beendet dann alle Clients. Auf ein
+              eventuelles Aufl&ouml;sen von Abh&auml;ngigkeiten wird maximal 30 Sekunden gewartet.
+            </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void cleanup(long timeout)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              R&auml;umt alle TestRunDaemons dieses Daemons und beendet dann alle Clients.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>timeout</code></strong></td><td class="paramdesc">
+              Die maximale Wartezeit in Millisekunden f&uuml;r ein eventuelles Aufr&auml;umen von Abh&auml;ngigkeiten.
+            </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>TestRunDaemon createTestRunDaemon()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Erzeugt einen TestRunDaemon.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+              Ein TestRunDaemon.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getHost()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Liefert den Host des Daemons.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Der Host des Daemons.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getIp()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Liefert die IP-Adresse des Daemons.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+              Die IP-Adresse des Daemons.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int getPort()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Liefert den Port des Daemons.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+              Der Port des Daemons.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>TestRunDaemon getSharedTestRunDaemon()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Liefert den gemeinsamen TestRunDaemon.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+              Der gemeinsame TestRunDaemon.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>TestRunDaemon[] getTestRunDaemons()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Liefert alle von diesem Daemon erzeugten TestRunDaemons, die noch aktiv sind.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+              Die aktiven TestRunDaemons, die von diesem Daemon erzeugt wurden, exklusive dem
+              gemeinsamen TestRunDaemon.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void killClients()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Beendet alle Clients, die zur VM des Daemons geh&ouml;ren.
+            </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void ping()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Pr&uuml;ft, ob der Daemon noch lebt.
+            </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+               Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void terminate(int exitCode)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Beendet den Daemon-Prozess durch den Aufruf von System.exit.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>exitCode</code></strong></td><td class="paramdesc">
+              Der Exit-Code f&uuml;r den Daemon.
+            </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+
+      
+
+      
+      
+
+      
+<a name="sec_N186228"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N186228">51.2.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N186228">Der <code class="classdef">TestRunDaemon</code></a>
+</h5>
+        
+<p>
+          Der <code>de.qfs.apps.qftest.daemon.TestRunDaemon</code> ist der Einstiegspunkt f&uuml;r die
+          Ausf&uuml;hrung von Tests. Er stellt die Umgebung f&uuml;r Testl&auml;ufe bereit und erstellt
+          <code>DaemonRunContext</code> Objekte welche die eigentliche Durchf&uuml;hrung &uuml;bernehmen.
+        </p>
+
+        
+<a name="sec_N186246"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N186246">51.2.3.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N186246">Verschiedenes</a>
+</h5>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Daemon getDaemon()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert den Daemon zu dem der TestRunDaemon geh&ouml;rt.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Der Daemon des TestRunDaemons.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+                Wenn etwas RMI-Spezifisches schief geht.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+        
+<a name="sec_N186276"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N186276">51.2.3.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N186276">Bearbeiten globaler Variablen</a>
+</h5>
+	  
+<p>
+	    Der TestRunDaemon h&auml;lt einen eigenen Satz globaler Variablen vor, die zur Initilaisierung der globalen
+	    Variablen beim Erzeugen eines neuen DaemonRunContext dienen. Die folgenden Methoden haben keinen Einfluss
+	    auf bereits laufende DaemonRunContext Instanzen.
+	  </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void clearGlobals()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                L&ouml;scht alle globalen Variablen.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+                Wenn etwas RMI-Spezifisches schief geht.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getGlobal(String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert den Wert einer globalen Variable.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">
+                Der Name der globalen Variable.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Der Wert der globalen Variable oder null wenn undefiniert.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+                Wenn etwas RMI-Spezifisches schief geht.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Properties getGlobals()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert die Werte aller globalen Variablen.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Die Werte aller globalen Variablen.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+                Wenn etwas RMI-Spezifisches schief geht.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setGlobal(String name, String value)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Setzt den Wert einer globalen Variable.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">
+                Der Name der globalen Variable.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>value</code></strong></td><td class="paramdesc">
+                Der Wert der globalen Variable.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+                Wenn etwas RMI-Spezifisches schief geht.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+        
+<a name="sec_N186375"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N186375">51.2.3.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N186375">Testausf&uuml;hrung</a>
+</h5>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void cleanup()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                R&auml;umt alle DaemonRunContexte dieses TestRunDaemons auf und gibts sie frei. Auf ein
+                eventuelles Aufl&ouml;sen von Abh&auml;ngigkeiten wird maximal 30 Sekunden gewartet.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+                Wenn etwas RMI-Spezifisches schief geht.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void cleanup(long timeout)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                R&auml;umt alle DaemonRunContexte dieses TestRunDaemons auf und gibts sie frei.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>timeout</code></strong></td><td class="paramdesc">
+                Die maximale Wartezeit in Millisekunden f&uuml;r ein eventuelles Aufr&auml;umen von Abh&auml;ngigkeiten.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+                Wenn etwas RMI-Spezifisches schief geht.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>DaemonRunContext createContext()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Erzeugt einen einzelnen Daemon Runcontext. Hierf&uuml;r wird eine Lizenz ben&ouml;tigt und
+                belegt.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Der Runcontext oder null wenn keine Lizenz belegt werden konnte.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+                Wenn etwas RMI-Spezifisches schief geht.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>DaemonRunContext[] createContexts(int threads)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Erzeugt Daemon Runcontext Objekte f&uuml;r mehrere Threads. Es wird eine Lizenz je
+                Thread ben&ouml;tigt und belegt.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>threads</code></strong></td><td class="paramdesc">
+                Die Zahl der Threads f&uuml;r den Runcontext.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Die Runcontext Objekte oder null wenn nicht genug Lizenzen belegt werden konnten.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+                Wenn etwas RMI-Spezifisches schief geht.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>DaemonRunContext[] getContexts()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert alle von diesem TestRunDaemon erzeugten DaemonRunContexte, die noch aktiv
+                sind und nicht freigegeben wurden.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Die aktiven DaemonRunContexte, die von diesem TestRunDaemon erzeugt wurden,
+                exklusive dem gemeinsamen DaemonRunContext.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+                Wenn etwas RMI-Spezifisches schief geht.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>DaemonRunContext getSharedContext()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert den gemeinsamen DaemonRunContext. Falls dieser neu erstellt werden muss,
+                wird eine neue Lizenz ben&ouml;tigt und belegt.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Der gemeinsame RunContext oder null wenn keine Lizenz belegt werden konnte.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+                Wenn etwas RMI-Spezifisches schief geht.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setRootDirectory(String directory)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Setzt das Testsuite-Wurzelverzeichnis f&uuml;r neu erzeugte Daemon Runcontexte.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>directory</code></strong></td><td class="paramdesc">
+                Das neue Wurzelverzeichnis.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+                Wenn etwas RMI-Spezifisches schief geht.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+        
+<a name="sec_N186528"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N186528">51.2.3.4</a></span>
+</div>
+<a href="contents.html#toc_sec_N186528">Identifikation</a>
+</h5>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getIdentifier()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert den Namen zur Identifikation des TestRunDaemons. Wurde kein Name explizit
+                via setIdentifier gesetzt, wird ein Name aus dem Namen des Daemons, zu dem der
+                TestRunDaemon geh&ouml;rt, sowie einem Z&auml;hler gebildet.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Der Name des TestRunDaemons.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+                Wenn etwas RMI-Spezifisches schief geht.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setIdentifier(String identifier)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Setzt einen Namen zur Identifikation des TestRunDaemons. Dies kann n&uuml;tzlich sein
+                um einen TestRunDaemon zu identifizieren, der via Daemon.getTestRunDaemons()
+                ermittelt wurde.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>identifier</code></strong></td><td class="paramdesc">
+                Der zu setzende Name.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+                Wenn etwas RMI-Spezifisches schief geht.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+      
+
+      
+      
+
+      
+<a name="sec_N186584"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N186584">51.2.4</a></span>
+</div>
+<a href="contents.html#toc_sec_N186584">Der <code class="interfacedef">DaemonRunContext</code></a>
+</h5>
+        
+<p>
+          Das <code>de.qfs.apps.qftest.daemon.DaemonRunContext</code> Interface dient der
+          eigentlichen Testdurchf&uuml;hrung.
+        </p>
+        
+<p>
+          Folgende Laufzust&auml;nde sind definiert:
+        </p>
+        
+
+        
+<a name="table_51.1"></a><a name="table_51.1"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5">
+            
+<tr>
+              
+<th rowspan="1" colspan="1">Status</th>
+              <th rowspan="1" colspan="1">Wert</th>
+              <th rowspan="1" colspan="1">Beschreibung</th>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1"><code>STATE_INVALID</code></td>
+              <td align="right" rowspan="1" colspan="1"><code>-1</code></td>
+              <td rowspan="1" colspan="1">Ung&uuml;ltig nach der Freigabe - kann nicht reaktiviert werden.</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1"><code>STATE_IDLE</code></td>
+              <td align="right" rowspan="1" colspan="1"><code>0</code></td>
+              <td rowspan="1" colspan="1">Kein Lauf geplant.</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1"><code>STATE_SCHEDULED</code></td>
+              <td align="right" rowspan="1" colspan="1"><code>1</code></td>
+              <td rowspan="1" colspan="1">Lauf geplant aber nicht gestartet.</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1"><code>STATE_RUNNING</code></td>
+              <td align="right" rowspan="1" colspan="1"><code>2</code></td>
+              <td rowspan="1" colspan="1">Laufend.</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1"><code>STATE_PAUSED</code></td>
+              <td align="right" rowspan="1" colspan="1"><code>3</code></td>
+              <td rowspan="1" colspan="1">Laufend aber pausiert.</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1"><code>STATE_FINISHED</code></td>
+              <td align="right" rowspan="1" colspan="1"><code>4</code></td>
+              <td rowspan="1" colspan="1">Lauf beendet, Resultat und Protokoll verf&uuml;gbar.</td>
+            
+</tr>
+          
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;51.1</a>:&nbsp;&nbsp;Der Laufzustand</td><td class="captionglue"></td>
+</tr>
+</table>
+
+        
+        
+<p>
+	  
+<span class="margin"><a name="new_N186766"></a><span class="note">6.0+</span></span>
+          Die folgenden Ergebnis-Werte f&uuml;r die Methode <code>getResult()</code> sind die gleichen wie &uuml;berall in QF-Test:
+        </p>
+        
+
+	
+<a name="table_51.2"></a><a name="table_51.2"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5">
+	    
+<tr>
+	      
+<th rowspan="1" colspan="1">Ergebnis</th>
+	      <th rowspan="1" colspan="1">Wert</th>
+	      <th rowspan="1" colspan="1">Beschreibung</th>
+	    
+</tr>
+	    
+<tr>
+	      
+<td rowspan="1" colspan="1"><code>RESULT_OK</code></td>
+	      <td align="right" rowspan="1" colspan="1"><code>0</code></td>
+	      <td rowspan="1" colspan="1">Lauf OK, keine Warnungen, Fehler oder Exceptions.</td>
+	    
+</tr>
+	    
+<tr>
+	      
+<td rowspan="1" colspan="1"><code>RESULT_WARNING</code></td>
+	      <td align="right" rowspan="1" colspan="1"><code>1</code></td>
+	      <td rowspan="1" colspan="1">Lauf weitgehend OK, einige Warnungen aber keine Fehler oder Exceptions.</td>
+	    
+</tr>
+	    
+<tr>
+	      
+<td rowspan="1" colspan="1"><code>RESULT_ERROR</code></td>
+	      <td align="right" rowspan="1" colspan="1"><code>2</code></td>
+	      <td rowspan="1" colspan="1">Lauf mit Fehlern aber ohne Exceptions.</td>
+	    
+</tr>
+	    
+<tr>
+	      
+<td rowspan="1" colspan="1"><code>RESULT_EXCEPTION</code></td>
+	      <td align="right" rowspan="1" colspan="1"><code>3</code></td>
+	      <td rowspan="1" colspan="1">Lauf mit Exception fehlgeschlagen.</td>
+	    
+</tr>
+	  
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;51.2</a>:&nbsp;&nbsp;Die Ergebnis-Werte</td><td class="captionglue"></td>
+</tr>
+</table>
+
+        
+
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void addTestRunListener(DaemonTestRunListener listener, boolean synchronous, long timeout)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Registriert einen DaemonTestRunListener beim DaemonRunContext.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>listener</code></strong></td><td class="paramdesc">Der zu registrierende Listener.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>synchronous</code></strong></td><td class="paramdesc">
+              Legt fest, ob der Listener synchron benachrichtigt werden soll. In diesem Fall wird
+              der Testlauf blockiert, bis der Listener den Event verarbeitet hat.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>timeout</code></strong></td><td class="paramdesc">
+              Wartezeit in Millisekunden f&uuml;r Aufrufe des Listeners. Falls der Listener nicht
+              innerhalb dieser Zeitspanne antwortet, wird er automatisch deregistriert, um weitere
+              Probleme zu vermeiden. Im Fall eines synchronen Listeners l&auml;uft dann auch der Test
+              weiter. Ein Wert von 0 bedeutet kein Timeout, was nicht ungef&auml;hrlich ist, aber
+              n&uuml;tzlich sein kann.
+            </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>boolean callProcedure(String procedure, Properties bindings=None)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              F&uuml;hrt eine Prozedur in diesem Runcontext aus.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>procedure</code></strong></td><td class="paramdesc">
+              Die Prozedur, die ausgef&uuml;hrt werden soll, in der Form <code>Suite#Procedure</code>,
+              wobei <code>Procedure</code> der vollst&auml;ndige Name einer 'Prozedur' sein muss.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>bindings</code></strong></td><td class="paramdesc">
+              Ein optionaler Satz von Variablendefinitionen. Diese binden st&auml;rker als die globalen
+              Variablen und als alle Definitionen auf dem sekund&auml;ren Stapel.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+              True falls der Prozeduraufruf gestartet wurde, false wenn die Suite oder die
+              Prozedur nicht gefunden werden konnten.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>IllegalStateException</code></strong></td><td class="throwdesc">
+              Falls im gegenw&auml;rtigen Status kein Test gestartet werden kann, der Status also weder
+              STATE_IDLE noch STATE_FINISHED ist.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void clearGlobals()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+	      L&ouml;scht die globalen Variablen des DaemonRunContext.
+	    </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+	      If something RMI specific goes wrong.
+	    </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void clearTestRunListeners()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Entfernt alle DaemonTestRunListener vom DaemonRunContext.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getGlobal(String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Liefert den Wert einer globalen Variable im DaemonRunContext.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">Der Name der Variable.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+              Der Wert der Variable oder null falls nicht definiert.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Properties getGlobals()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Liefert alle globalen Variablen im DaemonRunContext.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+              Die globalen Variablen.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getIdentifier()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Liefert den Namen zur Identifikation des DaemonRunContexts. Wurde kein Name explizit
+              via setIdentifier gesetzt, wird ein Name aus dem Namen des TestRunDaemons, zu dem
+              der DaemonRunContext geh&ouml;rt, sowie einem Z&auml;hler gebildet.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+              Der Name des DaemonRunContexts.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getLastTest()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Liefert den Namen der aktuell oder zuletzt von diesem DaemonRunContext ausgef&uuml;hrt
+              wird oder wurde.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+              Der Name des aktuellen bzw. zuletzt ausgef&uuml;hrten Tests.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int getNumThreads()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Liefert die Zahl der Threads in der Gruppe zu der der DaemonRunContext geh&ouml;rt.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+              Die Zahl der Threads der Gruppe des DaemonRunContext.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Properties getProperties(String group)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Liefert alle Properties einer Property oder Ressource Gruppe im DaemonRunContext.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">Der Name der Property oder Ressource Gruppe.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+              Die Properties oder null falls die Gruppe nicht existiert.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getProperty(String group, String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Liefert den Wert einer Property oder Ressource im DaemonRunContext.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">Der Name der Property oder Ressource Gruppe.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">Der Name der Property.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+              Der Wert der Property oder null falls nicht definiert.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int getResult()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Liefert das Resultat des Testlaufs.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+	      Das Ergebnis des Testlaufs, einer der Werte RESULT_OK, RESULT_WARNING, RESULT_ERROR oder RESULT_EXCEPTION.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>IllegalStateException</code></strong></td><td class="throwdesc">
+              Wenn der Laufzustand ungleich STATE_FINISHED ist.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>byte[] getRunLog()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Liefert das Protokoll des Testlaufs.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+              Das Protokoll in Form eines byte array.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>IllegalStateException</code></strong></td><td class="throwdesc">
+              Wenn der Laufzustand ungleich STATE_FINISHED ist.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int getRunState()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Liefert den aktuellen Laufzustand des Runcontext.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+              Der aktuelle Laufzustand des Runcontext, einer von STATE_IDLE, STATE_SCHEDULED, STATE_RUNNING,
+              STATE_PAUSED oder STATE_FINISHED.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>TestRunDaemon getTestRunDaemon()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Liefert den TestRunDaemon zu dem der DaemonRunContext geh&ouml;rt.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+              Der TestRunDaemon des DaemonRunContext.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int getThreadNum()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Liefert den Thread-Index des DaemonRunContext.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code></code></strong></td><td class="paramdesc">
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+              Der Thread-Index des DaemonRunContext.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void release()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Gibt den DaemonRunContext frei und auch die Lizenz, die dieser belegt hatte. Wenn
+              ein Test l&auml;uft, wird dieser angehalten.
+            </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>IllegalStateException</code></strong></td><td class="throwdesc">
+              Wenn kein DaemonRunContext angelegt war.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void removeTestRunListener(DaemonTestRunListener listener)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Entfernt einen DaemonTestRunListener vom DaemonRunContext.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>listener</code></strong></td><td class="paramdesc">Der zu entfernende Listener.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void rollbackDependencies()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">L&ouml;st die Abh&auml;ngigkeiten dieses DaemonRunContext auf.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>IllegalStateException</code></strong></td><td class="throwdesc">
+              Falls im gegenw&auml;rtigen Status kein Test gestartet werden kann, der Status also weder
+              STATE_IDLE noch STATE_FINISHED ist.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>boolean runTest(String test, Properties bindings=None)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Startet einen Test in diesem Runcontext.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>test</code></strong></td><td class="paramdesc">
+              Der Test, der ausgef&uuml;hrt werden soll, in der Form <code>Suite#Test</code>, wobei
+              <code>#Test</code> optional ist und <code>Test</code> der vollst&auml;ndige Name eines
+              Testfallsatzes oder Testfalls oder ein "." sein kann. Letzteres ist &auml;quivalent zur
+              Angabe von <code>Suite</code> alleine und bewirkt das Ausf&uuml;hren der ganzen
+              Testsuite. <br>
+<br>
+              Beispiele: <br>
+              
+<table class="tdleft" border="0" cellspacing="0" cellpadding="0" texwidth="\linewidth" valign="center">
+                
+<tr>
+                  
+<td rowspan="1" colspan="1"><code>MySuite</code></td>
+                  <td rowspan="1" colspan="1">&nbsp;&nbsp;&nbsp;</td>
+                  <td rowspan="1" colspan="1">F&uuml;hrt die ganze Testsuite <code>MySuite</code> aus.</td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1"><code>MySuite#.</code></td>
+                  <td rowspan="1" colspan="1">&nbsp;&nbsp;&nbsp;</td>
+                  <td rowspan="1" colspan="1">F&uuml;hrt die ganze Testsuite <code>MySuite</code> aus.</td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1"><code>MySuite#MyTestSet</code></td>
+                  <td rowspan="1" colspan="1">&nbsp;&nbsp;&nbsp;</td>
+                  <td rowspan="1" colspan="1">F&uuml;hrt den Testfallsatz <code>MyTestSet</code> in der Testsuite <code>MySuite</code>
+                    aus.</td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1"><code>MySuite#MyTestSet.MyTestCase</code></td>
+                  <td rowspan="1" colspan="1">&nbsp;&nbsp;&nbsp;</td>
+                  <td rowspan="1" colspan="1">F&uuml;hrt den Testfall <code>MyTestCase</code> aus, der sich im Testfallsatz
+                    <code>MyTestSet</code> in der Testsuite <code>MySuite</code> befindet.</td>
+                
+</tr>
+              
+</table>
+            
+</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>bindings</code></strong></td><td class="paramdesc">
+              Ein optionaler Satz von Variablendefinitionen. Diese binden st&auml;rker als die globalen
+              Variablen und als alle Definitionen auf dem sekund&auml;ren Stapel.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+              True falls der Test gestartet wurde, false wenn die Suite oder der Test nicht
+              gefunden werden konnten.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>IllegalStateException</code></strong></td><td class="throwdesc">
+              Falls im gegenw&auml;rtigen Status kein Test gestartet werden kann, der Status also weder
+              STATE_IDLE noch STATE_FINISHED ist.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setIdentifier(String identifier)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Setzt einen Namen zur Identifikation des DaemonRunContexts. Dies kann n&uuml;tzlich sein,
+              um einen DaemonRunContext zu identifizieren, der via TestRunDaemon.getContexts()
+              ermittelt wurde.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>identifier</code></strong></td><td class="paramdesc">
+              Der zu setzende Name.
+            </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setGlobals(Properties globals)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+	      Setzt die globalen Variablen des DaemonRunContext.
+	    </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>globals</code></strong></td><td class="paramdesc">
+	      Die zu setzende globalen Variablen.
+	    </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+	      If something RMI specific goes wrong.
+	    </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setRootDirectory(String directory)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Setzt das Testsuite-Wurzelverzeichnis f&uuml;r den n&auml;chsten Testlauf.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>directory</code></strong></td><td class="paramdesc">
+              Das neue Wurzelverzeichnis.
+            </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void stopRun()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              H&auml;lt den Testlauf an.
+            </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>IllegalStateException</code></strong></td><td class="throwdesc">
+              Wenn kein Testlauf angesto&szlig;en war.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>boolean waitForRunState(int state, long timeout)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Wartet bis der Runcontext einen vorgegebenen Zustand erreicht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>state</code></strong></td><td class="paramdesc">
+              Der Zustand auf den gewartet werden soll.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>timeout</code></strong></td><td class="paramdesc">
+              Maximale Wartezeit im Millisekunden.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+              True falls der Zustand erreicht wurde, false wenn die Wartezeit verstrichen ist und der Zustand bis dahin nicht erreicht wurde.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>RemoteException</code></strong></td><td class="throwdesc">
+              Wenn etwas RMI-Spezifisches schief geht.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_daemontestrunlistener"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N187596"></a><span class="note">3.1+</span></span><span class="numtitle"><a href="contents.html#toc_sec_daemontestrunlistener">51.2.5</a></span>
+</div>
+<a href="contents.html#toc_sec_daemontestrunlistener">Der <code>DaemonTestRunListener</code></a>
+</h5>
+        
+<p>
+          Das Interface <code>de.qfs.apps.qftest.daemon.DaemonTestRunListener</code> ist identisch
+          zum Interface <code>de.qfs.apps.qftest.extensions.qftest.TestRunListener</code>, welches
+          in  <a href="tech_testrunlisteners.html#sec_testrunlisteners">Abschnitt 50.7</a> beschrieben wird, au&szlig;er dass seine Methoden
+          eine <code>RemoteException</code> bei RMI Problemen werfen k&ouml;nnen.
+          Wenn Sie dieses Interface implementieren, m&uuml;ssen Sie von der Klasse
+          <code>java.rmi.server.UnicastRemoteObject</code> ableiten.
+        </p>
+        
+<p>
+          Sie k&ouml;nnen den Listener beim <code>DaemonRunContext</code> mittels seiner Methode
+          <code>addTestRunListener</code> registrieren, die im vorhergehenden Abschnitt
+          beschrieben wurde.
+        </p>
+      
+
+      
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_daemon_concepts.html#sec_N185607"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 51.1&nbsp;Daemon Konzepte" title="Vorheriges Kapitel: 51.1&nbsp;Daemon Konzepte"></a></td><td class="navicon"><a href="tech_daemon_security.html#sec_daemon_security"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 51.3&nbsp;Absicherung des QF-Test Daemon" title="N&auml;chste Seite: 51.3&nbsp;Absicherung des QF-Test Daemon"></a></td><td class="navicon"><a href="tech_daemon_security.html#sec_daemon_security"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 51.3&nbsp;Absicherung des QF-Test Daemon" title="N&auml;chstes Kapitel: 51.3&nbsp;Absicherung des QF-Test Daemon"></a></td><td class="navicon"><a href="tech_daemon.html#sec_daemon"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 51&nbsp;Daemon Modus" title="Kapitel-&Uuml;bersicht: 51&nbsp;Daemon Modus"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

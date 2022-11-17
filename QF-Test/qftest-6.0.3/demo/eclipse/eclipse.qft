@@ -1,0 +1,1019 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="root"
+          signature="302C02147106D29F11188E3299728A75EBDF8451071FFEBB021479FBF39D34025B1FCCCF14365C408AD46B82335D"
+          version="6.0.3">
+  <include>qfs.qft</include>
+  <variable name="eclipsedir">C:\qfs\common\eclipse\eclipse-4.8</variable>
+  <comment>In this test-suite the Eclipse IDE which is based on SWT/RCP is used as application to be tested. Some tests are performed with respect to Eclipse perspectives and simple workflows. Basic and advanced QF-Test techniques are used like test-sets, test-cases, dependencies, procedures, try/catch and scripting.
+
+You need to have the Eclipse IDE installed on your system in order run this tests.
+
+Please adapt eclipsedir in the variable definitions table above apropriatly to your system.
+
+Note: During replay QF-Test could report some warnings wrt component recognition.
+This happens because of the usage of some "generic" components during test creation. Those components have been
+introduced in order to get the demo running with any SWT version.
+
+@author QFS</comment>
+  <TestSet id="_1" name="Eclipse tests">
+    <DependencyReference id="_5W" reference="dependencies.started"/>
+    <TestCase id="_5i" name="Perspectives">
+      <ProcedureCall id="_5l" procedure="eclipse.set perspective">
+        <variable name="perspective">Plug-in Development</variable>
+      </ProcedureCall>
+      <SelectionEventStep client="$(client)"
+                          component="WorkbenchWindow.tabfolder-topLeft@Plug-ins"
+                          event="SELECTION" id="_5o"/>
+      <ProcedureCall id="_5j" procedure="eclipse.set perspective">
+        <variable name="perspective">Debug</variable>
+      </ProcedureCall>
+      <CheckStringStep client="$(client)"
+                       component="WorkbenchWindow.tabfolder-org.eclipse.debug.internal.ui.NavigatorFolderView"
+                       id="_5k">
+        <text>Debug</text>
+      </CheckStringStep>
+    </TestCase>
+    <TestCase id="_2v" name="Create and run a class">
+      <variable name="project">QF-Test Demo</variable>
+      <variable name="package">de.qfs.test</variable>
+      <variable name="class">DemoClass</variable>
+      <DependencyReference id="_5h"
+                           reference="dependencies.java perspective"/>
+      <ProcedureCall id="_2w"
+                     procedure="eclipse.package explorer.create project"/>
+      <ProcedureCall id="_2x"
+                     procedure="eclipse.package explorer.create class"/>
+      <ProcedureCall id="_2y"
+                     procedure="eclipse.code editor.check code template"/>
+      <ProcedureCall id="_2z"
+                     procedure="eclipse.code editor.implement hello world"/>
+      <ProcedureCall id="_2+"
+                     procedure="eclipse.package explorer.run democlass"/>
+      <ProcedureCall id="_2-" procedure="eclipse.console.check output">
+        <variable name="text">(?s).*Hello world!.*</variable>
+        <variable name="asRegexp">true</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_1kA4" procedure="eclipse.console.terminate"/>
+      <ProcedureCall id="_30" predelay="1000"
+                     procedure="eclipse.console.clear"/>
+      <ProcedureCall id="_32"
+                     procedure="eclipse.package explorer.delete project"/>
+    </TestCase>
+    <TestCase id="_6b3" name="Preferences">
+      <ProcedureCall id="_6b4"
+                     procedure="eclipse.preferences.open preferences dialog"/>
+      <ProcedureCall id="_6b5"
+                     procedure="eclipse.preferences.check Editors preference nodes"/>
+      <ProcedureCall id="_6b6"
+                     procedure="eclipse.preferences.close preferences dialog">
+        <variable name="apply">false</variable>
+      </ProcedureCall>
+    </TestCase>
+  </TestSet>
+  <PackageRoot id="_3">
+    <Package id="_33" name="dependencies">
+      <Dependency id="_34" name="started">
+        <SetupSequence id="_5M">
+          <IfSequence id="_1p6i" test="${qftest:macos}">
+            <ThrowStep id="_1p6j"
+                       throwmessage="Testing eclipse based applications is not supported under macOS right now."/>
+          </IfSequence>
+          <SetGlobalStep id="_IP" varname="client">
+            <default>eclipse</default>
+          </SetGlobalStep>
+          <ClientWaiter client="$(client)" id="_1p6G" local="true"
+                        raise="false" resvarname="isSUTRunning" timeout="1">
+            <comment>This node checks whether the SUT is already running. The result of this check will be stored in the variable isSUTRunning. The variable itself can contain true if SUT is already running or false if SUT is not running. This variable will be used in the following 'If' node.</comment>
+          </ClientWaiter>
+          <IfSequence id="_1p6H" name="Launch SUT if not running"
+                      test="not $(isSUTRunning)">
+            <ProcedureCall id="_2u" procedure="eclipse.start.launch"/>
+          </IfSequence>
+        </SetupSequence>
+        <CleanupSequence id="_1v">
+          <ProcedureCall id="_2t" procedure="eclipse.start.shutdown"/>
+        </CleanupSequence>
+      </Dependency>
+      <Dependency forcedcleanup="true" id="_4Q" name="java perspective">
+        <DependencyReference id="_4t" reference="dependencies.started"/>
+        <SetupSequence id="_4R">
+          <ProcedureCall id="_5g" procedure="eclipse.set perspective">
+            <variable name="perspective">Java</variable>
+          </ProcedureCall>
+        </SetupSequence>
+      </Dependency>
+    </Package>
+    <Package id="_6" name="eclipse">
+      <Package id="_2i" name="start">
+        <Procedure id="_2o" name="launch">
+          <IfSequence id="_1p6b"
+                      name="Set default directory for workspace - can be overridden by defining workspacedir"
+                      test="${qftest:windows}">
+            <SetGlobalStep id="_1p6c" local="true" varname="_workspacedir">
+              <default>${env:TEMP}\workspace</default>
+            </SetGlobalStep>
+            <ElseSequence id="_1p6d">
+              <SetGlobalStep id="_1p6e" local="true" varname="_workspacedir">
+                <default>/tmp/workspace</default>
+              </SetGlobalStep>
+            </ElseSequence>
+          </IfSequence>
+          <SUTClientStarter client="$(client)" directory="$(eclipsedir)"
+                            executable="$(eclipsedir)/eclipse" id="_2q">
+            <parameter>-data</parameter>
+            <parameter>${default:workspacedir:$(_workspacedir)}</parameter>
+          </SUTClientStarter>
+          <TryStep id="_1p6V" name="has client started?">
+            <ClientWaiter client="$(client)" id="_1p6W" timeout="20000"/>
+            <CatchSequence exception="TestException" id="_1p6X" maxerror="0">
+              <ProcedureCall id="_1p6Y"
+                             procedure="qfs.dialogs.showInformationMessageDialog">
+                <variable name="title">Eclipse start failed</variable>
+                <variable name="msg">'$(eclipsedir)/eclipse' could not be started. 
+
+Please check the path is correct.
+
+If not please set the value for the variable 'eclipsedir' 
+in the root (top) node of the test-suite accordingly 
+and start the test run again.</variable>
+                <variable name="timeout">60000</variable>
+                <variable name="alwaysOnTop">True</variable>
+                <variable name="wraplength">160</variable>
+              </ProcedureCall>
+              <ProcedureCall id="_1p6Z" procedure="qfs.utils.killAllClients">
+                <variable name="timeout">5000</variable>
+              </ProcedureCall>
+              <ProcedureCall id="_1p6a"
+                             procedure="qfs.utils.testrun.stop.stopTestRun"/>
+            </CatchSequence>
+          </TryStep>
+          <ComponentWaiter client="$(client)" component="WorkbenchWindow"
+                           id="_2s" timeout="90000"/>
+          <TryStep id="_48+" name="Try to close welcome view">
+            <BasicSequence id="_6gI" name="override tabname">
+              <variable name="tabname">Welcome</variable>
+              <SelectionEventStep client="$(client)"
+                                  component="genericShell.genericTabFolder@Welcome"
+                                  detail="close" event="SELECTION" id="_6gH"/>
+            </BasicSequence>
+            <CatchSequence exception="ComponentNotFoundException" id="_48-"
+                           maxerror="0"/>
+          </TryStep>
+          <BasicSequence id="_6gP" name="Close any blocking dialogs">
+            <ProcedureCall id="_6gJ"
+                           procedure="qfs.swt.cleanup.closeAllDialogsAndModalShells">
+              <variable name="maxDialogs">5</variable>
+            </ProcedureCall>
+          </BasicSequence>
+          <TryStep id="_5E" name="Close help view if existing">
+            <ComponentWaiter client="$(client)"
+                             component="tabfolder-HelpView(org.eclipse.help.ui)@Welcome"
+                             id="_5G" timeout="1000"/>
+            <SelectionEventStep client="$(client)"
+                                component="tabfolder-HelpView(org.eclipse.help.ui)@Welcome"
+                                detail="close" event="SELECTION" id="_5D"/>
+            <CatchSequence exception="ComponentNotFoundException" id="_5F"
+                           maxerror="0"/>
+          </TryStep>
+        </Procedure>
+        <Procedure id="_2j" name="shutdown">
+          <TryStep id="_5y">
+            <ClientWaiter client="$(client)" id="_5+" timeout="0"/>
+            <CatchSequence exception="ClientNotConnectedException" id="_5z"
+                           maxerror="0">
+              <ReturnStep id="_5-"/>
+            </CatchSequence>
+          </TryStep>
+          <TryStep id="_6gT">
+            <SelectionEventStep client="$(client)"
+                                component="WorkbenchWindow.menu-file"
+                                event="SELECTION" id="_2k"/>
+            <SelectionEventStep client="$(client)"
+                                component="WorkbenchWindow.menu-file-quit"
+                                event="SELECTION" id="_2l"/>
+            <CatchSequence exception="TestException" id="_6gU" maxerror="1"/>
+          </TryStep>
+          <TryStep id="_6c2">
+            <ProcessWaiter client="$(client)" id="_2m" timeout="8000"/>
+            <CatchSequence exception="ClientNotTerminatedException" id="_6c3"
+                           maxerror="0">
+              <ServerScriptStep id="_6c6" name="Warning">
+                <code>rc.logWarning("Eclipse is still alive, terminating...")</code>
+              </ServerScriptStep>
+              <ClientStopper client="$(client)" id="_6c4"/>
+              <ProcessWaiter client="$(client)" id="_6c5" timeout="5000"/>
+            </CatchSequence>
+          </TryStep>
+        </Procedure>
+      </Package>
+      <Package id="_7" name="package explorer">
+        <Procedure id="_27" name="create project">
+          <variable name="project"/>
+          <CheckBooleanStep checktype="visible" client="$(client)"
+                            component="WorkbenchWindow.Package_Explorer2.linkCreate_a_project..."
+                            id="_1p6n" local="true" resvarname="linkExists"/>
+          <IfSequence id="_1p6q" test="$(linkExists)">
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="WorkbenchWindow.Package_Explorer2.linkCreate_a_project..."
+                            event="MOUSE_MPRC" id="_1p6y" modifiers="16"/>
+            <ElseSequence id="_1p6r">
+              <MouseEventStep clicks="1" client="$(client)"
+                              component="WorkbenchWindow.Package_Explorer"
+                              event="MOUSE_MPRC" id="_28" modifiers="4"
+                              popup="true"/>
+              <SelectionEventStep client="$(client)"
+                                  component="WorkbenchWindow.menuitemNew"
+                                  event="SELECTION" id="_29"/>
+              <SelectionEventStep client="$(client)"
+                                  component="WorkbenchWindow.menuitemProject..."
+                                  event="SELECTION" id="_2A"/>
+            </ElseSequence>
+          </IfSequence>
+          <ComponentWaiter client="$(client)" component="NewWizard" id="_2B"/>
+          <TryStep id="_6b-">
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="NewWizard.newWizardSelectionPage.tree@/Java Project"
+                            event="MOUSE_MPRC" id="_2C" modifiers="16"/>
+            <CatchSequence exception="IndexNotFoundException" id="_6c0"
+                           maxerror="0">
+              <MouseEventStep clicks="1" client="$(client)"
+                              component="NewWizard.newWizardSelectionPage.tree@/Java/Java Project"
+                              event="MOUSE_MPRC" id="_6c1" modifiers="16"/>
+            </CatchSequence>
+          </TryStep>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="NewWizard.buttonNext" event="MOUSE_MPRC"
+                          id="_5R" modifiers="16"/>
+          <TextInputStep clear="true" client="$(client)"
+                         component="NewJavaProjectWizardPageOne.text" id="_2E"
+                         single="false">
+            <text>$(project)</text>
+          </TextInputStep>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="JavaProjectWizard.buttonNext"
+                          event="MOUSE_MPRC" id="_2F" modifiers="16"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="JavaProjectWizard.buttonFinish"
+                          event="MOUSE_MPRC" id="_2G" modifiers="16"/>
+          <ComponentWaiter absence="true" client="$(client)"
+                           component="JavaProjectWizard" id="_6c8"
+                           timeout="120000"/>
+        </Procedure>
+        <Procedure id="_2I" name="create class">
+          <variable name="project"/>
+          <variable name="package"/>
+          <variable name="class"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="WorkbenchWindow.Package_Explorer@/$(project)"
+                          event="MOUSE_MPRC" id="_2J" modifiers="16"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="WorkbenchWindow.Package_Explorer@/$(project)"
+                          event="MOUSE_MPRC" id="_2K" modifiers="4"
+                          popup="true"/>
+          <SelectionEventStep client="$(client)"
+                              component="WorkbenchWindow.menuitemNew"
+                              event="SELECTION" id="_2L"/>
+          <SelectionEventStep client="$(client)"
+                              component="WorkbenchWindow.menuitemClass"
+                              event="SELECTION" id="_2M"/>
+          <ComponentWaiter client="$(client)"
+                           component="NewClassCreationWizard" id="_2N"/>
+          <TextInputStep clear="true" client="$(client)"
+                         component="NewClassCreationWizard.NewClassWizardPage.text"
+                         id="_2Q" single="false">
+            <text>$(package)</text>
+          </TextInputStep>
+          <CheckStringStep client="$(client)"
+                           component="NewClassCreationWizard.NewClassWizardPage.text"
+                           id="_1p6z">
+            <text>$(package)</text>
+          </CheckStringStep>
+          <TextInputStep clear="true" client="$(client)"
+                         component="NewClassCreationWizard.NewClassWizardPage.text2"
+                         id="_2S" single="false">
+            <text>$(class)</text>
+          </TextInputStep>
+          <CheckStringStep client="$(client)"
+                           component="NewClassCreationWizard.NewClassWizardPage.text2"
+                           id="_1p6+">
+            <text>$(class)</text>
+          </CheckStringStep>
+          <ProcedureCall id="_6gR" procedure="qfs.swt.checkbox.set">
+            <variable name="check">true</variable>
+            <variable name="id">NewClassCreationWizard.buttonPublic_static_void_main(String[]_args)</variable>
+          </ProcedureCall>
+          <ProcedureCall id="_6gS" procedure="qfs.swt.checkbox.set">
+            <variable name="check">true</variable>
+            <variable name="id">NewClassCreationWizard.buttonGenerate_comments</variable>
+          </ProcedureCall>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="NewClassCreationWizard.buttonFinish"
+                          event="MOUSE_MPRC" id="_2V" modifiers="16"/>
+          <ComponentWaiter absence="true" client="$(client)"
+                           component="NewClassCreationWizard" id="_6c7"
+                           timeout="120000"/>
+        </Procedure>
+        <Procedure id="_1X" name="run democlass">
+          <variable name="project"/>
+          <variable name="package"/>
+          <variable name="class"/>
+          <TryStep id="_5H">
+            <comment>Eclipse 3.2</comment>
+            <ComponentWaiter client="$(client)"
+                             component="WorkbenchWindow.Package_Explorer@/$(project)/$(package)/$(class).java"
+                             id="_5J" timeout="1000"/>
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="WorkbenchWindow.Package_Explorer@/$(project)/$(package)/$(class).java"
+                            event="MOUSE_MPRC" id="_1Y" modifiers="16"/>
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="WorkbenchWindow.Package_Explorer@/$(project)/$(package)/$(class).java"
+                            event="MOUSE_MPRC" id="_1Z" modifiers="4"
+                            popup="true"/>
+            <CatchSequence exception="ComponentNotFoundException" id="_5I"
+                           maxerror="0">
+              <comment>Eclipse 3.3</comment>
+              <MouseEventStep clicks="1" client="$(client)"
+                              component="WorkbenchWindow.Package_Explorer@/$(project)/src/$(package)/$(class).java"
+                              event="MOUSE_MPRC" id="_5K" modifiers="16"/>
+              <MouseEventStep clicks="1" client="$(client)"
+                              component="WorkbenchWindow.Package_Explorer@/$(project)/src/$(package)/$(class).java"
+                              event="MOUSE_MPRC" id="_5L" modifiers="4"
+                              popup="true"/>
+            </CatchSequence>
+          </TryStep>
+          <SelectionEventStep client="$(client)"
+                              component="WorkbenchWindow.menu-org.eclipse.debug.ui.contextualLaunch.run.submenu"
+                              event="SELECTION" id="_1a"/>
+          <SelectionEventStep client="$(client)"
+                              component="WorkbenchWindow.menuitem_Java_Application"
+                              event="SELECTION" id="_1b"/>
+          <TryStep id="_6b8">
+            <ComponentWaiter client="$(client)"
+                             component="ProgressMonitorJobsDialog" id="_6b9"
+                             timeout="2000"/>
+            <ComponentWaiter absence="true" client="$(client)"
+                             component="ProgressMonitorJobsDialog" id="_6b7"
+                             timeout="40000"/>
+            <CatchSequence exception="ComponentNotFoundException" id="_6bA"
+                           maxerror="0"/>
+          </TryStep>
+        </Procedure>
+        <Procedure id="_O" name="delete project">
+          <variable name="project"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="WorkbenchWindow.Package_Explorer@/$(project)"
+                          event="MOUSE_MPRC" id="_P" modifiers="4"
+                          popup="true"/>
+          <SelectionEventStep client="$(client)"
+                              component="WorkbenchWindow.menuitemDelete"
+                              event="SELECTION" id="_Q"/>
+          <TryStep id="_6cE">
+            <ComponentWaiter client="$(client)"
+                             component="RefactoringWizardDialog2" id="_R"
+                             timeout="5000"/>
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="RefactoringWizardDialog2.buttonDelete_project_contents_on_disk"
+                            event="MOUSE_MPRC" id="_S" modifiers="16"/>
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="RefactoringWizardDialog2.buttonOk"
+                            event="MOUSE_MPRC" id="_T" modifiers="16"/>
+            <ComponentWaiter absence="true" client="$(client)"
+                             component="RefactoringWizardDialog2" id="_6D"
+                             timeout="5000"/>
+            <CatchSequence exception="ComponentNotFoundException" id="_6cF"
+                           maxerror="0">
+              <ComponentWaiter client="$(client)"
+                               component="DeleteResourceAction__DeleteProjectDialog"
+                               id="_6cG" timeout="0"/>
+              <MouseEventStep clicks="1" client="$(client)"
+                              component="DeleteResourceAction__DeleteProjectDialog.buttonAlso_delete_contents_under_'/tmp/workspace/QF-Test_Demo'"
+                              event="MOUSE_MPRC" id="_6cM" modifiers="16"/>
+              <MouseEventStep clicks="1" client="$(client)"
+                              component="DeleteResourceAction__DeleteProjectDialog.buttonOk"
+                              event="MOUSE_MPRC" id="_6cN" modifiers="16"/>
+              <ComponentWaiter absence="true" client="$(client)"
+                               component="DeleteResourceAction__DeleteProjectDialog"
+                               id="_6cJ" timeout="5000"/>
+            </CatchSequence>
+            <CatchSequence exception="ComponentFoundException" id="_1k9s"
+                           maxerror="0">
+              <ComponentWaiter client="$(client)"
+                               component="ErrorDialogDeleteResource"
+                               id="_1k9t" timeout="0"/>
+              <MouseEventStep clicks="1" client="$(client)"
+                              component="ErrorDialogDeleteResource.buttonOk"
+                              event="MOUSE_MPRC" id="_1k9u" modifiers="16"/>
+              <ComponentWaiter absence="true" client="$(client)"
+                               component="DeleteResourceAction__DeleteProjectDialog"
+                               id="_1k9w" timeout="5000"/>
+            </CatchSequence>
+          </TryStep>
+        </Procedure>
+      </Package>
+      <Package id="_2Z" name="code editor">
+        <Procedure id="_2X" name="check code template">
+          <ComponentWaiter client="$(client)"
+                           component="WorkbenchWindow.canvas-Editor.text"
+                           id="_2Y" raise="false" timeout="30000"/>
+          <CheckItemsStep client="$(client)"
+                          component="WorkbenchWindow.canvas-Editor.text"
+                          id="_6gQ" timeout="10000">
+            <item>/**</item>
+            <item>package de.qfs.test;</item>
+            <item></item>
+            <item>/**</item>
+            <item regexp="true">.*@author .*</item>
+            <item> *</item>
+            <item> */</item>
+            <item>public class DemoClass {</item>
+            <item></item>
+            <item>	/**</item>
+            <item>	 * @param args</item>
+            <item>	 */</item>
+            <item>	public static void main(String[] args) {</item>
+            <item>		// TODO Auto-generated method stub</item>
+            <item></item>
+            <item>	}</item>
+            <item></item>
+            <item>}</item>
+            <item></item>
+          </CheckItemsStep>
+        </Procedure>
+        <Procedure id="_p" name="implement hello world">
+          <ClientScriptStep client="$(client)" engine="swt" id="_5T"
+                            name="Set selection">
+            <code>text = rc.getComponent("WorkbenchWindow.canvas-Editor.text")
+lines = text.getText().replace("\r\n", "\n").split("\n")
+for i in range(len(lines)):
+    if lines[i].lstrip().startswith("public static void main"):
+        if lines[i + 1].lstrip().startswith("{"):
+            l = i + 2
+        else:
+            l = i + 1
+        offset = text.getOffsetAtLine(l)
+        text.setSelectionRange(offset, len(lines[l]))
+        </code>
+          </ClientScriptStep>
+          <KeyEventStep client="$(client)"
+                        component="WorkbenchWindow.canvas-Editor.text"
+                        event="KEY_PTR" id="_5V" keychar="10" keycode="10"
+                        modifiers="0"/>
+          <TextInputStep client="$(client)"
+                         component="WorkbenchWindow.canvas-Editor.text"
+                         id="_x" postdelay="1000" single="false">
+            <text>System.out.println("Hello world!");</text>
+          </TextInputStep>
+          <KeyEventStep client="$(client)"
+                        component="WorkbenchWindow.canvas-Editor.text"
+                        event="KEY_PRESSED" id="_12" keychar="65535"
+                        keycode="17" modifiers="0"/>
+          <KeyEventStep client="$(client)"
+                        component="WorkbenchWindow.canvas-Editor.text"
+                        event="KEY_PTR" id="_13" keychar="19" keycode="83"
+                        modifiers="2"/>
+          <KeyEventStep client="$(client)"
+                        component="WorkbenchWindow.canvas-Editor.text"
+                        event="KEY_RELEASED" id="_14" keychar="19"
+                        keycode="17" modifiers="2"/>
+          <ClientScriptStep client="$(client)" engine="swt" id="_1p6h"
+                            name="Log the result">
+            <code>text = rc.getComponent("WorkbenchWindow.canvas-Editor.text")
+rc.logMessage("Hello world code: %s" % text.getText(), dontcompactify=True)</code>
+          </ClientScriptStep>
+        </Procedure>
+      </Package>
+      <Package id="_2d" name="console">
+        <Procedure id="_1c" name="check output">
+          <variable name="text"/>
+          <variable name="asRegexp">false</variable>
+          <CheckStringStep client="$(client)"
+                           component="WorkbenchWindow.Console.text" id="_1d"
+                           regexp="$(asRegexp)" timeout="10000">
+            <text>$(text)
+</text>
+          </CheckStringStep>
+        </Procedure>
+        <Procedure id="_1e" name="clear">
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="WorkbenchWindow.Console.text"
+                          event="MOUSE_MPRC" id="_1f" modifiers="4"
+                          popup="true"/>
+          <SelectionEventStep client="$(client)" component="menuitemClear"
+                              event="SELECTION" id="_1g"/>
+        </Procedure>
+        <Procedure id="_1kA3" name="terminate">
+          <TryStep id="_1kA1" name="Terminate process">
+            <SelectionEventStep client="$(client)"
+                                component="WorkbenchWindow.toolbar-Console.toolItemTipTerminate"
+                                event="SELECTION" id="_1kA0"/>
+            <CatchSequence exception="TestException" id="_1kA2" maxerror="0"/>
+          </TryStep>
+        </Procedure>
+      </Package>
+      <Package id="_63" name="preferences">
+        <Procedure id="_64" name="open preferences dialog">
+          <SelectionEventStep client="$(client)"
+                              component="WorkbenchWindow.menu-window"
+                              event="SELECTION" id="_60"/>
+          <SelectionEventStep client="$(client)"
+                              component="WorkbenchWindow.menu-window-preferences"
+                              event="SELECTION" id="_61"/>
+          <ComponentWaiter client="$(client)"
+                           component="WorkbenchPreferenceDialog" id="_62"/>
+        </Procedure>
+        <Procedure id="_65" name="close preferences dialog">
+          <variable name="apply">false</variable>
+          <IfSequence id="_69" test="$(apply)">
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="WorkbenchPreferenceDialog.buttonOk"
+                            event="MOUSE_MPRC" id="_6A" modifiers="16"/>
+            <ElseSequence id="_6B">
+              <MouseEventStep clicks="1" client="$(client)"
+                              component="WorkbenchPreferenceDialog.buttonCancel"
+                              event="MOUSE_MPRC" id="_6C" modifiers="16"/>
+            </ElseSequence>
+          </IfSequence>
+        </Procedure>
+        <Procedure id="_6G" name="cbPreferenceNodes">
+          <variable name="treeId"/>
+          <variable name="node"/>
+          <ClientScriptStep client="$(client)" id="_6Wc" name="Add node">
+            <code>c = rc.getComponent("$(treeId)$(node)")[1]
+prefNodes = rc.lookup("prefNodes")
+if prefNodes != "":
+    prefNodes += ","
+prefNodes += c.getText()
+rc.setGlobal("prefNodes", prefNodes)
+</code>
+          </ClientScriptStep>
+        </Procedure>
+        <Procedure id="_6a-" name="check Editors preference nodes">
+          <SetGlobalStep id="_6b1" varname="prefNodes"/>
+          <ProcedureCall id="_6Wd" procedure="qfs.swt.tree.expandNodes">
+            <variable name="id">WorkbenchPreferenceDialog.tree@/General/Editors</variable>
+            <variable name="callbackProc">eclipse.preferences.cbPreferenceNodes</variable>
+          </ProcedureCall>
+          <ServerScriptStep id="_6b0" name="Check">
+            <code>
+expectedNodes = "Editors,File Associations,Text Editors,Accessibility,Annotations,Hyperlinking,Linked Mode,Quick Diff,Spelling"
+prefNodes = rc.lookup("prefNodes")
+expectedNodesArray = expectedNodes.split(",")
+for en in expectedNodesArray:
+    rc.check((en in prefNodes), "Check visibilty of preference node: " + en + " for 'Editors'")
+</code>
+          </ServerScriptStep>
+        </Procedure>
+      </Package>
+      <Procedure id="_5X" name="set perspective">
+        <variable name="perspective">Java</variable>
+        <TryStep id="_5Y">
+          <CheckStringStep client="$(client)" component="WorkbenchWindow"
+                           id="_35" raise="true" regexp="true">
+            <text>$(perspective) - Eclipse.*</text>
+          </CheckStringStep>
+          <CatchSequence exception="TestException" id="_5Z" maxerror="0">
+            <TryStep id="_1k9x" name="Variant for Eclipse 4.5 and above">
+              <SelectionEventStep client="$(client)"
+                                  component="WorkbenchWindow.menu-window"
+                                  event="SELECTION" id="_1k9d"/>
+              <SelectionEventStep client="$(client)"
+                                  component="WorkbenchWindow.menu-window-perspective"
+                                  event="SELECTION" id="_1k9e"/>
+              <SelectionEventStep client="$(client)"
+                                  component="WorkbenchWindow.menu-window-perspective-openPerspective"
+                                  event="SELECTION" id="_1k9f"/>
+              <SelectionEventStep client="$(client)"
+                                  component="WorkbenchWindow.menu-window-perspective-openPerspective.menuitemOther..."
+                                  event="SELECTION" id="_1k9g"/>
+              <CatchSequence exception="ComponentNotFoundException" id="_1k9y"
+                             maxerror="0"
+                             name="Variant for Eclipse version 4.4 and below">
+                <SelectionEventStep client="$(client)"
+                                    component="WorkbenchWindow.menu-window"
+                                    event="SELECTION" id="_4RV"/>
+                <SelectionEventStep client="$(client)"
+                                    component="WorkbenchWindow.menu-window-openPerspective"
+                                    event="SELECTION" id="_4RW"/>
+                <SelectionEventStep client="$(client)"
+                                    component="WorkbenchWindow.menuitemOther..."
+                                    event="SELECTION" id="_1E"/>
+              </CatchSequence>
+            </TryStep>
+            <ComponentWaiter client="$(client)"
+                             component="SelectPerspectiveDialog" id="_5x"/>
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="SelectPerspectiveDialog.table&amp;0%$(perspective).*"
+                            event="MOUSE_MPRC" id="_5e" modifiers="16"/>
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="SelectPerspectiveDialog.buttonOk"
+                            event="MOUSE_MPRC" id="_5f" modifiers="16"/>
+          </CatchSequence>
+        </TryStep>
+      </Procedure>
+    </Package>
+  </PackageRoot>
+  <ExtraSequence id="_4"/>
+  <WindowList id="_5">
+    <WindowStep class="org.eclipse.swt.widgets.Shell" engine="swt"
+                feature=".*Eclipse.*" height="768" id="WorkbenchWindow"
+                name="WorkbenchWindow" regexp="true" uid="_6bB" width="1024">
+      <ComponentStep class="org.eclipse.swt.widgets.Control" classcount="1"
+                     classindex="0" feature="ToolTip: Close" height="688"
+                     id="tabfolder-HelpView(org.eclipse.help.ui)"
+                     name="tabfolder-HelpView(org.eclipse.help.ui)" uid="_6bC"
+                     width="1006" x="9" y="52"/>
+      <ComponentStep class="org.eclipse.swt.widgets.Tree" classcount="2"
+                     classindex="1" height="610"
+                     id="WorkbenchWindow.Package_Explorer"
+                     name="Package Explorer" uid="_6bD" width="246" x="11"
+                     y="125"/>
+      <ComponentStep class="Panel" classcount="7" classindex="6" height="116"
+                     id="WorkbenchWindow.Package_Explorer2"
+                     name="Package Explorer" uid="_1p6l" width="223" x="8"
+                     y="55">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">org.eclipse.swt.widgets.Composite</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Panel</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">org.eclipse.swt.widgets.Composite</extrafeature>
+        <ComponentStep class="Link" classcount="4" classindex="2"
+                       feature="Create a project..." height="17"
+                       id="WorkbenchWindow.Package_Explorer2.linkCreate_a_project..."
+                       uid="_1p6x" width="110" x="36" y="67">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">org.eclipse.ui.forms.widgets.Hyperlink</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Link</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">Create a project...</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">org.eclipse.swt.widgets.Canvas</extrafeature>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="org.eclipse.swt.widgets.Menu"
+                     feature="Popup InvokerName: Package Explorer"
+                     height="270" id="WorkbenchWindow.popup-Package_Explorer"
+                     name="popup-Package Explorer" uid="_6bE" width="229">
+        <ComponentStep class="org.eclipse.swt.widgets.MenuItem" classindex="0"
+                       feature="New" height="18"
+                       id="WorkbenchWindow.menuitemNew" uid="_6bF" width="225"
+                       x="2" y="2">
+          <ComponentStep class="org.eclipse.swt.widgets.MenuItem"
+                         classcount="16" classindex="1" feature="Project..."
+                         height="0" id="WorkbenchWindow.menuitemProject..."
+                         uid="_6bG" width="0" x="0" y="0"/>
+          <ComponentStep class="org.eclipse.swt.widgets.MenuItem"
+                         classcount="16" classindex="4" feature="Class"
+                         height="0" id="WorkbenchWindow.menuitemClass"
+                         uid="_6bH" width="0" x="0" y="0"/>
+        </ComponentStep>
+        <ComponentStep class="org.eclipse.swt.widgets.MenuItem"
+                       feature="Delete" height="20"
+                       id="WorkbenchWindow.menuitemDelete" uid="_6bI"
+                       width="225" x="2" y="116"/>
+        <ComponentStep class="org.eclipse.swt.widgets.MenuItem"
+                       classcount="33" classindex="25" feature="Run As"
+                       height="18"
+                       id="WorkbenchWindow.menu-org.eclipse.debug.ui.contextualLaunch.run.submenu"
+                       name="menu-org.eclipse.debug.ui.contextualLaunch.run.submenu"
+                       uid="_6bJ" width="244" x="2" y="403">
+          <ComponentStep class="org.eclipse.swt.widgets.MenuItem"
+                         classcount="3" classindex="0"
+                         feature=".*Java Application" height="0"
+                         id="WorkbenchWindow.menuitem_Java_Application"
+                         regexp="true" uid="_6bK" width="0" x="0" y="0"/>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="org.eclipse.swt.widgets.Canvas" classcount="3"
+                     classindex="2" height="452"
+                     id="WorkbenchWindow.canvas-Editor" name="canvas-Editor"
+                     uid="_6bL" width="555" x="266" y="101">
+        <ComponentStep class="org.eclipse.swt.custom.StyledText"
+                       classcount="1" classindex="0" height="452"
+                       id="WorkbenchWindow.canvas-Editor.text" uid="_6bM"
+                       width="512" x="30" y="0"/>
+      </ComponentStep>
+      <ComponentStep class="org.eclipse.ui.part.PageBook" classcount="2"
+                     classindex="0" height="135" id="WorkbenchWindow.Console"
+                     name="Console" uid="_6bN" width="747" x="266" y="600">
+        <ComponentStep class="org.eclipse.swt.custom.StyledText"
+                       classcount="1" classindex="0" height="135"
+                       id="WorkbenchWindow.Console.text" uid="_6bO"
+                       width="747" x="0" y="0"/>
+      </ComponentStep>
+      <ComponentStep class="org.eclipse.swt.widgets.Menu"
+                     feature="Popup InvokerClass: StyledText" height="219"
+                     id="menuPopup_InvokerClass:_StyledText" uid="_6bP"
+                     width="210">
+        <ComponentStep class="org.eclipse.swt.widgets.MenuItem"
+                       feature="Clear" height="20" id="menuitemClear"
+                       uid="_6bQ" width="206" x="2" y="122">
+          <comment>NOTE: The structure information has been removed manually in order to avoid warnings during component recognition. See manual chapter "Component" for more details.</comment>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="org.eclipse.swt.widgets.Menu" feature="Bar"
+                     height="18" id="WorkbenchWindow.menuBar" uid="_6bR"
+                     width="1016" x="4" y="23">
+        <ComponentStep class="org.eclipse.swt.widgets.MenuItem"
+                       classcount="11" classindex="0" feature="File"
+                       height="18" id="WorkbenchWindow.menu-file"
+                       name="menu-file" uid="_6bS" width="28" x="0" y="0">
+          <ComponentStep class="org.eclipse.swt.widgets.MenuItem"
+                         classcount="26" classindex="25" feature="Exit"
+                         height="0" id="WorkbenchWindow.menu-file-quit"
+                         name="menu-file-quit" uid="_6bT" width="0" x="0"
+                         y="0"/>
+        </ComponentStep>
+        <ComponentStep class="org.eclipse.swt.widgets.MenuItem"
+                       classcount="11" classindex="9" feature="Window"
+                       height="18" id="WorkbenchWindow.menu-window"
+                       name="menu-window" uid="_6bU" width="50" x="380" y="0">
+          <ComponentStep class="org.eclipse.swt.widgets.MenuItem"
+                         classcount="16" classindex="3"
+                         feature="Open Perspective" height="0"
+                         id="WorkbenchWindow.menu-window-openPerspective"
+                         name="menu-window-openPerspective" uid="_6bV"
+                         width="0" x="0" y="0">
+            <ComponentStep class="org.eclipse.swt.widgets.MenuItem"
+                           feature="Other..." height="18"
+                           id="WorkbenchWindow.menuitemOther..." uid="_6bW"
+                           width="127" x="2" y="71"/>
+          </ComponentStep>
+          <ComponentStep class="org.eclipse.swt.widgets.MenuItem"
+                         classcount="16" classindex="15"
+                         feature="Preferences..." height="0"
+                         id="WorkbenchWindow.menu-window-preferences"
+                         name="menu-window-preferences" uid="_6bX" width="0"
+                         x="0" y="0"/>
+          <ComponentStep class="MenuItem" classcount="10" classindex="5"
+                         feature="Perspective" height="22"
+                         id="WorkbenchWindow.menu-window-perspective"
+                         name="menu-window-perspective" uid="_1k9h"
+                         width="155" x="2" y="98">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">org.eclipse.swt.widgets.MenuItem</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">MenuItem</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Perspective</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">org.eclipse.swt.widgets.MenuItem</extrafeature>
+            <ComponentStep class="MenuItem" classcount="7" classindex="0"
+                           feature="Open Perspective" height="22"
+                           id="WorkbenchWindow.menu-window-perspective-openPerspective"
+                           name="menu-window-perspective-openPerspective"
+                           uid="_1k9i" width="212" x="2" y="2">
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">org.eclipse.swt.widgets.MenuItem</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">MenuItem</extrafeature>
+              <extrafeature name="qfs:label" negate="false" regexp="false"
+                            state="1">Open Perspective</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">org.eclipse.swt.widgets.MenuItem</extrafeature>
+              <ComponentStep class="MenuItem" feature="Other..." height="19"
+                             id="WorkbenchWindow.menu-window-perspective-openPerspective.menuitemOther..."
+                             uid="_1k9j" width="135" x="2" y="49">
+                <extrafeature name="qfs:class" negate="false" regexp="false"
+                              state="0">org.eclipse.swt.widgets.MenuItem</extrafeature>
+                <extrafeature name="qfs:genericclass" negate="false"
+                              regexp="false" state="0">MenuItem</extrafeature>
+                <extrafeature name="qfs:label" negate="false" regexp="false"
+                              state="1">Other...</extrafeature>
+                <extrafeature name="qfs:systemclass" negate="false"
+                              regexp="false" state="0">org.eclipse.swt.widgets.MenuItem</extrafeature>
+                <comment>NOTE: The structure information has been removed manually in order to avoid warnings during component recognition. See manual chapter "Component" for more details.</comment>
+              </ComponentStep>
+            </ComponentStep>
+          </ComponentStep>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="org.eclipse.swt.widgets.Control" classcount="5"
+                     classindex="2" height="223"
+                     id="WorkbenchWindow.tabfolder-org.eclipse.debug.internal.ui.NavigatorFolderView"
+                     name="tabfolder-org.eclipse.debug.internal.ui.NavigatorFolderView"
+                     uid="_6bY" width="503" x="8" y="75"/>
+      <ComponentStep class="org.eclipse.swt.widgets.Control" classcount="4"
+                     classindex="1" height="663"
+                     id="WorkbenchWindow.tabfolder-topLeft"
+                     name="tabfolder-topLeft" uid="_6bZ" width="252" x="8"
+                     y="75"/>
+      <ComponentStep class="TabPanel" classcount="4" classindex="3"
+                     height="155" id="WorkbenchWindow.tabfolder-bottom"
+                     name="tabfolder-bottom" uid="_1k9z" width="749" x="265"
+                     y="576">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">org.eclipse.swt.custom.CTabFolder</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">TabPanel</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">org.eclipse.swt.custom.CTabFolder</extrafeature>
+        <ComponentStep class="ToolBar" classcount="2" classindex="0"
+                       height="22" id="WorkbenchWindow.toolbar-Console"
+                       name="toolbar-Console" uid="_1k9+" width="299" x="396"
+                       y="2">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">org.eclipse.swt.widgets.ToolBar</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">ToolBar</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">org.eclipse.swt.widgets.ToolBar</extrafeature>
+          <ComponentStep class="ToolBarItem" classindex="0"
+                         feature="ToolTip: Terminate" height="22"
+                         id="WorkbenchWindow.toolbar-Console.toolItemTipTerminate"
+                         uid="_1k9-" width="23" x="0" y="0">
+            <extrafeature name="imagehash" negate="false" regexp="false"
+                          state="0">1730019172</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">org.eclipse.swt.widgets.ToolItem</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">ToolBarItem</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Terminate</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">org.eclipse.swt.widgets.ToolItem</extrafeature>
+          </ComponentStep>
+        </ComponentStep>
+      </ComponentStep>
+    </WindowStep>
+    <WindowStep class="org.eclipse.swt.widgets.Shell" engine="swt"
+                feature="New Project" height="500" id="NewWizard" modal="true"
+                name="NewWizard" uid="_6ba" width="500">
+      <ComponentStep class="org.eclipse.swt.widgets.Composite" classcount="9"
+                     classindex="4" height="307"
+                     id="NewWizard.newWizardSelectionPage"
+                     name="newWizardSelectionPage" uid="_6bb" width="482"
+                     x="9" y="96">
+        <ComponentStep class="org.eclipse.swt.widgets.Tree" classcount="1"
+                       classindex="0" height="247"
+                       id="NewWizard.newWizardSelectionPage.tree" uid="_6bc"
+                       width="472" x="5" y="50"/>
+      </ComponentStep>
+      <ComponentStep class="org.eclipse.swt.widgets.Button" classcount="4"
+                     classindex="1" feature="Next &gt;" height="23"
+                     id="NewWizard.buttonNext" name="buttonNext" uid="_6bd"
+                     width="76" x="249" y="462"/>
+    </WindowStep>
+    <WindowStep class="org.eclipse.swt.widgets.Shell" engine="swt"
+                feature="New Java Project" height="692" id="JavaProjectWizard"
+                modal="true" name="JavaProjectWizard" uid="_6be" width="581">
+      <ComponentStep class="org.eclipse.swt.widgets.Composite" classcount="9"
+                     classindex="4" height="693"
+                     id="NewJavaProjectWizardPageOne" uid="_6bf" width="604"
+                     x="9" y="114">
+        <ComponentStep class="org.eclipse.swt.widgets.Text" classindex="0"
+                       height="27" id="NewJavaProjectWizardPageOne.text"
+                       uid="_6bg" width="477" x="115" y="17"/>
+      </ComponentStep>
+      <ComponentStep class="org.eclipse.swt.widgets.Button" classcount="4"
+                     classindex="1" feature="Next &gt;" height="23"
+                     id="JavaProjectWizard.buttonNext" name="buttonNext"
+                     uid="_6bh" width="76" x="330" y="654"/>
+      <ComponentStep class="org.eclipse.swt.widgets.Button" classcount="4"
+                     classindex="2" feature="Finish" height="23"
+                     id="JavaProjectWizard.buttonFinish" name="buttonFinish"
+                     uid="_6bi" width="76" x="411" y="654"/>
+    </WindowStep>
+    <WindowStep class="org.eclipse.swt.widgets.Shell" engine="swt"
+                feature="New Java Class" height="592"
+                id="NewClassCreationWizard" modal="true"
+                name="NewClassCreationWizard" uid="_6bj" width="500">
+      <ComponentStep class="org.eclipse.swt.widgets.Composite" classcount="8"
+                     classindex="4" height="399"
+                     id="NewClassCreationWizard.NewClassWizardPage"
+                     name="NewClassWizardPage" uid="_6bk" width="482" x="9"
+                     y="96">
+        <ComponentStep class="org.eclipse.swt.widgets.Text" classcount="5"
+                       classindex="1" height="19"
+                       id="NewClassCreationWizard.NewClassWizardPage.text"
+                       uid="_6bl" width="245" x="104" y="35"/>
+        <ComponentStep class="org.eclipse.swt.widgets.Text" classcount="5"
+                       classindex="3" height="19"
+                       id="NewClassCreationWizard.NewClassWizardPage.text2"
+                       uid="_6bm" width="292" x="104" y="107"/>
+        <ComponentStep class="org.eclipse.swt.widgets.Button" classcount="18"
+                       classindex="14"
+                       feature="public static void main(String[] args)"
+                       height="16"
+                       id="NewClassCreationWizard.buttonPublic_static_void_main(String[]_args)"
+                       uid="_6bn" width="193" x="104" y="297"/>
+        <ComponentStep class="org.eclipse.swt.widgets.Button" classcount="18"
+                       classindex="17" feature="Generate comments" height="16"
+                       id="NewClassCreationWizard.buttonGenerate_comments"
+                       uid="_6bo" width="373" x="104" y="378"/>
+      </ComponentStep>
+      <ComponentStep class="org.eclipse.swt.widgets.Button" classcount="2"
+                     classindex="0" feature="Finish" height="23"
+                     id="NewClassCreationWizard.buttonFinish"
+                     name="buttonFinish" uid="_6bp" width="76" x="330"
+                     y="554"/>
+    </WindowStep>
+    <WindowStep class="org.eclipse.swt.widgets.Shell" engine="swt"
+                feature="Open Perspective" height="414"
+                id="SelectPerspectiveDialog" modal="true"
+                name="SelectPerspectiveDialog" uid="_6bq" width="346">
+      <ComponentStep class="org.eclipse.swt.widgets.Table" classcount="1"
+                     classindex="0" height="320"
+                     id="SelectPerspectiveDialog.table" uid="_6br" width="320"
+                     x="13" y="34"/>
+      <ComponentStep class="org.eclipse.swt.widgets.Button" classcount="2"
+                     classindex="0" feature="OK" height="23"
+                     id="SelectPerspectiveDialog.buttonOk" name="buttonOk"
+                     uid="_6bs" width="76" x="176" y="376"/>
+    </WindowStep>
+    <WindowStep class="org.eclipse.swt.widgets.Shell" engine="swt"
+                feature="Preferences" height="536"
+                id="WorkbenchPreferenceDialog" modal="true"
+                name="WorkbenchPreferenceDialog" uid="_6bt" width="626">
+      <ComponentStep class="org.eclipse.swt.widgets.Button" classcount="2"
+                     classindex="0" feature="OK" height="23"
+                     id="WorkbenchPreferenceDialog.buttonOk" name="buttonOk"
+                     uid="_6bu" width="76" x="456" y="498"/>
+      <ComponentStep class="org.eclipse.swt.widgets.Button" classcount="2"
+                     classindex="1" feature="Cancel" height="23"
+                     id="WorkbenchPreferenceDialog.buttonCancel"
+                     name="buttonCancel" uid="_6bv" width="76" x="537"
+                     y="498"/>
+      <ComponentStep class="org.eclipse.swt.widgets.Tree" classcount="1"
+                     classindex="0" height="428"
+                     id="WorkbenchPreferenceDialog.tree" uid="_6bw"
+                     width="173" x="11" y="57"/>
+    </WindowStep>
+    <WindowStep class="org.eclipse.swt.widgets.Shell" engine="swt"
+                feature="Delete Resources" height="258"
+                id="RefactoringWizardDialog2" modal="true"
+                name="RefactoringWizardDialog2" uid="_6bx" width="599">
+      <ComponentStep class="org.eclipse.swt.widgets.Button" classcount="4"
+                     classindex="0"
+                     feature="Delete project contents on disk (cannot be undone)"
+                     height="23"
+                     id="RefactoringWizardDialog2.buttonDelete_project_contents_on_disk"
+                     uid="_6by" width="561" x="19" y="93"/>
+      <ComponentStep class="org.eclipse.swt.widgets.Button" classcount="4"
+                     classindex="2" feature="OK" height="31"
+                     id="RefactoringWizardDialog2.buttonOk" name="buttonOk"
+                     uid="_6bz" width="107" x="362" y="206"/>
+    </WindowStep>
+    <WindowStep class="org.eclipse.swt.widgets.Shell" engine="swt"
+                feature="Progress Information" height="181"
+                id="ProgressMonitorJobsDialog" modal="true"
+                name="ProgressMonitorJobsDialog" uid="_6b+" width="450"/>
+    <WindowStep class="org.eclipse.swt.widgets.Shell" engine="swt"
+                feature="Confirm Project Delete" height="282"
+                id="DeleteResourceAction__DeleteProjectDialog" modal="true"
+                name="DeleteResourceAction$$DeleteProjectDialog" uid="_6cC"
+                width="700">
+      <ComponentStep class="org.eclipse.swt.widgets.Button" classcount="4"
+                     classindex="0"
+                     feature="Also delete contents under '/tmp/workspace/QF-Test Demo'"
+                     height="26"
+                     id="DeleteResourceAction__DeleteProjectDialog.buttonAlso_delete_contents_under_'/tmp/workspace/QF-Test_Demo'"
+                     uid="_6cD" width="463" x="23" y="109"/>
+      <ComponentStep class="org.eclipse.swt.widgets.Button" classcount="4"
+                     classindex="2" feature="Yes" height="28"
+                     id="DeleteResourceAction__DeleteProjectDialog.buttonOk"
+                     name="buttonOk" uid="_6cK" width="122" x="430" y="226"/>
+    </WindowStep>
+    <WindowStep class="org.eclipse.swt.widgets.Shell" engine="swt"
+                feature="Delete Launch Configurations" height="204"
+                id="DeleteAssociatedLaunchConfigurationsDialog" modal="true"
+                name="DeleteAssociatedLaunchConfigurationsDialog" uid="_6Yn"
+                width="273">
+      <ComponentStep class="org.eclipse.swt.widgets.Button" classcount="5"
+                     classindex="0" feature="Select All" height="23"
+                     id="DeleteAssociatedLaunchConfigurationsDialog.buttonSelect_All"
+                     uid="_6Yo" width="76" x="13" y="98"/>
+      <ComponentStep class="org.eclipse.swt.widgets.Button" classcount="5"
+                     classindex="3" feature="OK" height="23"
+                     id="DeleteAssociatedLaunchConfigurationsDialog.buttonOk"
+                     name="buttonOk" uid="_6Yp" width="76" x="103" y="166"/>
+    </WindowStep>
+    <WindowStep class="org.eclipse.swt.widgets.Shell" engine="swt"
+                feature="Deleting resources" height="254"
+                id="shellDeleting_resources" uid="_6cL" width="700"/>
+    <WindowStep class="Dialog" engine="swt" feature="Delete Resource"
+                height="183" id="ErrorDialogDeleteResource" modal="true"
+                uid="_1k9p" width="548">
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">org.eclipse.swt.widgets.Shell</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Dialog</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">org.eclipse.swt.widgets.Shell</extrafeature>
+      <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Window:Dialog</extrafeature>
+      <ComponentStep class="Button" classcount="2" classindex="0" feature="OK"
+                     height="25" id="ErrorDialogDeleteResource.buttonOk"
+                     name="buttonOk" uid="_1k9q" width="92" x="339" y="137">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">org.eclipse.swt.widgets.Button</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Button</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">OK</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">org.eclipse.swt.widgets.Button</extrafeature>
+      </ComponentStep>
+    </WindowStep>
+  </WindowList>
+</RootStep>

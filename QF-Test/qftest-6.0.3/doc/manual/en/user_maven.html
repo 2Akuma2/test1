@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Maven</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_maven"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_ant.html#usec_ant"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 26.2&nbsp;Ant" title="Previous Chapter: 26.2&nbsp;Ant"></a></td><td class="navicon"><a href="user_jenkins.html#usec_jenkins"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 26.4&nbsp;Jenkins/Hudson" title="Next Page: 26.4&nbsp;Jenkins/Hudson"></a></td><td class="navicon"><a href="user_jenkins.html#usec_jenkins"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 26.4&nbsp;Jenkins/Hudson" title="Next Chapter: 26.4&nbsp;Jenkins/Hudson"></a></td><td class="navicon"><a href="buildtools.html#usec_buildtools"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 26&nbsp;Integration with Development Tools" title="Chapter Overview: 26&nbsp;Integration with Development Tools"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_maven">26.3</a></span>
+</div>
+<a href="contents.html#toc_usec_maven">Maven</a>
+</h4>
+      
+<p>
+        People who are using Apache Maven (<a href="http://maven.apache.org" shape="rect">http://maven.apache.org</a>) as build system may easily
+        integrate QF-Test in their build. This can be achieved by using the
+        antrun plugin of Maven. A demo <code>pom.xml</code> file, where QF-Tests
+        tests are executed in the <code>test</code> phase could look like this:
+      </p>
+      
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+  http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;artifactId&gt;testant&lt;/artifactId&gt;
+  &lt;packaging&gt;jar&lt;/packaging&gt;
+  &lt;name&gt;testant&lt;/name&gt;
+  &lt;groupId&gt;de.qfs&lt;/groupId&gt;
+  &lt;version&gt;1&lt;/version&gt;
+
+  &lt;properties&gt;
+   &lt;qf.exe&gt;"C:\Program Files\qfs\qftest\qftest-6.0.3\bin\qftest.exe"&lt;/qf.exe&gt;
+   &lt;qf.reportfolder&gt;qftest&lt;/qf.reportfolder&gt;
+   &lt;qf.log&gt;logFile.qrz&lt;/qf.log&gt;
+   &lt;qf.suite&gt;"c:\path\to\testsuite.qft"&lt;/qf.suite&gt;
+  &lt;/properties&gt;
+
+  &lt;build&gt;
+    &lt;plugins&gt;
+          &lt;plugin&gt;
+              &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+              &lt;artifactId&gt;maven-antrun-plugin&lt;/artifactId&gt;
+              &lt;executions&gt;
+                  &lt;execution&gt;
+                      &lt;phase&gt;test&lt;/phase&gt;
+                      &lt;configuration&gt;
+                          &lt;tasks&gt;
+                              &lt;exec executable="${qf.exe}"&gt;
+                                  &lt;arg value="-batch"/&gt;
+                                  &lt;arg value="-report"/&gt;
+                                  &lt;arg value="${qf.reportfolder}"/&gt;
+                                  &lt;arg value="-runlog"/&gt;
+                                  &lt;arg value="${qf.log}"/&gt;
+                                  &lt;arg value="${qf.suite}"/&gt;
+                              &lt;/exec&gt;
+                          &lt;/tasks&gt;
+                      &lt;/configuration&gt;
+                      &lt;goals&gt;
+                          &lt;goal&gt;run&lt;/goal&gt;
+                      &lt;/goals&gt;
+                  &lt;/execution&gt;
+              &lt;/executions&gt;
+          &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+
+&lt;/project&gt;
+        </pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;26.2:&nbsp;&nbsp;Maven build file <code>pom.xml</code> to execute a test-suite</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        In your project it might become required to run the tests during
+        another build phase, than the configured <code>test</code> phase in the
+        example. In this case you have to configure the plugin accordingly, like
+        described in the Maven documentation.
+      </p>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_ant.html#usec_ant"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 26.2&nbsp;Ant" title="Previous Chapter: 26.2&nbsp;Ant"></a></td><td class="navicon"><a href="user_jenkins.html#usec_jenkins"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 26.4&nbsp;Jenkins/Hudson" title="Next Page: 26.4&nbsp;Jenkins/Hudson"></a></td><td class="navicon"><a href="user_jenkins.html#usec_jenkins"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 26.4&nbsp;Jenkins/Hudson" title="Next Chapter: 26.4&nbsp;Jenkins/Hudson"></a></td><td class="navicon"><a href="buildtools.html#usec_buildtools"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 26&nbsp;Integration with Development Tools" title="Chapter Overview: 26&nbsp;Integration with Development Tools"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

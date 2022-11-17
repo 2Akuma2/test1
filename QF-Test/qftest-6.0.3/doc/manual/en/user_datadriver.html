@@ -1,0 +1,488 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Data-driven testing</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_datadriver"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="web_services.html#usec_web_services"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 19&nbsp;Testing web services" title="Previous Chapter: 19&nbsp;Testing web services"></a></td><td class="navicon"><a href="user_report.html#usec_report"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 21&nbsp;Reports and test documentation" title="Next Page: 21&nbsp;Reports and test documentation"></a></td><td class="navicon"><a href="user_report.html#usec_report"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 21&nbsp;Reports and test documentation" title="Next Chapter: 21&nbsp;Reports and test documentation"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;User manual" title="Chapter Overview: I&nbsp;User manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_datadriver">20</a></span>
+</div>
+<a href="contents.html#toc_usec_datadriver">Data-driven testing</a>
+</h3>
+    
+<p>
+      Data-driven testing is a very important aspect of test automation. In short, the goal is to
+      run a given test or set of tests multiple times with different sets of input data and
+      expected results. QF-Test has various means to store data or load external data for use in
+      data-driven tests. The most convenient is based on a 'Data driver' node which sets up an
+      environment for iterating over the sets of data combined with one or more 'Data binder' nodes
+      to bind the variables for test execution. Note that there is no 'Data binder' node as such.
+      The name serves as a generic term for the specific nodes like a 'Data table' or a
+      'CSV data file'. This is best explained through some examples. A demo test-suite with simple
+      and advanced examples named <code>datadriver.qft</code> is provided in the directory
+      <code>doc/tutorial</code> below QF-Test's root directory. Please take care
+          to store modified test-suites in a project-related folder.
+    </p>
+    
+
+    
+<a name="sec_N88374"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N88374">20.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N88374">Data-driver examples</a>
+</h4>
+      
+<a name="figure_20.1"></a><a name="figure_20.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/v2_datadriven.png" target="_blank"><img src="images/v2_datadriven.png" alt="A simple data-driven test" width="298" height="130" texscale="1"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;20.1</a>:&nbsp;&nbsp;A simple data-driven test</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        The image above shows a 'Test-set' with a 'Data driver' node that contains a single
+        'Data binder' in the form of a 'Data table' node. The contents of the
+        'Data table' are as follows:
+      </p>
+      
+<a name="figure_20.2"></a><a name="figure_20.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/v2_databinder.png" target="_blank"><img src="images/v2_databinder.png" alt="Data table example" width="393" height="385" texscale="1"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;20.2</a>:&nbsp;&nbsp;'Data table' example</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        When the 'Test-set' is executed, it will iterate over the rows of the 'Data table'
+        shown above. For each of the three iterations the values of the respective row in the
+        table are bound to the variable named in the matching column header. Thus, during the
+        first iteration the variable named "Model" is bound to "Rolo", "Variant" to "None" and
+        "Price" to "19000". During the second iteration, "Model" is set to "I5" and to
+        "Minigolf" during the third and last iteration. For each iteration, all 'Test-case' child
+        nodes of the 'Test-set' are run.
+      </p>
+      
+<p>
+        The following image shows a run-log for the above 'Test-set'.
+      </p>
+      
+<a name="figure_20.3"></a><a name="figure_20.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/v2_datadriverlog.png" target="_blank"><img src="images/v2_datadriverlog.png" alt="Run-log of a data-driven test" width="315" height="274" texscale="1"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;20.3</a>:&nbsp;&nbsp;Run-log of a data-driven test</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        The next example shows that data-driven testing is not limited to a single loop:
+      </p>
+      
+<a name="figure_20.4"></a><a name="figure_20.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/v2_datadriven2.png" target="_blank"><img src="images/v2_datadriven2.png" alt="Data-driven test with nested loops" width="312" height="162" texscale="1"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;20.4</a>:&nbsp;&nbsp;Data-driven test with nested loops</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        The 'Data driver' now contains a second 'Data table' node with the following
+        contents:
+      </p>
+      
+<a name="figure_20.5"></a><a name="figure_20.5"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/v2_databinder2.png" target="_blank"><img src="images/v2_databinder2.png" alt="Second data table example" width="393" height="367" texscale="1"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;20.5</a>:&nbsp;&nbsp;Second data table example</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        The 'Test-set' will now go through a total of six iterations because for each of the
+        three iterations of the outer loop "cars", both iterations of the inner loop
+        "accessories" will be run as shown in the following run-log.
+      </p>
+      
+<a name="figure_20.6"></a><a name="figure_20.6"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/v2_datadriverlog2.png" target="_blank"><img src="images/v2_datadriverlog2.png" alt="Run-log of a data-driven test with nested loops" width="372" height="194" texscale="1"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;20.6</a>:&nbsp;&nbsp;Run-log of a data-driven test with nested loops</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> The extremely useful dynamic names of the loop nodes in the
+        run-logs are obtained by setting the attribute 'Name for loop pass in the run-log' to the value "car
+        Model: $(Model)"in the first and to "car Model: $(Model), accessory Name: $(Accessory)" in the
+        second example. As you can see, that name is expanded individually for each iteration, so
+        you can make use of the variables bound for that iteration.
+      </p>
+
+    
+
+    
+    
+
+    
+<a name="sec_N88530"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N88530">20.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N88530">General use of 'Data drivers'</a>
+</h4>
+      
+<p>
+        As seen in the example above the 'Data driver' node must be placed in a 'Test-set' node,
+        between the optional 'Dependency' and 'Setup' nodes. When the 'Test-set' is
+        executed it will check for 'Data driver' and run it. The contents of the 'Data driver'
+        node are not limited to 'Data binders'. Like a normal 'Sequence' the 'Data driver'
+        node can hold any executable node to be able to perform any setup that may be required
+        to retrieve the data. Thus it is also possible to share 'Data binders' by putting them
+        inside a 'Procedure' and calling the 'Procedure' from inside the 'Data driver'.
+      </p>
+      
+<p>
+        Conceptually, a 'Data binder' represents a loop where a different set of variables is
+        bound for each iteration. A 'Data binder' must be registered with a name in the
+        'Data driver' context of a 'Test-set'. This ensures that the loop can be interrupted by a
+        <a href="control.html#step_BreakStep" shape="rect">'Break'</a> node with the same name. Once the 'Test-set' has run the 'Data driver'
+        node, it will iterate over the registered data loops and perform the tests.
+      </p>
+      
+<p>
+        In case of nested loops the 'Data binder' that was registered first represents the
+        outermost loop. Its variables are bound first and have lesser precedence than the
+        variables from the inner loop(s).
+      </p>
+
+    
+
+    
+    
+
+    
+<a name="sec_N88621"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N88621">20.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N88621">Examples for 'Data drivers'</a>
+</h4>
+      
+<p>
+        We provide a couple of examples for reading CSV or Excel files in the
+        test-suite <code>doc/tutorial/datadriver.qft</code>.
+      </p>
+    
+
+    
+    
+
+    
+<a name="user_datadriver_advanced"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_user_datadriver_advanced">20.4</a></span>
+</div>
+<a href="contents.html#toc_user_datadriver_advanced">Advanced use</a>
+</h4>
+      
+<p>
+        Besides the <a href="datadriver.html#step_TableDataBinder" shape="rect">'Data table'</a> node there are various other means for binding data in a
+        data driver. The <a href="datadriver.html#step_ExcelDataBinder" shape="rect">'Excel data file'</a>, <a href="datadriver.html#step_CSVDataBinder" shape="rect">'CSV data file'</a>, <a href="datadriver.html#step_DatabaseDataBinder" shape="rect">'Database'</a> and
+        <a href="datadriver.html#step_LoopDataBinder" shape="rect">'Data loop'</a> nodes are all explained in detail in <a href="datadriver.html#sec_datadriver">section 38.4</a>.
+      </p>
+      
+<p>
+        It is also possible to bind data by calling the 'Procedures'
+        <code>qfs.databinder.bindList</code> or <code>qfs.databinder.bindSets</code> in the
+        standard library <code>qfs.qft</code>. These take as parameters strings with lists or sets
+        of values to split and iterate over. Please see tutorial chapter 8 for information about
+        the standard library.
+      </p>
+      
+<p>
+        And finally, data can be bound directly from Jython (and analogous from Groovy and JavaScript) with the help of the
+        <code class="moduledef">databinder</code> module, which offers the following methods:
+      </p>
+      
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void bindDict(Object rc, String loopname, dictionary dict, String counter=None, String intervals=None)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Create and register a databinder that binds data from a dictionary. The keys of
+            the dictionary are the names of the variables and the values are sequences of values
+            to be bound.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>rc</code></strong></td><td class="paramdesc">The current run-context.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>loopname</code></strong></td><td class="paramdesc">
+            The name under which to bind the data, equivalent to the 'Name' attribute of a
+            'Data binder' node.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>dict</code></strong></td><td class="paramdesc">The dictionary to bind.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>counter</code></strong></td><td class="paramdesc">
+            An optional variable name for the iteration counter.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>intervals</code></strong></td><td class="paramdesc">
+            Optional ranges of indices, separated by comma, e.g. "0,2-3".
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void bindList(Object rc, String loopname, String varname, Object values, String separator=None, String counter=None, String intervals=None)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Create and register a databinder that binds a list of values to a variable.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>rc</code></strong></td><td class="paramdesc">The current run-context.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>loopname</code></strong></td><td class="paramdesc">
+            The name under which to bind the data, equivalent to the 'Name' attribute of a
+            'Data binder' node.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>varname</code></strong></td><td class="paramdesc">The name of the variable to bind to.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>values</code></strong></td><td class="paramdesc">
+            The values to bind. Either a sequence type or a string to split.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>separator</code></strong></td><td class="paramdesc">
+            Optional separator character to split the values at in case they're a string. Default
+            is whitespace.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>counter</code></strong></td><td class="paramdesc">
+            An optional variable name for the iteration counter.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>intervals</code></strong></td><td class="paramdesc">
+            Optional ranges of indices, separated by comma, e.g. "0,2-3".
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void bindSets(Object rc, String loopname, Object varnames, Object values, String separator=None, String counter=None, String intervals=None)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Create and register a databinder that binds a list of value-set to a set of variables.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>rc</code></strong></td><td class="paramdesc">The current run-context.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>loopname</code></strong></td><td class="paramdesc">
+            The name under which to bind the data, equivalent to the 'Name' attribute of a
+            'Data binder' node.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>varnames</code></strong></td><td class="paramdesc">
+            The names of the variables to bind to. Either a sequence type or a string to split.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>values</code></strong></td><td class="paramdesc">
+            The value-sets to bind. Either a sequence of sequences - each inner sequence being one
+            set of data to bind - or a string to split.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>separator</code></strong></td><td class="paramdesc">
+            Optional separator character to split the varnames and the values of a value-set at in
+            case they're a string. Default is whitespace. Value-sets are separated by line-breaks.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>counter</code></strong></td><td class="paramdesc">
+            An optional variable name for the iteration counter.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>intervals</code></strong></td><td class="paramdesc">
+            Optional ranges of indices, separated by comma, e.g. "0,2-3".
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+
+      
+<p>Some examples:</p>
+
+      
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>import databinder
+
+# Three iterations with the values "spam", "bacon" and "eggs"
+# bound to the variable named "ingredient"
+databinder.bindList(rc, "meal", "ingredient", ["spam", "bacon", "eggs"])
+# Same with string values
+databinder.bindList(rc, "meal", "ingredient", "spam bacon eggs")
+# Same with string values and special separator
+databinder.bindList(rc, "meal", "ingredient", "spam|bacon|eggs", "|")
+
+# Two iterations, the first with item="apple" and number="5",
+# the second with item="orange" and number="3"
+databinder.bindSets(rc, "fruit", ["item", "number"],
+                    [["apple",5], ["orange",3]])
+# Same with string values, note the linebreak
+databinder.bindSets(rc, "fruit", "item number", """apple 5
+orange 3""")
+
+# Same as before with the data stored in a dict
+databinder.bindDict(rc, "fruit",
+                    {"item": ["apple", "orange"],
+                     "number": [5,3]})</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;20.1:&nbsp;&nbsp;Examples for use of the <code>databinder</code> module</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="web_services.html#usec_web_services"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 19&nbsp;Testing web services" title="Previous Chapter: 19&nbsp;Testing web services"></a></td><td class="navicon"><a href="user_report.html#usec_report"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 21&nbsp;Reports and test documentation" title="Next Page: 21&nbsp;Reports and test documentation"></a></td><td class="navicon"><a href="user_report.html#usec_report"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 21&nbsp;Reports and test documentation" title="Next Chapter: 21&nbsp;Reports and test documentation"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;User manual" title="Chapter Overview: I&nbsp;User manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

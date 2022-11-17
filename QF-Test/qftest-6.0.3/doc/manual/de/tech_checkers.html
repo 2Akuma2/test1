@@ -1,0 +1,1176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>
+          Implementierung eigener Checks mit dem Checker Interface
+        </title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_checkers"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_itemresolvers.html#sec_itemresolvers"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 50.4&nbsp;
+          Implementierung eigener Unterelemente mit dem ItemResolver Interface
+        " title="Vorheriges Kapitel: 50.4&nbsp;
+          Implementierung eigener Unterelemente mit dem ItemResolver Interface
+        "></a></td><td class="navicon"><a href="tech_gef.html#sec_gef"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 50.6&nbsp;
+          Das Eclipse Graphical Editing Framework (GEF)
+        " title="N&auml;chste Seite: 50.6&nbsp;
+          Das Eclipse Graphical Editing Framework (GEF)
+        "></a></td><td class="navicon"><a href="tech_gef.html#sec_gef"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 50.6&nbsp;
+          Das Eclipse Graphical Editing Framework (GEF)
+        " title="N&auml;chstes Kapitel: 50.6&nbsp;
+          Das Eclipse Graphical Editing Framework (GEF)
+        "></a></td><td class="navicon"><a href="tech_extensions.html#sec_extensions"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 50&nbsp;APIs f&uuml;r Erweiterungen" title="Kapitel-&Uuml;bersicht: 50&nbsp;APIs f&uuml;r Erweiterungen"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="margin"><a name="new_N179621"></a><span class="note">3.1+</span></span><span class="numtitle"><a href="contents.html#toc_sec_checkers">50.5</a></span>
+</div>
+<a href="contents.html#toc_sec_checkers">
+          Implementierung eigener Checks mit dem <code>Checker</code> Interface
+        </a>
+</h4>
+        
+
+        
+<p>
+          'Checks' geh&ouml;ren zu QF-Test's n&uuml;tzlichsten Features. Ohne die F&auml;higkeit, die
+          Ergebnisse von simulierten Aktionen zu verifizieren, w&auml;re Testautomatisierung weitgehend
+          nutzlos. Allerdings beschr&auml;nkt sich das Repertoire von Checks in QF-Test nat&uuml;rlich auf die
+          g&auml;ngigen Attribute der standard Komponenten. F&uuml;r besondere, selten genutzte Attribute
+          oder f&uuml;r eigene Komponenten k&ouml;nnen Sie auf <a href="control.html#step_ClientScriptStep" shape="rect">'SUT Skript'</a> Knoten ausweichen,
+          dort den ben&ouml;tigten Wert auslesen und &uuml;ber die Methode <code>rc.checkEqual()</code> mit
+          dem erwarteten Wert vergleichen. So ein 'SUT Skript' Knoten funktioniert
+          schnell und zuverl&auml;ssig und l&auml;sst sich in einer <a href="procedures.html#step_Procedure" shape="rect">'Prozedur'</a> modularisieren. Er
+          hat aber zwei Nachteile: Er l&auml;sst sich nicht aufzeichnen und er ist abschreckend f&uuml;r
+          Nicht-Entwickler.
+        </p>
+        
+<p>
+          Mit Hilfe des in diesem Abschnitt beschriebenen API ist es m&ouml;glich, die standard Checks
+          von QF-Test zu erweitern. QF-Test's eigene Checks basieren sogar selbst darauf. Durch
+          Implementieren und Registrieren eines <code>Checkers</code> f&uuml;r eine Klasse von GUI
+          Elementen k&ouml;nnen Sie Ihre eigenen Checks erstellen, die genauso aufgenommen und
+          wiedergegeben werden k&ouml;nnen wie die standard Checks.
+        </p>
+        
+<p>
+          Um dies so einfach wie m&ouml;glich zu gestalten k&uuml;mmert sich QF-Test selbst um alle Details,
+          von der Darstellung im Check-Popupmen&uuml;, Abholen der Checkdaten, Aufnahme des
+          entsprechenden 'Check' Knotens um die Daten zu speichern, Schicken der Daten an
+          das SUT zur Wiedergabe, Abholen der dann g&uuml;ltigen Checkdaten bis hin zum Vergleichen der beiden
+          Werte und Darstellung der Ergebnisse im Protokoll. Alles was Sie dazu beitragen m&uuml;ssen,
+          ist QF-Test mitzuteilen, welche Checks Ihr <code>Checker</code> implementiert und f&uuml;r diese
+          auf Anfrage die Checkdaten zu ermitteln.
+        </p>
+        
+<p>
+          Illustrative Beispiele finden Sie am Ende des Kapitels sowie in der Testsuite
+          <code>carconfig_de.qft</code> im Verzeichnis <code>demo/carconfig</code> Ihrer QF-Test
+          Installation.
+        </p>
+
+        
+        
+
+        
+<a name="sec_N179682"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N179682">50.5.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N179682">Das <code class="interfacedef">Checker</code> Interface</a>
+</h5>
+          
+<p>
+            Das Interface <code>de.qfs.apps.qftest.extensions.checks.Checker</code> muss
+            implementiert werden, um eigene Checks f&uuml;r Ihre Anwendung bereitzustellen. Die damit
+            verbundenen Hilfsklassen und Interfaces werden in den folgenden Abschnitten
+            beschrieben.
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>CheckData getCheckData(Object element, Object item, CheckType type)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert die Checkdaten f&uuml;r den aktuellen Zustand eines GUI Elements oder
+                Unterelements.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+                Das GUI Element, f&uuml;r das die Checkdaten ermittelt werden sollen.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>item</code></strong></td><td class="paramdesc">
+                Ein optionales Unterelement, das gepr&uuml;ft werden soll. Sein Typ h&auml;ngt von der Art
+                des GUI Elements und der daf&uuml;r registrierten <code>ItemResolver</code> ab, wie in
+                <a href="tech_itemresolvers.html#sec_itemrepresentation">Abschnitt 50.4.5</a> beschrieben.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>type</code></strong></td><td class="paramdesc">
+                Die Art des auszuf&uuml;hrenden Checks.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Die Checkdaten f&uuml;r den aktuellen Zustand des GUI Elements selbst, falls
+                <code>item</code> null ist, oder des Unterelements. Der gew&uuml;nschte Checktyp wird
+                &uuml;ber den Parameter <code>type</code> definiert, der normalerweise einer der vorher
+                von <code>getSupportedCheckTypes</code> zur&uuml;ckgelieferten Checktypen sein sollte.
+                Falls Sie den gew&uuml;nschten Check f&uuml;r das angegebene Ziel nicht ausf&uuml;hren k&ouml;nnen,
+                liefern Sie null.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Pair getCheckDataAndItem(Object element, Object item, CheckType type)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert die Checkdaten f&uuml;r den aktuellen Zustand eines GUI Elements oder
+                Unterelements und zus&auml;tzlich das Unterelement, auf das sich der Check bezieht.
+                Diese Methode wird bei der Aufnahme aufgerufen, wo QF-Test nicht wei&szlig;, ob sich die
+                aufgenommenen Daten nun auf das GUI Element selbst oder ein Unterelement beziehen.
+                Um diese Methode ohne Duplizierung von Code zu implementieren, sollten Sie zum
+                Ermitteln der Daten Ihre eigene <code>getCheckData</code> Methode aufrufen.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+                Das GUI Element, f&uuml;r das die Checkdaten ermittelt werden sollen.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>item</code></strong></td><td class="paramdesc">
+                Ein optionales Unterelement, das gepr&uuml;ft werden soll. Sein Typ h&auml;ngt von der Art
+                des GUI Elements und der daf&uuml;r registrierten <code>ItemResolver</code> ab, wie in
+                <a href="tech_itemresolvers.html#sec_itemrepresentation">Abschnitt 50.4.5</a> beschrieben.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>type</code></strong></td><td class="paramdesc">
+                Die Art des auszuf&uuml;hrenden Checks.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Ein <code>Pair</code> bestehend aus den Checkdaten f&uuml;r das GUI Element oder
+                Unterelement sowie das Unterelement, auf das sich der Check bezieht. Letzteres kann
+                null sein.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>CheckType[] getSupportedCheckTypes(Object element, Object item)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert die Arten von Checks, die f&uuml;r ein GUI Element und ein optionales
+                Unterelement unterst&uuml;tzt werden.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+                Das GUI Element, f&uuml;r das die m&ouml;glichen Checks ermittelt werden.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>item</code></strong></td><td class="paramdesc">
+                Ein optionales Unterelement, das gepr&uuml;ft werden soll. Sein Typ h&auml;ngt von der Art
+                des GUI Elements und der daf&uuml;r registrierten <code>ItemResolver</code> ab, wie in
+                <a href="tech_itemresolvers.html#sec_itemrepresentation">Abschnitt 50.4.5</a> beschrieben.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Ein Array mit den <code>CheckType</code> Objekten, die Ihr <code>Checker</code>
+                unterst&uuml;tzt. Das erste Element ist der Standard f&uuml;r die Check-Aufnahme mit einem
+                Linksklick. Falls <code>item</code> null ist, liefern Sie nur die Checks zur&uuml;ck,
+                die sich auf das GUI Element als ganzes beziehen. Ansonsten ist es am besten, alle
+                verf&uuml;gbaren Checks mit oder ohne Unterelement zu liefern, da der Anwender zwar
+                vielleicht auf ein Unterelement geklickt hat, aber trotzdem einen Check f&uuml;r das
+                ganze GUI Element aufnehmen m&ouml;chte.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+          
+
+        
+<a name="sec_N179824"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N179824">50.5.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N179824">Die <code class="classdef">Pair</code> Klasse</a>
+</h5>
+          
+<p>
+            Die Klasse <code>de.qfs.lib.util.Pair</code> f&uuml;r den R&uuml;ckgabewert von
+            <code>getCheckDataAndItem</code> ist eine einfache Hilfsklasse, die praktisch f&uuml;r die
+            Gruppierung von zwei Objekten ist. Sie m&uuml;ssen nur ihren Konstruktor kennen, k&ouml;nnen
+            aber nat&uuml;rlich auch ihre Werte auslesen:
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Pair Pair(Object first, Object second)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Erstellt ein neues <code>Pair</code>.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>first</code></strong></td><td class="paramdesc">Das erste Objekt. Kann null sein.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>second</code></strong></td><td class="paramdesc">Das zweite Objekt Kann null sein.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Object getFirst()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert das erste Objekt des <code>Pair</code>.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Das erste Objekt.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Object getSecond()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert das zweite Objekt des <code>Pair</code>.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Das zweite Objekt.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+
+        
+        
+
+        
+<a name="sec_N179913"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N179913">50.5.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N179913">
+            Das <code class="interfacedef">CheckType</code> Interface und seine Implementierung
+            <code class="classdef">DefaultCheckType</code>
+          </a>
+</h5>
+          
+<p>
+            Ein <code>de.qfs.apps.qftest.extensions.checks.CheckType</code> kapselt die Definition
+            einer spezifischen Art von Check. Er kombiniert einen <code>CheckDataType</code> mit
+            einer Bezeichnung und stellt eine anwenderfreundliche Repr&auml;sentation f&uuml;r das Checkmen&uuml;
+            bereit. Sofern Sie nicht mehrsprachige Darstellungen im Checkmen&uuml; ben&ouml;tigen, sollten
+            Sie dieses Interface nie selbst implementieren, sondern einfach einen
+            <code>de.qfs.apps.qftest.extensions.checks.DefaultCheckType</code> instanziieren:
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>DefaultCheckType(String identifier, CheckDataType dataType, String description)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Erzeugt einen neuen <code>DefaultCheckType</code>.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>identifier</code></strong></td><td class="paramdesc">
+                Der Bezeichner des Checks. Die standard Checks von QF-Test benutzen hierf&uuml;r
+                ausschlie&szlig;lich Kleinbuchstaben. Um Konflikte zu vermeiden, beginnen Sie Ihre
+                Bezeichner einfach gro&szlig;.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>dataType</code></strong></td><td class="paramdesc">
+                Der <code>CheckDataType</code> f&uuml;r Ihre Checkdaten.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>description</code></strong></td><td class="paramdesc">
+                Die Beschreibung des Checks f&uuml;r das Checkmen&uuml;.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+          
+<p>
+            Der Vollst&auml;ndigkeit halber f&uuml;hren wir auch die Methoden des <code>CheckType</code>
+            Interfaces auf:
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>CheckDataType getDataType()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert den <code>CheckDataType</code> f&uuml;r den Check.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Der Datentyp des Checks.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getDescription()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert die lokalisierte Beschreibung f&uuml;r diesen Checktyp im Checkmen&uuml;.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Die Beschreibung f&uuml;r den Checktyp.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getIdentifier()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert den Bezeichner des Checktyps.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Der Bezeichner des Checktyps.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+
+        
+        
+
+        
+<a name="sec_N180038"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N180038">50.5.4</a></span>
+</div>
+<a href="contents.html#toc_sec_N180038">Die Klasse <code class="classdef">CheckDataType</code></a>
+</h5>
+          
+<p>
+            Die Klasse <code>de.qfs.apps.qftest.extensions.checks.CheckDataType</code> ist
+            vergleichbar zu <code>Enum</code>. Sie definiert einige Konstanten von
+            <code>CheckDataType</code> Instanzen, die dazu dienen, die Art der Daten zu
+            definieren, auf denen ein Check beruht. Jede Konstante entspricht dabei einem der
+            verf&uuml;gbaren 'Check' Knoten von QF-Test.
+          </p>
+          
+<p>
+            Au&szlig;er seiner Funktion als Identifikator hat ein <code>CheckDataType</code> keine
+            public Attribute oder Methoden und Sie k&ouml;nnen keine neuen <code>CheckDataType</code>
+            Objekte erstellen. Wenn Sie einen Check implementieren wollen, der nicht zu den
+            verf&uuml;gbaren Datentypen passt, m&uuml;ssen Sie Ihre Daten entsprechend konvertieren, z.B. in
+            einen String. Folgende <code>CheckDataType</code> Konstanten sind definiert:
+          </p>
+          
+<dl>
+            
+<dt>STRING</dt>
+            
+<dd>
+              Ein einzelner String. Entspricht dem <a href="checks.html#step_CheckStringStep" shape="rect">'Check Text'</a> Knoten.
+            </dd>
+            
+<dt>STRING_LIST</dt>
+            
+<dd>
+              Eine Liste von Strings, wie die Zellen einer Tabellenspalte. Entspricht dem
+              <a href="checks.html#step_CheckItemsStep" shape="rect">'Check Elemente'</a> Knoten.
+            </dd>
+            
+<dt>SELECTABLE_STRING_LIST</dt>
+            
+<dd>
+              Eine Liste von selektierbaren Strings, wie die Elemente einer Liste. Entspricht dem
+              <a href="checks.html#step_CheckSelectableItemsStep" shape="rect">'Check selektierbare Elemente'</a> Knoten.
+            </dd>
+            
+<dt>BOOLEAN</dt>
+            
+<dd>
+              Ein Boolean Zustand, entweder true oder false. Entspricht dem
+              <a href="checks.html#step_CheckBooleanStep" shape="rect">'Check Boolean'</a> Knoten.
+            </dd>
+            
+<dt>GEOMETRY</dt>
+            
+<dd>
+              Ein Satz von 4 Integer Werten f&uuml;r X und Y-Koordinaten, Breite und H&ouml;he. Nicht alle
+              m&uuml;ssen definiert sein. Entspricht dem <a href="checks.html#step_CheckGeometryStep" shape="rect">'Check Geometrie'</a> Knoten.
+            </dd>
+            
+<dt>IMAGE</dt>
+            
+<dd>
+              Ein Abbild einer ganzen Komponente, eines Unterelements oder einer Region darin.
+              Entspricht dem <a href="checks.html#step_CheckImageStep" shape="rect">'Check Abbild'</a> Knoten.
+            </dd>
+          
+</dl>
+        
+
+        
+        
+
+        
+<a name="sec_N180151"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N180151">50.5.5</a></span>
+</div>
+<a href="contents.html#toc_sec_N180151">Die Klasse <code class="classdef">CheckData</code> und ihre Unterklassen</a>
+</h5>
+          
+<p>
+            Die Klasse <code>de.qfs.apps.qftest.shared.data.check.CheckData</code> und ihre
+            Unterklassen, alle aus demselben Package, komplettieren das <code>Checker</code> API.
+            Ein <code>CheckData</code> Objekt kapselt die eigentlichen Daten f&uuml;r einen Check und
+            muss von der Methode <code>Checker.getCheckData()</code> zur&uuml;ckgeliefert werden.
+            Hiermit werden die Daten zwischen QF-Test und dem SUT ausgetauscht. F&uuml;r jeden
+            <code>CheckDataType</code> gibt es eine zugeh&ouml;rige Unterklasse von
+            <code>CheckData</code>. Sie m&uuml;ssen nur deren Konstruktoren kennen, also f&uuml;hren wir
+            auch nur diese auf:
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>BooleanCheckData BooleanCheckData(String identifier, boolean value)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Erzeugt ein neues <code>BooleanCheckData</code> Objekt.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>identifier</code></strong></td><td class="paramdesc">
+                Der Bezeichner des Checktyps. Sollte normalerweise dem Bezeichner des
+                <code>type</code> Arguments entsprechen, das an <code>Checker.getCheckData</code>
+                &uuml;bergeben wurde.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>value</code></strong></td><td class="paramdesc">
+                Der Wert des Checks, ein Boolean Zustand.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>GeometryCheckData GeometryCheckData(String identifier, int x, int y, int width, int height)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Erzeugt ein neues <code>GeometryCheckData</code> Objekt.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>identifier</code></strong></td><td class="paramdesc">
+                Der Bezeichner des Checktyps. Sollte normalerweise dem Bezeichner des
+                <code>type</code> Arguments entsprechen, das an <code>Checker.getCheckData</code>
+                &uuml;bergeben wurde.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>x</code></strong></td><td class="paramdesc">
+                Die X-Koordinate f&uuml;r den Check.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>y</code></strong></td><td class="paramdesc">
+                Die Y-Koordinate f&uuml;r den Check.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>width</code></strong></td><td class="paramdesc">
+                Die Breite f&uuml;r den Check.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>height</code></strong></td><td class="paramdesc">
+                Die H&ouml;he f&uuml;r den Check.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>ImageCheckData ImageCheckData(String identifier, ImageRep image, int xOffset, int yOffset, int subX, int subY, int subWidth, int subHeight)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Erzeugt ein neues <code>ImageCheckData</code> Objekt.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>identifier</code></strong></td><td class="paramdesc">
+                Der Bezeichner des Checktyps. Sollte normalerweise dem Bezeichner des
+                <code>type</code> Arguments entsprechen, das an <code>Checker.getCheckData</code>
+                &uuml;bergeben wurde.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>image</code></strong></td><td class="paramdesc">
+                Das Abbild f&uuml;r den Check. N&auml;heres hierzu unter <a href="tech_api_iwext.html#sec_api_iwext">Abschnitt 50.10</a>.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>xOffset</code></strong></td><td class="paramdesc">
+                Ein optionaler X-Offset.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>yOffset</code></strong></td><td class="paramdesc">
+                Ein optionaler Y-Offset.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>subX</code></strong></td><td class="paramdesc">
+                Die X-Koordinate einer optionalen Check-Region.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>subY</code></strong></td><td class="paramdesc">
+                Die Y-Koordinate einer optionalen Check-Region.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>subWidth</code></strong></td><td class="paramdesc">
+                Die Breite einer optionalen Check-Region.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>subHeight</code></strong></td><td class="paramdesc">
+                Die H&ouml;he einer optionalen Check-Region.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>SelectableItemsCheckData SelectableItemsCheckData(String identifier, Object[][] values)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Erzeugt ein neues <code>SelectableItemsCheckData</code> Objekt.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>identifier</code></strong></td><td class="paramdesc">
+                Der Bezeichner des Checktyps. Sollte normalerweise dem Bezeichner des
+                <code>type</code> Arguments entsprechen, das an <code>Checker.getCheckData</code>
+                &uuml;bergeben wurde.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>values</code></strong></td><td class="paramdesc">
+                Der Wert des Checks, ein Array von Arrays mit einem String und einem Boolean f&uuml;r
+                "regexp" und einem Boolean f&uuml;r "selected".
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>StringCheckData StringCheckData(String identifier, String value)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Erzeugt ein neues <code>StringCheckData</code> Objekt.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>identifier</code></strong></td><td class="paramdesc">
+                Der Bezeichner des Checktyps. Sollte normalerweise dem Bezeichner des
+                <code>type</code> Arguments entsprechen, das an <code>Checker.getCheckData</code>
+                &uuml;bergeben wurde.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>value</code></strong></td><td class="paramdesc">
+                Der Wert des Checks, ein String.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>StringItemsCheckData StringItemsCheckData(String identifier, String[] values)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Erzeugt ein neues <code>StringItemsCheckData</code> Objekt.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>identifier</code></strong></td><td class="paramdesc">
+                Der Bezeichner des Checktyps. Sollte normalerweise dem Bezeichner des
+                <code>type</code> Arguments entsprechen, das an <code>Checker.getCheckData</code>
+                &uuml;bergeben wurde.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>values</code></strong></td><td class="paramdesc">
+                Der Wert des Checks, ein Array von Strings.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+            
+<p>
+              Dar&uuml;ber hinaus kann f&uuml;r ein ImageCheckData optional ein Algorithmus definiert werden.
+            </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setAlgorithm(String algorithm)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Definiert einen Algorithmus. Eine genaue Beschreibung finden
+                  Sie in <a href="tech_imagealgorithmdetails.html#sec_imagealgorithmdetails">Details des Algorithmus zum Bildvergleich</a>.
+                </p>
+              
+</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+
+        
+        
+
+        
+<a name="sec_N180470"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N180470">50.5.6</a></span>
+</div>
+<a href="contents.html#toc_sec_N180470">Die <code class="classdef">CheckerRegistry</code></a>
+</h5>
+          
+<p>
+            Wenn Ihr <code>Checker</code> implementiert und instanziiert ist, muss er bei der
+            <code>CheckerRegistry</code> registriert werden. Die Klasse
+            <code>de.qfs.apps.qftest.extensions.checks.CheckerRegistry</code> bietet hierzu
+            folgende Methoden:
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>static CheckerRegistry instance()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Es gibt immer nur ein einziges <code>CheckerRegistry</code> Objekt und diese
+                Methode ist der einzige Weg, Zugriff auf diese Singleton Instanz erlangen.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Die <code>CheckerRegistry</code> Singleton Instanz.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void registerChecker(Object element, Checker checker)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Registriert einen <code>Checker</code> f&uuml;r ein spezifisches GUI Element. Der
+                Checker beeintr&auml;chtigt nicht die Garbage Collection und wird automatisch
+                entfernt, wenn die Komponente nicht mehr erreichbar ist.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+                Das GUI Element f&uuml;r das registriert wird.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>checker</code></strong></td><td class="paramdesc">
+                Der zu registrierende Checker.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void registerChecker(String clazz, Checker checker)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Registriert einen <code>Checker</code> f&uuml;r eine spezifische
+                Klasse von GUI Elementen.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>clazz</code></strong></td><td class="paramdesc">
+                Der Name der Klasse f&uuml;r die registriert wird.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>checker</code></strong></td><td class="paramdesc">
+                Der zu registrierende Checker.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void unregisterChecker(Object element, Checker checker)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Entfernt einen <code>Checker</code> f&uuml;r ein spezifisches GUI Element.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+                Das GUI Element f&uuml;r das entfernt wird.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>checker</code></strong></td><td class="paramdesc">
+                Der zu entfernende Checker.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void unregisterChecker(String clazz, Checker checker)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Entfernt einen <code>Checker</code> f&uuml;r eine spezifische
+                Klasse von GUI Elementen.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>clazz</code></strong></td><td class="paramdesc">
+                Der Name der Klasse f&uuml;r die entfernt wird.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>checker</code></strong></td><td class="paramdesc">
+                Der zu entfernende Checker.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+
+        
+        
+
+        
+<a name="sec_N180617"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N180617">50.5.7</a></span>
+</div>
+<a href="contents.html#toc_sec_N180617">Beispiel f&uuml;r einen Checker</a>
+</h5>
+          
+<p>
+            Das folgende Jython 'SUT Skript' zeigt, wie man alles zu einem eigenen
+            Checker zusammenf&uuml;gt. Nehmen wir an, Sie haben eine Java Swing Anwendung und
+            m&ouml;chten alle Labels in einem Panel gleichzeitig &uuml;berpr&uuml;fen. Dazu m&uuml;ssen Sie &uuml;ber
+            alle Komponenten im Panel und deren Kind-Komponenten iterieren, dabei die
+            Label-Komponenten identifizieren und eine Liste mit den enthaltenen Texten
+            generieren. In QF-Test Notation hei&szlig;t das, Sie brauchen einen
+            <code>CheckDataType.STRING_LIST</code> Checktyp und m&uuml;ssen die Daten in einem
+            <code>StringItemsCheckData</code> Objekt zur&uuml;ckliefern:
+          </p>
+          
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>from de.qfs.apps.qftest.extensions import ResolverRegistry
+from de.qfs.apps.qftest.extensions.checks import CheckerRegistry, \
+    Checker, DefaultCheckType, CheckDataType
+from de.qfs.apps.qftest.extensions.items import ItemRegistry
+from de.qfs.apps.qftest.shared.data.check import StringItemsCheckData
+from de.qfs.lib.util import Pair
+from java.lang import String
+import jarray
+
+componentClass = "javax.swing.JPanel"
+allLabelsCheckType = DefaultCheckType("AllLabels",
+    CheckDataType.STRING_LIST,
+    "Alle Labels im Panel")
+
+class AllLabelsChecker(Checker):
+    def __init__(self):
+        pass
+
+    def getSupportedCheckTypes(self, com, item):
+        return jarray.array([allLabelsCheckType], DefaultCheckType)
+
+    def getCheckData(self, com, item, checkType):
+        if allLabelsCheckType.getIdentifier() == checkType.getIdentifier():
+            labels = self._findLabels(com)
+            labels = map(lambda l: l.getText(), labels)
+            values = jarray.array(labels, String)
+            return StringItemsCheckData(checkType.getIdentifier(), values)
+        return None
+
+    def getCheckDataAndItem(self, com, item, checkType):
+        data = self.getCheckData(com, item, checkType)
+        if data is None:
+            return None
+        return Pair(data, None)
+
+    def _findLabels(self, com, labels=None):
+        if labels is None:
+            labels = []
+        if ResolverRegistry.instance().isInstance(com, "javax.swing.JLabel"):
+            labels.append(com)
+        for c in com.getComponents():
+            self._findLabels(c, labels)
+        return labels
+
+def unregister():
+    try:
+        CheckerRegistry.instance().unregisterChecker(
+            componentClass, allLabelsChecker)
+    except:
+        pass
+
+def register():
+    unregister()
+    global allLabelsChecker
+    allLabelsChecker = AllLabelsChecker()
+    CheckerRegistry.instance().registerChecker(
+        componentClass, allLabelsChecker)
+
+register()</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;50.41:&nbsp;&nbsp;Alle Labels in einem Panel checken</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            Nach Ausf&uuml;hrung des Skripts findet man einen neuen Eintrag "Alle Labels im Panel" im
+            Checktyp Men&uuml;, sobald man im Checkaufnahmemodus mit der rechten Maustaste auf eine
+            <code>JPanel</code> Komponente klickt (cf. <a href="user_capture.html#usec_recordchecks">Abschnitt 4.3</a>). Wenn
+            Sie den <code>allLabelsChecker</code> &uuml;berall in Ihrer Clientanwendung verwenden
+            m&ouml;chten, k&ouml;nnen Sie das obige 'SUT Skript' hinter den 'Warten auf Client'
+            Knoten in der 'Vorbereitung' stellen. Ansonsten k&ouml;nnen Sie den Checker auch nach
+            Bedarf registrieren und sp&auml;ter in einem anderen 'SUT Skript' wieder
+            entfernen:
+          </p>
+          
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>
+from de.qfs.apps.qftest.extensions.checks import CheckerRegistry
+
+global allLabelsChecker
+
+def unregister():
+    try:
+        CheckerRegistry.instance().unregisterChecker(
+            "javax.swing.JPanel", allLabelsChecker)
+    except:
+        pass
+
+unregister()</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;50.42:&nbsp;&nbsp;Den Label Checker entfernen</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+
+        
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_itemresolvers.html#sec_itemresolvers"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 50.4&nbsp;
+          Implementierung eigener Unterelemente mit dem ItemResolver Interface
+        " title="Vorheriges Kapitel: 50.4&nbsp;
+          Implementierung eigener Unterelemente mit dem ItemResolver Interface
+        "></a></td><td class="navicon"><a href="tech_gef.html#sec_gef"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 50.6&nbsp;
+          Das Eclipse Graphical Editing Framework (GEF)
+        " title="N&auml;chste Seite: 50.6&nbsp;
+          Das Eclipse Graphical Editing Framework (GEF)
+        "></a></td><td class="navicon"><a href="tech_gef.html#sec_gef"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 50.6&nbsp;
+          Das Eclipse Graphical Editing Framework (GEF)
+        " title="N&auml;chstes Kapitel: 50.6&nbsp;
+          Das Eclipse Graphical Editing Framework (GEF)
+        "></a></td><td class="navicon"><a href="tech_extensions.html#sec_extensions"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 50&nbsp;APIs f&uuml;r Erweiterungen" title="Kapitel-&Uuml;bersicht: 50&nbsp;APIs f&uuml;r Erweiterungen"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

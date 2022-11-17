@@ -1,0 +1,3736 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Prozesse</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_processes"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="control.html#sec_control"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 38.6&nbsp;Ablaufsteuerung" title="Vorheriges Kapitel: 38.6&nbsp;Ablaufsteuerung"></a></td><td class="navicon"><a href="events.html#sec_events"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 38.8&nbsp;Events" title="N&auml;chste Seite: 38.8&nbsp;Events"></a></td><td class="navicon"><a href="events.html#sec_events"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 38.8&nbsp;Events" title="N&auml;chstes Kapitel: 38.8&nbsp;Events"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite" title="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_processes">38.7</a></span>
+</div>
+<a href="contents.html#toc_sec_processes">Prozesse</a>
+</h4>
+    
+<p>
+      Um die Kommunikation zwischen dem SUT und QF-Test herzustellen,
+      m&uuml;ssen der oder die Prozesse des SUT aus QF-Test heraus gestartet
+      werden. Details zu den Hintergr&uuml;nden beim Starten einer Applikation und
+      Hinweise darauf, welche Methode wann am geeignetsten ist, finden Sie in
+      <a href="tech_startsut.html#sec_runningyourapp">Kapitel 42</a>.
+    </p>
+    
+<p>
+      Mit Hilfe der folgenden Knotentypen k&ouml;nnen Sie Programme starten,
+      auf die Verbindung mit einem SUT Client warten, auf das Ende
+      eines Programms warten und dessen Exitcode auswerten, sowie Prozesse
+      "abschie&szlig;en", vergleichbar mit einem <code>kill</code> unter Unix.
+      Die Zahl der Prozesse, die gleichzeitig von QF-Test gestartet werden
+      k&ouml;nnen, ist nur durch das zu Grunde liegende System begrenzt. Allerdings
+      muss jedem aktiven Prozess ein eindeutiger Name zugewiesen werden &uuml;ber
+      den ihn andere Knoten ansprechen k&ouml;nnen.
+    </p>
+    
+<p>
+      Im Weiteren werden wir von QF-Test gestartete Prozesse als Clients
+      bezeichnen.  QF-Test unterscheidet zwischen zwei Arten von Clients:
+      Beliebigen Programmen, die dazu dienen, korrekte Randbedingungen f&uuml;r
+      einen Test sicher zu stellen und SUT Clients, den eigentlichen Java
+      Applikationen, deren GUI von QF-Test ferngesteuert wird.
+    </p>
+    
+<p>
+      Die Standardein- und -ausgabekan&auml;le eines Clients werden in ein Terminal
+      umgeleitet, das &uuml;ber das &raquo;<em>Client</em>&laquo; Men&uuml; zug&auml;nglich
+      ist. Die Ausgabe des Client's wird auch im Protokoll des Testlaufs
+      gespeichert.
+    </p>
+    
+
+    
+<a name="step_JavaClientStarter"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_JavaClientStarter">38.7.1</a></span>
+</div>
+<a href="contents.html#toc_step_JavaClientStarter">'Java SUT Client starten'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/startclient.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Dieser Knoten stellt die direkteste und flexibelste M&ouml;glichkeit
+            dar, einen SUT Client zu starten. Hierzu muss das Java
+            Kommando bekannt sein, welches Ihre Applikation startet. Wird das
+            SUT normalerweise durch ein Skript gestartet, kann es einfacher
+            sein, einen <a href="#step_SUTClientStarter" shape="rect">'SUT Client starten'</a> Knoten zu verwenden (vgl.
+            <a href="tech_startsut.html#sec_runningyourapp">Kapitel 42</a>).
+          </p>
+          
+<p>
+            Anstatt Java direkt auszuf&uuml;hren, startet QF-Test das Programm
+            <code>qfclient</code>, welches seinerseits QF-Tests eigene H&uuml;lle
+            f&uuml;r das <code>java</code> Programm aufruft (vgl. <a href="tech_startsut.html#sec_runningyourapp">Kapitel 42</a>). Als praktischen Nebeneffekt dieser
+            indirekten Methode k&ouml;nnen Sie das
+            <a href="#att_JavaClientStarter_directory" shape="rect">'Verzeichnis'</a> f&uuml;r alle JDK Versionen direkt
+            angeben.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die Kommandozeile f&uuml;r das Programm wird aus den Attributen
+          zusammengesetzt und der Prozess gestartet. Ein- und Ausgabe des
+          Programms werden umgeleitet und von QF-Test &uuml;bernommen.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.38"></a><a name="figure_38.38"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_JavaClientStarter.png" target="_blank"><img src="images/att_JavaClientStarter.png" alt="Java SUT Client starten Attribute" texscale=".66" width="393" height="548"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.38</a>:&nbsp;&nbsp;'Java SUT Client starten' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_JavaClientStarter_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Dieser Name identifiziert den Client Prozess und muss eindeutig sein,
+        so lange der Prozess l&auml;uft. Andere Knoten identifizieren den Client an
+        Hand dieses Namens.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_JavaClientStarter_executable"></a>
+<dt>'Ausf&uuml;hrbares Programm'</dt>
+<dd>
+            
+            
+<p>
+              Das ausf&uuml;hrbare Java Programm, das gestartet werden soll,
+              normalerweise <code>java</code> bzw. <code>javaw</code> unter
+              Windows. Wenn Sie eine spezielle Java Version verwenden
+              wollen, sollten Sie den vollen Pfad angeben.
+            </p>
+            
+<p>
+              Der "Datei ausw&auml;hlen" Button
+              <img src="../icons/select_file.png" style="vertical-align: text-bottom" alt="[Datei ausw&auml;hlen]" title="Datei ausw&auml;hlen" width="20" height="20" texscale=".66">
+              &ouml;ffnet einen Dialog, in dem Sie das
+              Programm direkt ausw&auml;hlen k&ouml;nnen. Diesen erreichen Sie auch
+              mittels [Shift-Return] oder
+              [Alt-Return], sofern sich der
+              Fokus im Textfeld befindet.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_JavaClientStarter_directory"></a>
+<dt>'Verzeichnis'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie das Arbeitsverzeichnis f&uuml;r das Programm festlegen. Wenn Sie nichts
+        angeben, erbt das Programm das Arbeitsverzeichnis von QF-Test.
+      </p>
+      
+<p>
+        Der "Verzeichnis ausw&auml;hlen" Button
+        <img src="../icons/select_directory.png" style="vertical-align: text-bottom" alt="[Verzeichnis ausw&auml;hlen]" title="Verzeichnis ausw&auml;hlen" width="20" height="20" texscale=".66">
+        &ouml;ffnet einen Dialog, in dem Sie das
+        Verzeichnis direkt ausw&auml;hlen k&ouml;nnen. Diesen erreichen Sie auch
+        mittels [Shift-Return] oder
+        [Alt-Return], sofern sich der
+        Fokus im Textfeld befindet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Muss entweder leer, oder ein existierendes Verzeichnis sein
+    </p>
+</dd>
+<a name="att_JavaClientStarter_class"></a>
+<dt>'Klasse'</dt>
+<dd>
+            
+            
+<p>
+              Hier geben Sie den vollen Namen der Klasse des SUT an,
+              deren <code>main</code> Methode zum Start des Programms
+              aufgerufen werden soll. Wenn Ihre Applikation aus einem
+              Ausf&uuml;hrbaren jar Archiv mit dem <code>-jar</code> Parameter
+              gestartet wird, m&uuml;ssen Sie dieses Attribut leer lassen.
+            </p>
+            
+<p>
+              
+<span class="margin"><span class="note">Hinweis</span></span>QF-Test kann die <code>main</code>
+              Methode der Klasse nur starten, wenn sowohl die Klasse selbst,
+              als auch die Methode als <code>public</code> deklariert
+              sind. Wenn sie beim Start Ihrer Applikation eine
+              <code>IllegalAccessException</code> erhalten, pr&uuml;fen Sie nach ob
+              das der Fall ist.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltiger Klassenname inklusive
+          Packages</p>
+</dd>
+<a name="att_JavaClientStarter_parameter"></a>
+<dt>'Programm-Parameter'</dt>
+<dd>
+            
+            
+            
+<p>
+              Die Kommandozeilenargumente f&uuml;r das zu startende
+              Java Programm. Jeder Parameter muss in seiner eigenen Zeile
+              stehen, Leerzeichen innerhalb eines Parameters oder
+              Sonderzeichen m&uuml;ssen nicht speziell behandelt
+              werden.
+            </p>
+            
+<p>
+              Um zum Beispiel den classpath anzugeben, geben Sie in einer
+              Zeile <code>-classpath</code> und der darauf folgenden Zeile
+              den gew&uuml;nschten Wert ein. Dabei brauchen Sie &uuml;brigens die
+              jar Archive von QF-Test nicht zu bedenken.
+            </p>
+            
+<p>
+              N&auml;heres zur Arbeit mit den Tabellen finden Sie in
+              <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_JavaClientStarter_classarg"></a>
+<dt>'Klassen-Argumente'</dt>
+<dd>
+            
+            
+            
+<p>
+              Hiermit k&ouml;nnen Sie Argumente an die aufgerufene Klasse
+              &uuml;bergeben (f&uuml;r Programmierer: die Argumente der
+              <code>main(String[])</code> Methode der Klasse). Jedes
+              Argument muss dabei in seiner eigenen Zeile stehen,
+              Leerzeichen innerhalb eines Arguments oder Sonderzeichen
+              m&uuml;ssen nicht speziell behandelt werden.
+            </p>
+            
+<p>
+              N&auml;heres zur Arbeit mit den Tabellen finden Sie in
+              <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_JavaClientStarter_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_JavaClientStarter_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_JavaClientStarter_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_SUTClientStarter"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_SUTClientStarter">38.7.2</a></span>
+</div>
+<a href="contents.html#toc_step_SUTClientStarter">'SUT Client starten'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/startclient.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Wenn Ihre Applikation normalerweise durch ein Shellskript oder ein
+            spezielles Programm gestartet wird, ist dieser Knoten die
+            einfachste M&ouml;glichkeit das SUT aus QF-Test heraus zu starten.
+            Je nachdem wie die Applikation durch das Skript gestartet wird,
+            k&ouml;nnen einige Modifikationen daran n&ouml;tig sein. Ein deutliches
+            Signal daf&uuml;r ist es, wenn da SUT zwar wie gew&uuml;nscht startet,
+            jedoch keine Verbindung zu QF-Test hergestellt werden kann. In
+            diesem Fall sollten Sie <a href="tech_startsut.html#sec_runningyourapp">Kapitel 42</a> lesen.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die Kommandozeile f&uuml;r das Programm wird aus den Attributen
+          zusammengesetzt und der Prozess gestartet. Ein- und Ausgabe des
+          Programms werden umgeleitet und von QF-Test &uuml;bernommen.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.39"></a><a name="figure_38.39"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_SUTClientStarter.png" target="_blank"><img src="images/att_SUTClientStarter.png" alt="SUT Client starten Attribute" texscale=".66" width="393" height="417"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.39</a>:&nbsp;&nbsp;'SUT Client starten' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_SUTClientStarter_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Dieser Name identifiziert den Client Prozess und muss eindeutig sein,
+        so lange der Prozess l&auml;uft. Andere Knoten identifizieren den Client an
+        Hand dieses Namens.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_SUTClientStarter_executable"></a>
+<dt>'Ausf&uuml;hrbares Programm'</dt>
+<dd>
+            
+            
+<p>
+              Das ausf&uuml;hrbare Programm, das gestartet werden soll.
+              Wenn sich das Programm nicht im <code>PATH</code> befindet,
+              m&uuml;ssen Sie den vollen Pfad angeben.
+            </p>
+            
+<p>
+              Der "Datei ausw&auml;hlen" Button
+              <img src="../icons/select_file.png" style="vertical-align: text-bottom" alt="[Datei ausw&auml;hlen]" title="Datei ausw&auml;hlen" width="20" height="20" texscale=".66">
+              &ouml;ffnet einen Dialog, in dem Sie das
+              Programm direkt ausw&auml;hlen k&ouml;nnen. Diesen erreichen Sie auch
+              mittels [Shift-Return] oder
+              [Alt-Return], sofern sich der
+              Fokus im Textfeld befindet.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_SUTClientStarter_directory"></a>
+<dt>'Verzeichnis'</dt>
+<dd>
+            
+            
+<p>
+              Hier k&ouml;nnen Sie das Arbeitsverzeichnis f&uuml;r das Programm festlegen. Wenn Sie nichts
+              angeben, erbt das Programm das Arbeitsverzeichnis von QF-Test.
+            </p>
+            
+<p>
+              Der "Verzeichnis ausw&auml;hlen" Button
+              <img src="../icons/select_directory.png" style="vertical-align: text-bottom" alt="[Verzeichnis ausw&auml;hlen]" title="Verzeichnis ausw&auml;hlen" width="20" height="20" texscale=".66">
+              &ouml;ffnet einen Dialog, in dem Sie das
+              Verzeichnis direkt ausw&auml;hlen k&ouml;nnen. Diesen erreichen Sie auch
+              mittels [Shift-Return] oder
+              [Alt-Return], sofern sich der
+              Fokus im Textfeld befindet.
+            </p>
+            
+<p>
+              
+<span class="margin"><span class="note">Hinweis</span></span> Dieses Verzeichnis wird erst <strong>nach</strong> dem
+              Starten des Programms zum Arbeitsverzeichnis. Das hat zur Folge,
+              dass z.B. ein Skript namens <code>./kopiere_daten</code> relativ
+              zum Arbeitsverzeichnis von QF-Test gesucht wird und nicht
+              relativ zu diesem Verzeichnis. Erst die Pfadangaben innerhalb
+              des Skriptes werden relativ zu diesem Verzeichnis aufgel&ouml;st.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+            Muss entweder leer, oder ein existierendes Verzeichnis sein
+          </p>
+</dd>
+<a name="att_SUTClientStarter_parameter"></a>
+<dt>'Programm-Parameter'</dt>
+<dd>
+            
+            
+            
+<p>
+              Die Kommandozeilenargumente f&uuml;r das zu startende
+              Programm. Jeder Parameter muss in seiner eigenen Zeile
+              stehen, Leerzeichen innerhalb eines Parameters oder
+              Sonderzeichen m&uuml;ssen nicht speziell behandelt werden.
+            </p>
+            
+<p>
+              N&auml;heres zur Arbeit mit den Tabellen finden Sie in
+              <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_SUTClientStarter_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_SUTClientStarter_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_SUTClientStarter_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ProcessClientStarter"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ProcessClientStarter">38.7.3</a></span>
+</div>
+<a href="contents.html#toc_step_ProcessClientStarter">'Programm starten'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/startclient.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Um w&auml;hrend eines Tests ein beliebiges Programm zu starten, k&ouml;nnen
+            Sie entweder diesen Knoten, oder einen <a href="#step_ShellClientStarter" shape="rect">'Shellkommando ausf&uuml;hren'</a>
+            Knoten verwenden. Dieser Knoten ist vorzuziehen, wenn Sie mehrere,
+            m&ouml;glicherweise komplexe Parameter an das Programm &uuml;bergeben wollen.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die Kommandozeile f&uuml;r das Programm wird aus den Attributen
+          zusammengesetzt und der Prozess gestartet. Ein- und Ausgabe des
+          Programms werden umgeleitet und von QF-Test &uuml;bernommen.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.40"></a><a name="figure_38.40"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ProcessClientStarter.png" target="_blank"><img src="images/att_ProcessClientStarter.png" alt="Programm starten Attribute" texscale=".66" width="393" height="417"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.40</a>:&nbsp;&nbsp;'Programm starten' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ProcessClientStarter_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Dieser Name identifiziert den Client Prozess und muss eindeutig sein,
+        so lange der Prozess l&auml;uft. Andere Knoten identifizieren den Client an
+        Hand dieses Namens.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_ProcessClientStarter_executable"></a>
+<dt>'Ausf&uuml;hrbares Programm'</dt>
+<dd>
+            
+            
+<p>
+              Das ausf&uuml;hrbare Programm, das gestartet werden soll.
+              Wenn sich das Programm nicht im <code>PATH</code> befindet,
+              m&uuml;ssen Sie den vollen Pfad angeben.
+            </p>
+            
+<p>
+              Der "Datei ausw&auml;hlen" Button
+              <img src="../icons/select_file.png" style="vertical-align: text-bottom" alt="[Datei ausw&auml;hlen]" title="Datei ausw&auml;hlen" width="20" height="20" texscale=".66">
+              &ouml;ffnet einen Dialog, in dem Sie das
+              Programm direkt ausw&auml;hlen k&ouml;nnen. Diesen erreichen Sie auch
+              mittels [Shift-Return] oder
+              [Alt-Return], sofern sich der
+              Fokus im Textfeld befindet.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_ProcessClientStarter_directory"></a>
+<dt>'Verzeichnis'</dt>
+<dd>
+            
+            
+<p>
+              Hier k&ouml;nnen Sie das Arbeitsverzeichnis f&uuml;r das Programm festlegen. Wenn Sie nichts
+              angeben, erbt das Programm das Arbeitsverzeichnis von QF-Test.
+            </p>
+            
+<p>
+              Der "Verzeichnis ausw&auml;hlen" Button
+              <img src="../icons/select_directory.png" style="vertical-align: text-bottom" alt="[Verzeichnis ausw&auml;hlen]" title="Verzeichnis ausw&auml;hlen" width="20" height="20" texscale=".66">
+              &ouml;ffnet einen Dialog, in dem Sie das
+              Verzeichnis direkt ausw&auml;hlen k&ouml;nnen. Diesen erreichen Sie auch
+              mittels [Shift-Return] oder
+              [Alt-Return], sofern sich der
+              Fokus im Textfeld befindet.
+            </p>
+            
+<p>
+              
+<span class="margin"><span class="note">Hinweis</span></span> Dieses Verzeichnis ist lediglich das Arbeitsverzeichnis
+              des neu gestarteten Prozesses. Es hat keinen Einfluss auf das Arbeitsverzeichnis von
+              QF-Test. Das hat zur Folge, dass z.B. ein Skript namens <code>./kopiere_daten</code>
+              relativ zum Arbeitsverzeichnis von QF-Test gesucht wird und nicht relativ zu diesem
+              Verzeichnis. Erst die Pfadangaben innerhalb des Programms werden relativ zum
+              angegebenen Verzeichnis aufgel&ouml;st.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+            Muss entweder leer, oder ein existierendes Verzeichnis sein
+          </p>
+</dd>
+<a name="att_ProcessClientStarter_parameter"></a>
+<dt>'Programm-Parameter'</dt>
+<dd>
+            
+            
+<p>
+              Hier finden Sie Die Kommandozeilenargumente f&uuml;r das zu startende
+              Programm. Jeder Parameter muss in seiner eigenen Zeile stehen,
+              Leerzeichen innerhalb eines Parameters oder Sonderzeichen m&uuml;ssen
+              nicht speziell behandelt werden.
+            </p>
+            
+<p>
+              N&auml;heres zur Arbeit mit den Tabellen finden Sie in
+              <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ProcessClientStarter_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_ProcessClientStarter_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_ProcessClientStarter_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_WebEngineClientStarter"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_WebEngineClientStarter">38.7.4</a></span>
+</div>
+<a href="contents.html#toc_step_WebEngineClientStarter">'Web-Engine starten'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/startclient.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Mit diesem Knoten kann ein Browser speziell f&uuml;r Webtesten gestartet werden. Zum Test
+            eines Java Applets in einem Browser muss hingegen ein <a href="#step_SUTClientStarter" shape="rect">'SUT Client starten'</a>
+            Knoten verwendet werden.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die Kommandozeile f&uuml;r das Browser-Programm wird aus den Attributen
+          zusammengesetzt und der Prozess gestartet. Ein- und Ausgabe des
+          Programms werden umgeleitet und von QF-Test &uuml;bernommen.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.41"></a><a name="figure_38.41"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_WebEngineClientStarter.png" target="_blank"><img src="images/att_WebEngineClientStarter.png" alt="Browser starten Attribute" texscale=".66" width="393" height="514"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.41</a>:&nbsp;&nbsp;'Web-Engine starten' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_WebEngineClientStarter_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Dieser Name identifiziert den Client Prozess und muss eindeutig sein,
+        so lange der Prozess l&auml;uft. Andere Knoten identifizieren den Client an
+        Hand dieses Namens.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_WebEngineClientStarter_browser"></a>
+<dt>'Art des Browsers'</dt>
+<dd>
+            
+            
+<p>
+              Der Typ des zu startenden Browsers. Offiziell unterst&uuml;tzt werden aktuell "ie" f&uuml;r Internet Explorer,
+              "firefox" (oder "mozilla") f&uuml;r Mozilla Firefox, "chrome" f&uuml;r Google Chrome,
+              "edge" f&uuml;r Microsoft Edge, "opera" f&uuml;r Opera, "safari" f&uuml;r Apple Safari,
+              "headless-firefox" f&uuml;r Mozilla Firefox ohne sichtbares Fenster,
+              "headless-chrome" (oder "headless") f&uuml;r Google Chrome ohne sichtbares Fenster
+              und "headless-edge" f&uuml;r Microsoft Edge ohne sichtbares Fenster.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+            Erlaubte Werte sind "ie", "firefox" (alternativ "mozilla"), "chrome",
+            "edge", "msedge", "opera", "safari", "headless-firefox",
+            "headless-chrome" (alternativ "headless") und "headless-edge".
+          </p>
+</dd>
+<a name="att_WebEngineClientStarter_mozhome"></a>
+<dt>'Verzeichnis der Browser-Installation'</dt>
+<dd>
+            
+            
+<p>
+              F&uuml;r die meisten Browser kann dieses Feld leer gelassen werden. F&uuml;r Firefox mit QF-Driver
+              Verbindungsmodus muss hier das Installations-Verzeichnis des Browsers festgelegt werden. Bei einer
+              Verbindung &uuml;ber CDP-Driver oder WebDriver wird automatisch nach der Standardinstallation des angegebenen Browsers
+              gesucht. Ist f&uuml;r diesen Browser die Installation mehrerer Versionen m&ouml;glich, kann durch Angabe dieses
+              Verzeichnisses gezielt eine Version gew&auml;hlt werden.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+            Muss entweder leer sein oder ein existierendes Verzeichnis
+          </p>
+</dd>
+<a name="att_WebEngineClientStarter_connectionmode"></a>
+<dt>'Verbindungsmodus f&uuml;r den Browser'</dt>
+<dd>
+            
+            
+<p>
+              QF-Test kann sich auf drei verschiedene Arten mit einem Browser verbinden: Im
+              QF-Driver Verbindungsmodus durch Einbettung des Browsers in eine Java VM, direkt &uuml;ber das Chrome DevTools Protokoll
+              oder &uuml;ber Selenium WebDriver.
+              Weitere Informationen hierzu sowie eine &Uuml;bersicht der unterst&uuml;tzen Varianten finden Sie in <a href="tech_webconnectionmode.html#sec_webconnectionmodes">Abschnitt 47.3</a>.
+              Wenn verschiedene Verbindungsmodi zur Verf&uuml;gung stehen, so legt dieses Attribut fest, welcher konkret gew&auml;hlt wird.
+              Die m&ouml;glichen Werte sind:
+            </p>
+            
+<dl>
+              
+<dt>Prefer QF-Driver</dt>
+              
+<dd>
+                QF-Driver Verbindungsmodus vorziehen, falls nicht m&ouml;glich CDP-Driver oder WebDriver verwenden. Dies ist der Standard,
+                der auch angewendet wird, wenn dieses Attribut leer bleibt.
+              </dd>
+              
+<dt>QF-Driver only</dt>
+              
+<dd>Ausschlie&szlig;lich QF-Driver zulassen.</dd>
+              
+<dt>Prefer CDP-Driver</dt>
+              
+<dd>CDP-Driver Verbindungsmodus vorziehen, falls nicht m&ouml;glich QF-Driver oder WebDriver verwenden.</dd>
+              
+<dt>CDP-Driver only</dt>
+              
+<dd>Ausschlie&szlig;lich CDP-Driver zulassen.</dd>
+              
+<dt>Prefer WebDriver</dt>
+              
+<dd>WebDriver Verbindungsmodus vorziehen, falls nicht m&ouml;glich QF-Driver oder CDP-Driver verwenden.</dd>
+              
+<dt>WebDriver only</dt>
+              
+<dd>Ausschlie&szlig;lich WebDriver zulassen.</dd>
+            
+</dl>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+            Muss entweder leer sein oder einer der Werte 'Prefer QF-Driver', 'QF-Driver only', 'Prefer CDP-Driver' oder
+            'CDP-Driver only', 'Prefer WebDriver' oder 'WebDriver only'.
+          </p>
+</dd>
+<a name="att_WebEngineClientStarter_executable"></a>
+<dt>'Ausf&uuml;hrbares Programm'</dt>
+<dd>
+            
+            
+<p>
+              Das ausf&uuml;hrbare Java Programm, mit dem der Browser gestartet werden soll,
+              normalerweise <code>java</code> bzw. <code>javaw</code> unter
+              Windows. Wenn Sie eine spezielle Java Version verwenden
+              wollen, sollten Sie den vollen Pfad angeben.
+            </p>
+            
+<p>
+              
+<span class="margin"><span class="note">Hinweis</span></span>
+
+              Falls die Webanwendung ein Java Applet beinhaltet, m&uuml;ssen Sie hier das System JRE
+              angeben, mit dem das Applet Plugin ausgef&uuml;hrt wird, andernfalls st&uuml;rzt der Browser
+              ab.
+            </p>
+            
+<p>
+              Der Standard-Wert ist ${qftest:java}, das Java Programm mit dem QF-Test selbst gestartet
+              wurde. Wenn Sie den Browser &uuml;ber den QF-Driver ansprechen m&ouml;chten (nur Windows/Linux), so ist darauf zu achten, dass dieses Java
+              Programm die selbe 32 Bit oder 64 Bit Variante ist wie der im Attribut 'Verzeichnis der Browser-Installation'
+              angegebene Firefox Browser.
+            </p>
+            
+<p>
+              Der "Datei ausw&auml;hlen" Button
+              <img src="../icons/select_file.png" style="vertical-align: text-bottom" alt="[Datei ausw&auml;hlen]" title="Datei ausw&auml;hlen" width="20" height="20" texscale=".66">
+              &ouml;ffnet einen Dialog, in dem Sie das
+              Programm direkt ausw&auml;hlen k&ouml;nnen. Diesen erreichen Sie auch
+              mittels [Shift-Return] oder
+              [Alt-Return], sofern sich der
+              Fokus im Textfeld befindet.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_WebEngineClientStarter_parameter"></a>
+<dt>'Programm-Parameter'</dt>
+<dd>
+            
+            
+            
+<p>
+              Die Kommandozeilenargumente f&uuml;r das java Programm in das der Browser eingebettet
+              wird. Hier&uuml;ber lassen sich der verf&uuml;gbare Speicher (Standard ist 200MB), System
+              Properties, Java Debugging und &auml;hnliches konfigurieren. Jeder Parameter muss in
+              seiner eigenen Zeile stehen, Leerzeichen innerhalb eines Parameters oder
+              Sonderzeichen m&uuml;ssen nicht speziell behandelt werden.
+            </p>
+            
+<p>
+              N&auml;heres zur Arbeit mit den Tabellen finden Sie in
+              <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_WebEngineClientStarter_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_WebEngineClientStarter_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_WebEngineClientStarter_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_OpenBrowserWindowStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_OpenBrowserWindowStep">38.7.5</a></span>
+</div>
+<a href="contents.html#toc_step_OpenBrowserWindowStep">'Browser-Fenster &ouml;ffnen'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/startclient.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Dieser Knoten &ouml;ffnet eine Webseite in einem Browser-Fenster im laufenden Prozess.
+            Der Prozess sollte vorher von einem 'Web-Engine starten' Knoten gestartet werden.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+        Es wird eine Webseite im gestarteten Web-Engine Prozess ge&ouml;ffnet.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.42"></a><a name="figure_38.42"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_OpenBrowserWindowStep.png" target="_blank"><img src="images/att_OpenBrowserWindowStep.png" alt="Browser-Fenster &ouml;ffnen Attribute" texscale=".66" width="393" height="438"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.42</a>:&nbsp;&nbsp;'Browser-Fenster &ouml;ffnen' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_OpenBrowserWindowStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Dieser Name identifiziert den Client Prozess und muss eindeutig sein,
+        so lange der Prozess l&auml;uft. Andere Knoten identifizieren den Client an
+        Hand dieses Namens.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_OpenBrowserWindowStep_url"></a>
+<dt>'URL'</dt>
+<dd>
+            
+            
+<p>
+              Die URL der Webseite, die im Browser dargestellt werden soll.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_OpenBrowserWindowStep_windowname"></a>
+<dt>'Name des Browser-Fensters'</dt>
+<dd>
+            
+            
+<p>
+              Dieses Attribut k&ouml;nnen Sie ignorieren, sofern Sie nicht eine Web-Anwendung mit
+              mehreren offenen Browser-Fenstern testen m&uuml;ssen, die das selbe Dokument darstellen.
+              In diesem Fall kann das Attribut 'Name des Browser-Fensters' dazu dienen, die Browser-Fenster zu
+              unterscheiden. Hier k&ouml;nnen Sie den Namen des zu &ouml;ffnenden Browser-Fensters festlegen.
+              Der Umgang mit mehreren
+              Fenstern wird in <a href="faq.html#faq_25" shape="rect">FAQ 25</a> genauer erl&auml;utert.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_OpenBrowserWindowStep_geometry"></a>
+<dt>Geometrie des Browser-Fensters</dt>
+<dd>
+            
+            
+            
+            
+            
+<p>
+              Diese optionalen Attribute f&uuml;r die X/Y Koordinate, Breite und H&ouml;he k&ouml;nnen
+              zur Definition der Geometrie des zu &ouml;ffnenden Browser-Fensters verwendet werden.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+            Breite und H&ouml;he d&uuml;rfen nicht negativ sein.
+          </p>
+</dd>
+<a name="att_OpenBrowserWindowStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_OpenBrowserWindowStep_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_OpenBrowserWindowStep_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ShellClientStarter"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ShellClientStarter">38.7.6</a></span>
+</div>
+<a href="contents.html#toc_step_ShellClientStarter">'Shellkommando ausf&uuml;hren'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/startclient.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Hiermit l&auml;sst sich w&auml;hrend eines Testlaufs auf einfache Weise ein
+            Shellkommando ausf&uuml;hren. Die Shell zur Ausf&uuml;hrung des Kommandos
+            kann beim Start von QF-Test auf der Kommandozeile mittels
+            <a href="tech_execution.html#arg_shell" shape="rect"><code>-shell &lt;Programm&gt;</code></a> und <a href="tech_execution.html#arg_shellarg" shape="rect"><code>-shellarg &lt;Argument&gt;</code></a> angegeben
+            werden. Standardm&auml;&szlig;ig wird unter Unix <code>/bin/sh</code>
+            verwendet, unter Windows <code>COMMAND.COM</code> oder
+            <code>cmd.exe</code>.
+          </p>
+          
+<p>
+            Nach dem Starten der Shell wird sie wie jeder andere von QF-Test
+            gestartete Prozess behandelt, d.h. Sie k&ouml;nnen sie beenden oder auf
+            ihr Ende warten und den Exitcode auswerten.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Eine Shell wird gestartet, um das Kommando auszuf&uuml;hren.  Ihre Ein-
+          und Ausgabe werden umgeleitet und von QF-Test &uuml;bernommen.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.43"></a><a name="figure_38.43"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ShellClientStarter.png" target="_blank"><img src="images/att_ShellClientStarter.png" alt="Shellkommando ausf&uuml;hren Attribute" texscale=".66" width="393" height="330"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.43</a>:&nbsp;&nbsp;'Shellkommando ausf&uuml;hren' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ShellClientStarter_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Dieser Name identifiziert den Client Prozess und muss eindeutig sein,
+        so lange der Prozess l&auml;uft. Andere Knoten identifizieren den Client an
+        Hand dieses Namens.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_ShellClientStarter_command"></a>
+<dt>'Shell Kommando'</dt>
+<dd>
+            
+            
+<p>
+              Das Kommando, das die Shell ausf&uuml;hren soll. Geben Sie es genau
+              so wie an einem Shellprompt ein.
+            </p>
+            
+<p>
+              
+<span class="margin"><a name="windows_N129140"></a><span class="note">Windows</span></span> Unter Windows kann es zu Problemen
+              beim Quoten von Argumenten mit Leerzeichen kommen. Wenn Sie die
+              standard Windows Shell verwenden, sch&uuml;tzen Sie die Argumente
+              ganz normal mit Anf&uuml;hrungsstrichen, z.B. <code>dir "C:\Program
+              Files"</code>. Wenn Sie dagegen mit Hilfe des
+              Kommandozeilenarguments <a href="tech_execution.html#arg_shell" shape="rect"><code>-shell &lt;Programm&gt;</code></a> eine Unix Shell unter
+              Windows einsetzen, sollten Sie die Argumente mit Hochkommas
+              sch&uuml;tzen, also <code>ls 'C:/Program Files'</code>.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_ShellClientStarter_directory"></a>
+<dt>'Verzeichnis'</dt>
+<dd>
+            
+            
+<p>
+              Hier k&ouml;nnen Sie das Arbeitsverzeichnis f&uuml;r die Shell festlegen. Wenn Sie nichts
+              angeben, erbt die Shell das Arbeitsverzeichnis von QF-Test.
+            </p>
+            
+<p>
+              Der "Verzeichnis ausw&auml;hlen" Button
+              <img src="../icons/select_directory.png" style="vertical-align: text-bottom" alt="[Verzeichnis ausw&auml;hlen]" title="Verzeichnis ausw&auml;hlen" width="20" height="20" texscale=".66">
+              &ouml;ffnet einen Dialog, in dem Sie das
+              Verzeichnis direkt ausw&auml;hlen k&ouml;nnen. Diesen erreichen Sie auch
+              mittels [Shift-Return] oder
+              [Alt-Return], sofern sich der
+              Fokus im Textfeld befindet.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+            Muss entweder leer, oder ein existierendes Verzeichnis sein
+          </p>
+</dd>
+<a name="att_ShellClientStarter_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_ShellClientStarter_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_ShellClientStarter_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_PDFClientStarter"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_PDFClientStarter">38.7.7</a></span>
+</div>
+<a href="contents.html#toc_step_PDFClientStarter">'PDF Client starten'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/pdfclientstarter.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            &Uuml;ber diesen Knoten wird ein zu testendes PDF Dokument von QF-Test in einen
+            Viewer geladen, der als Client-Prozess gestartet wird.
+            Information zum Testen eines PDF Dokuments finden Sie in <a href="pdf-testing.html#sec_pdf">Kapitel 16</a>.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Der Viewer wird in einem Client-Prozess gestartet und das PDF Dokument geladen.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.44"></a><a name="figure_38.44"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_PDFClientStarter.png" target="_blank"><img src="images/att_PDFClientStarter.png" alt="PDF Client starten Attribute" texscale=".66" width="393" height="376"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.44</a>:&nbsp;&nbsp;'PDF Client starten' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_PDFClientStarter_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Dieser Name identifiziert den Client Prozess und muss eindeutig sein,
+        so lange der Prozess l&auml;uft. Andere Knoten identifizieren den Client an
+        Hand dieses Namens.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_PDFClientStarter_file"></a>
+<dt>'PDF Dokument'</dt>
+<dd>
+            
+            
+<p>
+              Das PDF Dokument, das ge&ouml;ffnet werden soll. Falls ein relativer Pfad angegeben ist, wird dieser relativ zum
+              Verzeichnis der aktuellen Testsuite aufgel&ouml;st.
+            </p>
+            
+<p>
+              Der "Datei ausw&auml;hlen" Button
+              <img src="../icons/select_file.png" style="vertical-align: text-bottom" alt="[Datei ausw&auml;hlen]" title="Datei ausw&auml;hlen" width="20" height="20" texscale=".66">
+              &ouml;ffnet einen Dialog, in dem Sie die
+              Datei direkt ausw&auml;hlen k&ouml;nnen. Diesen erreichen Sie auch
+              mittels [Shift-Return] oder
+              [Alt-Return], sofern sich der
+              Fokus im Textfeld befindet.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_PDFClientStarter_pagenumber"></a>
+<dt>'Seite des PDF Dokuments'</dt>
+<dd>
+            
+            
+<p>
+             Hier kann eine Seite angegeben werden, die beim Start angezeigt wird.
+            </p>
+            
+<p>
+             Eine Zahl wird als Seitennummer interpretiert. Ein String in Anf&uuml;hrungszeichen wird als Seitenname interpretiert.<br>
+             Beispiel:<br>
+             5 &ouml;ffnet die Seite 5<br>
+             "Index IV" &ouml;ffnet die Seite mit dem Namen Index IV
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Muss eine Ganzzahl oder ein valider Seitenname in Anf&uuml;hrungszeichen sein.</p>
+</dd>
+<a name="att_PDFClientStarter_password"></a>
+<dt>'Passwort'</dt>
+<dd>
+            
+            
+<p>
+             Hier kann das Passwort f&uuml;r das PDF Dokument angegeben werden, falls ein Passwort erforderlich ist.
+            </p>
+            
+<p>
+              
+<span class="margin"><span class="note">Hinweis</span></span>Eventuell ist es unerw&uuml;nscht, das Kennwort im Klartext in der Testsuite oder dem Protokoll abzulegen.
+              Um das Kennwort nach Eingabe in dieses Feld zu verschl&uuml;sseln, w&auml;hlen Sie nach einem
+              Rechts-Klick &raquo;<em>Kennwort verschl&uuml;sseln</em>&laquo; aus dem resultierenden
+              Popupmen&uuml;. Geben Sie auf jeden Fall vor der Verschl&uuml;sselung einen Salt in der Option
+              <a href="opt_play.html#opt_passwordsalt">Salt f&uuml;r Verschl&uuml;sselung von Kennw&ouml;rtern</a> an.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder das g&uuml;ltige Passwort, falls dieses ben&ouml;tigt wird.</p>
+</dd>
+<a name="att_PDFClientStarter_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_PDFClientStarter_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_PDFClientStarter_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+    
+<a name="step_WinClientStarterStart"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_WinClientStarterStart">38.7.8</a></span>
+</div>
+<a href="contents.html#toc_step_WinClientStarterStart">'Windows Anwendung starten'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/windowsclientstarter.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            &Uuml;ber diesen Knoten kann man eine native Windows Anwendung starten und sich damit
+            verbinden. Detaillierte Informationen zum Testen nativer Windows Anwendungen
+            finden Sie in <a href="user_wintesting.html#usec_wintesting">Kapitel 14</a>.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p></p>
+<p></p>
+<p></p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.45"></a><a name="figure_38.45"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_WinClientStarterStart.png" target="_blank"><img src="images/att_WinClientStarterStart.png" alt="Windows Client Starter Attribute" texscale=".66" width="393" height="536"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.45</a>:&nbsp;&nbsp;'Windows Anwendung starten' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_WinClientStarterStart_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Dieser Name identifiziert den Client Prozess und muss eindeutig sein,
+        so lange der Prozess l&auml;uft. Andere Knoten identifizieren den Client an
+        Hand dieses Namens.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_WinClientStarterStart_windowsprogram"></a>
+<dt>'Windows Anwendung'</dt>
+<dd>
+            
+            
+<p>
+              Die zu startende ausf&uuml;hrbare Datei der Windows Anwendung.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_WinClientStarterStart_directory"></a>
+<dt>'Verzeichnis'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie das Arbeitsverzeichnis f&uuml;r das Programm festlegen. Wenn Sie nichts
+        angeben, erbt das Programm das Arbeitsverzeichnis von QF-Test.
+      </p>
+      
+<p>
+        Der "Verzeichnis ausw&auml;hlen" Button
+        <img src="../icons/select_directory.png" style="vertical-align: text-bottom" alt="[Verzeichnis ausw&auml;hlen]" title="Verzeichnis ausw&auml;hlen" width="20" height="20" texscale=".66">
+        &ouml;ffnet einen Dialog, in dem Sie das
+        Verzeichnis direkt ausw&auml;hlen k&ouml;nnen. Diesen erreichen Sie auch
+        mittels [Shift-Return] oder
+        [Alt-Return], sofern sich der
+        Fokus im Textfeld befindet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Muss entweder leer, oder ein existierendes Verzeichnis sein
+    </p>
+</dd>
+<a name="att_WinClientStarterStart_windowtitle"></a>
+<dt>'Fenstertitel'</dt>
+<dd>
+            
+            
+<p>
+              Der Titel des Windows Fensters, das verbunden werden soll.
+            </p>
+            
+<p>
+              Mittels Rechtsklick und Auswahl von &raquo;<em>Text in regul&auml;ren Ausdruck konvertieren</em>&laquo;,
+              k&ouml;nnen Sie Sonderzeichen regul&auml;rer Ausdr&uuml;cke mit '\' sch&uuml;tzen.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Regexp, falls 'Als Regexp' gesetzt
+          ist.</p>
+</dd>
+<a name="att_WinClientStarterStart_regexp"></a>
+<dt>'Als Regexp'</dt>
+<dd>
+            
+            
+<p>
+            Ist dieses Attribut gesetzt, wird der Titel des Windows Fensters als regul&auml;rer
+            Ausdruck interpretiert (vgl. <a href="tech_regexp.html#sec_regexp">Abschnitt 45.3</a>).
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+            Keine
+          </p>
+</dd>
+<a name="att_WinClientStarterStart_timeout"></a>
+<dt>'Wartezeit'</dt>
+<dd>
+      
+<p>
+        Zeit in Millisekunden, die maximal verstreichen darf.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> &gt;= 0</p>
+</dd>
+<a name="att_WinClientStarterStart_parameter"></a>
+<dt>'Programm-Parameter'</dt>
+<dd>
+            
+            
+            
+            
+            
+<p>
+              Hier finden Sie je einen Tab f&uuml;r folgende Parameter:
+            </p>
+            
+<p>
+              Die Kommandozeilenargumente f&uuml;r das zu startende
+              Windows-Programm. Jeder Parameter muss in seiner eigenen Zeile
+              stehen, Leerzeichen innerhalb eines Parameters oder
+              Sonderzeichen m&uuml;ssen nicht speziell behandelt
+              werden. Um Parameter an den QF-Test-Win-Engine-Prozess zu &uuml;bergeben,
+              m&uuml;ssen diese mit "-qfengine:" beginnen.
+            </p>
+            
+<p>
+              N&auml;heres zur Arbeit mit den Tabellen finden Sie in
+              <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_WinClientStarterStart_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_WinClientStarterStart_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_WinClientStarterStart_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_WinClientStarterAttach"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_WinClientStarterAttach">38.7.9</a></span>
+</div>
+<a href="contents.html#toc_step_WinClientStarterAttach">'Windows Anwendung verbinden'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/windowsclientstarter.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            &Uuml;ber diesen Knoten kann man einer bereits laufenden nativen Windows Anwendung
+            verbinden. Detaillierte Informationen zum Testen nativer Windows Anwendungen
+            finden Sie in <a href="user_wintesting.html#usec_wintesting">Kapitel 14</a>.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p></p>
+<p></p>
+<p></p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.46"></a><a name="figure_38.46"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_WinClientStarterAttach.png" target="_blank"><img src="images/att_WinClientStarterAttach.png" alt="Windows Client Starter Attribute" texscale=".66" width="393" height="350"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.46</a>:&nbsp;&nbsp;'Windows Anwendung verbinden' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_WinClientStarterAttach_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Dieser Name identifiziert den Client Prozess und muss eindeutig sein,
+        so lange der Prozess l&auml;uft. Andere Knoten identifizieren den Client an
+        Hand dieses Namens.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_WinClientStarterAttach_windowtitle"></a>
+<dt>'Fenstertitel'</dt>
+<dd>
+            
+            
+<p>
+              Der Titel des Windows Fensters, das verbunden werden soll
+              Man kann sich auch durch Angabe der Prozess-Id verbinden. In diesem Fall
+              wird <code>-pid &lt;process ID&gt;</code> eingetragen. &Uuml;ber <code>-class &lt;class
+              name&gt;</code>, kann man sich durch Angabe des UI Automation Klassennames (class name)
+              des Fensters zur Anwendung verbinden.
+            </p>
+            
+<p>
+              Mittels Rechtsklick und Auswahl von &raquo;<em>Text in regul&auml;ren               Ausdruck konvertieren</em>&laquo;, k&ouml;nnen Sie Sonderzeichen regul&auml;rer Ausdr&uuml;cke mit '\' sch&uuml;tzen.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein. G&uuml;ltige Regexp, falls 'Als Regexp' gesetzt
+          ist.</p>
+</dd>
+<a name="att_WinClientStarterAttach_regexp"></a>
+<dt>'Als Regexp'</dt>
+<dd>
+            
+            
+<p>
+              Ist dieses Attribut gesetzt, wird der Titel des Windows Fensters als regul&auml;rer
+              Ausdruck interpretiert (vgl. <a href="tech_regexp.html#sec_regexp">Abschnitt 45.3</a>).
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+            Keine
+          </p>
+</dd>
+<a name="att_WinClientStarterAttach_timeout"></a>
+<dt>'Wartezeit'</dt>
+<dd>
+      
+<p>
+        Zeit in Millisekunden, die maximal verstreichen darf.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> &gt;= 0</p>
+</dd>
+<a name="att_WinClientStarterAttach_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_WinClientStarterAttach_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_WinClientStarterAttach_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+    
+<a name="step_AndroidEmulatorStarterStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_AndroidEmulatorStarterStep">38.7.10</a></span>
+</div>
+<a href="contents.html#toc_step_AndroidEmulatorStarterStep">'Android Emulator starten'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/androiddevicestarter.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            &Uuml;ber diesen Knoten kann man einen Android Emulator starten und sich damit
+            verbinden. Die Zusammenstellung der ben&ouml;tigten Knoten vom Emulator- bis
+            zum App-Start mit den passenden Warten-Knoten gelingt am einfachsten
+            &uuml;ber den <a href="user_quickstart.html#usec_quickstart">Schnellstart Ihrer Anwendung</a>.
+          <p>
+          
+</p>
+            Detaillierte Informationen zum Testen von Android Anwendungen
+            finden Sie in <a href="user_androidtesting.html#usec_androidtesting">Kapitel 15</a>.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p></p>
+<p></p>
+<p></p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.47"></a><a name="figure_38.47"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_AndroidEmulatorStart.png" target="_blank"><img src="images/att_AndroidEmulatorStart.png" alt="Android Emulator Starter Attributes" texscale=".66" width="393" height="452"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.47</a>:&nbsp;&nbsp;'Android Emulator starten' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_AndroidEmulatorStart_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Dieser Name identifiziert den Client Prozess und muss eindeutig sein,
+        so lange der Prozess l&auml;uft. Andere Knoten identifizieren den Client an
+        Hand dieses Namens.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_AndroidEmulatorStart_emulatorName"></a>
+<dt>'Name des zu verwendenden Android Emulators'</dt>
+<dd>
+            
+            
+<p>
+              Der Name des zu verwendenden Emulators wie er zum Beispiel im
+              Android Virtual Device Manager in der Spalte 'Name' angezeigt wird
+              (siehe <a href="usec_android_studio.html#fig_android_studio_avd_available">Android Studio Dialog zeigt verf&uuml;gbare AVDs</a>).
+              Der Emulatorname braucht hier nicht 'fest verdrahtet' werden.
+              Er kann auch in der Variablen <code>deviceName</code> abgespeichert
+              und hier &uuml;ber die Variable referenziert werden.
+            </p>
+            
+<p>
+<span class="margin"><span class="note">Hinweis</span></span>
+              Sollten Sie einen Emulator verwenden wollen, den Sie erst nach
+              Start von QF-Test erstellt haben, kann es vorkommen, dass dieser
+              noch nicht in der Drop-Down-Liste angezeigt wird. In diesem
+              Fall k&ouml;nnen Sie den Namen direkt im Textfeld eintragen.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_AndroidEmulatorStart_parameter"></a>
+<dt>'Programm-Parameter'</dt>
+<dd>
+            
+            
+<p>
+              Die Kommunikation zwischen QF-Test und dem Emulator erfolgt
+              &uuml;ber ein Java Programm, das zus&auml;tzlich um Emulator
+              gestartet wird und im Hintergrund l&auml;uft. Parameter f&uuml;r
+              dieses Java Programm k&ouml;nnen hier angegeben werden.
+              Jeder Parameter muss in seiner eigenen Zeile
+              stehen, Leerzeichen innerhalb eines Parameters oder
+              Sonderzeichen m&uuml;ssen nicht speziell behandelt
+              werden. Beispiel: <code>-Xmx1G</code>, um dem Java
+              Programm 1 GB Speicher zu geben.
+            </p>
+            
+<p>
+              N&auml;heres zur Arbeit mit den Tabellen finden Sie in
+              <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_AndroidEmulatorStart_emulatorarg"></a>
+<dt>'Emulator-Argumente'</dt>
+<dd>
+            
+            
+<p>
+              Die Kommandozeilenargumente f&uuml;r den zu startenden
+              Emulator, zum Beispiel <code>-no-snapshot-save</code>.
+              Jeder Parameter muss in seiner eigenen Zeile
+              stehen, Leerzeichen innerhalb eines Parameters oder
+              Sonderzeichen m&uuml;ssen nicht speziell behandelt
+              werden.
+            </p>
+            
+<p>
+              N&auml;heres zur Arbeit mit den Tabellen finden Sie in
+              <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_AndroidEmulatorStart_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_AndroidEmulatorStart_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_AndroidEmulatorStart_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+    
+<a name="step_ConnectToDeviceStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ConnectToDeviceStep">38.7.11</a></span>
+</div>
+<a href="contents.html#toc_step_ConnectToDeviceStep">'Mit Android Ger&auml;t verbinden'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/androiddevicestarter.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            &Uuml;ber diesen Knoten kann man sich mit einem laufenden Android Emulator
+            oder echtem Android Ger&auml;t
+            verbinden. Die Zusammenstellung der ben&ouml;tigten Knoten von
+            der Verbindung zum laufenden Emulator beziehungweise echtem
+            Android Ger&auml;t bis
+            zum App-Start mit den passenden Warten-Knoten gelingt am einfachsten
+            &uuml;ber den <a href="user_quickstart.html#usec_quickstart">Schnellstart Ihrer Anwendung</a>.
+          <p>
+          
+</p>
+            Detaillierte Informationen zum Testen von Android Anwendungen
+            finden Sie in <a href="user_androidtesting.html#usec_androidtesting">Kapitel 15</a>.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p></p>
+<p></p>
+<p></p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.48"></a><a name="figure_38.48"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_AndroidDeviceAttach.png" target="_blank"><img src="images/att_AndroidDeviceAttach.png" alt="Attributes of Android Emulator Attach Node" texscale=".66" width="393" height="367"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.48</a>:&nbsp;&nbsp;'Mit Android Ger&auml;t verbinden' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_AndroidDeviceAttach_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Dieser Name identifiziert den Client Prozess und muss eindeutig sein,
+        so lange der Prozess l&auml;uft. Andere Knoten identifizieren den Client an
+        Hand dieses Namens.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_AndroidDeviceAttach_deviceName"></a>
+<dt>'Name des zu verwendenden Android Ger&auml;tes'</dt>
+<dd>
+            
+            
+<p>
+              Der Name eines angeschlossenen Android Ger&auml;tes oder des
+              zu verwendenden Emulators. Die verf&uuml;gbaren Namen werden
+              in der Drop-Down-Liste angezeigt. Alternativ k&ouml;nnen Sie
+              diese auch &uuml;ber den Men&uuml;punkt &raquo;<em>Laufende               Android Ger&auml;te</em>&laquo;
+              im Men&uuml; &raquo;<em>Extras</em>&laquo; herausfinden.
+            </p>
+            
+<p>
+              Der Emulator- beziehungweise Ger&auml;tename braucht hier
+              nicht 'fest verdrahtet' werden.
+              Er kann auch in der Variablen <code>deviceName</code> abgespeichert
+              und hier &uuml;ber die Variable referenziert werden.
+            </p>
+            
+<p>
+<span class="margin"><span class="note">Hinweis</span></span>
+              Sollten Sie ein echtes Android Ger&auml;t verwenden wollen, das
+              Sie erst nach dem Start von QF-Test angeschlossen haben,
+              kann es vorkommen, dass dieses
+              noch nicht in der Drop-Down-Liste angezeigt wird. In diesem
+              Fall k&ouml;nnen Sie den Namen direkt im Textfeld eintragen.
+              Gleiches gilt f&uuml;r einen Emulator, den Sie erst nach
+              Start von QF-Test erstellt haben.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_AndroidDeviceAttach_parameter"></a>
+<dt>'Programm-Parameter'</dt>
+<dd>
+            
+            
+<p>
+              Die Kommunikation zwischen QF-Test und dem Android Emulator
+              beziehungweise echtem Ger&auml;t erfolgt
+              &uuml;ber ein Java Programm, das zus&auml;tzlich
+              gestartet wird und im Hintergrund l&auml;uft. Parameter f&uuml;r
+              dieses Java Programm k&ouml;nnen hier angegeben werden.
+              Jeder Parameter muss in seiner eigenen Zeile
+              stehen, Leerzeichen innerhalb eines Parameters oder
+              Sonderzeichen m&uuml;ssen nicht speziell behandelt
+              werden. Beispiel: <code>-Xmx1G</code>, um dem Java
+              Programm 1 GB Speicher zu geben.
+            </p>
+            
+<p>
+              N&auml;heres zur Arbeit mit den Tabellen finden Sie in
+              <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_AndroidDeviceAttach_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_AndroidDeviceAttach_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_AndroidDeviceAttach_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+    
+<a name="step_InstallAndLaunchAndroidAppStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_InstallAndLaunchAndroidAppStep">38.7.12</a></span>
+</div>
+<a href="contents.html#toc_step_InstallAndLaunchAndroidAppStep">'Android App starten'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/androidappstarter.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            &Uuml;ber diesen Knoten kann man eine Android Applikation installieren
+            und starten. Die Zusammenstellung der
+            ben&ouml;tigten Knoten vom Emulator-Start - oder alternativ der Verbindung
+            mit einem laufenden Android Emulator oder echtem Ger&auml;t - bis
+            zum App-Start mit den passenden Warten-Knoten gelingt am einfachsten
+            &uuml;ber den <a href="user_quickstart.html#usec_quickstart">Schnellstart Ihrer Anwendung</a>.
+          <p>
+          
+</p>
+            Detaillierte Informationen zum Testen von Android Anwendungen
+            finden Sie in <a href="user_androidtesting.html#usec_androidtesting">Kapitel 15</a>.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p></p>
+<p></p>
+<p></p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.49"></a><a name="figure_38.49"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_AndroidAppStart.png" target="_blank"><img src="images/att_AndroidAppStart.png" alt="Android Applikation Starter Attributes" texscale=".66" width="393" height="428"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.49</a>:&nbsp;&nbsp;'Android App starten' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_AndroidAppStart_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Dieser Name identifiziert den Client Prozess und muss eindeutig sein,
+        so lange der Prozess l&auml;uft. Andere Knoten identifizieren den Client an
+        Hand dieses Namens.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_AndroidAppStart_apkPath"></a>
+<dt>'Pfad zur APK Datei'</dt>
+<dd>
+            
+            
+<p>
+              Der Pfad zu der zu verwendenden Android App.
+              Um einen Pfad relativ zur Testsuite anzugeben,
+              nutzen Sie am besten die Variable <code>${qftest:suite.dir}</code>
+              verwenden, siehe <a href="user_variables.html#usec_externaldata">Abschnitt 6.5</a>. Beispiel:
+              <code>${qftest:suite.dir}/apps/myapp.apk</code>.
+            </p>
+            
+<p>
+              Falls die App vorinstalliert ist und die .apk-Datei nicht
+              verf&uuml;gbar ist, kann die App alternativ &uuml;ber die Attribute
+              'Package' und 'Activity'
+              gestartet werden.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_AndroidAppStart_reinstall"></a>
+<dt>'Neuinstallation der App erzwingen'</dt>
+<dd>
+            
+            
+<p>
+              Wenn Sie das Attribut selektieren, wird die App auf jeden
+              Fall neu installiert, egal, ob bereits eine
+              Installation der App auf dem Android Emulator oder dem echten Ger&auml;t
+              vorhanden ist.
+            </p>
+            
+<p>
+<span class="margin"><span class="note">Hinweis</span></span>
+              Diese Aktion l&ouml;scht nicht zwingend vorhandene Einstellungen und
+              Daten der App.
+              Dies ist abh&auml;ngig davon, wo die Daten und Einstellungen der App
+              gespeichert werden.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_AndroidAppStart_launch"></a>
+<dt>'Die App starten'</dt>
+<dd>
+            
+            
+<p>
+              Attribut selektieren, um die Applikation zu starten.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_AndroidAppStart_package"></a>
+<dt>'Package'</dt>
+<dd>
+            
+            
+<p>
+              Der Package-Name der zu startenden Android App.
+              Wird nur f&uuml;r den Sonderfall ben&ouml;tigt, dass die .apk-Datei
+              nicht im Attribut 'Pfad zur APK Datei'
+              angegeben werden kann. Zus&auml;tzlich muss dann auch das Attribut
+              'Activity' gesetzt werden.
+              Das Package kann &uuml;ber die
+              Android Debug Bridge ermittelt werden. Alternativ k&ouml;nnen zun&auml;chst
+              nur den Emulator starten oder sich mit einem echten Ger&auml;t oder
+              laufenden Emulator verbinden. Wenn Sie nun die App manuell
+              starten, k&ouml;nnen Sie eine Komponente aufnehmen. Dann wird das Package
+              in den Attributen des obersten Knotens der Komponentenhierarchie
+              abgespeichert.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_AndroidAppStart_activity"></a>
+<dt>'Activity'</dt>
+<dd>
+            
+            
+<p>
+              Der Activity-Name der zu startenden Android App.
+              Wird nur f&uuml;r den Sonderfall ben&ouml;tigt, dass die .apk-Datei
+              nicht im Attribut 'Pfad zur APK Datei'
+              angegeben werden kann. Zus&auml;tzlich muss dann auch das Attribut
+              'Package' gesetzt werden. Die Activity kann &uuml;ber die
+              Android Debug Bridge ermittelt werden.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_AndroidAppStart_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_AndroidAppStart_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_AndroidAppStart_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ClientWaiter"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ClientWaiter">38.7.13</a></span>
+</div>
+<a href="contents.html#toc_step_ClientWaiter">'Warten auf Client'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/waitclient.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Bei seiner Ausf&uuml;hrung stellt dieser Knoten sicher, dass eine
+            Verbindung zu einem bestimmten Client besteht. Ist dies nicht
+            der Fall, wartet er eine gewisse Zeit und wirft im Fehlerfall
+            eine <a href="exceptions.html#ex_ClientNotConnectedException" shape="rect">ClientNotConnectedException</a>.
+            Das Resultat des Knotens kann auch in einer Variable mittels des
+            Attributes 'Variable f&uuml;r Ergebnis' gesetzt werden. Mit Ausschalten des
+            Attributes 'Im Fehlerfall Exception werfen' kann das Werfen der Exceptions unterdr&uuml;ckt werden.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          QF-Test wartet, bis der Java Client des SUT mit dem
+          entsprechenden Namen eine RMI Verbindung herstellt oder das
+          Timeout abgelaufen ist.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.50"></a><a name="figure_38.50"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ClientWaiter.png" target="_blank"><img src="images/att_ClientWaiter.png" alt="Warten auf CLient Attribute" texscale=".66" width="393" height="502"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.50</a>:&nbsp;&nbsp;'Warten auf Client' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ClientWaiter_client"></a>
+<dt>'Client'</dt>
+<dd>
+            
+            
+<p>
+              Der Name des Java Clients auf dessen Verbindung gewartet
+              wird.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_ClientWaiter_timeout"></a>
+<dt>'Wartezeit'</dt>
+<dd>
+      
+<p>
+        Zeit in Millisekunden, die maximal verstreichen darf.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> &gt;= 0</p>
+</dd>
+<a name="att_ClientWaiter_engine"></a>
+<dt>'GUI Engine'</dt>
+<dd>
+            
+            
+<p>
+              Die GUI Engine auf die gewartet werden soll. Nur relevant f&uuml;r SUTs mit mehr als
+              einer GUI Engine wie in <a href="tech_engines.html#sec_engines">Kapitel 41</a> beschrieben.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Siehe <a href="tech_engines.html#sec_engines">Kapitel 41</a>
+</p>
+</dd>
+<a name="att_ClientWaiter_resvarname"></a>
+<dt>'Variable f&uuml;r Ergebnis'</dt>
+<dd>
+      
+<p>
+        Mit diesem optionalen Attribut k&ouml;nnen Sie den Namen einer Variable festlegen, die
+        abh&auml;ngig vom Ergebnis der Aktion auf 'true' (erfolgreich) oder 'false' (fehlgeschlagen)
+        gesetzt wird.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Ist dieses Attribut gesetzt, wird das Attribut 'Fehlerstufe der Meldung'
+        ignoriert. Das Attribut 'Im Fehlerfall Exception werfen' beh&auml;lt dagegen seine Funktion, so dass es m&ouml;glich ist,
+        eine Ergebnisvariable zu erhalten und trotzdem eine Exception zu werfen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ClientWaiter_local"></a>
+<dt>'Lokale Variable'</dt>
+<dd>
+      
+<p>
+        Ist dieses Attribut nicht gesetzt, wird die Variable in den globalen Definitionen
+        gebunden. Andernfalls wird - sofern vorhanden - die oberste aktuelle Definition der
+        Variablen &uuml;berschrieben, sofern diese innerhalb des aktuellen <a href="procedures.html#step_Procedure" shape="rect">'Prozedur'</a>,
+        <a href="dependencies.html#step_Dependency" shape="rect">'Abh&auml;ngigkeit'</a> oder <a href="sequences.html#step_TestCase" shape="rect">'Testfall'</a> Knotens liegt. Gibt es keine solche Definition,
+        wird eine neue Definition im aktuellen 'Prozedur', 'Abh&auml;ngigkeit' oder 'Testfall'
+        Knoten angelegt, oder, falls kein solcher existiert, im obersten Knoten auf dem Variablen-Stapel
+	mit Fallback auf die globalen Definitionen. Eine
+        Erl&auml;uterung dieser Begriffe und weitere Details zu Variablen finden Sie in <a href="user_variables.html#usec_variables">Kapitel 6</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ClientWaiter_errorlevel"></a>
+<dt>'Fehlerstufe der Meldung'</dt>
+<dd>
+      
+<p>
+        &Uuml;ber dieses Attribut legen Sie die Fehlerstufe der Meldung fest,
+        die in das Protokoll geschrieben wird, wenn die Aktion nicht erfolgreich
+        ist. Zur Auswahl stehen Nachricht, Warnung und Fehler.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Dieses Attribut ist ohne Bedeutung, falls eines der Attribute
+        'Im Fehlerfall Exception werfen' oder 'Variable f&uuml;r Ergebnis' gesetzt ist.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ClientWaiter_raise"></a>
+<dt>'Im Fehlerfall Exception werfen'</dt>
+<dd>
+      
+<p>
+        Ist dieses Attribut gesetzt, wird bei einem Scheitern der Aktion eine Exception geworfen.
+        F&uuml;r 'Check...' Knoten wird eine <a href="exceptions.html#ex_CheckFailedException" shape="rect"><code>CheckFailedException</code></a> geworfen, f&uuml;r 'Warten auf...'
+        Knoten eine spezifische Exception f&uuml;r diesen Knoten.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ClientWaiter_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_ClientWaiter_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_ClientWaiter_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_WaitForAndroidDeviceStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_WaitForAndroidDeviceStep">38.7.14</a></span>
+</div>
+<a href="contents.html#toc_step_WaitForAndroidDeviceStep">'Warten auf Android Ger&auml;t'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/androidwaiter.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Bei seiner Ausf&uuml;hrung stellt dieser Knoten sicher, dass eine
+            Verbindung zu einem bestimmten (virtuellen) Android Ger&auml;t besteht. Ist dies nicht
+            der Fall, wartet er eine gewisse Zeit und wirft nach Ablauf der Zeit
+            eine <a href="exceptions.html#ex_ClientNotConnectedException" shape="rect"><code>ClientNotConnectedException</code></a>. Falls bereits vor Ablauf der Zeit
+            erkannt wird, dass die Verbindung nicht zustande kommt, wird eine
+            <a href="exceptions.html#ex_ConnectionFailureException" shape="rect"><code>ConnectionFailureException</code></a> geworfen.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          QF-Test wartet, bis das (virtuelle) Android Ger&auml;t mit dem
+          entsprechenden Namen eine Verbindung herstellt oder das
+          Timeout abgelaufen ist.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.51"></a><a name="figure_38.51"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_AndroidDeviceWaiter.png" target="_blank"><img src="images/att_AndroidDeviceWaiter.png" alt="Warten auf Android CLient Attribute" texscale=".66" width="393" height="282"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.51</a>:&nbsp;&nbsp;'Warten auf Android Ger&auml;t' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_WaitForAndroidDeviceStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+            
+            
+<p>
+              Der Name des (virtuellen) Android Ger&auml;ts auf dessen Verbindung gewartet
+              wird.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_WaitForAndroidDeviceStep_timeout"></a>
+<dt>'Wartezeit'</dt>
+<dd>
+      
+<p>
+        Zeit in Millisekunden, die maximal verstreichen darf.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> &gt;= 0</p>
+</dd>
+<a name="att_WaitForAndroidDeviceStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_WaitForAndroidDeviceStep_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_WaitForAndroidDeviceStep_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ClientStopper"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ClientStopper">38.7.15</a></span>
+</div>
+<a href="contents.html#toc_step_ClientStopper">'Programm beenden'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/stopclient.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Hiermit kann ein Prozess, der von QF-Test gestartet wurde,
+            beendet werden. Sollte sich der Prozess bereits selbst beendet
+            haben, &auml;ndert sich nichts. Andernfalls versucht QF-Test im Fall
+            eines SUT Clients zun&auml;chst, die Applikation durch Aufruf der
+            Java Methode <code>System.exit(-1)</code> zu beenden. Ist der
+            Client kein SUT Client oder anschlie&szlig;end immer noch nicht
+            beendet, wird der Prozess "abgeschossen" und erh&auml;lt einen Exitcode
+            von -1.
+          </p>
+          
+<p>
+            
+<span class="margin"><a name="windows_N132172"></a><span class="note">Windows</span></span><strong>Achtung:</strong> Unter Windows werden Kindprozesse nicht
+            beendet, wenn der Vaterprozess abgeschossen wird. Wie in <a href="tech_startsut.html#sec_runningyourapp">Kapitel 42</a> beschrieben, startet QF-Test das SUT
+            &uuml;ber einige Umwege. Wenn das SUT sich nicht mit
+            <code>System.exit(-1)</code> beenden l&auml;sst, kann das zu
+            "herrenlosen" Prozessen f&uuml;hren, die nach und nach das System
+            blockieren.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Schie&szlig;t den Prozess ab, der unter dem entsprechenden Namen
+          gestartet wurde.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.52"></a><a name="figure_38.52"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ClientStopper.png" target="_blank"><img src="images/att_ClientStopper.png" alt="Programm beenden Attribute" texscale=".66" width="393" height="236"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.52</a>:&nbsp;&nbsp;'Programm beenden' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ClientStopper_client"></a>
+<dt>'Client'</dt>
+<dd>
+            
+            
+<p>
+              Der Name unter dem der Prozess, der abgeschossen werden
+              soll, gestartet wurde.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_ClientStopper_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_ClientStopper_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_ClientStopper_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ProcessWaiter"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ProcessWaiter">38.7.16</a></span>
+</div>
+<a href="contents.html#toc_step_ProcessWaiter">'Warten auf Programmende'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/waitproc.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Hiermit kann auf das Ende eines Prozesses, der von QF-Test
+            gestartet wurde, gewartet werden. Terminiert der Prozess nicht
+            innerhalb des vorgegebenen Timeouts, wird eine
+            <a href="exceptions.html#ex_ClientNotTerminatedException" shape="rect"><code>ClientNotTerminatedException</code></a> ausgel&ouml;st. Andernfalls wird der
+            Exitcode des Prozesses ermittelt und kann mit einem vorgegebenen
+            Wert verglichen werden.
+            Das Resultat des Knotens kann auch in einer Variable mittels des
+            Attributes 'Variable f&uuml;r Ergebnis' gesetzt werden. Mit Ausschalten des
+            Attributes 'Im Fehlerfall Exception werfen' kann das Werfen der Exceptions unterdr&uuml;ckt werden.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Wartet auf das Ende des Prozesses, der unter dem entsprechenden
+          Namen gestartet wurde und pr&uuml;ft dessen Exitcode.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.53"></a><a name="figure_38.53"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ProcessWaiter.png" target="_blank"><img src="images/att_ProcessWaiter.png" alt="Warten auf Programmende Attribute" texscale=".66" width="393" height="502"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.53</a>:&nbsp;&nbsp;'Warten auf Programmende' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ProcessWaiter_client"></a>
+<dt>'Client'</dt>
+<dd>
+            
+            
+<p>
+              Der Name unter dem der Prozess, auf dessen Ende gewartet
+              werden soll, gestartet wurde.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_ProcessWaiter_timeout"></a>
+<dt>'Wartezeit'</dt>
+<dd>
+      
+<p>
+        Zeit in Millisekunden, die maximal verstreichen darf.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> &gt;= 0</p>
+</dd>
+<a name="att_ProcessWaiter_check"></a>
+<dt>'Erwarteter Exitcode'</dt>
+<dd>
+            
+            
+<p>
+              Ist dieses Attribut gesetzt, wird nach dem Ende des
+              Prozesses dessen Exitcode ausgewertet und mit diesem Wert
+              verglichen. Die Art des Vergleichs wird durch einen der vier
+              Operatoren <strong>==</strong>, <strong>!=</strong>,
+              <strong>&lt;</strong> und <strong>&gt;</strong> festgelegt,
+              die dem Wert vorangestellt werden k&ouml;nnen. Ohne Operator wird
+              auf Gleichheit gepr&uuml;ft. Scheitert die Pr&uuml;fung, wird eine
+              <code>TestException</code> ausgel&ouml;st.
+            </p>
+            
+<p>
+              Beispiele: Wird als Attributwert <strong>0</strong>
+              angegeben, so f&uuml;hrt jeder andere Exitcode als 0 zu einem
+              Fehler. Dies entspricht der Angabe <strong>==0</strong>.
+              Bei einem Wert von <strong>&gt;0</strong> l&ouml;st entsprechend
+              jeder Exitcode kleiner oder gleich 0 eine Exception aus.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Siehe oben</p>
+</dd>
+<a name="att_ProcessWaiter_resvarname"></a>
+<dt>'Variable f&uuml;r Ergebnis'</dt>
+<dd>
+      
+<p>
+        Mit diesem optionalen Attribut k&ouml;nnen Sie den Namen einer Variable festlegen, die
+        abh&auml;ngig vom Ergebnis der Aktion auf 'true' (erfolgreich) oder 'false' (fehlgeschlagen)
+        gesetzt wird.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Ist dieses Attribut gesetzt, wird das Attribut 'Fehlerstufe der Meldung'
+        ignoriert. Das Attribut 'Im Fehlerfall Exception werfen' beh&auml;lt dagegen seine Funktion, so dass es m&ouml;glich ist,
+        eine Ergebnisvariable zu erhalten und trotzdem eine Exception zu werfen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ProcessWaiter_local"></a>
+<dt>'Lokale Variable'</dt>
+<dd>
+      
+<p>
+        Ist dieses Attribut nicht gesetzt, wird die Variable in den globalen Definitionen
+        gebunden. Andernfalls wird - sofern vorhanden - die oberste aktuelle Definition der
+        Variablen &uuml;berschrieben, sofern diese innerhalb des aktuellen <a href="procedures.html#step_Procedure" shape="rect">'Prozedur'</a>,
+        <a href="dependencies.html#step_Dependency" shape="rect">'Abh&auml;ngigkeit'</a> oder <a href="sequences.html#step_TestCase" shape="rect">'Testfall'</a> Knotens liegt. Gibt es keine solche Definition,
+        wird eine neue Definition im aktuellen 'Prozedur', 'Abh&auml;ngigkeit' oder 'Testfall'
+        Knoten angelegt, oder, falls kein solcher existiert, im obersten Knoten auf dem Variablen-Stapel
+	mit Fallback auf die globalen Definitionen. Eine
+        Erl&auml;uterung dieser Begriffe und weitere Details zu Variablen finden Sie in <a href="user_variables.html#usec_variables">Kapitel 6</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ProcessWaiter_errorlevel"></a>
+<dt>'Fehlerstufe der Meldung'</dt>
+<dd>
+      
+<p>
+        &Uuml;ber dieses Attribut legen Sie die Fehlerstufe der Meldung fest,
+        die in das Protokoll geschrieben wird, wenn die Aktion nicht erfolgreich
+        ist. Zur Auswahl stehen Nachricht, Warnung und Fehler.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Dieses Attribut ist ohne Bedeutung, falls eines der Attribute
+        'Im Fehlerfall Exception werfen' oder 'Variable f&uuml;r Ergebnis' gesetzt ist.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ProcessWaiter_raise"></a>
+<dt>'Im Fehlerfall Exception werfen'</dt>
+<dd>
+      
+<p>
+        Ist dieses Attribut gesetzt, wird bei einem Scheitern der Aktion eine Exception geworfen.
+        F&uuml;r 'Check...' Knoten wird eine <a href="exceptions.html#ex_CheckFailedException" shape="rect"><code>CheckFailedException</code></a> geworfen, f&uuml;r 'Warten auf...'
+        Knoten eine spezifische Exception f&uuml;r diesen Knoten.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ProcessWaiter_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_ProcessWaiter_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_ProcessWaiter_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="control.html#sec_control"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 38.6&nbsp;Ablaufsteuerung" title="Vorheriges Kapitel: 38.6&nbsp;Ablaufsteuerung"></a></td><td class="navicon"><a href="events.html#sec_events"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 38.8&nbsp;Events" title="N&auml;chste Seite: 38.8&nbsp;Events"></a></td><td class="navicon"><a href="events.html#sec_events"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 38.8&nbsp;Events" title="N&auml;chstes Kapitel: 38.8&nbsp;Events"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite" title="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

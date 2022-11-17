@@ -1,0 +1,520 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Vorgehensweise</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_automac_general"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_extensions.html#sec_extensions"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 50&nbsp;APIs f&uuml;r Erweiterungen" title="N&auml;chste Seite: 50&nbsp;APIs f&uuml;r Erweiterungen"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_automac.html#usec_automac"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 49&nbsp;Steuern und Testen von nativen MacOS-Anwendungen" title="Kapitel-&Uuml;bersicht: 49&nbsp;Steuern und Testen von nativen MacOS-Anwendungen"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_automac_general">49.1</a></span>
+</div>
+<a href="contents.html#toc_usec_automac_general">Vorgehensweise</a>
+</h4>
+      
+<p>
+        Die Accessibility-Schnittstelle erlaubt den programmatischen
+        Zugriff auf GUI Elemente von nativen MacOS-Anwendungen. In QF-Test
+        kann dieses Framework in Skriptknoten &uuml;ber das Jython Modul <code>automac</code> angesprochen werden
+        (alternativ <code>de.qfs.automac</code> f&uuml;r Groovy <code>automac</code> f&uuml;r Javascript).
+      </p>
+      
+<p>
+        Zur direkten und einfachen Nutzung f&uuml;r die Testerstellung bietet QF-Test
+        in der Standardbibliothek ein Package, das QF-Test-Prozeduren f&uuml;r h&auml;ufig ben&ouml;tigte
+        Interaktionen mit GUI-Elementen zur Verf&uuml;gung stellt. Dieses wird im Folgenden beschrieben.
+      </p>
+      
+<p>
+        Die f&uuml;r die Ansteuerung von nativen MacOS-Elementen relevanten Prozeduren
+        befinden sich im Package <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.automac"><code>qfs.automac</code></a>.
+      </p>
+      
+      
+<p>
+        Die grunds&auml;tzliche Vorgehensweise bei der Erstellung von Tests f&uuml;r native
+        MacOS-Anwendungen ist folgende:
+      </p>
+      
+<ul>
+        
+<li>
+          Start der Anwendung
+        </li>
+        
+<li>
+          Identifikation der Zugriffsparameter f&uuml;r die GUI-Elemente
+        </li>
+        
+<li>
+          Erstellung von Tests unter Verwendung der ermittelten Zugriffsparameter
+        </li>
+      
+</ul>
+      
+<a name="usec_automac_start_general"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_automac_start_general">49.1.1</a></span>
+</div>
+<a href="contents.html#toc_usec_automac_start_general">Start der Anwendung</a>
+</h5>
+        
+<p>
+          Die zu testende Anwendung kann, muss aber nicht, &uuml;ber QF-Test gestartet werden.
+          Auf jeden Fall muss eine "Verbindung" zur Anwendung hergestellt werden.
+          Dies geschieht &uuml;ber die Prozedur <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.automac.app.connect"><code>qfs.automac.app.connect</code></a>,
+          wobei der Zugriff auf die Accessibilty-Schnittstelle der
+          Anwendung von QF-Test in einer Variablen abgespeichert werden. Diese Jython
+          Variable wird in den Prozeduren, die Aktionen auf der Anwendung ausf&uuml;hren,
+          genutzt. F&uuml;r das Auffinden der Anwendung oder ggf. deren Start stehen mehrere
+          M&ouml;glichkeiten zur Verf&uuml;gung.
+        </p>
+        
+<p>
+          &Uuml;ber den Parameter <code>bundleId</code> wird die f&uuml;r die Anwendung eindeutige Bundle Id
+          angegeben, z.B. com.apple.Calculator. Falls die Anwendung bereits gestartet ist,
+          wird ein Zugriff auf diese Anwendung abgespeichert, ansonsten wird die
+          Anwendung gestartet.
+        </p>
+        
+<p>
+          &Uuml;ber den Parameter <code>bundleFile</code> wird f&uuml;r die Anwendung das Bundle file
+          angegeben unter dem die Anwendung zu finden ist, z.B. /Applications/Calculator.app.
+          Falls die Anwendung bereits gestartet ist,
+          wird ein Zugriff auf diese Anwendung abgespeichert, ansonsten wird die
+          Anwendung gestartet. In letzterem Fall wird auch ein QF-Test Prozess gestartet, der
+          in der Liste der QF-Test-Clients im Men&uuml; &raquo;<em>Clients</em>&laquo; erscheint.
+          Durch Beendigung dieses Prozesses wird auch die Applikation selbst beendet.
+        </p>
+        
+<p>
+          &Uuml;ber den Parameter <code>title</code> wird der Zugriff auf die Anwendung mit
+          dem angegebenen Fenstertitel abgespeichert. In diesem Fall muss die Anwendung
+          bereits anderweitig gestartet worden sein, z.B. &uuml;ber den Knoten 'Shellkommando ausf&uuml;hren'.
+        </p>
+        
+<p>
+          &Uuml;ber den Parameter <code>processId</code> wird der Zugriff auf die Anwendung mit
+          der angegebenen Prozessidentifikationsnummer (PID) abgespeichert.
+          In diesem Fall muss die Anwendung
+          bereits anderweitig gestartet worden sein, z.B. &uuml;ber den Knoten 'Shellkommando ausf&uuml;hren'.
+        </p>
+        
+<p>
+          Die Prozedur <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.automac.helpers.DumpDesktopWindows"><code>qfs.automac.helpers.DumpDesktopWindows</code></a> gibt
+          den Titel, die PID, Bundle id und Bundle file aller gestarteten Applikationen
+          im Terminal aus.
+        </p>
+      
+      
+<a name="usec_automac_dump_controls_general"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_automac_dump_controls_general">49.1.2</a></span>
+</div>
+<a href="contents.html#toc_usec_automac_dump_controls_general">Auflistung aller GUI-Elemente eines Fensters</a>
+</h5>
+        
+<p>
+          Bevor Tests erstellt werden k&ouml;nnen, ist es notwendig, sich einen &Uuml;berblick &uuml;ber
+          die in der Anwendung vorhandenen GUI-Elemente zu verschaffen. Hierzu stehen
+          die Prozeduren <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.automac.helpers.dumpComponents"><code>qfs.automac.helpers.dumpComponents</code></a> und
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.automac.helpers.dumpComponentsToFile"><code>qfs.automac.helpers.dumpComponentsToFile</code></a> zur Verf&uuml;gung.
+          Diese listen die GUI-Elemente f&uuml;r das angegebene Fenster auf. Erstere gibt
+          das Ergebnis im QF-Test-Terminal, letztere in eine Datei aus.
+        </p>
+        
+<p>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.automac.helpers.dumpComponents"><code>qfs.automac.helpers.dumpComponents</code></a> gibt Label, Titel,
+          Rolle, Subrole, Typ und Identifier des GUI-Elements aus, soweit diese f&uuml;r
+          das GUI-Element implementiert wurden.
+        </p>
+        
+<p>
+          Alle auf dem Desktop sichtbaren GUI-Elemente sind in einer Baumstruktur
+          organisiert, mit dem Desktop als Wurzelelement. Die Verschachtelung der GUI-Elemente
+          wird in der Ausgabe mittels Einr&uuml;ckungen dargestellt.
+          Die Dump-Prozedur bezieht sich auf die verbundene Applikation oder auf die im
+          Aufruf der Prozedur spezifizierte.
+        </p>
+        
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span>
+          Die Ausgabe der Prozedur dumpComponents() wird im QF-Test-Terminal,
+          das standardm&auml;&szlig;ig unten im QF-Test-Fenster angezeigt wird, ausgegeben.
+          In den Terminals, die separat ge&ouml;ffnet werden k&ouml;nnen, wird das Ergebnis dieses
+          Dump-Befehls nicht angezeigt.
+        </p>
+      
+      
+<a name="sec_N172827"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N172827">49.1.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N172827">Informationen zu einzelnen GUI-Elementen</a>
+</h5>
+        
+<p>
+          In der Standardbibliothek steht die Prozedur
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.automac.helpers.dumpComponent"><code>qfs.automac.helpers.dumpComponent</code></a> zur Verf&uuml;gung,
+          um sich zu einem einzelnen GUI-Element weitere Informationen ausgeben zu lassen.
+          Dies umfasst die Liste der zur Verf&uuml;gung stehenden Methoden sowie einzelne Attributwerte.
+        </p>
+        
+<p>
+          &Uuml;ber den Accessibility Inspector von XCode k&ouml;nnen ebenfalls die
+          Parameter eines GUI-Elements angezeigt werden.
+        </p>
+      
+      
+<a name="usec_automac_controls_general"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_automac_controls_general">49.1.4</a></span>
+</div>
+<a href="contents.html#toc_usec_automac_controls_general">Zugriff auf GUI Elemente</a>
+</h5>
+        
+<p>
+          Alle in der Standardbibliothek f&uuml;r die Ausf&uuml;hrung von Aktionen auf nativen
+          MacOS-Anwendungen zur Verf&uuml;gung gestellten Prozeduren ermitteln im ersten
+          Schritt das jeweilige GUI-Element und f&uuml;hren dann die entsprechende Aktion
+          darauf aus. Diese sind im Package <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.automac.component"><code>qfs.automac.component</code></a> zusammengefasst.
+          Das GUI-Element wird &uuml;ber die Prozedur <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.automac.component.getControl"><code>qfs.automac.component.getControl</code></a> ermittelt.
+          Die Parameter dieser Hilfsprozedur gelten daher f&uuml;r alle Prozeduren, die
+          eine Aktion auf einem GUI-Element ausf&uuml;hren.
+        </p>
+        
+<p>
+          Folgende Parameter sind m&ouml;glich:
+        </p>
+        
+<ul>
+          
+<li>
+            label
+          </li>
+          
+<li>
+            title
+          </li>
+          
+<li>
+            identifier
+          </li>
+          
+<li>
+            role
+          </li>
+          
+<li>
+            roleType
+          </li>
+          
+<li>
+            subrole
+          </li>
+          
+<li>
+            index
+          </li>
+        
+</ul>
+        
+<p>
+          Bei der Angabe mehrerer Parameter wird das GUI-Element gesucht, auf das alle Werte
+          zutreffen.
+        </p>
+        
+<dl>
+          
+<dt>
+<code>identifier</code>
+</dt>
+          
+<dd>
+            &Uuml;ber <code>identifier</code> ist die eindeutige Identifikation eines GUI-Elements
+            innerhalb eines Fensters m&ouml;glich. Er muss jedoch bei der Anwendungsentwicklung
+            explizit vergeben werden und ist deshalb nicht immer verf&uuml;gbar.
+          </dd>
+          
+<dt>
+<code>label</code>
+</dt>
+          
+<dd>
+            
+<code>label</code> entspricht in der Regel dem angezeigten Text.
+            <code>label</code> muss nicht eindeutig sein. Daher kann es notwendig sein,
+            zus&auml;tzlich andere Parameter, z.B. <code>role</code> anzugeben.
+            Falls der Accessibility Inspector zur Untersuchung der GUI-Elemente
+            verwendet wird, hei&szlig;t dieses Attribut dort entweder <code>Label</code> oder
+            <code>AXDescription</code>.
+          </dd>
+          
+<dt>
+<code>title</code>
+</dt>
+          
+<dd>
+            
+<code>title</code> entspricht in der Regel dem angezeigten Text.
+            <code>title</code> muss nicht eindeutig sein. Daher kann es notwendig sein,
+            zus&auml;tzlich andere Parameter, z.B. <code>role</code> anzugeben.
+          </dd>
+          
+<dt>
+<code>role</code>
+</dt>
+          
+<dd>
+            
+<code>role</code> ist ein Wert aus einer vordefinierten Liste von Komponententypen,
+            z.B. AXButton.
+          </dd>
+          
+<dt>
+<code>roleType</code>
+</dt>
+          
+<dd>
+            
+<code>roleType</code> bezeichnet den Typ des GUI-Elements.
+            Falls der Accessibility Inspector zur Untersuchung der GUI-Elemente
+            verwendet wird, hei&szlig;t dieses Attribut dort entweder <code>Type</code> oder
+            <code>AXRoleDescription</code>.
+          </dd>
+          
+<dt>
+<code>subrole</code>
+</dt>
+          
+<dd>
+            Eine zus&auml;tzliche Spezifizierung zu <code>role</code>.
+          </dd>
+          
+<dt>
+<code>index</code>
+</dt>
+          
+<dd>
+            Falls es mehrere GUI-Elemente gibt, auf die die angegebenen Parameter
+            zutreffen, kann &uuml;ber <code>index</code> das gew&uuml;schte GUI-Element
+            spezifiziert werden. <code>index</code> beginnt mit 0.
+          </dd>
+        
+</dl>
+      
+      
+<a name="usec_automac_actions_general"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_automac_actions_general">49.1.5</a></span>
+</div>
+<a href="contents.html#toc_usec_automac_actions_general">Ausf&uuml;hren von Aktionen auf GUI-Elementen</a>
+</h5>
+        
+<p>
+          F&uuml;r die h&auml;ufigsten Aktionen finden Sie vorgefertigte Prozeduren in der
+          Standard-Bibliothek qfs.qft im Package <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.automac.component"><code>qfs.automac.component</code></a>.
+          Sie k&ouml;nnen das Package
+          nach Belieben unter Verwendung des Skripting-Moduls "automac" erweitern. Hierbei
+          empfiehlt es sich, die Erweiterungen nicht direkt in der qfs.qft vorzunehmen,
+          da wir die Standardbibliothek kontinuierlich weiterentwickeln und mit jeder
+          QF-Test Version neu ausliefern.
+        </p>
+        
+<dl>
+          
+<dt>Mausklick</dt>
+          
+<dd>
+            Prozedur: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.automac.component.click"><code>qfs.automac.component.click</code></a>  
+<br>
+<br>
+          
+</dd>
+          
+<dd>
+            Die Prozedur wartet auf die angegebene Komponente und sobald diese gefunden
+            wurde, wird ein Klick-Event abgespielt.
+          </dd>
+          
+<dt>Warten auf Komponente</dt>
+          
+<dd>
+            Prozedur: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.automac.component.waitForComponent"><code>qfs.automac.component.waitForComponent</code></a> 
+<br>
+<br>
+          
+</dd>
+          
+<dd>
+            Die Prozedur wartet auf die angegebene Komponente und sobald diese gefunden
+            wurde, wird die Kontrolle an den rufenden Knoten zur&uuml;ckgegeben. Die
+            angegebene Wartezeit (in Millisekunden) ist die maximale Zeit, die gewartet
+            wird. Die Prozedur wirft eine Exception, wenn die Komponente nicht innerhalb
+            der angegeben Zeit gefunden wird.
+          </dd>
+          
+<dt>Texteingabe</dt>
+          
+<dd>
+            Prozedur: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.automac.component.setValue"><code>qfs.automac.component.setValue</code></a> 
+<br>
+<br>
+          
+</dd>
+          
+<dd>
+            Die Prozedur wartet auf die angegebene Komponente und sobald diese gefunden
+            wurde, wird &uuml;ber die Methode setValue() der &uuml;bergebene Wert eingetragen.
+          </dd>
+          
+<dt>Tastatur-Events</dt>
+          
+<dd>
+            Prozedur: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.automac.sendKey"><code>qfs.automac.sendKey</code></a> 
+<br>
+<br>
+          
+</dd>
+          
+<dd>
+            Es k&ouml;nnen einzelne Tastatureingaben, auch in Kombination mit STRG, ALT, CMD
+            und SHIFT, abgespielt werden,
+            z.B. einzelne Buchstaben, Ziffern, Funktionstasten. Die Eingabe
+            geht auf die Komponente, die in der Applikation aktuell den Fokus hat.
+          </dd>
+          
+<dt>Text auslesen</dt>
+          
+<dd>
+            Prozedur: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.automac.component.getValue"><code>qfs.automac.component.getValue</code></a> 
+<br>
+<br>
+          
+</dd>
+          
+<dd>
+            Die Prozedur wartet auf die angegebene Komponente und sobald diese gefunden
+            wurde, wird &uuml;ber die Methode getValue() deren Wert ermittelt und zur&uuml;ckgeliefert.
+          </dd>
+          
+<dt>Geometrie auslesen</dt>
+          
+<dd>
+            Prozedur: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.automac.component.getGeometry"><code>qfs.automac.component.getGeometry</code></a> 
+<br>
+<br>
+          
+</dd>
+          
+<dd>
+            Es werden die x- und y-Bildschirmkoordinate der oberen linken Ecke sowie Breite und H&ouml;he
+            des angegebenen GUI-Elements ermittelt und als komma-separierter Text
+            zur&uuml;ckgegeben.
+          </dd>
+          
+<dt>Text pr&uuml;fen</dt>
+          
+<dd>
+            Prozedur: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.automac.component.checkValue"><code>qfs.automac.component.checkValue</code></a> 
+<br>
+<br>
+          
+</dd>
+          
+<dd>
+            Die Prozedur holt sich den Text des GUI-Elements &uuml;ber die Prozedur getValue()
+            und pr&uuml;ft den erhaltenen Wert mit dem &uuml;bergebenen Sollwert. <br>
+<br>
+          
+</dd>
+          
+<dt>Geometrie pr&uuml;fen</dt>
+          
+<dd>
+            Prozedur: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.automac.component.getGeometry"><code>qfs.automac.component.getGeometry</code></a>  
+<br>
+<br>
+          
+</dd>
+          
+<dd>
+            Die ermittelten Geometriedaten
+            werden mit den &uuml;bergebenen Sollwerten verglichen.
+          </dd>
+          
+<dt>Bildvergleich</dt>
+          
+<dd>
+            Prozedur: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.automac.component.checkImage"><code>qfs.automac.component.checkImage</code></a> 
+<br>
+<br>
+          
+</dd>
+          
+<dd>
+            F&uuml;r das Pr&uuml;fen des Abbilds wird ein Referenzbild ben&ouml;tigt. Dieses muss in einer Datei
+            im png-Format bereitsgestellt werden. &Uuml;ber <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.automac.component.getGeometry"><code>qfs.automac.component.getGeometry</code></a> werden die
+            Bildschirmkoordinaten des zu pr&uuml;fenden Bereichs ermittelt. Die eigentliche
+            Pr&uuml;fung wird &uuml;ber die Prozedur getPositionOfImage()
+            aus dem Package <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autoscreen"><code>qfs.autoscreen</code></a> der Standardbibliothek durchgef&uuml;hrt. <br>
+<br>
+          
+</dd>
+          
+<dt>Men&uuml;eintrag ausw&auml;hlen</dt>
+          
+<dd>
+            Procedure: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.automac.menu.selectItem"><code>qfs.automac.menu.selectItem</code></a> 
+<br>
+<br>
+          
+</dd>
+          
+<dd>
+            Beim Debuggen eines Tests &uuml;ber Einzelschritte ist es h&auml;ufig sehr st&ouml;rend,
+            wenn vor dem Klick auf einen Eintrag das zugeh&ouml;rige Men&uuml; zuklappt, weil der
+            Fokus an QF-Test &uuml;bergeben wurde. Hier hilft die Prozedur selectItem(),
+            mit der das &Ouml;ffnen des Men&uuml;s und der Klick auf den Eintrag in einem
+            Debug-Schritt ausgef&uuml;hrt werden kann.
+          </dd>
+        
+</dl>
+      
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_extensions.html#sec_extensions"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 50&nbsp;APIs f&uuml;r Erweiterungen" title="N&auml;chste Seite: 50&nbsp;APIs f&uuml;r Erweiterungen"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_automac.html#usec_automac"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 49&nbsp;Steuern und Testen von nativen MacOS-Anwendungen" title="Kapitel-&Uuml;bersicht: 49&nbsp;Steuern und Testen von nativen MacOS-Anwendungen"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,499 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Vorgehensweise</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_uiauto_general"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_uiauto_example.html#usec_uiauto_example"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 48.2&nbsp;Beispiel" title="N&auml;chste Seite: 48.2&nbsp;Beispiel"></a></td><td class="navicon"><a href="tech_uiauto_example.html#usec_uiauto_example"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 48.2&nbsp;Beispiel" title="N&auml;chstes Kapitel: 48.2&nbsp;Beispiel"></a></td><td class="navicon"><a href="tech_uiauto.html#usec_uiauto"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 48&nbsp;Steuern und Testen von nativen Windows Anwendungen -
+               ohne Verwendung der QF-Test win Engine" title="Kapitel-&Uuml;bersicht: 48&nbsp;Steuern und Testen von nativen Windows Anwendungen -
+               ohne Verwendung der QF-Test win Engine"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_uiauto_general">48.1</a></span>
+</div>
+<a href="contents.html#toc_usec_uiauto_general">Vorgehensweise</a>
+</h4>
+      
+<p>
+        Die Microsoft UI Automation ist ein Accessibility- und Test-Framework, das den programmatischen
+        Zugriff auf GUI Elemente von nativen Windows Anwendungen erlaubt. In QF-Test
+        kann dieses Framework in Skriptknoten &uuml;ber das Jython Modul <code>uiauto</code> angesprochen werden
+        (alternativ <code>de.qfs.UIAuto</code> f&uuml;r Groovy, <code>uiauto</code> f&uuml;r Javascript).
+      </p>
+      
+<p>
+        Zur direkten und einfachen Nutzung f&uuml;r die Testerstellung bietet QF-Test
+        in der Standardbibliothek ein Package, das QF-Test-Prozeduren f&uuml;r h&auml;ufig ben&ouml;tigte
+        Interaktionen mit GUI-Elementen zur Verf&uuml;gung stellt. Dieses wird im Folgenden beschrieben.
+      </p>
+      
+<p>
+        Die f&uuml;r die Ansteuerung von nativen Windows Elementen relevanten Prozeduren
+        befinden sich im Package <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin"><code>qfs.autowin</code></a>. Sie sehen in dem Package
+        etliche Prozeduren, die als &uuml;berholt (deprecated) gekennzeichnet sind. Diese sind durch
+        normale Knoten der <code>win</code> Engine von QF-Test abgel&ouml;st worden und werden nicht mehr
+        weiterentwickelt. Dies bezieht sich zum Beispiel auf Themen bei der Bildschirmskalierung.
+        Prinzipiell k&ouml;nnen Sie die Prozeduren so wie sie sind weiter verwenden. Wenn
+        es aber zu Problemen kommt, dann ist es empfehlenswert auf die <code>win</code> Engine umzusteigen.
+      </p>
+      
+<a name="fig_uiauto_stdlib"></a><a name="figure_48.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/uiauto_stdlib.png" target="_blank"><img texscale=".66" src="images/uiauto_stdlib.png" width="342" height="706"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;48.1</a>:&nbsp;&nbsp;UI Automation Prozeduren in der Standardbibliothek</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Die grunds&auml;tzliche Vorgehensweise bei der Erstellung von Tests f&uuml;r native
+        Windows Anwendungen ist folgende:
+      </p>
+      
+<ul>
+        
+<li>
+          Start der Anwendung
+        </li>
+        
+<li>
+          Identifikation der Zugriffsparameter f&uuml;r die GUI-Elemente
+        </li>
+        
+<li>
+          Erstellung von Tests unter Verwendung der ermittelten Zugriffsparameter
+        </li>
+      
+</ul>
+      
+<a name="usec_uiauto_start_general"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_uiauto_start_general">48.1.1</a></span>
+</div>
+<a href="contents.html#toc_usec_uiauto_start_general">Start der Anwendung</a>
+</h5>
+        
+<p>
+          Die zu testende Anwendung kann, muss aber nicht, &uuml;ber QF-Test gestartet werden.
+        </p>
+        
+<p>
+          Wenn die Anwendung &uuml;ber QF-Test gestartet wird, erscheint der gestartete Prozess
+          in der Liste der QF-Test-Clients im Men&uuml; &raquo;<em>Clients</em>&laquo;
+          und auch die Beendigung des Prozesses durch QF-Test ist m&ouml;glich.
+        </p>
+        
+<p>
+          Zur Pr&uuml;fung, ob die zu testende Anwendung gestartet ist, wird die Prozedur
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.checkForExistence"><code>qfs.autowin.checkForExistence</code></a> verwendet.
+        </p>
+        
+<p>
+          Ein Beispiel zum Anwendungsstart finden Sie in <a href="tech_uiauto_example.html#usec_uiauto_start_example">Abschnitt 48.2.1</a>.
+        </p>
+      
+      
+<a name="usec_uiauto_dump_controls_general"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_uiauto_dump_controls_general">48.1.2</a></span>
+</div>
+<a href="contents.html#toc_usec_uiauto_dump_controls_general">Auflistung aller GUI-Elemente eines Fensters</a>
+</h5>
+        
+<p>
+          Bevor Tests erstellt werden k&ouml;nnen, ist es notwendig, sich einen &Uuml;berblick &uuml;ber
+          die in der Anwendung vorhandenen GUI-Elemente zu verschaffen. Hierzu stehen
+          die Prozeduren <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.helpers.dumpComponents"><code>qfs.autowin.helpers.dumpComponents</code></a> und
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.helpers.dumpComponentsToFile"><code>qfs.autowin.helpers.dumpComponentsToFile</code></a> zur Verf&uuml;gung.
+          Diese listen die GUI-Elemente f&uuml;r das angegebene Fenster auf. Erstere gibt
+          das Ergebnis im QF-Test-Terminal, letztere in eine Datei aus.
+        </p>
+        
+<p>
+          Mit der Prozedur <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.helpers.dumpDesktopWindows"><code>qfs.autowin.helpers.dumpDesktopWindows</code></a>
+          k&ouml;nnen die Titel der aktuell ge&ouml;ffneten Windows Fenster
+          ausgegeben werden.
+        </p>
+        
+<p>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.helpers.dumpComponents"><code>qfs.autowin.helpers.dumpComponents</code></a> gibt den Namen (Name),
+          die Klasse (ClassName), den Komponententyp
+          (ControlType) und die Id (AutomationId) des GUI-Elements aus, soweit diese f&uuml;r
+          das GUI-Element implementiert wurden.
+        </p>
+        
+<p>
+          Alle auf dem Desktop sichtbaren GUI-Elemente sind in einer Baumstruktur
+          organisiert, mit dem Desktop als Wurzelelement. Im Aufruf der Dump-Prozedur
+          wird das gew&uuml;nschte Fenster angegeben. Die Verschachtelung der GUI-Elemente
+          wird in der Ausgabe mittels Einr&uuml;ckungen dargestellt.
+        </p>
+        
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span>
+          Die Ausgabe der Prozedur dumpComponents() wird im QF-Test-Terminal,
+          das standardm&auml;&szlig;ig unten im QF-Test-Fenster angezeigt wird, ausgegeben.
+          In den Terminals, die separat ge&ouml;ffnet werden k&ouml;nnen, wird das Ergebnis dieses
+          Dump-Befehls nicht angezeigt.
+        </p>
+        
+<p>
+          Ein Beispiel finden Sie in <a href="tech_uiauto_example.html#usec_uiauto_dump_controls_example">Abschnitt 48.2.2</a>.
+        </p>
+      
+      
+<a name="sec_N172198"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N172198">48.1.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N172198">Informationen zu einzelnen GUI-Elementen</a>
+</h5>
+        
+<p>
+          In der Standardbibliothek steht die Prozedur
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.helpers.dumpComponent"><code>qfs.autowin.helpers.dumpComponent</code></a> zur Verf&uuml;gung,
+          um sich zu einem einzelnen GUI-Element weitere Informationen ausgeben zu lassen.
+          Dies umfasst die Liste der zur Verf&uuml;gung stehenden Methoden sowie einzelne Attributwerte.
+        </p>
+      
+      
+<a name="usec_uiauto_controls_general"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_uiauto_controls_general">48.1.4</a></span>
+</div>
+<a href="contents.html#toc_usec_uiauto_controls_general">Zugriff auf GUI Elemente</a>
+</h5>
+        
+<p>
+          Alle in der Standardbibliothek f&uuml;r die Ausf&uuml;hrung von Aktionen auf nativen
+          Windows Anwendungen zur Verf&uuml;gung gestellten Prozeduren ermitteln im ersten
+          Schritt das jeweilige GUI-Element und f&uuml;hren dann die entsprechende Aktion
+          darauf aus. Diese sind im Package <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.component"><code>qfs.autowin.component</code></a> zusammengefasst.
+          Das GUI-Element wird &uuml;ber die Prozedur <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.component.getControl"><code>qfs.autowin.component.getControl</code></a> ermittelt.
+          Die Parameter dieser Hilfsprozedur gelten daher f&uuml;r alle Prozeduren, die
+          eine Aktion auf einem GUI-Element ausf&uuml;hren.
+        </p>
+        
+<p>
+          Folgende Parameter(-kombinationen) sind m&ouml;glich (in der Reihenfolge der Auswertung):
+        </p>
+        
+<ul>
+          
+<li>
+            AutomationId
+          </li>
+          
+<li>
+            ControlType und Name
+          </li>
+          
+<li>
+            ControlType und Index
+          </li>
+          
+<li>
+            ClassName und Name
+          </li>
+          
+<li>
+            ClassName und Index
+          </li>
+          
+<li>
+            Name
+          </li>
+        
+</ul>
+        
+<dl>
+          
+<dt>AutomationId</dt>
+          
+<dd>
+            &Uuml;ber die AutomationId ist die eindeutige Identifikation eines GUI-Elements
+            innerhalb eines Fensters m&ouml;glich. Sie muss jedoch bei der Anwendungsentwicklung
+            explizit vergeben werden und ist deshalb in vielen F&auml;llen leider nicht verf&uuml;gbar.
+          </dd>
+          
+<dt>Name</dt>
+          
+<dd>
+            Der Name entspricht in der Regel dem angezeigten Text.
+            Namen m&uuml;ssen nicht eindeutig sein. Daher kann es notwendig sein,
+            zus&auml;tzlich zum Namen den ControlType oder ClassName anzugeben.
+          </dd>
+          
+<dd>
+            Namen werden als regul&auml;re Ausdr&uuml;cke ausgewertet.
+            N&auml;here Infomationen zu regul&auml;ren Ausdr&uuml;cken finden Sie in <a href="tech_regexp.html#sec_regexp">Regul&auml;re Ausdr&uuml;cke - <em>Regexps</em></a>.
+          </dd>
+          
+<dt>ControlType</dt>
+          
+<dd>
+            Der ControlType ist ein Wert aus einer vordefinierten Liste von Komponententypen,
+            zum Beispiel : Button, CheckBox, ComboBox, DataGrid, Edit, List, Tab, Text.
+            Die Prozedur <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.helpers.dumpComponent"><code>qfs.autowin.helpers.dumpComponent</code></a>
+            zeigt den Namen und den numerischen Wert des jeweiligen ControlTypes an.
+            Um ein GUI-Element an Hand seines ControlTypes zu identifizieren, muss entweder
+            der Name oder der Index, bezogen auf den ControlType, zus&auml;tzlich angegeben werden,
+            au&szlig;er es gibt im Fenster nur ein GUI-Element dieses ControlTypes.
+          </dd>
+          
+<dt>ClassName</dt>
+          
+<dd>
+            Der ClassName eines GUI-Elements ist Framework-spezifisch.
+            Zus&auml;tzlich zu dem ClassName kann auch der Name oder der Index, bezogen auf die Klasse,
+            des GUI-Elements angegeben werden.
+          </dd>
+        
+</dl>
+      
+      
+<a name="usec_uiauto_actions_general"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_uiauto_actions_general">48.1.5</a></span>
+</div>
+<a href="contents.html#toc_usec_uiauto_actions_general">Ausf&uuml;hren von Aktionen auf GUI-Elementen</a>
+</h5>
+        
+<p>
+          F&uuml;r die h&auml;ufigsten Aktionen finden Sie vorgefertigte Prozeduren in der
+          Standard-Bibliothek qfs.qft im Package <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.component"><code>qfs.autowin.component</code></a>.
+          Sie k&ouml;nnen das Package
+          nach Belieben unter Verwendung des Jython-Moduls "uiauto" erweitern. Hierbei
+          empfiehlt es sich, die Erweiterungen nicht direkt in der qfs.qft vorzunehmen,
+          da wir die Standardbibliothek kontinuierlich weiterentwickeln und mit jeder
+          QF-Test Version neu ausliefern.
+        </p>
+        
+<dl>
+          
+<dt>Mausklick</dt>
+          
+<dd>
+            Prozedur: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.component.click"><code>qfs.autowin.component.click</code></a>  
+<br>
+<br>
+          
+</dd>
+          
+<dd>
+            Zun&auml;chst versucht die Prozedur ein Klick-Event auszul&ouml;sen. Dies ist jedoch h&auml;ufig nicht implementiert.
+            Falls dies nicht m&ouml;glich ist, wird ein harter Mausklick auf die Position des
+            GUI-Elements abgespielt.
+          </dd>
+          
+<dt>Warten auf Komponente</dt>
+          
+<dd>
+            Prozedur: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.component.waitForComponent"><code>qfs.autowin.component.waitForComponent</code></a> 
+<br>
+<br>
+          
+</dd>
+          
+<dd>
+            Die Prozedur wartet auf die angegebene Komponente und sobald diese gefunden
+            wurde, wird die Kontrolle an den rufenden Knoten zur&uuml;ckgegeben. Die
+            angegebene Wartezeit (in Millisekunden) ist die maximale Zeit, die gewartet
+            wird. Die Prozedur wirft eine Exception, wenn die Komponente nicht innerhalb
+            der angegeben Zeit gefunden wird.
+          </dd>
+          
+<dt>Warten auf Fenster</dt>
+          
+<dd>
+            Prozedur: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.checkForExistence"><code>qfs.autowin.checkForExistence</code></a> 
+<br>
+<br>
+          
+</dd>
+          
+<dd>
+            Die Prozedur wartet auf das angegebene Fenster und sobald dieses gefunden
+            wurde, wird die Kontrolle an den rufenden Knoten zur&uuml;ckgegeben. Die
+            angegebene Wartezeit (in Millisekunden) ist die maximale Zeit, die gewartet
+            wird. Die Prozedur wirft eine Exception, wenn das Fenster nicht innerhalb
+            der angegeben Zeit gefunden wird.
+          </dd>
+          
+<dt>Texteingabe</dt>
+          
+<dd>
+            Prozedur: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.component.setText"><code>qfs.autowin.component.setText</code></a> 
+<br>
+<br>
+          
+</dd>
+          
+<dd>
+            H&auml;ufig ist setText() f&uuml;r die jeweilige Komponente nicht implementiert. In
+            diesem Fall steht meistens setValue() zur Verf&uuml;gung.
+          </dd>
+          
+<dt>Tastatur-Events</dt>
+          
+<dd>
+            Im Package <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.keyevents"><code>qfs.autowin.keyevents</code></a> stehen Prozeduren f&uuml;r das Abspielen der Tastatur-Events
+            ENTER, TAB und DELETE zur Verf&uuml;gung. &Uuml;ber die Prozedur
+            <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.keyevents.sendKey"><code>qfs.autowin.keyevents.sendKey</code></a> k&ouml;nnen einzelne
+            Tastatureingaben, auch in Kombination mit Strg, Alt und der Umschalttaste, erfolgen,
+            z.B. einzelne Buchstaben, Ziffern, Funktionstasten. Die Eingabe
+            geht auf die Komponente, die im angegebenen Fenster den Fokus hat.
+          </dd>
+          
+<dt>Text auslesen</dt>
+          
+<dd>
+            Prozedur: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.component.getText"><code>qfs.autowin.component.getText</code></a> 
+<br>
+<br>
+          
+</dd>
+          
+<dd>
+            Einen direkten Zugriff auf den Text eines GUI-Elements gibt es nicht.
+            Viele GUI-Elemente haben einen Namen, der in der Regel dem angezeigten Text entspricht.
+            Manchmal hat der Name nur einen Bezug zum angezeigten Text, entspricht ihm aber
+            nicht w&ouml;rtlich. Manche Elemente haben unabh&auml;ngig vom Namen einen Wert, der den
+            Text widergibt. Die Prozedur getText()
+            versucht zun&auml;chst, den Wert des Elements zu ermitteln und,
+            falls dies fehlschl&auml;gt oder der Wert leer ist, den Namen des Elements.
+            <br>
+<br>
+          
+</dd>
+          
+<dd>
+            Die Prozeduren getName() und getValue() stehen zus&auml;tzlich zur Verf&uuml;gung.
+          </dd>
+          
+<dt>Geometrie auslesen</dt>
+          
+<dd>
+            Prozedur: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.component.getGeometry"><code>qfs.autowin.component.getGeometry</code></a> 
+<br>
+<br>
+          
+</dd>
+          
+<dt>Text pr&uuml;fen</dt>
+          
+<dd>
+            Prozedur: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.component.checkText"><code>qfs.autowin.component.checkText</code></a> 
+<br>
+<br>
+          
+</dd>
+          
+<dd>
+            Die Prozedur holt sich den Text des GUI-Elements &uuml;ber die Prozedur getText()
+            und pr&uuml;ft den erhaltenen Wert mit dem &uuml;bergebenen Sollwert. <br>
+<br>
+          
+</dd>
+          
+<dd>
+            Die Prozeduren checkName() und checkValue() stehen zus&auml;tzlich zur Verf&uuml;gung.
+          </dd>
+          
+<dt>Geometrie pr&uuml;fen</dt>
+          
+<dd>
+            Prozedur: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.component.getGeometry"><code>qfs.autowin.component.getGeometry</code></a>  
+<br>
+<br>
+          
+</dd>
+          
+<dd>
+            Die ermittelten Geometriedaten
+            werden mit den &uuml;bergebenen Sollwerten verglichen.
+          </dd>
+          
+<dt>Bildvergleich</dt>
+          
+<dd>
+            Prozedur: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.component.checkImage"><code>qfs.autowin.component.checkImage</code></a> 
+<br>
+<br>
+          
+</dd>
+          
+<dd>
+            F&uuml;r das Pr&uuml;fen des Abbilds wird ein Referenzbild ben&ouml;tigt. Dieses muss in einer Datei
+            im png-Format bereitsgestellt werden. &Uuml;ber <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.component.getGeometry"><code>qfs.autowin.component.getGeometry</code></a> werden die
+            Bildschirmkoordinaten des zu pr&uuml;fenden Bereichs ermittelt. Die eigentliche
+            Pr&uuml;fung wird &uuml;ber die Prozedur getPositionOfImage()
+            aus dem Package <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autoscreen"><code>qfs.autoscreen</code></a> der Standardbibliothek durchgef&uuml;hrt. <br>
+<br>
+          
+</dd>
+          
+<dt>Men&uuml;eintrag ausw&auml;hlen</dt>
+          
+<dd>
+            Procedure: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.menu.selectItem"><code>qfs.autowin.menu.selectItem</code></a> 
+<br>
+<br>
+          
+</dd>
+          
+<dd>
+            Beim Debuggen eines Tests &uuml;ber Einzelschritte ist es h&auml;ufig sehr st&ouml;rend,
+            wenn vor dem Klick auf einen Eintrag das zugeh&ouml;rige Men&uuml; zuklappt, weil der
+            Fokus an QF-Test &uuml;bergeben wurde. Hier hilft die Prozedur selectItem(),
+            mit der das &Ouml;ffnen des Men&uuml;s und der Klick auf den Eintrag in einem
+            Debug-Schritt ausgef&uuml;hrt werden kann.
+          </dd>
+        
+</dl>
+      
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_uiauto_example.html#usec_uiauto_example"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 48.2&nbsp;Beispiel" title="N&auml;chste Seite: 48.2&nbsp;Beispiel"></a></td><td class="navicon"><a href="tech_uiauto_example.html#usec_uiauto_example"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 48.2&nbsp;Beispiel" title="N&auml;chstes Kapitel: 48.2&nbsp;Beispiel"></a></td><td class="navicon"><a href="tech_uiauto.html#usec_uiauto"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 48&nbsp;Steuern und Testen von nativen Windows Anwendungen -
+               ohne Verwendung der QF-Test win Engine" title="Kapitel-&Uuml;bersicht: 48&nbsp;Steuern und Testen von nativen Windows Anwendungen -
+               ohne Verwendung der QF-Test win Engine"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

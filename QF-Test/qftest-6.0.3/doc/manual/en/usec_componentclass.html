@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Class</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_componentclass"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="usec_components_name.html#usec_components_name"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 5.4.2&nbsp;Name" title="Next Page: 5.4.2&nbsp;Name"></a></td><td class="navicon"><a href="usec_components_name.html#usec_components_name"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 5.4.2&nbsp;Name" title="Next Chapter: 5.4.2&nbsp;Name"></a></td><td class="navicon"><a href="user_component_recognition_criteria.html#usec_component_recognition_criteria"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 5.4&nbsp;Recognition criteria" title="Chapter Overview: 5.4&nbsp;Recognition criteria"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_componentclass">5.4.1</a></span>
+</div>
+<a href="contents.html#toc_usec_componentclass">Class</a>
+</h5>
+        
+<p>
+          The class of a component is a very important attribute
+          as it describes the type of the recorded component.
+          Once QF-Test records a button, it will only look for a button on replay,
+          not for a table or a tree.
+          Thus the component class conveniently serves to partition the components of a GUI.
+          This improves performance and reliability of component recognition,
+          but also helps you associate the component information recorded by QF-Test
+          with the actual component in the GUI.
+        </p>
+        
+<p>
+          Besides its role in component identification,
+          the class of a component is also important
+          for registering various kinds of resolvers
+          that can have great influence on the way QF-Test handles components.
+          Resolvers are explained in detail in <a href="tech_resolversmodule.html#sec_nameresolver">subsection 50.1.6</a>.
+        </p>
+        
+<p>
+          The 'Name' is used here for generating the 'QF-Test component ID'.
+          Examples for this can be found in <a href="bp_componentrecognition.html#components_robust_recognition_judge">How to judge robust component recognition</a>.
+        </p>
+        
+<p>
+          In a <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a> components can also be directly addressed via their 'Names', without recording a <a href="user_componentstep.html#usec_componentstep">'Component' node</a>.
+        </p>
+        
+<p>
+          The influence of the class on the  <a href="components.html#att_ComponentStep_id" shape="rect">'QF-Test ID'</a> of the component is described below,
+          usage as SmartID in <a href="user_smartid.html#usec_smartid">section 5.6</a>.
+        </p>
+
+        
+<a name="usec_componentclassgeneric"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_componentclassgeneric">5.4.1.1</a></span>
+</div>
+<a href="contents.html#toc_usec_componentclassgeneric">Generic classes</a>
+</h5>
+          
+<p>
+            Each UI toolkit usially defines its own system-specific classes for components like Buttons or
+            Tables. In case of Buttons, that
+            definition could be <code>javax.swing.JButton</code> for Java Swing, or
+            <code>org.eclipse.swt.widgets.Button</code> for Java SWT, or
+            <code>javafx.scene.control.ButtonBase</code> For JavaFX, or <code>INPUT:SUBMIT</code> for
+            web applications. In order to allow your tests to run independently of
+            the utilised concrete technology QF-Test unifies those classes via
+            so-called generic
+            classes, for example all buttons are simply called
+            <code>Button</code> now.
+          </p>
+          
+<p>
+            You can find a detailed description of generic classes in <a href="tech_genericclasses.html#sec_genericclasses">chapter 57</a>.
+            In addition to the generic class, systen specific classes
+            are recorded as <a href="components.html#att_ComponentStep_extrafeatures" shape="rect">'Extra features'</a>,
+            but with the status "ignore".
+            In case of recognition problems because of too many similiar components, these can be enabled to sharpen recognition, even if detracting from flexibility.
+          </p>
+          
+<p>
+<span class="margin"><a name="swing_N71326"></a><span class="note">Swing</span></span>
+<br>
+<span class="margin"><a name="fx_N71328"></a><span class="note">JavaFX</span></span>
+            Even if the class was extended, the generic class will be recorded.
+            Additionally, it should be mentioned that this concept allows QF-Test
+            to easily create tests with obfuscated classes
+            without having to change the default settings.
+            During replay, QF-Test compares the recorded 'Class name' attribute of the component
+            with each class of the object in the SUT.
+            Therefore, QF-Test can handle class name changes
+            as long as the base type remains the same.
+          </p>
+          
+<p>
+<span class="margin"><a name="web_N71335"></a><span class="note">Web</span></span>
+            HTML is a very flexible language to describe content and structure of a website.
+            There is only a minimum of quasi-standards like <code>INPUT:SUBMIT</code>,
+            for which you can always expect the same functionality
+            and which can therefore be assigned to a QF-Test class by default.
+            The development of web applications usually happens via toolkits which use their own standards.
+            QF-Test includes class mappings for a range of commonly used toolkits, see <a href="tech_ajax.html#sec_ajax">Special support for various web frameworks</a>.
+            If you extended a toolkit or are using a custom one,
+            it will be neccessary to announce the class mapping to QF-Test.
+            This is described in <a href="tech_customajax.html#sec_customajax">Improving component recognition with a <code>CustomWebResolver</code></a>.
+          </p>
+          
+<p>
+            If QF-Test can assign a component a generic class,
+            this will gain the following advantages for test creation and execution:
+          </p>
+          
+<dl>
+            
+<dt>Independence from concrete technical classes</dt>
+            
+<dd>
+              With generic classes, a certain independence from the concrete technical classes is established. This concept allows you to create tests independent of the concrete technology.
+            </dd>
+
+            
+<dt>Improved component recognition</dt>
+            
+<dd>
+              
+<p>
+                If the functionality of the component is known,
+                the most suitable recognition criteria can be stored.
+              </p>
+              
+<p>
+                Example button: The button label is the first choice for the 'Feature'
+                and the extra feature 'qfs:label'.
+              </p>
+              
+<p>
+                Example text field: It does not make sense to use the text value for recognition.
+                Instead, QF-Test searches for a label nearby
+                and stores this in the extra feature 'qfs:label'.
+              </p>
+              
+<p>
+                The generic class itself also is a differentiation criterium.
+                This is especially noticeable in web applications,
+                where most components will be recorded with the class <code>DIV</code>,
+                matching their HTML tag by default.
+              </p>
+            
+</dd>
+
+            
+<dt>Optimal mouse position during replay</dt>
+            
+<dd>
+              
+<p>
+                The generic class also influences the optimal mouse position during event replay.
+              </p>
+              
+<p>
+                Example button: The mouse click is ideally placed in the middle of the button.
+              </p>
+              
+<p>
+                Example text field: The mouse click is ideally placed in the same place where the tester clicked during recording,
+                so text can be inserted in exactly the same place if needed.
+              </p>
+            
+</dd>
+
+            
+<dt>Class-specific checks</dt>
+            
+<dd>
+              In addition, QF-Test offers additional class-specific checks during recording.
+              For example, text fields can be checked for their editable state.
+              <a href="checks.html#step_CheckItemsStep" shape="rect">'Check items'</a> however only make sense for lists, tables or trees.
+            </dd>
+          
+</dl>
+        
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="usec_components_name.html#usec_components_name"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 5.4.2&nbsp;Name" title="Next Page: 5.4.2&nbsp;Name"></a></td><td class="navicon"><a href="usec_components_name.html#usec_components_name"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 5.4.2&nbsp;Name" title="Next Chapter: 5.4.2&nbsp;Name"></a></td><td class="navicon"><a href="user_component_recognition_criteria.html#usec_component_recognition_criteria"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 5.4&nbsp;Recognition criteria" title="Chapter Overview: 5.4&nbsp;Recognition criteria"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

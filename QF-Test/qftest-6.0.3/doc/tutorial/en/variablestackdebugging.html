@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Advanced debugging of variable bindings</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2002-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="tut_variable_stack_debugging"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="variablebindingstable.html#tut_variable_stack"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 6.2&nbsp;The Variable Bindings table" title="Previous Chapter: 6.2&nbsp;The Variable Bindings table"></a></td><td class="navicon"><a href="settingvariables.html#tut_setting_variables"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 6.4&nbsp;Setting Variables" title="Next Page: 6.4&nbsp;Setting Variables"></a></td><td class="navicon"><a href="settingvariables.html#tut_setting_variables"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 6.4&nbsp;Setting Variables" title="Next Chapter: 6.4&nbsp;Setting Variables"></a></td><td class="navicon"><a href="variablestack.html#sec_variablestack"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 6&nbsp;Variables and Procedure Parameters (Java)" title="Chapter Overview: 6&nbsp;Variables and Procedure Parameters (Java)"></a></td><td class="navicon"><a href="../../tutorial_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_tut_variable_stack_debugging">6.3</a></span>
+</div>
+<a href="contents.html#toc_tut_variable_stack_debugging">Advanced debugging of variable bindings</a>
+</h4>
+      
+<p>
+        Next, we want to explore the variable bindings table and see how it can be used for
+        debugging purposes. For this reason do not correct the faulty value of the procedure call
+        we added in the last section, but let us find out more about debugging.
+      </p>
+      
+<p>
+        In the next steps we want to have QF-Test pause the test execution at the procedure
+        call. Then we will step into the procedure and, while doing so, have a look
+        at the variable bindings table. Finally, we will navigate directly from the
+        variable bindings table to the faulty procedure call and correct the parameter
+        value.
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Action</span></span>
+          <strong>Add a breakpoint</strong> to the 'Call procedure: checkFinalPrice' node
+          of the second test-case.
+        </li>
+        
+<li>
+          
+<strong>Run the second test-case again</strong>.
+        </li>
+        
+<li>
+          When QF-Test stops at the breakpoint <strong>step into the procedure</strong>
+          via <img src="images/step_in.png" style="vertical-align: text-bottom" alt="Step-In" title="Step-In" width="26" height="26" texscale=".5"> and <strong>watch
+          the table of the variable bindings</strong> as you do so.
+        </li>
+      
+</ul>
+      
+<a name="fig_VariableStack3"></a><a name="figure_6.8"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/ProcedureVariableStack.png" target="_blank"><img src="images/ProcedureVariableStack.png" alt="Variable stack" texscale=".5" width="1036" height="593"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;6.8</a>:&nbsp;&nbsp;Variable bindings stack showing incorrect value</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        As you step into the procedure, first the row 'Call procedure: checkFinalPrice'
+        and with the next step the row 'Procedure: checkFinalPrice' appear at the top of the table.
+      </p>
+      
+<p>
+        Now the variable <code>price</code> shows on two different levels of the variable bindings table:
+        In the 'Call procedure: checkFinalPrice' row and the 'Procedure: checkFinalPrice' row on the fallback stack.
+        Since we did not adapt the value of the parameter passed to the procedure, neither of
+        the two values bound to the <code>price</code> variable is correct.
+      </p>
+      
+<p>
+        QF-Test lets you change the values of the variables interactively in the variable bindings
+        table when you are in debugging mode. You can even add new variables or delete them.
+        However, changes to variable values in the variable bindings table are not
+        persistent. They only last as long as the variable is on the stack (variable
+        bindings table). In our case, if we changed the price
+        value, as long as the procedure is being executed.
+      </p>
+      
+<p>
+        The parameter value in the procedure call will not be altered
+        by changing the current value of the variable in the variable bindings table.
+        To do so you have to navigate to the 'Procedure call' node and change it there.
+      </p>
+      
+<p>
+        To get there quickly, you just double-click the procedure call in the variable binding table
+        (second row). This feature is particularly useful when debugging more complex
+        tests where the node you want to jump to is not directly visible in the test-suite
+        window. You can invoke it via right-clicking the row and selecting &raquo;<em>Jump to node in test-suite</em>&laquo; from the pop-up menu, too.
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Action</span></span>
+          <strong>Double-click the second row with the procedure call</strong> in the
+          variable bindings table.
+        </li>
+        
+<li>
+          
+<strong>Set the value of the parameter to the correct value</strong>, i.e. <code>$26,100.00</code>.
+        </li>
+      
+</ul>
+      
+<p>
+        When checking the variable bindings table you will notice that the current value
+        has not changed. This is hardly surprising as we have not yet executed the
+        procedure call again. Only, test execution is already past the procedure call.
+        Fortunately, QF-Test has another very useful debugging feature to set back (or forward)
+        test execution to some node:
+        <strong>&raquo;<em>Continue execution from here</em>&laquo;</strong>, which
+        can be invoked either via the pop-up menu of the node you want to make the current node
+        or by pressing [Ctrl-,] after selecting the node.
+      </p>
+      
+<p>
+        In order to try out the newly set value:
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Action</span></span>
+          <strong>Right-click the 'Call procedure: checkFinalPrice' node </strong> of the second procedure.
+        </li>
+        
+<li>
+          
+<strong>Select 'Continue execution from here'</strong> in the popup menu.
+        </li>
+      
+</ul>
+      
+<a name="fig_ProcedureContinueExecFromHere"></a><a name="figure_6.9"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/ProcedureContinueExecFromHere.png" target="_blank"><img src="images/ProcedureContinueExecFromHere.png" alt="Variable stack" texscale=".5" width="886" height="723"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;6.9</a>:&nbsp;&nbsp;Continue Execution from here</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        When checking the variable bindings table you will find that the top two rows have
+        disappeared. This is because now we exited the procedure (even though 'backwards')
+        and therefore the procedure call and all its variable bindings was taken off the call stack.
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Action</span></span>
+          Release the pause button <img src="images/pause_continue.png" style="vertical-align: text-bottom" alt="Continue" title="Continue" width="26" height="26" texscale=".5">.
+        </li>
+      
+</ul>
+      
+<p>
+        The test run should finish without error.
+      </p>
+      
+<p>
+<span class="margin"><span class="note">Note</span></span>
+        As the variable bindings table is very useful when looking for incorrect variable values you
+        will also find a copy of it in the run-log whenever an error or exception
+        is logged. It is written to the subnode 'Stack trace' of the node causing the error,
+        showing the variable values at the time the error occurred.
+      </p>
+
+      
+
+      
+<p>
+<a name="locate_current_node" shape="rect"></a><strong>Locate the current Node:</strong> Sometimes during debugging you will navigate
+        far away from the current node where execution stopped and eventually want to get back to
+        it again.  The easiest way to do so is by pressing the "Locate Current Node" <img src="images/locate.png" style="vertical-align: text-bottom" alt="Locate Current Node" title="Locate Current Node" width="26" height="26" texscale=".5"> button or select the &raquo;<em>Debugger</em>&laquo;-&raquo;<em>Locate Current Node</em>&laquo; menu option to
+        cause the debugger to "select" the current node.
+        </p>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="variablebindingstable.html#tut_variable_stack"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 6.2&nbsp;The Variable Bindings table" title="Previous Chapter: 6.2&nbsp;The Variable Bindings table"></a></td><td class="navicon"><a href="settingvariables.html#tut_setting_variables"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 6.4&nbsp;Setting Variables" title="Next Page: 6.4&nbsp;Setting Variables"></a></td><td class="navicon"><a href="settingvariables.html#tut_setting_variables"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 6.4&nbsp;Setting Variables" title="Next Chapter: 6.4&nbsp;Setting Variables"></a></td><td class="navicon"><a href="variablestack.html#sec_variablestack"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 6&nbsp;Variables and Procedure Parameters (Java)" title="Chapter Overview: 6&nbsp;Variables and Procedure Parameters (Java)"></a></td><td class="navicon"><a href="../../tutorial_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 2002-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

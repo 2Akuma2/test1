@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Include file resolution</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="tsec_includes"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_quoting.html#sec_quoting"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 45.5&nbsp;Quoting and escaping special characters" title="Previous Chapter: 45.5&nbsp;Quoting and escaping special characters"></a></td><td class="navicon"><a href="tech_scripting.html#sec_scripting"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 46&nbsp;Scripting (Jython, Groovy and JavaScript)" title="Next Page: 46&nbsp;Scripting (Jython, Groovy and JavaScript)"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_misc.html#tsec_miscellaneous"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 45&nbsp;Technical details about miscellaneous issues" title="Chapter Overview: 45&nbsp;Technical details about miscellaneous issues"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_tsec_includes">45.6</a></span>
+</div>
+<a href="contents.html#toc_tsec_includes">Include file resolution</a>
+</h4>
+      
+<p>
+        This is a section you should hopefully never need to read. It
+        explains in detail how implicit 'Procedure' and 'Component'
+        references are resolved during test replay. If you need to read it,
+        your test-suite include hierarchy probably is too complicated and
+        you should consider simplifying your includes.
+      </p>
+      
+<p>
+        There are basically two scenarios in which QF-Test must implicitly
+        resolve a 'Procedure' or 'Component' reference to another suite
+        when the requested 'Procedure' or 'Component' cannot be found in
+        the current (or explicitly referenced) suite:
+      </p>
+      
+<ul>
+        
+<li>
+          The current suite includes other suites (by defining them in the
+          <a href="rootnode.html#att_RootStep_includes" shape="rect">'Include files'</a> attribute of the <a href="rootnode.html#step_RootStep" shape="rect">'Test-suite'</a> root
+          node). In this case, QF-Test searches all included suites in the
+          given order.
+        </li>
+        
+<li>
+          The current suite (or rather one of its 'Procedures') was called
+          by another suite. Here QF-Test searches the calling suite for the
+          requested node.
+        </li>
+      
+</ul>
+      
+<p>
+        The whole thing gets complicated, when (possibly indirect)
+        'Procedure calls' across test-suite boundaries and (possibly
+        indirect, maybe even recursive) includes are combined.
+        Following are detailed explanations of the search algorithm that
+        will hopefully enable you to debug and resolve any include-file
+        related problems.
+      </p>
+      
+<ul>
+        
+<li>
+          Whenever execution leaves the current suite to continue with some
+          'Procedure' or to retrieve a 'Component', the other suite
+          becomes the current suite. This process is complemented by two
+          things: the old suite is pushed onto the so-called
+          <em>call-stack</em> and the variable bindings of the new current
+          suite are pushed on top of the <em>fallback bindings stack</em>
+          (see <a href="user_variables.html#usec_variables">chapter 6</a>), so they override the
+          bindings of the old suite. In the run-log this process is
+          documented by adding a <em>Suite-change</em> node which holds all
+          of the run-log nodes for the execution that takes place outside
+          the old suite.
+        </li>
+        
+<li>
+          Any search through test-suites starts with the current
+          suite, then continues top-down through the call-stack. So if, for
+          example, A calls B which calls C, then C is searched first,
+          followed by B and finally A.
+        </li>
+        
+<li>
+          Includes are considered stronger bindings than the call-stack.
+          This means that during the search through the current suite and
+          the suites on the call-stack, at each step the included
+          test-suites are searched before moving to the next suite on the
+          call-stack. For example, if A calls B which includes C, A is on
+          the call-stack and B is the current Suite, then B will be searched
+          first, then C, and lastly A.
+        </li>
+        
+<li>
+          In case of multiple, possibly indirect includes, the search is
+          always conducted depth-first in the oder in which the include
+          files are listed. This means that if A includes B and C, and B
+          includes D, first A is searched, followed by B, then D and then C.
+        </li>
+        
+<li>
+          If a 'Procedure' is found (possibly indirectly) in an included
+          test-suite (as opposed to the current suite, an explicitly
+          referenced suite or a suite on the call-stack), the change from
+          the old current suite to the new current suite doesn't take place
+          in one step. This has to be illustrated with an example right from
+          the start or we'll get totally lost: Let's say A calls B and that
+          A includes C. B calls a 'Procedure' which is found in C by way of
+          A. Instead of changing suites directly from B to C, A will first
+          become the current suite and then C. As a consequence, A gets
+          pushed onto the call-stack again on top of B and its variable
+          bindings are also pushed again on top of B's bindings on the
+          fallback bindings stack. The reasoning behind this is that C,
+          which is now the current suite, is "closer to" A, which includes
+          C, than it is to B, which only happened to be called by A. One
+          could also say that inclusion creates a kind of union, so that to
+          B, A and C will always appear as a single test-suite as long as B
+          doesn't call C explicitly.
+        </li>
+        
+<li>
+          That's it, except for one thing: During a search QF-Test never
+          searches a suite twice. This would be useless in any case, but it
+          is more than an optimization, since it prevents trouble with
+          recursive includes if A includes B and B includes A.
+        </li>
+      
+</ul>
+      
+<p>
+        If you really have a problem determining how, why or why not a
+        certain 'Procedure' or 'Component' was retrieved, first take a
+        look at the run-log. It shows exactly which suites were used and
+        which variable expansions took place.
+      </p>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_quoting.html#sec_quoting"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 45.5&nbsp;Quoting and escaping special characters" title="Previous Chapter: 45.5&nbsp;Quoting and escaping special characters"></a></td><td class="navicon"><a href="tech_scripting.html#sec_scripting"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 46&nbsp;Scripting (Jython, Groovy and JavaScript)" title="Next Page: 46&nbsp;Scripting (Jython, Groovy and JavaScript)"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_misc.html#tsec_miscellaneous"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 45&nbsp;Technical details about miscellaneous issues" title="Chapter Overview: 45&nbsp;Technical details about miscellaneous issues"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

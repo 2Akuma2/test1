@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Generic components</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_bpCRGeneric"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="usec_scope.html#usec_scope"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 5.7&nbsp;Scope (Preview)" title="Previous Chapter: 5.7&nbsp;Scope (Preview)"></a></td><td class="navicon"><a href="user_subitems.html#usec_subitems"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 5.9&nbsp;Sub-items: Addressing relative to a parent component" title="Next Page: 5.9&nbsp;Sub-items: Addressing relative to a parent component"></a></td><td class="navicon"><a href="user_subitems.html#usec_subitems"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 5.9&nbsp;Sub-items: Addressing relative to a parent component" title="Next Chapter: 5.9&nbsp;Sub-items: Addressing relative to a parent component"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 5&nbsp;Components" title="Chapter Overview: 5&nbsp;Components"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpCRGeneric">5.8</a></span>
+</div>
+<a href="contents.html#toc_sec_bpCRGeneric">Generic components</a>
+</h4>
+        
+<p>
+          Before the introduction of the <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a>
+          in QF-Test Version 6.0, generic components were the pattern of choice
+          for avoiding recording components.
+          With SmartIDs, this goal can be achieved easier and more flexibly.
+          Still, the concept of generic components
+          is described here for backwards compatibility.
+        </p>
+        
+<p>
+          A typical use case is the testing of localized applications.
+        </p>
+        
+<p>
+          Another situation could be the use of a GUI framework during development.
+          This generates, for example, a lot of similar dialogs which differ by only a few components.
+          But you must re-record them for each dialog,
+          for example global navigation buttons,
+          because they are located inside a new window each time.
+        </p>
+        
+<p>
+          With generic components, you use variables in the component properties
+          or simply delete non-dynamic parts of them.
+        </p>
+        
+<p>
+          The following is a general approach for generalizing components:
+        </p>
+        
+<ol>
+          
+<li>Record some components you want to generalize and compare them.</li>
+          
+<li>
+            Create a new generic component with 'generic' in the 'QF-Test ID' so you can find it again later.
+          </li>
+          
+<li>
+            Remove all attributes you do not want to use for recognition
+            from this generic component.
+          </li>
+          
+<li>
+            Define the recognition criterium, like 'name',
+            'feature' or 'index'.
+          </li>
+          
+<li>Place a variable in this attribute, for example <code>$(name)</code>.</li>
+          
+<li>
+            To avoid false positives, deactivate geometry recognition
+            by placing a '-' in the 'X' and 'Y' attributes.
+          </li>
+          
+<li>
+            Specify '@generic' in the 'Comment' attribute
+            so this component is not inadvertently removed by the 'Remove unused components' action.
+          </li>
+          
+<li>
+            Create a procedure for accessing this generic component
+            and use the variable from before as procedure parameter.
+          </li>
+        
+</ol>
+        
+<p>
+          
+<span class="margin"><span class="note">Note</span></span>
+          Generic components are very useful for replay of tests,
+          but QF-Test does not use them for recording.
+          It always records concrete components and
+          you need to manually replace these with generic components afterwards.
+        </p>
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="usec_scope.html#usec_scope"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 5.7&nbsp;Scope (Preview)" title="Previous Chapter: 5.7&nbsp;Scope (Preview)"></a></td><td class="navicon"><a href="user_subitems.html#usec_subitems"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 5.9&nbsp;Sub-items: Addressing relative to a parent component" title="Next Page: 5.9&nbsp;Sub-items: Addressing relative to a parent component"></a></td><td class="navicon"><a href="user_subitems.html#usec_subitems"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 5.9&nbsp;Sub-items: Addressing relative to a parent component" title="Next Chapter: 5.9&nbsp;Sub-items: Addressing relative to a parent component"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 5&nbsp;Components" title="Chapter Overview: 5&nbsp;Components"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

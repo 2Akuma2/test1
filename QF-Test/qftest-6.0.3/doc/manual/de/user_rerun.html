@@ -1,0 +1,340 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Erneute Ausf&uuml;hrung von Knoten (Rerun)</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_rerun"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_execdaemon.html#usec_execdaemon"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 22.2&nbsp;Testausf&uuml;hrung im Daemonmodus" title="Vorheriges Kapitel: 22.2&nbsp;Testausf&uuml;hrung im Daemonmodus"></a></td><td class="navicon"><a href="user_distributed.html#usec_distributeddevelopment"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 23&nbsp;Verteilte Entwicklung von Tests" title="N&auml;chste Seite: 23&nbsp;Verteilte Entwicklung von Tests"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="user_testexecution.html#usec_testexecution"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 22&nbsp;Testausf&uuml;hrung" title="Kapitel-&Uuml;bersicht: 22&nbsp;Testausf&uuml;hrung"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="margin"><a name="new_N91028"></a><span class="note">4.1+</span></span><span class="numtitle"><a href="contents.html#toc_usec_rerun">22.3</a></span>
+</div>
+<a href="contents.html#toc_usec_rerun">Erneute Ausf&uuml;hrung von Knoten (Rerun)</a>
+</h4>
+
+      
+        
+<a name="usec_rerun_from_log"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_rerun_from_log">22.3.1</a></span>
+</div>
+<a href="contents.html#toc_usec_rerun_from_log">Erneute Ausf&uuml;hrung aus dem Protokoll</a>
+</h5>
+        
+<p>
+        Nach einem automatischen Testlauf ist das Protokoll bzw. der erstellte Report dieser Ausf&uuml;hrung
+        ein guter Einstiegspunkt um sich ein Bild von den Testergebnissen zu machen.
+        Sind Fehler aufgetreten, stellt sich
+        f&uuml;r Sie als Anwender oft die Herausforderung die fehlgeschlagenen Testf&auml;lle nochmals auszuf&uuml;hren,
+        um das Fehlverhalten zu analysieren oder nach einer erfolgten Fehlerbehebung
+        diesen Testfall nochmals offiziell nachzutesten. Eventuelle Nachtestergebnisse
+        k&ouml;nnten bei Bedarf auch im Report angezeigt werden und zwar wahlweise zus&auml;tzlich oder an Stelle des fehlerhaften
+        Ergebnisses des vorherigen Laufs.
+        In manchen F&auml;llen kann es auch einfach vom Interesse sein,
+        einige Testf&auml;lle nochmals gezielt mit dem Variablenstand vom vorigen Lauf anzusto&szlig;en und die vorherigen
+        Protokolle unangetastet zu lassen.
+        </p>
+        
+<p>Genau hierf&uuml;r bietet QF-Test nun die M&ouml;glichkeit, direkt aus dem Protokoll heraus Testf&auml;lle
+        nochmals auszuf&uuml;hren. Dies erreichen Sie, indem Sie den Protokoll-Knoten oder die gew&uuml;nschten
+        Testfallsatz Knoten selektieren und die Men&uuml;aktion
+        &raquo;<em>Testf&auml;lle nochmal ausf&uuml;hren</em>&laquo; im Men&uuml;  &raquo;<em>Bearbeiten</em>&laquo; oder &uuml;ber
+        das Kontextmen&uuml; ausw&auml;hlen. Alternativ k&ouml;nnen sie die Testf&auml;lle aus der Fehlerliste
+        &uuml;ber den Kontextmen&uuml;eintrag
+        &raquo;<em>Testf&auml;lle der selektierten Knoten nochmal ausf&uuml;hren</em>&laquo; ausw&auml;hlen.
+        Im daraufhin erscheinenden Dialog
+        k&ouml;nnen Sie die nochmal auszuf&uuml;hrenden Testf&auml;lle ausw&auml;hlen sowie in
+        der Auswahlbox <code>Protokollmodus</code> bestimmen, ob die Ergebnisse dieser Wiederholung
+        in das originale Protokoll des Laufes eingepflegt werden sollen oder nicht.
+        Es werden folgende Auswahlm&ouml;glichkeiten geboten:
+        </p>
+        
+<a name="table_22.1"></a><a name="table_22.1"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth">
+            
+<tr>
+              
+<th width="30%" rowspan="1" colspan="1">Auswahlm&ouml;glichkeit</th>
+              <th width="70%" rowspan="1" colspan="1">Bedeutung</th>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Testf&auml;lle ersetzen</td>
+              <td rowspan="1" colspan="1">Im Protokoll werden die Ergebnisse des vorherigen Testlaufes durch die neuen Ergebnisse
+              ersetzt. Die vorherigen Ergebnisse fallen also aus dem Protokoll heraus. Das vorherige Protokoll
+              wird als Sicherungskopie gespeichert und behalten.</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Protokolle zusammenf&uuml;hren</td>
+              <td rowspan="1" colspan="1">Die neuen Ergebnisse werden in die bestehende Struktur eingef&uuml;gt.</td>
+            
+</tr>
+           
+<tr>
+              
+<td rowspan="1" colspan="1">Protokoll anh&auml;ngen</td>
+              <td rowspan="1" colspan="1">Die neuen Ergebnisse werden zus&auml;tzlich an das Originalprotokoll
+              geh&auml;ngt. Die Testfallsatzstruktur wird nicht ber&uuml;cksichtigt.</td>
+            
+</tr>
+           
+<tr>
+              
+<td rowspan="1" colspan="1">Protokolle getrennt lassen</td>
+              <td rowspan="1" colspan="1">Die neue Ausf&uuml;hrung bekommt ihr eigenes Protokoll. Das Originalprotokoll bleibt
+              unangetastet.</td>
+            
+</tr>
+          
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;22.1</a>:&nbsp;&nbsp;Auswahlm&ouml;glichkeiten f&uuml;r die Protokollierung einer Wiederausf&uuml;hrung</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<a name="figure_22.1"></a><a name="figure_22.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/dlg_RerunChooser.png" target="_blank"><img src="images/dlg_RerunChooser.png" alt="Dialog zur Wiederausf&uuml;hrung von Testf&auml;llen" width="600" height="750" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;22.1</a>:&nbsp;&nbsp;Dialog zur Wiederausf&uuml;hrung von Testf&auml;llen</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+        Diese wiederholte Ausf&uuml;hrung verwendet f&uuml;r jeden Testfall dessen Variablenst&auml;nde aus dem vorherigen
+        Protokoll. Die Variable <code>${qftest:isInRerunFromLog}</code> erh&auml;lt f&uuml;r eine solche Wiederholung den Wert
+        <code>true</code>, womit im Test zwischen normalem Lauf und Wiederholung unterschieden werden kann.
+        </p>
+        
+<p>
+<span class="margin"><span class="note">Hinweis</span></span>Die Zusammenf&uuml;hrung der Protokolle basiert zur Zeit auf den Namen der Testf&auml;lle
+        und Testfalls&auml;tze. Daher m&uuml;ssen deren Namen eindeutig sein. Im Falle von datengetriebenen Testen
+        sollten Sie darauf achten, dass Sie diese Eindeutigkeit der Namen &uuml;ber die Attribute
+        'Name f&uuml;r separates Protokoll' bzw. 'Charakteristische Variablen' herstellen.
+        </p>
+      
+
+      
+      
+        
+<a name="usec_rerun_node"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_rerun_node">22.3.2</a></span>
+</div>
+<a href="contents.html#toc_usec_rerun_node">Fehlerhafte Knoten sofort wiederholen</a>
+</h5>
+        
+<p>
+            W&auml;hrend der Testautomatisierung kann es vorkommen, dass Testschritte sich
+            volatil verhalten und manchmal das richtige Ergebnis liefern aber in anderen F&auml;llen
+            scheitern. Meist sind solche F&auml;lle abh&auml;ngig vom Timing und k&ouml;nnen in QF-Test mit <a href="miscnodes.html#step_ComponentWaiter" shape="rect">'Warten auf Komponente'</a>
+            Knoten oder Checks auf Zust&auml;nde, mit Skripten, Verz&ouml;gerungen oder Kontrollstrukturen stabilisiert werden.
+            Alternativ oder zus&auml;tzlich erm&ouml;glicht QF-Test es Ihnen, solche Knoten im Fehlerfall automatisch nochmals auszuf&uuml;hren.
+        </p>
+        
+<p>
+            F&uuml;r die Art der automatischen Ausf&uuml;hrung im Fehlerfall k&ouml;nnen Sie bei jedem ausf&uuml;hrbaren Knoten
+            in der Testsuite einen Doctag im Attribut 'Bemerkung' verwenden. Dieser Doctag
+            kann im Wesentlichen wie folgt aussehen:
+        </p>
+      
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>@rerun attempts=3;errorlevel&gt;=ERROR;newerrorlevel=WARNING;
+          handler=handlers.errorhandler
+        </pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;22.18:&nbsp;&nbsp;Beispiel f&uuml;r eine Rerun Definition</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+        Das obige Beispiel bedeutet, dass ein Knoten im Falle eines Fehlers oder einer Exception maximal dreimal
+        wiederholt wird bis kein Fehler und keine Exception mehr auftreten.
+        Die Versuche, die mit Fehler oder Exception endeten, werden im Protokoll als
+        Warnung markiert und nicht mehr als Fehler. Nach jedem Versuch, der mit Fehler oder Exception endet, wird die
+        Prozedur <code>handlers.errorhandler</code> aufgerufen. Besteht nach dem dritten Versuch immer noch ein Fehler
+        oder eine Exception, so wird dieser letzte Zustand protokolliert.
+        </p>
+        
+<p>
+         Falls Sie den aktuellen Versuch des Reruns herausfinden m&ouml;chten, k&ouml;nnen Sie die Variable <code>reruncounter</code> aus der <code>qftest</code> Variablengruppe verwenden, siehe <a href="user_variables.html#usec_externaldata">Abschnitt 6.5</a>.
+        </p>
+        
+<p>
+         F&uuml;r das @rerun Doctag k&ouml;nnen verschiedene Parameter wie <code>attempts</code>
+         oder <code>errorlevel</code> mit folgender Bedeutung verwendet werden:
+        </p>
+        
+<dl>
+        
+<dt>attempts</dt>
+        
+<dd>
+            Die maximale Anzahl der Wiederholungen.
+        </dd>
+        
+<dt>errorlevel (optional)</dt>
+        
+<dd>
+          Gibt an, auf welche Arten von Fehlverhalten reagiert werden soll. Hier k&ouml;nnen Sie entweder die Fehlerstufen
+          <code>EXCEPTION</code>, <code>ERROR</code> oder <code>WARNING</code> angeben, entweder
+            exakt (mit =) oder mit &gt; oder &gt;=. Mit
+          <code>errorlevel=ERROR</code> wird der Knoten nur bei Fehlern neu ausgef&uuml;hrt wird, bei
+          <code>errorlevel&gt;=ERROR</code> bei Fehlern und Exceptions.
+            Falls Sie nichts angeben wird der Wert <code>errorlevel&gt;=ERROR</code> als Standard herangezogen.
+        </dd>
+        
+<dt>newerrorlevel (optional)</dt>
+        
+<dd>
+          Legt die Fehlerstufe f&uuml;r die Protokollierung des initialen Laufs und eventueller weiterer fehlgeschlagener
+          Versuche fest. Zul&auml;ssige Werte sind wiederum
+          <code>EXCEPTION</code>, <code>ERROR</code> oder <code>WARNING</code> sowie zus&auml;tzlich
+            <code>NOLOG</code> und <code>KEEP</code>. Die Stufe <code>NOLOG</code> bedeutet, dass die fehlerhaften
+            Versuche
+            aus dem Protokoll gel&ouml;scht werden, so dass nur der letzte Versuch im Protokoll auftaucht. Der Wert
+            <code>NOLOG</code> sollte mit gro&szlig;er Vorsicht eingesetzt werden. Der Wert <code>KEEP</code> gibt an,
+            dass die originalen Fehlerstufen im Protokoll behalten werden.
+            Falls Sie nichts angeben wird der Wert <code>WARNING</code> als Standard herangezogen.
+        </dd>
+        
+<dt>handler (optional)</dt>
+        
+<dd>
+          Definiert den Namen einer Prozedur, welche aufgerufen werden soll, falls das Fehlverhalten auftritt.
+           Diese Prozedur wird nach jedem fehlgeschlagenen Durchlauf ausgef&uuml;hrt.
+        </dd>
+        
+<dt>reusevariables (optional, default=true)</dt>
+        
+<dd>
+          Hier geben Sie an, ob der Variablenstand vom Beginn des ersten Durchlaufs wiederverwendet werden soll.
+           Steht der Parameter auf <code>false</code> wird der aktuelle Variablenstand genutzt.
+        </dd>
+        
+<dt>logmessages (optional, default=true)</dt>
+        
+<dd>
+          Ist dieser Parameter auf <code>true</code> gesetzt, wird am Anfang eines jeden Versuchs sowie
+          nach erfolgreicher bzw. fehlerhafter Ausf&uuml;hrung eine Nachricht in das Protokoll geschrieben. Zus&auml;tzlich
+          wird bei jedem Versuch eine Anmerkung im Protokoll f&uuml;r diesen Knoten gesetzt.
+        </dd>
+        
+<dt>logmessagesintoreport (optional, default=true)</dt>
+        
+<dd>
+          Ist dieser Parameter und der Parameter <code>logmessages</code> auf <code>true</code> gesetzt,
+          werden die Meldungen auch in den Report geschrieben.
+        </dd>
+        
+<dt>keepfirst (optional, default=false)</dt>
+        
+<dd>
+          Falls dieser Wert auf <code>true</code> gesetzt wird, wird das erste gefangene Fehlerverhalten mit dem
+          Originalzustand protokolliert. Im Falle von weiteren Fehlern wird der Parameter <code>newerrorlevel</code>
+          herangezogen.
+        </dd>
+        
+<dt>exceptiontype (optional)</dt>
+        
+<dd>
+          Falls Sie einen speziellen Exceptiontype fangen wollen, k&ouml;nnen Sie diesen Typ hiermit angeben, z.B.
+          <code>CheckFailedException</code> oder nur <code>ClientNotConnected</code> f&uuml;r eine <code>ClientNotConnectedException</code>.
+          Dieser Parameter sollte nur verwendet werden, wenn Sie <code>Exception</code> als Wert f&uuml;r
+          <code>errorlevel</code> gesetzt haben. Details zu Exceptions finden Sie beim <a href="control.html#step_CatchSequence" shape="rect">'Catch'</a> Knoten.
+        </dd>
+        
+<dt>exceptionmessage (optional)</dt>
+        
+<dd>
+          Falls Sie eine bestimmte Exception mit bestimmter Nachricht abfangen wollen, k&ouml;nnen Sie diese Nachricht
+          hier angeben.
+          Dieser Parameter sollte nur verwendet werden, wenn Sie <code>Exception</code> als Wert f&uuml;r
+          <code>errorlevel</code> gesetzt haben. Details zu Exceptions finden Sie beim <a href="control.html#step_CatchSequence" shape="rect">'Catch'</a> Knoten.
+        </dd>
+        
+<dt>exceptionregex (optional)</dt>
+        
+<dd>
+          Wenn dieser Wert <code>true</code> ist, dann stellt der Parameter <code>exceptionmessage</code> einen regul&auml;ren Ausdruck dar.
+          Dieser Parameter sollte nur verwendet werden, wenn Sie <code>Exception</code> als Wert f&uuml;r
+          <code>errorlevel</code> gesetzt haben und einen Wert f&uuml;r <code>exceptionmessage</code> angegeben haben.
+          Details zu Exceptions finden Sie beim <a href="control.html#step_CatchSequence" shape="rect">'Catch'</a> Knoten.
+        </dd>
+        
+<dt>exceptionlocalized (optional)</dt>
+        
+<dd>
+            Wenn dieser Wert <code>true</code> ist, dann steht der Parameter <code>exceptionmessage</code>
+            f&uuml;r die lokalisierte Fehlermeldung der Exception.
+          Dieser Parameter sollte nur verwendet werden, wenn Sie <code>Exception</code> als Wert f&uuml;r
+          <code>errorlevel</code> gesetzt haben und einen Wert f&uuml;r <code>exceptionmessage</code> angegeben haben.
+          Details zu Exceptions finden Sie beim <a href="control.html#step_CatchSequence" shape="rect">'Catch'</a> Knoten.
+        </dd>
+      
+</dl>
+      
+
+      
+
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_execdaemon.html#usec_execdaemon"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 22.2&nbsp;Testausf&uuml;hrung im Daemonmodus" title="Vorheriges Kapitel: 22.2&nbsp;Testausf&uuml;hrung im Daemonmodus"></a></td><td class="navicon"><a href="user_distributed.html#usec_distributeddevelopment"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 23&nbsp;Verteilte Entwicklung von Tests" title="N&auml;chste Seite: 23&nbsp;Verteilte Entwicklung von Tests"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="user_testexecution.html#usec_testexecution"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 22&nbsp;Testausf&uuml;hrung" title="Kapitel-&Uuml;bersicht: 22&nbsp;Testausf&uuml;hrung"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

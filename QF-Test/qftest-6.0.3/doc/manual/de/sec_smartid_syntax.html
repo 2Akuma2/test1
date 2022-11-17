@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>SmartIDs - allgemeine Syntax</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_smartid_syntax"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_qftestid.html#sec_qftestid_creation"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 44.2&nbsp;Generierung der 'QF-Test ID' der Komponente" title="Vorheriges Kapitel: 44.2&nbsp;Generierung der 'QF-Test ID' der Komponente"></a></td><td class="navicon"><a href="sec_smartids_escaping.html#sec_smartids_escaping"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 44.4&nbsp;SmartIDs: Sonderzeichen" title="N&auml;chste Seite: 44.4&nbsp;SmartIDs: Sonderzeichen"></a></td><td class="navicon"><a href="sec_smartids_escaping.html#sec_smartids_escaping"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 44.4&nbsp;SmartIDs: Sonderzeichen" title="N&auml;chstes Kapitel: 44.4&nbsp;SmartIDs: Sonderzeichen"></a></td><td class="navicon"><a href="tsec_components.html#tsec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 44&nbsp;Technisches zu Komponenten" title="Kapitel-&Uuml;bersicht: 44&nbsp;Technisches zu Komponenten"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_smartid_syntax">44.3</a></span>
+</div>
+<a href="contents.html#toc_sec_smartid_syntax">SmartIDs - allgemeine Syntax</a>
+</h4>
+        
+<p>
+          Die verschiedenen SmartID-Features k&ouml;nnen miteinander kombiniert werden.
+          Im Folgenden finden Sie die allgemeine Syntax f&uuml;r die Kombination von SmartID-Merkmalen beschrieben.
+          Eckige Klammern markieren optionale Elemente, w&auml;hrend Gro&szlig;buchstaben f&uuml;r einen Platzhalter stehen:
+        </p>
+        
+<p>
+          
+<code>#[%][noscope:][ENGINE:][KLASSE:][WERT][&lt;INDEX&gt;]</code>
+        
+</p>
+        
+<p>
+          Eine SmartID besteht aus den folgenden Teilen in der folgenden Reihenfolge:
+        </p>
+        
+<ol>
+          
+<li>
+            
+<code>#</code> markiert immer den Anfang einer SmartID.
+          </li>
+          
+<li>
+            
+<code>%</code> (optional) markiert WERT als Regul&auml;ren Ausdruck (siehe <a href="tech_regexp.html#sec_regexp">Regul&auml;re Ausdr&uuml;cke - <em>Regexps</em></a>).
+          </li>
+          
+<li>
+            
+<code>noscope:</code> (optional) zeigt an,
+            dass die SmartID auch au&szlig;erhalb des aktuellen Geltungsbereichs gilt (siehe <a href="usec_scope.html#usec_scope">Geltungsbereich(Scope) (Preview)</a>).
+          </li>
+          
+<li>
+            
+<code>ENGINE:</code> (optional) gibt die UI-Technologie an, auf die die SmartID zutrifft. Dies wird nur ben&ouml;tigt falls QF-Test mit mehrern Applikationen mit verschiedenen UI-Technologien gleichzeitig verwendet wird. G&uuml;ltige Werte sind <code>awt:</code>, <code>fx:</code>, <code>swt:</code>, <code>web:</code> und <code>win:</code>, wobei die Gro&szlig;-/Kleinschreibung keine Rolle spielt.
+          </li>
+          
+<li>
+            
+<code>KLASSE:</code> (optional) gibt die generische Klasse oder Klasse der Komponente an (siehe <a href="tech_genericclasses.html#sec_genericclasses">Kapitel 57</a>), zum Beispiel <code>Label:</code>, <code>CheckBox:ComboBoxListItemCheckBox:</code> oder <code>CheckBox\:MyCheckBox:</code>.
+          </li>
+          
+          
+<li>
+            
+<code>WERT</code> (optional falls KLASSE gegeben) gibt den Wert an, dem die Komponente entsprechen muss, z.B. eine Beschriftung, ein Name, oder ein anderes durch MATCH angegebenes Kriterium
+          </li>
+          
+<li>
+            
+<code>&lt;INDEX&gt;</code> (optional) gibt einen numerischen Index an, beginnend mit 0.
+          </li>
+        
+</ol>
+        
+<p>
+          Beispiele:
+        </p>
+        
+<ul>
+          
+<li>
+<code>#Button:OK</code>
+</li>
+          
+<li>
+<code>#TextField:PLZ&lt;1&gt;</code>
+</li>
+          
+<li>
+<code>#TextField:name=adresse&lt;2&gt;</code>
+</li>
+          
+<li>
+<code>#PLZ&lt;1&gt;</code>
+</li>
+          
+<li>
+<code>#noscope:SWT:Label:PLZ&lt;1&gt;</code>
+</li>
+        
+</ul>
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_qftestid.html#sec_qftestid_creation"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 44.2&nbsp;Generierung der 'QF-Test ID' der Komponente" title="Vorheriges Kapitel: 44.2&nbsp;Generierung der 'QF-Test ID' der Komponente"></a></td><td class="navicon"><a href="sec_smartids_escaping.html#sec_smartids_escaping"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 44.4&nbsp;SmartIDs: Sonderzeichen" title="N&auml;chste Seite: 44.4&nbsp;SmartIDs: Sonderzeichen"></a></td><td class="navicon"><a href="sec_smartids_escaping.html#sec_smartids_escaping"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 44.4&nbsp;SmartIDs: Sonderzeichen" title="N&auml;chstes Kapitel: 44.4&nbsp;SmartIDs: Sonderzeichen"></a></td><td class="navicon"><a href="tsec_components.html#tsec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 44&nbsp;Technisches zu Komponenten" title="Kapitel-&Uuml;bersicht: 44&nbsp;Technisches zu Komponenten"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

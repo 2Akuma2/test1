@@ -1,0 +1,889 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Die abstrakte Klasse Node</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_dom_Node"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_dom_document.html#sec_dom_documentnode"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 50.11.2&nbsp;Die Klasse DocumentNode" title="N&auml;chste Seite: 50.11.2&nbsp;Die Klasse DocumentNode"></a></td><td class="navicon"><a href="tech_dom_document.html#sec_dom_documentnode"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 50.11.2&nbsp;Die Klasse DocumentNode" title="N&auml;chstes Kapitel: 50.11.2&nbsp;Die Klasse DocumentNode"></a></td><td class="navicon"><a href="tech_domapi.html#sec_domapi"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 50.11&nbsp;Pseudo DOM API f&uuml;r Webanwendungen" title="Kapitel-&Uuml;bersicht: 50.11&nbsp;Pseudo DOM API f&uuml;r Webanwendungen"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_dom_Node">50.11.1</a></span>
+</div>
+<a href="contents.html#toc_sec_dom_Node">Die abstrakte Klasse <code class="classdef">Node</code></a>
+</h5>
+          
+<p>
+            Alle Klassen von QF-Test's pseudo DOM API sind von dieser Klasse abgeleitet und
+            implementieren damit das folgende Interface. Die Klasse befindet sich im Package
+            <code>de.qfs.apps.qftest.client.web.dom</code>.
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Node findCommonAncestor(Node node1, Node node2, Node topmost)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert einen gemeinsamen Vorg&auml;nger von zwei Knoten.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>node1</code></strong></td><td class="paramdesc">Der erste Knoten.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>node2</code></strong></td><td class="paramdesc">Der zweite Knoten.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>topmost</code></strong></td><td class="paramdesc">Der oberste Knoten, bei dem die Suche stoppen soll.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Der gemeinsame Vorg&auml;nger oder null.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Node getAncestorOfClass(String clazz)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert die n&auml;chsten Vorg&auml;nger dieser Komponente von einer angegebenen Klasse.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>clazz</code></strong></td><td class="paramdesc">Das Klassenname des Parents.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Der passende Vorg&auml;nger oder null.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Node getAncestorOfClass(String clazz, int maxDepth)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert die n&auml;chsten Vorg&auml;nger dieser Komponente von einer angegebenen Klasse unter
+              Angabe einer maximalen Suchh&ouml;he.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>clazz</code></strong></td><td class="paramdesc">Das Klassenname des Parents.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>maxDepth</code></strong></td><td class="paramdesc">Das maximale Suchlevel.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Der passende Vorg&auml;nger oder null.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getAttribute(String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert den wert eines Attributs des Knotens. Zur bequemeren Nutzung ist diese
+                Methode bereits auf dieser Ebene f&uuml;r <code>Node</code> definiert. Falls es sich bei
+                einem konkreten Knoten nicht um ein Objekt der Klasse <code>DomNode</code>
+                handelt, ist das Ergebnis immer null. In einigen F&auml;llen liefert diese Methode Werte
+                f&uuml;r Attribute zur&uuml;ck, die nicht explizit angegeben wurden, z.B. die Attribute
+                "width" und "height" f&uuml;r einen &lt;IMG&gt; Knoten. Welche
+                Attribute implizit zur Verf&uuml;gung stehen, h&auml;ngt vom jeweiligen Browser ab.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">Der Name des Attributs.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Der Wert des Attributs oder null, falls es f&uuml;r diesen Knoten kein solches Attribut
+                gibt.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getAttributeIfSpecified(String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert den Wert eines Attributs, sofern dieses explizit im HTML Code spezifiziert
+                wurde. Zur bequemeren Nutzung ist diese Methode bereits auf dieser Ebene f&uuml;r
+                <code>Node</code> definiert. Falls es sich bei einem konkreten Knoten nicht um ein
+                Objekt der Klasse <code>DomNode</code> handelt, ist das Ergebnis immer null.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">Der Name des Attributs.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Der Wert des Attributs oder null, falls f&uuml;r diesen Knoten kein solches Attribut
+                explizit spezifiziert wurde.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Node getChild(int index)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert den Kind-Knoten an einem bestimmten Index.
+              <b>Hinweis f&uuml;r Opera vor Version 86, Google Chrome und Microsoft Edge vor Version 100:</b>
+              Text-Knoten, die nur zur Formatierung des HTML-Codes dienen
+              und keinen Einfluss auf die Darstellung der Webseite haben, werden im CDP-Verbindungsmodus
+              nicht vom Browser an QF-Test &uuml;bermittelt. Daher kann in diesem Verbindungsmodus mit diesen Browsern eine
+              abweichende Z&auml;hlung der Kind-Knoten auftreten. Prinzipiell ist hier ein Zugriff &uuml;ber
+              <code>getChildrenByTagName</code> zu bevorzugen.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>index</code></strong></td><td class="paramdesc">Der Index des Kind-Knotens, beginnend mit 0.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Der Kind-Knoten an dem angegebenen Index.</td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>IllegalArgumentException</code></strong></td><td class="throwdesc">
+                Falls der Index negativ oder gr&ouml;&szlig;er als die Zahl der Kind-Knoten ist.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int getChildCount()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert die Anzahl an Kind-Knoten.
+              <b>Hinweis f&uuml;r Opera vor Version 86, Google Chrome und Microsoft Edge vor Version 100:</b>
+              Text-Knoten, die nur zur Formatierung des HTML-Codes dienen
+              und keinen Einfluss auf die Darstellung der Webseite haben, werden im CDP-Verbindungsmodus
+              nicht vom Browser an QF-Test &uuml;bermittelt. Daher kann in diesem Verbindungsmodus mit diesen Browsern eine
+              abweichende Anzahl der Kind-Knoten auftreten.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Die Anzahl an Kind-Knoten.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Node[] getChildren()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert alle Kinder dieses Knotens als Array.
+                <b>Hinweis f&uuml;r Opera vor Version 86, Google Chrome und Microsoft Edge vor Version 100:</b>
+                Text-Knoten, die nur zur Formatierung des HTML-Codes dienen
+                und keinen Einfluss auf die Darstellung der Webseite haben, werden im CDP-Verbindungsmodus
+                nicht vom Browser an QF-Test &uuml;bermittelt. Daher kann in diesem Verbindungsmodus mit diesen Browsern eine
+                abweichende Anzahl Kind-Knoten auftreten.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Die Kind-Knoten.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getClassName()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert den aktuellsten Klassennamen des Knotens.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Die Name der aktuellsten Klasse des Knotens.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String[] getClassNames()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert alle Klassen des Knotens.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Ein Array mit allen Klassen des Knotens.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>DocumentNode getDocument()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert das Dokument, zu dem dieser Knoten geh&ouml;rt.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Das Dokument, zu dem dieser Knoten geh&ouml;rt. Ein <code>DocumentNode</code>
+                liefert sich selbst, ein <code>DialogNode</code> liefert null.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Node getElementById(String id)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert einen direkten oder indirekten Kind-Knoten mit einer bestimmten ID.
+                Verglichen wird hierbei nicht mit dem original 'ID' Attribut, sondern der
+                m&ouml;glicherweise durch <code>IdResolver</code> modifizierten ID (vgl. <a href="tech_resolversmodule.html#sec_idresolver">Abschnitt 50.1.16</a>).
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>id</code></strong></td><td class="paramdesc">Die gesuchte ID.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Der Kind-Knoten mit der vorgegebenen ID, ein beliebiger im Fall mehrerer Treffer
+                oder null falls keiner gefunden wird. Ein <code>DialogNode</code> liefert immer
+                null, ein <code>FrameNode</code> Knoten reicht den Aufruf an seinen
+                <code>DocumentNode</code> Knoten weiter und ein <code>DocumentNode</code> Knoten an
+                seinen &lt;HTML&gt; Wurzelknoten.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Node[] getElementsByClassName(String className)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert alle direkten oder indirekten Kind-Knoten mit einer bestimmten Klasse.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>className</code></strong></td><td class="paramdesc">Der Klassenname.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Ein Array von Kind-Knoten mit der vorgegebenen Klasse. Werden keine gefunden, wird
+                ein leeres Array zur&uuml;ckgeliefert.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Node[] getElementsById(String id)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert alle direkten oder indirekten Kind-Knoten mit einer bestimmten ID.
+                Verglichen wird hierbei nicht mit dem original 'ID' Attribut, sondern der
+                m&ouml;glicherweise durch <code>IdResolver</code> modifizierten ID (vgl. <a href="tech_resolversmodule.html#sec_idresolver">Abschnitt 50.1.16</a>).
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>id</code></strong></td><td class="paramdesc">Die gesuchte ID.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Ein Array von Kind-Knoten mit der vorgegebenen ID. Werden keine gefunden, wird
+                ein leeres Array zur&uuml;ckgeliefert. Ein <code>DialogNode</code> liefert immer ein
+                leeres Array, ein <code>FrameNode</code> Knoten reicht den Aufruf an seinen
+                <code>DocumentNode</code> Knoten weiter und ein <code>DocumentNode</code> Knoten an
+                seinen &lt;HTML&gt; Wurzelknoten.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Node[] getElementsByIdAndTagname(String id, String tagName)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert alle direkten oder indirekten Kind-Knoten mit einem bestimmten TagNamen und
+                einer bestimmten ID. Verglichen wird hierbei nicht mit dem original 'ID' Attribut,
+                sondern der m&ouml;glicherweise durch <code>IdResolver</code> modifizierten ID (vgl.
+                <a href="tech_resolversmodule.html#sec_idresolver">Abschnitt 50.1.16</a>).
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>id</code></strong></td><td class="paramdesc">Die gesuchte ID.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>tagName</code></strong></td><td class="paramdesc">Der gesuchte Tagname.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Ein Array von Kind-Knoten mit der vorgegebenen ID und dem vorgegebenen Tagnamen.
+                Werden keine gefunden, wird ein leeres Array zur&uuml;ckgeliefert. Ein
+                <code>DialogNode</code> liefert immer ein leeres Array, ein <code>FrameNode</code>
+                Knoten reicht den Aufruf an seinen <code>DocumentNode</code> Knoten weiter und ein
+                <code>DocumentNode</code> Knoten an seinen &lt;HTML&gt;
+                Wurzelknoten.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Node[] getElementsByTagName(String tagName)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert alle direkten oder indirekten Kind-Knoten mit einem bestimmten Tagnamen.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>tagName</code></strong></td><td class="paramdesc">Der gesuchte Tagname.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Ein Array von Kind-Knoten mit dem vorgegebenen Tagnamen. Werden keine gefunden, wird
+                ein leeres Array zur&uuml;ckgeliefert. Ein <code>DialogNode</code> liefert immer ein
+                leeres Array, ein <code>FrameNode</code> Knoten reicht den Aufruf an seinen
+                <code>DocumentNode</code> Knoten weiter und ein <code>DocumentNode</code> Knoten an
+                seinen &lt;HTML&gt; Wurzelknoten.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Node getFirstChild()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert den ersten Kind-Knoten: ein Element, ein Text-Knoten oder ein Kommentar.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Der erste Kind-Knoten.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Node getFirstElementChild()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert das erste Kind-Element (Text-Knoten und Kommentare werden &uuml;bersprungen).</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Das erste Kind-Element.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getFlatText()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert den "flachen" Textinhalt eines Knotens. F&uuml;r einen einfachen Text-Knoten ist
+                dies sein Wert. Andernfalls werden die Werte aller direkt in diesem Knoten
+                enthaltenen Text-Knoten gesammelt. Knoten in darunter liegenden Ebenen werden nicht
+                ber&uuml;cksichtigt.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Der gesamte direkte Textinhalt eines Knotens.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getGenericClassName()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert den generischen Klassenname des Knotens.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Der Name der generischen Klasse.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int getIndexOfChild(Node child)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert den Index eines bestimmten Kind-Knotens.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>child</code></strong></td><td class="paramdesc">Der Kind-Knoten dessen Index ermittelt werden soll.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Der Index des Kind-Knoten, beginnend bei 0, oder -1 falls es sich dabei nicht um ein
+                Kind dieses Knotens handelt.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Node getInterestingParent()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert den interessanten Parent eines Knoten. Das ist der Parent, der auch als Parent aufgezeichnet wird.
+                Ein <code>DocumentNode</code> auf oberster Ebene
+                oder ein <code>DialogNode</code> liefern null. Alle anderen Knoten sollten einen
+                Parent haben, sofern sie nicht via JavaScript aus dem DOM entfernt wurden.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Der interessante Parent des Knoten.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Node getInterestingParent(int n)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert den interessanten Parent eines Knoten. Das ist der Parent, der auch als Parent aufgezeichnet wird.
+                Ein <code>DocumentNode</code> auf oberster Ebene
+                oder ein <code>DialogNode</code> liefern null. Alle anderen Knoten sollten einen
+                Parent haben, sofern sie nicht via JavaScript aus dem DOM entfernt wurden.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>n</code></strong></td><td class="paramdesc">Das Level des interessanten Parents.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Der interessante Parent des Knoten.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getName()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert den <em>Tagnamen</em> eines Knoten. Dieser Name entspricht dem Type des
+                Knotens in Gro&szlig;buchstaben, z.B: "HTML" f&uuml;r einen &lt;HTML&gt;
+                Knoten. Einfache Text-Knoten werden als <code>DomNode</code> mit dem Tagnamen "#text"
+                repr&auml;sentiert. Pseudo-Tagnamen sind f&uuml;r <code>DocumentNodes</code> ("DOCUMENT") und
+                <code>DialogNodes</code> ("DIALOG") definiert.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Der Tagname eines Knotens.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Node getNextElementSibling()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert das nachfolgende Element auf der gleichen Ebene des DOM-Baums.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Das nachfolgende Element.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Node getNextSibling()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert den nachfolgenden Knoten: ein Element, ein Text-Knoten oder ein Kommentar.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Der nachfolgende Knoten.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getNodeType()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert einen Bezeichner f&uuml;r die Art des Knotens. Diese Methode ist zwar nicht ganz
+                im Sinne einer puristischen OO Doktrin, beim Traversieren des DOM aber sehr
+                praktisch, um ohne Aufwand die Art des jeweiligen Knotens zu bestimmen.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Ein String der die Art des Knoten angibt. Die zugeh&ouml;rigen Konstanten sind in den
+                konkreten Unterklassen definiert:<code>DocumentNode.DOCUMENT_NODE</code>,
+                <code>FrameNode.FRAME_NODE</code>, <code>DomNode.DOM_NODE</code> und
+                <code>DialogNode.DIALOG_NODE</code>.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Node getNthParent(int n)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert den Parent vom n-tn Level.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>n</code></strong></td><td class="paramdesc">Das Level des Parents.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Der Parent oder null.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Node getParent()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert den Parent eines Knoten. Ein <code>DocumentNode</code> auf oberster Ebene
+                oder ein <code>DialogNode</code> liefern null. Alle anderen Knoten sollten einen
+                Parent haben, sofern sie nicht via JavaScript aus dem DOM entfernt wurden.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Der Parent des Knoten.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Node getPreviousElementSibling()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert das vorangehende Element auf der gleichen Ebene des DOM-Baums.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Das vorangehende Element.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Node getPreviousSibling()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert den vorangehenden Knoten: ein Element, ein Text-Knoten oder ein Kommentar.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Der vorangehende Knoten.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Object getProperty(String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert eine benutzerdefinierte Eigenschaft zur&uuml;ck.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">Der Name der Eigenschaft.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Der Wert der Eigenschaft oder null.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getSimpleText()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert den "einfachen" Textinhalt eines Knotens. F&uuml;r einen einfachen Text-Knoten
+                ist dies sein Wert. Andernfalls wird das DOM ab diesem Knoten traversiert und die
+                Werte aller Text-Knoten gesammelt, die direkt in diesem Knoten, oder in "einfachen"
+                Knoten wie &lt;B&gt; enthalten sind. Strukturell komplexere
+                Knoten wie &lt;TABLE&gt; werden f&uuml;r die Suche nicht betreten.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Der einfache Textinhalt eines Knotens.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getText()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert den Textinhalt eines Knotens. F&uuml;r einen einfachen Text-Knoten ist dies sein
+                Wert. Andernfalls wird das DOM ab diesem Knoten traversiert und die Werte aller
+                verschachtelten Text-Knoten gesammelt. Dabei wird darauf geachtet, Leerraum
+                m&ouml;glichst so wiederzugeben, wie er im Browser dargestellt wird.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Der gesamte direkte und indirekte Textinhalt eines Knotens.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getVisibleFlatText()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert den "flachen" Textinhalt eines Knotens. F&uuml;r einen einfachen Text-Knoten ist
+                dies sein Wert. Andernfalls werden die Werte aller direkt in diesem Knoten
+                enthaltenen Text-Knoten gesammelt. Unsichtbare Knoten und Knoten in darunter
+                liegenden Ebenen werden nicht ber&uuml;cksichtigt.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Der gesamte direkte sichtbare Textinhalt eines Knotens.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getVisibleSimpleText()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert den "einfachen" Textinhalt eines Knotens. F&uuml;r einen einfachen Text-Knoten
+                ist dies sein Wert. Andernfalls wird das DOM ab diesem Knoten traversiert und die
+                Werte aller sichtbaren Text-Knoten gesammelt, die direkt in diesem Knoten, oder in
+                "einfachen" Knoten wie &lt;B&gt; enthalten sind. Strukturell
+                komplexere Knoten wie &lt;TABLE&gt; werden f&uuml;r die Suche nicht
+                betreten.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Der sichtbare einfache Textinhalt eines Knotens.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getVisibleText()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert den Textinhalt eines Knotens. F&uuml;r einen einfachen Text-Knoten ist dies sein
+                Wert. Andernfalls wird das DOM ab diesem Knoten traversiert und die Werte aller
+                verschachtelten Text-Knoten gesammelt, wobei unsichtbare Knoten ignoriert werden.
+                Dabei wird darauf geachtet, Leerraum m&ouml;glichst so wiederzugeben, wie er im Browser
+                dargestellt wird.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Der gesamte direkte und indirekte sichtbare Textinhalt eines Knotens.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>boolean isAncestor(Node node)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Pr&uuml;ft, ob ein angegebener Knoten ein Vorg&auml;nger des aktuellen Knotens ist.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>node</code></strong></td><td class="paramdesc">Der vermeintliche Vorg&auml;ngerknoten.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">True, falls der Knoten ein Vorg&auml;nger ist, sonst false.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>boolean isAttributeSpecified(String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Pr&uuml;ft, ob ein Attribut eines Knotens explizit im HTML Code spezifiziert wurde. Zur
+                bequemeren Nutzung ist diese Methode bereits auf dieser Ebene f&uuml;r <code>Node</code>
+                definiert. Falls es sich bei einem konkreten Knoten nicht um ein Objekt der Klasse
+                <code>DomNode</code> handelt, ist das Ergebnis immer false.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">Der Name des Attributs.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                True falls das Attribut f&uuml;r diesen Knoten explizit spezifiziert wurde.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Browser isBrowserIE()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Pr&uuml;ft, ob der Browser, zu dem dieser Knoten geh&ouml;rt, ein Internet Explorer ist.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">True f&uuml;r Internet Explorer, false f&uuml;r Mozilla Varianten.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Browser isBrowserMozilla()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Pr&uuml;ft, ob der Browser, zu dem dieser Knoten geh&ouml;rt, eine Mozilla Variante ist.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">True f&uuml;r Mozilla Varianten, false f&uuml;r Internet Explorer.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>boolean isMatchingClass(String className)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Pr&uuml;ft, ob der Knoten von der angegebenen Klasse ist.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>className</code></strong></td><td class="paramdesc">Der zu pr&uuml;fende Klassenname.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">True, wenn der Knoten diese Klasse besitzt, sonst false.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setProperty(String name, Object value)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Setzt eine benutzerdefinierte Eigenschaft.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">Der Name der Eigenschaft.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>value</code></strong></td><td class="paramdesc">
+                Der Wert der Eigenschaft oder null um eine Eigenschaft wieder zu entfernen.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_dom_document.html#sec_dom_documentnode"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 50.11.2&nbsp;Die Klasse DocumentNode" title="N&auml;chste Seite: 50.11.2&nbsp;Die Klasse DocumentNode"></a></td><td class="navicon"><a href="tech_dom_document.html#sec_dom_documentnode"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 50.11.2&nbsp;Die Klasse DocumentNode" title="N&auml;chstes Kapitel: 50.11.2&nbsp;Die Klasse DocumentNode"></a></td><td class="navicon"><a href="tech_domapi.html#sec_domapi"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 50.11&nbsp;Pseudo DOM API f&uuml;r Webanwendungen" title="Kapitel-&Uuml;bersicht: 50.11&nbsp;Pseudo DOM API f&uuml;r Webanwendungen"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

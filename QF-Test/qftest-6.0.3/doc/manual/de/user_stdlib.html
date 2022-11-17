@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Standardbibliothek</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_stdlib"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="projects.html#usec_projects"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 9&nbsp;Projekte" title="Vorheriges Kapitel: 9&nbsp;Projekte"></a></td><td class="navicon"><a href="user_scripting.html#usec_scripting"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 11&nbsp;Skripting" title="N&auml;chste Seite: 11&nbsp;Skripting"></a></td><td class="navicon"><a href="user_scripting.html#usec_scripting"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 11&nbsp;Skripting" title="N&auml;chstes Kapitel: 11&nbsp;Skripting"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch" title="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_stdlib">10</a></span>
+</div>
+<a href="contents.html#toc_usec_stdlib">Standardbibliothek</a>
+</h3>
+    
+<p>
+      Die Standardbibliothek <code>qfs.qft</code>, eine Testsuite mit vielen hilfreichen
+      Prozeduren f&uuml;r unterschiedliche Aufgaben, ist Teil der QF-Test Distribution.
+    </p>
+      
+<a name="fig_qfsqft"></a><a name="figure_10.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/qfsqft.png" target="_blank"><img texscale=".66" src="images/qfsqft.png" width="966" height="816"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;10.1</a>:&nbsp;&nbsp;Standardbibliothek <code>qfs.qft</code></td><td class="captionglue"></td>
+</tr>
+</table>
+     
+<p>
+      Unter anderem gibt es Prozeduren zum generischen Ansteuern und Pr&uuml;fen von Komponenten (AWT,
+      Swing, JavaFX, SWT, Web), f&uuml;r den Zugriff auf Dateisysteme und Datenbanken, das Schreiben von Text
+      oder Bildschirmabbildern in Protokoll und Report sowie Aufr&auml;ummechanismen.
+    </p>
+    
+<p>
+      Die vollst&auml;ndige Beschreibung aller Packages und Prozeduren, inklusive Parameter und
+      R&uuml;ckgabewerte, finden Sie in der <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html" shape="rect">HTML
+      Dokumentation</a>, die auch &uuml;ber das &raquo;<em>Hilfe</em>&laquo; Men&uuml; in
+      QF-Test erreichbar ist. Zus&auml;tzlich ist die jeweils neueste Version <a href="http://www.qfs.de/include/qfs_pkgdoc/qfs_pkgdoc.html" shape="rect">online verf&uuml;gbar</a>.
+    </p>
+    
+<p>
+      
+<code>qfs.qft</code> wird standardm&auml;&szlig;ig in jeder neu erzeugten Testsuite inkludiert. Da das
+      Verzeichnis der Suite immer im <a href="opt_general.html#sec_opt_libpath">Bibliothekspfad</a>
+      enthalten ist, reicht <code>qfs.qft</code> ohne weitere Pfadangabe in den
+      <a href="rootnode.html#att_RootStep_includes" shape="rect">'Include Dateien'</a> des 'Testsuite' Knotens aus.
+    </p>
+    
+<p>
+      
+<span class="margin"><span class="note">Hinweis</span></span> Alle Prozeduren, die sich auf ein SUT beziehen, nutzen die generische Variable
+      <code>$(client)</code> als impliziten Parameter. Stellen Sie sicher, dass diese Variable
+      korrekt gesetzt wird, entweder global, lokal oder als expliziter Parameter im
+      Prozeduraufruf.
+    </p>
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="projects.html#usec_projects"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 9&nbsp;Projekte" title="Vorheriges Kapitel: 9&nbsp;Projekte"></a></td><td class="navicon"><a href="user_scripting.html#usec_scripting"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 11&nbsp;Skripting" title="N&auml;chste Seite: 11&nbsp;Skripting"></a></td><td class="navicon"><a href="user_scripting.html#usec_scripting"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 11&nbsp;Skripting" title="N&auml;chstes Kapitel: 11&nbsp;Skripting"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch" title="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

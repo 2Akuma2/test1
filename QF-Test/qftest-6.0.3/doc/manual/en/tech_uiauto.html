@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Controlling native Windows applications via the UIAuto module - 
+               without the QF-Test win engine</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_uiauto"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_web.html#sec_web"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 47&nbsp;Web" title="Previous Chapter: 47&nbsp;Web"></a></td><td class="navicon"><a href="tech_uiauto_general.html#usec_uiauto_general"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 48.1&nbsp;Proceeding" title="Next Page: 48.1&nbsp;Proceeding"></a></td><td class="navicon"><a href="tech_automac.html#usec_automac"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 49&nbsp;Controlling and testing native MacOS applications" title="Next Chapter: 49&nbsp;Controlling and testing native MacOS applications"></a></td><td class="navicon"><a href="technical.html#sec_technical"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: IV&nbsp;Technical reference" title="Chapter Overview: IV&nbsp;Technical reference"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_uiauto">48</a></span>
+</div>
+<a href="contents.html#toc_usec_uiauto">Controlling native Windows applications via the UIAuto module - 
+               without the QF-Test <code>win</code> engine</a>
+</h3>
+    
+<p>
+<span class="margin"><span class="note">Note</span></span>
+      The <code>win</code> engine is described in a separate chapter <a href="user_wintesting.html#usec_wintesting">Testing native Windows applications</a>.  
+    </p>
+    
+<p>
+      Generally you should use the <code>win</code> engine of QF-Test for testing and controlling
+      native Windows applications. This requires a respective license. In case you
+      do not have a license for the <code>win</code> engine of QF-Test and you require just a little test or 
+      need to do some simple controlling of a Windows application, e.g. during testing 
+      of process flow across Java, Web and Windows applications, you can use the 
+      library described in the current chapter.
+    </p>
+    
+<p>
+      The module allows control of native Windows GUI elements via Microsoft's UI Automation
+      interface. It can trigger actions and check certain values. The interface is described on
+       <a href="https://en.wikipedia.org/wiki/Microsoft_UI_Automation" shape="rect">
+        https://en.wikipedia.org/wiki/Microsoft_UI_Automation</a>.
+    </p>
+    
+<p>
+      Procedures in the <a href="user_stdlib.html#usec_stdlib">standard library</a>
+      <code>qfs.qft</code> wrap the methods of the module most frequently required.
+    </p>
+    
+<p>
+      It is not possible to record actions or checks directly (capturing). The
+      parameters identifying a GUI object need to be determined and then be passed
+      to the respective procedure.
+    </p>
+    
+<p>
+      Actions are replayed via 'hard' system events mainly. This results in a
+      different replay behavior than you are used to with QF-Test for Java or web applications.
+    </p>
+    
+<p>
+      Despite these restrictions the module can be very helpful for simple testing and
+      controlling tasks on native Windows applications.
+    </p>
+     
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="tech_uiauto_general.html#usec_uiauto_general"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="tech_uiauto_general.html#usec_uiauto_general">48.1</a></span>
+</div>
+<a href="tech_uiauto_general.html#usec_uiauto_general">Proceeding</a>
+</h4>
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="tech_uiauto_example.html#usec_uiauto_example"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="tech_uiauto_example.html#usec_uiauto_example">48.2</a></span>
+</div>
+<a href="tech_uiauto_example.html#usec_uiauto_example">Example</a>
+</h4>
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_web.html#sec_web"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 47&nbsp;Web" title="Previous Chapter: 47&nbsp;Web"></a></td><td class="navicon"><a href="tech_uiauto_general.html#usec_uiauto_general"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 48.1&nbsp;Proceeding" title="Next Page: 48.1&nbsp;Proceeding"></a></td><td class="navicon"><a href="tech_automac.html#usec_automac"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 49&nbsp;Controlling and testing native MacOS applications" title="Next Chapter: 49&nbsp;Controlling and testing native MacOS applications"></a></td><td class="navicon"><a href="technical.html#sec_technical"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: IV&nbsp;Technical reference" title="Chapter Overview: IV&nbsp;Technical reference"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

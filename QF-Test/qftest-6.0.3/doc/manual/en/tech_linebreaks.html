@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Line breaks under Unix and Windows</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_linebreaks"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_regexp.html#sec_regexp"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 45.3&nbsp;Regular expressions" title="Previous Chapter: 45.3&nbsp;Regular expressions"></a></td><td class="navicon"><a href="tech_quoting.html#sec_quoting"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 45.5&nbsp;Quoting and escaping special characters" title="Next Page: 45.5&nbsp;Quoting and escaping special characters"></a></td><td class="navicon"><a href="tech_quoting.html#sec_quoting"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 45.5&nbsp;Quoting and escaping special characters" title="Next Chapter: 45.5&nbsp;Quoting and escaping special characters"></a></td><td class="navicon"><a href="tech_misc.html#tsec_miscellaneous"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 45&nbsp;Technical details about miscellaneous issues" title="Chapter Overview: 45&nbsp;Technical details about miscellaneous issues"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_linebreaks">45.4</a></span>
+</div>
+<a href="contents.html#toc_sec_linebreaks">Line breaks under Unix and Windows</a>
+</h4>
+      
+<p>
+        The difference in the treatment of line breaks between Unix and
+        Windows is a well-known problem. While Unix uses a single LineFeed
+        character ('\n', hex 0x0A) as line separator, Windows uses the
+        combination CarriageReturn/LineFeed ('\r\n', hex 0x0D0A). Java
+        automatically converts text as needed which generally works well.
+      </p>
+      
+<p>
+        However, the XML standard specifies that an XML parser has to
+        convert line breaks of any type into LineFeed only, regardless of
+        the system under which it is running. This could lead to trouble,
+        for example when checking a multi line text field. QF-Test works around
+        the problem by converting all text strings read from the SUT to
+        the Unix version with LineFeed only. This has the added benefit that
+        tests created on one system will run unchanged on the other.
+      </p>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_regexp.html#sec_regexp"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 45.3&nbsp;Regular expressions" title="Previous Chapter: 45.3&nbsp;Regular expressions"></a></td><td class="navicon"><a href="tech_quoting.html#sec_quoting"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 45.5&nbsp;Quoting and escaping special characters" title="Next Page: 45.5&nbsp;Quoting and escaping special characters"></a></td><td class="navicon"><a href="tech_quoting.html#sec_quoting"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 45.5&nbsp;Quoting and escaping special characters" title="Next Chapter: 45.5&nbsp;Quoting and escaping special characters"></a></td><td class="navicon"><a href="tech_misc.html#tsec_miscellaneous"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 45&nbsp;Technical details about miscellaneous issues" title="Chapter Overview: 45&nbsp;Technical details about miscellaneous issues"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

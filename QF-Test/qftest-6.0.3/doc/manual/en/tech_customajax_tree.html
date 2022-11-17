@@ -1,0 +1,269 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Mapping of Trees</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_customajax_tree"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_customajax_table.html#sec_customajax_table"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 47.1.5&nbsp;Mapping of Tables and TreeTables" title="Previous Chapter: 47.1.5&nbsp;Mapping of Tables and TreeTables"></a></td><td class="navicon"><a href="tech_customajax_list.html#sec_customajax_list"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 47.1.7&nbsp;Mapping of Lists" title="Next Page: 47.1.7&nbsp;Mapping of Lists"></a></td><td class="navicon"><a href="tech_customajax_list.html#sec_customajax_list"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 47.1.7&nbsp;Mapping of Lists" title="Next Chapter: 47.1.7&nbsp;Mapping of Lists"></a></td><td class="navicon"><a href="tech_customajax.html#sec_customajax"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 47.1&nbsp;Improving component recognition with a CustomWebResolver" title="Chapter Overview: 47.1&nbsp;Improving component recognition with a CustomWebResolver"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_customajax_tree">47.1.6</a></span>
+</div>
+<a href="contents.html#toc_sec_customajax_tree">Mapping of Trees</a>
+</h5>
+          
+<p>
+            In order to resolve Tree components correctly, it's necessary to map the component
+            containing all entries i.e the tree itself
+            as well as the components which represent the individual tree entires.
+            Furthermore you need to map the toggler button, which opens and closes a tree node.
+          </p>
+          
+<a name="table_47.2"></a><a name="table_47.2"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth" valign="center">
+            
+<tr>
+              
+<th rowspan="1" colspan="1">Class</th>
+              <th rowspan="1" colspan="1">Required components and sub items</th>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Tree</td>
+              <td rowspan="1" colspan="1">Represents the Tree component, contains all tree nodes.</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">TreeNode</td>
+              <td rowspan="1" colspan="1">Represents a tree node.</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Expander:TreeNodeExpander</td>
+              <td rowspan="1" colspan="1">Represents the toggling component used to open and close the tree node.</td>
+            
+</tr>
+            
+<tr>
+              
+<th rowspan="1" colspan="1">&nbsp;</th>
+              <th rowspan="1" colspan="1">Optional sub items</th>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Spacer:TreeNodeSpacer</td>
+              <td rowspan="1" colspan="1">(Optional) Represents the spacing object used to create the level of the tree node.</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">CheckBox:TreeNodeCheckBox</td>
+              <td rowspan="1" colspan="1">(Optional) Represents a CheckBox of a tree node.</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Icon:TreeNodeIcon</td>
+              <td rowspan="1" colspan="1">(Optional) Represents an Icon in a tree node.</td>
+            
+</tr>
+          
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;47.2</a>:&nbsp;&nbsp;Mapping of trees</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            In case of TreeTables, simply replace Tree with TreeTable, i.e.
+            <code>TreeTable</code> instead of <code>Tree</code>,
+            <code>TreeTableNode</code> instead of <code>TreeNode</code>,
+            <code>Expander:TreeTableNodeExpander</code> instead of <code>Expander:TreeNodeExpander</code> etc.
+          </p>
+          
+<p>
+            
+<strong>Example:</strong>
+          
+</p>
+          
+<p>
+            The WebCarConfigurator demo
+            (<code>qftest-6.0.3/demo/carconfigWeb/carconfigWeb_de.qft</code>)
+            contains a tree. Please open the specials dialog via the
+            menu &raquo;<em>Options</em>&laquo;-&raquo;<em>Specials...</em>&laquo;,
+            select a model and click the Button 'Details'.
+          </p>
+          
+<p>
+            When you have a look at the css classes recorded by QF-Test or analyse the
+            web page with the developer tool of a browser (cf. <a href="tech_customajax_analysis.html#sec_customajax_analysis">subsection 47.1.2</a>)
+            you will find the following HTML structure (slightly simplifies and shortened):
+          </p>
+            
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>&lt;table id="DetailsTree" class="tree"&gt;
+  &lt;tbody&gt;
+    &lt;tr class="treenode even"&gt;
+      &lt;td&gt;Information&lt;/td&gt;
+      &lt;td&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr class="treenode odd&gt;
+      &lt;td&gt;
+        &lt;span&gt;
+          &lt;span class=treenodespacer"&gt;&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+          &lt;span class="treetoggler"&gt;
+            &lt;img src="include/collapse.png" onclick="javascript: ..."&gt;&lt;/img&gt;
+          &lt;/span&gt;
+          &lt;span&gt;Zubeh&ouml;r&lt;/span&gt;
+        &lt;/span&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr class="treenode odd&gt;
+      &lt;td&gt;
+        &lt;span&gt;
+          &lt;span class=treenodespacer"&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/span&gt;
+          &lt;span&gt;Zentralverriegelung&lt;/span&gt;
+        &lt;/span&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;47.2:&nbsp;&nbsp;HTML Tree</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            In the CarConfigurator demo test-suite you will find the mapping for the tree
+            in the procedure call to <code>qfs.web.ajax.installCustomWebResolver</code>.
+            It is located in the procedure <code>startStop.start</code> in the last sequence,
+            <code>Install CustomWebResolver</code>.
+          </p>
+          
+<a name="figure_47.5"></a><a name="figure_47.5"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/WebCarConfigCallCustom.png" target="_blank"><img src="images/WebCarConfigCallCustom.png" alt="WebCarConfig" width="602" height="226" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;47.5</a>:&nbsp;&nbsp;WebCarConfigurator</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            In the value field of the parameter 'genericClasses' the
+            following entries map the tree:
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>installCustomWebResolver</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Map the tree of the QF-Test demo test-suite.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>resolver</code></strong></td><td class="paramdesc">
+                custom
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>version</code></strong></td><td class="paramdesc">
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>genericClasses</code></strong></td><td class="paramdesc">
+                tree=Tree,<br>
+                treenode=TreeNode,<br>
+                treetoggler=Expander:TreeNodeExpander,<br>
+                treenodespacer=Spacer:TreeNodeSpacer
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_customajax_table.html#sec_customajax_table"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 47.1.5&nbsp;Mapping of Tables and TreeTables" title="Previous Chapter: 47.1.5&nbsp;Mapping of Tables and TreeTables"></a></td><td class="navicon"><a href="tech_customajax_list.html#sec_customajax_list"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 47.1.7&nbsp;Mapping of Lists" title="Next Page: 47.1.7&nbsp;Mapping of Lists"></a></td><td class="navicon"><a href="tech_customajax_list.html#sec_customajax_list"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 47.1.7&nbsp;Mapping of Lists" title="Next Chapter: 47.1.7&nbsp;Mapping of Lists"></a></td><td class="navicon"><a href="tech_customajax.html#sec_customajax"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 47.1&nbsp;Improving component recognition with a CustomWebResolver" title="Chapter Overview: 47.1&nbsp;Improving component recognition with a CustomWebResolver"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

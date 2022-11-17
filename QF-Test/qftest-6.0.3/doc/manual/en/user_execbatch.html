@@ -1,0 +1,469 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Test execution in batch mode</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_execbatch"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="user_execdaemon.html#usec_execdaemon"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 22.2&nbsp;Executing tests in daemon mode" title="Next Page: 22.2&nbsp;Executing tests in daemon mode"></a></td><td class="navicon"><a href="user_execdaemon.html#usec_execdaemon"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 22.2&nbsp;Executing tests in daemon mode" title="Next Chapter: 22.2&nbsp;Executing tests in daemon mode"></a></td><td class="navicon"><a href="user_testexecution.html#usec_testexecution"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 22&nbsp;Test execution" title="Chapter Overview: 22&nbsp;Test execution"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_execbatch">22.1</a></span>
+</div>
+<a href="contents.html#toc_usec_execbatch">Test execution in batch mode</a>
+</h4>
+      
+
+      
+<p>
+        There are a lot of command line arguments when running QF-Test in batch mode; an overview
+        can be found in <a href="tech_execution.html#sec_execution">chapter 40</a>. Here we will present examples showing the
+        most important of them.
+      </p>
+      
+<p>
+        The examples are written for the Windows operating system, but you may easily adapt them
+        for the Linux platform. What is different is the path specification and also the syntax
+        for placeholders (<a href="tech_execution.html#sec_placeholders">subsection 40.2.4</a>): On Linux you can use +X as well as
+        %X. On Windows there's a separate console application <code>qftestc.exe</code>. In
+        contrast to its GUI variant <code>qftest.exe</code>, it waits until the execution of
+        QF-Test has terminated and also displays print output from a <a href="control.html#step_ServerScriptStep" shape="rect">'Server script'</a>. You
+        can use <code>qftestc.exe</code> in place of <code>qftest.exe</code> wherever you'll find
+        it convenient.
+      </p>
+
+      
+      
+
+      
+<a name="sec_N89843"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N89843">22.1.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N89843">Command line usage</a>
+</h5>
+        
+<p>
+          Let's start with the most simple QF-Test command to execute a test:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>qftest -batch -run c:\mysuites\suiteA.qft</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;22.1:&nbsp;&nbsp;Test execution from the command line</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          The argument <code>-batch</code> makes QF-Test start without a graphical user interface.
+          The second argument, <code>-run</code>, is the specifier for test execution. Finally, at
+          the end of the command line, you find the test-suite to be executed.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Note</span></span> The argument <code>-run</code> is optional, i. e. the test
+          execution is defined as default for the batch mode.
+        </p>
+        
+<p>
+          When running the above command, all top-level 'Test-case' and
+          'Test-set' nodes of <code>suiteA.qft</code> will be executed one after another.
+          After the test-run you will find a run-log file in the current directory; it has the
+          same name as the test-suite (except from the extension, which can be
+          <code>.qrl</code>, <code>.qrz</code> or <code>.qzp</code>). The run-log file shows the
+          result of the test-run.
+        </p>
+        
+<p>
+          By specifying <code>-nolog</code> you can suppress the creation of a run-log. Probably
+          this only makes sense, if you have extended your test by your own log output (written
+          to a file). Otherwise you'd have to check the result code of QF-Test, whereas 0 means
+          that everything is alright. A positive value in contrast indicates that warnings,
+          errors or exceptions occurred during the test-run (see <a href="tech_execution.html#sec_exitcodes">section 40.3</a>). That's why in most situations you'll probably prefer to create
+          a run-log and save it at a fixed place in the file system. This can be achieved with
+          the parameter <code>-runlog</code>:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>qftest -batch -compact -runlog c:\mylogs\+b c:\mysuites\suiteA.qft</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;22.2:&nbsp;&nbsp;Test execution with run-log creation</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          A run-log file <code>suiteA.qrz</code> will now be created in the specified directory
+          <code>c:\mylogs</code>. The placeholder <code>+b</code> is responsible for its name
+          being identical with that of the test-suite. The additional switch <code>-compact</code>
+          prevents the run-log from growing too large: Only the nodes needed for a report and
+          those immediately before an error or an exception are kept in the run-log. Especially in
+          case of very long test-runs this may help to reduce the amount of required memory.
+          The newer method of using split run-logs is even more powerful. For more
+          information about that see <a href="user_debugging.html#usec_runlog">section 7.1</a>.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Note</span></span> Whether the file is indeed created as compressed run-log (to be
+          distinguished from the above "compact") with extension <code>.qrz</code>,
+          depends on the system settings. To force the creation of a particular format you can
+          set the file extension explicitly. With <code>-runlog c:\mylogs\+b.qrl</code>, for
+          example, an uncompressed XML file will be produced.
+        </p>
+        
+<p>
+          Sometimes you may want to execute not the whole test-suite but only parts of it. By
+          using the parameter <code>-test</code> you can run a specific node of the test-suite:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>qftest -batch -runlog c:\mylogs\+b -test "My test-case" c:\mysuites\suiteA.qft</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;22.3:&nbsp;&nbsp;Executing a specified node</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          The parameter <code>-test</code> expects the 'QF-Test ID' attribute of the node to follow or
+          the qualified name of a 'Test-case' or 'Test-set'. If you want to execute several nodes,
+          you can define <code>-test &lt;ID&gt;</code> multiple times. Apart from the node's 'QF-Test ID',
+          <code>-test</code> accepts also the numerical index of a top-level node. For example,
+          <code>-test 0</code> will run the first child of the 'Test-suite' node.
+        </p>
+        
+<p>
+          The run-log provides a rather technical view of the test-run; it is helpful mainly
+          when analyzing errors (cf. <a href="user_debugging.html#usec_runlog">section 7.1</a>). The report in contrast
+          contains a summary of the executed test-cases and errors (cf. <a href="user_report.html#usec_report">chapter 21</a>) in XML or HTML format. It is created from the run-log either in
+          a separate step after running the test or automatically with the test-run:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>qftest -batch -runlog c:\mylogs\+b -report c:\mylogs\rep_+b_+y+M+d+h+m c:\mysuites\suiteA.qft</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;22.4:&nbsp;&nbsp;Creating a report</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          In this example the XML and HTML files are saved in a directory which name consists of
+          the test-suite and a timestamp like <code>c:\mylogs\rep_suiteA_0806042152</code>. When
+          replacing the argument <code>-report</code> with <code>-report.xml</code> or
+          <code>-report.html</code> respectively, only an XML or HTML report will be created.
+        </p>
+        
+<p>
+          Test-cases often uses variables to control the execution of the test. For example, you
+          may have defined the variable <code>myvar</code> in the <a href="rootnode.html#step_RootStep" shape="rect">'Test-suite'</a> node of the
+          suite. You can overwrite its default value when running the test-suite from the
+          command line:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>qftest -batch -variable myvar="Value from command line" -runlog c:\mylogs\+b c:\mysuites\suiteA.qft</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;22.5:&nbsp;&nbsp;Test execution with variables</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          If needed, you can specify <code>-variable &lt;name&gt;=&lt;wert&gt;</code> multiple
+          times to set values for different variables.
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_N90059"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N90059">22.1.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N90059">Windows batch script</a>
+</h5>
+        
+<p>
+          Running tests from the command line is fundamental for integrating QF-Test in
+          test management systems (see <a href="user_testmanagement.html#usec_testmanagement">Interaction with Test Management Tools</a>). Otherwise, living
+          without such a tool, you may find it convenient to embed the command for the
+          test execution into a script. A simple Windows batch script (<code>qfbatch.bat</code>)
+          looks like this:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>@echo off
+setlocal
+if "%1" == "" (
+    echo Usage: qfbatch Testsuite
+    goto end
+) else (
+    set suite=%~f1
+)
+set logdir=c:\mylogs
+pushd c:\programs\qftest\qftest-6.0.3\bin
+
+@echo on
+.\qftest -batch -compact -runlog %logdir%\+b %suite%
+@echo off
+
+if %errorlevel% equ 0 (
+  echo Test terminated successfully
+  goto end
+)
+if %errorlevel% equ 1 (
+  echo Test terminated with warnings
+  goto end
+)
+if %errorlevel% equ 2 (
+  echo Test terminated with errors
+  goto end
+)
+if %errorlevel% equ 3 (
+  echo Test terminated with exceptions
+  goto end
+)
+if %errorlevel% leq -1 (
+  echo Error %errorlevel%
+  goto end
+)
+
+:end
+popd</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;22.6:&nbsp;&nbsp;Batch script <code>qfbatch.bat</code> to execute a test-suite</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Now you can simply run that script with only the file name of the test-suite as parameter.
+          Everything else is done automatically: The test-suite will be executed, the run-log
+          file stored in <code>logdir</code> and finally the script will print out the state of the
+          test-run (depending on the QF-Test result code).
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_N90099"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N90103"></a><span class="note">3.0+</span></span><span class="numtitle"><a href="contents.html#toc_sec_N90099">22.1.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N90099">Groovy</a>
+</h5>
+        
+<p>
+          Since version QF-Test 3 the language Groovy is part of the release (cf. <a href="user_scripting.html#usec_scripting">chapter 11</a>). It is meant mainly for scripting inside QF-Test (Server and SUT
+          scripts), but it can, like Jython, also be used outside of QF-Test. Groovy is probably
+          well suited to create a little test execution management system by yourself. By the
+          way, Groovy simplifies working with Ant, too: Instead of dealing with bulky XML files,
+          which makes it hard to define conditions, you can work with the Groovy
+          <code>AntBuilder</code>. However, that's out of scope here, the following example
+          doesn't rely on Ant but only on the basic Groovy features:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def suite = ''
+if (args.size() == 0) {
+    println 'Usage: groovy QfExec Testsuite'
+    return
+}
+else {
+    suite = args[0]
+}
+
+def qftestdir = 'c:\\programs\\qfs\\qftest\\qftest-6.0.3'
+def qftest = qftestdir + '\\bin\\qftest.exe'
+def command = [qftest,
+              "-batch",
+              "-compact",
+              "-runlog", "c:\\mylogs\\+b",
+              suite]
+def printStream = { stream -&gt;
+    while (true) {
+        try {
+            stream.eachLine { println it }
+        } catch (IOException) {
+            break
+        }
+    }
+}
+
+println "Running command: $command"
+def proc = command.execute()
+new Thread().start() { printStream(proc.in) }
+new Thread().start() { printStream(proc.err) }
+proc.waitFor()
+
+switch (proc.exitValue()) {
+    case '0': println 'Test terminated successfully'; break
+    case '1': println 'Test terminated with warnings'; break
+    case '2': println 'Test terminated with errors'; break
+    case '3': println 'Test terminated with exceptions'; break
+    default: println "Error ${proc.exitValue()}"
+}</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;22.7:&nbsp;&nbsp;Groovy script <code>QfExec.groovy</code> to execute a test-suite</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          If you have Groovy installed on your computer independently of QF-Test, you can run the
+          example test-suite simply via  <code>groovy QfExec c:\mysuites\suiteA.qft</code>.
+          Otherwise you can use the Groovy jar file from the QF-Test installation, preferably again
+          with help of a batch script:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>@echo off
+setlocal
+if "%1" == "" (
+    echo Usage: qfexec Testsuite
+    goto end
+)
+set qftestdir=c:\programs\qftest\qftest-6.0.3
+set scriptfile=QfExec.groovy
+java -cp %qftestdir%/lib/groovy-all.jar groovy.ui.GroovyMain %scriptfile% %*
+:end</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;22.8:&nbsp;&nbsp;Batch script <code>qfexec.bat</code> to run a Groovy script (here:
+          <code>QfExec.groovy</code>)</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Now execute the test-suite with <code>qfexec c:\mysuites\suiteA.qft</code>.
+        </p>
+      
+
+      
+
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="user_execdaemon.html#usec_execdaemon"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 22.2&nbsp;Executing tests in daemon mode" title="Next Page: 22.2&nbsp;Executing tests in daemon mode"></a></td><td class="navicon"><a href="user_execdaemon.html#usec_execdaemon"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 22.2&nbsp;Executing tests in daemon mode" title="Next Chapter: 22.2&nbsp;Executing tests in daemon mode"></a></td><td class="navicon"><a href="user_testexecution.html#usec_testexecution"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 22&nbsp;Test execution" title="Chapter Overview: 22&nbsp;Test execution"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

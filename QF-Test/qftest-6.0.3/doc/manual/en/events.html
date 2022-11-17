@@ -1,0 +1,2476 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Events</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_events"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="processes.html#sec_processes"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 38.7&nbsp;Processes" title="Previous Chapter: 38.7&nbsp;Processes"></a></td><td class="navicon"><a href="checks.html#sec_checks"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 38.9&nbsp;Checks" title="Next Page: 38.9&nbsp;Checks"></a></td><td class="navicon"><a href="checks.html#sec_checks"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 38.9&nbsp;Checks" title="Next Chapter: 38.9&nbsp;Checks"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 38&nbsp;Elements of a test-suite" title="Chapter Overview: 38&nbsp;Elements of a test-suite"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_events">38.8</a></span>
+</div>
+<a href="contents.html#toc_sec_events">Events</a>
+</h4>
+    
+<p>
+      This section lists all kinds of nodes that trigger actions in the
+      SUT. Besides true Java events these include pseudo events with
+      special behavior.
+    </p>
+    
+
+    
+<a name="step_MouseEventStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_MouseEventStep">38.8.1</a></span>
+</div>
+<a href="contents.html#toc_step_MouseEventStep">'Mouse event'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/mouse.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            'Mouse events' simulate mouse movement and clicks as well as
+            drag and drop operations.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> All kinds of <a href="sequences.html#sec_sequences" shape="rect">sequences</a>.</p>
+<p>
+<strong>Children:</strong> None</p>
+<p>
+<strong>Execution:</strong> 
+          The coordinates and other attributes of the event are sent to the
+          SUT together with the data about the target component. The
+          <code>TestEventQueue</code> determines the corresponding component in the
+          SUT, adjusts the coordinates and triggers the resulting event.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.54"></a><a name="figure_38.54"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_MouseEventStep.png" target="_blank"><img src="images/att_MouseEventStep.png" alt="Mouse event attributes" texscale=".66" width="393" height="486"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.54</a>:&nbsp;&nbsp;'Mouse event' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_MouseEventStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        The name of the SUT client process to which the event is sent.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_MouseEventStep_component"></a>
+<dt>'QF-Test component ID'</dt>
+<dd>
+      
+<p>
+        The <a href="components.html#att_WindowStep_id" shape="rect">'QF-Test ID'</a> of the <a href="components.html#step_WindowStep" shape="rect">'Window'</a>,
+        <a href="components.html#step_ComponentStep" shape="rect">'Component'</a> or <a href="components.html#step_SubItemStep" shape="rect">'Item'</a> node that is the
+        target of the event.
+      </p>
+      
+<p>
+    The "Select component" button
+    <img src="../icons/select_component.png" style="vertical-align: text-bottom" alt="[Select component]" title="Select component" width="20" height="20" texscale=".66">
+    brings up a dialog in which you can select the component
+    interactively. You can also get to this dialog by pressing
+    [Shift-Return] or
+    [Alt-Return], when the focus is in the
+    text field. As an alternative you can copy the target node with
+    [Ctrl-C] or
+    &raquo;<em>Edit</em>&laquo;-&raquo;<em>Copy</em>&laquo;
+    and insert its QF-Test component ID into the text field by pressing
+    [Ctrl-V].
+  </p>
+      
+<p>
+    This attribute supports a special format
+    for referencing components in other test suites
+    (see <a href="user_distributed.html#usec_suitereference">section 23.1</a>).
+    Furthermore, sub-elements of nodes can be addressed directly
+    without requiring separate nodes for them (see <a href="user_subitems.html#usec_subitems">section 5.9</a>). 
+    When using SmartIDs, you can address a GUI element
+    directly via its recognition criteria.
+    For more information, refer to <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a>
+    and <a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">'Component' nodes versus SmartID</a>.
+  </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_MouseEventStep_event"></a>
+<dt>'Event'</dt>
+<dd>
+            
+            
+<p>
+              This <em>ComboBox</em> lets you choose the type of the event.
+              <code>MOUSE_MOVED</code>, <code>MOUSE_PRESSED</code>, <code>MOUSE_RELEASED</code>,
+              <code>MOUSE_CLICKED</code> and <code>MOUSE_DRAGGED</code> are the standard event IDs of
+              the Java class <code>MouseEvent</code>.
+            </p>
+            
+<p>
+              The abstract 'Mouse click' event is a compound of the events
+              <code>MOUSE_MOVED</code>, <code>MOUSE_PRESSED</code>, <code>MOUSE_RELEASED</code> and <code>MOUSE_CLICKED</code>.
+              During replay the pseudo event is simulated as four separate
+              events. This adds to the clarity of a test-suite and simplifies
+              editing.
+            </p>
+            
+<p>
+              
+<span class="margin"><a name="new_N133147"></a><span class="note">4.1.3+</span></span>
+
+              The special 'Double click' event comprises all the individual events required to simulate a complete
+              double click.
+            </p>
+            
+<p>
+              The events <code>MOUSE_DRAG_FROM</code>, <code>MOUSE_DRAG_OVER</code> and
+              <code>MOUSE_DROP_TO</code> are used to simulate Drag&amp;Drop in the SUT. See <a href="tech_draganddop.html#sec_draganddrop">section 45.1</a> for details.
+            </p>
+          
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_MouseEventStep_xy"></a>
+<dt>X/Y</dt>
+<dd>
+            
+            
+            
+<p>
+              These are the coordinates of the <em>MouseEvent</em>. They are
+              relative to the upper left corner of the <a href="components.html#step_WindowStep" shape="rect">'Window'</a>,
+              <a href="components.html#step_ComponentStep" shape="rect">'Component'</a> or <a href="components.html#step_SubItemStep" shape="rect">'Item'</a> that is the target of
+              the event. They can be negative, e.g. to simulate a click on the
+              expansion toggle of a node in a <code>JTree</code>.
+            </p>
+            
+<p>
+              Most of the time the exact coordinates for a mouse don't really matter, any place
+              within the target will do. In this case you should leave the 'X' and 'Y'
+              values empty to tell QF-Test to aim at the center of the target. Where possible QF-Test
+              will leave the values empty when recording, provided the option <a href="opt_record.html#opt_repositionmouseevents">
+              Record MouseEvents without coordinates where possible
+            </a> is active.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number or empty</p>
+</dd>
+<a name="att_MouseEventStep_modifiers"></a>
+<dt>'Modifiers'</dt>
+<dd>
+      
+<p>
+        This value reflects the state of the mouse buttons and the modifier
+        keys [Shift], [Control],
+        [Alt] and [Meta] during a
+        mouse or key event. States are combined by adding up their values.
+      </p>
+      
+<a name="table_38.16"></a><a name="table_38.16"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdrightleft" border="1" cellspacing="0" cellpadding="3">
+          
+<tr>
+            
+<th align="right" rowspan="1" colspan="1">Value</th>
+            <th align="left" rowspan="1" colspan="1">Key/Button</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="right" rowspan="1" colspan="1">1</td>
+            <td rowspan="1" colspan="1">Shift</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="right" rowspan="1" colspan="1">2</td>
+            <td rowspan="1" colspan="1">Control</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="right" rowspan="1" colspan="1">4</td>
+            <td rowspan="1" colspan="1">Meta or right mouse button (Longclick for Android)</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="right" rowspan="1" colspan="1">8</td>
+            <td rowspan="1" colspan="1">Alt or middle mouse button</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="right" rowspan="1" colspan="1">16</td>
+            <td rowspan="1" colspan="1">Left mouse button</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;38.16</a>:&nbsp;&nbsp;Modifier values</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number</p>
+</dd>
+<a name="att_MouseEventStep_clicks"></a>
+<dt>'Click count'</dt>
+<dd>
+            
+            
+<p>
+              This value lets a Java program distinguish between a single
+              and a double (or even multiple) click.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number</p>
+</dd>
+<a name="att_MouseEventStep_popup"></a>
+<dt>'Popup trigger'</dt>
+<dd>
+            
+            
+<p>
+              If this attribute is set, the event can trigger a
+              <em>PopupMenu</em>. This is Java's somewhat peculiar
+              way of supporting different conventions for triggering
+              <em>PopupMenus</em> on different platforms.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_MouseEventStep_hardevent"></a>
+<dt>'Replay as "hard" event'</dt>
+<dd>
+            
+            
+<p>
+              If this attribute is set the event is replayed as a hard event, meaning it is
+              triggered as a real system event that moves the mouse around and not just inserted
+              as soft event into the event queue. Soft events are are typically better because
+              they avoid impact of concurrent user mouse actions and are less likely to break due
+              to interference from an overlapping window. Nevertheless there are certain special
+              situations where hard events are helpful.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_MouseEventStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_MouseEventStep_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_MouseEventStep_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_KeyEventStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_KeyEventStep">38.8.2</a></span>
+</div>
+<a href="contents.html#toc_step_KeyEventStep">'Key event'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/key.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            'Key events' simulate keyboard input in the SUT. These are
+            used mainly for control and function keys. Input of text is better
+            represented as a <a href="#step_TextInputStep" shape="rect">'Text input'</a>.
+          </p>
+          
+<p>
+            The special keyboard event <code>InputMethodEvent</code> supports international
+            character codes. QF-Test doesn't support <code>InputMethodEvents</code> directly.
+            Instead, it converts events of type <code>INPUT_METHOD_TEXT_CHANGED</code> into
+            'Key events' of type <code>KEY_TYPED</code>.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> All kinds of <a href="sequences.html#sec_sequences" shape="rect">sequences</a>.</p>
+<p>
+<strong>Children:</strong> None</p>
+<p>
+<strong>Execution:</strong> 
+          The key codes of the event are sent to the SUT together with the
+          data about the target component. The <code>TestEventQueue</code> determines the
+          corresponding component in the SUT and triggers the resulting
+          event.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.55"></a><a name="figure_38.55"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_KeyEventStep.png" target="_blank"><img src="images/att_KeyEventStep.png" alt="Key event attributes" texscale=".66" width="393" height="417"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.55</a>:&nbsp;&nbsp;'Key event' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_KeyEventStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        The name of the SUT client process to which the event is sent.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_KeyEventStep_component"></a>
+<dt>'QF-Test component ID'</dt>
+<dd>
+      
+<p>
+        The <a href="components.html#att_WindowStep_id" shape="rect">'QF-Test ID'</a> of the <a href="components.html#step_WindowStep" shape="rect">'Window'</a>,
+        <a href="components.html#step_ComponentStep" shape="rect">'Component'</a> or <a href="components.html#step_SubItemStep" shape="rect">'Item'</a> node that is the
+        target of the event.
+      </p>
+      
+<p>
+    The "Select component" button
+    <img src="../icons/select_component.png" style="vertical-align: text-bottom" alt="[Select component]" title="Select component" width="20" height="20" texscale=".66">
+    brings up a dialog in which you can select the component
+    interactively. You can also get to this dialog by pressing
+    [Shift-Return] or
+    [Alt-Return], when the focus is in the
+    text field. As an alternative you can copy the target node with
+    [Ctrl-C] or
+    &raquo;<em>Edit</em>&laquo;-&raquo;<em>Copy</em>&laquo;
+    and insert its QF-Test component ID into the text field by pressing
+    [Ctrl-V].
+  </p>
+      
+<p>
+    This attribute supports a special format
+    for referencing components in other test suites
+    (see <a href="user_distributed.html#usec_suitereference">section 23.1</a>).
+    Furthermore, sub-elements of nodes can be addressed directly
+    without requiring separate nodes for them (see <a href="user_subitems.html#usec_subitems">section 5.9</a>). 
+    When using SmartIDs, you can address a GUI element
+    directly via its recognition criteria.
+    For more information, refer to <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a>
+    and <a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">'Component' nodes versus SmartID</a>.
+  </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_KeyEventStep_event"></a>
+<dt>'Event'</dt>
+<dd>
+            
+            
+<p>
+              This <em>ComboBox</em> lets you choose the type of the event.
+              <code>KEY_PRESSED</code>, <code>KEY_TYPED</code> and <code>KEY_RELEASED</code> are the standard
+              event IDs of the Java class <code>KeyEvent</code>.
+            </p>
+            
+<p>
+              The 'Keystroke' pseudo event is a compound of the events
+              <code>KEY_PRESSED</code>, <code>KEY_TYPED</code> and <code>KEY_RELEASED</code>.  During replay the
+              pseudo event is simulated as two or three separate events,
+              depending on whether it is a printable character key, or a
+              control or function key. In the latter case, no <code>KEY_TYPED</code> event
+              is generated.
+            </p>
+          
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_KeyEventStep_key"></a>
+<dt>'Key'</dt>
+<dd>
+            
+            
+<p>
+              This is a convenience method to set <a href="#att_KeyEventStep_keycode" shape="rect">'Key code'</a>,
+              <a href="#att_KeyEventStep_keychar" shape="rect">'Key char'</a> and <a href="#att_KeyEventStep_modifiers" shape="rect">'Modifiers'</a>
+              directly by pressing the corresponding key while this component
+              has the keyboard focus. For <code>KEY_TYPED</code> events
+              <a href="#att_KeyEventStep_keychar" shape="rect">'Key char'</a> is set to 0.
+            </p>
+            
+<p>
+              Unfortunately you can't select the [Tab]
+              key this way since it is used for keyboard
+              traversal. <a href="#att_KeyEventStep_keycode" shape="rect">'Key code'</a> and
+              <a href="#att_KeyEventStep_keychar" shape="rect">'Key char'</a> for the [Tab]
+              key are both 9.
+            </p>
+          
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_KeyEventStep_keycode"></a>
+<dt>'Key code'</dt>
+<dd>
+            
+            
+<p>
+              This is a Java specific code for the key, the
+              <code>keyCode</code> member of the Java class
+              <code>KeyEvent</code>.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number</p>
+</dd>
+<a name="att_KeyEventStep_keychar"></a>
+<dt>'Key char'</dt>
+<dd>
+            
+            
+<p>
+              This is the <code>keyChar</code> member of the Java class
+              <code>KeyEvent</code>. Its value is the character generated
+              created by the last key press, taking the state of the
+              [Shift] key into account. Control and
+              function keys always have a 'Key char' value of 65535.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number</p>
+</dd>
+<a name="att_KeyEventStep_modifiers"></a>
+<dt>'Modifiers'</dt>
+<dd>
+      
+<p>
+        This value reflects the state of the mouse buttons and the modifier
+        keys [Shift], [Control],
+        [Alt] and [Meta] during a
+        mouse or key event. States are combined by adding up their values.
+      </p>
+      
+<a name="table_38.17"></a><a name="table_38.17"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdrightleft" border="1" cellspacing="0" cellpadding="3">
+          
+<tr>
+            
+<th align="right" rowspan="1" colspan="1">Value</th>
+            <th align="left" rowspan="1" colspan="1">Key/Button</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="right" rowspan="1" colspan="1">1</td>
+            <td rowspan="1" colspan="1">Shift</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="right" rowspan="1" colspan="1">2</td>
+            <td rowspan="1" colspan="1">Control</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="right" rowspan="1" colspan="1">4</td>
+            <td rowspan="1" colspan="1">Meta or right mouse button (Longclick for Android)</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="right" rowspan="1" colspan="1">8</td>
+            <td rowspan="1" colspan="1">Alt or middle mouse button</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="right" rowspan="1" colspan="1">16</td>
+            <td rowspan="1" colspan="1">Left mouse button</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;38.17</a>:&nbsp;&nbsp;Modifier values</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number</p>
+</dd>
+<a name="att_KeyEventStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_KeyEventStep_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_KeyEventStep_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_TextInputStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_TextInputStep">38.8.3</a></span>
+</div>
+<a href="contents.html#toc_step_TextInputStep">'Text input'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/text.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            This is a pseudo event for simulating text input from the
+            keyboard.  A single 'Text input' node replaces a whole sequence
+            of <a href="#step_KeyEventStep" shape="rect">'Key event'</a> nodes. To achieve this, QF-Test takes
+            advantage of the fact that AWT and Swing text fields listen
+            only to <code>KEY_TYPED</code> events, so input of text can be simulated by
+            triggering one <code>KEY_TYPED</code> event per text character. If your SUT
+            uses custom text components that actually require the <code>KEY_PRESSED</code>
+            and <code>KEY_RELEASED</code> events, you cannot use this node type but have
+            to resort to plain <a href="#step_KeyEventStep" shape="rect">'Key events'</a>.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> All kinds of <a href="sequences.html#sec_sequences" shape="rect">sequences</a>.</p>
+<p>
+<strong>Children:</strong> None</p>
+<p>
+<strong>Execution:</strong> 
+          The text is sent to the SUT together with the data about the
+          target component. The <code>TestEventQueue</code> determines the corresponding
+          component in the SUT and triggers the resulting events.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.56"></a><a name="figure_38.56"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_TextInputStep.png" target="_blank"><img src="images/att_TextInputStep.png" alt="Text input attributes" texscale=".66" width="393" height="384"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.56</a>:&nbsp;&nbsp;'Text input' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_TextInputStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        The name of the SUT client process to which the event is sent.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_TextInputStep_component"></a>
+<dt>'QF-Test component ID'</dt>
+<dd>
+      
+<p>
+        The <a href="components.html#att_WindowStep_id" shape="rect">'QF-Test ID'</a> of the <a href="components.html#step_WindowStep" shape="rect">'Window'</a>,
+        <a href="components.html#step_ComponentStep" shape="rect">'Component'</a> or <a href="components.html#step_SubItemStep" shape="rect">'Item'</a> node that is the
+        target of the event.
+      </p>
+      
+<p>
+    The "Select component" button
+    <img src="../icons/select_component.png" style="vertical-align: text-bottom" alt="[Select component]" title="Select component" width="20" height="20" texscale=".66">
+    brings up a dialog in which you can select the component
+    interactively. You can also get to this dialog by pressing
+    [Shift-Return] or
+    [Alt-Return], when the focus is in the
+    text field. As an alternative you can copy the target node with
+    [Ctrl-C] or
+    &raquo;<em>Edit</em>&laquo;-&raquo;<em>Copy</em>&laquo;
+    and insert its QF-Test component ID into the text field by pressing
+    [Ctrl-V].
+  </p>
+      
+<p>
+    This attribute supports a special format
+    for referencing components in other test suites
+    (see <a href="user_distributed.html#usec_suitereference">section 23.1</a>).
+    Furthermore, sub-elements of nodes can be addressed directly
+    without requiring separate nodes for them (see <a href="user_subitems.html#usec_subitems">section 5.9</a>). 
+    When using SmartIDs, you can address a GUI element
+    directly via its recognition criteria.
+    For more information, refer to <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a>
+    and <a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">'Component' nodes versus SmartID</a>.
+  </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_TextInputStep_text"></a>
+<dt>'Text'</dt>
+<dd>
+            
+            
+<p>
+              The text that is to be sent to the SUT.
+            </p>
+            
+<p>
+              
+<span class="margin"><span class="note">Note</span></span> When inserting text into a password field it may be desirable to avoid
+              having the password show up as plain text in the test-suite or a run-log. To that
+              end the password can be encrypted by inserting the plain-text password, right-clicking
+              and selecting &raquo;<em>Crypt password</em>&laquo; from the popup menu. Please be
+              sure to specify a password salt before encrypting via the option <a href="opt_play.html#opt_passwordsalt">Salt for crypting passwords</a>.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> No line breaks are possible.</p>
+</dd>
+<a name="att_TextInputStep_clear"></a>
+<dt>'Clear target component first'</dt>
+<dd>
+            
+            
+<p>
+              If this attribute is set, and the target component is a text
+              field or text area, the contents of the target component are
+              removed before the new text is inserted.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TextInputStep_single"></a>
+<dt>'Replay single events'</dt>
+<dd>
+            
+            
+<p>
+              If the target component is a text field or a text area, the text
+              can optionally be inserted by manipulating the component
+              directly through its API. This is much faster, but if
+              KeyListeners are registered on the component they will not be
+              notified of the change. If this attribute is set, key events are
+              simulated for every single character.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TextInputStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_TextInputStep_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_TextInputStep_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_WindowEventStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_WindowEventStep">38.8.4</a></span>
+</div>
+<a href="contents.html#toc_step_WindowEventStep">'Window event'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/window.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            
+<em>WindowEvents</em> are of limited use for a test-suite since most of
+            them are not generated as a direct consequence of some user
+            interaction.
+            
+            The only
+            exception is the <code>WINDOW_CLOSING</code> event that is triggered when the
+            user closes a window. It is also possible to
+            simulate <code>WINDOW_ICONIFIED</code> and <code>WINDOW_DEICONIFIED</code> events.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> All kinds of <a href="sequences.html#sec_sequences" shape="rect">sequences</a>.</p>
+<p>
+<strong>Children:</strong> None</p>
+<p>
+<strong>Execution:</strong> 
+          The event is sent to the SUT together with the data about the
+          target window. The <code>TestEventQueue</code> determines the corresponding
+          window in the SUT and triggers the resulting event.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.57"></a><a name="figure_38.57"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_WindowEventStep.png" target="_blank"><img src="images/att_WindowEventStep.png" alt="Window event attributes" texscale=".66" width="393" height="340"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.57</a>:&nbsp;&nbsp;'Window event' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_WindowEventStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        The name of the SUT client process to which the event is sent.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_WindowEventStep_component"></a>
+<dt>'QF-Test component ID'</dt>
+<dd>
+      
+<p>
+        The <a href="components.html#att_WindowStep_id" shape="rect">'QF-Test ID'</a> of the <a href="components.html#step_WindowStep" shape="rect">'Window'</a>,
+        <a href="components.html#step_ComponentStep" shape="rect">'Component'</a> or <a href="components.html#step_SubItemStep" shape="rect">'Item'</a> node that is the
+        target of the event.
+      </p>
+      
+<p>
+    The "Select component" button
+    <img src="../icons/select_component.png" style="vertical-align: text-bottom" alt="[Select component]" title="Select component" width="20" height="20" texscale=".66">
+    brings up a dialog in which you can select the component
+    interactively. You can also get to this dialog by pressing
+    [Shift-Return] or
+    [Alt-Return], when the focus is in the
+    text field. As an alternative you can copy the target node with
+    [Ctrl-C] or
+    &raquo;<em>Edit</em>&laquo;-&raquo;<em>Copy</em>&laquo;
+    and insert its QF-Test component ID into the text field by pressing
+    [Ctrl-V].
+  </p>
+      
+<p>
+    This attribute supports a special format
+    for referencing components in other test suites
+    (see <a href="user_distributed.html#usec_suitereference">section 23.1</a>).
+    Furthermore, sub-elements of nodes can be addressed directly
+    without requiring separate nodes for them (see <a href="user_subitems.html#usec_subitems">section 5.9</a>). 
+    When using SmartIDs, you can address a GUI element
+    directly via its recognition criteria.
+    For more information, refer to <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a>
+    and <a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">'Component' nodes versus SmartID</a>.
+  </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_WindowEventStep_event"></a>
+<dt>'Event'</dt>
+<dd>
+            
+            
+<p>
+              This <em>ComboBox</em> lets you choose the type of the event.
+              Possible values are <code>WINDOW_OPENED</code>, <code>WINDOW_CLOSING</code>, <code>WINDOW_CLOSED</code>,
+              <code>WINDOW_ACTIVATED</code>, <code>WINDOW_DEACTIVATED</code>, <code>WINDOW_ICONIFIED</code> and
+              <code>WINDOW_DEICONIFIED</code>, the standard event IDs of the Java class
+              <code>WindowEvent</code>.
+            </p>
+          
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_WindowEventStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_WindowEventStep_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_WindowEventStep_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ComponentEventStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ComponentEventStep">38.8.5</a></span>
+</div>
+<a href="contents.html#toc_step_ComponentEventStep">'Component event'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/window.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            The name 'Component event' for this node may be misleading,
+            since QF-Test filters all of these events except for windows, but
+            since they represent the Java class <code>ComponentEvent</code>,
+            it is better to stick to that name. Except for <code>COMPONENT_MOVED</code> and
+            <code>COMPONENT_SIZED</code> events on a window, which are the result of the user
+            moving or resizing the window interactively, all
+            <em>ComponentEvents</em> are artificial and thus ignored.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> All kinds of  <a href="sequences.html#sec_sequences" shape="rect">sequences</a>.</p>
+<p>
+<strong>Children:</strong> None</p>
+<p>
+<strong>Execution:</strong> 
+          The event is sent to the SUT together with the data about the
+          target window. The <code>TestEventQueue</code> determines the corresponding
+          window in the SUT and triggers the resulting event.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.58"></a><a name="figure_38.58"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ComponentEventStep.png" target="_blank"><img src="images/att_ComponentEventStep.png" alt="Component event attributes" texscale=".66" width="393" height="386"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.58</a>:&nbsp;&nbsp;'Component event' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ComponentEventStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        The name of the SUT client process to which the event is sent.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_ComponentEventStep_component"></a>
+<dt>'QF-Test component ID'</dt>
+<dd>
+      
+<p>
+        The <a href="components.html#att_WindowStep_id" shape="rect">'QF-Test ID'</a> of the <a href="components.html#step_WindowStep" shape="rect">'Window'</a>,
+        <a href="components.html#step_ComponentStep" shape="rect">'Component'</a> or <a href="components.html#step_SubItemStep" shape="rect">'Item'</a> node that is the
+        target of the event.
+      </p>
+      
+<p>
+    The "Select component" button
+    <img src="../icons/select_component.png" style="vertical-align: text-bottom" alt="[Select component]" title="Select component" width="20" height="20" texscale=".66">
+    brings up a dialog in which you can select the component
+    interactively. You can also get to this dialog by pressing
+    [Shift-Return] or
+    [Alt-Return], when the focus is in the
+    text field. As an alternative you can copy the target node with
+    [Ctrl-C] or
+    &raquo;<em>Edit</em>&laquo;-&raquo;<em>Copy</em>&laquo;
+    and insert its QF-Test component ID into the text field by pressing
+    [Ctrl-V].
+  </p>
+      
+<p>
+    This attribute supports a special format
+    for referencing components in other test suites
+    (see <a href="user_distributed.html#usec_suitereference">section 23.1</a>).
+    Furthermore, sub-elements of nodes can be addressed directly
+    without requiring separate nodes for them (see <a href="user_subitems.html#usec_subitems">section 5.9</a>). 
+    When using SmartIDs, you can address a GUI element
+    directly via its recognition criteria.
+    For more information, refer to <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a>
+    and <a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">'Component' nodes versus SmartID</a>.
+  </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_ComponentEventStep_event"></a>
+<dt>'Event'</dt>
+<dd>
+            
+            
+<p>
+              This <em>ComboBox</em> lets you choose the type of the event.
+              Possible values are <code>COMPONENT_SIZED</code>
+              and <code>COMPONENT_MOVED</code>, the standard event IDs of the Java class
+              <code>ComponentEvent</code>.
+            </p>
+          
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_ComponentEventStep_param2"></a>
+<dt>'Y/Height'</dt>
+<dd>
+            
+            
+<p>
+              For a  <code>COMPONENT_MOVED</code> event set this to the new Y-coordinate of the
+              window, for a <code>COMPONENT_SIZED</code> event to its new height.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number, height &gt; 0</p>
+</dd>
+<a name="att_ComponentEventStep_param1"></a>
+<dt>'X/Width'</dt>
+<dd>
+            
+            
+<p>
+              For a  <code>COMPONENT_MOVED</code> event set this to the new X-coordinate of the
+              window, for a <code>COMPONENT_SIZED</code> event to its new width.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number, width &gt; 0</p>
+</dd>
+<a name="att_ComponentEventStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_ComponentEventStep_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_ComponentEventStep_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_SelectionEventStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_SelectionEventStep">38.8.6</a></span>
+</div>
+<a href="contents.html#toc_step_SelectionEventStep">'Selection'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/selection.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            A 'Selection' node represents an abstract event like selecting a menu item,
+            choosing an entry in a combo box or selecting something from or closing a system
+            dialog. Currently this event node is used only for SWT, web and Electron SUT clients, where some
+            events cannot be triggered by "soft" mouse events, . The alternative of using "hard"
+            events has some disadvantages as described for the <a href="#att_MouseEventStep_hardevent" shape="rect">'Replay as "hard" event'</a>
+            attribute of a <a href="#step_MouseEventStep" shape="rect">'Mouse event'</a>.
+          </p>
+          
+<p>
+            The <a href="#att_SelectionEventStep_detail" shape="rect">'Detail'</a> attribute determines the kind of operation to
+            perform, or the value to select, depending on the target component.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> All kinds of <a href="sequences.html#sec_sequences" shape="rect">sequences</a>.</p>
+<p>
+<strong>Children:</strong> None</p>
+<p>
+<strong>Execution:</strong> 
+          The event is sent to the SUT together with the data about the target component.
+          The component is resolved and an action performed which depends on the type of
+          component as listed in the table above.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.59"></a><a name="figure_38.59"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_Selection.png" target="_blank"><img src="images/att_Selection.png" alt="Mouse event attributes" texscale=".66" width="393" height="330"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.59</a>:&nbsp;&nbsp;'Selection' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_SelectionEventStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        The name of the SUT client process to which the event is sent.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_SelectionEventStep_component"></a>
+<dt>'QF-Test component ID'</dt>
+<dd>
+      
+<p>
+        The <a href="components.html#att_WindowStep_id" shape="rect">'QF-Test ID'</a> of the <a href="components.html#step_WindowStep" shape="rect">'Window'</a>,
+        <a href="components.html#step_ComponentStep" shape="rect">'Component'</a> or <a href="components.html#step_SubItemStep" shape="rect">'Item'</a> node that is the
+        target of the event.
+      </p>
+      
+<p>
+    The "Select component" button
+    <img src="../icons/select_component.png" style="vertical-align: text-bottom" alt="[Select component]" title="Select component" width="20" height="20" texscale=".66">
+    brings up a dialog in which you can select the component
+    interactively. You can also get to this dialog by pressing
+    [Shift-Return] or
+    [Alt-Return], when the focus is in the
+    text field. As an alternative you can copy the target node with
+    [Ctrl-C] or
+    &raquo;<em>Edit</em>&laquo;-&raquo;<em>Copy</em>&laquo;
+    and insert its QF-Test component ID into the text field by pressing
+    [Ctrl-V].
+  </p>
+      
+<p>
+    This attribute supports a special format
+    for referencing components in other test suites
+    (see <a href="user_distributed.html#usec_suitereference">section 23.1</a>).
+    Furthermore, sub-elements of nodes can be addressed directly
+    without requiring separate nodes for them (see <a href="user_subitems.html#usec_subitems">section 5.9</a>). 
+    When using SmartIDs, you can address a GUI element
+    directly via its recognition criteria.
+    For more information, refer to <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a>
+    and <a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">'Component' nodes versus SmartID</a>.
+  </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_SelectionEventStep_detail"></a>
+<dt>'Detail'</dt>
+<dd>
+            
+            
+<p>
+              The 'Detail' attribute specifies the kind of operation to perform or the value to
+              select, depending on the target component. The possible combinations are listed
+              in detail below.
+            </p>
+          
+<p>
+<span class="margin"><a name="swt_N135814"></a><span class="note">SWT</span></span>
+            The following combinations of widgets and 'Detail' values are currently supported
+            for SWT:
+          </p>
+          
+<a name="table_38.18"></a><a name="table_38.18"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table border="1" cellspacing="0" cellpadding="3" texwidth="\linewidth">
+              
+<tr>
+                
+<th align="left" rowspan="1" colspan="1">Class</th>
+                <th align="left" rowspan="1" colspan="1">'Detail' attribute</th>
+                <th align="left" rowspan="1" colspan="1">Action</th>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>CCombo</code> sub-item</td>
+                <td rowspan="1" colspan="1">Empty</td>
+                <td rowspan="1" colspan="1">Choose item as current value</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>ColorDialog</code></td>
+                <td rowspan="1" colspan="1">Color value in hexadecimal #rrggbb format</td>
+                <td rowspan="1" colspan="1">Select given color</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>ColorDialog</code></td>
+                <td rowspan="1" colspan="1"><code>CANCEL</code></td>
+                <td rowspan="1" colspan="1">Abort color selection</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Combo</code> sub-item</td>
+                <td rowspan="1" colspan="1">Empty</td>
+                <td rowspan="1" colspan="1">Choose item as current value</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>CTabFolder</code> sub-item</td>
+                <td rowspan="1" colspan="1">Empty</td>
+                <td rowspan="1" colspan="1">Select tab</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>CTabFolder</code> sub-item</td>
+                <td rowspan="1" colspan="1"><code>close</code></td>
+                <td rowspan="1" colspan="1">Close tab</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>DirectoryDialog</code></td>
+                <td rowspan="1" colspan="1">Directory name</td>
+                <td rowspan="1" colspan="1">Select given directory</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>DirectoryDialog</code></td>
+                <td rowspan="1" colspan="1"><code>CANCEL</code></td>
+                <td rowspan="1" colspan="1">Abort directory selection</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>FileDialog</code></td>
+                <td rowspan="1" colspan="1">File name, including directory</td>
+                <td rowspan="1" colspan="1">Select given file</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>FileDialog</code></td>
+                <td rowspan="1" colspan="1"><code>CANCEL</code></td>
+                <td rowspan="1" colspan="1">Abort file selection</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>FontDialog</code></td>
+                <td rowspan="1" colspan="1">Font description, system specific</td>
+                <td rowspan="1" colspan="1">Select given font</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>FontDialog</code></td>
+                <td rowspan="1" colspan="1"><code>CANCEL</code></td>
+                <td rowspan="1" colspan="1">Abort file selection</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Menu</code></td>
+                <td rowspan="1" colspan="1"><code>close</code></td>
+                <td rowspan="1" colspan="1">Cancel the menu (close without selection)</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>MenuItem</code></td>
+                <td rowspan="1" colspan="1">Empty</td>
+                <td rowspan="1" colspan="1">Select item</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>MessageBox</code></td>
+                <td rowspan="1" colspan="1">
+                  Any of
+                  <code>OK</code>
+                  <code>YES</code>
+                  <code>NO</code>
+                  <code>CANCEL</code>
+                  <code>ABORT</code>
+                  <code>RETRY</code>
+                  <code>IGNORE</code>
+                  <code>OPEN</code>
+                  <code>SAVE</code>
+                </td>
+                <td rowspan="1" colspan="1">Close with the given value as the user's choice</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>ProgressBar</code></td>
+                <td rowspan="1" colspan="1"><code>ProgressBar</code> value</td>
+                <td rowspan="1" colspan="1">Set the given value</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Scale</code></td>
+                <td rowspan="1" colspan="1"><code>Scale</code> value</td>
+                <td rowspan="1" colspan="1">Set the given value</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Slider</code></td>
+                <td rowspan="1" colspan="1"><code>Slider</code> value</td>
+                <td rowspan="1" colspan="1">Set the given value</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Spinner</code></td>
+                <td rowspan="1" colspan="1"><code>Spinner</code> value</td>
+                <td rowspan="1" colspan="1">Set the given value</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>TabFolder</code> sub-item</td>
+                <td rowspan="1" colspan="1">Empty</td>
+                <td rowspan="1" colspan="1">Select tab</td>
+              
+</tr>
+            
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;38.18</a>:&nbsp;&nbsp;Supported SWT widgets for a 'Selection' event</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            
+<span class="margin"><span class="note">Note</span></span> Eclipse/RCP makes heavy use of dynamic <code>CTabFolders</code>
+            where the items can be moved between folders. The items represent the actual business
+            objects whereas the folders are just scaffolding to hold them. Besides, the layout of
+            the folders and items can change drastically when switching perspectives. Thus it is
+            often desirable to be able to select or close an item independent of the
+            <code>CTabFolder</code> it currently resides in. This can be done by using the
+            <a href="procedures.html#step_Procedure" shape="rect">'Procedures'</a> <code>qfs.qft#qfs.swt.ctabfolder.selectTab</code> and
+            <code>qfs.qft#qfs.swt.ctabfolder.closeTab</code>, provided in the <code>qfs.qft</code>
+            standard library. Besides the ubiquitous <code>client</code> parameter, the only other
+            parameter <code>tabname</code> must be set to the name of the item to select or close.
+          </p>
+          
+<p>
+<span class="margin"><a name="web_N136319"></a><span class="note">Web</span></span> The following combinations of DOM nodes and 'Detail' values are
+            currently supported for web SUT clients:
+          </p>
+          
+<a name="table_38.19"></a><a name="table_38.19"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table border="1" cellspacing="0" cellpadding="3" texwidth="\linewidth">
+              
+<tr>
+                
+<th align="left" rowspan="1" colspan="1">Node type</th>
+                <th align="left" rowspan="1" colspan="1">'Detail' attribute</th>
+                <th align="left" rowspan="1" colspan="1">Action</th>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Confirmation dialog</td>
+                <td rowspan="1" colspan="1">
+                  Any of
+                  <code>OK</code>
+                  <code>YES</code>
+                  <code>NO</code>
+                  <code>CANCEL</code>
+                  <code>RETRY</code>
+                </td>
+                <td rowspan="1" colspan="1">Close the dialog with the given value as the user's choice</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">File dialog for download</td>
+                <td rowspan="1" colspan="1">
+                  The file to save to or <code>CANCEL</code>
+                </td>
+                <td rowspan="1" colspan="1">Close the dialog and save to the specified file or abort the download</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Login dialog</td>
+                <td rowspan="1" colspan="1">
+                  Username|Password or <code>CANCEL</code>
+                </td>
+                <td rowspan="1" colspan="1">
+                  Close the dialog and login with the specified data or abort. The password can by
+                  encrypted by right-clicking the 'Detail' field and selecting &raquo;<em>Crypt password</em>&laquo;. Please be sure to specify a password salt before
+                  encrypting via the option <a href="opt_play.html#opt_passwordsalt">Salt for crypting passwords</a>.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Prompt dialog</td>
+                <td rowspan="1" colspan="1">
+                  The text to enter or <code>CANCEL</code>
+                </td>
+                <td rowspan="1" colspan="1">Close the dialog and return the specified text or abort</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Top-level &lt;DOCUMENT&gt;</td>
+                <td rowspan="1" colspan="1"><code>back</code></td>
+                <td rowspan="1" colspan="1">Navigate back to the previous page</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Top-level &lt;DOCUMENT&gt;</td>
+                <td rowspan="1" colspan="1"><code>forward</code></td>
+                <td rowspan="1" colspan="1">Navigate forward to the next page</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Top-level &lt;DOCUMENT&gt;</td>
+                <td rowspan="1" colspan="1"><code>goto</code>:URL</td>
+                <td rowspan="1" colspan="1">Navigate to the specified URL</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Top-level &lt;DOCUMENT&gt;</td>
+                <td rowspan="1" colspan="1"><code>refresh</code></td>
+                <td rowspan="1" colspan="1">Reload the current page</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Top-level &lt;DOCUMENT&gt;</td>
+                <td rowspan="1" colspan="1"><code>stop</code></td>
+                <td rowspan="1" colspan="1">Stop loading the current page</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">
+                  &lt;OPTION&gt; or &lt;SELECT&gt; sub-item
+                </td>
+                <td rowspan="1" colspan="1"><code>0</code></td>
+                <td rowspan="1" colspan="1">Choose the &lt;OPTION&gt; as current value</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">
+                  &lt;OPTION&gt; or &lt;SELECT&gt; sub-item
+                </td>
+                <td rowspan="1" colspan="1"><code>1</code></td>
+                <td rowspan="1" colspan="1">Add the &lt;OPTION&gt; to the selection</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">
+                  &lt;OPTION&gt; or &lt;SELECT&gt; sub-item
+                </td>
+                <td rowspan="1" colspan="1"><code>-1</code></td>
+                <td rowspan="1" colspan="1">Remove the &lt;OPTION&gt; from the selection</td>
+              
+</tr>
+            
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;38.19</a>:&nbsp;&nbsp;Supported DOM nodes for a 'Selection' event</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            
+<span class="margin"><a name="electron_N136662"></a><span class="note">Electron</span></span>The following Combinations of DOM nodes and
+            the 'Detail' attribute are currently support for Electron applications
+            (see <a href="web_electron.html#usec_electron">chapter 18</a>), additionally to the ones listed
+            for Web as above.
+          </p>
+          
+<a name="selection_step_electron_table"></a><a name="table_38.20"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table border="1" cellspacing="0" cellpadding="3" texwidth="\linewidth">
+              
+<tr>
+                
+<th align="left" rowspan="1" colspan="1">Node type</th>
+                <th align="left" rowspan="1" colspan="1">'Detail' Attribute</th>
+                <th align="left" rowspan="1" colspan="1">Action</th>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Menu</td>
+                <td rowspan="1" colspan="1">
+                  <code>clickmenu:@/&lt;Menu path&gt;</code>
+                </td>
+                <td rowspan="1" colspan="1">
+                  Where <code>&lt;Menu path&gt;</code> specifies the menu and the sub-menu
+                  item(s), seperated by <code>/</code>. For example, if you want to trigger
+                  the menu item <code>Save as</code> in the menu <code>File</code> you would
+                  enter <code>clickmenu:@File/Save as</code> for the attribute.
+                  You also need to enter the 'QF-Test ID' of the node <code>Web page</code>
+                  of the SUT in the attribute 'QF-Test component ID'.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Dialog</td>
+                <td rowspan="1" colspan="1">
+                  <code>select:@/&lt;Return value&gt;</code>
+                </td>
+                <td rowspan="1" colspan="1">
+                  <a href="opt_play.html#opt_passwordsalt">Salt for crypting passwords</a>
+                  Close a previously opened dialog.
+                  For details about possible return values
+                  please refer to: <a href="web_electron.html#sec_electron_native_dialogs">Native Dialogs</a>
+                  You also need to enter the 'QF-Test ID' of the node <code>Web page</code>
+                  of the SUT in the attribute 'QF-Test component ID'.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Error dialog</td>
+                <td rowspan="1" colspan="1">select:1</td>
+                <td rowspan="1" colspan="1">Closes the open dialog.</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Message box</td>
+                <td rowspan="1" colspan="1">select:2:true</td>
+                <td rowspan="1" colspan="1">Select the button with id "2" and sets the checkbox value to true.</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Save dialog</td>
+                <td rowspan="1" colspan="1">select:"C:\path\to\my.file"</td>
+                <td rowspan="1" colspan="1">Closes the save dialog and returns the given path.</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Open dialog</td>
+                <td rowspan="1" colspan="1">select:["C:\path\to\my.file"]</td>
+                <td rowspan="1" colspan="1">Closes the open dialog and returns the given path.</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Open dialog</td>
+                <td rowspan="1" colspan="1">select:["C:\path\to\my\first.file", "C:\path\to\my\second.file"]</td>
+                <td rowspan="1" colspan="1">Closes the open dialog and returns the given paths.</td>
+              
+</tr>
+            
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;38.20</a>:&nbsp;&nbsp;Supported DOM nodes for Electron SUTs in a 'Selection' Event</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+            
+<p>
+              
+<span class="margin"><a name="android_N136885"></a><span class="note">Android</span></span> The following Combinations of DOM nodes and
+                the 'Detail' attribute are currently support for Android applications
+               (see <a href="user_androidtesting.html#usec_androidtesting">chapter 15</a>):
+            </p>
+            
+<a name="selection_step_android_table"></a><a name="table_38.21"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table border="1" cellspacing="0" cellpadding="3" texwidth="\linewidth">
+                
+<tr>
+                  
+<th align="left" rowspan="1" colspan="1">Node type</th>
+                  <th align="left" rowspan="1" colspan="1">'Detail' attribute</th>
+                  <th align="left" rowspan="1" colspan="1">Action</th>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">All (will be ignored)</td>
+                  <td rowspan="1" colspan="1">
+                    <code>HOME</code>
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    Click on the Home-Button of the Emulator.
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">All (will be ignored)</td>
+                  <td rowspan="1" colspan="1">
+                    <code>BACK</code>
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    Click on the Back-Button of the Emulator.
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">All (will be ignored)</td>
+                  <td rowspan="1" colspan="1">
+                    <code>APP_SWITCH</code>
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    Click on the App-Switch-Button of the Emulator.
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">All</td>
+                  <td rowspan="1" colspan="1">
+                    <code>swipe: &lt;Direction&gt;</code>
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    Swipe on a component into a certain direction. Possible values are: "right", "&rarr;", "go_left", "prevPage", "⭢",
+                    "left", "&larr;", "go_right", "nextPage", "⭠", "up", "&uarr;", "go_down", "scrollDown", "⭡",
+                    "down", "&darr;", "go_up", "scrollUp", "⭣", "down_right", "↘", "go_up_left", "⭨",
+                    "up_left", "↖", "go_down_right", "⭦", ""down_left", "↙", "go_up_right", "⭩",
+                    "up_right", "↗", "go_down_left" and "⭧" (all without quotes).
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">All</td>
+                  <td rowspan="1" colspan="1">
+                    <code>swipe: &lt;Start Coordinate X&gt; &lt;Start Coordinate Y&gt; &lt;End Coordinate X&gt; &lt;End Coordinate X&gt;</code>
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    Swipe on a component whereby the Swipe-start and the swipe-end coordinate are given. Instead of Integer-Numbers
+                    it is also possible to specify "W", "E", "S", "N", "C", "CH" or "CW". In this case "W" stands for West, "E" for East,
+                    "S" for the south of the component, "N" for the north of the component and "C" for the center of a component. Thus
+                    <code>swipe: W C E C</code> will swipe in the middle of the component from west (left) to the east (right)
+                    and <code>swipe: C N C S</code> from up to down.
+                  </td>
+                
+</tr>
+              
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;38.21</a>:&nbsp;&nbsp;</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_SelectionEventStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_SelectionEventStep_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_SelectionEventStep_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_FileSelection"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_FileSelection">38.8.7</a></span>
+</div>
+<a href="contents.html#toc_step_FileSelection">'File selection'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/file.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            A 'File selection' is a pseudo event that you only need in a special case.
+          </p>
+          
+<p>
+            If your SUT uses the standard AWT file selection dialog,
+            implemented by the class <code>java.awt.FileDialog</code>,
+            QF-Test has no chance to record the events the user generates
+            while selecting a file, since they are all handled by the
+            underlying system and never passed on to Java. For the same
+            reason, the selection cannot be simulated as a sequence of mouse
+            and key events. This is not the case with Swing's
+            <code>javax.swing.JFileChooser</code> which is implemented as a
+            normal dialog.
+          </p>
+          
+<p>
+            Therefore QF-Test just records the result of the file selection in the form of this node
+            and stores that data in the FileDialog upon replay before closing it. For the SUT
+            there is no difference to an actual selection by the user.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> All kinds of <a href="sequences.html#sec_sequences" shape="rect">sequences</a>.</p>
+<p>
+<strong>Children:</strong> None</p>
+<p>
+<strong>Execution:</strong> 
+          File and directory are stored in an open <code>java.awt.FileDialog</code> and the dialog
+          is closed.If no FileDialog is open, a <a href="exceptions.html#ex_ComponentNotFoundException" shape="rect"><code>ComponentNotFoundException</code></a> is
+          thrown.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.60"></a><a name="figure_38.60"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_FileSelection.png" target="_blank"><img src="images/att_FileSelection.png" alt="File selection attributes" texscale=".66" width="393" height="376"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.60</a>:&nbsp;&nbsp;'File selection' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_FileSelection_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        The name of the SUT client process to which the event is sent.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_FileSelection_file"></a>
+<dt>'File'</dt>
+<dd>
+            
+            
+<p>
+              The name of the file (without the directory part) that is to be
+              selected.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty</p>
+</dd>
+<a name="att_FileSelection_directory"></a>
+<dt>'Directory'</dt>
+<dd>
+            
+            
+<p>
+              The directory of the file that is to be selected.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty</p>
+</dd>
+<a name="att_FileSelection_engine"></a>
+<dt>'GUI engine'</dt>
+<dd>
+            
+            
+<p>
+              The GUI engine in which to look for a file selection dialog. Only relevant for
+              SUTs with more than one GUI engine as described in <a href="tech_engines.html#sec_engines">chapter 41</a>.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> See <a href="tech_engines.html#sec_engines">chapter 41</a>
+</p>
+</dd>
+<a name="att_FileSelection_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_FileSelection_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_FileSelection_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="processes.html#sec_processes"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 38.7&nbsp;Processes" title="Previous Chapter: 38.7&nbsp;Processes"></a></td><td class="navicon"><a href="checks.html#sec_checks"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 38.9&nbsp;Checks" title="Next Page: 38.9&nbsp;Checks"></a></td><td class="navicon"><a href="checks.html#sec_checks"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 38.9&nbsp;Checks" title="Next Chapter: 38.9&nbsp;Checks"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 38&nbsp;Elements of a test-suite" title="Chapter Overview: 38&nbsp;Elements of a test-suite"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

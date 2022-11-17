@@ -1,0 +1,324 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Re-execution of nodes (Re-run)</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_rerun"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_execdaemon.html#usec_execdaemon"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 22.2&nbsp;Executing tests in daemon mode" title="Previous Chapter: 22.2&nbsp;Executing tests in daemon mode"></a></td><td class="navicon"><a href="user_distributed.html#usec_distributeddevelopment"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 23&nbsp;Distributed test development" title="Next Page: 23&nbsp;Distributed test development"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="user_testexecution.html#usec_testexecution"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 22&nbsp;Test execution" title="Chapter Overview: 22&nbsp;Test execution"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="margin"><a name="new_N90653"></a><span class="note">4.1+</span></span><span class="numtitle"><a href="contents.html#toc_usec_rerun">22.3</a></span>
+</div>
+<a href="contents.html#toc_usec_rerun">Re-execution of nodes (Re-run)</a>
+</h4>
+
+      
+        
+<a name="usec_rerun_from_log"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_rerun_from_log">22.3.1</a></span>
+</div>
+<a href="contents.html#toc_usec_rerun_from_log">Triggering re-run from a run-log</a>
+</h5>
+        
+<p>
+        When a test-run has finished, the run-log or report is a good
+        entry point for evaluating the results. In case of errors you may face various challenges.
+        You might want to re-execute the failed test-cases to investigate the reason for the error
+        or because
+        you want to perform an official re-test of this failing situation after removing the error condition.
+        If the re-test
+        results are to be shown in the test-report, you may want to replace the previous results or append
+        them to the existing ones. Or you might just want to repeat the test-case with the
+        previous variable settings and keep the new run-logs and reports separately.
+        </p>
+        
+<p>To that end QF-Test offers the capability to trigger re-execution from the run-log.
+        You can trigger a re-run via selecting the run-log node or any test-set node and choose
+        &raquo;<em>Re-run test-cases</em>&laquo; from the &raquo;<em>Edit</em>&laquo; menu or
+        from the context menu.
+        Alternatively you can select the nodes to re-run it the error-list and use the context menu entry
+        &raquo;<em>Re-run test-cases of selected nodes</em>&laquo;.
+        The dialog then shown
+        lets you select the test-cases for the re-run and choose how to handle run-logs
+        via the selection box <code>Mode for merging run-logs</code> with the following options:
+        </p>
+        
+<a name="table_22.1"></a><a name="table_22.1"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth">
+            
+<tr>
+              
+<th width="30%" rowspan="1" colspan="1">Choice</th>
+              <th width="70%" rowspan="1" colspan="1">Meaning</th>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Replace test-cases</td>
+              <td rowspan="1" colspan="1">Replace the test-cases from the original run-log with the results from the re-run, i.e.
+              the previous results will get lost. The previous run-log will be saved in a backup copy.</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Merge run-logs</td>
+              <td rowspan="1" colspan="1">The new test-results will be merged into the existing structure.</td>
+            
+</tr>
+           
+<tr>
+              
+<td rowspan="1" colspan="1">Append run-log</td>
+              <td rowspan="1" colspan="1">The new test-results will be appended to the end of the run-log. The test-set structure
+              will be ignored.</td>
+            
+</tr>
+           
+<tr>
+              
+<td rowspan="1" colspan="1">Keep run-logs separated</td>
+              <td rowspan="1" colspan="1">The new test-results will be written to a new run-log, the original one remains unchanged.</td>
+            
+</tr>
+          
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;22.1</a>:&nbsp;&nbsp;Choices for handling the run-log of a re-run</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<a name="figure_22.1"></a><a name="figure_22.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/dlg_RerunChooser.png" target="_blank"><img src="images/dlg_RerunChooser.png" alt="Dialog to re-run test-cases" width="600" height="750" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;22.1</a>:&nbsp;&nbsp;Dialog to re-run test-cases</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+        For each test-case the variable values are taken from the run-log of the original test-run.
+        During re-execution the variable <code>${qftest:isInRerunFromLog}</code> is set to <code>true</code>,
+        making it possible to distinguish between a normal test-run and a a re-run.
+        </p>
+        
+<p>
+<span class="margin"><span class="note">Note</span></span>Merging of run-logs makes use of names of test-cases and test-sets.
+            Therefore, those names should be unique. In case of data-driven testing you should take
+            care to keep those names unique via the attributes 'Name for separate run-log' or 'Characteristic variables'.
+        </p>
+      
+
+      
+      
+        
+<a name="usec_rerun_node"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_rerun_node">22.3.2</a></span>
+</div>
+<a href="contents.html#toc_usec_rerun_node">Re-running failing nodes immediately</a>
+</h5>
+        
+<p>
+        During your test-automation project you can sometimes face situations where
+        some test-steps don't provide reliable results, failing sometimes but not always.
+        Most of the time such cases depend on timing and can be stabilized using <a href="miscnodes.html#step_ComponentWaiter" shape="rect">'Wait for component to appear'</a> nodes,
+        or checks for conditions, delays, scripts or other control structures.
+        As an alternative or additional approach
+        QF-Test offers the capability to repeat such steps whenever they fail.
+        </p>
+        
+<p>
+        This automated re-running in case of error can be applied to every executable node using a certain doctag in
+        the 'comment' attribute. This doctag can look like this:
+        </p>
+      
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>@rerun attempts=3;errorlevel&gt;=ERROR;newerrorlevel=WARNING;
+          handler=handlers.errorhandler
+        </pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;22.18:&nbsp;&nbsp;Example for a re-run definition</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          In the example above a failed node will be repeated up to three times until an attempt succeeds. Failed
+          attempts will be downgraded to warning in the run-log. In case all attempts fail the last attempt
+        will be reported as error or exception. After every failing attempt QF-Test will execute the procedure
+        <code>handlers.errorhandler</code>.
+        </p>
+        
+<p>
+        If you are interested in the number of the current re-run attempt, you can use the variable <code>reruncounter</code> from the <code>qftest</code> variable group, see <a href="user_variables.html#usec_externaldata">section 6.5</a>.
+        </p>
+        
+<p>
+          The <code>@rerun</code> doctag has parameters like <code>attempts</code>
+         or <code>errorlevel</code> with possibilities as follows:
+        </p>
+        
+<dl>
+        
+<dt>attempts</dt>
+        
+<dd>
+          The maximum number of attempts.
+        </dd>
+        
+<dt>errorlevel (optional)</dt>
+        
+<dd>
+          Defines the error states to be handled. Possible values are
+          <code>EXCEPTION</code>, <code>ERROR</code> or <code>WARNING</code> with = for an exact match or
+          &gt; or &gt;= for a range.
+          Specifying <code>errorlevel=ERROR</code> means to re-run that node only in case of an error whereas
+          <code>errorlevel&gt;=ERROR</code> triggers the re-run in case of errors or exceptions.
+          If this parameter isn't specified the value <code>errorlevel&gt;=ERROR</code> will be taken as default.
+        </dd>
+        
+<dt>newerrorlevel (optional)</dt>
+        
+<dd>
+          Specifies the error-level in the run-log for the initial run and possible additional failed runs.
+          You can again choose between
+          <code>EXCEPTION</code>, <code>ERROR</code> or <code>WARNING</code> with the additional options
+            <code>NOLOG</code> and <code>KEEP</code>. The level <code>NOLOG</code> stands for removing the
+            failing results from the run-log entirely. <code>NOLOG</code> should be used with extreme care.
+            Using the level <code>KEEP</code> doesn't override the original error level and reports it unchanged.
+          If this parameter isn't specified the value <code>WARNING</code> will be taken as default.
+        </dd>
+        
+<dt>handler (optional)</dt>
+        
+<dd>
+        The name of the procedure which should be called in case a caught error state occurs.
+          This procedure will be called after each failed attempt.
+        </dd>
+        
+<dt>reusevariables (optional, default=true)</dt>
+        
+<dd>
+          Specifies whether to reuse the variable values from the beginning of the first run.
+          When set to <code>false</code> the current variable values will be used.
+        </dd>
+        
+<dt>logmessages (optional, default=true)</dt>
+        
+<dd>
+          If that parameter is set to <code>true</code> a message will be written into the run-log,
+          when an attempt begins and when the execution of that sequence terminates. In addition every node
+          gets an annotation in the run-log with the current attempt.
+        </dd>
+        
+<dt>logmessagesintoreport (optional, default=true)</dt>
+        
+<dd>
+          If this parameter and the parameter <code>logmessages</code> are set to <code>true</code>,
+          all messages will be written to the report as well.
+        </dd>
+        
+<dt>keepfirst (optional, default=false)</dt>
+        
+<dd>
+          If this value is set to <code>true</code> the first failing attempt will be logged with its
+          original error level. In case of further failing attempts those errors will be logged with the
+          <code>newerrorlevel</code> level.
+        </dd>
+        
+<dt>exceptiontype (optional)</dt>
+        
+<dd>
+          In case you want to catch only one specific exception you can specify the exception type here, e.g.
+          <code>CheckFailedException</code> or just <code>ClientNotConnected</code> for a <code>ClientNotConnectedException</code>.
+          This parameter should only be used if you set <code>Exception</code> as value for the parameter
+          <code>errorlevel</code>. Please see the <a href="control.html#step_CatchSequence" shape="rect">'Catch'</a> node for details about exceptions.
+        </dd>
+        
+<dt>exceptionmessage (optional)</dt>
+        
+<dd>
+          In case you want to catch only one specific exception with one text, you can specify the text here.
+          This parameter should only be used if you set <code>Exception</code> as error level.
+          Please see the <a href="control.html#step_CatchSequence" shape="rect">'Catch'</a> node for details about exceptions.
+        </dd>
+        
+<dt>exceptionregex (optional)</dt>
+        
+<dd>
+          If <code>true</code>, the value of <code>exceptionmessage</code> is a regular expression.
+          This parameter should only be used if you set <code>Exception</code> as error level and an
+          exception message. Please see the <a href="control.html#step_CatchSequence" shape="rect">'Catch'</a> node for details about exceptions.
+        </dd>
+        
+<dt>exceptionlocalized (optional)</dt>
+        
+<dd>
+          If <code>true</code>, the value of <code>exceptionmessage</code> should be the localized exception message, e.g.
+          mostly the full text. This parameter should only be used if you set <code>Exception</code> as error level
+          and an exception message. Please see the <a href="control.html#step_CatchSequence" shape="rect">'Catch'</a> node for details about exceptions.
+        </dd>
+      
+</dl>
+      
+
+      
+
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_execdaemon.html#usec_execdaemon"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 22.2&nbsp;Executing tests in daemon mode" title="Previous Chapter: 22.2&nbsp;Executing tests in daemon mode"></a></td><td class="navicon"><a href="user_distributed.html#usec_distributeddevelopment"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 23&nbsp;Distributed test development" title="Next Page: 23&nbsp;Distributed test development"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="user_testexecution.html#usec_testexecution"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 22&nbsp;Test execution" title="Chapter Overview: 22&nbsp;Test execution"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

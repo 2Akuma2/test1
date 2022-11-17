@@ -1,0 +1,1187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Bedienung von QF-Test</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_gui"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_installation.html#usec_installation"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 1&nbsp;Installation und Start" title="Vorheriges Kapitel: 1&nbsp;Installation und Start"></a></td><td class="navicon"><a href="user_quickstart.html#usec_quickstart"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 3&nbsp;Schnellstart Ihrer Anwendung" title="N&auml;chste Seite: 3&nbsp;Schnellstart Ihrer Anwendung"></a></td><td class="navicon"><a href="user_quickstart.html#usec_quickstart"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 3&nbsp;Schnellstart Ihrer Anwendung" title="N&auml;chstes Kapitel: 3&nbsp;Schnellstart Ihrer Anwendung"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch" title="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_gui">2</a></span>
+</div>
+<a href="contents.html#toc_usec_gui">Bedienung von QF-Test</a>
+</h3>
+    
+<p>
+      Dieses Kapitel beschreibt den Aufbau des QF-Test Hauptfensters und wie Sie
+      sich darin zurechtfinden. Sp&auml;testens nach diesem Kapitel ist es an der
+      Zeit, QF-Test zu starten und verschiedene Dinge auszuprobieren. &Uuml;ber den Men&uuml;eintrag
+      &raquo;<em>Hilfe</em>&laquo;-&raquo;<em>Tutorial</em>&laquo; k&ouml;nnen Sie Ihren Browser mit
+      dem QF-Test "learning-by-doing" Tutorial starten. Sollte das mit Ihrer
+      Systemkonfiguration nicht klappen, finden Sie das Tutorial im
+      Verzeichnis <code>qftest-6.0.3/doc/tutorial</code>. Dort
+      gibt es auch eine PDF Variante.
+    </p>
+    
+<p>
+      
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+      Der erste Teil des Videos <a href="https://www.qfs.de/de/yt/hauptfenster-sut-40.html" class="videolink" target="_blank">'Das
+      Hauptfenster und das System under Test'</a> befasst sich mit den Bestandteilen des QF-Test
+      Hauptfensters.
+    </p>
+    
+
+    
+<a name="usec_gui_suite"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_gui_suite">2.1</a></span>
+</div>
+<a href="contents.html#toc_usec_gui_suite">Die Testsuite</a>
+</h4>
+      
+<p>
+        Zum Automatisieren von GUI Tests ben&ouml;tigt man zwei Dinge:
+        Kontrollstrukturen und Daten. Die Kontrollstrukturen legen fest, was
+        zu tun ist und wann es zu tun ist. Die Daten f&uuml;r die Tests setzen sich
+        aus den Informationen &uuml;ber die GUI Komponenten des SUT (System under test), den zu
+        simulierenden Events und den erwarteten Ergebnissen zusammen.
+      </p>
+      
+<p>
+        QF-Test vereint alles zusammen in einer hierarchischen Baumstruktur, die
+        wir als
+
+        <a name="idx_N67176"></a><em>Testsuite</em>
+
+        bezeichnen. Die Elemente des Baums werden
+
+        <a name="idx_N67184"></a><em>Knoten</em>
+
+        genannt. Knoten k&ouml;nnen weitere Knoten enthalten, in bestem "Denglish"
+
+        <a name="idx_N67192"></a><em>Childknoten</em>
+
+        (oder kurz <em>Children</em>) genannt. Beim &uuml;bergeordneten Knoten
+        reden wir vom
+
+        <a name="idx_N67203"></a><em>Parentknoten</em>
+
+        (kurz <em>Parent</em>). Der
+
+        <em><a name="idx_N67215"></a>Wurzelknoten</em>
+
+        des Baums repr&auml;sentiert die Testsuite als Ganzes.
+      </p>
+      
+<p>
+
+      
+</p>
+      
+<p>
+        Es gibt mehr als 60 verschiedene Arten von Knoten, die alle im Detail
+        im <a href="nodes.html#sec_suite" shape="rect">Referenzteil</a> beschrieben werden.  Manche
+        Knoten fungieren nur als Datencontainer, w&auml;hrend andere den Ablauf von
+        Tests steuern. Alle haben ihre speziellen Eigenschaften in Form von Attributen.
+      </p>
+      
+<p>
+        Die jeweiligen Attribute des gerade selektierten Knotens werden zur Rechten des
+        Baums in der Detailansicht dargestellt. Diese ist &uuml;ber das Men&uuml;
+
+        &raquo;<em>Ansicht</em>&laquo;-&raquo;<em>Details</em>&laquo;
+
+        ein- oder ausschaltbar.
+      </p>
+      
+<a name="figure_2.1"></a><a name="figure_2.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/TestSuite.png" target="_blank"><img src="images/TestSuite.png" alt="Struktur einer Testsuite" width="986" height="872" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;2.1</a>:&nbsp;&nbsp;Struktur einer Testsuite</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Die obige Abbildung zeigt ein einfaches Beispiel einer Testsuite. Die
+        Attribute des Knotens "Einfacher Test" k&ouml;nnen rechts in der
+        Detailansicht bearbeitet werden.
+      </p>
+      
+<p>
+        Eine Testsuite - und damit der <a href="rootnode.html#step_RootStep" shape="rect">'Testsuite'</a> Wurzelknoten - besitzt die folgende
+        Grundstruktur: Eine beliebige Anzahl von <a href="sequences.html#step_TestSet" shape="rect">'Testfallsatz'</a> oder <a href="sequences.html#step_TestCase" shape="rect">'Testfall'</a> Knoten,
+        gefolgt von den <a href="procedures.html#step_PackageRoot" shape="rect">'Prozeduren'</a>, <a href="sequences.html#step_ExtraSequence" shape="rect">'Extrasequenzen'</a> und
+        <a href="components.html#step_WindowList" shape="rect">'Fenster und Komponenten'</a> Knoten.
+
+        Der 'Prozeduren' Knoten enth&auml;lt die
+        <a href="procedures.html#step_Package" shape="rect">'Packages'</a> und <a href="procedures.html#step_Procedure" shape="rect">'Prozeduren'</a>, die in
+        <a href="user_organization.html#usec_procedures">Abschnitt 8.5</a> beschrieben werden.
+
+        Der 'Extrasequenzen' Knoten ist eine Art Spielwiese oder Clipboard,
+        wo alle Arten von Knoten f&uuml;r Experimente oder zur Zwischenlagerung
+        abgelegt werden k&ouml;nnen.
+
+        Die Fenster und Komponenten, die die Oberfl&auml;che des SUT bilden,
+        werden durch <a href="components.html#step_WindowStep" shape="rect">'Fenster'</a> und <a href="components.html#step_ComponentStep" shape="rect">'Komponente'</a> Knoten
+        repr&auml;sentiert und sind unterhalb des 'Fenster und Komponenten' Knotens
+        angesiedelt.
+      </p>
+      
+<p>
+        Um detaillierte Informationen zu einem Knoten oder einem seiner Attribute zu
+        bekommen, klicken Sie darauf mit der rechten Maustaste und w&auml;hlen Sie
+        im Kontextmen&uuml; &raquo;<em>Was&nbsp;ist&nbsp;das?</em>&laquo;.
+        Dies &ouml;ffnet einen HTML Browser mit dem entsprechenden Abschnitt
+        des Handbuchs.
+      </p>
+    
+
+    
+    
+
+    
+<a name="usec_gui_editing"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_gui_editing">2.2</a></span>
+</div>
+<a href="contents.html#toc_usec_gui_editing">Bearbeiten einer Testsuite</a>
+</h4>
+      
+<p>
+        Zum Editieren einer Testsuite gibt es sowohl Funktionen zur
+        Bearbeitung der Knoten als Ganzes, wie Ausschneiden/Kopieren/Einf&uuml;gen,
+        als auch f&uuml;r deren Attribute. Letztere k&ouml;nnen direkt in den Feldern
+        der Detailansicht editiert werden, was durch Dr&uuml;cken des <em>OK</em>
+        Knopfs oder [Return] abgeschlossen werden
+        muss. Alternativ kann mittels
+        &raquo;<em>Bearbeiten</em>&laquo;-&raquo;<em>Eigenschaften</em>&laquo; oder [Alt-Return]
+        ein eigener Dialog f&uuml;r die Attribute des selektierten Knotens ge&ouml;ffnet
+        werden. Wenn Sie Werte in der Detailansicht &auml;ndern und vergessen,
+        <em>OK</em> zu dr&uuml;cken, bevor Sie einen anderen Knoten selektieren,
+        wird ebenfalls ein Dialog ge&ouml;ffnet, in dem Sie Ihre &Auml;nderungen
+        abschlie&szlig;en oder verwerfen k&ouml;nnen. Dieses Feature kann &uuml;ber die Option
+        <a href="opt_general.html#opt_askaccept">Vor implizitem &Uuml;bernehmen von &Auml;nderungen in den Details nachfragen</a> abgeschaltet werden.
+      </p>
+      
+<p>
+        F&uuml;r die Bearbeitung von mehrzeiligen Textfeldern gibt es einige
+        n&uuml;tzliche Tastaturk&uuml;rzel: [Strg-TAB] und [Shift-Strg-TAB] bewegen den Tastaturfokus aus dem Textfeld heraus,
+        [Strg-Return] entspricht
+        einem Klick auf den <em>OK</em> Knopf.
+      </p>
+      
+<p>
+        Eine &auml;u&szlig;erst n&uuml;tzliche Funktion ist &raquo;<em>Bearbeiten</em>&laquo;-&raquo;<em>R&uuml;ckg&auml;ngig machen</em>&laquo;
+        ([Strg-Z]), auch <em>Undo</em>
+        genannt. Sie macht jede Art von &Auml;nderung an der Testsuite r&uuml;ckg&auml;ngig,
+        inklusive Aufnahmen oder &Auml;nderungen mit Hilfe des Suchen/Ersetzen
+        Dialogs. &Auml;nderungen werden dabei Schritt f&uuml;r Schritt aufgehoben. Die
+        Anzahl der verf&uuml;gbaren Schritte ist in der Option <a href="opt_general.html#opt_undolimit">Anzahl der zur&uuml;cknehmbaren &Auml;nderungen pro Suite</a> einstellbar, Standard ist 30. Sollten Sie zu
+        viele Schritte r&uuml;ckg&auml;ngig gemacht haben, k&ouml;nnen Sie diese mittels
+        &raquo;<em>Bearbeiten</em>&laquo;-&raquo;<em>Wiederherstellen</em>&laquo; ([Strg-Y]) wieder herstellen.
+      </p>
+      
+
+      
+<a name="sec_N67427"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N67427">2.2.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N67427">Navigation im Baum</a>
+</h5>
+        
+<p>
+          Auch wenn die Tastaturk&uuml;rzel f&uuml;r die Navigation im Baum den &uuml;blichen
+          Konventionen entsprechen, sollen sie hier noch einmal genannt
+          werden. Dar&uuml;ber hinaus bietet QF-Test einige hilfreiche
+          Zusatzfunktionen.
+        </p>
+        
+<p>
+          Die Pfeiltasten dienen zur grundlegenden Navigation.
+          [Hoch] und [Runter] sind
+          offensichtlich, [Rechts] expandiert entweder
+          einen geschlossenen Knoten, oder geht zum n&auml;chsten Knoten, w&auml;hrend
+          [Links] entweder einen ge&ouml;ffneten Knoten
+          schlie&szlig;t, oder zu seinem Parentknoten springt.
+        </p>
+        
+<p>
+          B&auml;ume in QF-Test erlauben eine spezielle Variante von
+          Mehrfachselektion. Es k&ouml;nnen mehrere nicht zusammenh&auml;ngende
+          Regionen selektiert werden, aber nur unter den Knoten eines
+          gemeinsamen Parentknotens. W&auml;re Mehrfachselektion &uuml;ber den ganzen
+          Baum erlaubt, w&uuml;rde Ausschneiden und wieder Einf&uuml;gen in totalem
+          Chaos enden. Tastaturk&uuml;rzel zum Ausprobieren sind [Shift-Hoch] und [Shift-Runter] um die Selektion zu erweitern, [Strg-Hoch] und [Strg-Runter] f&uuml;r Bewegungen ohne &Auml;nderung der
+          Selektion und [Leertaste] zum Umschalten der
+          Selektion des aktuellen Knotens. Analog erweitern Mausklicks in
+          Kombination mit der [Shift] Taste die
+          Selektion, w&auml;hrend Klicks mit [Strg] die
+          Selektion des angeklickten Knotens umschalten.
+        </p>
+        
+<p>
+          Spezielle K&uuml;rzel sind
+          [Alt-Rechts] und [Alt-Links],
+          welche rekursiv einen Knoten mit all seinen Childknoten aus- oder
+          einklappen,.
+          [Alt-Runter] und [Alt-Hoch] navigieren zum n&auml;chsten oder
+          vorhergehenden Knoten auf der selben Ebene, dazwischen liegende
+          Childknoten werden &uuml;bersprungen.
+        </p>
+        
+<p>
+          Intern merkt sich QF-Test die zuletzt angesprungenen Knoten.
+          [Strg-Backspace] navigiert zum
+          zuletzt selektierten Knoten, auch mehrere Schritte zur&uuml;ck.
+        </p>
+        
+<p>
+          Zu guter Letzt sollten noch [Strg-Rechts] und [Strg-Links] erw&auml;hnt werden, mit deren Hilfe
+          der Baum horizontal gescrollt werden kann, wenn er zu gro&szlig; f&uuml;r
+          seinen Rahmen geworden ist.
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_insert"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_insert">2.2.2</a></span>
+</div>
+<a href="contents.html#toc_usec_insert">Einf&uuml;gemarkierung</a>
+</h5>
+        
+<p>
+          Wenn Sie neue Knoten anlegen oder eine Aufnahme oder kopierte Knoten
+          in die Testsuite einf&uuml;gen, zeigt Ihnen die
+
+          <a name="idx_N67530"></a>Einf&uuml;gemarkierung
+
+          an, wo die neuen Knoten landen werden.
+        </p>
+        
+<a name="fig_insertmark"></a><a name="figure_2.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/insertmark.png" target="_blank"><img src="images/insertmark.png" alt="Einf&uuml;gemarkierung" width="290" height="98" texscale="1"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;2.2</a>:&nbsp;&nbsp;Einf&uuml;gemarkierung</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Knoten werden immer nach dem selektierten Knoten eingef&uuml;gt. Ist der
+          selektierte Knoten ge&ouml;ffnet, werden der oder die neuen Knoten
+          Children des selektierten Knotens, andernfalls landen sie auf der
+          gleichen Ebene.
+        </p>
+        
+<p>
+          Im Beispiel der obigen <a href="#fig_insertmark">Abbildung&nbsp;2.2</a> w&uuml;rde ein
+          neuer Knoten als erstes Child der Sequenz "Events" vor dem
+          Mausevent eingef&uuml;gt.
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_copy_paste"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_copy_paste">2.2.3</a></span>
+</div>
+<a href="contents.html#toc_usec_copy_paste">Knoten verschieben</a>
+</h5>
+        
+<p>
+          Knoten k&ouml;nnen kopiert und eingef&uuml;gt werden oder innerhalb einer Testsuite oder &uuml;ber
+          Testsuite Grenzen hinweg verschoben werden. Die &uuml;blichen Tastaturk&uuml;rzel [Strg-X], [Strg-C] und [Strg-V] werden dazu ebenso unterst&uuml;tzt wie entsprechende Eintr&auml;ge im
+          Kontextmen&uuml;.
+        </p>
+        
+<p>
+          
+<span class="margin"><a name="new_N67587"></a><span class="note">2.0+</span></span>
+          Alternativ k&ouml;nnen Knoten auch durch Ziehen mit der Maus, genannt <em>Drag&amp;Drop</em>,
+          verschoben werden. Normalerweise werden der oder die markierten Knoten bei dieser
+          Operation verschoben. Durch Dr&uuml;cken der [Strg] Taste w&auml;hrend des
+          Loslassens k&ouml;nnen die Knoten stattdessen kopiert werden.
+        </p>
+        
+<p>
+          W&auml;hrend die Maus &uuml;ber den Baum einer Testsuite gezogen wird zeigt die
+          Einf&uuml;gemarkierung an, wo die Knoten beim Loslassen der Maus eingef&uuml;gt werden und ob
+          die Operation so erlaubt ist. Eine gr&uuml;ne Markierung signalisiert erwartungsgem&auml;&szlig; eine
+          g&uuml;ltige Operation, eine rote Markierung eine ung&uuml;ltige. In letzterem Fall passiert
+          beim Loslassen der Maus gar nichts.
+        </p>
+        
+<p>
+          W&auml;hrend des Ziehens k&ouml;nnen Sie Knoten im Baum auf- oder zuklappen indem Sie mit dem
+          Mauszeiger &uuml;ber den entsprechenden Schalter fahren und dort kurz verharren. Auf diesem
+          Weg k&ouml;nnen Sie einfach zur Zielposition navigieren, ohne die Drag&amp;Drop Operation abbrechen
+          und neu starten zu m&uuml;ssen.
+        </p>
+        
+<p>
+          Die Drag&amp;Drop Operation kann jeder Zeit durch Dr&uuml;cken der [Esc] Taste
+          abgebrochen werden.
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_transform_nodes"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_transform_nodes">2.2.4</a></span>
+</div>
+<a href="contents.html#toc_usec_transform_nodes">Knoten konvertieren</a>
+</h5>
+        
+<p>
+          Manche Knoten k&ouml;nnen in einen anderen Knotentyp konvertiert werden, was wesentlich
+          bequemer ist als erst den gew&uuml;nschten Knoten anzulegen und dann die ben&ouml;tigten Attribute
+          zu kopieren. Beispiele von austauschbaren Knoten sind <a href="sequences.html#step_BasicSequence" shape="rect">'Sequenz'</a> und
+          <a href="sequences.html#step_TestStep" shape="rect">'Testschritt'</a> oder <a href="control.html#step_ServerScriptStep" shape="rect">'Server Skript'</a> und <a href="control.html#step_ClientScriptStep" shape="rect">'SUT Skript'</a>. Die
+          Konvertierung eines Knotens ist nur dann m&ouml;glich, wenn seine Childknoten und seine
+          aktuelle Position im Baum auch f&uuml;r den gew&uuml;nschten Zielknoten g&uuml;ltig sind. M&ouml;gliche
+          Ziele der Konvertierung k&ouml;nnen unter dem Eintrag &raquo;<em>Knoten konvertieren           in</em>&laquo; im Kontextmen&uuml; ausgew&auml;hlt werden. Ist dieser Eintrag nicht verf&uuml;gbar, gibt es keine
+          g&uuml;ltigen Zielknoten. In diesem Fall kann es hilfreich sein, den Ausgangsknoten zun&auml;chst
+          unter die <a href="sequences.html#step_ExtraSequence" shape="rect">'Extrasequenzen'</a> zu verschieben.
+        </p>
+        
+<p>
+          Sie finden weitere Details &uuml;ber den Konvertierungsmechanismus unter <a href="tech_transformdetails.html#sec_transformdetails">Details zu Knotenkonvertierungen</a>.
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_tables"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_tables">2.2.5</a></span>
+</div>
+<a href="contents.html#toc_usec_tables">Tabellen</a>
+</h5>
+        
+<p>
+          An verschiedenen Stellen verwendet QF-Test Tabellen zur Darstellung
+          und Bearbeitung von Werten, z.B. um <a href="user_variables.html#usec_variables" shape="rect">Variablen</a> zu definieren oder f&uuml;r <a href="checks.html#sec_checks" shape="rect">Checks</a> von mehreren Elementen.
+        </p>
+        
+<a name="expl_table"></a><a name="figure_2.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/tableedit.png" target="_blank"><img src="images/tableedit.png" alt="Beispieltabelle" width="540" height="130" texscale="1"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;2.3</a>:&nbsp;&nbsp;Beispieltabelle</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Die Buttons oberhalb der Tabelle haben folgende Tastaturk&uuml;rzel und
+          Bedeutung:
+        </p>
+        
+<table class="indent" cellspacing="0" texwidth="\linewidth">
+          
+<tr>
+            
+<td class="top" texalign="l" rowspan="1" colspan="1">
+              <img src="../icons/row_new.png" alt="Zeile einf&uuml;gen" width="20" height="20" texscale="1">
+            </td>
+            <td texalign="l" rowspan="1" colspan="1">&nbsp;</td>
+            <td class="top" rowspan="1" colspan="1">
+              [Shift-Einfg]<br>
+              Zeile einf&uuml;gen. Legt eine neue Zeile an.
+            </td>
+          
+</tr>
+
+          
+<tr>
+            
+<td class="top" texalign="l" rowspan="1" colspan="1">
+              <img src="../icons/row_edit.png" alt="Zeile bearbeiten" width="20" height="20" texscale="1">
+            </td>
+            <td texalign="l" rowspan="1" colspan="1">&nbsp;</td>
+            <td class="top" rowspan="1" colspan="1">
+              [Shift-Return],
+              [Alt-Return]<br>
+              Zeile bearbeiten. &Ouml;ffnet einen Dialog mit Eingabefeldern f&uuml;r alle
+              Zellen der aktuellen Zeile.
+            </td>
+          
+</tr>
+
+          
+<tr>
+            
+<td class="top" rowspan="1" colspan="1">
+              <img src="../icons/row_delete.png" alt="Zeile l&ouml;schen" width="20" height="20" texscale="1">
+            </td>
+            <td rowspan="1" colspan="1">&nbsp;</td>
+            <td class="top" rowspan="1" colspan="1">
+              [Shift-Entf]<br>
+              Zeile l&ouml;schen. Entfernt die aktuelle Zeile.
+            </td>
+          
+</tr>
+
+          
+<tr>
+            
+<td class="top" rowspan="1" colspan="1">
+              <img src="../icons/row_up.png" alt="Zeile nach oben verschieben" width="20" height="20" texscale="1">
+            </td>
+            <td rowspan="1" colspan="1">&nbsp;</td>
+            <td class="top" rowspan="1" colspan="1">
+              [Shift-Strg-Hoch]<br>
+              Zeile nach oben verschieben. Verschiebt die aktuelle Zeile um eine
+              Position nach oben.
+            </td>
+          
+</tr>
+
+          
+<tr>
+            
+<td class="top" rowspan="1" colspan="1">
+              <img src="../icons/row_down.png" alt="Zeile nach unten verschieben" width="20" height="20" texscale="1">
+            </td>
+            <td rowspan="1" colspan="1">&nbsp;</td>
+            <td class="top" rowspan="1" colspan="1">
+              [Shift-Strg-Runter]<br>
+              Zeile nach unten verschieben. Verschiebt die aktuelle Zeile um eine
+              Position nach unten.
+            </td>
+          
+</tr>
+        
+</table>
+        
+<p>
+          Manche Tabellen bieten zus&auml;tzlich die M&ouml;glichkeit, Spalten anzulegen und zu l&ouml;schen,
+          sowie die &Uuml;berschriften der Spalten zu bearbeiten und stellen dazu die folgenden Buttons
+          bereit:
+        </p>
+        
+<table class="indent" cellspacing="0" texwidth="\linewidth">
+          
+<tr>
+            
+<td class="top" texalign="l" rowspan="1" colspan="1">
+              <img src="../icons/column_new.png" alt="Spalte einf&uuml;gen" width="20" height="20" texscale="1">
+            </td>
+            <td texalign="l" rowspan="1" colspan="1">&nbsp;</td>
+            <td class="top" rowspan="1" colspan="1">
+              Spalte einf&uuml;gen. F&uuml;gt eine neue Spalte ein.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td class="top" texalign="l" rowspan="1" colspan="1">
+              <img src="../icons/column_delete.png" alt="Spalte l&ouml;schen" width="20" height="20" texscale="1">
+            </td>
+            <td texalign="l" rowspan="1" colspan="1">&nbsp;</td>
+            <td class="top" rowspan="1" colspan="1">
+              Spalte l&ouml;schen. L&ouml;scht die selektierte Spalte.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td class="top" texalign="l" rowspan="1" colspan="1">
+              <img src="../icons/column_edit.png" alt="Spalten&uuml;berschrift" width="20" height="20" texscale="1">
+            </td>
+            <td texalign="l" rowspan="1" colspan="1">&nbsp;</td>
+            <td class="top" rowspan="1" colspan="1">
+              Spalte bearbeiten. &Ouml;ffnet einen Dialog zum Bearbeiten der Spalten&uuml;berschrift.
+            </td>
+          
+</tr>
+        
+</table>
+        
+<p>
+          Um einen Wert direkt in der Tabelle zu editieren, k&ouml;nnen Sie einfach
+          losschreiben. Dabei wird der aktuelle Wert &uuml;berschrieben. Um
+          den vorhandenen Wert zu ver&auml;ndern, dr&uuml;cken Sie zun&auml;chst
+          [F2] oder selektieren Sie die Zelle mit einem
+          Doppelklick. Zum Abschluss der Bearbeitung dr&uuml;cken Sie
+          [Return], abbrechen k&ouml;nnen Sie mit
+          [Escape]. Wenn Sie versuchen, einen
+          unzul&auml;ssigen Wert einzugeben, f&auml;rbt sich der Rand der Zelle rot und
+          Sie k&ouml;nnen die Eingabe nicht &uuml;bernehmen.
+        </p>
+        
+<p>
+          Die Tabellen unterst&uuml;tzen Mehrfachselektion der Zeilen (Mausklicks
+          mit [Shift/Strg], [Shift/Strg-Hoch/Runter]) sowie Ausschneiden, Kopieren und Einf&uuml;gen von
+          ganzen Zeilen ([Strg-X/C/V]).
+          Das Einf&uuml;gen ist dabei auf Tabellen mit gleichartigen Spalten
+          beschr&auml;nkt.
+        </p>
+        
+<p>
+          Im Kontextmen&uuml; der Tabelle k&ouml;nnen noch weitere Aktionen verf&uuml;gbar sein,
+          z.B. Anzeigen von Zeilennummern, Komponente finden, etc.
+        </p>
+        
+<p>
+          Ein Mausklick auf die Spalten&uuml;berschrift aktiviert die Sortierung der Zeilen.
+          Ein Doppelklick auf die Spalten&uuml;berschrift passt die Spaltenbreite
+          automatisch an den breitesten Wert innerhalb der Spalte an oder erlaubt das Editieren des der
+          Spalten&uuml;berschrift (bei Datentablle).
+        </p>
+      
+
+      
+      
+      
+<a name="usec_basicEditPack"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_basicEditPack">2.2.6</a></span>
+</div>
+<a href="contents.html#toc_usec_basicEditPack">Packen und Entpacken</a>
+</h5>
+        
+<p>
+          W&auml;hrend der Entwicklung von Tests ist es ab und zu notwendig, mehrere
+          Knoten unter einen neuen Elternknoten zu verschieben. Eine typische
+          Situation hierf&uuml;r ist das Refactoring von Prozeduren bzw. das
+          Reorganisieren dieser Knoten in Packages oder einen Ablauf in einen
+          'Try'/'Catch' Block zu packen.
+        </p>
+        
+<p>
+          F&uuml;r solche Anforderungen erlaubt QF-Test dem Benutzer Knoten zu
+          packen. Dies kann mittels Rechtsklick auf die entsprechenden Knoten
+          und Auswahl von &raquo;<em>Knoten einpacken</em>&laquo; und des
+          gew&uuml;nschten neuen Elternknotens erreicht werden.
+        </p>
+        
+<p>
+          QF-Test erlaubt ebenfalls Knoten wieder zu entpacken und deren
+          Elternknoten zu l&ouml;schen. Diesen Ansatz kann man z.B. verwenden, um
+          Test unn&ouml;tige Packages bzw. Testfalls&auml;tze zu l&ouml;schen oder einen
+          'Try'/'Catch' Block wieder zu entfernen. Um Knoten
+          zu entpacken selektieren Sie den entsprechenden Knoten und w&auml;hlen im
+          Kontextmen&uuml; &raquo;<em>Knoten entpacken</em>&laquo; aus.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span> Die Pack- und Entpackaktionen werden nur dann im
+          Kontextmen&uuml; angezeigt, wenn das Einf&uuml;gen der Kindknoten in der
+          aktuellen Struktur erlaubt ist.
+        </p>
+      
+      
+      
+
+      
+<a name="usec_basicEditSort"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_basicEditSort">2.2.7</a></span>
+</div>
+<a href="contents.html#toc_usec_basicEditSort">Sortieren von Knoten</a>
+</h5>
+        
+<p>
+          QF-Test gibt Ihnen die M&ouml;glichkeit Knoten einer Testsuite zu
+          sortieren. Dies erreichen Sie mittels Rechtsklick auf den entsprechenden Knoten
+          und Auswahl von &raquo;<em>Knoten rekursiv sortieren</em>&laquo;. Alternativ k&ouml;nnen
+          Sie auch mehrere Knoten markieren und mittels
+          &raquo;<em>Knoten sortieren</em>&laquo; nur die markierten Knoten
+          in eine geordnete Reihenfolge bringen.
+        </p>
+        
+<p>
+          Der Algorithmus sortiert zur Zeit Ziffern vor Gro&szlig;buchstaben und diese
+          vor Kleinbuchstaben.
+          Neben der bestehenden Grundstruktur von QF-Test, die eingehalten werden
+          muss, besteht noch
+          die Regel, dass 'Package' Knoten immer vor 'Abh&auml;ngigkeit' Knoten
+          und diese vor 'Prozedur' Knoten einsortiert werden.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span> Die Grundstruktur einer Testsuite wird vom Sortieren
+          nicht ver&auml;ndert. In einer Testsuite k&ouml;nnen Sie zwar Testf&auml;lle und
+          Prozeduren sortieren, allerdings wird der 'Prozeduren' Knoten
+          immer vor dem 'Fenster und Komponenten' Knoten sein.
+        </p>
+      
+
+      
+
+    
+
+    
+    
+
+    
+<a name="usec_gui_advanced_editing"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_gui_advanced_editing">2.3</a></span>
+</div>
+<a href="contents.html#toc_usec_gui_advanced_editing">Erweiterte Bearbeitungsm&ouml;glichkeiten</a>
+</h4>
+      
+<p>
+        Dieser Abschnitt erl&auml;utert die etwas komplexeren
+        Bearbeitungsm&ouml;glichkeiten wie Suchen/Ersetzen oder die Arbeit mit
+        mehreren Ansichten der selben Testsuite.
+      </p>
+      
+
+      
+<a name="usec_searching"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_searching">2.3.1</a></span>
+</div>
+<a href="contents.html#toc_usec_searching">Suchen</a>
+</h5>
+        
+<p>
+          QF-Test bietet zwei Arten von Suchoperationen, eine allgemeine Suche durch alle Knoten und
+          deren Attribute in Testsuiten und Protokollen sowie eine inkrementelle Suche in
+          Textfeldern, darunter auch Skript-Terminals und Programmausgaben.
+        </p>
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+<a name="usec_gensearch"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_gensearch">2.3.1.1</a></span>
+</div>
+<a href="contents.html#toc_usec_gensearch">Allgemeine Suche</a>
+</h5>
+          
+<p>
+            Obwohl die Funktionen zum Suchen und Ersetzen vieles gemeinsam
+            haben, gibt es signifikante Unterschiede, vor allem in der
+            Reichweite der Operation. Eine Suche startet normalerweise beim selektierten
+            Knoten und geht von dort den Baum bis zum Ende durch. Nach einer
+            entsprechenden R&uuml;ckfrage wird die Suche am Anfang des Baums
+            fortgesetzt und endet sp&auml;testens beim urspr&uuml;nglichen Startknoten, so
+            dass jeder Knoten des Baums genau einmal durchlaufen wird. Dieses
+            Vorgehen ist analog zur Suchfunktion in g&auml;ngigen Textverarbeitungen und
+            sollte intuitiv zu benutzen sein.
+          </p>
+          
+<a name="parameter_search_text"></a>
+<p id="parameter_search_text">
+            Anfangs &ouml;ffnet QF-Test die 'einfache' Suche. Diese erlaubt Ihnen nach
+            einen bestimmten Text zu suchen.
+          </p>
+          
+<a name="figure_2.4"></a><a name="figure_2.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/dlg_Search.png" target="_blank"><img src="images/dlg_Search.png" alt="Der Dialog f&uuml;r die einfache Suche" width="346" height="266" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;2.4</a>:&nbsp;&nbsp;Der Dialog f&uuml;r die einfache Suche</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            F&uuml;r eine spezifischere Suche, z.B. nach Attributen, Knotentypen
+            oder bestimmten Zust&auml;nden von Knoten k&ouml;nnen Sie in den
+            'Fortgeschrittenen' Suchmodus wechseln. Hierf&uuml;r klicken Sie auf
+            den 'Suchmodus wechseln' Knopf in der Werkzeugleiste.
+          </p>
+          
+<a name="figure_2.5"></a><a name="figure_2.5"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/dlg_SearchAdvanced.png" target="_blank"><img src="images/dlg_SearchAdvanced.png" alt="Der fortgeschrittene               Suchdialog" width="697" height="640" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;2.5</a>:&nbsp;&nbsp;Der fortgeschrittene Suchdialog</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            Normalerweise durchsucht QF-Test alle Attribute in allen Arten von Knoten
+            nach dem gew&uuml;nschten
+            Text.
+          </p>
+          
+<a name="parameter_search_attribute"></a>
+<p id="parameter_search_attribute">
+            Mit Hilfe der Option "Im Attribut" l&auml;sst sich die Suche auf ein
+            spezielles Attribut einschr&auml;nken.
+          </p>
+          
+<a name="parameter_search_nodetype"></a>
+<p id="parameter_search_nodetype">
+            &Uuml;ber die Option "Knotentyp" kann mann die Suche auf eine spezielle
+            Art von Knoten einschr&auml;nken.
+          </p>
+          
+<a name="parameter_search_range"></a>
+<p id="parameter_search_range">
+            Die Option
+            "Reichweite der Such-Operation" setzt fest, wo nach dem angegebenen Ausdruck gesucht
+            werden soll. Dies kann entweder in den aktuell selektierten
+            Knoten, in der gesamten Testsuite oder in allen offenen Testsuiten geschehen.
+          </p>
+          
+<a name="parameter_search_nodestates"></a>
+<p id="parameter_search_nodestates">
+            Wenn Sie
+            die Option "Nur Knoten mit den folgenden Zust&auml;nden" ausw&auml;hlen, wird
+            nur nach Knoten gesucht, welche den angegebenen Status besitzen,
+            z.B. einer gr&uuml;nen Marke oder einen Breakpoint.
+          </p>
+          
+<a name="parameter_search_whole"></a>
+<p id="parameter_search_whole">
+            Ist "Gesamtes Attribut vergleichen" aktiviert,
+            muss der gesuchte Text genau einem Wert entsprechen, andernfalls
+            gen&uuml;gt es, wenn der Suchtext im Attribut enthalten ist.
+          </p>
+          
+<a name="parameter_search_regexp"></a>
+<p id="parameter_search_regexp">
+            Regul&auml;re Ausdr&uuml;cke werden in <a href="tech_regexp.html#sec_regexp">Abschnitt 45.3</a> erkl&auml;rt.
+          </p>
+          
+<p>
+            
+<span class="margin"><span class="note">Hinweis</span></span> Um nach Werten von Booleschen
+            Attributen wie <a href="events.html#att_MouseEventStep_hardevent" shape="rect">'Als "harten" Event wiedergeben'</a> zu suchen, verwenden Sie "true" oder
+            "false" (ohne Anf&uuml;hrungsstriche) als Suchtext. Falls Sie nach
+            leeren Werten suchen m&ouml;chten, m&uuml;ssen Sie "Gesamtes Attribut
+            vergleichen" anhaken.
+          </p>
+          
+<p>
+            Wenn die Suche erfolgreich ist, wird der gefundene Knoten markiert
+            und eine Meldung in der Statuszeile ausgegeben, die den Namen des
+            gefundenen Attributs angibt.
+          </p>
+          
+<p>
+<span class="margin"><a name="new_N68252"></a><span class="note">3.4+</span></span>Wie bereits erw&auml;hnt, startet die Suche
+            normalerweise vom gerade selektierten Knoten. Falls Sie allerdings
+            w&auml;hrend des Suchprozesses die Selektion &auml;ndern m&ouml;chten und trotzdem
+            die vorherige Suche fortsetzen wollen, dann k&ouml;nnen Sie dies mit
+            dem Button "Suche fortsetzen" erreichen.
+          </p>
+          
+<p>
+            Wenn der Suchdialog geschlossen wurde, k&ouml;nnen Sie die Suche immer
+            noch fortsetzen, in dem Sie [F3]
+            dr&uuml;cken. Mittels [Ctrl-G] k&ouml;nnen
+            Sie sogar die selbe Suche von einem neuen Knoten aus starten.
+          </p>
+          
+<p>
+            Ein sehr n&uuml;tzliches Feature ist die F&auml;higkeit nach allen 'Prozeduraufruf' Knoten zu
+            suchen, die eine bestimmte 'Prozedur' aufrufen, oder nach allen 'Events',
+            die eine bestimmte 'Komponente' ben&ouml;tigen. W&auml;hlen Sie hierzu einfach den
+            Men&uuml;eintrag &raquo;<em>Referenzen finden...</em>&laquo; im Kontextmen&uuml; des Knotens, der
+            aufgerufen oder referenziert wird. Danach wird ein neues Fenster
+            mit allen Referenzen auf den ausgew&auml;hlten Knoten angezeigt. In
+            diesem Fenster k&ouml;nnen Sie mittels Doppelklick auf einen Eintrag
+            zur jeweiligen Stelle in der Testsuite springen.
+          </p>
+        
+<a name="figure_2.6"></a><a name="figure_2.6"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/dlg_StepReferences.png" target="_blank"><img src="images/dlg_StepReferences.png" alt="Referenzenliste" width="600" height="500" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;2.6</a>:&nbsp;&nbsp;Resultatsliste von 'Referenzen finden'</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+<span class="margin"><a name="new_N68298"></a><span class="note">3.1+</span></span>Es ist ebenso m&ouml;glich alle gefundenen
+          Knoten aus dem Suchdialog mittels Klick auf "Ergebnisliste anzeigen"
+          zu erreichen. Von diesem Fenster aus, k&ouml;nnen Sie auch wiederum jeden
+          einzelnen Knoten der Testsuite erreichen.
+          </p>
+        
+
+        
+        
+        
+<a name="usec_incsearch"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_incsearch">2.3.1.2</a></span>
+</div>
+<a href="contents.html#toc_usec_incsearch">Inkrementelle Textsuche</a>
+</h5>
+          
+<p>
+            
+<span class="margin"><a name="new_N68316"></a><span class="note">3.1+</span></span>
+            Zus&auml;tzlich zur Suche im Baum gibt es die M&ouml;glichkeit f&uuml;r inkrementelles Suchen in
+            Komponenten, die Text enthalten, wie z.B. das Terminal oder entsprechende Attribute in
+            der Detailansicht. Diese Features kann &uuml;ber den &raquo;<em>Suchen...</em>&laquo;
+            Eintrag im Kontextmen&uuml; der Komponente aktiviert werden oder durch Dr&uuml;cken von
+            [Strg-F], wenn die Komponente ausgew&auml;hlt ist und den
+            Tastaturfokus besitzt. Dann erscheint das Eingabefenster f&uuml;r die inkrementelle Suche
+            am rechten oberen Rand der entsprechenden Komponente. Die folgende Abbildung zeigt
+            eine inkrementelle Suche f&uuml;r das Terminal mit hervorgehobenen Suchtreffern.
+          </p>
+          
+<a name="figure_2.7"></a><a name="figure_2.7"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/Incsearch.png" target="_blank"><img src="images/Incsearch.png" alt="Die inkrementelle Suche" width="872" height="627" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;2.7</a>:&nbsp;&nbsp;Die inkrementelle Suche</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            Die Suche kann auf einen bestimmten Teil des enthaltenen Textes beschr&auml;nkt werden, in dem man den
+            gew&uuml;nschten Bereich selektiert und den &raquo;<em>Suchen in Auswahl...</em>&laquo; Eintrag im
+            Kontextmen&uuml; der Komponente w&auml;hlt oder [Strg-Umschalt-F] dr&uuml;ckt.
+          </p>
+          
+<p>
+            Ansonsten sollte die inkrementelle Suche und auch die verf&uuml;gbaren Optionen
+            selbsterkl&auml;rend sein.
+          </p>
+        
+
+        
+
+      
+
+
+      
+      
+      
+      
+      
+<a name="usec_replace"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_replace">2.3.2</a></span>
+</div>
+<a href="contents.html#toc_usec_replace">Ersetzen</a>
+</h5>
+        
+<a name="parameter_search_replace"></a>
+<p id="parameter_search_replace">
+          Wenn man einmal die Besonderheiten beim G&uuml;ltigkeitsbereich
+          verinnerlicht hat, ist der Ersetzen Dialog ebenso intuitiv zu
+          benutzen wie der Suchdialog. Beim Ersetzen haben Sie die
+          M&ouml;glichkeit, einen Treffer nach dem anderen zu ersetzen, oder alle
+          auf einmal. Um bei Letzterem unerwartete Resultate zu vermeiden
+          bedarf es einer M&ouml;glichkeit, den Bereich f&uuml;r das Ersetzen
+          einzuschr&auml;nken. Daher werden beim Ersetzen nur die selektierten
+          Knoten sowie deren direkte oder indirekte Childknoten durchsucht.
+          Um Ersetzungen im gesamten Baum durchzuf&uuml;hren, selektieren Sie den
+          Wurzelknoten oder w&auml;hlen Sie im Ersetzen Dialog die entsprechende
+          Einstellung unter "Reichweite der Ersetzen-Operation".
+        </p>
+        
+<a name="figure_2.8"></a><a name="figure_2.8"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/dlg_Replace.png" target="_blank"><img src="images/dlg_Replace.png" alt="Der Ersetzen Dialog" width="697" height="686" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;2.8</a>:&nbsp;&nbsp;Der Ersetzen Dialog</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Die Optionen entsprechen denen im Suchdialog. Ist "Gesamtes
+          Attribut vergleichen" ausgeschaltet, sind mehrere Ersetzungen
+          innerhalb eines Attributs m&ouml;glich. Zum Beispiel w&uuml;rde das Ersetzen
+          von "a" durch "b" im Wort "ananas" zu "bnbnbs" f&uuml;hren.
+          F&uuml;r den Einsatz von regul&auml;ren Ausdr&uuml;cken lesen Sie bitte <a href="tech_regexp.html#sec_regexp">Abschnitt 45.3</a>.
+        </p>
+        
+<p>
+          Ist die Suche erfolgreich, wird der gefundene Knoten selektiert und
+          ein Dialog ge&ouml;ffnet, der das gefundene Attribut mit dem alten und
+          neuen Wert anzeigt.
+        </p>
+        
+<a name="figure_2.9"></a><a name="figure_2.9"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/dlg_ReplaceQuery.png" target="_blank"><img src="images/dlg_ReplaceQuery.png" alt="Der R&uuml;ckfrage Dialog                beim Ersetzen" width="450" height="233" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;2.9</a>:&nbsp;&nbsp;Der R&uuml;ckfrage Dialog beim Ersetzen</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Sie haben folgende M&ouml;glichkeiten:
+        </p>
+        
+<ul>
+          
+<li>
+            Ein Klick auf <em>Ersetzen</em> &auml;ndert das Attribut und setzt die
+            Suche nach dem n&auml;chsten Wert fort.
+          </li>
+          
+<li>
+            
+<em>Alle ersetzen</em> &auml;ndert dieses Attribut sowie alle weiteren
+            Treffer ohne nochmalige R&uuml;ckfrage.
+          </li>
+          
+<li>
+            
+<em>&Uuml;berspringen</em> l&auml;sst dieses Attribut unver&auml;ndert und setzt
+            die Suche fort.
+          </li>
+          
+<li>
+            Erwartungsgem&auml;&szlig; beendet <em>Abbrechen</em> den gesamten Vorgang.
+          </li>
+        
+</ul>
+        
+<p>
+          Wenn Sie sich bei den Eingaben sicher sind, k&ouml;nnen Sie gleich im
+          Ersetzen Dialog <em>Alle ersetzen</em> w&auml;hlen und damit die
+          R&uuml;ckfrage &uuml;berspringen. Nachdem die Attribute ge&auml;ndert wurden, wird
+          die Anzahl der betroffenen Knoten in einem Meldungsdialog ausgegeben.
+        </p>
+        
+<p>
+<span class="margin"><a name="new_N68454"></a><span class="note">3.1+</span></span>Nach dem Ersetzen wird von QF-Test ein
+          Ergebnisfenster mit allen angepassten Knoten angezeigt. Sie k&ouml;nnen
+          dieses Fenster auch vor der eigentlichen Aktion mittels Klick auf
+          "Ergebnisliste anzeigen" im Ersetzen Dialog erreichen.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span> Ob Werte einzeln oder in einem Rutsch
+          ersetzt werden, beeinflusst das anschlie&szlig;ende Verhalten der Undo
+          Funktion. S&auml;mtliche durch <em>Alle ersetzen</em> ausgel&ouml;sten
+          &Auml;nderungen werden in einem Schritt zur&uuml;ckgenommen, &Auml;nderungen in
+          Einzelschritten werden einzeln r&uuml;ckg&auml;ngig gemacht.
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_tunesearch"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_tunesearch">2.3.3</a></span>
+</div>
+<a href="contents.html#toc_usec_tunesearch">Kompliziertere Such- und Ersetzungsvorg&auml;nge</a>
+</h5>
+        
+<p>
+          
+<span class="margin"><a name="new_N68480"></a><span class="note">3.3+</span></span>
+
+          Manchmal ist eine einfache Suchoperation nicht ausreichend. Stellen Sie sich zum
+          Beispiel vor, Sie wollen eine 'Wartezeit' von 3000 Millisekunden f&uuml;r alle
+          'Check Text' Knoten einer bestimmten Komponente setzen. Sie kennen die 'QF-Test ID'
+          der Komponente, aber wenn Sie danach suchen erhalten Sie auch alle anderen Events und
+          Checks f&uuml;r diese. Wenn Sie nach dem Knotentext 'Check Text' suchen, finden Sie dagegen
+          die 'Check Text' Knoten f&uuml;r alle Komponenten, nicht nur die f&uuml;r die gesuchte
+          Komponente.
+        </p>
+        
+<p>
+          Anstelle mehrerer kombinierbarer Ebenen von Suchkriterien bietet QF-Test durch seine Marken
+          v&ouml;llige Flexibilit&auml;t. F&uuml;hren Sie zun&auml;chst eine Suche nach Ihrem ersten Kriterium durch,
+          z.B. dem Knotentext und w&auml;hlen Sie 'Ergebnisliste anzeigen'. Im folgenden Ergebnisdialog
+          selektieren Sie durch dr&uuml;cken von [Ctrl-A] s&auml;mtliche
+          Eintr&auml;ge in der Tabelle, w&auml;hlen dann 'Setze Marke' um allen gefundenen Knoten die
+          blaue Marke zuzuweisen und schlie&szlig;en den Dialog. Sie k&ouml;nnen nun eine weitere Suche oder
+          einen Ersetzungsvorgang durchf&uuml;hren, dessen G&uuml;ltigkeitsbereich auf Knoten mit einer
+          bestimmten Marke beschr&auml;nkt ist. In unserem Beispiel w&uuml;rden Sie nun den leeren Text
+          durch '3000' ersetzen, und zwar auf alle 'Wartezeit' Attribute von Knoten mit blauer
+          Marke im gesamten Baum.
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_N68511"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N68511">2.3.4</a></span>
+</div>
+<a href="contents.html#toc_sec_N68511">Mehrere Ansichten</a>
+</h5>
+        
+<p>
+          Es k&ouml;nnen mehrere Fenster ge&ouml;ffnet werden, die verschiedene Teile
+          der selben Baumstruktur gleichzeitig anzeigen. Dies kann beim Umgang
+          mit gro&szlig;en Testsuiten oder zum Vergleichen von Attributen mehrerer
+          Knoten n&uuml;tzlich sein.
+        </p>
+        
+<p>
+          Zus&auml;tzliche Ansichten werden mittels
+          &raquo;<em>Ansicht</em>&laquo;-&raquo;<em>Neues&nbsp;Fenster...</em>&laquo;
+          ge&ouml;ffnet. Der aktuelle Knoten wird dabei zum Wurzelknoten f&uuml;r die
+          neue Ansicht. Die Zusatzfenster sind analog zu
+          den Hauptfenstern, jedoch mit eingeschr&auml;nktem Funktionsumfang.
+        </p>
+      
+      
+      
+      
+<a name="sec_N68535"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N68535">2.3.5</a></span>
+</div>
+<a href="contents.html#toc_sec_N68535">Toolbar-Buttons ausblenden</a>
+</h5>
+        
+<p>
+          Sie k&ouml;nnen die Zahl der angezeigten Kn&ouml;pfe in der Werkzeugleiste reduzieren,
+          indem Sie den Knopf, den Sie ausblenden wollen, mit der rechten Maustaste
+          anklicken und im Kontextmen&uuml; &raquo;<em>Aus Werkzeugleiste entfernen</em>&laquo;
+          ausw&auml;hlen.
+        </p>
+        
+<p>
+          Um die urspr&uuml;ngliche Ansicht wiederherzustellen, klicken Sie eine beliebige
+          Stelle in der Werkzeugleiste und w&auml;hlen &raquo;<em>Ganze Werkzeugleiste anzeigen</em>&laquo;.
+          Wenn Sie alle Buttons ausgeblendet haben, w&auml;hlen Sie unter &raquo;<em>Anzeigen</em>&laquo;-&raquo;<em>Werkzeugleiste anzeigen</em>&laquo;.
+        </p>
+      
+
+      
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_installation.html#usec_installation"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 1&nbsp;Installation und Start" title="Vorheriges Kapitel: 1&nbsp;Installation und Start"></a></td><td class="navicon"><a href="user_quickstart.html#usec_quickstart"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 3&nbsp;Schnellstart Ihrer Anwendung" title="N&auml;chste Seite: 3&nbsp;Schnellstart Ihrer Anwendung"></a></td><td class="navicon"><a href="user_quickstart.html#usec_quickstart"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 3&nbsp;Schnellstart Ihrer Anwendung" title="N&auml;chstes Kapitel: 3&nbsp;Schnellstart Ihrer Anwendung"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch" title="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

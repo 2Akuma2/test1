@@ -1,0 +1,691 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>The procedure installCustomWebResolver</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_custom_web_resolver"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_customajax_analysis.html#sec_customajax_analysis"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 47.1.2&nbsp;Analyzing a web page" title="Previous Chapter: 47.1.2&nbsp;Analyzing a web page"></a></td><td class="navicon"><a href="tech_customajax_demo_resolver.html#sec_customajax_demo_resolver"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 47.1.4&nbsp;installCustomWebResolver - Samples" title="Next Page: 47.1.4&nbsp;installCustomWebResolver - Samples"></a></td><td class="navicon"><a href="tech_customajax_demo_resolver.html#sec_customajax_demo_resolver"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 47.1.4&nbsp;installCustomWebResolver - Samples" title="Next Chapter: 47.1.4&nbsp;installCustomWebResolver - Samples"></a></td><td class="navicon"><a href="tech_customajax.html#sec_customajax"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 47.1&nbsp;Improving component recognition with a CustomWebResolver" title="Chapter Overview: 47.1&nbsp;Improving component recognition with a CustomWebResolver"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_custom_web_resolver">47.1.3</a></span>
+</div>
+<a href="contents.html#toc_sec_custom_web_resolver">The procedure <code>installCustomWebResolver</code></a>
+</h5>
+          
+<p>
+            The mapping of HTML objects to QF-Test components is usually done via the procedure
+            <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.ajax.installCustomWebResolver"><code>qfs.web.ajax.installCustomWebResolver</code></a>
+            from the standard library <code>qfs.qft</code>.
+            If you used the Quickstart Wizard from the &raquo;<em>Extras</em>&laquo;  menu to create the
+            setup sequence for your web application, as recommended, you will find a call to this procedure
+            in the last 'Sequence' node.
+          </p>
+          
+<a name="figure_47.4"></a><a name="figure_47.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/WebResolver_setup_sequence.png" target="_blank"><img src="images/WebResolver_setup_sequence.png" alt="WebResolver_setup_sequence" width="1006" height="162" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;47.4</a>:&nbsp;&nbsp;Aufruf des CustomWebResolvers im 'Setup' Knoten des
+              Schnellstart-Assistenten</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            Please find general information about component recognition in <a href="user_webtesting.html#usec_web_components">Recognition of web components and toolkits</a>
+            as well as in <a href="tech_customajax_mapping_general.html#sec_customajax_mapping_general">General configuration</a>.
+          </p>
+          
+<p>
+            For information on QF-Test generic classes please refer to <a href="tech_genericclasses.html#sec_genericclasses">chapter 57</a>.
+            An interesting feature of the generic classes is the class type. It is
+            used for the mapping of some GUI elements, e.g. <code>Item:ListItem</code>:
+            the main class is <code>Item</code>, the type <code>ListItem</code>.
+            Or for the button in a combo box: <code>Button:ComboBoxButton</code>.
+            And, this is the interesting bit, you can define you own types.
+            The example in <a href="tech_customajax_table.html#sec_customajax_table">Mapping of Tables and TreeTables</a> uses this technique.
+          </p>
+          
+<p>
+            The sections
+          </p>
+          
+<p>
+            
+<a href="#sec_custom_web_resolver_parameters"><code>installCustomWebResolver</code> - Parameters</a> and
+          </p>
+          
+<p>
+            
+<a href="#sec_custom_web_resolver_syntax"><code>installCustomWebResolver</code> - Parameter syntax</a>
+          
+</p>
+          
+<p>
+            explain the parameters and the syntax of the procedure. Subsequently, you will
+            find samples.
+          </p>
+          
+<a name="sec_custom_web_resolver_parameters"></a>
+            
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_custom_web_resolver_parameters">47.1.3.1</a></span>
+</div>
+<a href="contents.html#toc_sec_custom_web_resolver_parameters"><code>installCustomWebResolver</code> - Parameters</a>
+</h5>
+            
+<p>
+              The parameters are sorted by relevance. So, for example,
+              as component recognition is mostly based on determining QF-Test generic class names
+              from CSS classes or other attributes the parameters <code>genericClasses</code>
+              and <code>attributesToGenericClasses</code> come first.
+            </p>
+            
+
+            
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>installCustomWebResolver</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                  Configure component recognition for web applications.
+                </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>resolver</code></strong></td><td class="paramdesc">
+                  The short name of the resolver to extend. Either <br>
+                  - <code>autodetect</code> (default) to determine the framework automatically or <br>
+                  - <code>custom</code> if you do not use any of the frameworks supported by QF-Test or<br>
+                  - the framework name, e.g. <code>zk</code> or <code>vaadin</code>.
+                  For the correct name please refer to the table
+                  <a href="tech_ajax.html#table_toolkits">table&nbsp;47.6</a>. <br>If you created the start sequence
+                  via the quick start wizzard and entered a framework there, it will be
+                  shown in the parameter.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>version</code></strong></td><td class="paramdesc">
+                  The resolver version,
+                  e.g. <code>1</code> or <code>1.0</code> or <code>1.1.1</code>. The latest
+                  available version with the given restriction will be used.
+                  So, if <code>1.0</code> is given then the latest 1.0.x will apply.
+                  If empty, the latest available version will be used. <br>
+                  Delete or leave empty when auto detection is used.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>genericClasses</code></strong></td><td class="paramdesc">
+                  (Optional) A list of assignments mapping a css class to a generic QF-Test class.<br>
+                  The parameter evaluates the <code>class</code> attribute of the GUI
+                  element only. The <code>class</code> attribute can hold several css classes,
+                  separated by spaces. For the mapping of a GUI element you can specify one of the
+                  css classes.<br>
+                  Can be overridden by <code>attributesToGenericClasses</code>. <br>
+                  e.g. <code>css-button=Button,ui-table=Table</code>. <br>
+                  Sample for a GUI element with sereral css classes: <br>
+                  
+<code>class="button css-button active"</code>. Above example makes use of the css
+                  class <code>css-button</code>.<br>
+                  (uses node.getAttribute(<code>class</code>)).
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>attributesToGenericClasses</code></strong></td><td class="paramdesc">
+                  (Optional) A list of assignments mapping GUI elements with the given attribute value
+                  to QF-Test components of the given generic class.<br>
+                  The mapping refers to the whole value of the attribute.<br>
+                  Assignments from here can override mappings done in the <code>genericClasses</code> parameter.<br>
+                  e.g. <code>id=table=Table,name=%.*combo.*=ComboBox</code>.<br>
+                  Sample for overriding the parameter <code>genericClasses</code> with several
+                  css classes:<br>
+                  
+<code>class=button css-button active=Button</code>.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>tagsToGenericClasses</code></strong></td><td class="paramdesc">
+                  (Optional) A list of assignments mapping a tag to a generic QF-Test class. <br>
+                  Tags have to be written in capital letters,<br>
+                  e.g. <code>LI=ListItem</code>.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>ignoreTags</code></strong></td><td class="paramdesc">
+                  (Optional) A list of class names or tags for which to ignore nodes when creating the
+                  parent hierarchy of a node. Tags have to be written in capital letters,<br>
+                  e.g. <code>DIV,TBODY</code>. In this example all <code>DIV</code> and
+                  <code>TBODY</code> nodes not mapped
+                  to some other class will be ignored.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>ignoreByAttributes</code></strong></td><td class="paramdesc">
+                  (Optional) A list of attributes values for which to ignore nodes when creating the
+                  parent hierarchy of a node. <br>
+                  e.g. <code>id=container,id=header</code>.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>autoIdPatterns</code></strong></td><td class="paramdesc">
+                  (Optional) A list of patterns specifying ids generated automatically by the framework.
+                  If the <code>id</code> attribute matches the pattern the node will be ignored,
+                  <br>e.g. <code>myAutoId,%auto.*</code>.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>customIdAttributes</code></strong></td><td class="paramdesc">
+                  (Optional) A list of attribute names which can act as id for the component, <br>
+                  e.g. <code>myid,qft-id</code>
+                  will use the attributes <code>myid</code> and <code>qft-id</code> for id resolution.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>interestingByAttributes</code></strong></td><td class="paramdesc">
+                  (Optional) A list of attribute values telling QF-Test to create a node in the component tree
+                  for the respective GUI object, <br>
+                  e.g. <code>id=container,id=header</code>.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>attributesToQftFeature</code></strong></td><td class="paramdesc">
+                  (Optional) A list of attributes where the values will to be used for the 'Feature'
+                  attribute of the QF-Test component.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>documentJS</code></strong></td><td class="paramdesc">
+                  (Optional) Javascript code to be injected into the web page. Can be used to
+                  inject custom Javascript functions.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>attributesToQftName</code></strong></td><td class="paramdesc">
+                  (Optional) A list of attributes which will be used for QF-Test name recognition of components.
+                  <br>Use with care. If not sure contact the QF-Test support team.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>nonTrivialClasses</code></strong></td><td class="paramdesc">
+                  (Optional) A list of CSS classes of objects which shouldn't be ignored by QF-Test.
+                  Trivial nodes are I, FONT, BOLD etc. If you want to keep them, you need to
+                  activate them here specifying a proper CSS class.
+                  <br>Use with care. If not sure contact the QF-Test support team.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>allBrowsersSemihardClasses</code></strong></td><td class="paramdesc">
+                  (Optional) A list of classes to activate semi-hard events for,
+                  e.g. <code>Button</code>, for all browsers.
+                  <br>Use with care. If not sure contact the QF-Test support team.
+                  <br>An Alternative might be setting the global
+                  <code>Options.OPT_WEB_SEMI_HARD_EVENTS</code> option to true,
+                  which works for all components.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>chromeSemihardClasses</code></strong></td><td class="paramdesc">
+                  (Optional) A list of classes to activate semi-hard events for, e.g. <code>Button</code>, for Chrome.
+                  <br>Use with care. If not sure contact the QF-Test support team.
+                  <br>An Alternative might be setting the global
+                  <code>Options.OPT_WEB_SEMI_HARD_EVENTS</code> option to true,
+                  which works for all components.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>ieSemihardClasses</code></strong></td><td class="paramdesc">
+                  (Optional) A list of classes to activate semi-hard events for, e.g. <code>Button</code>, for IE.
+                  <br>Use with care. If not sure contact the QF-Test support team.
+                  <br>An Alternative might be setting the global
+                  <code>Options.OPT_WEB_SEMI_HARD_EVENTS</code> option to true,
+                  which works for all components.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>mozSemihardClasses</code></strong></td><td class="paramdesc">
+                  (Optional) A list of classes to activate semi-hard events for, e.g. <code>Button</code>, for Firefox.
+                  <br>Use with care. If not sure contact the QF-Test support team.
+                  <br>An Alternative might be setting the global
+                  <code>Options.OPT_WEB_SEMI_HARD_EVENTS</code> option to true,
+                  which works for all components.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>edgeSemihardClasses</code></strong></td><td class="paramdesc">
+                  (Optional) A list of classes to activate semi-hard events for, e.g. <code>Button</code>, for Edge.
+                  <br>Use with care. If not sure contact the QF-Test support team.
+                  <br>An Alternative might be setting the global
+                  <code>Options.OPT_WEB_SEMI_HARD_EVENTS</code> option to true,
+                  which works for all components.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>allBrowsersHardClasses</code></strong></td><td class="paramdesc">
+                  (Optional) A list of classes to activate hard events for, e.g. <code>Button</code>, for all browsers.
+                  <br>Use with care. If not sure contact the QF-Test support team.
+                  <br>An alternative might be activating "Replay as hard event" for mouse-click nodes.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>chromeHardClasses</code></strong></td><td class="paramdesc">
+                  (Optional) A list of classes to activate hard events for, e.g. <code>Button</code>, for Chrome.
+                  <br>Use with care. If not sure contact the QF-Test support team.
+                  <br>An alternative might be activating "Replay as hard event" for mouse-click nodes.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>ieHardClasses</code></strong></td><td class="paramdesc">
+                  (Optional) A list of classes to activate hard events for, e.g. <code>Button</code>, for IE.
+                  <br>Use with care. If not sure contact the QF-Test support team.
+                  <br>An alternative might be activating "Replay as hard event" for mouse-click nodes.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>mozHardClasses</code></strong></td><td class="paramdesc">
+                  (Optional) A list of classes to activate hard events for, e.g. <code>Button</code>, for Firefox.
+                  <br>Use with care. If not sure contact the QF-Test support team.
+                  <br>An alternative might be activating "Replay as hard event" for mouse-click nodes.
+                </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>edgeHardClasses</code></strong></td><td class="paramdesc">
+                  (Optional) A list of classes to activate hard events for, e.g. <code>Button</code>, for Edge.
+                  <br>Use with care. If not sure contact the QF-Test support team.
+                  <br>An alternative might be activating "Replay as hard event" for mouse-click nodes.
+                </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+
+            
+          
+          
+<a name="sec_custom_web_resolver_syntax"></a>
+            
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_custom_web_resolver_syntax">47.1.3.2</a></span>
+</div>
+<a href="contents.html#toc_sec_custom_web_resolver_syntax"><code>installCustomWebResolver</code> - Parameter syntax</a>
+</h5>
+            
+<p>
+              If a parameter can take more than one entry you need to separate the entries
+              by commas. The comma may be followed by a line break,
+              however, <strong>not</strong> by a space.
+            </p>
+            
+<p>
+              The parameter syntax consists of the following expressions, sorted by relevance:
+            </p>
+            
+<dl>
+              
+<dt>%</dt>
+              
+<dd>
+                
+<p>
+<code>%</code> denotes the following string as a regular expression.</p>
+                
+<p>
+<code>%list.*</code> refers to all values starting with <code>list</code>
+</p>
+                
+<p>Can be used with all parameters.</p>
+              
+</dd>
+              
+<dt>
+<code>css-class</code>=<code>generic class</code>
+</dt>
+              
+<dd>
+                
+<p>Maps an HTML element with the given css class to a QF-Test component of the given generic class.</p>
+                
+<p>
+<code>css-button=Button</code>
+                  maps an HTML element with the css class <code>css-button</code> to a QF-Test
+                  component of the generic class <code>Button</code>.
+                </p>
+                
+<p>Can be used with the parameter <code>genericClasses</code>.</p>
+              
+</dd>
+              
+<dt>
+<code>attribute</code>=<code>value</code>=<code>generic class</code>
+</dt>
+              
+<dd>
+                
+<p>
+                  Maps an HTML element with the given attribute value to a QF-Test component
+                  with the given generic class.
+                </p>
+                
+<p>
+                  
+<code>role=datatable=Table</code> assigns the generic QF-Test class <code>Table</code>
+                  if the attribute <code>role</code> has the value <code>datatable</code>.
+                </p>
+                
+<p>Can be used with the parameter <code>attributesToGenericClasses</code>.</p>
+              
+</dd>
+              
+<dt>
+<code>TAG</code>=<code>generic class</code>
+</dt>
+              
+<dd>
+                
+<p>
+                  Maps an HTML element with the given tag to a QF-Test component of the given generic class.
+                  Tags have to be written in capital letters.
+                </p>
+                
+<p>
+                  
+<code>LI=ListItem</code> maps the HTML element with the tag <code>li</code> to a QF-Test
+                  component with the generic class <code>ListItem</code>.
+                </p>
+                
+<p>Can be used with the parameter <code>tagsToGenericClasses</code>.</p>
+              
+</dd>
+              
+<dt>@::ancestor=<code>class name or TAG</code>
+</dt>
+              
+<dd>
+                
+<p>
+                  Suffix to entries in the parameter lists. The entry will only be
+                  evaluated when one of the ancestors of the GUI element has the given
+                  class name or the given tag. Please use capital letters for the tag.
+                </p>
+                
+<p>
+                  Can be used with all parameters.
+                </p>
+                
+<p>
+                  Sample for parameter <code>tagsToGenericClasses</code>:
+                </p>
+                
+<p>
+                  
+<code>LI=TableCell@::ancestor=TableRow</code>
+                  maps an HTML element with the tag <code>li</code>
+                  to a QF-Test component of the generic class
+                  <code>TableCell</code> if an ancestor has the class <code>TableRow</code>.
+                </p>
+              
+</dd>
+              
+<dt>...=<code>TAG</code>
+</dt>
+              
+<dd>
+                
+<p>
+                  The preceding expression is only evaluated if
+                  the tag of the HTML element matches.
+                  Precedes the <code>@::</code> operator.<br>
+                  Tags have to be written in capital letters.
+                </p>
+                
+<p>
+                  Can be used with all parameters.
+                </p>
+                
+<p>
+                  Sample for parameter <code>genericClasses</code>:
+                </p>
+                
+<p>
+                  
+<code>row=TableRow=SPAN</code>
+                  maps an HTML element with the class <code>row</code> to a QF-Test component
+                  of the generic class <code>TableRow</code>
+                  if the tag is <code>SPAN</code>.
+                </p>
+                
+<p>
+                  Sample for parameter <code>genericClasses</code>:
+                </p>
+                
+<p>
+                  
+<code>row=TableRow=SPAN@::ancestor=Table</code>
+                  maps an HTML element with the css class <code>row</code> to a QF-Test <code>TableRow</code>
+                  only if the tag is <code>SPAN</code> and if it has a some parent of the class
+                  <code>Table</code>.
+                </p>
+                
+<p>
+                  Sample for parameter <code>interestingByAttributes</code>:
+                </p>
+                
+<p>
+                  
+<code>myid=%.*=CONTAINER</code>
+                  maps HTML elements with the tag <code>container</code> only if they have the
+                  attribute <code>myid</code>.
+                </p>
+              
+</dd>
+              
+<dt>@::parent=<code>class name or TAG</code>
+</dt>
+              
+<dd>
+                
+<p>
+                  Suffix to entries in the parameter lists. The entry will only be
+                  evaluated when the direct parent of the GUI element has the given
+                  class name or the given tag. Please use capital letters for the tag.
+                </p>
+                
+<p>
+                  Can be used with all parameters.
+                </p>
+                
+<p>
+                  Sample for parameter <code>genericClasses</code>:
+                </p>
+                
+<p>
+                  
+<code>css-data-row=TableRow@::parent=Table</code>
+<br>
+                  maps the HTML element with the css class
+                  <code>css-data-row</code> to a QF-Test component of the generic class
+                  <code>TableRow</code> only if the direct parent has the class <code>Table</code>.
+                </p>
+              
+</dd>
+              
+<dt>@::parent&lt;<code>level</code>&gt;=<code>class name or TAG</code>
+</dt>
+              
+<dd>
+                
+<p>
+                  Suffix to entries in the parameter lists. The entry will only be
+                  evaluated when the parent of the given level of the GUI element has the given
+                  class name or the given tag. Please use capital letters for the tag.
+                </p>
+                
+<p>
+                  The level relies on the component structure recorded by QF-Test or the generated DomNode,
+                  so they could fail if the web-page or your resovler get changed.
+                  You should consider using the normal <code>@::ancestor</code> operator in that
+                  case or mapping a dedicated parent to a specific parent class which you can then use with
+                  <code>@::parent</code> or <code>@::ancestor</code>. The sample in
+                  <a href="tech_customajax_table.html#sec_customajax_table">Mapping of Tables and TreeTables</a> shows this technique.
+                </p>
+                
+<p>
+                  Can be used with all parameters.
+                </p>
+                
+<p>
+                  Sample for parameter <code>genericClasses</code>:
+                </p>
+                
+<p>
+                  
+<code>css-button=Button:ComboBoxButton@::parent&lt;3&gt;=ComboBox</code>
+                  maps the button as of type <code>ComboBoxButton</code> if the parent at level three has the class
+                  <code>ComboBox</code>.
+                </p>
+              
+</dd>
+              
+<dt>@::ancestor&lt;<code>level</code>&gt;=<code>class name or TAG</code>
+</dt>
+              
+<dd>
+                
+<p>
+                  Suffix to entries in the parameter lists. The entry will only be
+                  evaluated when a parent of the GUI element up to the given level has the given
+                  class name or the given tag. Please use capital letters for the tag.
+                </p>
+                
+<p>
+                  Can be used with all parameters.
+                </p>
+                
+<p>
+                  Sample for parameter <code>genericClasses</code>:
+                </p>
+                
+<p>
+                  
+<code>cbx=CheckBox:ListItemCheckBox@::ancestor&lt;3&gt;=List</code>
+                  maps the check box as of type <code>ListItemCheckBox</code> if an ancestor
+                  within three parent levels has the class <code>List</code>.
+                  (Count of levels as with @::parent.)
+                </p>
+              
+</dd>
+              
+<dt>
+<code>attribute</code>=<code>value</code>
+</dt>
+              
+<dd>
+                
+<p>
+                  Can be used with the parameters <code>ignoreByAttributes</code> and
+                  <code>interestingByAttributes</code>.
+                </p>
+                
+<p>
+                  With the parameter <code>ignoreByAttributes</code> the entry has the effect
+                  that no nodes will be created in the component hierarchy for HTML elements
+                  with the given attribute value.
+                </p>
+                
+<p>
+                  With the parameter <code>interestingByAttributes</code> the entry has the effect
+                  that a component will be recorded for HTML elements where the attribute has the given value.
+                </p>
+                
+<p>
+                  Sample for parameter <code>ignoreByAttributes</code>:
+                </p>
+                
+<p>
+                  
+<code>type=container</code> ignores all nodes where the attribute <code>type</code> has the value
+                  <code>container</code> when creating the parent hierarchy of a node.
+                </p>
+                
+<p>
+                  Sample for parameter <code>interestingByAttributes</code>:
+                </p>
+                
+<p>
+                  
+<code>type=splitpane</code> creates a node in the parent hierarchy if the
+                  attribute <code>type</code> has the value <code>splitpane</code>.
+                </p>
+              
+</dd>
+            
+</dl>
+            
+<p>
+              In case you are interested: <br>
+              @::ancestor=<code>class</code> internally uses the object method   obj.getAncestorOfClass(<code>class</code>). <br>
+              @::ancestor&lt;<code>level</code>&gt;=<code>class</code> internally uses the
+              object method obj.getAncestorOfClass(<code>class</code>, level) <br>
+              @::parent= internally uses the object method obj.getParent() <br>
+              @::parent&lt;<code>level</code>&gt;= internally uses the object method
+              obj.getNthParent(<code>level</code>) <br>
+            
+</p>
+            
+<p>
+              For details of the methods please refer to <a href="tech_domapi.html#sec_domapi">Pseudo DOM API</a>.
+            </p>
+          
+        
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_customajax_analysis.html#sec_customajax_analysis"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 47.1.2&nbsp;Analyzing a web page" title="Previous Chapter: 47.1.2&nbsp;Analyzing a web page"></a></td><td class="navicon"><a href="tech_customajax_demo_resolver.html#sec_customajax_demo_resolver"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 47.1.4&nbsp;installCustomWebResolver - Samples" title="Next Page: 47.1.4&nbsp;installCustomWebResolver - Samples"></a></td><td class="navicon"><a href="tech_customajax_demo_resolver.html#sec_customajax_demo_resolver"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 47.1.4&nbsp;installCustomWebResolver - Samples" title="Next Chapter: 47.1.4&nbsp;installCustomWebResolver - Samples"></a></td><td class="navicon"><a href="tech_customajax.html#sec_customajax"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 47.1&nbsp;Improving component recognition with a CustomWebResolver" title="Chapter Overview: 47.1&nbsp;Improving component recognition with a CustomWebResolver"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

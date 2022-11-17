@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Example</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_uiauto_example"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_uiauto_general.html#usec_uiauto_general"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 48.1&nbsp;Proceeding" title="Previous Chapter: 48.1&nbsp;Proceeding"></a></td><td class="navicon"><a href="tech_automac.html#usec_automac"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 49&nbsp;Controlling and testing native MacOS applications" title="Next Page: 49&nbsp;Controlling and testing native MacOS applications"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_uiauto.html#usec_uiauto"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 48&nbsp;Controlling native Windows applications via the UIAuto module - 
+               without the QF-Test win engine" title="Chapter Overview: 48&nbsp;Controlling native Windows applications via the UIAuto module - 
+               without the QF-Test win engine"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_uiauto_example">48.2</a></span>
+</div>
+<a href="contents.html#toc_usec_uiauto_example">Example</a>
+</h4>
+      
+<p>
+        Please find the sample test-suites in the subdirectories
+        <code>demo/carconfigWpf</code> and <code>demo/carconfigForms</code> of the QF-Test
+        installation directory.
+      </p>
+      
+<a name="usec_uiauto_start_example"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_uiauto_start_example">48.2.1</a></span>
+</div>
+<a href="contents.html#toc_usec_uiauto_start_example">Starting the application</a>
+</h5>
+        
+<p>
+          The sample test-suites use the dependency <code>SUT_started</code>
+          in the package <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.dependencies"><code>qfs.autowin.dependencies</code></a> of the standard library
+          to start the demo application.
+
+        </p>
+        
+<p>
+          The node
+        </p>
+        
+<ul>
+          
+<li>
+            Execute shell command
+          </li>
+        
+</ul>
+        
+<p>
+          actually starts the demo. The
+        </p>
+        
+<ul>
+          
+<li>
+            Procedure call: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.checkForExistence"><code>qfs.autowin.checkForExistence</code></a>
+          
+</li>
+        
+</ul>
+        
+<p>
+          waits for the demo application to appear before passing on control to the
+          test-case itself.
+        </p>
+        
+<p>
+          The demo test-suite makes use of the dependency functionality which enables you to
+          manage the set up and clean up requirements of your tests very efficiently.
+          In short, in a test-case the dependency functionality runs the setup node
+          before passing control to the test-case, thus making sure that the requirements
+          implemented in the setup node are met before running the test-case.
+          At the end of the test-case, the cleanup node is not executed by default.
+          Only in the next test-case it may be executed if required by the dependency
+          of that test-case, either because it calls a different dependency or the
+          characteristic variables of the dependency have changed. For more information
+          about dependencies please refer to the tutorial or the manual, chapter
+          <a href="user_organization.html#usec_dependencies">Dependency nodes</a>.
+        </p>
+        
+<p>
+          For general information on the start of a native windows application please refer to
+          <a href="tech_uiauto_general.html#usec_uiauto_start_general">subsection 48.1.1</a>.
+        </p>
+      
+      
+<a name="usec_uiauto_dump_controls_example"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_uiauto_dump_controls_example">48.2.2</a></span>
+</div>
+<a href="contents.html#toc_usec_uiauto_dump_controls_example">GUI element information</a>
+</h5>
+        
+<p>
+          The next step after starting the SUT is to get an overview of the GUI elements
+          of the application. In this example we will use the procedure
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.helpers.dumpComponents"><code>qfs.autowin.helpers.dumpComponents</code></a>. The output
+          will be written to the QF-Test terminal.
+        </p>
+        
+<p>
+          In the following we will have a look at the output of dumpComponents() for
+          some of the GUI elements of the WPF demo application.
+        </p>
+        
+<a name="fig_uiauto_carconfig"></a><a name="figure_48.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/uiauto_carconfig.png" target="_blank"><img texscale=".66" src="images/uiauto_carconfig.png" width="349" height="361"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;48.2</a>:&nbsp;&nbsp;The WPF demo application</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl>
+          
+<dt>Window (1)</dt>
+          
+<dd>
+            Name: CarConfiguratorNet WPF<br>
+            ClassName: Window<br>
+            ControlType: Window (#50032)<br>
+          
+</dd>
+          
+<p>
+            This shows a typical set of identifiers for the window itself. You can
+            address it via its name, which seems to be unique.
+          </p>
+          
+<dt>Menu (2)</dt>
+          
+<dd>
+            Name: Help<br>
+            ClassName: MenuItem<br>
+            ControlType: MenuItem (#50011)<br>
+            AutomationId: mHelp
+          </dd>
+          
+<p>
+            This GUI element has an AutomationId. Use this to identify the GUI element
+            unambiguously. Of course, you may also use its name 'Help' or
+            the ControlType (or ClassName) 'MenuItem' along with the index '4'.
+          </p>
+          
+<dt>Table cell (3)</dt>
+          
+<dd>
+            Name: Rolo<br>
+            ClassName: DataGridCell<br>
+            ControlType: Custom (#50025)
+          </dd>
+          
+<p>
+            The table cell can either be
+            addressed by its name or by the ControlType along with the name. If you want
+            to address the table cell via an index it would make sense to use the
+            ClassName and not the ControlType as the same ControlType 'Custom' is used for
+            non table cells as well. An AutomationId has not been implemented.
+          </p>
+          
+<dt>Input field (4)</dt>
+          
+<dd>
+            ClassName: TextBox<br>
+            ControlType: Edit (#50004)<br>
+            AutomationId: textBoxDiscountPrice
+          </dd>
+          
+<p>
+            The input field can be addressed via the AutomationId or the ControlType or ClassName
+            along with the index 0.
+          </p>
+          
+<dt>Text display field (5)</dt>
+          
+<dd>
+            Name: $ 12,300.00 <br>
+            ClassName: Text<br>
+            ControlType: Text (#50020)<br>
+            AutomationId: labelCalculatedPriceOutput
+          </dd>
+          
+<p>
+            Use the AutomationId
+            to identify the GUI element as the name varies according to the text displayed.
+          </p>
+        
+</dl>
+        
+<p>
+          Please find general information in  <a href="tech_uiauto_general.html#usec_uiauto_dump_controls_general">subsection 48.1.2</a>.
+        </p>
+      
+
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_uiauto_general.html#usec_uiauto_general"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 48.1&nbsp;Proceeding" title="Previous Chapter: 48.1&nbsp;Proceeding"></a></td><td class="navicon"><a href="tech_automac.html#usec_automac"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 49&nbsp;Controlling and testing native MacOS applications" title="Next Page: 49&nbsp;Controlling and testing native MacOS applications"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_uiauto.html#usec_uiauto"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 48&nbsp;Controlling native Windows applications via the UIAuto module - 
+               without the QF-Test win engine" title="Chapter Overview: 48&nbsp;Controlling native Windows applications via the UIAuto module - 
+               without the QF-Test win engine"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

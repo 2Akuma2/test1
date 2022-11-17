@@ -1,0 +1,3610 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>The resolvers module</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_resolversmodule"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_webresolversmodule.html#sec_webresolversmodule"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 50.2&nbsp;The webResolvers module" title="Next Page: 50.2&nbsp;The webResolvers module"></a></td><td class="navicon"><a href="tech_webresolversmodule.html#sec_webresolversmodule"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 50.2&nbsp;The webResolvers module" title="Next Chapter: 50.2&nbsp;The webResolvers module"></a></td><td class="navicon"><a href="tech_extensions.html#sec_extensions"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 50&nbsp;Extension APIs" title="Chapter Overview: 50&nbsp;Extension APIs"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_resolversmodule">50.1</a></span>
+</div>
+<a href="contents.html#toc_sec_resolversmodule">The <code class="moduledef">resolvers</code> module</a>
+</h4>
+      
+      
+<p>
+        This extension API lets you install hooks that can modify the way QF-Test recognizes
+        and records components and items. This is a very powerful feature that gives you
+        fine-grained control over the QF-Test component management.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+        Video: <a href="https://www.qfs.de/en/yt/resolvers-46.html" class="videolink" target="_blank">'Resolvers in
+        QF-Test'</a>.
+      </p>
+      
+      
+      
+<a name="sec_resolvers_usage"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_resolvers_usage">50.1.1</a></span>
+</div>
+<a href="contents.html#toc_sec_resolvers_usage">Usage</a>
+</h5>
+        
+<p>
+          
+<span class="margin"><span class="note">Note</span></span>
+
+          When registering resolvers it is important to specify the correct <a href="control.html#att_ClientScriptStep_engine" shape="rect">'GUI engine'</a> attribute
+          in the <a href="control.html#step_ClientScriptStep" shape="rect">'SUT script'</a>. If the wrong engine is specified, the resolver simply will not work. If no
+          engine is specified the resolver applies to all engines which can cause confusion and break replay in
+          engines for which the resolver was not intended.
+        </p>
+        
+<p>
+          We will start with a short description of how QF-Test does component recognition
+          to give you an idea where resolvers come into play.
+          It consists roughly of four steps:
+        </p>
+        
+<ol>
+          
+<li>
+            Get the component object from the GUI.
+          </li>
+          
+<li>
+            Extract the data for each component: e.g. component class, id, coordinates,
+            component text.
+          </li>
+          
+<li>
+            Analyze the relationship between components: e.g. structure information (index),
+            find the label belonging to the component (qfs:label).
+          </li>
+          
+<li>
+            Recoding: Create a 'Component' node and save the retrieved data in the
+            details of the node.<br>
+            Replay: Compare the retrieved data with the details of the node that is
+            the target of the replay action.
+          </li>
+        
+</ol>
+        
+<p>
+          QF-Test uses resolvers for steps 2 and 3. Via the API you can overwrite resolver
+          methods and thus manipulate component recognition.
+        </p>
+        
+<p>
+          A resolver is the only way to influence component recognition during recording.
+          During replay you also have other options (e.g. a script or a regular expression
+          in the details of the 'Component' node) to get at component data.
+        </p>
+        
+<p>
+          
+<span class="margin"><a name="web_N173759"></a><span class="note">Web</span></span>
+          For web applications QF-Test offers a specialized interface providing most of the
+          functionality of the resolvers described below, which is a lot easier to handle.
+          See <a href="tech_customajax.html#sec_customajax">Improving component recognition with a <code>CustomWebResolver</code></a>. The procedure
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.ajax.installCustomWebResolver"><code>qfs.web.ajax.installCustomWebResolver</code></a> of the standard library
+          <code>qfs.qft</code> has been optimized for web elements thus providing a better
+          performance than resolvers of this section. The use of below resolvers
+          for web components should be limited to very special cases.
+        </p>
+        
+<p>
+          A list of available <code>resolvers</code>:
+        </p>
+        
+<ul>
+          
+<li>
+<code>NameResolver</code> <a href="#sec_nameresolver">subsection 50.1.6</a>
+</li>
+          
+<li>
+<code>GenericClassNameResolver</code> <a href="#sec_genericclassnameresolver">subsection 50.1.7</a>
+</li>
+          
+<li>
+<code>ClassNameResolver</code> <a href="#sec_classnameresolver">subsection 50.1.8</a>
+</li>
+          
+<li>
+<code>FeatureResolver</code> <a href="#sec_featureresolver">subsection 50.1.9</a>
+</li>
+          
+<li>
+<code>ExtraFeatureResolver</code> <a href="#sec_extrafeatureresolver">subsection 50.1.10</a>
+</li>
+          
+<li>
+<code>ItemNameResolver</code> <a href="#sec_itemnameresolver">subsection 50.1.11</a>
+</li>
+          
+<li>
+<code>ItemValueResolver</code> <a href="#sec_itemvalueresolver">subsection 50.1.12</a>
+</li>
+          
+<li>
+<code>TreeTableResolver</code> <a href="#sec_treetableresolver">subsection 50.1.13</a>
+</li>
+          
+<li>
+<code>InterestingParentResolver</code> <a href="#sec_interestingparentresolver">subsection 50.1.14</a>
+</li>
+          
+<li>
+<code>TooltipResolver</code> <a href="#sec_tooltipresolver">subsection 50.1.15</a>
+</li>
+          
+<li>
+<code>IdResolver</code> <a href="#sec_idresolver">subsection 50.1.16</a>
+</li>
+          
+<li>
+<code>EnabledResolver</code> <a href="#sec_enabledresolver">subsection 50.1.17</a>
+</li>
+          
+<li>
+<code>VisibilityResolver</code> <a href="#sec_visibilityresolver">subsection 50.1.18</a>
+</li>
+          
+<li>
+<code>MainTextResolver</code> <a href="#sec_maintextresolver">subsection 50.1.19</a>
+</li>
+          
+<li>
+<code>BusyPaneResolver</code> <a href="#sec_busypaneresolver">subsection 50.1.20</a>
+</li>
+          
+<li>
+<code>GlassPaneResolver</code> <a href="#sec_glasspaneresolver">subsection 50.1.21</a>
+</li>
+          
+<li>
+<code>EventSynchronizer</code> <a href="#sec_eventsynchronizer">subsection 50.1.22</a>
+</li>
+          
+<li>
+<code>BusyApplicationDetector</code> <a href="#sec_busyapplicationdetector">subsection 50.1.23</a>
+</li>
+          
+<li>
+<code>ExtraFeatureMatcher</code> <a href="#sec_extrafeaturematcher">subsection 50.1.24.1</a>
+</li>
+        
+</ul>
+      
+      
+      
+      
+<a name="sec_resolvers_implementation"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_resolvers_implementation">50.1.2</a></span>
+</div>
+<a href="contents.html#toc_sec_resolvers_implementation">Implementation</a>
+</h5>
+        
+<p>
+          The following two steps are required to implement a resolver:
+        </p>
+        
+<ol>
+          
+<li>
+            Implementation of the resolver interface.
+          </li>
+          
+<li>
+            Registration of the interface for the desired component class(es).
+          </li>
+        
+</ol>
+        
+<p>
+          In most cases the interface consists of only one method.
+          A typical example would be (Jython-Skript):
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def getName(menuItem, name):
+    if not name:
+        return menuItem.getLabel()
+resolvers.addResolver("menuItems", getName, "MenuItem")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.1:&nbsp;&nbsp;Simple <code>NameResolver</code> (Jython) for <code>MenuItems</code></td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          The first three lines are the method of the resolver interface. The name of the
+          method defines the resolver type. Each resolver type manipulates a certain value in the
+          'Component' node data. In our case the method is <code>getName</code> thus
+          defining a name resolver. The fourth line calls the function <code>addResolver</code>
+          of the <code>resolvers</code> module and registers the resolver.
+        </p>
+        
+<p>
+          Most resolver methods only have two parameters: the first is the component for
+          which component recognition is done at that moment. The second is the value or
+          object to be handled by the method. With a name resolver it is the name
+          determined by the QF-Test standard name resolver. With a feature resolver the
+          feature determined by QF-Test and so on. You will find a detailed description of
+          the resolvers interfaces in chapters <a href="#sec_nameresolver">subsection 50.1.6</a> to
+          <a href="#sec_busyapplicationdetector">subsection 50.1.23</a>.
+        </p>
+        
+<p>
+          Each resolver needs to be given a name at registration time. The name has to be
+          unique. It will be used when the resolver needs to be updated or
+          uninstalled explicitly via <code>resolvers.removeResolver("resolver name")</code>
+          (see <a href="#sec_removeresolver">subsection 50.1.4</a>). The names of all registered
+          resolvers can be listed via the function <code>resolvers.listNames()</code>
+          (see <a href="#sec_listresolver">subsection 50.1.5</a>).
+        </p>
+        
+<p>
+          After changing the contents of a resolver script it needs to be executed again in order to
+          register the updated resolver. As long as the name of the resolver remains
+          unchanged there is no need to first deregister the old version first.
+        </p>
+        
+<p>
+          All resolver types can be registered either for single components, specific classes
+          or <a href="usec_componentclass.html#usec_componentclassgeneric">Generic classes</a>. Resolvers registered for a single
+          component are only called when exactly that component is being handled. Resolvers
+          registered for a certain class are called for all components of this type and
+          derived classes.
+        </p>
+        
+<p>
+          A resolver may be registered for one or several components and/or classes.
+          If no parameter is specified the resolver will be called for components of
+          all classes. For example, a <code>NameResolver</code> or a <code>FeatureResolver</code>
+          registered globally will be
+          called for each and every name or feature. This is similar to but more efficient than
+          registering them on the <code>java.lang.Object</code> class in the case of Java applications.
+        </p>
+        
+<p>
+          You may set up resolvers for various tasks and register them at run time. In order
+          to install a resolver permanently, put the 'SUT script' node for the
+          resolver directly after the <a href="processes.html#step_ClientWaiter" shape="rect">'Wait for client to connect'</a> node in the start sequence of the SUT.
+        </p>
+        
+<p>
+          If multiple resolvers are registered globally or registered on the same object or class,
+          the resolver added last will be called first. The first resolver returning a non-null
+          value determines the outcome.
+        </p>
+        
+<p>
+          Since a resolver will be called for each instance of the component, respectively class, displayed
+          in the GUI you should implement time-saving algorithms for the resolvers.
+          For example, in a Jython script the execution of <code>string[0:3] == "abc"</code> is faster than
+          <code>string.startswith("abc")</code>.
+        </p>
+        
+<p>
+          All exceptions thrown inside a name resolver will be caught and handled by the
+          <code>ResolverRegistry</code>. However, instead of dumping a stack trace, the registry
+          will only print a short message like "Exception inside NameResolver" because some resolvers
+          may be called very often, and a buggy resolver printing a stack trace for every error
+          would flood the net and the client terminal. Therefore name resolvers should include
+          their own error handling. This can still generate a lot of output in some cases, but
+          the output will be more useful than a Java stack trace.
+        </p>
+        
+<p>
+          The <code>resolvers</code> module is always automatically available in all
+          'SUT script' nodes.
+        </p>
+        
+<p>
+          Most examples in the manual are implemented as Jython scripts.
+          In <a href="#sec_nameresolver">subsection 50.1.6</a> you will find examples for Groovy 'SUT script' nodes.
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_addresolver"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_addresolver">50.1.3</a></span>
+</div>
+<a href="contents.html#toc_sec_addresolver"><code>addResolver</code></a>
+</h5>
+        
+<p>
+          The generic function <code>addResolver</code> has a central role in the
+          <code>resolvers</code> module. Given the name of the defined method and its parameters
+          it identifies the respective object and its specific function for registering the
+          resolver.
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void addResolver(String resolverName, Method method, Object target=None, ...)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Register the <code>resolver</code> determined by the given method for the given
+              target(s). If another resolver was previously registered under the given name,
+              deregister that first.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">
+              The name under which to register the resolver.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>method</code></strong></td><td class="paramdesc">
+              The method implementing the resolver method. The name of the method defines the
+              type of the registered resolver, i.e. for Groovy this has to be a MethodClosure.
+              Valid names are e.g.: <code>getName</code>, <code>getClassName</code>,
+              <code>getGenericClassName</code>, <code>getFeature</code>, <code>getExtraFeatures</code>,
+              <code>getItemName</code>, <code>getItemValue</code>, <code>getItemNameByIndex</code>,
+              <code>getTree</code> and <code>getTreeColumn</code>, <code>isInterestingParent</code>,
+              <code>getTooltip</code>, <code>getId</code>, <code>isEnabled</code>, <code>isVisible</code>,
+              <code>getMainText</code>, <code>matchExtraFeature</code>, <code>isBusy</code>,
+              <code>isGlassPaneFor</code>, <code>sync</code>
+              and <code>applicationIsBusy</code>.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>target</code></strong></td><td class="paramdesc">
+              One or more optional targets to register the resolver for. Each can be any of the following:
+              <ul>
+                
+<li>An individual component</li>
+                
+<li>The fully qualified name of a class</li>
+              
+</ul>
+              If no target is given a global resolver for all components is registered.
+            </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void addResolver(String resolverName, Object object, Object target=None, ...)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Register the <code>resolver</code> determined by the given method(s) of the object
+              for the given targets. If another resolver was previously registered under the given name,
+              deregister that first.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">
+              The name under which to register the resolver.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>object</code></strong></td><td class="paramdesc">
+              An object or a class providing one or more resolver methods. Depending on the
+              method names the respective resolver is registered. For valid method names see
+              the description of <code>addResolver</code> above.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>target</code></strong></td><td class="paramdesc">
+              One or more optional targets to register the resolver for. Each can be any of the following:
+              <ul>
+                
+<li>An individual component</li>
+                
+<li>The fully qualified name of a class</li>
+              
+</ul>
+              If no target is given a global resolver for all components is registered.
+            </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+<a name="sec_resolverhistory"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_resolverhistory">50.1.3.1</a></span>
+</div>
+<a href="contents.html#toc_sec_resolverhistory"><code>History</code></a>
+</h5>
+          
+<p>
+            Resolvers have quite a history in QF-Test. Up to QF-Test version 4.1 you had to call
+            a function specific to each resolver interface in order to register a certain resolver
+            type. You may continue to use those functions. However, they are no longer described in
+            the manual. The flexible <code>addResolver</code> function replaces the following
+            functions, among others, of the <code>resolvers</code> module:
+          </p>
+          
+<ul>
+            
+<li> 
+              
+<code>addNameResolver2(String name, Method method, Object target=None, ...)</code>
+            
+</li>
+            
+<li> 
+              
+<code>addClassNameResolver(String name, Method method, Object target=None, ...)</code>
+            
+</li>
+            
+<li> 
+              
+<code>addGenericClassNameResolver(String name, Method method, Object target=None, ...)</code>
+            
+</li>
+            
+<li> 
+              
+<code>addFeatureResolver2(String name, Method method, Object target=None, ...)</code>
+            
+</li>
+            
+<li> 
+              
+<code>addExtraFeatureResolver(String name, Method method, Object target=None, ...)</code>
+            
+</li>
+            
+<li> 
+              
+<code>addItemNameResolver2(String name, Method method, Object target=None, ...)</code>
+            
+</li>
+            
+<li> 
+              
+<code>addItemValueResolver2(String name, Method method, Object target=None, ...)</code>
+            
+</li>
+            
+<li> 
+              
+<code>addTreeTableResolver(String name, Method getTable, Method getColumn=None, Object target=None)</code>
+            
+</li>
+            
+<li> 
+              
+<code>addTooltipResolver(String name, Method method, Object target=None, ...)</code>
+            
+</li>
+            
+<li> 
+              
+<code>addIdResolver(String name, Method method, Object target=None,...)</code>
+            
+</li>
+          
+</ul>
+        
+      
+
+      
+      
+
+      
+<a name="sec_removeresolver"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_removeresolver">50.1.4</a></span>
+</div>
+<a href="contents.html#toc_sec_removeresolver"><code>removeResolver</code></a>
+</h5>
+        
+<p>
+          The function <code>removeResolver</code> may be used to deregister resolvers installed
+          via the <code>resolvers</code> module.
+        </p>
+        
+<p>
+          Often, resolvers are registered directly after the start of the application
+          and remain active during the full time of test execution. In some cases, however,
+          resolvers are required only for handling a certain component and then need be to removed, either
+          due to performance issues or because the effect of the resolver is not desirable for
+          other components.
+        </p>
+        
+<p>
+          There are two functions for deregistration. The first, <code>removeResolver</code>
+          deregisters a single resolver, the second, <code>removeAll</code>, removes all resolvers
+          registered by the user.
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void removeAll()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Deregister all resolvers registered via the <code>resolvers</code> module from
+              all targets they were registered for.
+            </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void removeResolver(String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Deregister a resolver from all the targets it was registered for.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name the resolver was registered under.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+<p>
+          The example first removes a resolver registered under the name "menuItems", then
+          deregister all resolvers registered via the <code>resolvers</code> module.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>resolvers.removeResolver("menuItems")
+          resolvers.removeAll()</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.2:&nbsp;&nbsp;SUT script deregistering a resolver</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_listresolver"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_listresolver">50.1.5</a></span>
+</div>
+<a href="contents.html#toc_sec_listresolver"><code>listNames</code></a>
+</h5>
+        
+<p>
+          Return a list of resolver names registered via the <code>resolvers</code> module.
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>List&lt;String&gt; listNames()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              List the registered resolvers.
+            </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+<p>
+          The example checks whether a certain resolver has been registered. If not, an error
+          message is written to the run log.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>if (! resolvers.listNames().contains("specialNames")) {
+    rc.logError("Special names resolver not registered!")
+}</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.3:&nbsp;&nbsp;Groovy SUT script searching for a certain resolver registered via the <code>resolvers</code> module</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_nameresolver"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N174453"></a><span class="note">3.1+</span></span><span class="numtitle"><a href="contents.html#toc_sec_nameresolver">50.1.6</a></span>
+</div>
+<a href="contents.html#toc_sec_nameresolver">
+            The <code class="interfacedef">NameResolver</code> Interface</a>
+</h5>
+        
+<p>
+          The <code>NameResolver</code> works on the 'Name' attribute value of a
+          'Component' node.
+        </p>
+        
+<p>
+          After QF-Test determined the name of a GUI element the registered <code>NameResolvers</code>
+          get a chance to override or suppress this name. The first resolver that returns a non-null
+          value determines the outcome. If no resolvers are registered or all of them return null
+          the original name is used.
+        </p>
+        
+<p>
+          A <code>NameResolver</code> can change (or provide) the name of a GUI element as set
+          with <code>setName()</code> for AWT/Swing, <code>setId()</code> or the <code>fx:id</code> attribute for JavaFX,
+          <code>setData(name, ...)</code> for SWT or via the 'ID' attribute of a DOM node for web
+          applications. It can be very useful when setting names in the source code is
+          not an option, like for third-party code or when child components of complex
+          components are not readily accessible. For example, QF-Test provides a name
+          resolver for the Java Swing <code>JFileChooser</code> dialog, which you can read more about in the
+          Tutorial chapter 'The Standard Library'.
+        </p>
+        
+<p>
+          In some cases it may be desirable to suppress an element's name, for example for
+          names which are not unique or which - even worse - vary depending on the situation.
+          To do so, getName should return the empty string.
+        </p>
+        
+<p>
+          Technologies: AWT/Swing, JavaFX, SWT. For web applications please use procedure
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.ajax.installCustomWebResolver"><code>qfs.web.ajax.installCustomWebResolver</code></a> of the standard library
+          <code>qfs.qft</code> described in <a href="tech_customajax.html#sec_customajax">Improving component recognition with a <code>CustomWebResolver</code></a>.
+          It was optimized for web elements and is more performant. Just in case the functionality
+          provided there is not sufficient make use of the <code>NameResolver</code>.
+        </p>
+        
+<p>
+          A <code>NameResolver</code> needs to implement the following method:
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getName(Object element, String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Determine the name of a GUI element.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+              The element to determine the name for.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">
+              The original name QF-Test would use without a resolver.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+              The name to use or null if the element is not handled by the resolver. Returning
+              an empty string suppresses the original name.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+<p>
+          The first example is a <code>NameResolver</code> returning the text of the menu item
+          as name for components of the generic class <code>MenuItems</code>
+          for which the  QF-Test standard resolver could not determine a name.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def getName(menuItem, name):
+    if not name:
+        return menuItem.getLabel()
+resolvers.addResolver("menuItems", getName, "MenuItem")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.4:&nbsp;&nbsp;Jython name resolver for <code>MenuItems</code></td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Give it a try. Copy the example above into a <a href="control.html#step_ClientScriptStep" shape="rect">'SUT script'</a> node and execute
+          it. If your application is based on SWT instead of Swing, replace
+          <code>getLabel()</code> with <code>getText()</code>. Then
+          record some menu actions into a new, empty test-suite. You'll find that all recorded
+          menu item components without name will now have names set according to their
+          labels. If <code>setName</code> is not used in your application and the labels of menu
+          items are more or less static while the structure of the items often changes, this
+          can be a very useful feature.
+        </p>
+        
+<p>
+          The second example is a name resolver assigning a defined name ('Serial number')
+          to a component which would otherwise have a partially dynamic name (e.g. 'Serial no: 100347').
+          It is registered for a specific Java Swing class.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def getName(menuItem, name):
+    if name and name[0:10] == "Serial no:":
+        return "Serial number"
+resolvers.addResolver("lfdNr", getName, "javax.swing.JMenuItem")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.5:&nbsp;&nbsp;Jython <code>NameResolver</code> for a specific class</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          The following Groovy example returns the text of the menu item as the name for a component
+          the QF-Test standard resolver did not find a name for.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def getName(def menuItem, def name) {
+    if (name == null) {
+        return menuItem.getLabel()
+    }
+}
+
+resolvers.addResolver("menuItems", this.&amp;getName, "MenuItem")
+
+// You could also code it shorter:
+//   resolvers.addResolver("menuItems", this, "MenuItem")
+// since every Groovy script represents an object
+// and addResolver(...) for objects registers
+// all methods of the object as a resolver if possible.</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.6:&nbsp;&nbsp;Groovy <code>resolver</code> for <code>MenuItems</code></td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          A resolver can be registered for multiple component classes at once:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def getName(com, name):
+    return com.getText()
+resolvers.addResolver("labels", getName, "Label", "Button")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.7:&nbsp;&nbsp;Register a <code>Resolver</code> for multiple classes</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_genericclassnameresolver"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N174646"></a><span class="note">4.0+</span></span><span class="numtitle"><a href="contents.html#toc_sec_genericclassnameresolver">50.1.7</a></span>
+</div>
+<a href="contents.html#toc_sec_genericclassnameresolver">
+          The <code class="interfacedef">GenericClassNameResolver</code> Interface</a>
+</h5>
+
+        
+<p>
+          A <code>GenericClassNameResolver</code> can assign generic classes (<a href="tech_genericclasses.html#sec_genericclasses">chapter 57</a>) to
+          arbitrary components. It can be used to make recorded components more readable and to register additional resolvers for the newly created classes.
+        </p>
+        
+<p>
+          Technologies: all
+        </p>
+        
+<p>
+<span class="margin"><a name="web_N174667"></a><span class="note">Web</span></span>
+          You should only use this resolver with a web application if the procedure
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.ajax.installCustomWebResolver"><code>qfs.web.ajax.installCustomWebResolver</code></a> is not sufficient.
+        </p>
+        
+<p>
+          After QF-Test determined the generic class name of a GUI element the registered
+          <code>GenericClassNameResolvers</code> get a chance to override this generic class name.
+          The first resolver that returns a non-null value determines the outcome. If no
+          resolvers are registered or all of them return null the original
+          generic class name is used.
+        </p>
+        
+<p>
+          For performance reasons classes are cached so the resolver will only be called once at the most
+          for each element. If you change your resolver you need to re-load or to close and
+          re-open the area which shows the component.
+        </p>
+        
+<p>
+          A <code>GenericClassNameResolver</code> needs to implement the following method:
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getGenericClassName(Object element, String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Determine the name of the generic class of a GUI element.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+              The element to determine the generic class name for.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">
+              The original generic class name QF-Test would use without a resolver. May be null.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+              The generic class name to use or null if the element is not handled by this
+              resolver. An empty string to suppress the generic class determined by QF-Test.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_classnameresolver"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N174725"></a><span class="note">3.1+</span></span><span class="numtitle"><a href="contents.html#toc_sec_classnameresolver">50.1.8</a></span>
+</div>
+<a href="contents.html#toc_sec_classnameresolver">
+          The <code class="interfacedef">ClassNameResolver</code> Interface</a>
+</h5>
+        
+<p>
+          The <code>ClassNameResolver</code>
+          can control the class QF-Test records for a component. It can be used to make
+          recorded components more readable and to register additional resolvers for
+          the newly created classes. However, we generally recommend the use of
+          <a href="tech_genericclasses.html#sec_genericclasses">Generic classes</a> instead. To register generic classes you should
+          use the <code>GenericClassNameResolver</code>
+          (<a href="#sec_genericclassnameresolver">subsection 50.1.7</a>).
+        </p>
+        
+<p>
+          Technologies: all
+        </p>
+        
+<p>
+<span class="margin"><a name="web_N174752"></a><span class="note">Web</span></span>
+          You should only use this resolver with a web application if the procedure
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.ajax.installCustomWebResolver"><code>qfs.web.ajax.installCustomWebResolver</code></a> is not sufficient.
+        </p>
+        
+<p>
+          A <code>ClassNameResolver</code> needs to implement the following method:
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getClassName(Object element, String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Determine the name of the class of a GUI element.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+              The element to determine the class name for.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">
+              The original class name QF-Test would use without a resolver.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+              The class name to use or null if the element is not handled by this resolver.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+<p>
+          After QF-Test determined the class name of a GUI element the registered
+          <code>ClassNameResolvers</code> get a chance to override this class name.
+          The first resolver that returns a non-null value determines the outcome. If no
+          resolvers are registered or all of them return null the original
+          class name is used. The resolver is free to return any arbitrary
+          class name. Those names will be treated as normal classes in
+          QF-Test internal methods.
+        </p>
+        
+<p>For performance reasons classes are cached so the resolver will only be called once at the
+          most for each element. If you change your resolver you need
+          to re-load or to close and re-open the area which shows the component.
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_featureresolver"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N174810"></a><span class="note">3.1+</span></span><span class="numtitle"><a href="contents.html#toc_sec_featureresolver">50.1.9</a></span>
+</div>
+<a href="contents.html#toc_sec_featureresolver">
+            The <code class="interfacedef">FeatureResolver</code> Interface</a>
+</h5>
+        
+<p>
+          A <code>FeatureResolver</code> can provide a feature for a GUI element.
+        </p>
+        
+<p>
+          After QF-Test determined the feature of a GUI element the registered
+          <code>FeatureResolvers</code> get a chance to override or suppress this feature. The
+          first resolver that returns a non-null value determines the outcome. If no resolvers
+          are registered or all of them return null the original feature is used.
+        </p>
+        
+<p>
+          To suppress an element's feature <code>getFeature</code>
+          should return the empty string.
+        </p>
+        
+<p>
+          Technologies: AWT/Swing, JavaFX, SWT. For web applications please use the procedure
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.ajax.installCustomWebResolver"><code>qfs.web.ajax.installCustomWebResolver</code></a> of the standard library
+          <code>qfs.qft</code> described in <a href="tech_customajax.html#sec_customajax">Improving component recognition with a <code>CustomWebResolver</code></a>.
+          It was optimized for web elements and is more performant. Just in case the functionality
+          provided there is not sufficient make use of the <code>FeatureResolver</code>.
+        </p>
+        
+<p>
+          A <code>FeatureResolver</code> needs to implement the following method:
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getFeature(Object element, String feature)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Determine the feature of a GUI element.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+              The element to determine the feature for.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>feature</code></strong></td><td class="paramdesc">
+              The original feature QF-Test would use without a resolver.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+              The feature to use or null if the element is not handled by this resolver.
+              Returning an empty string suppresses the original feature.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+<p>
+          The following example implements a feature resolver returning the title
+          of the panel border as feature for Java/Swing panels.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def getFeature(com, feature):
+    try:
+        title = com.getBorder().getInsideBorder().getTitle()
+        if title != None:
+            return title
+    except:
+        pass
+
+resolvers.addResolver("paneltitle", getFeature, "Panel")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.8:&nbsp;&nbsp;A <code>FeatureResoler</code> for Java/Swing <code>Panels</code></td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_extrafeatureresolver"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_extrafeatureresolver">50.1.10</a></span>
+</div>
+<a href="contents.html#toc_sec_extrafeatureresolver">The <code class="interfacedef">ExtraFeatureResolver</code> Interface</a>
+</h5>
+        
+<p>
+          An <code>ExtraFeatureResolver</code> can add, change or delete an 'Extra feature' in the
+          'Extra features' table for a GUI element. For this purpose the interface provides a number of
+          methods.
+        </p>
+        
+<p>
+          Instances of the class <code>de.qfs.apps.qftest.shared.data.ExtraFeature</code>
+          represent one 'Extra feature' for a GUI element, comprising its name and value along
+          with information about whether the feature is expected to match, whether it is a
+          regular expression and whether the match should be negated. For possible states the
+          class defines the constants STATE_IGNORE, STATE_SHOULD_MATCH and STATE_MUST_MATCH.
+        </p>
+        
+<p>
+          After QF-Test determined the 'Extra features' for a GUI element, the registered
+          <code>ExtraFeatureResolvers</code> get a chance to override these features. In
+          contrast to other resolvers, QF-Test does not stop when the first resolver returns a
+          non-null value. Instead it passes its result as input to the next resolver which makes
+          it possible to register several <code>ExtraFeatureResolvers</code> that handle
+          different 'Extra features'. If no resolvers are registered or all of them return null,
+          QF-Test will proceed to use the original set.
+        </p>
+        
+<p>
+          Of course, in order to be able to implement the <code>getExtraFeatures</code> method properly, you
+          need to know the details for the API of the classes involved, namely
+          <code>ExtraFeature</code> and <code>ExtraFeatureSet</code> described below
+          - after the examples.
+        </p>
+        
+<p>
+          Technologies: AWT/Swing, JavaFX, SWT. For web applications please use the procedure
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.ajax.installCustomWebResolver"><code>qfs.web.ajax.installCustomWebResolver</code></a> of the standard library
+          <code>qfs.qft</code> described in <a href="tech_customajax.html#sec_customajax">Improving component recognition with a <code>CustomWebResolver</code></a>.
+          It was optimized for web elements and is more performant. Just in case the functionality
+          provided there is not sufficient make use of the <code>ExtraFeatureResolver</code>.
+        </p>
+        
+<p>
+          A <code>ExtraFeatureResolver</code> needs to implement the following method:
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>ExtraFeatureSet getExtraFeatures(Object element, ExtraFeatureSet features)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Determine extra features for a GUI element.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+              The element to determine the extra features for.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>features</code></strong></td><td class="paramdesc">
+              The extra features determined by QF-Test itself, an empty set in case there are
+              none. These can be modified in place or ignored and a different ExtraFeatureSet
+              returned.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The original features modified in place or a different set, null if the
+              element is not handled by this resolver. To suppress all the element's original
+              extra features return an empty ExtraFeatureSet.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+<p>
+          The first example implements an <code>ExtraFeatureResolver</code> adding
+          the title of a Java/Swing dialog as an 'Extra feature' with the status "must match"
+          (STATE_MUST_MATCH). This comes in handy when component recognition depends
+          on the correct title of the dialog.
+        </p>
+        
+<a name="ex_extra_feature_resolver"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def getExtraFeatures(node, features):
+    try:
+        title = node.getTitle()
+        features.add(resolvers.STATE_MUST_MATCH,"dialog.title", title)
+        return features
+    except:
+        pass
+resolvers.addResolver("dialog title", getExtraFeatures,"Dialog")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.9:&nbsp;&nbsp;
+            <code>ExtraFeatureResolver</code> adding an 'Extra feature' for Java/Swing dialogs
+          </td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          The following example shows how to change an existing 'Extra feature'.
+        </p>
+
+        
+<a name="ex_extra_feature_resolver_get"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def getExtraFeatures(node, features):
+    if features.get("qfs:label") \
+        and features.get("qfs:label").getValue() == "bad name":
+        features.get("qfs:label").setValue("good name")
+        return features
+resolvers.addResolver("get label example", getExtraFeatures,"TextField")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.10:&nbsp;&nbsp;
+            <code>ExtraFeatureResolver</code> changing an existing 'Extra feature'
+          </td><td class="captionglue"></td>
+</tr>
+</table>
+
+        
+<p>
+          The next example shows how to change the status of an existing 'Extra feature'. In
+          this case the 'Extra feature' is set to 'ignore':
+        </p>
+        
+<a name="ex_extra_feature_resolver_get_status"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def getExtraFeatures(node, features) {
+    def labelFeature = features.get("qfs:label")
+    if (labelFeature) {
+        labelFeature.setState(resolvers.STATE_IGNORE)
+        return features
+    }
+}
+resolvers.addResolver("get label example", this)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.11:&nbsp;&nbsp;
+            An <code>ExtraFeatureResolver</code> (Groovy) changing the state of the 'Extra feature'
+          </td><td class="captionglue"></td>
+</tr>
+</table>
+
+        
+<p>
+          In the following you will find the description of the APIs of the classes
+          <code>ExtraFeature</code> and <code>ExtraFeatureSet</code>.
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>ExtraFeature ExtraFeature(String name, String value)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Create a new ExtraFeature with the default state STATE_IGNORE.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name of the ExtraFeature.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>value</code></strong></td><td class="paramdesc">The value of the ExtraFeature.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>ExtraFeature ExtraFeature(int state, String name, String value)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Create a new ExtraFeature with a given state.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>state</code></strong></td><td class="paramdesc">
+              The state of the ExtraFeature. Values allowed are STATE_IGNORE,
+              STATE_SHOULD_MATCH, STATE_MUST_MATCH.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name of the ExtraFeature.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>value</code></strong></td><td class="paramdesc">The value of the ExtraFeature.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getName()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get the name of the ExtraFeature.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The name of the ExtraFeature.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>boolean getNegate()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get the negate state of the ExtraFeature.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The negate state of the ExtraFeature.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>boolean getRegexp()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get the regexp state of the ExtraFeature.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">Whether the ExtraFeature's value is a regular expression.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int getState()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get the state of the ExtraFeature.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The state of the ExtraFeature.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getValue()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get the value of the ExtraFeature.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The value of the ExtraFeature.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setName(String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Set the name of the ExtraFeature.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name to set.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setNegate(boolean negate)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Set the negate state of the ExtraFeature.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>negate</code></strong></td><td class="paramdesc">The negate state to set.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setRegexp(boolean regexp)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Set the regexp state of the ExtraFeature.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>regexp</code></strong></td><td class="paramdesc">The regexp state to set.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setState(int state)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Set the state of the ExtraFeature.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>state</code></strong></td><td class="paramdesc">The state to set.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setValue(String value)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Set the value of the ExtraFeature.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>value</code></strong></td><td class="paramdesc">The value to set.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+<p>
+          The class <code>de.qfs.apps.qftest.shared.data.ExtraFeatureSet</code> collects
+          <code>ExtraFeatures</code> into set:
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>ExtraFeatureSet ExtraFeatureSet()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Create a new, empty ExtraFeatureSet.
+            </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void add(ExtraFeature extraFeature)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Add an ExtraFeature to the set, potentially replacing a feature with the same
+              name.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>extraFeature</code></strong></td><td class="paramdesc">The ExtraFeature to add.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void add(String name, String value)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Add a new extra feature to the set with the state STATE_IGNORE, potentially replacing a feature with the same
+              name.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name of the ExtraFeature.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>value</code></strong></td><td class="paramdesc">The value of the ExtraFeature.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void add(int state, String name, String value)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Add a new extra feature with the given state to the set, potentially replacing a feature with the same
+              name.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>state</code></strong></td><td class="paramdesc">
+              The state of the ExtraFeature. Values allowed are resolvers.STATE_IGNORE,
+              resolvers.STATE_SHOULD_MATCH, resolvers.STATE_MUST_MATCH.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name of the ExtraFeature.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>value</code></strong></td><td class="paramdesc">The value of the ExtraFeature.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>ExtraFeature get(String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get an ExtraFeature from the set.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name of the ExtraFeature to get.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+              The ExtraFeature or null if no feature by that name is stored in the set.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>ExtraFeature remove(String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Remove an extraFeature from the set.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name of the ExtraFeature to remove.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+              The ExtraFeature that was removed or null if no feature by that name was stored
+              in the set.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>ExtraFeature[] toArray()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get all ExtraFeatures in the set.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">An array of the contained ExtraFeatures, sorted by name.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_itemnameresolver"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N175462"></a><span class="note">3.1+</span></span><span class="numtitle"><a href="contents.html#toc_sec_itemnameresolver">50.1.11</a></span>
+</div>
+<a href="contents.html#toc_sec_itemnameresolver">
+            The <code>ItemNameResolver</code> Interface</a>
+</h5>
+        
+<p>
+          An <code>ItemNameResolver</code> can change (or provide) the textual representation
+          of the index for addressing a sub-item of a complex component.
+        </p>
+        
+<p>
+          After QF-Test determined the name for an item's index the registered
+          <code>ItemNameResolvers</code> get a chance to override. The
+          first resolver that returns a non-null value determines the outcome. If no resolvers
+          are registered or all of them return null the original name is used.
+        </p>
+        
+<p>
+          Technologies: AWT/Swing, JavaFX, SWT. For web applications please use the procedure
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.ajax.installCustomWebResolver"><code>qfs.web.ajax.installCustomWebResolver</code></a> of the standard library
+          <code>qfs.qft</code> described in <a href="tech_customajax.html#sec_customajax">Improving component recognition with a <code>CustomWebResolver</code></a>.
+          It was optimized for web elements and is more performant. Just in case the functionality
+          provided there is not sufficient make use of the <code>ItemNameResolver</code>.
+        </p>
+        
+<p>
+          An <code>ItemNameResolver</code> needs to implement the following method:
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getItemName(Object element, Object item, String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Determine the name of an item of a complex GUI element that will be used for the
+              textual representation of the item's index.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+              The GUI element to which the item belongs.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>item</code></strong></td><td class="paramdesc">
+              The item to get the name for. Its type depends on the GUI element and the
+              registered <code>ItemResolvers</code> as described in <a href="tech_itemresolvers.html#sec_itemrepresentation">subsection 50.4.5</a>.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">
+              The original name that QF-Test would use without a resolver.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+              The name to use or null if the resolver does not handle this element or item.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+<p>
+          The example implements an <code>ItemNameResolver</code> making the ID of a
+          <code>JTable</code> available as index:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def getItemName(tableHeader, item, name):
+    id = tableHeader.getColumnModel().getColumn(item).getIdentifier()
+    if id:
+        return str(id)
+resolvers.addResolver("tableColumnId", getItemName,
+                      "javax.swing.table.JTableHeader")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.12:&nbsp;&nbsp;An <code>ItemNameResolver</code> for <code>JTableHeader</code></td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_itemvalueresolver"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N175572"></a><span class="note">3.1+</span></span><span class="numtitle"><a href="contents.html#toc_sec_itemvalueresolver">50.1.12</a></span>
+</div>
+<a href="contents.html#toc_sec_itemvalueresolver">
+            The <code>ItemValueResolver</code> Interface</a>
+</h5>
+        
+<p>
+          The <code>ItemValueResolver</code> is used to improve the textual check of elements.
+        </p>
+        
+<p>
+          An <code>ItemValueResolver</code> can change (or provide) the textual representation
+          of the value a sub-item of a complex component as used by a <a href="checks.html#step_CheckStringStep" shape="rect">'Check text'</a> node
+          or retrieved via a <a href="queries.html#step_FetchTextStep" shape="rect">'Fetch text'</a> node.
+        </p>
+        
+<p>
+          After QF-Test determined the value for an item's index the registered
+          <code>ItemValueResolvers</code> get a chance to override. The
+          first resolver that returns a non-null value determines the outcome. If no resolvers
+          are registered or all of them return null the original value is used.
+        </p>
+        
+<p>
+          Technologies: AWT/Swing, JavaFX, SWT. For web applications please use procedure
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.ajax.installCustomWebResolver"><code>qfs.web.ajax.installCustomWebResolver</code></a> of the standard library
+          <code>qfs.qft</code> described in <a href="tech_customajax.html#sec_customajax">Improving component recognition with a <code>CustomWebResolver</code></a>.
+          It was optimized for web elements and is more performant. Just in case the functionality
+          provided there is not sufficient make use of the <code>ItemValueResolver</code>.
+        </p>
+        
+<p>
+          An <code>ItemValueResolver</code> needs to implement the following method:
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getItemValue(Object element, Object item, String value)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Determine the value of an item of a complex GUI element that will be used for its
+              textual representation in a <a href="checks.html#step_CheckStringStep" shape="rect">'Check text'</a> or a <a href="queries.html#step_FetchTextStep" shape="rect">'Fetch text'</a> node.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+              The GUI element to which the item belongs.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>item</code></strong></td><td class="paramdesc">
+              The item to get the value for. Its type depends on the GUI element and the
+              registered <code>ItemResolvers</code> as described in <a href="tech_itemresolvers.html#sec_itemrepresentation">subsection 50.4.5</a>.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>value</code></strong></td><td class="paramdesc">
+              The original value QF-Test would use without a resolver.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+              The value to use or null if the resolver does not handle this element or item.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_treetableresolver"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_treetableresolver">50.1.13</a></span>
+</div>
+<a href="contents.html#toc_sec_treetableresolver">The <code class="interfacedef">TreeTableResolver</code> Interface</a>
+</h5>
+        
+<p>
+          A <code>TreeTableResolver</code> helps QF-Test recognize TreeTable components. A
+          TreeTable is a mixture between a table and a tree. It is not a standard Swing
+          component, but most TreeTables are implemented alike using a tree as the
+          renderer component for one column of the table. Once QF-Test recognizes a TreeTable as
+          such, it treats the row indexes of all table cells as tree indexes, which is a lot
+          more useful in that context than standard table row indexes. In addition, geometry
+          information for cells in the tree column is based on tree nodes instead of table
+          cells.
+        </p>
+        
+<p>
+          Technologies: AWT/Swing
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Note</span></span> The interface is only relevant for AWT/Swing. For SWT and JavaFX multi-column trees
+          are support by QF-Test automatically. For web frameworks the TreeTable is defined by the
+          (custom) web resolver (see <a href="tech_customajax.html#sec_customajax">Improving component recognition with a <code>CustomWebResolver</code></a>).
+        </p>
+        
+<p>
+          A <code>TreeTableResolver</code> needs to implement to following two methods:
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>JTree getTree(JTable table)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Determine the tree component used to implement a TreeTable.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>table</code></strong></td><td class="paramdesc">
+              The JTable component to determine the tree for.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+              The tree or null if the JTable is a plain table and not a TreeTable.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int getTreeColumn(JTable table)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Determine the column index of the tree component in a TreeTable. Most
+              implementations place the tree in the first column, in which case the index is 0.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>table</code></strong></td><td class="paramdesc">
+              The JTable component to determine the tree's column index for.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+              The column index or -1 if the JTable is a plain table and not a TreeTable. The
+              column index must always be given in the table's model coordinates, not in view
+              coordinates.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+        
+<p>
+          Most <code>TreeTableResolvers</code> are trivial to implement. The following Jython
+          example works well for the <code>org.openide.explorer.view.TreeTable</code> component
+          used in the popular netBeans IDE, provided that the resolver is registered for the
+          TreeTable class:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def getTreeMethod(table):
+        return table.getCellRenderer(0,0)
+    def getColumn(table):
+        return 0
+
+    resolvers.addResolver("treetableResolver", getTreeMethod, \
+    getColumn, "org.openide.explorer.view.TreeTable")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.13:&nbsp;&nbsp;<code>TreeTableResolver</code> for netBeans IDE</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          The following example shows a typical <code>TreeTableResolver</code>.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def getTree(table):
+    return table.getTree()
+def getColumn(table):
+    return 0
+resolvers.addResolver("treeTable", getTree, getColumn,
+                               "my.package.TreeTable")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.14:&nbsp;&nbsp;<code>TreeTableResolver</code> for Swing TreeTable with optional
+          <code>getColumn</code> method</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          As practically all TreeTables implement the tree in the first column of the table the
+          <code>getColumn</code> method is optional. When none is passed QF-Test automatically
+          creates a default implementation for the first column:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def getTree(table):
+    return table.getTree()
+resolvers.addResolver("treeTable", getTree, None,
+                               "my.package.TreeTable")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.15:&nbsp;&nbsp;Simplified <code>TreeTableResolver</code></td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          If no dedicated <code>getTree</code> method is available, the cell renderer of the column
+          containing the tree (typically 0) might work, as it is typically derived from <code>JTree</code>.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def getTree(table):
+    return table.getCellRenderer(0,0)
+resolvers.addResolver("treeTable", getTree,
+                               "my.package.TreeTable")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.16:&nbsp;&nbsp;Simplified <code>TreeTableResolver</code> using the method <code>getCellRenderer</code></td><td class="captionglue"></td>
+</tr>
+</table>
+
+        
+
+      
+
+      
+      
+
+      
+<a name="sec_interestingparentresolver"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_interestingparentresolver">50.1.14</a></span>
+</div>
+<a href="contents.html#toc_sec_interestingparentresolver">The <code class="interfacedef">InterestingParentResolver</code> Interface</a>
+</h5>
+        
+<p>
+          An <code>InterestingParentResolver</code> influences which components will be
+          treated as interesting or ignorable by QF-Test recording. This, in turn, determines
+          whether a 'Component' node will be created for a component.
+        </p>
+        
+<p>
+          Technologies: AWT/Swing, JavaFX, SWT. For web applications please use the procedure
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.ajax.installCustomWebResolver"><code>qfs.web.ajax.installCustomWebResolver</code></a> of the standard library
+          <code>qfs.qft</code> described in <a href="tech_customajax.html#sec_customajax">Improving component recognition with a <code>CustomWebResolver</code></a>.
+          It was optimized for web elements and is more performant. Just in case the functionality
+          provided there is not sufficient make use of the <code>InterestingParentResolver</code>.
+        </p>
+        
+<p>
+          An <code>InterestingParentResolver</code> needs to implement the following method:
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Boolean isInterestingParent(Object parent, boolean interesting)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Determine whether a parent element is interesting.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>parent</code></strong></td><td class="paramdesc">
+              The (direct or indirect) parent element.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>interesting</code></strong></td><td class="paramdesc">
+              Whether QF-Test considers the parent interesting without resolver.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+              Boolean.TRUE if interesting, Boolean.FALSE if not, null if this resolver cannot tell either way.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_tooltipresolver"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N175928"></a><span class="note">4.1+</span></span><span class="numtitle"><a href="contents.html#toc_sec_tooltipresolver">50.1.15</a></span>
+</div>
+<a href="contents.html#toc_sec_tooltipresolver">
+            The <code class="interfacedef">TooltipResolver</code> Interface</a>
+</h5>
+        
+<p>
+          A <code>TooltipResolver</code> can provide a tooltip for a component. A tooltip is one
+          of the texts considered for the 'qfs:label' 'Extra feature'.
+        </p>
+        
+<p>
+          Technologies: AWT/Swing, JavaFX, SWT. For web applications please use the procedure
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.ajax.installCustomWebResolver"><code>qfs.web.ajax.installCustomWebResolver</code></a> of the standard library
+          <code>qfs.qft</code> described in <a href="tech_customajax.html#sec_customajax">Improving component recognition with a <code>CustomWebResolver</code></a>.
+          It was optimized for web elements and is more performant. Just in case the functionality
+          provided there is not sufficient make use of the <code>TooltipResolver</code>.
+        </p>
+        
+<p>
+          A <code>TooltipResolver</code> needs to implement the following method:
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getTooltip(Object element, String tooltip)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Determine the tooltip of a GUI element.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+              The element to determine the tooltip for.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>tooltip</code></strong></td><td class="paramdesc">
+              The original tooltip  QF-Test would use without a resolver.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+              The tooltip to use or null if the element is not handled by this resolver.
+              Returning an empty string suppresses the original tooltip.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_idresolver"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="web_N176003"></a><span class="note">Web</span></span><span class="numtitle"><a href="contents.html#toc_sec_idresolver">50.1.16</a></span>
+</div>
+<a href="contents.html#toc_sec_idresolver">The <code class="interfacedef">IdResolver</code> interface</a>
+</h5>
+        
+<p>
+        An <code>IdResolver</code> allows modifying or even removing the 'ID' attribute of a DomNode.
+          When QF-Test registers the DOM nodes of a web page it also caches the "id" attribute of
+          those nodes. Depending on the option <a href="opt_web.html#opt_webidasname">Turn 'ID' attribute into name where "unique enough"</a> the value of
+          the "id" attribute will even be taken as name for the component. As many web pages or AJAX toolkits
+          generate such IDs automatically it's a very common requirement to modify that ID in order to get
+          stable and reliable component recognition.
+        </p>
+          
+<p>
+          There are three possibilities to deal with such automatically generated IDs:
+        </p>
+        
+<ul>
+          
+<li>The simplest method influencing the IDs can be achieved by calling the
+          procedure <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.ajax.installCustomWebResolver"><code>qfs.web.ajax.installCustomWebResolver</code></a> from the standard library.
+          There you should set the parameter <code>autoIdPatterns</code>. This parameter allows to specify
+          dedicated values to ignore like
+          <code>myAutoId</code> or even regular expressions like <code>%auto.*</code>, which ignores any ID beginning
+          with <code>auto</code>.
+          </li>
+          
+<li>In case you have introduced a custom attribute, which should act as id instead of
+          the original 'ID' attribute, you should call the
+          procedure <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.ajax.installCustomWebResolver"><code>qfs.web.ajax.installCustomWebResolver</code></a> from the standard library.
+          There you should set the parameter <code>customIdAttributes</code>. This parameter allows to specify
+          custom attributes which will be used for determining the 'ID'.
+          </li>
+          
+<li>You can activate the option <a href="opt_web.html#opt_websuppressnumerals">Eliminate all numerals from 'ID' attributes</a>
+          to ignore any numerals from the ID.</li>
+          
+<li>In case you would like to implement a complex algorithm
+          you need to implement an <code>IdResolver</code>.
+          </li>
+        
+</ul>
+        
+<p>
+          The options mentioned above can also be combined and don't exclude each other.
+          In case you decide to implement a custom algorithm you should always use an <code>IdResolver</code>.
+          You should take care that the 'ID' attribute of a node can show up in multiple places.
+          The most notably place is the
+          attribute <a href="components.html#att_ComponentStep_name" shape="rect">'Name'</a> of the node (depending on the option <a href="opt_web.html#opt_webidasname">Turn 'ID' attribute into name where "unique enough"</a>), its <a href="components.html#att_ComponentStep_feature" shape="rect">'Feature'</a> and its
+          <a href="components.html#att_ComponentStep_extrafeatures" shape="rect">'Extra feature'</a>. Because of that many locations you should prefer implementing
+          an <code>IdResolver</code> over implementing individual
+          <code>Name-</code>, <code>Feature-</code> and <code>ExtraFeatureResolvers</code>.
+          More importantly, changing a node's 'ID' attribute can have a major impact on whether
+          the attribute is unique and QF-Test's mechanism for using an ID as a 'Name' takes
+          uniqueness into account, so an <code>IdResolver</code> is allowed to return non-unique
+          IDs whereas a <code>NameResolver2</code> is not.
+        </p>
+        
+<p>
+          Technologies: Web
+        </p>
+        
+<p>
+          The
+          <code>de.qfs.apps.qftest.extensions.IdResolver</code>
+          interface consists of a single method:
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getId(DomNode node, String id)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Determine the ID of a <code>DomNode</code>. The resolved ID will be cached
+              and can later be retrieved via <code>node.getId()</code>, whereas
+              <code>node.getAttribute("id")</code> always returns the original, unmodified 'ID'
+              attribute.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>node</code></strong></td><td class="paramdesc">
+              The <code>DomNode</code> to determine the ID for.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>id</code></strong></td><td class="paramdesc">
+              The ID that QF-Test has determined, possibly with suppressed numerals,
+              depending on the setting of the option <a href="opt_web.html#opt_websuppressnumerals">Eliminate all numerals from 'ID' attributes</a>.
+              To implement the resolver based on the original 'ID' attribute, simply fetch this
+              with <code>node.getAttribute("id")</code>.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+              The ID or null if the element is not handled by this resolver. Returning an empty
+              string will suppress or hide the node's actual ID.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_enabledresolver"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N176176"></a><span class="note">4.1+</span></span><span class="numtitle"><a href="contents.html#toc_sec_enabledresolver">50.1.17</a></span>
+</div>
+<a href="contents.html#toc_sec_enabledresolver">
+            The <code class="interfacedef">EnabledResolver</code> Interface</a>
+</h5>
+        
+<p>
+          An <code>EnabledResolver</code> provides information about when to consider a component
+          active or inactive. AWT/Swing Components have a respective attribute. Web and JavaFX,
+          however, have special stylesheet classes that need to be evaluated via the
+          <code>EnabledResolver</code>.
+        </p>
+        
+<p>
+          Technologies: JavaFX, Web
+        </p>
+        
+<p>
+          An <code>EnabledResolver</code> needs to implement the following method:
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Boolean isEnabled(Object element, boolean enabled)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Determine whether a GUI element is regarded as active or inactive.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+              The element to determine the enabled state for.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>enabled</code></strong></td><td class="paramdesc">
+              The original state  QF-Test would use without a resolver.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+              True or false. Null if the element was not handled by the resolver.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+<p>
+          The example determines the enabled state of a web node via the css class
+          <code>v-disabled</code>.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def isEnabled(element):
+    try:
+        return not element.hasCSSClass("v-disabled")
+    except:
+        return True
+
+resolvers.addResolver("vEnabledResolver",isEnabled, \
+                      "de.qfs.apps.qftest.client.web.dom.DomNode")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.17:&nbsp;&nbsp;An <code>EnabledResolver</code></td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_visibilityresolver"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N176252"></a><span class="note">4.1+</span></span><span class="numtitle"><a href="contents.html#toc_sec_visibilityresolver">50.1.18</a></span>
+</div>
+<a href="contents.html#toc_sec_visibilityresolver">
+            The <code class="interfacedef">VisibilityResolver</code> Interface</a>
+</h5>
+        
+<p>
+          A <code>VisibilityResolver</code> influences whether to consider a web element to be visible.
+        </p>
+        
+<p>
+          Technologies: Web
+        </p>
+        
+<p>
+          A <code>VisibilityResolver</code> needs to implement the following method:
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Boolean isVisible(Object element, boolean visible)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Determine whether a GUI element is regarded visible.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+              The web element to determine the visible state for.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>visible</code></strong></td><td class="paramdesc">
+              The original state  QF-Test would use without a resolver.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+              True or false. Null if the element was not handled by the resolver.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+<p>
+          The resolver in the example below returns false for the visibility state of the web element
+          in case it is opaque.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>import re
+
+def getOpacity(element):
+    style = element.getAttribute("style")
+    if not style:
+        return 1
+    m = re.search("opacity:\s*([\d\.]+)", style)
+    if m:
+        return float(m.group(1)) == 0.4
+    else:
+        return 1
+
+def isVisible(element,visible):
+    while visible and element:
+        visible = getOpacity(element) &gt; 0
+        element = element.getParent()
+    return visible
+
+resolvers.addResolver("opacityResolver",isVisible)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.18:&nbsp;&nbsp;A <code>VisibilityResolver</code></td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_maintextresolver"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N176322"></a><span class="note">4.1+</span></span><span class="numtitle"><a href="contents.html#toc_sec_maintextresolver">50.1.19</a></span>
+</div>
+<a href="contents.html#toc_sec_maintextresolver">
+            The <code class="interfacedef">MainTextResolver</code> Interface</a>
+</h5>
+        
+<p>
+
+          A <code>MainTextResolver</code> determines the text of a component, which then may be
+          used for label, feature etc.
+        </p>
+        
+<p>
+          Technologies: AWT/Swing, JavaFX, SWT, Web
+        </p>
+        
+<p>
+          A <code>MainTextResolver</code> needs to implement the following method:
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getMainText(Object element, String text);</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Determine the 'main' text of a component
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+              The GUI element to determine the text for.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>text</code></strong></td><td class="paramdesc">
+              The original text QF-Test would use without a resolver.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+              The 'main' text. Null if the element was not handled by the resolver.
+              Returning an empty string suppresses the original text.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+<p>
+          The resolver in the example removes the string <code>TO-DO</code> from all texts.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def getMainText(element,text):
+    if text:
+        return text.replace("TO-DO","")
+    return text
+
+resolvers.addResolver("removeMarkFromText",getMainText)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.19:&nbsp;&nbsp;A <code>MainTextResolver</code></td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_busypaneresolver"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N176395"></a><span class="note">4.1+</span></span><span class="numtitle"><a href="contents.html#toc_sec_busypaneresolver">50.1.20</a></span>
+</div>
+<a href="contents.html#toc_sec_busypaneresolver">
+            The <code class="interfacedef">BusyPaneResolver</code> Interfaces</a>
+</h5>
+        
+<p>
+          At text execution, QF-Test waits for BusyPanes covering other components to disappear before resuming
+          in a determined state. A <code>BusyPaneResolver</code> influences whether to consider
+          a component as being covered.
+        </p>
+        
+<p>
+          Technologies: AWT/Swing, JavaFX
+        </p>
+        
+<p>
+          A <code>BusyPaneResolver</code> needs to implement the following method:
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Boolean isBusy(Object element)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Determine whether a component is currently being covered by a BusyPane or comparable
+              component.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+              The GUI element to determine the text state for.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+              True if the element cannot currently be accessed because of a BusyPane or similar.<br>
+              False otherwise. <br>Null if the element was not handled by the resolver.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+<p>
+          The resolver in the example below deactivates recognition of BusyPanes for
+          components of the type "my.special.Component".
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def isBusy():
+    return false
+
+resolvers.addResolver("neverBusyResolver",isBusy,"my.special.Component")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.20:&nbsp;&nbsp;A <code>BusyPaneResolver</code></td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_glasspaneresolver"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N176465"></a><span class="note">4.1+</span></span><span class="numtitle"><a href="contents.html#toc_sec_glasspaneresolver">50.1.21</a></span>
+</div>
+<a href="contents.html#toc_sec_glasspaneresolver">
+            The <code>GlassPaneResolver</code> Interfaces</a>
+</h5>
+        
+<p>
+          When components (e.g. transparent ones) hide others components you can use a
+          <code>GlassPaneResolver</code> to inform QF-Test of this relationship and thus redirect
+          events to the correct component.
+        </p>
+        
+<p>
+          Technology: AWT/Swing
+        </p>
+        
+<p>
+          A <code>GlassPaneResolver</code> needs to implement the following method:
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Object isGlassPaneFor(Object element, Object target)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Determine the relationship between an overlaying component and the actual target component.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+              The GUI element events are received for.
+            </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>target</code></strong></td><td class="paramdesc">
+              The GUI element QF-Test would pass the event on to without a resolver.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+              The component to which to pass the events on to.
+              Null if the element was not handled by the resolver.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+<p>
+          The resolver in the example below deactivates passing on events through GlassPanes.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def isGlassPaneFor(element):
+    return element
+
+resolvers.addResolver("noGlassPaneResolver", isGlassPaneFor)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.21:&nbsp;&nbsp;A <code>GlassPaneResolver</code></td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_eventsynchronizer"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N176534"></a><span class="note">4.1+</span></span><span class="numtitle"><a href="contents.html#toc_sec_eventsynchronizer">50.1.22</a></span>
+</div>
+<a href="contents.html#toc_sec_eventsynchronizer">
+            The <code class="interfacedef">EventSynchronizer</code> Interface</a>
+</h5>
+        
+<p>
+          After replaying an event to the SUT QF-Test waits for synchronization with the respective
+          Event Dispatch Thread. Via an <code>EventSynchronizer</code> you can tell QF-Test when the
+          SUT is ready to accept the next event. It ought to be used when the SUT has a non-standard
+          event synchronization.
+        </p>
+        
+<p>
+          Technologies: AWT/Swing, JavaFX, SWT, Web
+        </p>
+        
+<p>
+          An <code>EventSynchronizer</code> needs to implement the following method:
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void sync(Object context)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Synchronization with the Event Dispatch Thread of the SUT.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>context</code></strong></td><td class="paramdesc">
+              The context specified when registrating the resolver.
+            </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+<p>
+          The resolver in the following example stops execution on the Dispatch Thread until
+          the next full second.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>import time
+
+def sync():
+    t = time.time()
+    full = int(t)
+    delta = t - full
+    time.sleep(delta)
+
+resolvers.addResolver("timeSynchronizer",sync)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.22:&nbsp;&nbsp;An <code>EventSynchronizer</code></td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_busyapplicationdetector"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N176597"></a><span class="note">4.1+</span></span><span class="numtitle"><a href="contents.html#toc_sec_busyapplicationdetector">50.1.23</a></span>
+</div>
+<a href="contents.html#toc_sec_busyapplicationdetector">
+            The <code class="interfacedef">BusyApplicationDetector</code> Interface</a>
+</h5>
+        
+<p>
+          Using a <code>BusyApplicationDetector</code> can tell QF-Test when to consider an
+          application to be currently 'busy' and not in grade of accepting events.
+        </p>
+        
+<p>
+          Technologies: AWT/Swing, JavaFX, SWT, Web
+        </p>
+        
+<p>
+          A <code>BusyApplicationDetector</code> needs to implement the following method:
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Boolean applicationIsBusy</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              Determine whether an application is currently 'busy'.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+              True if the application is 'busy', false otherwise.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+<p>
+          The resolver in the example uses a SUT specific method to tell QF-Test it is 'busy':
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def applicationIsBusy():
+    return my.app.App.instance().isDoingDbSynchronization()
+
+resolvers.addResolver("dbAccessDetector",applicationIsBusy)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.23:&nbsp;&nbsp;A <code>BusyApplicationDetector</code></td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_matcher"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_matcher">50.1.24</a></span>
+</div>
+<a href="contents.html#toc_sec_matcher"><code class="interfacedef">Matcher</code></a>
+</h5>
+        
+<p>
+          The difference between a <code>matcher</code> and a <code>resolver</code> is that
+          <code>matchers</code> are relevant for replay only. They have no effect on recordings.
+          However, they are registered via the <code>resolvers</code> module as well.
+        </p>
+        
+<p>
+          A <code>matcher</code> can become useful when you are working with generic components or
+          for keyword driven testing, if you do not record components.
+        </p>
+        
+<a name="sec_extrafeaturematcher"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N176689"></a><span class="note">4.1+</span></span><span class="numtitle"><a href="contents.html#toc_sec_extrafeaturematcher">50.1.24.1</a></span>
+</div>
+<a href="contents.html#toc_sec_extrafeaturematcher">
+              The <code class="interfacedef">ExtraFeatureMatcher</code> Interface</a>
+</h5>
+          
+<p>
+            An <code>ExtraFeatureMatcher</code> influences whether to consider an 'Extra feature'
+            QF-Test registered for the component as 'suitable'.
+          </p>
+          
+<p>
+            Technologies: AWT/Swing, JavaFX, SWT, Web
+          </p>
+          
+<p>
+            An <code>ExtraFeatureMatcher</code> needs to implement the following method:
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Boolean matchExtraFeature(Object element, String name, String value, boolean regexp, boolean negate)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Check the 'Extra feature' of a component.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+                The GUI element to check the 'Extra feature' for.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">
+                The name of the 'Extra feature'.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>value</code></strong></td><td class="paramdesc">
+                The value of the 'Extra feature'.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>regexp</code></strong></td><td class="paramdesc">
+                True, if <code>value</code> is a regular expression.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>negate</code></strong></td><td class="paramdesc">
+                True, if the check is to be negated.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+                True, if the ExtraFeature is suitable, false otherwise.
+                Null if the element was not handled by the resolver.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+          
+<p>
+            The matcher in the example below checks the value of the 'Extra feature' <code>my:label</code>
+            against the <code>my-label</code> attribute of the web element.
+          </p>
+          
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>import re
+
+def matchExtraFeature(element, name, value, regexp, negate):
+    if not name == "my:label":
+        return None
+    label = element.getAttribute("my-label")
+    if label:
+        if regexp:
+            match = re.match(value,label)
+        else:
+            match = (value == label)
+    else:
+        match = False
+    return (match and not negate) or (not match and negate)
+
+resolvers.addResolver("myLabelResolver", matchExtraFeature)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.24:&nbsp;&nbsp;An <code>ExtraFeatureMatcher</code></td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            The resolver method call can be limited to a specific feature name by means of the
+            special resolvers method <code>addSpecificExtraFeatureMatcher</code>:
+          </p>
+          
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>import re
+
+def matchExtraFeature(element, name, value, regexp, negate):
+    label = element.getAttribute("my-label")
+    if label:
+        if regexp:
+            match = re.match(value,label)
+        else:
+            match = (value == label)
+    else:
+        match = False
+    return (match and not negate) or (not match and negate)
+
+resolvers.addSpecificExtraFeatureMatcher("myLabelResolver", \
+                                  matchExtraFeature, "my:label")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.25:&nbsp;&nbsp;Using <code>addSpecificExtraFeatureMatcher</code></td><td class="captionglue"></td>
+</tr>
+</table>
+        
+      
+
+      
+      
+
+      
+<a name="sec_external_implementation"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_external_implementation">50.1.25</a></span>
+</div>
+<a href="contents.html#toc_sec_external_implementation">External Implementation</a>
+</h5>
+        
+<p>
+          As an alternative to directly implementing a resolver in an SUT-script, it is possible to provide
+          them as Java classes inside a JAR file in the plugin folder. In doing so, it is helpful
+          to implement the aforementioned resolver interfaces (Basically, QF-Test is able to detect resolvers by their
+          implemented method names).
+        </p>
+        
+<p>
+          To implement the interfaces provided by QF-Test, the file <code>qfsut.jar</code> has to be added to the
+          development classpath. Most of the interfaces reside in the <code>de.qfs.apps.qftest.extensions</code>
+          package, and the names of the interfaces which have two method parameters are suffixed with a "2".
+          All Interfaces named <code>Item...</code> reside in the package <code>de.qfs.apps.qftest.extensions.items</code>.
+          When calling <code>resolvers.addResolver(...)</code> in an SUT script, provide an instance of
+          the implemented resolver class as argument.
+        </p>
+      
+
+      
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_webresolversmodule.html#sec_webresolversmodule"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 50.2&nbsp;The webResolvers module" title="Next Page: 50.2&nbsp;The webResolvers module"></a></td><td class="navicon"><a href="tech_webresolversmodule.html#sec_webresolversmodule"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 50.2&nbsp;The webResolvers module" title="Next Chapter: 50.2&nbsp;The webResolvers module"></a></td><td class="navicon"><a href="tech_extensions.html#sec_extensions"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 50&nbsp;Extension APIs" title="Chapter Overview: 50&nbsp;Extension APIs"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

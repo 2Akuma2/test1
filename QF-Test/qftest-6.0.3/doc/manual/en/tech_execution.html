@@ -1,0 +1,2806 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Command line arguments and exit codes</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_execution"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_engines.html#sec_engines"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 41&nbsp;GUI engines" title="Next Page: 41&nbsp;GUI engines"></a></td><td class="navicon"><a href="tech_engines.html#sec_engines"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 41&nbsp;GUI engines" title="Next Chapter: 41&nbsp;GUI engines"></a></td><td class="navicon"><a href="technical.html#sec_technical"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: IV&nbsp;Technical reference" title="Chapter Overview: IV&nbsp;Technical reference"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_execution">40</a></span>
+</div>
+<a href="contents.html#toc_sec_execution">Command line arguments and exit codes</a>
+</h3>
+      
+
+      
+<a name="sec_callsyntax"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_callsyntax">40.1</a></span>
+</div>
+<a href="contents.html#toc_sec_callsyntax">Call syntax</a>
+</h4>
+        
+<p>
+          The call syntax for interactive and batch mode varies widely since some
+          command line arguments are specific to interactive mode or batch mode or even sub-modes
+          of batch mode.
+          Note that all of the arguments have sensible default values which you only
+          need to override for special cases. In most cases you'll only need to
+          execute either <code>qftest [&lt;suite&gt; | &lt;run-log&gt;]*</code>
+          to run QF-Test in interactive mode, or <code>qftest <code>-batch</code>
+            [<code>-runlog [&lt;file&gt;]</code>] [<code>-report &lt;directory&gt;</code>] &lt;suite&gt;</code> to execute a test in batch mode.
+        </p>
+        
+<p>
+          
+<span class="margin"><a name="new_N156913"></a><span class="note">5.2+</span></span>
+          For maximum flexibility the names of all QF-Test arguments are case-insensitive and embedded '-', '_', '.' and
+          ':' characters are ignored, so <code>-report.html</code> is equivalent to <code>--reportHtml</code> or
+          <code>-report-html</code>. The latter is the officially documented form because it avoids conflicts with
+          Windows PowerShell.
+        </p>
+        
+<p>
+          
+<span class="margin"><a name="windows_N156928"></a><span class="note">Windows</span></span>The program <code>qftest.exe</code> is a Windows GUI application.
+          When started from a command shell, it will not wait for QF-Test to terminate but return
+          immediately. Thus, when executing a test in batch mode, you cannot see whether QF-Test has
+          finished or not (you may put the command into a <code>.bat</code> file to deal with this behaviour).
+          Furthermore you won't see any output from QF-Test in the console window when using
+          <code>qftest.exe</code>.
+          For both reasons you may prefer to utilize the <code>qftestc.exe</code> Console application
+          when launching QF-Test from a command shell: It waits for QF-Test to terminate and print output
+          from <a href="control.html#step_ServerScriptStep" shape="rect">'Server scripts'</a> will be displayed in the console window.
+          Apart from that, everything said about <code>qftest.exe</code> in this chapter holds true
+          for <code>qftestc.exe</code> too.
+        </p>
+        
+<p>
+          
+<span class="margin"><a name="mac_N156957"></a><span class="note">Mac</span></span>
+          In case the macOS App is used those parameters can be defined directly in QF-Test via
+	        &raquo;<em>Edit</em>&laquo;-&raquo;<em>Options</em>&laquo; under
+	        General-&gt;Startup (please also see the macOS specific note under <a href="user_installation.html#usec_execution">Starting QF-Test</a>).
+        </p>
+        
+<dl>
+          
+<dt>Interactive mode</dt>
+          
+<dd>
+            The full call syntax for interactive mode is:<br>
+
+            
+<code>
+              qftest [<a href="#arg_dbg" shape="rect"><code>-dbg</code></a>]
+              [<a href="#arg_java" shape="rect"><code>-java &lt;executable&gt;</code></a>] [<a href="#arg_noconsole" shape="rect"><code>-noconsole</code></a>]
+              [-J&lt;java-argument&gt;]*
+              [<a href="#arg_allowshutdown" shape="rect"><code>-allow-shutdown [&lt;shutdown ID&gt;]</code></a>]
+              [<a href="#arg_daemon" shape="rect"><code>-daemon</code></a>]
+              [<a href="#arg_daemonhost" shape="rect"><code>-daemonhost &lt;host&gt;</code></a>]
+              [<a href="#arg_daemonport" shape="rect"><code>-daemonport &lt;port&gt;</code></a>]
+              [<a href="#arg_daemonrmiport" shape="rect"><code>-daemonrmiport &lt;port&gt;</code></a>]
+              [<a href="#arg_dontkillprocesses" shape="rect"><code>-dontkillprocesses</code></a>]
+              [<a href="#arg_engine" shape="rect"><code>-engine &lt;engine&gt;</code></a>]
+              [<a href="#arg_groovydir" shape="rect"><code>-groovydir &lt;directory&gt;</code></a>]
+              [<a href="#arg_help" shape="rect"><code>-help</code></a>]
+              [<a href="#arg_javascriptdir" shape="rect"><code>-javascriptdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_jythondir" shape="rect"><code>-jythondir &lt;directory&gt;</code></a>]
+              [<a href="#arg_jythonport" shape="rect"><code>-jythonport &lt;number&gt;</code></a>]
+              [<a href="#arg_keybindings" shape="rect"><code>-keybindings &lt;value&gt;</code></a>]
+              [<a href="#arg_keystore" shape="rect"><code>-keystore &lt;keystore file&gt;</code></a>]
+              [<a href="#arg_keypass" shape="rect"><code>-keypass &lt;keystore password&gt;</code></a>]
+              [<a href="#arg_libpath" shape="rect"><code>-libpath &lt;path&gt;</code></a>]
+              [<a href="#arg_license" shape="rect"><code>-license &lt;file&gt;</code></a>]
+              [<a href="#arg_license.waitfor" shape="rect"><code>-license-waitfor &lt;seconds&gt;</code></a>]
+              [<a href="#arg_logdir" shape="rect"><code>-logdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_noupdatecheck" shape="rect"><code>-noupdatecheck</code></a>]
+              [<a href="#arg_option" shape="rect"><code>-option &lt;name&gt;=&lt;value&gt;</code></a>]
+              [<a href="#arg_options" shape="rect"><code>-options &lt;file&gt;</code></a>]
+              [<a href="#arg_plugindir" shape="rect"><code>-plugindir &lt;directory&gt;</code></a>]
+              [<a href="#arg_port" shape="rect"><code>-port &lt;number&gt;</code></a>]
+              [<a href="#arg_reuse" shape="rect"><code>-reuse</code></a>]
+              [<a href="#arg_run" shape="rect"><code>-run</code></a>]
+              [<a href="#arg_runlogdir" shape="rect"><code>-runlogdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_runtime" shape="rect"><code>-runtime</code></a>]
+              [<a href="#arg_serverhost" shape="rect"><code>-serverhost &lt;host&gt;</code></a>]
+              [<a href="#arg_shell" shape="rect"><code>-shell &lt;executable&gt;</code></a>]
+              [<a href="#arg_shellarg" shape="rect"><code>-shellarg &lt;argument&gt;</code></a>]
+              [<a href="#arg_suitesfile" shape="rect"><code>-suitesfile &lt;file&gt;</code></a>]
+              [<a href="#arg_systemcfg" shape="rect"><code>-systemcfg &lt;file&gt;</code></a>]
+              [<a href="#arg_systemdir" shape="rect"><code>-systemdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_tempdir" shape="rect"><code>-tempdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_test" shape="rect"><code>-test &lt;n&gt;|&lt;ID&gt;</code></a>]*
+              [<a href="#arg_usercfg" shape="rect"><code>-usercfg &lt;file&gt;</code></a>]
+              [<a href="#arg_userdir" shape="rect"><code>-userdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_variable" shape="rect"><code>-variable &lt;name&gt;=&lt;value&gt;</code></a>]*
+              [<a href="#arg_version" shape="rect"><code>-version</code></a>]
+              [&lt;suite&gt; | &lt;run-log&gt;]*
+            </code>
+          
+</dd>
+        
+</dl>
+        
+<p>
+          There are several sub-modes for running QF-Test in batch mode. The default is to execute
+          one or more test-suites. Alternatively QF-Test can be invoked to create test documentation
+          from test-suites or reports from run-logs.
+          QF-Test can also be run in daemon mode where it sits in the background waiting for calls
+          from the outside telling it what to do (see <a href="tech_daemon.html#sec_daemon">chapter 51</a> for further
+          information about the daemon mode). Finally, showing help or version information can
+          also be seen as separate sub-modes.
+        </p>
+        
+<dl>
+          
+<dt>Test execution</dt>
+          
+<dd>
+            
+<p>
+              To execute one or more test-suites and create a run-log and/or report as a result,
+              use:
+            </p>
+
+            
+<code>
+              qftest -batch [<a href="#arg_run" shape="rect"><code>-run</code></a>]
+              [<a href="#arg_dbg" shape="rect"><code>-dbg</code></a>] [<a href="#arg_java" shape="rect"><code>-java &lt;executable&gt;</code></a>] [<a href="#arg_noconsole" shape="rect"><code>-noconsole</code></a>]
+              [-J&lt;java-argument&gt;]*
+              [<a href="#arg_allowshutdown" shape="rect"><code>-allow-shutdown [&lt;shutdown ID&gt;]</code></a>]
+              [<a href="#arg_clearglobals" shape="rect"><code>-clearglobals</code></a>]
+              [<a href="#arg_compact" shape="rect"><code>-compact</code></a>]
+              [<a href="#arg_engine" shape="rect"><code>-engine &lt;engine&gt;</code></a>]
+              [<a href="#arg_exitcodeignoreexception" shape="rect"><code>-exitcode-ignore-exception</code></a>]
+              [<a href="#arg_exitcodeignoreerror" shape="rect"><code>-exitcode-ignore-error</code></a>]
+              [<a href="#arg_exitcodeignorewarning" shape="rect"><code>-exitcode-ignore-warning</code></a>]
+              [<a href="#arg_groovydir" shape="rect"><code>-groovydir &lt;directory&gt;</code></a>]
+              [<a href="#arg_javascriptdir" shape="rect"><code>-javascriptdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_jythondir" shape="rect"><code>-jythondir &lt;directory&gt;</code></a>]
+              [<a href="#arg_jythonport" shape="rect"><code>-jythonport &lt;number&gt;</code></a>]
+              [<a href="#arg_keystore" shape="rect"><code>-keystore &lt;keystore file&gt;</code></a>]
+              [<a href="#arg_keypass" shape="rect"><code>-keypass &lt;keystore password&gt;</code></a>]
+              [<a href="#arg_libpath" shape="rect"><code>-libpath &lt;path&gt;</code></a>]
+              [<a href="#arg_license" shape="rect"><code>-license &lt;file&gt;</code></a>]
+              [<a href="#arg_license.waitfor" shape="rect"><code>-license-waitfor &lt;seconds&gt;</code></a>]
+              [<a href="#arg_logdir" shape="rect"><code>-logdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_nolog" shape="rect"><code>-nolog</code></a>]
+              [<a href="#arg_nomessagewindow" shape="rect"><code>-nomessagewindow</code></a>]
+              [<a href="#arg_option" shape="rect"><code>-option &lt;name&gt;=&lt;value&gt;</code></a>]
+              [<a href="#arg_options" shape="rect"><code>-options &lt;file&gt;</code></a>]
+              [<a href="#arg_plugindir" shape="rect"><code>-plugindir &lt;directory&gt;</code></a>]
+              [<a href="#arg_port" shape="rect"><code>-port &lt;number&gt;</code></a>]
+              [<a href="#arg_report" shape="rect"><code>-report &lt;directory&gt;</code></a>]
+              [<a href="#arg_report.checks" shape="rect"><code>-report-checks</code></a>]
+              [<a href="#arg_report.customdir" shape="rect"><code>-report-customdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_report.doctags" shape="rect"><code>-report-doctags</code></a>]
+              [<a href="#arg_report.errors" shape="rect"><code>-report-errors</code></a>]
+              [<a href="#arg_report.exceptions" shape="rect"><code>-report-exceptions</code></a>]
+              [<a href="#arg_report.html" shape="rect"><code>-report-html &lt;directory&gt;</code></a>]
+              [<a href="#arg_report.ignorenotimplemented" shape="rect"><code>-report-ignorenotimplemented</code></a>]
+              [<a href="#arg_report.ignoreskipped" shape="rect"><code>-report-ignoreskipped</code></a>]
+              [<a href="#arg_report.junit" shape="rect"><code>-report-junit &lt;directory&gt;</code></a>]
+              [<a href="#arg_report.name" shape="rect"><code>-report-name &lt;name&gt;</code></a>]
+              [<a href="#arg_report.nodeicons" shape="rect"><code>-report-nodeicons</code></a>]
+              [<a href="#arg_report.passhtml" shape="rect"><code>-report-passhtml</code></a>]
+              [<a href="#arg_report.piechart" shape="rect"><code>-report-piechart</code></a>]
+              [<a href="#arg_report.includesuitename" shape="rect"><code>-report-include-suitename</code></a>]
+              [<a href="#arg_report.scale-thumbnails" shape="rect"><code>-report-scale-thumbnails &lt;percent&gt;</code></a>]
+              [<a href="#arg_report.teststeps" shape="rect"><code>-report-teststeps</code></a>]
+              [<a href="#arg_report.thumbnails" shape="rect"><code>-report-thumbnails</code></a>]
+              [<a href="#arg_report.warnings" shape="rect"><code>-report-warnings</code></a>]
+              [<a href="#arg_report.xml" shape="rect"><code>-report-xml &lt;directory&gt;</code></a>]
+              [<a href="#arg_runid" shape="rect"><code>-runid &lt;ID&gt;</code></a>]
+              [<a href="#arg_runlogdir" shape="rect"><code>-runlogdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_runlog" shape="rect"><code>-runlog [&lt;file&gt;]</code></a>]
+              [<a href="#arg_runtime" shape="rect"><code>-runtime</code></a>]
+              [<a href="#arg_serverhost" shape="rect"><code>-serverhost &lt;host&gt;</code></a>]
+              [<a href="#arg_shell" shape="rect"><code>-shell &lt;executable&gt;</code></a>]
+              [<a href="#arg_shellarg" shape="rect"><code>-shellarg &lt;argument&gt;</code></a>]
+              [<a href="#arg_sourcedir" shape="rect"><code>-sourcedir &lt;directory&gt;</code></a>]
+              [<a href="#arg_suitesfile" shape="rect"><code>-suitesfile &lt;file&gt;</code></a>]
+              [<a href="#arg_splitlog" shape="rect"><code>-splitlog</code></a>]
+              [<a href="#arg_systemcfg" shape="rect"><code>-systemcfg &lt;file&gt;</code></a>]
+              [<a href="#arg_systemdir" shape="rect"><code>-systemdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_test" shape="rect"><code>-test &lt;n&gt;|&lt;ID&gt;</code></a>]*
+              [<a href="#arg_threads" shape="rect"><code>-threads &lt;number&gt;</code></a>]
+              [<a href="#arg_userdir" shape="rect"><code>-userdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_variable" shape="rect"><code>-variable &lt;name&gt;=&lt;value&gt;</code></a>]*
+              [<a href="#arg_verbose" shape="rect"><code>-verbose [&lt;level&gt;]</code></a>]
+              &lt;suite&gt;+
+            </code>
+          
+</dd>
+
+          
+<dt>Test execution via QF-Test daemon</dt>
+          
+<dd>
+            
+<p>
+              The following parameters can be specified when executing a test-case
+              by calling a daemon:
+            </p>
+            
+<code>
+              qftest -batch <a href="#arg_calldaemon" shape="rect"><code>-calldaemon</code></a>
+              [<a href="#arg_cleanup" shape="rect"><code>-cleanup</code></a>] [<a href="#arg_clearglobals" shape="rect"><code>-clearglobals</code></a>]
+              [<a href="#arg_dbg" shape="rect"><code>-dbg</code></a>] [<a href="#arg_java" shape="rect"><code>-java &lt;executable&gt;</code></a>] [<a href="#arg_noconsole" shape="rect"><code>-noconsole</code></a>] [-J&lt;java-argument&gt;]*
+              [<a href="#arg_daemonhost" shape="rect"><code>-daemonhost &lt;host&gt;</code></a>]
+              [<a href="#arg_daemonport" shape="rect"><code>-daemonport &lt;port&gt;</code></a>]
+              [<a href="#arg_exitcodeignoreexception" shape="rect"><code>-exitcode-ignore-exception</code></a>]
+              [<a href="#arg_exitcodeignoreerror" shape="rect"><code>-exitcode-ignore-error</code></a>]
+              [<a href="#arg_exitcodeignorewarning" shape="rect"><code>-exitcode-ignore-warning</code></a>]
+              [<a href="#arg_keystore" shape="rect"><code>-keystore &lt;keystore file&gt;</code></a>]
+              [<a href="#arg_keypass" shape="rect"><code>-keypass &lt;keystore password&gt;</code></a>]
+              [<a href="#arg_nomessagewindow" shape="rect"><code>-nomessagewindow</code></a>]
+              [<a href="#arg_ping" shape="rect"><code>-ping</code></a>]
+              [<a href="#arg_option" shape="rect"><code>-option &lt;name&gt;=&lt;value&gt;</code></a>]
+              [<a href="#arg_options" shape="rect"><code>-options &lt;file&gt;</code></a>]
+              [<a href="#arg_runid" shape="rect"><code>-runid &lt;ID&gt;</code></a>]
+              [<a href="#arg_runlogdir" shape="rect"><code>-runlogdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_runlog" shape="rect"><code>-runlog [&lt;file&gt;]</code></a>]
+              [<a href="#arg_startclean" shape="rect"><code>-startclean</code></a>]
+              [<a href="#arg_startsut" shape="rect"><code>-startsut</code></a>]
+              [<a href="#arg_stopclean" shape="rect"><code>-stopclean</code></a>]
+              [<a href="#arg_stoprun" shape="rect"><code>-stoprun</code></a>]
+              [<a href="#arg_systemdir" shape="rect"><code>-systemdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_suitedir" shape="rect"><code>-suitedir &lt;dir&gt;</code></a>]
+              [<a href="#arg_systemdir" shape="rect"><code>-systemdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_terminate" shape="rect"><code>-terminate</code></a>]
+              [<a href="#arg_timeout" shape="rect"><code>-timeout &lt;milliseconds&gt;</code></a>]
+              [<a href="#arg_userdir" shape="rect"><code>-userdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_variable" shape="rect"><code>-variable &lt;name&gt;=&lt;value&gt;</code></a>]*
+              [<a href="#arg_verbose" shape="rect"><code>-verbose [&lt;level&gt;]</code></a>]
+              &lt;suite#test-case&gt;
+            </code>
+          
+</dd>
+
+          
+<dt>Create test documentation</dt>
+          
+<dd>
+            
+<p>
+              Package or test-case documentation can be create for one or more test-suites or whole
+              directories. This is described further in <a href="user_report.html#usec_report">chapter 21</a>. The
+              command line syntax is:
+            </p>
+            
+<code>
+              qftest -batch <a href="#arg_gendoc" shape="rect"><code>-gendoc</code></a>
+              [<a href="#arg_dbg" shape="rect"><code>-dbg</code></a>] [<a href="#arg_java" shape="rect"><code>-java &lt;executable&gt;</code></a>] [<a href="#arg_noconsole" shape="rect"><code>-noconsole</code></a>]
+              [-J&lt;java-argument&gt;]*
+              [<a href="#arg_license" shape="rect"><code>-license &lt;file&gt;</code></a>]
+              [<a href="#arg_license.waitfor" shape="rect"><code>-license-waitfor &lt;seconds&gt;</code></a>]
+              [<a href="#arg_nomessagewindow" shape="rect"><code>-nomessagewindow</code></a>]
+              [<a href="#arg_option" shape="rect"><code>-option &lt;name&gt;=&lt;value&gt;</code></a>]
+              [<a href="#arg_options" shape="rect"><code>-options &lt;file&gt;</code></a>]
+              [<a href="#arg_pkgdoc" shape="rect"><code>-pkgdoc &lt;directory&gt;</code></a>]
+              [<a href="#arg_pkgdoc.dependencies" shape="rect"><code>-pkgdoc-dependencies</code></a>]
+              [<a href="#arg_pkgdoc.doctags" shape="rect"><code>-pkgdoc-doctags</code></a>]
+              [<a href="#arg_pkgdoc.html" shape="rect"><code>-pkgdoc-html &lt;directory&gt;</code></a>]
+              [<a href="#arg_pkgdoc.includelocal" shape="rect"><code>-pkgdoc-includelocal</code></a>]
+              [<a href="#arg_pkgdoc.nodeicons" shape="rect"><code>-pkgdoc-nodeicons</code></a>]
+              [<a href="#arg_pkgdoc.passhtml" shape="rect"><code>-pkgdoc-passhtml</code></a>]
+              [<a href="#arg_pkgdoc.sortpackages" shape="rect"><code>-pkgdoc-sortpackages</code></a>]
+              [<a href="#arg_pkgdoc.sortprocedures" shape="rect"><code>-pkgdoc-sortprocedures</code></a>]
+              [<a href="#arg_pkgdoc.xml" shape="rect"><code>-pkgdoc-xml &lt;directory&gt;</code></a>]
+              [<a href="#arg_sourcedir" shape="rect"><code>-sourcedir &lt;directory&gt;</code></a>]
+              [<a href="#arg_systemdir" shape="rect"><code>-systemdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_testdoc" shape="rect"><code>-testdoc &lt;directory&gt;</code></a>]
+              [<a href="#arg_testdoc.doctags" shape="rect"><code>-testdoc-doctags</code></a>]
+              [<a href="#arg_testdoc.followcalls" shape="rect"><code>-testdoc-followcalls</code></a>]
+              [<a href="#arg_testdoc.html" shape="rect"><code>-testdoc-html &lt;directory&gt;</code></a>]
+              [<a href="#arg_testdoc.nodeicons" shape="rect"><code>-testdoc-nodeicons</code></a>]
+              [<a href="#arg_testdoc.passhtml" shape="rect"><code>-testdoc-passhtml</code></a>]
+              [<a href="#arg_testdoc.sorttestcases" shape="rect"><code>-testdoc-sorttestcases</code></a>]
+              [<a href="#arg_testdoc.sorttestsets" shape="rect"><code>-testdoc-sorttestsets</code></a>]
+              [<a href="#arg_testdoc.teststeps" shape="rect"><code>-testdoc-teststeps</code></a>]
+              [<a href="#arg_testdoc.xml" shape="rect"><code>-testdoc-xml &lt;directory&gt;</code></a>]
+              (&lt;suite&gt; | &lt;directory&gt;)+
+            </code>
+          
+</dd>
+
+          
+<dt>Create a report from run-logs</dt>
+          
+<dd>
+            
+<p>
+              To create a report from one or more run-logs or whole directories use:
+            </p>
+            
+<code>
+              qftest -batch <a href="#arg_genreport" shape="rect"><code>-genreport</code></a>
+              [<a href="#arg_dbg" shape="rect"><code>-dbg</code></a>] [<a href="#arg_java" shape="rect"><code>-java &lt;executable&gt;</code></a>] [<a href="#arg_noconsole" shape="rect"><code>-noconsole</code></a>]
+              [-J&lt;java-argument&gt;]*
+              [<a href="#arg_license" shape="rect"><code>-license &lt;file&gt;</code></a>]
+              [<a href="#arg_license.waitfor" shape="rect"><code>-license-waitfor &lt;seconds&gt;</code></a>]
+              [<a href="#arg_nomessagewindow" shape="rect"><code>-nomessagewindow</code></a>]
+              [<a href="#arg_option" shape="rect"><code>-option &lt;name&gt;=&lt;value&gt;</code></a>]
+              [<a href="#arg_options" shape="rect"><code>-options &lt;file&gt;</code></a>]
+              [<a href="#arg_report" shape="rect"><code>-report &lt;directory&gt;</code></a>]
+              [<a href="#arg_report.checks" shape="rect"><code>-report-checks</code></a>]
+              [<a href="#arg_report.customdir" shape="rect"><code>-report-customdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_report.doctags" shape="rect"><code>-report-doctags</code></a>]
+              [<a href="#arg_report.errors" shape="rect"><code>-report-errors</code></a>]
+              [<a href="#arg_report.exceptions" shape="rect"><code>-report-exceptions</code></a>]
+              [<a href="#arg_report.html" shape="rect"><code>-report-html &lt;directory&gt;</code></a>]
+              [<a href="#arg_report.ignorenotimplemented" shape="rect"><code>-report-ignorenotimplemented</code></a>]
+              [<a href="#arg_report.ignoreskipped" shape="rect"><code>-report-ignoreskipped</code></a>]
+              [<a href="#arg_report.junit" shape="rect"><code>-report-junit &lt;directory&gt;</code></a>]
+              [<a href="#arg_report.name" shape="rect"><code>-report-name &lt;name&gt;</code></a>]
+              [<a href="#arg_report.nodeicons" shape="rect"><code>-report-nodeicons</code></a>]
+              [<a href="#arg_report.passhtml" shape="rect"><code>-report-passhtml</code></a>]
+              [<a href="#arg_report.piechart" shape="rect"><code>-report-piechart</code></a>]
+              [<a href="#arg_report.includesuitename" shape="rect"><code>-report-include-suitename</code></a>]
+              [<a href="#arg_report.scale-thumbnails" shape="rect"><code>-report-scale-thumbnails &lt;percent&gt;</code></a>]
+              [<a href="#arg_report.teststeps" shape="rect"><code>-report-teststeps</code></a>]
+              [<a href="#arg_report.thumbnails" shape="rect"><code>-report-thumbnails</code></a>]
+              [<a href="#arg_report.warnings" shape="rect"><code>-report-warnings</code></a>]
+              [<a href="#arg_report.xml" shape="rect"><code>-report-xml &lt;directory&gt;</code></a>]
+              [<a href="#arg_runlogdir" shape="rect"><code>-runlogdir &lt;directory&gt;</code></a>]
+              (&lt;run-log&gt; | &lt;directory&gt;)+
+            </code>
+          
+</dd>
+
+          
+<dt>Daemon mode</dt>
+          
+<dd>
+            
+<p>
+              To run QF-Test in daemon mode as described <a href="tech_daemon.html#sec_daemon">chapter 51</a> use:
+            </p>
+            
+<code>
+              qftest -batch <a href="#arg_daemon" shape="rect"><code>-daemon</code></a>
+              [<a href="#arg_dbg" shape="rect"><code>-dbg</code></a>] [<a href="#arg_java" shape="rect"><code>-java &lt;executable&gt;</code></a>] [<a href="#arg_noconsole" shape="rect"><code>-noconsole</code></a>]
+              [-J&lt;java-argument&gt;]*
+              [<a href="#arg_daemonhost" shape="rect"><code>-daemonhost &lt;host&gt;</code></a>]
+              [<a href="#arg_daemonport" shape="rect"><code>-daemonport &lt;port&gt;</code></a>]
+              [<a href="#arg_daemonrmiport" shape="rect"><code>-daemonrmiport &lt;port&gt;</code></a>]
+              [<a href="#arg_engine" shape="rect"><code>-engine &lt;engine&gt;</code></a>]
+              [<a href="#arg_groovydir" shape="rect"><code>-groovydir &lt;directory&gt;</code></a>]
+              [<a href="#arg_javascriptdir" shape="rect"><code>-javascriptdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_jythondir" shape="rect"><code>-jythondir &lt;directory&gt;</code></a>]
+              [<a href="#arg_jythonport" shape="rect"><code>-jythonport &lt;number&gt;</code></a>]
+              [<a href="#arg_keystore" shape="rect"><code>-keystore &lt;keystore file&gt;</code></a>]
+              [<a href="#arg_keypass" shape="rect"><code>-keypass &lt;keystore password&gt;</code></a>]
+              [<a href="#arg_libpath" shape="rect"><code>-libpath &lt;path&gt;</code></a>]
+              [<a href="#arg_license" shape="rect"><code>-license &lt;file&gt;</code></a>]
+              [<a href="#arg_license.waitfor" shape="rect"><code>-license-waitfor &lt;seconds&gt;</code></a>]
+              [<a href="#arg_logdir" shape="rect"><code>-logdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_nolog" shape="rect"><code>-nolog</code></a>]
+              [<a href="#arg_nomessagewindow" shape="rect"><code>-nomessagewindow</code></a>]
+              [<a href="#arg_option" shape="rect"><code>-option &lt;name&gt;=&lt;value&gt;</code></a>]
+              [<a href="#arg_options" shape="rect"><code>-options &lt;file&gt;</code></a>]
+              [<a href="#arg_plugindir" shape="rect"><code>-plugindir &lt;directory&gt;</code></a>]
+              [<a href="#arg_port" shape="rect"><code>-port &lt;number&gt;</code></a>]
+              [<a href="#arg_runtime" shape="rect"><code>-runtime</code></a>]
+              [<a href="#arg_serverhost" shape="rect"><code>-serverhost &lt;host&gt;</code></a>]
+              [<a href="#arg_shell" shape="rect"><code>-shell &lt;executable&gt;</code></a>]
+              [<a href="#arg_shellarg" shape="rect"><code>-shellarg &lt;argument&gt;</code></a>]
+              [<a href="#arg_splitlog" shape="rect"><code>-splitlog</code></a>]
+              [<a href="#arg_systemcfg" shape="rect"><code>-systemcfg &lt;file&gt;</code></a>]
+              [<a href="#arg_systemdir" shape="rect"><code>-systemdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_userdir" shape="rect"><code>-userdir &lt;directory&gt;</code></a>]
+              [<a href="#arg_variable" shape="rect"><code>-variable &lt;name&gt;=&lt;value&gt;</code></a>]*
+            </code>
+          
+</dd>
+
+          
+<dt>Import one test-suite into another</dt>
+          
+<dd>
+            
+<code>
+              qftest -batch <a href="#arg_import" shape="rect"><code>-import</code></a>
+              [<a href="#arg_importFrom" shape="rect"><code>-import-from &lt;test-suite&gt;</code></a>] [<a href="#arg_importInto" shape="rect"><code>-import-into &lt;test-suite&gt;</code></a>]
+              [<a href="#arg_importComponents" shape="rect"><code>-import-components</code></a>] [<a href="#arg_importProcedures" shape="rect"><code>-import-procedures</code></a>] [<a href="#arg_importTests" shape="rect"><code>-import-tests</code></a>]
+            </code>
+          
+</dd>
+
+          
+<dt>Analyze references of a test-suite</dt>
+          
+<dd>
+            
+<code>
+              qftest -batch <a href="#arg_analyze" shape="rect"><code>-analyze</code></a>
+              [<a href="#arg_analyzeTarget" shape="rect"><code>-analyze-target &lt;directory&gt;</code></a>]
+              [<a href="#arg_suitedir" shape="rect"><code>-suitedir &lt;dir&gt;</code></a>]
+              [<a href="#arg_analyzeReferences" shape="rect"><code>-analyze-references</code></a>]
+              [<a href="#arg_analyzeDuplicates" shape="rect"><code>-analyze-duplicates</code></a>]
+              [<a href="#arg_analyzeInvalidChar" shape="rect"><code>-analyze-invalidchar</code></a>]
+              [<a href="#arg_analyzeEmptyNodes" shape="rect"><code>-analyze-emptynodes</code></a>]
+              [<a href="#arg_analyzeComponents" shape="rect"><code>-analyze-components</code></a>]
+              [<a href="#arg_analyzeProcedures" shape="rect"><code>-analyze-procedures</code></a>]
+              [<a href="#arg_analyzeDependencies" shape="rect"><code>-analyze-dependencies</code></a>]
+              [<a href="#arg_analyzeTests" shape="rect"><code>-analyze-tests</code></a>]
+              [<a href="#arg_analyzePackages" shape="rect"><code>-analyze-packages</code></a>]
+              [<a href="#arg_AnalyzeUnusedCallables" shape="rect"><code>-remove-unused-callables</code></a>]
+              [<a href="#arg_AnalyzeUnusedComponents" shape="rect"><code>-remove-unused-components</code></a>]
+              [<a href="#arg_analyzeTransitive" shape="rect"><code>-analyze-transitive</code></a>] [<a href="#arg_analyzeFollowIncludes" shape="rect"><code>-analyze-followincludes</code></a>]
+              (&lt;suite&gt; | &lt;directory&gt;)+
+            </code>
+          
+</dd>
+
+        
+<dt>Merging run-logs</dt>
+          
+<dd>
+            
+<code>
+              qftest -batch <a href="#arg_MergeRunlog" shape="rect"><code>-mergelogs</code></a>
+              [<a href="#arg_MergeRunlogMode" shape="rect"><code>-mergelogs-mode [&lt;mode&gt;]</code></a>]
+              [<a href="#arg_MergeRunlogUseFqn" shape="rect"><code>-mergelogs-usefqn</code></a>]
+              [<a href="#arg_MergeRunlogResultLog" shape="rect"><code>-mergelogs-resultlog [&lt;file&gt;]</code></a>]
+              [<a href="#arg_MergeRunlogMasterLog" shape="rect"><code>-mergelogs-masterlog [&lt;file&gt;]</code></a>]
+              (&lt;run-log&gt; | &lt;directory&gt;)+
+            </code>
+          
+</dd>
+
+          
+<dt>Get version information</dt>
+          
+<dd>
+            
+<code>
+              qftest -batch <a href="#arg_version" shape="rect"><code>-version</code></a>
+            </code>
+          
+</dd>
+
+          
+<dt>Cleanly terminate one specific QF-Test instance running on the local system (see
+          <a href="#arg_allowshutdown" shape="rect"><code>-allow-shutdown [&lt;shutdown ID&gt;]</code></a>)</dt>
+          
+<dd>
+            
+<code>
+              qftest -batch <a href="#arg_shutdown" shape="rect"><code>-shutdown &lt;ID&gt;</code></a> 4711
+            </code>
+          
+</dd>
+
+          
+<dt>Pause the current test-run on the local system</dt>
+          
+<dd>
+            
+<code>
+              qftest -batch <a href="#arg_interruptrunninginstances" shape="rect"><code>-interrupt-running-instances</code></a> [<a href="#arg_timeout" shape="rect"><code>-timeout &lt;milliseconds&gt;</code></a>]
+            </code>
+          
+</dd>
+
+          
+<dt>Compress images in an existing test-suite</dt>
+          
+<dd>
+            
+<code>
+              qftest -batch <a href="#arg_compress" shape="rect"><code>-compress</code></a> &lt;suite&gt;+
+            </code>
+          
+</dd>
+
+          
+<dt>Get help</dt>
+          
+<dd>
+            
+<code>
+              qftest -batch <a href="#arg_help" shape="rect"><code>-help</code></a>
+            </code>
+          
+</dd>
+        
+</dl>
+      
+
+      
+      
+
+      
+<a name="sec_commandline"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_commandline">40.2</a></span>
+</div>
+<a href="contents.html#toc_sec_commandline">Command line arguments</a>
+</h4>
+        
+<p>
+          Command line arguments for QF-Test fall in three categories. They
+          can be mixed freely.
+        </p>
+        
+
+        
+<a name="sec_N158748"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N158748">40.2.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N158748">Arguments for the starter script</a>
+</h5>
+          
+<p>
+            These arguments are evaluated directly by the
+            <code>qftest</code> shell script or executable and override
+            settings determined during installation. On Unix these settings
+            are stored in the file <code>launcher.cfg</code> in QF-Test's system
+            directory, on Windows the file is called <code>launcherwin.cfg</code>.
+          </p>
+          
+<dl>
+            
+<a name="arg_batch"></a>
+<dt id="arg_batch">
+<code>-batch</code>
+</dt>
+            
+<dd>
+              Run QF-Test in batch mode. This causes QF-Test to load and execute a
+              test-suite directly and finish with an exit code that represents
+              the result of the test run.
+            </dd>
+
+            
+<a name="arg_dbg"></a>
+<dt id="arg_dbg">
+<code>-dbg</code>
+</dt>
+            
+<dd>
+              Turn on debugging output for the starter script. The same effect is achieved by
+              setting the environment variable <code>QFTEST_DEBUG</code> to a non-empty value. On
+              Windows this causes QF-Test to open a console window to display the output that would
+              otherwise be invisible unless the argument <a href="#arg_noconsole" shape="rect"><code>-noconsole</code></a> is also given. This
+              also turns on debugging output for the <code>qfclient</code> and <code>java</code>
+              helper programs when using the old connection mechanism (see <a href="tech_startsut.html#sec_runningyourapp">chapter 42</a>).
+            </dd>
+
+            
+<a name="arg_java"></a>
+<dt id="arg_java">
+<code>-java &lt;executable&gt;</code>
+</dt>
+            
+<dd>
+              The Java executable used to run QF-Test. The default is
+              <code>java</code> on Unix and <code>javaw.exe</code> on Windows,
+              unless a different value was set during installation.
+            </dd>
+
+            
+<a name="arg_noconsole"></a>
+<dt id="arg_noconsole">
+<code>-noconsole</code> (Windows only)</dt>
+            
+<dd>
+              On Windows this argument suppresses the console window that would otherwise be
+              opened in case <a href="#arg_dbg" shape="rect"><code>-dbg</code></a> is specified.
+            </dd>
+          
+</dl>
+        
+
+        
+        
+
+        
+<a name="sec_N158837"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N158837">40.2.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N158837">Arguments for the Java VM</a>
+</h5>
+          
+<p>
+            You can pass arguments to the Java VM through the starter script
+            by prepending them with <code>-J</code>,
+            e.g. <code>-J-Duser.language=en</code> to set a system
+            property. To set the classpath, prepend <code>-J</code> only to
+            the <code>-cp</code> or <code>-classpath</code> argument, not to
+            the actual value, e.g.  <code>-J-classpath
+            myclasses.jar</code>. When setting the classpath this way, QF-Test's
+            own jar archives need not to be taken into account.
+          </p>
+        
+
+        
+        
+
+        
+<a name="sec_N158869"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N158869">40.2.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N158869">Arguments for QF-Test</a>
+</h5>
+          
+<p>
+            The rest of the arguments are handled by QF-Test itself when it is
+            executed by the Java virtual machine. These arguments can also
+            be placed in a file using the syntax
+            <code>&lt;name&gt;=&lt;value&gt;</code> for arguments with
+            parameters or <code>&lt;name&gt;=true</code> or
+            <code>&lt;name&gt;=false</code> to turn a simple argument on or
+            off. By default this file is called <code>qftest.options</code>,
+            located in the <code>bin</code> directory of QF-Test and used only for internal logging
+            purposes. If you
+            change anything in this file, you can move it to QF-Test's system
+            directory so your changes will still apply after
+            upgrading. Alternatively you can use the <a href="#arg_options" shape="rect"><code>-options &lt;file&gt;</code></a> argument
+            to specify a different file. Arguments given on the command line
+            override arguments from an option file except for those which can
+            be given multiple times. In the latter case the arguments are
+            merged.
+          </p>
+          
+<dl>
+            
+<a name="arg_allowkilling"></a>
+<dt id="arg_allowkilling">
+<code>-allowkilling</code>
+</dt>
+            
+<dd>
+	      Deprecated, use <code>-allow-shutdown</code> without shutdown ID instead.
+            </dd>
+            
+<a name="arg_allowshutdown"></a>
+<dt id="arg_allowshutdown">
+<code>-allow-shutdown [&lt;shutdown ID&gt;]</code>
+</dt>
+            
+<dd>
+              Explicitly specifies that this QF-Test instance can be cleanly terminated via a batch call with the
+              <a href="#arg_shutdown" shape="rect"><code>-shutdown &lt;ID&gt;</code></a> argument. An optional string argument can be provided as shutdown ID which allows
+              selective process termination without knowing the process ID. If <a href="#arg_allowshutdown" shape="rect"><code>-allow-shutdown [&lt;shutdown ID&gt;]</code></a> has not been
+              specified on the command line, a running QF-Test process can only be terminated cleanly by means of the
+              process ID. The argument <code>-allow-shutdown false</code> prohibits all clean termination of the QF-Test
+              instance, even if <a href="#arg_shutdown" shape="rect"><code>-shutdown &lt;ID&gt;</code></a> is used with the correct process ID.
+            </dd>
+            
+<a name="arg_analyze"></a>
+<dt id="arg_analyze">
+<code>-analyze</code> (batch mode only)</dt>
+            
+<dd>
+              Run the static validation of test-suites.
+              Analyzing results are stored to a given file.
+            </dd>
+
+            
+<a name="arg_analyzeTarget"></a>
+<dt id="arg_analyzeTarget">
+<code>-analyze-target &lt;directory&gt;</code> (batch mode only)</dt>
+            
+<dd>
+               The target folder, where the result file should be created.
+            </dd>
+
+            
+<a name="arg_analyzeReferences"></a>
+<dt id="arg_analyzeReferences">
+<code>-analyze-references</code> (batch mode only)</dt>
+            
+<dd>
+              Switch for analyzing references the given test-suite.
+            </dd>
+
+            
+<a name="arg_analyzeDuplicates"></a>
+<dt id="arg_analyzeDuplicates">
+<code>-analyze-duplicates</code> (batch mode only)</dt>
+            
+<dd>
+              Switch for analyzing duplicates of the given test-suite.
+            </dd>
+
+            
+<a name="arg_analyzeInvalidChar"></a>
+<dt id="arg_analyzeInvalidChar">
+<code>-analyze-invalidchar</code> (batch mode only)</dt>
+            
+<dd>
+              Checks the given test-suite for invalid characters in node names.
+            </dd>
+
+
+            
+<a name="arg_analyzeEmptyNodes"></a>
+<dt id="arg_analyzeEmptyNodes">
+<code>-analyze-emptynodes</code> (batch mode only)</dt>
+            
+<dd>
+              Checks the given test-suite for empty nodes.
+            </dd>
+
+            
+<a name="arg_analyzeComponents"></a>
+<dt id="arg_analyzeComponents">
+<code>-analyze-components</code> (batch mode only)</dt>
+            
+<dd>
+              Switch for analyzing components of the given test-suite.
+            </dd>
+
+             
+<a name="arg_analyzeDependencies"></a>
+<dt id="arg_analyzeDependencies">
+<code>-analyze-dependencies</code> (batch mode only)</dt>
+            
+<dd>
+              Switch for analyzing dependency references of the given test-suite.
+            </dd>
+
+            
+<a name="arg_analyzeProcedures"></a>
+<dt id="arg_analyzeProcedures">
+<code>-analyze-procedures</code> (batch mode only)</dt>
+            
+<dd>
+              Switch for analyzing procedure calls of the given test-suite.
+            </dd>
+
+            
+<a name="arg_analyzeTests"></a>
+<dt id="arg_analyzeTests">
+<code>-analyze-tests</code> (batch mode only)</dt>
+            
+<dd>
+              Switch for analyzing test calls of the given test-suite.
+            </dd>
+
+            
+<a name="arg_analyzePackages"></a>
+<dt id="arg_analyzePackages">
+<code>-analyze-packages</code> (batch mode only)</dt>
+            
+<dd>
+              Switch for analyzing packages of the given test-suite.
+            </dd>
+
+            
+<a name="arg_AnalyzeUnusedCallables"></a>
+<dt id="arg_AnalyzeUnusedCallables">
+<code>-remove-unused-callables</code> (batch mode only)</dt>
+            
+<dd>
+               Switch to remove unused callable nodes.
+            </dd>
+
+            
+<a name="arg_AnalyzeUnusedComponents"></a>
+<dt id="arg_AnalyzeUnusedComponents">
+<code>-remove-unused-components</code> (batch mode only)</dt>
+            
+<dd>
+               Switch to remove unused components.
+            </dd>
+
+            
+<a name="arg_analyzeTransitive"></a>
+<dt id="arg_analyzeTransitive">
+<code>-analyze-transitive</code> (batch mode only)</dt>
+            
+<dd>
+              Switch for analyzing references and calls transitively,
+              i.e. follow the calls and analyze its content also.
+            </dd>
+
+            
+<a name="arg_analyzeFollowIncludes"></a>
+<dt id="arg_analyzeFollowIncludes">
+<code>-analyze-followincludes</code> (batch mode only)</dt>
+            
+<dd>
+              Switch for analyzing all included test-suites of the given test-suite.
+            </dd>
+
+            
+<a name="arg_calldaemon"></a>
+<dt id="arg_calldaemon">
+<code>-calldaemon</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Connect to a running QF-Test daemon to execute a test-case.
+            </dd>
+
+            
+<a name="arg_cleanup"></a>
+<dt id="arg_cleanup">
+<code>-cleanup</code>
+              (calldaemon mode only)</dt>
+            
+<dd>
+              With this argument all TestRunDaemons belonging to a daemon are cleaned up and
+              all clients killed before running the test.
+            </dd>
+
+            
+<a name="arg_clearglobals"></a>
+<dt id="arg_clearglobals">
+<code>-clearglobals</code>
+              (batch mode and calldaemon mode only)</dt>
+            
+<dd>
+              If more than one test-suite is specified for batch execution, clear global variables
+              and resources before the execution of each test-suite. Can also be used in calldaemon mode to clear
+	      globals before assigning variables from the command line and starting the test and, if used in
+	      combination with <a href="#arg_stopclean" shape="rect"><code>-stopclean</code></a>, to clear globals after the test.
+            </dd>
+
+            
+<a name="arg_compact"></a>
+<dt id="arg_compact">
+<code>-compact</code> (batch mode only)</dt>
+            
+<dd>
+              Create a compact run-log which retains only those branches and nodes that contain
+              warnings, errors, exceptions or other information that is relevant to the report.
+	      This is equivalent to activating the option <a href="opt_log.html#opt_compactlog">Create compact run-log</a> in interactive mode.
+	      Ignored if log file creation is suppressed with <a href="#arg_nolog" shape="rect"><code>-nolog</code></a>.
+            </dd>
+
+            
+<a name="arg_compress"></a>
+<dt id="arg_compress">
+<code>-compress</code> (batch mode only)</dt>
+            
+<dd>
+             Loss-free compresses the images in an existing test-suite.
+            </dd>
+
+            
+<a name="arg_daemon"></a>
+<dt id="arg_daemon">
+<code>-daemon</code>
+</dt>
+            
+<dd>
+              Run QF-Test in daemon mode. Further information is provided in <a href="tech_daemon.html#sec_daemon">chapter 51</a>.
+            </dd>
+
+            
+<a name="arg_daemonhost"></a>
+<dt id="arg_daemonhost">
+<code>-daemonhost &lt;host&gt;</code>
+              (daemon or calldaemon mode only)</dt>
+            
+<dd>
+              In calldaemon mode, specify the host where to locate the QF-Test daemon. The default is
+              localhost. When starting a daemon, either in interactive or in batch mode, this
+              parameter defines the hostname or IP address that daemon objects use at RMI level.
+              The default in this case is chosen by Java, typically the IP address of the primary
+              local network interface.
+            </dd>
+
+            
+<a name="arg_daemonport"></a>
+<dt id="arg_daemonport">
+<code>-daemonport &lt;port&gt;</code>
+</dt>
+            
+<dd>
+              Specify the registry port for the QF-Test daemon to listen on and to connect to
+              respectively. The default is 3543 or the port defined with <a href="#arg_port" shape="rect"><code>-port &lt;number&gt;</code></a>.
+            </dd>
+
+            
+<a name="arg_daemonrmiport"></a>
+<dt id="arg_daemonrmiport">
+<code>-daemonrmiport &lt;port&gt;</code>
+</dt>
+            
+<dd>
+              Specify the port that the QF-Test daemon should use for RMI communication. Useful only
+              when running the daemon behind a firewall. When running unprotected without SSL (see
+              <a href="tech_daemon_security.html#sec_daemon_security">section 51.3</a>) this can be identical to the daemon port
+              specified with <a href="#arg_daemonport" shape="rect"><code>-daemonport &lt;port&gt;</code></a>. If using SSL, two different ports are required.
+            </dd>
+
+            
+<a name="arg_dontkillprocesses"></a>
+<dt id="arg_dontkillprocesses">
+<code>-dontkillprocesses</code>
+              (batch mode only)</dt>
+            
+<dd>
+              When finishing batch execution, don't explicitly kill processes started by QF-Test as
+              part of the tests. However, whether or not a sub-process of QF-Test survives QF-Test's
+              exit is system-dependent.
+            </dd>
+
+            
+<a name="arg_engine"></a>
+<dt id="arg_engine">
+<code>-engine &lt;engine&gt;</code>
+</dt>
+            
+<dd>
+              Specify which engine license(s) to use. This option is only useful in case the QF-Test
+              license contains a mix of GUI engine(s) with different numbers of engine licenses.
+              In that case it may be necessary to specify the engine license(s) to use in order to
+              prevent license conflicts with colleagues using the same license. Possible values
+              are "all" to use all supported licenses, "ask" to bring up a dialog for engine
+              selection or any combination of "awt" for AWT/Swing, "fx" for JavaFX, "swt" for SWT or "web" for Web,
+              e.g. "awt,web". This is explained in more detail in <a href="opt_general.html#sec_opt_license">subsection 37.1.7</a>.
+            </dd>
+
+            
+<a name="arg_exitcodeignoreexception"></a>
+<dt id="arg_exitcodeignoreexception">
+<code>-exitcode-ignore-exception</code>
+              (batch and calldaemon mode)</dt>
+            
+<dd>
+              For exit code calculation exceptions, errors and warnings are ignored. This means if
+              exceptions, errors or warnings occurred during a test-run the exit code will be 0. This option
+              is helpful when integrating QF-Test with build tools that rate a build as failed
+              dependent on the the exit code.
+            </dd>
+
+            
+<a name="arg_exitcodeignoreerror"></a>
+<dt id="arg_exitcodeignoreerror">
+<code>-exitcode-ignore-error</code>
+               (batch and calldaemon mode)</dt>
+            
+<dd>
+              For exit code calculation errors and warnings are ignored. This means if just
+              errors and warnings occurred during a test-run the exit code will be 0. This option
+              is helpful when integrating QF-Test with build tools that rate a build as failed
+              dependent on the the exit code.
+            </dd>
+
+            
+<a name="arg_exitcodeignorewarning"></a>
+<dt id="arg_exitcodeignorewarning">
+<code>-exitcode-ignore-warning</code>
+               (batch and calldaemon mode)</dt>
+            
+<dd>
+              For exit code calculation warnings are ignored. This means if just
+              warnings occurred during a test-run the exit code will be 0. This option
+              is helpful when integrating QF-Test with build tools that rate a build as failed
+              dependent on the the exit code.
+            </dd>
+
+            
+<a name="arg_gendoc"></a>
+<dt id="arg_gendoc">
+<code>-gendoc</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Tell QF-Test that this batch run serves to create test documentation from test-suites.
+            </dd>
+
+            
+<a name="arg_genreport"></a>
+<dt id="arg_genreport">
+<code>-genreport</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Tell QF-Test that this batch run serves to create a report from run-logs.
+            </dd>
+
+            
+<a name="arg_groovydir"></a>
+<dt id="arg_groovydir">
+<code>-groovydir &lt;directory&gt;</code>
+</dt>
+            
+<dd>
+              This argument overrides the default location of the directory
+              for additional Groovy modules. The default directory called
+              <code>groovy</code> is located under QF-Test's system directory.
+            </dd>
+
+            
+<a name="arg_help"></a>
+<dt id="arg_help">
+<code>-help</code>
+</dt>
+            
+<dd>
+              Show help about available command line arguments.
+            </dd>
+
+            
+<a name="arg_import"></a>
+<dt id="arg_import">
+<code>-import</code> (batch mode only)</dt>
+            
+<dd>
+              Import a given test-suite into another one.
+              This mode can be used to merge two test-suites.
+            </dd>
+
+            
+<a name="arg_importFrom"></a>
+<dt id="arg_importFrom">
+<code>-import-from &lt;test-suite&gt;</code> (batch mode only)</dt>
+            
+<dd>
+               The source test-suite, which should be imported into another one.
+            </dd>
+
+            
+<a name="arg_importInto"></a>
+<dt id="arg_importInto">
+<code>-import-into &lt;test-suite&gt;</code> (batch mode only)</dt>
+            
+<dd>
+              The target tests-suite for importing.
+            </dd>
+
+
+            
+<a name="arg_importComponents"></a>
+<dt id="arg_importComponents">
+<code>-import-components</code> (batch mode only)</dt>
+            
+<dd>
+              Switch for merging components of two given test-suites.
+            </dd>
+
+            
+<a name="arg_importProcedures"></a>
+<dt id="arg_importProcedures">
+<code>-import-procedures</code> (batch mode only)</dt>
+            
+<dd>
+              Switch for merging packages and procedures of two given test-suites.
+            </dd>
+
+            
+<a name="arg_importTests"></a>
+<dt id="arg_importTests">
+<code>-import-tests</code> (batch mode only)</dt>
+            
+<dd>
+              Switch for merging test-cases and test-sets of two given test-suites.
+            </dd>
+
+            
+<a name="arg_interruptrunninginstances"></a>
+<dt id="arg_interruptrunninginstances">
+<code>-interrupt-running-instances</code> (batch mode only)</dt>
+            
+<dd>
+              Interrupt a test-run on the current system and brings up a dialog which allows to pause or to interrupt the current test-run.
+            </dd>
+
+            
+<a name="arg_javascriptdir"></a>
+<dt id="arg_javascriptdir">
+<code>-javascriptdir &lt;directory&gt;</code>
+</dt>
+            
+<dd>
+              This argument overrides the default location of the directory
+              for additional JavaScript modules. The default directory called
+              <code>javascript</code> is located under QF-Test's system directory.
+            </dd>
+
+            
+<a name="arg_jythondir"></a>
+<dt id="arg_jythondir">
+<code>-jythondir &lt;directory&gt;</code>
+</dt>
+            
+<dd>
+              This argument overrides the default location of the directory
+              for additional Jython modules. The default directory called
+              <code>jython</code> is located under QF-Test's system directory.
+            </dd>
+
+            
+<a name="arg_jythonport"></a>
+<dt id="arg_jythonport">
+<code>-jythonport &lt;number&gt;</code>
+</dt>
+            
+<dd>
+              Tell the embedded Jython interpreter to listen for TCP
+              connections at the specified port. You can then use
+              <code>telnet</code> to connect to that port and get an
+              interactive Jython command line.
+            </dd>
+
+            
+<a name="arg_keybindings"></a>
+<dt id="arg_keybindings">
+<code>-keybindings &lt;value&gt;</code> (interactive mode only)</dt>
+            
+<dd>
+              Currently used only for macOS to switch between the new default Mac bindings (value system) or the old,
+              Windows oriented QF-Test bindings (value classic).
+            </dd>
+            
+<a name="arg_keystore"></a>
+<dt id="arg_keystore">
+<code>-keystore &lt;keystore file&gt;</code>
+</dt>
+
+            
+<dd>
+              An alternative keystore file to use for securing daemon communication with SSL. See
+              <a href="tech_daemon_security.html#sec_daemon_security">section 51.3</a> for details. To disable SSL by specifying no
+              keystore, use this argument in the form <code>-keystore=</code>.
+            </dd>
+
+            
+<a name="arg_keypass"></a>
+<dt id="arg_keypass">
+<code>-keypass &lt;keystore password&gt;</code>
+</dt>
+            
+<dd>
+              The password for the keystore file used for securing daemon communication with SSL.
+              See <a href="tech_daemon_security.html#sec_daemon_security">section 51.3</a> for details.
+            </dd>
+
+            
+<a name="arg_killrunninginstances"></a>
+<dt id="arg_killrunninginstances">
+<code>-kill-kunning-instances</code>
+</dt>
+            
+<dd>
+	      Deprecated, use <code>-shutdown all</code> instead.
+            </dd>
+
+            
+<a name="arg_libpath"></a>
+<dt id="arg_libpath">
+<code>-libpath &lt;path&gt;</code>
+</dt>
+            
+<dd>
+              Override the library path option (<a href="opt_general.html#opt_libpath">Directories holding test-suite libraries</a>). The directories of the library path should
+              be separated by the standard path separator character for the
+              system, i.e. ';' for Windows and ':' for Unix. QF-Test's
+              <code>include</code> directory will automatically be appended to
+              the path.
+            </dd>
+
+            
+<a name="arg_license"></a>
+<dt id="arg_license">
+<code>-license &lt;file&gt;</code>
+</dt>
+            
+<dd>
+              Set the location of the license file (see <a href="user_installation.html#usec_licensefile">section 1.5</a>).
+            </dd>
+
+            
+<a name="arg_license.waitfor"></a>
+<dt id="arg_license.waitfor">
+<code>-license-waitfor &lt;seconds&gt;</code>;</dt>
+            
+<dd>
+              Specify an interval in seconds to wait during QF-Test startup in case a license is not immediately
+              available. This timeout is also in effect when renewing a lease from the QF-Test license server and the
+              server is temporarily unavailable.
+            </dd>
+
+            
+<a name="arg_logdir"></a>
+<dt id="arg_logdir">
+<code>-logdir &lt;directory&gt;</code>
+</dt>
+            
+<dd>
+              This argument overrides the default location of the directory into which
+              QF-Test saves its internal log files. The default log directory is called
+              <code>log</code> and located under QF-Test's system directory.
+            </dd>
+
+            
+<a name="arg_MergeRunlog"></a>
+<dt id="arg_MergeRunlog">
+<code>-mergelogs</code> (batch mode only)</dt>
+            
+<dd>
+                Tell QF-Test that this batch run serves to merge several run-logs.
+                You can find a detailed description at <a href="user_debugging.html#usec_mergerunlogs">subsection 7.1.8</a>.
+            </dd>
+
+            
+<a name="arg_MergeRunlogMasterLog"></a>
+<dt id="arg_MergeRunlogMasterLog">
+<code>-mergelogs-masterlog [&lt;file&gt;]</code> (batch mode only)</dt>
+            
+<dd>
+                The path to the run-log which will act as master run-log for log mering, if
+                the run-log should be patched with newer results.
+                Use this switch, if you want to replace individual test-cases in that run-log with
+                results from a re-run.
+            </dd>
+
+            
+<a name="arg_MergeRunlogMode"></a>
+<dt id="arg_MergeRunlogMode">
+<code>-mergelogs-mode [&lt;mode&gt;]</code> (batch mode only)</dt>
+            
+<dd>
+                Specifies the mode how run-logs should be merged based in the main run-log, specified with
+                the <a href="#arg_MergeRunlogMasterLog" shape="rect"><code>-mergelogs-masterlog [&lt;file&gt;]</code></a> switch.
+                You can specify the modes "replace", "merge" and "append".
+                "replace" takes the new results and overwrites the existing test-cases from the main run-log.
+                "merge" adds the new test-cases to main run-log and "append" simply adds the new run-log to the
+                main run-log.
+            </dd>
+
+            
+<a name="arg_MergeRunlogResultLog"></a>
+<dt id="arg_MergeRunlogResultLog">
+<code>-mergelogs-resultlog [&lt;file&gt;]</code> (batch mode only)</dt>
+            
+<dd>
+                The path to the run-log which will contain the merged results of the master run-log and
+                the new run-logs with updates. So, this will be the new and clean run-log file.
+            </dd>
+
+            
+<a name="arg_MergeRunlogUseFqn"></a>
+<dt id="arg_MergeRunlogUseFqn">
+<code>-mergelogs-usefqn</code> (batch mode only)</dt>
+            
+<dd>
+                Use that switch, if the full qualified name of test-cases should be used in case
+                of merging run-logs. Otherwise only the name of test-cases will be used without test-set
+                names.
+            </dd>
+
+            
+<a name="arg_nolog"></a>
+<dt id="arg_nolog">
+<code>-nolog</code> (batch mode only)</dt>
+            
+<dd>
+              Suppress the automatic creation of a run-log. If any of <a href="#arg_runlog" shape="rect"><code>-runlog [&lt;file&gt;]</code></a>,
+              <a href="#arg_report" shape="rect"><code>-report &lt;directory&gt;</code></a>, <a href="#arg_report.html" shape="rect"><code>-report-html &lt;directory&gt;</code></a>, <a href="#arg_report.xml" shape="rect"><code>-report-xml &lt;directory&gt;</code></a> or <a href="#arg_report.junit" shape="rect"><code>-report-junit &lt;directory&gt;</code></a>
+              is given, this argument is ignored. This option is
+              retained for backwards compatibility only. To keep memory use manageable, split
+              run-logs should be used instead (see <a href="#arg_splitlog" shape="rect"><code>-splitlog</code></a>).
+            </dd>
+
+            
+<a name="arg_nomessagewindow"></a>
+<dt id="arg_nomessagewindow">
+<code>-nomessagewindow</code> (batch mode only)</dt>
+            
+<dd>
+              In case of a fatal error in batch mode QF-Test prints an error message to the console
+              and for improved visibility also brings up an error dialog for about 30 seconds.
+              That dialog can be suppressed with the help of this argument. Batch commands that
+              don't require an actual display, i.e. all batch commands that do not execute tests,
+              will run in AWT headless mode if this argument is specified.
+            </dd>
+
+            
+<a name="arg_noupdatecheck"></a>
+<dt id="arg_noupdatecheck">
+<code>-noupdatecheck</code>
+</dt>
+            
+<dd>
+              Using this argument disables the automatic update check.
+              This overrides the update options (see <a href="opt_general.html#sec_opt_update">subsection 37.1.8</a>).
+            </dd>
+
+            
+<a name="arg_option"></a>
+<dt id="arg_option">
+<code>-option &lt;name&gt;=&lt;value&gt;</code>
+</dt>
+            
+<dd>
+              Specifies options. <code>-option &lt;name&gt;=&lt;value&gt;</code>
+              sets a value of the option with a name
+              <code>&lt;name&gt;</code> to <code>&lt;value&gt;</code>.
+              This argument can be given more than once to set several options.
+            </dd>
+
+            
+<a name="arg_options"></a>
+<dt id="arg_options">
+<code>-options &lt;file&gt;</code>
+</dt>
+            
+<dd>
+              Override the location of the file used to specify additional
+              command line arguments. This argument can be given more than once
+              to use several sources of command line arguments.
+            </dd>
+
+            
+<a name="arg_ping"></a>
+<dt id="arg_ping">
+<code>-ping</code>
+              (calldaemon mode only)</dt>
+            
+<dd>
+              Use this option, if you want to check whether a daemon is up and running.
+            </dd>
+
+            
+<a name="arg_pkgdoc"></a>
+<dt id="arg_pkgdoc">
+<code>-pkgdoc &lt;directory&gt;</code> (batch mode only)</dt>
+            
+<dd>
+              With this argument QF-Test creates both HTML and XML pkgdoc documentation. If no
+              directory is given, it is created from the basename of the suite.
+            </dd>
+
+            
+<a name="arg_pkgdoc.dependencies"></a>
+<dt id="arg_pkgdoc.dependencies">
+<code>-pkgdoc-dependencies</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to list dependencies when creating the pkgdoc documentation.
+              Default is true, use <code>-pkgdoc-dependencies=false</code> to disable.
+            </dd>
+
+            
+<a name="arg_pkgdoc.doctags"></a>
+<dt id="arg_pkgdoc.doctags">
+<code>-pkgdoc-doctags</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to use the QFS doctag extensions when creating the pkgdoc documentation.
+              Default is true, use <code>-pkgdoc-doctags=false</code> to disable.
+            </dd>
+
+            
+<a name="arg_pkgdoc.html"></a>
+<dt id="arg_pkgdoc.html">
+<code>-pkgdoc-html &lt;directory&gt;</code> (batch mode only)</dt>
+            
+<dd>
+              With this argument QF-Test creates HTML pkgdoc documentation. If no directory is given,
+              it is created from the basename of the suite.
+            </dd>
+
+            
+<a name="arg_pkgdoc.includelocal"></a>
+<dt id="arg_pkgdoc.includelocal">
+<code>-pkgdoc-includelocal</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to include local packages and procedures (those whose names begin with an
+              '_'). Default is false.
+            </dd>
+
+            
+<a name="arg_pkgdoc.nodeicons"></a>
+<dt id="arg_pkgdoc.nodeicons">
+<code>-pkgdoc-nodeicons</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to show icons for nodes in the pkgdoc documentation. Default is true, use
+              <code>-pkgdoc-nodeicons=false</code> to disable.
+            </dd>
+
+            
+<a name="arg_pkgdoc.passhtml"></a>
+<dt id="arg_pkgdoc.passhtml">
+<code>-pkgdoc-passhtml</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to pass HTML tags in comments through to the HTML pkgdoc.
+              Default is true, use <code>-pkgdoc-passhtml=false</code> to disable.
+            </dd>
+
+            
+<a name="arg_pkgdoc.sortpackages"></a>
+<dt id="arg_pkgdoc.sortpackages">
+<code>-pkgdoc-sortpackages</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to sort packages alphabetically.
+              Default is true, use <code>-pkgdoc-sortpackages=false</code> to disable.
+            </dd>
+
+            
+<a name="arg_pkgdoc.sortprocedures"></a>
+<dt id="arg_pkgdoc.sortprocedures">
+<code>-pkgdoc-sortprocedures</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to sort procedures alphabetically.
+              Default is true, use <code>-pkgdoc-sortprocedures=false</code> to disable.
+            </dd>
+
+            
+<a name="arg_pkgdoc.splitparagraph"></a>
+<dt id="arg_pkgdoc.splitparagraph">
+<code>-pkgdoc-splitparagraph</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Specifies whether comments are splitted into paragraphs by using empty lines.
+              Default is true, with <code>-pkgdoc-splitparagraph=false</code> it is
+              possible to disable this option.
+            </dd>
+
+            
+<a name="arg_pkgdoc.stylesheet"></a>
+<dt id="arg_pkgdoc.stylesheet">
+<code>-pkgdoc-stylesheet &lt;file&gt;</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Optional XSLT Stylesheet for the second step of the transformation.
+            </dd>
+
+            
+<a name="arg_pkgdoc.xml"></a>
+<dt id="arg_pkgdoc.xml">
+<code>-pkgdoc-xml &lt;directory&gt;</code> (batch mode only)</dt>
+            
+<dd>
+              With this argument QF-Test creates XML pkgdoc documentation. If no directory is given,
+              it is created from the basename of the suite.
+            </dd>
+
+            
+<a name="arg_plugindir"></a>
+<dt id="arg_plugindir">
+<code>-plugindir &lt;directory&gt;</code>
+</dt>
+            
+<dd>
+              This argument overrides the default location of the directory
+              for plugins, jar files that should be made accessible to
+              scripts. The default directory called
+              <code>plugin</code> is located under QF-Test's system directory.
+              See <a href="tech_scripting.html#sec_plugindir">section 46.2</a> for more
+              information about plugins.
+            </dd>
+
+            
+<a name="arg_port"></a>
+<dt id="arg_port">
+<code>-port &lt;number&gt;</code>
+</dt>
+            
+<dd>
+              The TCP port on which QF-Test communicates with the SUT.  By
+              default QF-Test uses an arbitrary dynamic port where it creates its
+              own RMI registry. A specific port should only be requested if
+              it must be hard-coded when starting the SUT.
+            </dd>
+
+            
+<a name="arg_report"></a>
+<dt id="arg_report">
+<code>-report &lt;directory&gt;</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Create a combined XML/HTML report. The directory name may contain placeholders as
+              explained in <a href="#sec_placeholders">subsection 40.2.4</a>.
+            </dd>
+
+            
+<a name="arg_report.checks"></a>
+<dt id="arg_report.checks">
+<code>-report-checks</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to list checks in the report. Default is false.
+            </dd>
+
+            
+<a name="arg_report.customdir"></a>
+<dt id="arg_report.customdir">
+<code>-report-customdir &lt;directory&gt;</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Directory containing css stylesheets and icons for custom reports.
+            </dd>
+
+            
+<a name="arg_report.doctags"></a>
+<dt id="arg_report.doctags">
+<code>-report-doctags</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to use the QFS doctag extensions when creating the report.
+              Default is true, use <code>-report-doctags=false</code> to disable.
+            </dd>
+
+            
+<a name="arg_report.errors"></a>
+<dt id="arg_report.errors">
+<code>-report-errors</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to list errors in the report. Default is true, use
+              <code>-report-errors=false</code> to disable.
+            </dd>
+
+            
+<a name="arg_report.exceptions"></a>
+<dt id="arg_report.exceptions">
+<code>-report-exceptions</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to list exceptions in the report. Default is true, use
+              <code>-report-exceptions=false</code> to disable.
+            </dd>
+
+            
+<a name="arg_report.html"></a>
+<dt id="arg_report.html">
+<code>-report-html &lt;directory&gt;</code> (batch mode only)</dt>
+            
+<dd>
+              Create an HTML report. The directory name may contain placeholders as explained in
+              <a href="#sec_placeholders">subsection 40.2.4</a>.
+            </dd>
+
+            
+<a name="arg_report.ignorenotimplemented"></a>
+<dt id="arg_report.ignorenotimplemented">
+<code>-report-ignorenotimplemented</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to ignore nodes that are not implemented in the report in which case the
+              legend and respective columns for not implemented tests are also not shown. Default
+              is false.
+            </dd>
+
+            
+<a name="arg_report.ignoreskipped"></a>
+<dt id="arg_report.ignoreskipped">
+<code>-report-ignoreskipped</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to ignore skipped nodes in the report in which case the legend and
+              respective columns for skipped tests are also not shown. Default is false.
+            </dd>
+
+            
+<a name="arg_report.junit"></a>
+<dt id="arg_report.junit">
+<code>-report-junit &lt;directory&gt;</code> (batch mode only)</dt>
+            
+<dd>
+              Create a report in JUnit XML format as understood by many Continuous Integration
+              Tools. The directory name may contain placeholders as explained in <a href="#sec_placeholders">subsection 40.2.4</a>.
+            </dd>
+
+            
+<a name="arg_report.name"></a>
+<dt id="arg_report.name">
+<code>-report-name &lt;name&gt;</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Specify the name for the report, meaning its identifier, not a file name. Default is
+              the runid. The name may contain placeholders as explained in <a href="#sec_placeholders">subsection 40.2.4</a>.
+            </dd>
+
+            
+<a name="arg_report.nodeicons"></a>
+<dt id="arg_report.nodeicons">
+<code>-report-nodeicons</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to show icons for nodes in the report. Default is true, use
+              <code>-report-nodeicons=false</code> to disable.
+            </dd>
+
+            
+<a name="arg_report.passhtml"></a>
+<dt id="arg_report.passhtml">
+<code>-report-passhtml</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to pass HTML tags in comments through to the HTML report.
+              Default is true, <code>-report-passhtml=false</code> to disable.
+            </dd>
+
+            
+<a name="arg_report.piechart"></a>
+<dt id="arg_report.piechart">
+<code>-report-piechart</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to create a pie chart in the top part of the HTML report.
+              Default is true, <code>-report-piechart=false</code> to disable.
+            </dd>
+
+            
+<a name="arg_report.includesuitename"></a>
+<dt id="arg_report.includesuitename">
+<code>-report-include-suitename</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to use the value of the <a href="rootnode.html#att_RootStep_name" shape="rect">'Name'</a> attribute of the
+              <a href="rootnode.html#step_RootStep" shape="rect">'Test-suite'</a> step as label of a testsuite in the HTML report.
+              Default is true, <code>-report-include-suitename=false</code> to use the file name instead.
+            </dd>
+
+            
+<a name="arg_report.scale-thumbnails"></a>
+<dt id="arg_report.scale-thumbnails">
+<code>-report-scale-thumbnails &lt;percent&gt;</code>
+              (batch mode only)</dt>
+            
+<dd>
+              How to scale thumbnail images for screenshots in the error listings
+              of the report, an integer value interpreted as percent of the original image size.
+              Default is 20.
+            </dd>
+
+            
+<a name="arg_report.teststeps"></a>
+<dt id="arg_report.teststeps">
+<code>-report-teststeps</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to list test-steps in the report. Default is true, use
+              <code>-report-teststeps=false</code> to disable.
+            </dd>
+
+            
+<a name="arg_report.thumbnails"></a>
+<dt id="arg_report.thumbnails">
+<code>-report-thumbnails</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to display thumbnail images for screenshots in the error listings
+              of the report. Default is false.
+            </dd>
+
+            
+<a name="arg_report.warnings"></a>
+<dt id="arg_report.warnings">
+<code>-report-warnings</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to show warning information in the report. Default is true.
+            </dd>
+
+            
+<a name="arg_report.xml"></a>
+<dt id="arg_report.xml">
+<code>-report-xml &lt;directory&gt;</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Create an XML report. The directory name may contain placeholders as explained in
+              <a href="#sec_placeholders">subsection 40.2.4</a>.
+            </dd>
+
+            
+<a name="arg_reuse"></a>
+<dt id="arg_reuse">
+<code>-reuse</code> (interactive mode only)</dt>
+            
+<dd>
+              This argument is used mainly when launching QF-Test from a desktop
+              icon or the Windows explorer through a file association. It
+              tells the newly started QF-Test instance to search for an already
+              running version of QF-Test and ask that to open the given file(s).
+              If another instance can be reused in that way, the newly started
+              program will terminate immediately and new windows for the
+              file(s) will be opened by the old instance.
+            </dd>
+
+            
+<a name="arg_run"></a>
+<dt id="arg_run">
+<code>-run</code> (interactive and batch mode)</dt>
+            
+<dd>
+              If this parameter is set for the interactive mode, it will directly start the specified test-suites or
+              tests after launching QF-Test.
+              Using it in batch mode explicitly tells QF-Test that this batch run is for actual test execution as opposed
+              to generating documentation or a report. As this is the default operation for batch
+              mode this argument can be omitted.
+            </dd>
+
+            
+<a name="arg_runid"></a>
+<dt id="arg_runid">
+<code>-runid &lt;ID&gt;</code>
+              (batch and calldaemon mode)</dt>
+            
+<dd>
+              Specify an ID for the test-run. The ID may contain placeholders as
+              explained in <a href="#sec_placeholders">subsection 40.2.4</a> and will itself serve as a
+              replacement for the placeholder <code>%i</code>/<code>+i</code>.
+            </dd>
+
+            
+<a name="arg_runlog"></a>
+<dt id="arg_runlog">
+<code>-runlog [&lt;file&gt;]</code>
+              (batch and calldaemon mode)</dt>
+            
+<dd>
+              Save the run-log in the given file. The optional filename may contain placeholders
+              as explained in <a href="#sec_placeholders">subsection 40.2.4</a>. If no filename is given, it is
+              composed of the basename of the suite and a timestamp. If missing, the extension
+              <code>.qrz</code> is added automatically and the run-log is saved compressed.
+              Otherwise the extension <code>.qrl</code> or <code>.qrz</code> determines
+              compression. Even without this argument a run-log is created unless suppressed with
+              <a href="#arg_nolog" shape="rect"><code>-nolog</code></a> or when a report is generated. The default value is
+              <code>%p%b.qrz</code>.
+              In calldaemon mode, a run-log will be stored only if a (local) filename is specified.
+            </dd>
+
+            
+<a name="arg_runlogdir"></a>
+<dt id="arg_runlogdir">
+<code>-runlogdir &lt;directory&gt;</code>
+</dt>
+            
+<dd>
+              In interactive mode this argument overrides the option <a href="opt_log.html#opt_recentlogdirectory">Directory for run-logs</a> at a special layer for command line arguments. If
+              specified, interactively changing the option has no effect whereas changing it at
+              script level is still possible. In batch mode this directory serves as the target
+              base directory for saving run-logs unless the filename of the run-logs specified
+              with <a href="#arg_runlog" shape="rect"><code>-runlog [&lt;file&gt;]</code></a> is an absolute path. If this argument is given and a report is
+              generated, the files in the report will be laid out according to the structure of
+              the run-logs relative to this directory. The directory name may contain placeholders
+              as explained in <a href="#sec_placeholders">subsection 40.2.4</a>.
+            </dd>
+
+            
+<a name="arg_runtime"></a>
+<dt id="arg_runtime">
+<code>-runtime</code>
+</dt>
+            
+<dd>
+              Use a runtime license only. In batch mode, QF-Test will normally use a runtime license
+              (or multiple runtime licenses if <a href="#arg_threads" shape="rect"><code>-threads &lt;number&gt;</code></a> is given). If not enough free
+              runtime licenses are available, full development licenses will be used instead
+              unless <code>-runtime</code> is given in which case no development license is used and QF-Test
+              will fail with an error message. In interactive mode, if <code>-runtime</code> is given, QF-Test
+              will use a runtime license instead of a full development license. In that mode, any
+              test-suite can be loaded and tests can be run interactively as usual, including
+              debugging support. Saving of test-suites will be disabled, however, though
+              test-suites can be modified for temporary experiments.
+            </dd>
+
+            
+<a name="arg_shell"></a>
+<dt id="arg_shell">
+<code>-shell &lt;executable&gt;</code>
+</dt>
+            
+<dd>
+              The shell to use when executing a <a href="processes.html#step_ShellClientStarter" shape="rect">'Execute shell command'</a>
+              node. Default for Unix is <code>/bin/sh</code>, for Windows
+              <code>COMMAND.COM</code> or <code>cmd.exe</code>.
+            </dd>
+
+            
+<a name="arg_shellarg"></a>
+<dt id="arg_shellarg">
+<code>-shellarg &lt;argument&gt;</code>
+</dt>
+            
+<dd>
+              The argument that causes the shell specified with <a href="#arg_shell" shape="rect"><code>-shell &lt;executable&gt;</code></a>
+              to execute the following argument and then exit. For Unix shells
+              this is typically <code>-c</code>, <code>COMMAND.COM</code> and
+              <code>cmd.exe</code> expect <code>/c</code>. If you have Unix
+              tools installed on Windows and specify <code>sh</code> or
+              <code>bash</code> as the shell to use, don't forget to change
+                <code>-shellarg &lt;argument&gt;</code> to <code>-c</code>.
+            </dd>
+
+            
+<a name="arg_shutdown"></a>
+<dt id="arg_shutdown">
+<code>-shutdown &lt;ID&gt;</code> (batch mode only)</dt>
+            
+<dd>
+              Cleanly terminates the QF-Test instance with the given process ID or shutdown ID on the local system, if
+              allowed (see <a href="#arg_allowshutdown" shape="rect"><code>-allow-shutdown [&lt;shutdown ID&gt;]</code></a>). In batch mode this means that a running test is stopped, connected
+              clients are terminated, the run-log is saved, and the QF-Test instance terminates with the exit code -12.
+              If QF-Test is running interactively, all open testsuites are closed without saving modifications. In
+              special cases this might be useful, especially if auto-save is configured in a meaningful way (see
+              <a href="opt_general.html#opt_autosaveinterval">Auto-save interval (s)</a>).
+
+              The special shutdown ID <code>all</code> terminates all running QF-Test processes that
+	      were started with the <a href="#arg_allowshutdown" shape="rect"><code>-allow-shutdown [&lt;shutdown ID&gt;]</code></a> argument to explicitly allow that.
+            </dd>
+
+            
+<a name="arg_serverhost"></a>
+<dt id="arg_serverhost">
+<code>-serverhost &lt;host&gt;</code>
+</dt>
+            
+<dd>
+              Set the host name or IP address for communication between QF-Test and the SUT. You may need to do this when
+              running QF-Test and the SUT on different machines or if you experience troubles with reverse name lookup.
+              The default is to use the loopback interface. To use the primary network interface of the local host,
+              specify <code>-serverhost=</code> with an empty value.
+            </dd>
+
+            
+            
+            
+            
+            
+            
+            
+
+            
+<a name="arg_sourcedir"></a>
+<dt id="arg_sourcedir">
+<code>-sourcedir &lt;directory&gt;</code>
+              (batch mode only)</dt>
+            
+<dd>
+              If this argument is given and a report is generated, the files in the report will be
+              laid out according to the structure of the test-suites relative to this directory
+              unless <a href="#arg_runlogdir" shape="rect"><code>-runlogdir &lt;directory&gt;</code></a> is also specified. In any case, the directory of a
+              test-suite listed in the report will only be listed if this argument is specified
+              and the test-suite is located below this directory.
+            </dd>
+
+            
+<a name="arg_splitlog"></a>
+<dt id="arg_splitlog">
+<code>-splitlog</code> (batch mode only)</dt>
+            
+<dd>
+              In batch mode split run-logs (see <a href="user_debugging.html#usec_splitlogs">subsection 7.1.5</a>) are enabled by
+              default and can be turned off via <code>-splitlog=false</code>. If <code>-splitlog</code> is
+              explicitly specified without parameter, the default extension for run-logs is
+              changed from <code>.qrz</code> to <code>.qzp</code> so as to create split run-logs
+              in ZIP format. The same can be achieved by specifying the name of the run-log
+              explicitly with the desired extension.
+            </dd>
+
+            
+<a name="arg_startclean"></a>
+<dt id="arg_startclean">
+<code>-startclean</code>
+              (calldaemon mode only)</dt>
+            
+<dd>
+              With this argument all contexts of the shared TestRunDaemon are cleaned up and released
+              before running the test.
+            </dd>
+
+            
+<a name="arg_startsut"></a>
+<dt id="arg_startsut">
+<code>-startsut</code>
+              (only for internal use)</dt>
+            
+<dd>
+              This argument is used to start a client application on a remote host. You should
+              not work with this argument directly. The standard library <code>qfs.qft</code> contains
+              a procedure <code>qfs.daemon.startRemoteSUT</code> which can be use for this
+              purpose.
+            </dd>
+
+            
+<a name="arg_stopclean"></a>
+<dt id="arg_stopclean">
+<code>-stopclean</code>
+              (calldaemon mode only)</dt>
+            
+<dd>
+              With this argument all contexts of the shared TestRunDaemon are cleaned up and released
+              after running the test.
+            </dd>
+
+            
+<a name="arg_stoprun"></a>
+<dt id="arg_stoprun">
+<code>-stoprun</code>
+              (calldaemon mode only)</dt>
+            
+<dd>
+              Stop a running test executed by the Daemon on the given host and port. This
+              argument can be combined with <a href="#arg_cleanup" shape="rect"><code>-cleanup</code></a> or <a href="#arg_stopclean" shape="rect"><code>-stopclean</code></a>.
+            </dd>
+
+            
+<a name="arg_suitedir"></a>
+<dt id="arg_suitedir">
+<code>-suitedir &lt;dir&gt;</code>
+              (calldaemon mode only)</dt>
+            
+<dd>
+              Specify the (remote) directory where the QF-Test Daemon looks for test-suites.
+              Use an absolute path when specifying the test to execute, if this argument
+              is not given.
+            </dd>
+
+            
+<a name="arg_suitesfile"></a>
+<dt id="arg_suitesfile">
+<code>-suitesfile &lt;file&gt;</code>
+              (interactive and batch mode)</dt>
+            
+<dd>
+             Specify a text file containing test-suites or test-cases to be executed. You should specify one
+             test-suite per line. Individual test-cases can be added as for the the <code>-test &lt;n&gt;|&lt;ID&gt;</code> argument. You can find
+             some samples in the table below.
+            <a name="table_40.1"></a><a name="table_40.1"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table align="center" cellspacing="0" cellpadding="5" border="1">
+              
+<tr>
+                
+<th rowspan="1" colspan="1">Entries in file</th>
+                <th rowspan="1" colspan="1">Description</th>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" valign="bottom" rowspan="1" colspan="1">
+                
+<table align="center" cellspacing="0" cellpadding="10" border="0" texvalign="b">
+                
+<tr>
+<td rowspan="1" colspan="1">path/suite1.qft</td>
+</tr>
+                
+<tr>
+<td rowspan="1" colspan="1">path/suite2.qft</td>
+</tr>
+                
+</table>
+                
+</td>
+                <td rowspan="1" colspan="1">Both test-suites will be executed.</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" valign="bottom" rowspan="1" colspan="1">
+                
+<table align="center" cellspacing="0" cellpadding="10" border="0" texvalign="b">
+                
+<tr>
+<td rowspan="1" colspan="1">path/suite1.qft</td>
+</tr>
+                
+<tr>
+<td rowspan="1" colspan="1">path/suite2.qft#id-tc1</td>
+</tr>
+                
+</table>
+                
+</td>
+                <td rowspan="1" colspan="1">
+<table align="center" cellspacing="0" cellpadding="10" border="0" texvalign="b">
+                     
+<tr>
+<td rowspan="1" colspan="1">Test-suite suite1.qft will be executed completely</td>
+</tr>
+                     
+<tr>
+<td rowspan="1" colspan="1">and test-case 'id-tc1' of suite2.qft will be executed.</td>
+</tr>
+                     
+</table>
+                     
+</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" valign="bottom" rowspan="1" colspan="1">
+                
+<table align="center" cellspacing="0" cellpadding="10" border="0" texvalign="b">
+                
+<tr>
+<td rowspan="1" colspan="1">path/suite1.qft</td>
+</tr>
+                
+<tr>
+<td rowspan="1" colspan="1">-test tc1</td>
+</tr>
+                
+<tr>
+<td rowspan="1" colspan="1">-test tc2</td>
+</tr>
+                
+</table>
+                
+</td>
+                <td rowspan="1" colspan="1">Test-cases tc1 and tc2 of suite1.qft will be executed.</td>
+              
+</tr>
+            
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;40.1</a>:&nbsp;&nbsp;Samples <code>-suitesfile &lt;file&gt;</code></td><td class="captionglue"></td>
+</tr>
+</table>
+            
+</dd>
+
+            
+<a name="arg_systemcfg"></a>
+<dt id="arg_systemcfg">
+<code>-systemcfg &lt;file&gt;</code>
+</dt>
+            
+<dd>
+              Set the location of the system configuration file (see <a href="user_installation.html#usec_configfile">section 1.6</a>).
+            </dd>
+
+            
+<a name="arg_systemdir"></a>
+<dt id="arg_systemdir">
+<code>-systemdir &lt;directory&gt;</code>
+</dt>
+            
+<dd>
+              Override the location of the directory holding the system configuration files (see <a href="user_installation.html#usec_configfile">section 1.6</a>) including optional plugins and scripting modules. If any of <a href="#arg_systemcfg" shape="rect"><code>-systemcfg &lt;file&gt;</code></a>,
+              <a href="#arg_plugindir" shape="rect"><code>-plugindir &lt;directory&gt;</code></a>, <a href="#arg_jythondir" shape="rect"><code>-jythondir &lt;directory&gt;</code></a>, <a href="#arg_groovydir" shape="rect"><code>-groovydir &lt;directory&gt;</code></a> or <a href="#arg_javascriptdir" shape="rect"><code>-javascriptdir &lt;directory&gt;</code></a> are also specified
+              they have precedence.
+            </dd>
+
+            
+<a name="arg_tempdir"></a>
+<dt id="arg_tempdir">
+<code>-tempdir &lt;directory&gt;</code> (interactive mode only)</dt>
+            
+<dd>
+              Can be used to specify a temporary directory which is needed on
+              Windows only for the context sensitive help system. By default
+              the values of the environment variables <code>TEMP</code> and
+              <code>TMP</code> are tried.
+            </dd>
+
+            
+<a name="arg_terminate"></a>
+<dt id="arg_terminate">
+<code>-terminate</code>
+              (calldaemon mode only)</dt>
+            
+<dd>
+              Use this option, if you want to terminate a running QF-Test daemon.
+            </dd>
+
+            
+<a name="arg_test"></a>
+<dt id="arg_test">
+<code>-test &lt;n&gt;|&lt;ID&gt;</code> (interactive and batch mode)</dt>
+            
+<dd>
+              Without this argument all the top-level tests of the suite
+              are executed one after the other. Using <code>-test
+              &lt;n&gt;|&lt;ID&gt;</code>, you can select specific tests. An
+              arbitrary node located anywhere in a test-suite can be accessed
+              by its <a href="sequences.html#att_TestCase_id" shape="rect">'QF-Test ID'</a>. <a href="sequences.html#step_TestCase" shape="rect">'Test-case'</a> or <a href="sequences.html#step_TestSet" shape="rect">'Test-set'</a> nodes can be
+              referenced also by their qualified name. Top-level tests
+              can also be selected by their index, the index
+              for the first test being 0. You can use this argument multiple
+              times, even for the same test.
+            </dd>
+
+            
+<a name="arg_testdoc"></a>
+<dt id="arg_testdoc">
+<code>-testdoc &lt;directory&gt;</code> (batch mode only)</dt>
+            
+<dd>
+              With this argument QF-Test creates both HTML and XML testdoc documentation. If no
+              directory is given, it is created from the basename of the suite.
+            </dd>
+
+            
+<a name="arg_testdoc.doctags"></a>
+<dt id="arg_testdoc.doctags">
+<code>-testdoc-doctags</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to use the QFS doctag extensions when creating the testdoc documentation.
+              Default is true, use <code>-testdoc-doctags=false</code> to disable.
+            </dd>
+
+            
+<a name="arg_testdoc.followcalls"></a>
+<dt id="arg_testdoc.followcalls">
+<code>-testdoc-followcalls</code>
+              (batch mode only)</dt>
+            
+<dd>
+              By default QF-Test ignores <a href="sequences.html#step_TestCall" shape="rect">'Test call'</a> nodes during testdoc creation. With this
+              argument the target 'Test-case', 'Test-set' or whole test-suite are processed as
+              if they were part of the original test-suite. Thus it is possible to create a
+              subset testdoc documentation by creating a dedicated test-suite with 'Test calls' to
+              the required parts.
+            </dd>
+
+            
+<a name="arg_testdoc.html"></a>
+<dt id="arg_testdoc.html">
+<code>-testdoc-html &lt;directory&gt;</code> (batch mode only)</dt>
+            
+<dd>
+              With this argument QF-Test creates HTML testdoc documentation. If no directory is
+              given, it is created from the basename of the suite.
+            </dd>
+
+            
+<a name="arg_testdoc.nodeicons"></a>
+<dt id="arg_testdoc.nodeicons">
+<code>-testdoc-nodeicons</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to show icons for nodes in the testdoc documentation. Default is true, use
+              <code>-testdoc-nodeicons=false</code> to disable.
+            </dd>
+
+            
+<a name="arg_testdoc.passhtml"></a>
+<dt id="arg_testdoc.passhtml">
+<code>-testdoc-passhtml</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to pass HTML tags in comments through to the HTML testdoc.
+              Default is true, use <code>-testdoc-passhtml=false</code> to disable.
+            </dd>
+
+            
+<a name="arg_testdoc.sorttestcases"></a>
+<dt id="arg_testdoc.sorttestcases">
+<code>-testdoc-sorttestcases</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to sort test-cases alphabetically.
+              Default is true, use <code>-testdoc-sorttestcases=false</code> to disable.
+            </dd>
+
+            
+<a name="arg_testdoc.sorttestsets"></a>
+<dt id="arg_testdoc.sorttestsets">
+<code>-testdoc-sorttestsets</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to sort test-sets alphabetically.
+              Default is true, use <code>-testdoc-sorttestsets=false</code> to disable.
+            </dd>
+
+            
+<a name="arg_testdoc.splitparagraph"></a>
+<dt id="arg_testdoc.splitparagraph">
+<code>-testdoc-splitparagraph</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Specifies whether comments are splitted into paragraphs by using empty lines.
+              Default is true, with <code>-testdoc-splitparagraph=false</code> it is
+              possible to disable this option.
+            </dd>
+
+            
+<a name="arg_testdoc.stylesheet"></a>
+<dt id="arg_testdoc.stylesheet">
+<code>-testdoc-stylesheet &lt;file&gt;</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Optional XSLT Stylesheet for the second step of the transformation.
+            </dd>
+
+            
+<a name="arg_testdoc.teststeps"></a>
+<dt id="arg_testdoc.teststeps">
+<code>-testdoc-teststeps</code>
+              (batch mode only)</dt>
+            
+<dd>
+              Whether to list test-steps in the testdoc documentation. Default is true, use
+              <code>-testdoc-teststeps=false</code> to disable.
+            </dd>
+
+            
+<a name="arg_testdoc.xml"></a>
+<dt id="arg_testdoc.xml">
+<code>-testdoc-xml &lt;directory&gt;</code> (batch mode only)</dt>
+            
+<dd>
+              With this argument QF-Test creates XML testdoc documentation. If no directory is given,
+              it is created from the basename of the suite.
+            </dd>
+
+            
+<a name="arg_threads"></a>
+<dt id="arg_threads">
+<code>-threads &lt;number&gt;</code> (batch mode only)</dt>
+            
+<dd>
+              Run the same test-suite in a number of parallel threads. Typically used for the
+              purpose of load testing. One license is required per thread, so normally
+              <a href="#arg_runtime" shape="rect"><code>-runtime</code></a> should be specified as well. See <a href="user_loadtest.html#usec_loadtest">chapter 29</a> for
+              more information about load tests.
+            </dd>
+
+            
+<a name="arg_timeout"></a>
+<dt id="arg_timeout">
+<code>-timeout &lt;milliseconds&gt;</code> (batch or calldaemon mode only)</dt>
+            
+<dd>
+              Give a timeout value in milliseconds for the test run when executing a test in batch mode or
+              through the QF-Test daemon. Default is infinite.
+            </dd>
+
+            
+<a name="arg_usercfg"></a>
+<dt id="arg_usercfg">
+<code>-usercfg &lt;file&gt;</code> (interactive mode only)</dt>
+            
+<dd>
+              Set the location of the user configuration file (see <a href="user_installation.html#usec_configfile">section 1.6</a>).
+            </dd>
+
+            
+<a name="arg_userdir"></a>
+<dt id="arg_userdir">
+<code>-userdir &lt;directory&gt;</code>
+</dt>
+            
+<dd>
+              Override the location of the directory holding the user configuration files (see <a href="user_installation.html#usec_configfile">section 1.6</a>). If <a href="#arg_usercfg" shape="rect"><code>-usercfg &lt;file&gt;</code></a> or <a href="#arg_runlogdir" shape="rect"><code>-runlogdir &lt;directory&gt;</code></a> are also specified they have
+              precedence.
+            </dd>
+
+            
+<a name="arg_variable"></a>
+<dt id="arg_variable">
+<code>-variable &lt;name&gt;=&lt;value&gt;</code>
+</dt>
+            
+<dd>
+              To override a system or suite variable definition (see <a href="user_variables.html#usec_variables">chapter 6</a>) use this argument to set the variable
+              named <code>&lt;name&gt;</code> to the value
+              <code>&lt;value&gt;</code>. Using this argument multiple times
+              you can define more than one variable.
+            </dd>
+
+            
+<a name="arg_verbose"></a>
+<dt id="arg_verbose">
+<code>-verbose [&lt;level&gt;]</code>
+</dt>
+            
+<dd>
+              Print progress and status information during a test-run to the console. This is in
+              particular useful when driving a test via <code>-calldaemon</code>, because the actual test
+              usually runs on a different host where you may not be able to observe it. Note
+              that on Windows you need to use <code>qftestc.exe</code> (instead of
+              <code>qftest.exe</code>) to see the output. Specifying a level of verbosity is
+              optional, possible values are <code>all</code> (print all nodes) and
+              <code>tests</code> (default, only 'Test-set' and 'Test-case' nodes are
+              printed out). Each level can be combined with <code>errors</code> (print error and
+              exception messages) like <code>tests,errors</code>.
+            </dd>
+
+            
+<a name="arg_version"></a>
+<dt id="arg_version">
+<code>-version</code>
+</dt>
+            
+<dd>
+              Print version information and exit.
+            </dd>
+          
+</dl>
+        
+
+        
+        
+
+        
+<a name="sec_placeholders"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_placeholders">40.2.4</a></span>
+</div>
+<a href="contents.html#toc_sec_placeholders">Placeholders in the filename parameter for run-log and
+          report</a>
+</h5>
+          
+<p>
+            The filename given in any of the command line arguments <a href="#arg_runid" shape="rect"><code>-runid &lt;ID&gt;</code></a>,
+            <a href="#arg_runlog" shape="rect"><code>-runlog [&lt;file&gt;]</code></a>, <a href="#arg_runlogdir" shape="rect"><code>-runlogdir &lt;directory&gt;</code></a>, <a href="#arg_report" shape="rect"><code>-report &lt;directory&gt;</code></a>, <a href="#arg_report.html" shape="rect"><code>-report-html &lt;directory&gt;</code></a>,
+            <a href="#arg_report.name" shape="rect"><code>-report-name &lt;name&gt;</code></a>, <a href="#arg_report.xml" shape="rect"><code>-report-xml &lt;directory&gt;</code></a> or <a href="#arg_report.junit" shape="rect"><code>-report-junit &lt;directory&gt;</code></a>,
+            may contain placeholders of the form %X or +X (the latter must
+            be used on Windows where '%' is a special character) where X may be any of the
+            characters listed in the table below. QF-Test will fill in the respective value when
+            creating the run-log or report. All time values refer to the time the test was
+            started.
+          </p>
+          
+<p>
+            
+<span class="margin"><span class="note">Note</span></span> When executing multiple test-suites, be sure to include the
+            base name of the suite in the filename by specifying %b. Otherwise only a single
+            run-log or report may be written that represents only the test-run of the last
+            test-suite.
+          </p>
+          
+<a name="table_40.2"></a><a name="table_40.2"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdcenterleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth">
+              
+<tr>
+                
+<th rowspan="1" colspan="1">Character</th>
+                <th rowspan="1" colspan="1">Replacement</th>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1">%</td>
+                <td rowspan="1" colspan="1">Literal '%' character.</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1">+</td>
+                <td rowspan="1" colspan="1">Literal '+' character.</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1">i</td>
+                <td rowspan="1" colspan="1">The current runid as specified with <a href="#arg_runid" shape="rect"><code>-runid &lt;ID&gt;</code></a>.</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1">p</td>
+                <td rowspan="1" colspan="1">
+                  The directory of the test-suite relative to <a href="#arg_sourcedir" shape="rect"><code>-sourcedir &lt;directory&gt;</code></a>. Expands to the
+                  absolute directory in case <code>-sourcedir &lt;directory&gt;</code> is unspecified and is empty if
+                  <code>-sourcedir &lt;directory&gt;</code> is specified but the test-suite is not located below it.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1">P</td>
+                <td rowspan="1" colspan="1">
+                  The absolute directory of the test-suite. May only be given at the beginning.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1">b</td>
+                <td rowspan="1" colspan="1">
+                  The basename of the test-suite, exclusive directory and <code>.qft</code>
+                  extension.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1">r</td>
+                <td rowspan="1" colspan="1">The return value (or "exit code") of the test-run (<code>-runlog</code> only).</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1">w</td>
+                <td rowspan="1" colspan="1">The number of warnings in the test-run (<code>-runlog</code> only).</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1">e</td>
+                <td rowspan="1" colspan="1">The number of errors in the test-run (<code>-runlog</code> only).</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1">x</td>
+                <td rowspan="1" colspan="1">The number of exceptions in the test-run (<code>-runlog</code> only).</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1">y</td>
+                <td rowspan="1" colspan="1">The current year (2 digits).</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1">Y</td>
+                <td rowspan="1" colspan="1">The current year (4 digits).</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1">M</td>
+                <td rowspan="1" colspan="1">The current month (2 digits).</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1">d</td>
+                <td rowspan="1" colspan="1">The current day (2 digits).</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1">h</td>
+                <td rowspan="1" colspan="1">The current hour (2 digits).</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1">m</td>
+                <td rowspan="1" colspan="1">The current minute (2 digits).</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1">s</td>
+                <td rowspan="1" colspan="1">The current second (2 digits).</td>
+              
+</tr>
+            
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;40.2</a>:&nbsp;&nbsp;Placeholders in filename parameters</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            So if, for example, you want to save the run-log in a subdirectory
+            of your test-suite directory called <code>logs</code> and want to
+            include a timestamp and the exit code, use
+          </p>
+          
+<p>
+            
+<code>-runlog %p/logs/%b-%y%M%d-%h%m%s-%r.qrl</code>
+          
+</p>
+          
+<p>
+            
+<span class="margin"><span class="note">Note</span></span> It is possible to use %b, %p and %P for collective parameters
+            like runid or report. This makes sense only when processing a single test-suite. When
+            processing multiple test-suites, the name of the first test-suite is used.
+          </p>
+        
+
+        
+      
+
+      
+      
+
+      
+<a name="sec_exitcodes"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_exitcodes">40.3</a></span>
+</div>
+<a href="contents.html#toc_sec_exitcodes">Exit codes for QF-Test</a>
+</h4>
+        
+<p>
+          When run in interactive mode, the exit code of QF-Test is not very useful. It is either
+          negative if QF-Test fails to start or 0.
+        </p>
+        
+<p>
+          In batch mode however the exit code expresses the result of the test
+          run. Negative values represent fatal errors that prevent the test
+          from being executed, while positive values stand for errors during
+          the test run. Note that many systems only support exit codes between
+          0 and 255, so every exit code may have to be calculated modulo 256,
+          i.e. -1=255, -2=254 and so on.
+        </p>
+        
+<p>
+          The following exit codes are currently defined:
+        </p>
+        
+<a name="table_40.3"></a><a name="table_40.3"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdrightleft" border="1" cellspacing="0" cellpadding="5">
+            
+<tr>
+              
+<th align="left" rowspan="1" colspan="1">Value</th>
+              <th rowspan="1" colspan="1">Meaning</th>
+            
+</tr>
+            
+<tr>
+              
+<td align="right" rowspan="1" colspan="1">0</td>
+              <td rowspan="1" colspan="1">Everything OK</td>
+            
+</tr>
+            
+<tr>
+              
+<td align="right" rowspan="1" colspan="1">1</td>
+              <td rowspan="1" colspan="1">Warnings occurred during the test run</td>
+            
+</tr>
+            
+<tr>
+              
+<td align="right" rowspan="1" colspan="1">2</td>
+              <td rowspan="1" colspan="1">Errors occurred during the test run</td>
+            
+</tr>
+            
+<tr>
+              
+<td align="right" rowspan="1" colspan="1">3</td>
+              <td rowspan="1" colspan="1">Exceptions occurred during the test run</td>
+            
+</tr>
+            
+<tr>
+              
+<td align="right" rowspan="1" colspan="1">-1</td>
+              <td rowspan="1" colspan="1">Unexpected Exception</td>
+            
+</tr>
+            
+<tr>
+              
+<td align="right" rowspan="1" colspan="1">-2</td>
+              <td rowspan="1" colspan="1">Bad command line arguments</td>
+            
+</tr>
+            
+<tr>
+              
+<td align="right" rowspan="1" colspan="1">-3</td>
+              <td rowspan="1" colspan="1">Missing or invalid license</td>
+            
+</tr>
+            
+<tr>
+              
+<td align="right" rowspan="1" colspan="1">-4</td>
+              <td rowspan="1" colspan="1">Errors while setting up the RMI connection</td>
+            
+</tr>
+            
+<tr>
+              
+<td align="right" rowspan="1" colspan="1">-5</td>
+              <td rowspan="1" colspan="1">Errors while loading the test-suite</td>
+            
+</tr>
+            
+<tr>
+              
+<td align="right" rowspan="1" colspan="1">-6</td>
+              <td rowspan="1" colspan="1">The test-suite doesn't contain any tests</td>
+            
+</tr>
+            
+<tr>
+              
+<td align="right" rowspan="1" colspan="1">-12</td>
+              <td rowspan="1" colspan="1">The process was terminated from outside via the <a href="#arg_shutdown" shape="rect"><code>-shutdown &lt;ID&gt;</code></a> batch command</td>
+            
+</tr>
+          
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;40.3</a>:&nbsp;&nbsp;Exit codes for QF-Test</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Besides, there are special exit codes when running QF-Test with the
+          <code>-calldaemon</code> argument:
+        </p>
+        
+<a name="table_40.4"></a><a name="table_40.4"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdrightleft" border="1" cellspacing="0" cellpadding="5">
+            
+<tr>
+              
+<th align="left" rowspan="1" colspan="1">Value</th>
+              <th rowspan="1" colspan="1">Meaning</th>
+            
+</tr>
+            
+<tr>
+              
+<td align="right" rowspan="1" colspan="1">-7</td>
+              <td rowspan="1" colspan="1">Daemon could not be found</td>
+            
+</tr>
+            
+<tr>
+              
+<td align="right" rowspan="1" colspan="1">-8</td>
+              <td rowspan="1" colspan="1">Failed to get or create a TestRunDaemon</td>
+            
+</tr>
+            
+<tr>
+              
+<td align="right" rowspan="1" colspan="1">-9</td>
+              <td rowspan="1" colspan="1">Failed to get or create a run context</td>
+            
+</tr>
+            
+<tr>
+              
+<td align="right" rowspan="1" colspan="1">-10</td>
+              <td rowspan="1" colspan="1">The test could not be started</td>
+            
+</tr>
+            
+<tr>
+              
+<td align="right" rowspan="1" colspan="1">-11</td>
+              <td rowspan="1" colspan="1">The test has not ended within the given timeout</td>
+            
+</tr>
+          
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;40.4</a>:&nbsp;&nbsp;<code>calldaemon</code> exit codes for QF-Test</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_engines.html#sec_engines"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 41&nbsp;GUI engines" title="Next Page: 41&nbsp;GUI engines"></a></td><td class="navicon"><a href="tech_engines.html#sec_engines"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 41&nbsp;GUI engines" title="Next Chapter: 41&nbsp;GUI engines"></a></td><td class="navicon"><a href="technical.html#sec_technical"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: IV&nbsp;Technical reference" title="Chapter Overview: IV&nbsp;Technical reference"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,829 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="root"
+          signature="302D0215008CEE9E308FDAEC682F7FBFF7E951984BE6545AD202143E64C80BCF06BB9EA5A05ED8FA0ADCF5EF195FB1"
+          version="6.0.3">
+  <include>qfs.qft</include>
+  <comment>Demo Testsuite für die Windows Anwendung "Rechner"
+
+@author	QFS</comment>
+  <DependencyReference id="_2KO3"
+                       reference="dependencies.SUT_Gestartet_Zurückgesetzt"/>
+  <TestSet id="_2KOL" name="Standard Rechner">
+    <TestCase id="_2KOM" name="2+2">
+      <TestStep id="_2KQh" name="Öffne den Standard Rechner">
+        <ProcedureCall id="_2KTn" procedure="hauptfenster.menü.wähleModus">
+          <variable name="modus">Standard</variable>
+        </ProcedureCall>
+      </TestStep>
+      <TestStep id="_2KQi" name="Eingabe 2+2">
+        <MouseEventStep clicks="1" client="$(client)" component="2"
+                        event="MOUSE_MPRC" id="_2KGK" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)" component="+"
+                        event="MOUSE_MPRC" id="_2KGL" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)" component="2"
+                        event="MOUSE_MPRC" id="_2KGM" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)" component="="
+                        event="MOUSE_MPRC" id="_2KJT" modifiers="16"/>
+      </TestStep>
+      <TestStep id="_2KQj" name="Prüfe das Ergebnis">
+        <CheckStringStep client="$(client)" component="CalculatorResults"
+                         id="_2KGO">
+          <text>4</text>
+        </CheckStringStep>
+      </TestStep>
+    </TestCase>
+    <TestCase id="_2KMn" name="Mit 0 dividieren">
+      <TestStep id="_2KQl" name="Eingabe 2/0">
+        <MouseEventStep clicks="1" client="$(client)" component="2"
+                        event="MOUSE_MPRC" id="_2KMp" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)" component="divide"
+                        event="MOUSE_MPRC" id="_2KM-" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)" component="0"
+                        event="MOUSE_MPRC" id="_2KN0" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)" component="="
+                        event="MOUSE_MPRC" id="_2KN1" modifiers="16"/>
+      </TestStep>
+      <TestStep id="_2KQm" name="Prüfe das Ergebnis">
+        <CheckStringStep client="$(client)" component="CalculatorResults"
+                         id="_2KN2">
+          <text>Teilen durch 0 nicht möglich</text>
+        </CheckStringStep>
+      </TestStep>
+    </TestCase>
+  </TestSet>
+  <TestSet id="_2KKh" name="Konverter">
+    <TestCase id="_2KLt" name="Länge">
+      <TestStep id="_2KQn" name="Öffne den Konverter &#34;Länge&#34;">
+        <ProcedureCall id="_2KTc" procedure="hauptfenster.menü.wähleModus">
+          <variable name="modus">Länge</variable>
+        </ProcedureCall>
+      </TestStep>
+      <TestStep id="_2KQy" name="Setze das Inputfeld auf Meter">
+        <ProcedureCall id="_2KU0"
+                       procedure="hauptfenster.setzeEingabeeinheit">
+          <variable name="eingabeEinheit">Meter</variable>
+        </ProcedureCall>
+      </TestStep>
+      <TestStep id="_2KQz" name="Setze das Outputfeld auf Zentimeter">
+        <ProcedureCall id="_2KU8"
+                       procedure="hauptfenster.setzeAusgabeeinheit">
+          <variable name="ausgabeEinheit">Zentimeter</variable>
+        </ProcedureCall>
+      </TestStep>
+      <TestStep id="_2KQ+" name="Eingabe 2">
+        <MouseEventStep clicks="1" client="$(client)" component="2"
+                        event="MOUSE_MPRC" id="_2KPA" modifiers="16"/>
+      </TestStep>
+      <TestStep id="_2KQ-" name="Prüfe das Ergebnis">
+        <CheckStringStep client="$(client)" component="ResultValue"
+                         id="_2KPE">
+          <text>200</text>
+        </CheckStringStep>
+        <CheckStringStep client="$(client)" component="label_Yard" id="_2KQu">
+          <text>2,19 Yard</text>
+        </CheckStringStep>
+        <CheckStringStep client="$(client)" component="label_Fuß" id="_2KQv">
+          <text>6,56 Fuß</text>
+        </CheckStringStep>
+        <CheckStringStep client="$(client)" component="label_Zoll" id="_2KQw">
+          <text>78,74 Zoll</text>
+        </CheckStringStep>
+        <CheckStringStep client="$(client)" component="label_Hand" id="_2KQx">
+          <text>10,71 Hand</text>
+        </CheckStringStep>
+      </TestStep>
+    </TestCase>
+    <TestCase id="_2KJm" name="Volumen">
+      <TestStep id="_2KR0" name="Öffne den Konverter &#34;Volumen&#34;">
+        <ProcedureCall id="_2KTq" procedure="hauptfenster.menü.wähleModus">
+          <variable name="modus">Volumen</variable>
+        </ProcedureCall>
+      </TestStep>
+      <TestStep id="_2KR1" name="Setze das Inputfeld auf Liter">
+        <ProcedureCall id="_2KUh"
+                       procedure="hauptfenster.setzeEingabeeinheit">
+          <variable name="eingabeEinheit">Liter</variable>
+        </ProcedureCall>
+      </TestStep>
+      <TestStep id="_2KR2" name="Setze das Outputfeld auf Milliliter">
+        <ProcedureCall id="_2KUi"
+                       procedure="hauptfenster.setzeAusgabeeinheit">
+          <variable name="ausgabeEinheit">Milliliter</variable>
+        </ProcedureCall>
+      </TestStep>
+      <TestStep id="_2KR3" name="Eingabe 1024">
+        <MouseEventStep clicks="1" client="$(client)" component="1"
+                        event="MOUSE_MPRC" id="_P" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)" component="0"
+                        event="MOUSE_MPRC" id="_Q" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)" component="2"
+                        event="MOUSE_MPRC" id="_R" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)" component="4"
+                        event="MOUSE_MPRC" id="_S" modifiers="16"/>
+      </TestStep>
+      <TestStep id="_2KR4" name="Prüfe das Ergebnis">
+        <CheckStringStep client="$(client)" component="ResultValue" id="_T"
+                         regexp="true">
+          <text>.*1\.024\.000.*</text>
+        </CheckStringStep>
+      </TestStep>
+    </TestCase>
+  </TestSet>
+  <TestSet id="_2KQZ" name="Info">
+    <TestCase id="_2KQb" name="Info">
+      <TestStep id="_2KR5" name="Öffne den Info Dialog">
+        <ProcedureCall id="_2KTm" procedure="hauptfenster.menü.info"/>
+      </TestStep>
+      <TestStep id="_2KR6" name="Prüfe den Text im Dialog">
+        <CheckStringStep client="$(client)" component="AboutContentBody"
+                         id="_2KQe" regexp="true">
+          <text>(?s).*Microsoft. Alle Rechte vorbehalten.*
+</text>
+        </CheckStringStep>
+        <CheckStringStep client="$(client)" component="Header2" id="_2KQf">
+          <text>Info</text>
+        </CheckStringStep>
+      </TestStep>
+      <TestStep id="_2KUa" name="Schließe Menü">
+        <MouseEventStep clicks="1" client="$(client)" component="Calculator"
+                        event="MOUSE_MPRC" id="_2KUn" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)" component="Menu"
+                        event="MOUSE_MPRC" id="_2KUZ" modifiers="16"/>
+      </TestStep>
+    </TestCase>
+  </TestSet>
+  <PackageRoot id="_3">
+    <Package id="_2KUg" name="StartStop">
+      <comment>Prozeduren um die SUT zu starten bzw. zu stoppen.</comment>
+      <Procedure id="_2KUc" name="start">
+        <comment>Startet SUT.</comment>
+        <ShellClientStarter client="killOldCalculator"
+                            command="taskkill /F /IM Calculator.exe &gt; nul 2&gt;&amp;1 "
+                            id="_2KUW"/>
+        <ProcessWaiter client="killOldCalculator" id="_2KUX"/>
+        <WinClientStarter class="de.qfs.apps.qfwin.QFWin" client="$(client)"
+                          id="_C" windowsprogram="calc.exe"
+                          windowtitle="Rechner"/>
+        <ClientWaiter client="$(client)" id="_D" timeout="25000"/>
+        <ClientScriptStep client="$(client)" id="_1yCQ" interpreter="groovy"
+                          name="registerGenericClassNameResolver for MenuItemsHost">
+          <code>def getGenericClassName(def winc, def gcln) {
+    uid = winc.getUiaId()
+    if (uid == "MenuItemsHost") {
+        return "List"
+    }     
+}
+
+resolvers.addResolver("menuitemHostResolver", this.&amp;getGenericClassName, "XAML.Group")</code>
+        </ClientScriptStep>
+      </Procedure>
+      <Procedure id="_2KUe" name="stop">
+        <comment>Schließt das Hauptfenster.</comment>
+        <TryStep id="_2JPt" name="läuft SUT?">
+          <ProcessWaiter client="$(client)" id="_2KCc" timeout="0"/>
+          <CatchSequence exception="ClientNotTerminatedException" id="_2JPu"
+                         maxerror="0">
+            <TryStep id="_2KCa">
+              <ClientScriptStep client="$(client)" id="_1yCf"
+                                interpreter="groovy"
+                                name="unregisterGenericClassNameResolver for MenuItemsHost">
+                <code>resolvers.removeResolver("menuitemHostResolver")</code>
+              </ClientScriptStep>
+              <WindowEventStep client="$(client)" component="Calculator"
+                               event="WINDOW_CLOSING" id="_2KQU"/>
+              <ProcessWaiter client="$(client)" id="_1xv4"/>
+              <CatchSequence exception="TestException" id="_2JlK"
+                             maxerror="0">
+                <ClientStopper client="$(client)" id="_2KQQ"/>
+                <ProcessWaiter client="$(client)" id="_2KQR"/>
+              </CatchSequence>
+            </TryStep>
+          </CatchSequence>
+        </TryStep>
+      </Procedure>
+    </Package>
+    <Package id="_2KUb" name="dependencies">
+      <comment>Package für die Abhängigkeiten.</comment>
+      <Dependency id="_6" name="SUT_Gestartet">
+        <comment>Stellt sicher, dass SUT gestartet wurde.</comment>
+        <SetupSequence id="_7" name="SUT starten, wenn notwendig">
+          <IfSequence id="_2KR7" name="Sprache abfragen"
+                      test="'${system:user.language}' != 'de'">
+            <ProcedureCall id="_2KRC"
+                           procedure="qfs.dialogs.showInformationMessageDialog">
+              <variable name="title">Der Test kann nicht ausgeführt werden!</variable>
+              <variable name="msg">Diese Testsuite kann nur auf einem deutschen
+Windows ausgeführt werden! Bei Windows mit Englisch als Benutzersprache verwenden Sie bitte die Testsuite "Win10Calculator_en.qft".</variable>
+              <variable name="timeout">120000</variable>
+              <variable name="alwaysOnTop">True</variable>
+              <variable name="wraplength">160</variable>
+            </ProcedureCall>
+            <ProcedureCall id="_2KRD"
+                           procedure="qfs.utils.testrun.stop.stopTestRun"/>
+          </IfSequence>
+          <SetGlobalStep id="_9" varname="client">
+            <default>calc</default>
+          </SetGlobalStep>
+          <ClientWaiter client="$(client)" id="_A" local="true" raise="false"
+                        resvarname="isSUTRunning" timeout="1"/>
+          <IfSequence id="_B" name="SUT starten, wenn notwendig"
+                      test="not $(isSUTRunning)">
+            <ProcedureCall id="_2KUd" procedure="StartStop.start"/>
+          </IfSequence>
+        </SetupSequence>
+        <CleanupSequence id="_2JlF" name="SUT schließen">
+          <ProcedureCall id="_2KUf" procedure="StartStop.stop"/>
+        </CleanupSequence>
+      </Dependency>
+      <Dependency id="_2KNg" name="SUT_Gestartet_Zurückgesetzt">
+        <comment>Stellt sicher, dass SUT gestartet und in den Ausgangszustand gesetzt wurde.</comment>
+        <DependencyReference id="_2KRQ"
+                             reference="dependencies.SUT_Gestartet"/>
+        <SetupSequence id="_2KNh">
+          <CheckStringStep client="$(client)" component="Header" id="_2KRN"
+                           local="true" resvarname="standard_calc">
+            <text>Standard</text>
+          </CheckStringStep>
+          <IfSequence id="_2KOI"
+                      name="Falls nicht der Standard Rechner ausgewählt ist"
+                      test="not $(standard_calc)">
+            <ProcedureCall id="_2KUV"
+                           procedure="hauptfenster.menü.wähleModus">
+              <variable name="modus">Standard</variable>
+            </ProcedureCall>
+          </IfSequence>
+          <ProcedureCall id="_2KSh" procedure="hauptfenster.Zurücksetzen"/>
+        </SetupSequence>
+      </Dependency>
+    </Package>
+    <Package id="_2KT9" name="hauptfenster">
+      <comment>Prozeduren für Aktionen im Hauptfenster.</comment>
+      <Package id="_2KTI" name="menü">
+        <comment>Prozeduren für Aktionen im Menü.</comment>
+        <Procedure id="_2KTl" name="info">
+          <comment>Klick auf Menü -&gt; Info.
+</comment>
+          <MouseEventStep clicks="1" client="$(client)" component="Menu"
+                          event="MOUSE_MPRC" id="_2KQc" modifiers="16"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AboutButton" event="MOUSE_MPRC"
+                          hardevent="true" id="_2KUl" modifiers="16"/>
+        </Procedure>
+        <Procedure id="_2KTV" name="wähleModus">
+          <variable name="modus"/>
+          <comment>Wählt den entsprechenden Modus (Standard, Wissenschaftlich, Länge, Temperatur, ...) aus.
+
+@param  modus
+@author  QFS</comment>
+          <MouseEventStep clicks="1" client="$(client)" component="Menu"
+                          event="MOUSE_MPRC" id="_2KOB" modifiers="16"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="MenuItemsHost@$(modus)"
+                          event="MOUSE_MPRC" id="_2KOC" modifiers="16"/>
+        </Procedure>
+      </Package>
+      <Procedure id="_2KPu" name="Zurücksetzen">
+        <ComponentWaiter client="$(client)" component="clearButton" id="_2KQF"
+                         local="true" raise="false" resvarname="clearButton"
+                         timeout="100"/>
+        <IfSequence id="_2KQ3" test="$(clearButton)">
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="clearButton" event="MOUSE_MPRC"
+                          id="_2KQ4" modifiers="16"/>
+          <ElseSequence id="_2KSW">
+            <ComponentWaiter client="$(client)" component="clearEntryButton"
+                             id="_2KSa" local="true" raise="false"
+                             resvarname="clearButton" timeout="100"/>
+            <IfSequence id="_2KSc" test="$(clearButton)">
+              <MouseEventStep clicks="1" client="$(client)"
+                              component="clearEntryButton" event="MOUSE_MPRC"
+                              id="_2KSd" modifiers="16"/>
+              <ElseSequence id="_2KSe">
+                <MouseEventStep clicks="1" client="$(client)"
+                                component="ClearEntryButtonPos0"
+                                event="MOUSE_MPRC" id="_2KSg" modifiers="16"/>
+              </ElseSequence>
+            </IfSequence>
+          </ElseSequence>
+        </IfSequence>
+      </Procedure>
+      <Procedure id="_2KU7" name="setzeAusgabeeinheit">
+        <variable name="ausgabeEinheit"/>
+        <comment>Setzt die Ausgabeeinheit des Konverters.
+
+@param  ausgabeEinheit - die zu wählende Ausgabeeinheit
+@author QFS</comment>
+        <MouseEventStep clicks="1" client="$(client)" component="Output_Unit"
+                        event="MOUSE_MPRC" id="_2KP6" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="Output_Unit@$(ausgabeEinheit)"
+                        event="MOUSE_MPRC" id="_2KPU" modifiers="16"/>
+        <KeyEventStep client="$(client)" component="Calculator"
+                      event="KEY_PTR" id="_2KPK" keychar="9" keycode="9"
+                      modifiers="0"/>
+      </Procedure>
+      <Procedure id="_2KT-" name="setzeEingabeeinheit">
+        <variable name="eingabeEinheit"/>
+        <comment>Setzt die Eingabeeinheit des Konverters.
+
+@param  eingabeEinheit - die zu wählende Eingabeeinheit
+
+@author  QFS</comment>
+        <MouseEventStep clicks="1" client="$(client)" component="Input_Units"
+                        event="MOUSE_MPRC" id="_2KPT" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="Input_Units@$(eingabeEinheit)"
+                        event="MOUSE_MPRC" id="_2KPG" modifiers="16"/>
+        <KeyEventStep client="$(client)" component="Calculator"
+                      event="KEY_PTR" id="_2KPJ" keychar="9" keycode="9"
+                      modifiers="0"/>
+      </Procedure>
+    </Package>
+  </PackageRoot>
+  <ExtraSequence id="_4"/>
+  <WindowList id="_5">
+    <WindowStep class="Window" engine="win" feature="Rechner" height="532"
+                id="Calculator" uid="_2KSi" width="320">
+      <extrafeature name="patterns" negate="false" regexp="false" state="0">LegacyIAccessible</extrafeature>
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">XAML.Windows.UI.Core.CoreWindow</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Window</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">Uia.Window</extrafeature>
+      <ComponentStep class="Button" classcount="1" classindex="0"
+                     feature="Navigation öffnen" height="40" id="Menu"
+                     name="TogglePaneButton" uid="_2KSj" width="40" x="0"
+                     y="32">
+        <extrafeature name="id" negate="false" regexp="false" state="0">TogglePaneButton</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">Invoke ScrollItem LegacyIAccessible</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">XAML.Button</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Button</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Rechner</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.Button</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="Label" classcount="4" classindex="2" feature=".*"
+                     height="0" id="CalculatorResults"
+                     name="CalculatorResults" regexp="true" uid="_2KRy"
+                     width="0" x="-39" y="-305">
+        <extrafeature name="id" negate="false" regexp="false" state="0">CalculatorResults</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">Invoke ScrollItem LegacyIAccessible</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">XAML.Text</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Label</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.Text</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="Window" classcount="2" classindex="1" height="888"
+                     id="MenuPane" name="PaneRoot" uid="_w" width="256" x="0"
+                     y="32">
+        <extrafeature name="id" negate="false" regexp="false" state="0">PaneRoot</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">Window ScrollItem LegacyIAccessible</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">XAML.SplitViewPane</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Window</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.Window</extrafeature>
+        <ComponentStep class="List" classcount="2" classindex="0" height="772"
+                       id="MenuItemsHost" name="MenuItemsHost" uid="_x"
+                       width="256" x="0" y="48">
+          <extrafeature name="id" negate="false" regexp="false" state="0">MenuItemsHost</extrafeature>
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">Selection Scroll ScrollItem LegacyIAccessible ItemContainer</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">XAML.ListView</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">List</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.List</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Item" classcount="1" classindex="0"
+                       feature="Info" height="40" id="AboutButton"
+                       name="AboutButton" uid="_2KUj" width="256" x="0"
+                       y="620">
+          <extrafeature name="id" negate="false" regexp="false" state="0">AboutButton</extrafeature>
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">Invoke SelectionItem ScrollItem LegacyIAccessible</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">XAML.Microsoft.UI.Xaml.Controls.NavigationViewItem</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Item</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.ListItem</extrafeature>
+          <extrafeature name="qfs:type" negate="false" regexp="false"
+                        state="0">Item:ListItem</extrafeature>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="Window" classcount="2" classindex="0"
+                     feature="Popup" height="32" id="windowPopup" uid="_2KT8"
+                     width="320" x="0" y="0">
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">ScrollItem LegacyIAccessible</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">XAML.Popup</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Window</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.Window</extrafeature>
+        <ComponentStep class="Label" classcount="2" classindex="1" height="40"
+                       id="AboutContentBody" name="AboutContentBody"
+                       uid="_2KQO" width="285" x="1966" y="881">
+          <extrafeature name="id" negate="false" regexp="false" state="0">AboutContentBody</extrafeature>
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">Text ScrollItem LegacyIAccessible</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">XAML.RichTextBlock</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Label</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.Text</extrafeature>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="Panel" classcount="6" classindex="2"
+                     feature="Anzeigesteuerelemente" height="52"
+                     id="DisplayControls" name="DisplayControls" uid="_2KT3"
+                     width="312" x="4" y="205">
+        <extrafeature name="id" negate="false" regexp="false" state="0">DisplayControls</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">ScrollItem LegacyIAccessible</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">XAML.NamedContainerAutomationPeer</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Panel</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.Group</extrafeature>
+        <ComponentStep class="Button" classcount="4" classindex="1"
+                       feature="Eingabe löschen" height="52"
+                       id="clearEntryButton" name="clearEntryButton"
+                       uid="_2KT4" width="76" x="78" y="0">
+          <extrafeature name="id" negate="false" regexp="false" state="0">clearEntryButton</extrafeature>
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">Invoke ScrollItem LegacyIAccessible</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">XAML.Button</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Button</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">CE</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.Button</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Button" classcount="4" classindex="2"
+                       feature="Löschen" height="52" id="clearButton"
+                       name="clearButton" uid="_2KT5" width="76" x="157"
+                       y="0">
+          <extrafeature name="id" negate="false" regexp="false" state="0">clearButton</extrafeature>
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">Invoke ScrollItem LegacyIAccessible</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">XAML.Button</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Button</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">C</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.Button</extrafeature>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="Panel" classcount="6" classindex="4"
+                     feature="Standardoperatoren" height="268"
+                     id="StandardOperators" name="StandardOperators"
+                     uid="_2KS-" width="76" x="239" y="259">
+        <extrafeature name="id" negate="false" regexp="false" state="0">StandardOperators</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">ScrollItem LegacyIAccessible</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">XAML.NamedContainerAutomationPeer</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Panel</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.Group</extrafeature>
+        <ComponentStep class="Button" classcount="5" classindex="3"
+                       feature="Plus" height="52" id="+" name="plusButton"
+                       uid="_2KT0" width="76" x="0" y="162">
+          <extrafeature name="id" negate="false" regexp="false" state="0">plusButton</extrafeature>
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">Invoke ScrollItem LegacyIAccessible</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">XAML.Button</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Button</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.Button</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Button" classcount="5" classindex="4"
+                       feature="Gleich" height="52" id="=" name="equalButton"
+                       uid="_2KT1" width="76" x="0" y="216">
+          <extrafeature name="id" negate="false" regexp="false" state="0">equalButton</extrafeature>
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">Invoke ScrollItem LegacyIAccessible</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">XAML.Button</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Button</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.Button</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Button" classcount="5" classindex="0"
+                       feature="Dividieren durch" height="52" id="divide"
+                       name="divideButton" uid="_2KT2" width="76" x="0" y="0">
+          <extrafeature name="id" negate="false" regexp="false" state="0">divideButton</extrafeature>
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">Invoke ScrollItem LegacyIAccessible</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">XAML.Button</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Button</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.Button</extrafeature>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="Panel" classcount="1" classindex="0" height="456"
+                     id="CalculatorPanel" uid="_2KSk" width="316" x="0"
+                     y="72">
+        <extrafeature name="id" negate="false" regexp="false" state="0">UnitConverterRootGrid</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">ScrollItem LegacyIAccessible</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">XAML.LandmarkTarget</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Panel</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.Group</extrafeature>
+        <ComponentStep class="ComboBox" classcount="2" classindex="0"
+                       feature="Eingabeeinheit" height="32" id="Input_Units"
+                       name="Units1" uid="_2KSl" width="82" x="0" y="56">
+          <extrafeature name="id" negate="false" regexp="false" state="0">Units1</extrafeature>
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">Selection ExpandCollapse ScrollItem LegacyIAccessible ItemContainer</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">XAML.ComboBox</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">ComboBox</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">0</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.ComboBox</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="ComboBox" classcount="2" classindex="1"
+                       feature="Ausgabeeinheit" height="32" id="Output_Unit"
+                       name="Units2" uid="_2KSm" width="114" x="0" y="144">
+          <extrafeature name="id" negate="false" regexp="false" state="0">Units2</extrafeature>
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">Selection ExpandCollapse ScrollItem LegacyIAccessible ItemContainer</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">XAML.ComboBox</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">ComboBox</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">0</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.ComboBox</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Label" classcount="2" classindex="1"
+                       feature=".*" height="56" id="ResultValue" name="Value2"
+                       regexp="true" uid="_2KSn" width="42" x="0" y="88">
+          <extrafeature name="id" negate="false" regexp="false" state="0">Value2</extrafeature>
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">Invoke ScrollItem LegacyIAccessible</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">XAML.Text</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Label</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="0">0</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.Text</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Panel" classcount="2" classindex="1"
+                       feature="Zehnertastatur" height="184" id="NumberPad"
+                       name="NumberPad" uid="_2KSp" width="312" x="4" y="272">
+          <extrafeature name="id" negate="false" regexp="false" state="0">NumberPad</extrafeature>
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">ScrollItem LegacyIAccessible</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">XAML.NamedContainerAutomationPeer</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Panel</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.Group</extrafeature>
+          <ComponentStep class="Button" classcount="11" classindex="0"
+                         feature="Null" height="44" id="0" name="num0Button"
+                         uid="_2KSq" width="103" x="105" y="140">
+            <extrafeature name="id" negate="false" regexp="false" state="0">num0Button</extrafeature>
+            <extrafeature name="patterns" negate="false" regexp="false"
+                          state="0">Invoke ScrollItem LegacyIAccessible</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">XAML.Button</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Button</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">0</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">Uia.Button</extrafeature>
+          </ComponentStep>
+          <ComponentStep class="Button" classcount="11" classindex="1"
+                         feature="Eins" height="45" id="1" name="num1Button"
+                         uid="_2KSr" width="103" x="0" y="93">
+            <extrafeature name="id" negate="false" regexp="false" state="0">num1Button</extrafeature>
+            <extrafeature name="patterns" negate="false" regexp="false"
+                          state="0">Invoke ScrollItem LegacyIAccessible</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">XAML.Button</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Button</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">1</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">Uia.Button</extrafeature>
+          </ComponentStep>
+          <ComponentStep class="Button" classcount="11" classindex="2"
+                         feature="Zwei" height="45" id="2" name="num2Button"
+                         uid="_2KSs" width="103" x="105" y="93">
+            <extrafeature name="id" negate="false" regexp="false" state="0">num2Button</extrafeature>
+            <extrafeature name="patterns" negate="false" regexp="false"
+                          state="0">Invoke ScrollItem LegacyIAccessible</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">XAML.Button</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Button</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">2</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">Uia.Button</extrafeature>
+          </ComponentStep>
+          <ComponentStep class="Button" classcount="11" classindex="4"
+                         feature="Vier" height="44" id="4" name="num4Button"
+                         uid="_2KSt" width="103" x="0" y="47">
+            <extrafeature name="id" negate="false" regexp="false" state="0">num4Button</extrafeature>
+            <extrafeature name="patterns" negate="false" regexp="false"
+                          state="0">Invoke ScrollItem LegacyIAccessible</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">XAML.Button</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Button</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">4</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">Uia.Button</extrafeature>
+          </ComponentStep>
+        </ComponentStep>
+        <ComponentStep class="Label" classcount="11" classindex="3"
+                       feature=".* Yard" height="19" id="label_Yard"
+                       regexp="true" uid="_2KSw" width="47" x="12" y="194">
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">ScrollItem LegacyIAccessible</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">XAML.Text</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Label</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="true"
+                        state="1">.* Yard</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.Text</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Label" classcount="11" classindex="4"
+                       feature=".* Fuß" height="19" id="label_Fuß"
+                       regexp="true" uid="_2KSx" width="49" x="75" y="194">
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">ScrollItem LegacyIAccessible</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">XAML.Text</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Label</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">.* Fuß</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.Text</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Label" classcount="11" classindex="6"
+                       feature=".* Zoll" height="19" id="label_Zoll"
+                       regexp="true" uid="_2KSy" width="38" x="140" y="194">
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">ScrollItem LegacyIAccessible</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">XAML.Text</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Label</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="true"
+                        state="1">.* Zoll</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.Text</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Label" classcount="10" classindex="9"
+                       feature=".* Hand" height="27" id="label_Hand"
+                       regexp="true" uid="_2KS+" width="94" x="197" y="189">
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">ScrollItem LegacyIAccessible</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">XAML.Text</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Label</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="true"
+                        state="1">.*Hand</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.Text</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Panel" classcount="2" classindex="0"
+                       feature="Anzeigesteuerelemente" height="45"
+                       id="panelDisplay_controls" uid="_2KSu" width="207"
+                       x="109" y="225">
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">ScrollItem LegacyIAccessible</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">XAML.NamedContainerAutomationPeer</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Panel</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.Group</extrafeature>
+          <ComponentStep class="Button" classcount="2" classindex="0"
+                         feature="Eingabe löschen" height="45"
+                         id="ClearEntryButtonPos0" name="ClearEntryButtonPos0"
+                         uid="_2KSv" width="103" x="0" y="0">
+            <extrafeature name="id" negate="false" regexp="false" state="0">ClearEntryButtonPos0</extrafeature>
+            <extrafeature name="patterns" negate="false" regexp="false"
+                          state="0">Invoke ScrollItem LegacyIAccessible</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">XAML.Button</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Button</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">CE</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">Uia.Button</extrafeature>
+          </ComponentStep>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="Label" classcount="4" classindex="3"
+                     feature="Rechnermodus: Standard" height="27" id="Header"
+                     name="Header" uid="_2KT7" width="79" x="52" y="38">
+        <extrafeature name="id" negate="false" regexp="false" state="0">Header</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">Text ScrollItem LegacyIAccessible</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">XAML.TextBlock</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Label</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Standard</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.Text</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="Window" classcount="3" classindex="1"
+                     feature="Popup" height="0" id="windowPopup2" uid="_2KUP"
+                     width="0" x="-111" y="-37">
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">Window ScrollItem LegacyIAccessible</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">XAML.Popup</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Window</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.Window</extrafeature>
+        <ComponentStep class="Panel" classcount="1" classindex="0"
+                       height="293" id="AboutPageFlyout"
+                       name="AboutPageFlyout" uid="_2KUQ" width="335" x="111"
+                       y="418">
+          <extrafeature name="id" negate="false" regexp="false" state="0">AboutPageFlyout</extrafeature>
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">Invoke ScrollItem LegacyIAccessible</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">XAML.Flyout</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Panel</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.Pane</extrafeature>
+          <ComponentStep class="Panel" classcount="1" classindex="0"
+                         height="291" id="ScrollViewer" name="ScrollViewer"
+                         uid="_2KUR" width="333" x="1" y="1">
+            <extrafeature name="id" negate="false" regexp="false" state="0">ScrollViewer</extrafeature>
+            <extrafeature name="patterns" negate="false" regexp="false"
+                          state="0">Scroll ScrollItem LegacyIAccessible</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">XAML.ScrollViewer</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Panel</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">Uia.Pane</extrafeature>
+            <ComponentStep class="Label" classcount="2" classindex="0"
+                           feature="Info" height="27" id="Header2"
+                           name="Header" uid="_2KUS" width="285" x="24"
+                           y="21">
+              <extrafeature name="id" negate="false" regexp="false" state="0">Header</extrafeature>
+              <extrafeature name="patterns" negate="false" regexp="false"
+                            state="0">Text ScrollItem LegacyIAccessible</extrafeature>
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">XAML.TextBlock</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">Label</extrafeature>
+              <extrafeature name="qfs:label" negate="false" regexp="false"
+                            state="1">Info</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">Uia.Text</extrafeature>
+            </ComponentStep>
+          </ComponentStep>
+        </ComponentStep>
+      </ComponentStep>
+    </WindowStep>
+  </WindowList>
+</RootStep>

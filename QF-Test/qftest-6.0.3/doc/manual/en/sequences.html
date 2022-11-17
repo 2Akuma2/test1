@@ -1,0 +1,2485 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Test and Sequence nodes</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_sequences"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="rootnode.html#sec_rootnode"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 38.1&nbsp;The test-suite and its structure" title="Previous Chapter: 38.1&nbsp;The test-suite and its structure"></a></td><td class="navicon"><a href="dependencies.html#sec_dependencies"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 38.3&nbsp;Dependencies" title="Next Page: 38.3&nbsp;Dependencies"></a></td><td class="navicon"><a href="dependencies.html#sec_dependencies"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 38.3&nbsp;Dependencies" title="Next Chapter: 38.3&nbsp;Dependencies"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 38&nbsp;Elements of a test-suite" title="Chapter Overview: 38&nbsp;Elements of a test-suite"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_sequences">38.2</a></span>
+</div>
+<a href="contents.html#toc_sec_sequences">Test and Sequence nodes</a>
+</h4>
+    
+<p>
+      Tests and sequences are the main structural elements of a test-suite. <a href="#step_TestCase" shape="rect">'Test-case'</a> nodes
+      represent logical test-cases and are implemented as
+      specialized sequences. A sequence is a container that executes its child nodes one by one.
+      It can define variables (see <a href="user_variables.html#usec_variables">chapter 6</a>) that remain bound during the
+      execution of the children.
+    </p>
+    
+<p>
+      Other kinds of sequences differ either in the way their child nodes are executed, or in the
+      restrictions they impose on their child or parent nodes.
+    </p>
+    
+
+    
+<a name="step_TestCase"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_TestCase">38.2.1</a></span>
+</div>
+<a href="contents.html#toc_step_TestCase">'Test-case'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/testcase.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            A 'Test-case' node represents one or more logical test cases. In a sense it is the most
+            important of all QF-Test nodes and everything else only serves to lend structure to
+            'Test-cases' or to implement their logic. Functionally it is a highly specialized
+            <a href="#step_BasicSequence" shape="rect">'Sequence'</a> with a number of important extensions and special attributes.
+          </p>
+          
+<p>
+            A 'Test-case' should focus on the actual test it supposed to perform. Setup and cleanup
+            tasks required to ensure that the 'Test-case' executes in the required environment and
+            does not interfere with subsequent tests should be implemented in the form of
+            <a href="dependencies.html#step_Dependency" shape="rect">'Dependencies'</a> as described in <a href="user_organization.html#usec_dependencies">section 8.6</a>. Alternatively -
+            or in addition to 'Dependencies' - a 'Test-case' can have <a href="dependencies.html#step_SetupSequence" shape="rect">'Setup'</a> and
+            <a href="dependencies.html#step_CleanupSequence" shape="rect">'Cleanup'</a> nodes to be executed before and after the 'Test-case'.
+          </p>
+          
+<p>
+            Because a 'Test-case' can be called from a <a href="#step_TestCall" shape="rect">'Test call'</a> node it is also somewhat
+            similar to a <a href="procedures.html#step_Procedure" shape="rect">'Procedure'</a> in that its <a href="#att_TestCase_name" shape="rect">'Name'</a> attribute is mandatory
+            and that it has a list of <a href="#att_TestCase_fallback" shape="rect">'Parameter default values'</a> that can be overridden in the
+            calling node.
+          </p>
+          
+<p>
+            'Test-cases' also play a central role in run-logs and test reports. During a test-run a
+            'Test-case' node can be executed several times in different contexts and with different
+            parameters. Logically these executions may represent the same or different test-cases.
+            By defining a set of <a href="#att_TestCase_discriminator" shape="rect">'Characteristic variables'</a> you can specify which variable
+            values are used to differentiate between executions, thus characterizing the run-time
+            environment of the test. The values of these variables at the time of entry to the
+            'Test-case' are stored in the run-log. To emphasize the fact that each execution of a
+            'Test-case' node may represent a separate logical test-case there is an alternative
+            name attribute called <a href="#att_TestCase_reportname" shape="rect">'Name for run-log and report'</a>. Its value may contain references to
+            the 'Characteristic variables' of the test. In the run-log or report the test will then
+            be listed with this name, including the expanded run-time variable values.
+          </p>
+          
+<p>
+            Finally, there are situations in which a test cannot or should not be executed for
+            specific variable settings. If the <a href="#att_TestCase_condition" shape="rect">'Condition'</a> attribute of the
+            'Test-case' is defined, the 'Test-case' will only be executed if that expression expands
+            to a true value. If the 'Test-case' is not executed due to the 'Condition' it will
+            be listed as <em>skipped</em> in the report.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> <a href="rootnode.html#step_RootStep" shape="rect">'Test-suite'</a>, <a href="#step_TestSet" shape="rect">'Test-set'</a>.</p>
+<p>
+<strong>Children:</strong> 
+          Optional <a href="dependencies.html#step_Dependency" shape="rect">'Dependency'</a> or <a href="dependencies.html#step_DependencyReference" shape="rect">'Dependency reference'</a> as the first element. A
+          <a href="dependencies.html#step_SetupSequence" shape="rect">'Setup'</a> may be the next and a <a href="dependencies.html#step_CleanupSequence" shape="rect">'Cleanup'</a> the last node with an
+          arbitrary number of normal child nodes in between. A 'Test-case' that does not contain
+          normal child nodes will be listed as <em>not implemented</em> in the report.
+        </p>
+<p>
+<strong>Execution:</strong> 
+          First the <a href="#att_TestCase_variable" shape="rect">'Variable definitions'</a> of the 'Test-case' are bound on the primary and its
+          <a href="#att_TestCase_fallback" shape="rect">'Parameter default values'</a> on the fallback variable stack (see <a href="user_variables.html#usec_variables">chapter 6</a>). With these in place the <a href="#att_TestCase_condition" shape="rect">'Condition'</a> is evaluated
+          and the node will be skipped if a non-empty 'Condition' evaluates to false. Next the
+          dependency of the 'Test-case' - possibly inherited from its parent node - is determined
+          and resolved as described in <a href="user_organization.html#usec_dependencies">section 8.6</a>. Then the optional
+          'Setup' is executed once, followed by the normal child nodes and a single
+          execution of the optional 'Cleanup'. An exception raised during the course of
+          the 'Test-case' will be caught and passed to the 'Dependency' for handling in a
+          <a href="control.html#step_CatchSequence" shape="rect">'Catch'</a> node. Even if the exception is not handled by a 'Dependency' it is
+          not propagated beyond the 'Test-case' to prevent aborting the whole test-run. The error
+          state is duly noted in run-log and report however.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.2"></a><a name="figure_38.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_TestCase.png" target="_blank"><img src="images/att_TestCase.png" alt="Test-case attributes" texscale=".66" width="393" height="821"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.2</a>:&nbsp;&nbsp;'Test-case' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_TestCase_name"></a>
+<dt>'Name'</dt>
+<dd>
+            
+            
+<p>
+              A 'Test-case' is identified by its name and the names of its
+              <a href="#step_TestSet" shape="rect">'Test-set'</a> ancestors, so you should assign a name with a
+              meaning that is easy to recognize and remember.
+            </p>
+          
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty or contain
+          the characters '.' or '#'.</p>
+</dd>
+<a name="att_TestCase_reportname"></a>
+<dt>'Name for run-log and report'</dt>
+<dd>
+      
+<p>
+        A separate name to be used for run-log and report. This is useful to differentiate between
+        multiple executions with potentially different values for the 'Characteristic variables'.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TestCase_discriminator"></a>
+<dt>'Characteristic variables'</dt>
+<dd>
+      
+<p>
+        These variables are part of the characteristics of a 'Test-set' or 'Test-case'. Two
+        executions of a 'Test-case' are considered to represent the same logical test-case if the
+        run-time values of all 'Characteristic variables' are identical. The run-time values of the
+        'Characteristic variables' are stored in the run-log.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TestCase_externalizename"></a>
+<dt>'Name for separate run-log'</dt>
+<dd>
+      
+<p>
+        If this attribute is set it marks the node as a breaking point for split run-logs and
+        defines the filename for the partial log. When the node finishes, the respective log entry
+        is removed from the main run-log and saved as a separate, partial run-log. This operation
+        is completely transparent, the main run-log retains references to the partial logs and is
+        fully controllable. Please see <a href="user_debugging.html#usec_splitlogs">subsection 7.1.5</a> for further information
+        about split run-logs.
+      </p>
+      
+<p>
+        This attribute has no effect if the option <a href="opt_log.html#opt_supportsplitlog">Create split run-logs</a> is
+        disabled or split run-logs are explicitly turned off for batch mode via the
+        <a href="tech_execution.html#arg_splitlog" shape="rect"><code>-splitlog</code></a> command line argument.
+      </p>
+      
+<p>
+        There is no need to keep the filename unique. If necessary, QF-Test appends a number to the
+        filename to avoid collisions. The filename may contain directories and, similar to
+        specifying the name of a run-log in batch mode on the command line, the following
+        placeholders can be used after a '%' or a '+' character:
+      </p>
+      
+<a name="table_38.1"></a><a name="table_38.1"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdcenterleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Character</th>
+            <th rowspan="1" colspan="1">Replacement</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">%</td>
+            <td rowspan="1" colspan="1">Literal '%' character.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">+</td>
+            <td rowspan="1" colspan="1">Literal '+' character.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">i</td>
+            <td rowspan="1" colspan="1">The current runid as specified with <a href="tech_execution.html#arg_runid" shape="rect"><code>-runid &lt;ID&gt;</code></a>.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">r</td>
+            <td rowspan="1" colspan="1">The error level of the partial log.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">w</td>
+            <td rowspan="1" colspan="1">The number of warnings in the partial log.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">e</td>
+            <td rowspan="1" colspan="1">The number of errors in the partial log.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">x</td>
+            <td rowspan="1" colspan="1">The number of exceptions in the partial log.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">t</td>
+            <td rowspan="1" colspan="1">The thread index to which the partial log belongs
+              (for tests run with parallel threads).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">y</td>
+            <td rowspan="1" colspan="1">The current year (2 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">Y</td>
+            <td rowspan="1" colspan="1">The current year (4 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">M</td>
+            <td rowspan="1" colspan="1">The current month (2 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">d</td>
+            <td rowspan="1" colspan="1">The current day (2 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">h</td>
+            <td rowspan="1" colspan="1">The current hour (2 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">m</td>
+            <td rowspan="1" colspan="1">The current minute (2 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">s</td>
+            <td rowspan="1" colspan="1">The current second (2 digits).</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;38.1</a>:&nbsp;&nbsp;Placeholders for the 'Name for separate run-log' attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> 
+      None, characters that are illegal for a filename will be replaced with '_'.
+    </p>
+</dd>
+<a name="att_TestCase_inherit"></a>
+<dt>'Inherit dependency from parent node'</dt>
+<dd>
+      
+<p>
+        This option allows inheriting the <a href="dependencies.html#step_Dependency" shape="rect">'Dependency'</a> from the parent node as a replacement
+        for or in addition to specifying a 'Dependency' for the node itself.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TestCase_condition"></a>
+<dt>'Condition'</dt>
+<dd>
+      
+<p>
+        If the condition is non-empty it will be evaluated and if the result is false the
+        execution of the current node is aborted. In this case the node will be reported as
+        skipped.
+      </p>
+      
+<p>
+        Like the <a href="control.html#att_IfSequence_test" shape="rect">'Condition'</a> of an <a href="control.html#step_IfSequence" shape="rect">'If'</a> node, the 'Condition' is
+        evaluated by the Jython interpreter, so the same rules apply.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid syntax</p>
+</dd>
+<a name="att_TestCase_expectedfail"></a>
+<dt>'Expected to fail if...'</dt>
+<dd>
+            
+            
+<p>
+              This attribute allows specifying a condition under which the 'Test-case' is expected
+              to fail. This is helpful to distinguish new problems from already known ones. Of
+              course the latter should be fixed, but if and when that happens may be outside the
+              tester's sphere of influence.
+            </p>
+            
+<p>
+              Most of the time it is sufficient to simply set this attribute to 'true' to mark the
+              'Test-case' as an expected failure. But if the 'Test-case' is executed multiple times,
+              e.g. within a <a href="datadriver.html#step_DataDriver" shape="rect">'Data driver'</a> or on multiple systems and fails only in specific
+              cases, the condition should be written so that it evaluates to true for exactly
+              those cases, e.g. ${qftest:windows} for a test that fails on Windows but runs fine
+              on other systems.
+            </p>
+            
+<p>
+              If this attribute evaluates to true and the 'Test-case' fails with an error, it will
+              be listed separately in the run-log, report and on the status line. It still means
+              that there is an error in the application, so the overall percentage of successful
+              tests is not changed.
+            </p>
+            
+<p>
+              It is treated as an error if this attribute evaluates to true and the 'Test-case'
+              does not fail because this means that either the test is not able to reproduce the
+              problem reliably or that the problem has been fixed and the 'Test-case' must be
+              updated accordingly.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid syntax</p>
+</dd>
+<a name="att_TestCase_variable"></a>
+<dt>'Variable definitions'</dt>
+<dd>
+            
+            
+<p>
+              These variables are bound on the direct bindings stack (see <a href="user_variables.html#usec_variables">chapter 6</a>). They remain valid during the execution of the 'Test-case's'
+              child nodes and cannot be overridden by a <a href="#step_TestCall" shape="rect">'Test call'</a> node. See <a href="user_gui.html#usec_tables">subsection 2.2.5</a> about how to work with the table.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Variable names no, values yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TestCase_fallback"></a>
+<dt>'Parameter default values'</dt>
+<dd>
+            
+            
+<p>
+              Here you can define default or fallback values for the
+              'Test-case's' parameters (see <a href="user_variables.html#usec_variables">chapter 6</a>).
+              Defining these values also serves as documentation and is a
+              valuable time-saver when using the dialog to select the
+              'Test-case' for the <a href="#att_TestCall_calledtest" shape="rect">'Test name'</a> attribute of a
+              <a href="#step_TestCall" shape="rect">'Test call'</a>. See <a href="user_gui.html#usec_tables">subsection 2.2.5</a> about how
+              to work with the table.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Variable names no, values yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TestCase_maxerror"></a>
+<dt>'Maximum error level'</dt>
+<dd>
+      
+<p>
+        When a warning, error or exception occurs during a test run, the state
+        of the corresponding node of the run-log is set accordingly. This
+        state is normally propagated to the parent node in a way that ensures
+        that the error state of a run-log node represents the worst of its
+        child nodes' states. Using this attribute, the maximum error state
+        that the run-log node for a sequence will propagate, can be limited.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> This value has no effect on the way exceptions
+        are handled. It only affects the error states of the run-log nodes and
+        by that the exit code of QF-Test when run in batch mode
+        (see. <a href="user_installation.html#usec_execution">section 1.7</a>). It also has no effect on the
+        creation of compact run-logs (see command line argument
+        <a href="tech_execution.html#arg_compact" shape="rect"><code>-compact</code></a>).  The node for a sequence in which a warning, error
+        or exception occurs is never removed from a compact log, even if the
+        error is not propagated due to the setting of this attribute.
+      </p>
+      
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TestCase_exectimeout"></a>
+<dt>'Execution timeout'</dt>
+<dd>
+      
+<p>
+        Time limit for the node's execution in milliseconds. If that limit expires
+        the execution of that node will get interrupted.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> &gt;= 0</p>
+</dd>
+<a name="att_TestCase_border"></a>
+<dt>'Border for relative calls'</dt>
+<dd>
+      
+<p>
+        This flag determines whether relative procedure calls, test calls or
+        dependency references are allowed
+        within that certain node. Relative calls passing that border are not
+        allowed. If that attribute is not specified in the hierarchy, no
+        relative calls are allowed.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TestCase_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        When using the command line argument <a href="tech_execution.html#arg_test" shape="rect"><code>-test &lt;n&gt;|&lt;ID&gt;</code></a> for execution in batch mode you can
+        specify the 'QF-Test ID' of the node as an alternative to its qualified name.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_TestCase_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_TestCase_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_TestSet"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_TestSet">38.2.2</a></span>
+</div>
+<a href="contents.html#toc_step_TestSet">'Test-set'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/testset.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            The main purpose of a 'Test-set' is to give structure to the <a href="#step_TestCase" shape="rect">'Test-cases'</a> of a
+            test-suite. 'Test-sets' can be nested. The <a href="#att_TestSet_name" shape="rect">'Name'</a> of a 'Test-set' is part of
+            the 'Test-case's' fully qualified name to which a <a href="#step_TestCall" shape="rect">'Test call'</a> node refers.
+            'Test-sets' are also callable themselves and thus have a set of
+            <a href="#att_TestSet_fallback" shape="rect">'Parameter default values'</a> that can be overridden in the 'Test call'.
+          </p>
+          
+<p>
+            One way of structuring 'Test-cases' is to collect those with similar setup and cleanup
+            requirements in the same 'Test-set' which can provide a <a href="dependencies.html#step_Dependency" shape="rect">'Dependency'</a> or
+            <a href="dependencies.html#step_DependencyReference" shape="rect">'Dependency reference'</a> node to be inherited by the 'Test-case' or nested 'Test-set'
+            child nodes. If the <a href="#att_TestSet_inherit" shape="rect">'Inherit dependency from parent node'</a> attribute of the 'Test-set' is set, the
+            'Dependency' nodes of the 'Test-set's' parent(s) are also inherited. See <a href="user_organization.html#usec_dependencies">section 8.6</a> for information about QF-Test's dependency mechanism.
+            Alternative or additional setup and cleanup is available in the form of
+            <a href="dependencies.html#step_SetupSequence" shape="rect">'Setup'</a> and <a href="dependencies.html#step_CleanupSequence" shape="rect">'Cleanup'</a> nodes which will be executed before and
+            after each of the 'Test-set' and 'Test-case' child nodes.
+          </p>
+          
+<p>
+            Another important feature of a 'Test-set' is data-driven testing. This can be achieved
+            by adding a <a href="datadriver.html#step_DataDriver" shape="rect">'Data driver'</a> node with one or more 'Data binders' as described in
+            <a href="user_datadriver.html#usec_datadriver">chapter 20</a>.
+          </p>
+          
+<p>
+            Like a 'Test-case', a 'Test-set' plays an important role for reports. As it can also be
+            executed several times with different parameter settings, it has a set of
+            <a href="#att_TestSet_discriminator" shape="rect">'Characteristic variables'</a> and an alternative <a href="#att_TestSet_reportname" shape="rect">'Name for run-log and report'</a> that work just
+            like for a 'Test-case'. The same is true for the <a href="#att_TestSet_condition" shape="rect">'Condition'</a> which can be
+            used to skip an entire 'Test-set' depending on current variable values.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> <a href="rootnode.html#step_RootStep" shape="rect">'Test-suite'</a>, <a href="#step_TestSet" shape="rect">'Test-set'</a>.</p>
+<p>
+<strong>Children:</strong> 
+          Optional <a href="dependencies.html#step_Dependency" shape="rect">'Dependency'</a> or <a href="dependencies.html#step_DependencyReference" shape="rect">'Dependency reference'</a> as the first child, followed by
+          an optional <a href="datadriver.html#step_DataDriver" shape="rect">'Data driver'</a>. A <a href="dependencies.html#step_SetupSequence" shape="rect">'Setup'</a> may come next and a
+          <a href="dependencies.html#step_CleanupSequence" shape="rect">'Cleanup'</a> at the end with an arbitrary number of <a href="#step_TestSet" shape="rect">'Test-set'</a>,
+          <a href="#step_TestCase" shape="rect">'Test-case'</a> and <a href="#step_TestCall" shape="rect">'Test call'</a> nodes in between.
+        </p>
+<p>
+<strong>Execution:</strong> 
+          First the <a href="#att_TestSet_fallback" shape="rect">'Parameter default values'</a> of the 'Test-set' are bound on the fallback variable
+          stack (see <a href="user_variables.html#usec_variables">chapter 6</a>). With these in place the
+          <a href="#att_TestSet_condition" shape="rect">'Condition'</a> is evaluated and the node will be skipped if a non-empty
+          'Condition' evaluates to false. The <a href="dependencies.html#step_Dependency" shape="rect">'Dependency'</a> or <a href="dependencies.html#step_DependencyReference" shape="rect">'Dependency reference'</a>
+          node will not be resolved at this time unless its <a href="dependencies.html#att_Dependency_forcedexec" shape="rect">'Always execute, even in test-suite and test-set nodes'</a> attribute
+          is set. If there is a <a href="datadriver.html#step_DataDriver" shape="rect">'Data driver'</a> node, it is executed to create a data driving
+          context, bind one or more 'Data binders' and then repeatedly execute the other child
+          nodes as described in <a href="user_datadriver.html#usec_datadriver">chapter 20</a>. For each loop iteration - or
+          once in case no 'Data driver' is present - the 'Test-set' executes each of its 'Test-set'
+          or 'Test-case' child nodes. If an optional <a href="dependencies.html#step_SetupSequence" shape="rect">'Setup'</a> or <a href="dependencies.html#step_CleanupSequence" shape="rect">'Cleanup'</a>
+          node are present, they are executed before and after each of these child nodes
+          respectively.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.3"></a><a name="figure_38.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_TestSet.png" target="_blank"><img src="images/att_TestSet.png" alt="Test-set attributes" texscale=".66" width="393" height="690"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.3</a>:&nbsp;&nbsp;'Test-set' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_TestSet_name"></a>
+<dt>'Name'</dt>
+<dd>
+            
+            
+<p>
+              The name of a 'Test-set' is part of its own identification and of that of the
+              <a href="#step_TestCase" shape="rect">'Test-case'</a> and 'Test-set' nodes it contains, so you should assign a name with a
+              meaning that is easy to recognize and remember.
+            </p>
+          
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty or contain
+          the characters '.' or '#'.</p>
+</dd>
+<a name="att_TestSet_reportname"></a>
+<dt>'Name for run-log and report'</dt>
+<dd>
+      
+<p>
+        A separate name to be used for run-log and report. This is useful to differentiate between
+        multiple executions with potentially different values for the 'Characteristic variables'.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TestSet_discriminator"></a>
+<dt>'Characteristic variables'</dt>
+<dd>
+      
+<p>
+        These variables are part of the characteristics of a 'Test-set' or 'Test-case'. Two
+        executions of a 'Test-case' are considered to represent the same logical test-case if the
+        run-time values of all 'Characteristic variables' are identical. The run-time values of the
+        'Characteristic variables' are stored in the run-log.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TestSet_externalizename"></a>
+<dt>'Name for separate run-log'</dt>
+<dd>
+      
+<p>
+        If this attribute is set it marks the node as a breaking point for split run-logs and
+        defines the filename for the partial log. When the node finishes, the respective log entry
+        is removed from the main run-log and saved as a separate, partial run-log. This operation
+        is completely transparent, the main run-log retains references to the partial logs and is
+        fully controllable. Please see <a href="user_debugging.html#usec_splitlogs">subsection 7.1.5</a> for further information
+        about split run-logs.
+      </p>
+      
+<p>
+        This attribute has no effect if the option <a href="opt_log.html#opt_supportsplitlog">Create split run-logs</a> is
+        disabled or split run-logs are explicitly turned off for batch mode via the
+        <a href="tech_execution.html#arg_splitlog" shape="rect"><code>-splitlog</code></a> command line argument.
+      </p>
+      
+<p>
+        There is no need to keep the filename unique. If necessary, QF-Test appends a number to the
+        filename to avoid collisions. The filename may contain directories and, similar to
+        specifying the name of a run-log in batch mode on the command line, the following
+        placeholders can be used after a '%' or a '+' character:
+      </p>
+      
+<a name="table_38.2"></a><a name="table_38.2"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdcenterleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Character</th>
+            <th rowspan="1" colspan="1">Replacement</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">%</td>
+            <td rowspan="1" colspan="1">Literal '%' character.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">+</td>
+            <td rowspan="1" colspan="1">Literal '+' character.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">i</td>
+            <td rowspan="1" colspan="1">The current runid as specified with <a href="tech_execution.html#arg_runid" shape="rect"><code>-runid &lt;ID&gt;</code></a>.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">r</td>
+            <td rowspan="1" colspan="1">The error level of the partial log.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">w</td>
+            <td rowspan="1" colspan="1">The number of warnings in the partial log.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">e</td>
+            <td rowspan="1" colspan="1">The number of errors in the partial log.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">x</td>
+            <td rowspan="1" colspan="1">The number of exceptions in the partial log.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">t</td>
+            <td rowspan="1" colspan="1">The thread index to which the partial log belongs
+              (for tests run with parallel threads).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">y</td>
+            <td rowspan="1" colspan="1">The current year (2 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">Y</td>
+            <td rowspan="1" colspan="1">The current year (4 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">M</td>
+            <td rowspan="1" colspan="1">The current month (2 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">d</td>
+            <td rowspan="1" colspan="1">The current day (2 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">h</td>
+            <td rowspan="1" colspan="1">The current hour (2 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">m</td>
+            <td rowspan="1" colspan="1">The current minute (2 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">s</td>
+            <td rowspan="1" colspan="1">The current second (2 digits).</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;38.2</a>:&nbsp;&nbsp;Placeholders for the 'Name for separate run-log' attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> 
+      None, characters that are illegal for a filename will be replaced with '_'.
+    </p>
+</dd>
+<a name="att_TestSet_inherit"></a>
+<dt>'Inherit dependency from parent node'</dt>
+<dd>
+      
+<p>
+        This option allows inheriting the <a href="dependencies.html#step_Dependency" shape="rect">'Dependency'</a> from the parent node as a replacement
+        for or in addition to specifying a 'Dependency' for the node itself.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TestSet_condition"></a>
+<dt>'Condition'</dt>
+<dd>
+      
+<p>
+        If the condition is non-empty it will be evaluated and if the result is false the
+        execution of the current node is aborted. In this case the node will be reported as
+        skipped.
+      </p>
+      
+<p>
+        Like the <a href="control.html#att_IfSequence_test" shape="rect">'Condition'</a> of an <a href="control.html#step_IfSequence" shape="rect">'If'</a> node, the 'Condition' is
+        evaluated by the Jython interpreter, so the same rules apply.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid syntax</p>
+</dd>
+<a name="att_TestSet_fallback"></a>
+<dt>'Parameter default values'</dt>
+<dd>
+            
+            
+<p>
+              Here you can define default or fallback values for the
+              'Test-set's' parameters (see <a href="user_variables.html#usec_variables">chapter 6</a>).
+              Defining these values also serves as documentation and is a
+              valuable time-saver when using the dialog to select the
+              'Test-set' for the <a href="#att_TestCall_calledtest" shape="rect">'Test name'</a> attribute of a
+              <a href="#step_TestCall" shape="rect">'Test call'</a>. See <a href="user_gui.html#usec_tables">subsection 2.2.5</a> about how
+              to work with the table.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Variable names no, values yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TestSet_maxerror"></a>
+<dt>'Maximum error level'</dt>
+<dd>
+      
+<p>
+        When a warning, error or exception occurs during a test run, the state
+        of the corresponding node of the run-log is set accordingly. This
+        state is normally propagated to the parent node in a way that ensures
+        that the error state of a run-log node represents the worst of its
+        child nodes' states. Using this attribute, the maximum error state
+        that the run-log node for a sequence will propagate, can be limited.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> This value has no effect on the way exceptions
+        are handled. It only affects the error states of the run-log nodes and
+        by that the exit code of QF-Test when run in batch mode
+        (see. <a href="user_installation.html#usec_execution">section 1.7</a>). It also has no effect on the
+        creation of compact run-logs (see command line argument
+        <a href="tech_execution.html#arg_compact" shape="rect"><code>-compact</code></a>).  The node for a sequence in which a warning, error
+        or exception occurs is never removed from a compact log, even if the
+        error is not propagated due to the setting of this attribute.
+      </p>
+      
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TestSet_exectimeout"></a>
+<dt>'Execution timeout'</dt>
+<dd>
+      
+<p>
+        Time limit for the node's execution in milliseconds. If that limit expires
+        the execution of that node will get interrupted.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> &gt;= 0</p>
+</dd>
+<a name="att_TestSet_border"></a>
+<dt>'Border for relative calls'</dt>
+<dd>
+      
+<p>
+        This flag determines whether relative procedure calls, test calls or
+        dependency references are allowed
+        within that certain node. Relative calls passing that border are not
+        allowed. If that attribute is not specified in the hierarchy, no
+        relative calls are allowed.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TestSet_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        When using the command line argument <a href="tech_execution.html#arg_test" shape="rect"><code>-test &lt;n&gt;|&lt;ID&gt;</code></a> for execution in batch mode you can
+        specify the 'QF-Test ID' of the node as an alternative to its qualified name.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_TestSet_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_TestSet_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_TestCall"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_TestCall">38.2.3</a></span>
+</div>
+<a href="contents.html#toc_step_TestCall">'Test call'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/testcall.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            With this node a call to some other executable test node can be made. Possible targets
+            are <a href="rootnode.html#step_RootStep" shape="rect">'Test-suite'</a>, <a href="#step_TestSet" shape="rect">'Test-set'</a> and <a href="#step_TestCase" shape="rect">'Test-case'</a> nodes in the same or a different
+            test-suite. Execution will continue in the called node and when finished return to the
+            'Test call' and thus to its parent node.
+          </p>
+          
+<p>
+            The name of a 'Test-case' or 'Test-set' to call is determined by its <a href="#att_TestCase_name" shape="rect">'Name'</a>
+            and the <a href="#att_TestSet_name" shape="rect">'Names'</a> of its 'Test-set' ancestors. These are concatenated with a
+            dot ('.') as separator, starting with the outermost 'Test-set' and ending in the
+            'Test-case's' name. Thus to call a 'Test-case' named <code>nodeTest</code> in a
+            'Test-set' named <code>Tree</code> that is itself a child of a 'Test-set' named
+            <code>Main</code>, the <a href="#att_TestCall_calledtest" shape="rect">'Test name'</a> attribute would be set to
+            '<code>Main.Tree.nodeTest</code>'. A node in a different test-suite is addressed by
+            prepending the filename of the test-suite followed by a '#' to the 'Test name'. A
+            'Test-suite' node is addressed by a single '.', so calling a whole test-suite is done
+            with a 'Test name' attribute of the form '<code>suitename.qft#.</code>'. It is
+            generally easiest to pick the target node interactively from a dialog by clicking on
+            the button above the 'Test name' attribute.
+          </p>
+          
+<p>
+            See also <a href="user_distributed.html#usec_suitereference">section 23.1</a> for further information about
+            cross-suite calls.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> All kinds of <a href="#sec_sequences" shape="rect">sequences</a>.</p>
+<p>
+<strong>Children:</strong> None</p>
+<p>
+<strong>Execution:</strong> 
+          The <a href="#att_TestCall_variable" shape="rect">'Variable definitions'</a> of the 'Test call' are bound, the target node is determined
+          and execution is passed to it. After the 'Test call' returns, the 'Test call's' variables
+          are unbound again.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.4"></a><a name="figure_38.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_TestCall.png" target="_blank"><img src="images/att_TestCall.png" alt="Test call Attributes" texscale=".66" width="393" height="442"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.4</a>:&nbsp;&nbsp;'Test call' Attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_TestCall_calledtest"></a>
+<dt>'Name'</dt>
+<dd>
+            
+            
+<p>
+              In case of a 'Test-case' or 'Test-set' it is the full name, created from the
+              <a href="#att_TestSet_name" shape="rect">'Name'</a> of its 'Test-set' parents and its own <a href="#att_TestCase_name" shape="rect">'Name'</a>, joined
+              by a dot. A 'Test-suite' node is addressed by a single '.' character.
+	      The "Select test" button
+              <img src="../icons/select_test.png" style="vertical-align: text-bottom" alt="[Select test]" title="Select test" width="20" height="20" texscale=".66">
+	      above the attribute brings up a dialog in which you can select the target node
+              interactively.
+              You can also get to this dialog by pressing [Shift-Return] or [Alt-Return] when the focus is in
+              the text field.
+              By selecting the "Copy parameters" checkbox you can adopt the
+              'Test-case's' or 'Test-set's' 'Parameter default values' as parameters for the 'Test call' node to
+              save typing.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_TestCall_externalizename"></a>
+<dt>'Name for separate run-log'</dt>
+<dd>
+      
+<p>
+        If this attribute is set it marks the node as a breaking point for split run-logs and
+        defines the filename for the partial log. When the node finishes, the respective log entry
+        is removed from the main run-log and saved as a separate, partial run-log. This operation
+        is completely transparent, the main run-log retains references to the partial logs and is
+        fully controllable. Please see <a href="user_debugging.html#usec_splitlogs">subsection 7.1.5</a> for further information
+        about split run-logs.
+      </p>
+      
+<p>
+        This attribute has no effect if the option <a href="opt_log.html#opt_supportsplitlog">Create split run-logs</a> is
+        disabled or split run-logs are explicitly turned off for batch mode via the
+        <a href="tech_execution.html#arg_splitlog" shape="rect"><code>-splitlog</code></a> command line argument.
+      </p>
+      
+<p>
+        There is no need to keep the filename unique. If necessary, QF-Test appends a number to the
+        filename to avoid collisions. The filename may contain directories and, similar to
+        specifying the name of a run-log in batch mode on the command line, the following
+        placeholders can be used after a '%' or a '+' character:
+      </p>
+      
+<a name="table_38.3"></a><a name="table_38.3"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdcenterleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Character</th>
+            <th rowspan="1" colspan="1">Replacement</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">%</td>
+            <td rowspan="1" colspan="1">Literal '%' character.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">+</td>
+            <td rowspan="1" colspan="1">Literal '+' character.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">i</td>
+            <td rowspan="1" colspan="1">The current runid as specified with <a href="tech_execution.html#arg_runid" shape="rect"><code>-runid &lt;ID&gt;</code></a>.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">r</td>
+            <td rowspan="1" colspan="1">The error level of the partial log.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">w</td>
+            <td rowspan="1" colspan="1">The number of warnings in the partial log.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">e</td>
+            <td rowspan="1" colspan="1">The number of errors in the partial log.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">x</td>
+            <td rowspan="1" colspan="1">The number of exceptions in the partial log.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">t</td>
+            <td rowspan="1" colspan="1">The thread index to which the partial log belongs
+              (for tests run with parallel threads).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">y</td>
+            <td rowspan="1" colspan="1">The current year (2 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">Y</td>
+            <td rowspan="1" colspan="1">The current year (4 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">M</td>
+            <td rowspan="1" colspan="1">The current month (2 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">d</td>
+            <td rowspan="1" colspan="1">The current day (2 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">h</td>
+            <td rowspan="1" colspan="1">The current hour (2 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">m</td>
+            <td rowspan="1" colspan="1">The current minute (2 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">s</td>
+            <td rowspan="1" colspan="1">The current second (2 digits).</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;38.3</a>:&nbsp;&nbsp;Placeholders for the 'Name for separate run-log' attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> 
+      None, characters that are illegal for a filename will be replaced with '_'.
+    </p>
+</dd>
+<a name="att_TestCall_variable"></a>
+<dt>'Variable definitions'</dt>
+<dd>
+            
+            
+<p>
+              This is where you define the parameter values for the target node. These variables
+              are bound on the primary variable stack (see <a href="user_variables.html#usec_variables">chapter 6</a>) so
+              they override any 'Parameter default values'. See <a href="user_gui.html#usec_tables">subsection 2.2.5</a> about how to work
+              with the table.
+            </p>
+            
+<p>
+<span class="margin"><a name="new_N111934"></a><span class="note">4.2+</span></span>
+            In case you want to re-set the order of the parameters like they are sorted in
+            the called test-case or test-set, you can select &raquo;<em>Re-set parameter order</em>&laquo;.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Variable names no, values yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TestCall_actasproccall"></a>
+<dt>'Act like a procedure call'</dt>
+<dd>
+            
+            
+<p>
+              If the 'Test call' node is executed inside a 'Test-case', this attribute determines how exceptions are
+              handled in the called node(s). If it is activated a single exception terminates the whole call
+              irrespective of 'Test-set' and 'Test-case' nesting, just like it would for a regular 'Procedure call' node.
+              If this attribute is unset the special roles of 'Test-set' and 'Test-case' nodes with their local
+              exception handling is maintained.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TestCall_exectimeout"></a>
+<dt>'Execution timeout'</dt>
+<dd>
+      
+<p>
+        Time limit for the node's execution in milliseconds. If that limit expires
+        the execution of that node will get interrupted.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> &gt;= 0</p>
+</dd>
+<a name="att_TestCall_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_TestCall_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_TestCall_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_BasicSequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_BasicSequence">38.2.4</a></span>
+</div>
+<a href="contents.html#toc_step_BasicSequence">'Sequence'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/basic.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            This is the most general kind of sequence. Its children are
+            executed one by one and their number or type is not limited in any
+            way.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> All kinds of <a href="#sec_sequences" shape="rect">sequences</a>.</p>
+<p>
+<strong>Children:</strong> Any</p>
+<p>
+<strong>Execution:</strong> 
+          The <a href="#att_BasicSequence_variable" shape="rect">'Variable definitions'</a> of the 'Sequence' are bound
+          and its child nodes executed one by one. After the execution of the
+          last child is complete, the variables are unbound again.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.5"></a><a name="figure_38.5"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_BasicSequence.png" target="_blank"><img src="images/att_BasicSequence.png" alt="Sequence attributes" texscale=".66" width="393" height="367"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.5</a>:&nbsp;&nbsp;'Sequence' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_BasicSequence_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        The name of a sequence is a kind of short description. It is displayed
+        in the tree view, so it should be concise and tell something about the
+        function of the sequence.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_BasicSequence_variable"></a>
+<dt>'Variable definitions'</dt>
+<dd>
+      
+<p>
+        This is where you define the values of the variables that remain bound
+        during the execution of the sequence's child nodes (see <a href="user_variables.html#usec_variables">chapter 6</a>).  See <a href="user_gui.html#usec_tables">subsection 2.2.5</a> about how to
+        work with the table.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Variable names no, values yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_BasicSequence_maxerror"></a>
+<dt>'Maximum error level'</dt>
+<dd>
+      
+<p>
+        When a warning, error or exception occurs during a test run, the state
+        of the corresponding node of the run-log is set accordingly. This
+        state is normally propagated to the parent node in a way that ensures
+        that the error state of a run-log node represents the worst of its
+        child nodes' states. Using this attribute, the maximum error state
+        that the run-log node for a sequence will propagate, can be limited.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> This value has no effect on the way exceptions
+        are handled. It only affects the error states of the run-log nodes and
+        by that the exit code of QF-Test when run in batch mode
+        (see. <a href="user_installation.html#usec_execution">section 1.7</a>). It also has no effect on the
+        creation of compact run-logs (see command line argument
+        <a href="tech_execution.html#arg_compact" shape="rect"><code>-compact</code></a>).  The node for a sequence in which a warning, error
+        or exception occurs is never removed from a compact log, even if the
+        error is not propagated due to the setting of this attribute.
+      </p>
+      
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_BasicSequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_BasicSequence_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_BasicSequence_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_TestStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_TestStep">38.2.5</a></span>
+</div>
+<a href="contents.html#toc_step_TestStep">'Test-step'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/teststep.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            A 'Test-step' is a special 'Sequence' that serves to divide a 'Test-case' into
+            steps that can be documented individually and will show up in the report or testdoc
+            documentation. In contrast to 'Test-cases', which should not be nested, 'Test-steps' can
+            be nested to any depth.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> All kinds of <a href="#sec_sequences" shape="rect">sequences</a>.</p>
+<p>
+<strong>Children:</strong> Any</p>
+<p>
+<strong>Execution:</strong> 
+          The <a href="#att_TestStep_variable" shape="rect">'Variable definitions'</a> of the 'Test-step' are bound
+          and its child nodes executed one by one. After the execution of the
+          last child is complete, the variables are unbound again.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.6"></a><a name="figure_38.6"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_TestStep.png" target="_blank"><img src="images/att_TestStep.png" alt="Test-step attributes" texscale=".66" width="393" height="505"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.6</a>:&nbsp;&nbsp;'Test-step' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_TestStep_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        The name of a sequence is a kind of short description. It is displayed
+        in the tree view, so it should be concise and tell something about the
+        function of the sequence.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TestStep_reportname"></a>
+<dt>'Name for run-log and report'</dt>
+<dd>
+      
+<p>
+        A separate name to be used for run-log and report. This is useful to differentiate between
+        multiple executions of the surrounding 'Test-case' with potentially different values for
+        its 'Characteristic variables'.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TestStep_externalizename"></a>
+<dt>'Name for separate run-log'</dt>
+<dd>
+      
+<p>
+        If this attribute is set it marks the node as a breaking point for split run-logs and
+        defines the filename for the partial log. When the node finishes, the respective log entry
+        is removed from the main run-log and saved as a separate, partial run-log. This operation
+        is completely transparent, the main run-log retains references to the partial logs and is
+        fully controllable. Please see <a href="user_debugging.html#usec_splitlogs">subsection 7.1.5</a> for further information
+        about split run-logs.
+      </p>
+      
+<p>
+        This attribute has no effect if the option <a href="opt_log.html#opt_supportsplitlog">Create split run-logs</a> is
+        disabled or split run-logs are explicitly turned off for batch mode via the
+        <a href="tech_execution.html#arg_splitlog" shape="rect"><code>-splitlog</code></a> command line argument.
+      </p>
+      
+<p>
+        There is no need to keep the filename unique. If necessary, QF-Test appends a number to the
+        filename to avoid collisions. The filename may contain directories and, similar to
+        specifying the name of a run-log in batch mode on the command line, the following
+        placeholders can be used after a '%' or a '+' character:
+      </p>
+      
+<a name="table_38.4"></a><a name="table_38.4"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdcenterleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Character</th>
+            <th rowspan="1" colspan="1">Replacement</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">%</td>
+            <td rowspan="1" colspan="1">Literal '%' character.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">+</td>
+            <td rowspan="1" colspan="1">Literal '+' character.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">i</td>
+            <td rowspan="1" colspan="1">The current runid as specified with <a href="tech_execution.html#arg_runid" shape="rect"><code>-runid &lt;ID&gt;</code></a>.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">r</td>
+            <td rowspan="1" colspan="1">The error level of the partial log.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">w</td>
+            <td rowspan="1" colspan="1">The number of warnings in the partial log.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">e</td>
+            <td rowspan="1" colspan="1">The number of errors in the partial log.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">x</td>
+            <td rowspan="1" colspan="1">The number of exceptions in the partial log.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">t</td>
+            <td rowspan="1" colspan="1">The thread index to which the partial log belongs
+              (for tests run with parallel threads).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">y</td>
+            <td rowspan="1" colspan="1">The current year (2 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">Y</td>
+            <td rowspan="1" colspan="1">The current year (4 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">M</td>
+            <td rowspan="1" colspan="1">The current month (2 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">d</td>
+            <td rowspan="1" colspan="1">The current day (2 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">h</td>
+            <td rowspan="1" colspan="1">The current hour (2 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">m</td>
+            <td rowspan="1" colspan="1">The current minute (2 digits).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">s</td>
+            <td rowspan="1" colspan="1">The current second (2 digits).</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;38.4</a>:&nbsp;&nbsp;Placeholders for the 'Name for separate run-log' attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> 
+      None, characters that are illegal for a filename will be replaced with '_'.
+    </p>
+</dd>
+<a name="att_TestStep_variable"></a>
+<dt>'Variable definitions'</dt>
+<dd>
+      
+<p>
+        This is where you define the values of the variables that remain bound
+        during the execution of the sequence's child nodes (see <a href="user_variables.html#usec_variables">chapter 6</a>).  See <a href="user_gui.html#usec_tables">subsection 2.2.5</a> about how to
+        work with the table.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Variable names no, values yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TestStep_maxerror"></a>
+<dt>'Maximum error level'</dt>
+<dd>
+      
+<p>
+        When a warning, error or exception occurs during a test run, the state
+        of the corresponding node of the run-log is set accordingly. This
+        state is normally propagated to the parent node in a way that ensures
+        that the error state of a run-log node represents the worst of its
+        child nodes' states. Using this attribute, the maximum error state
+        that the run-log node for a sequence will propagate, can be limited.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> This value has no effect on the way exceptions
+        are handled. It only affects the error states of the run-log nodes and
+        by that the exit code of QF-Test when run in batch mode
+        (see. <a href="user_installation.html#usec_execution">section 1.7</a>). It also has no effect on the
+        creation of compact run-logs (see command line argument
+        <a href="tech_execution.html#arg_compact" shape="rect"><code>-compact</code></a>).  The node for a sequence in which a warning, error
+        or exception occurs is never removed from a compact log, even if the
+        error is not propagated due to the setting of this attribute.
+      </p>
+      
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TestStep_exectimeout"></a>
+<dt>'Execution timeout'</dt>
+<dd>
+      
+<p>
+        Time limit for the node's execution in milliseconds. If that limit expires
+        the execution of that node will get interrupted.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> &gt;= 0</p>
+</dd>
+<a name="att_TestStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_TestStep_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_TestStep_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_TimeConstrainedSequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_TimeConstrainedSequence">38.2.6</a></span>
+</div>
+<a href="contents.html#toc_step_TimeConstrainedSequence">'Sequence with time limit'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/timeseq.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            This node extends the basic <a href="#step_BasicSequence" shape="rect">'Sequence'</a> node with time-constraint checking.
+            Child nodes are executed as usual, but upon completion of the sequence the elapsed
+            time is compared to the time-limit. Exceeding the time limit will result in a warning,
+            error or exception, depending on the value of the attribute
+            <a href="#att_TimeConstrainedSequence_timeerror" shape="rect">'Error level if time limit exceeded'</a>. Explicit delays like
+            <a href="#att_TimeConstrainedSequence_delay" shape="rect">'Delay before/after'</a> or user interrupts are deducted from the duration
+            before the constraints are checked, unless <a href="#att_TimeConstrainedSequence_checkrealtime" shape="rect">'Check realtime'</a>
+            is activated.
+          </p>
+          
+<p>
+            For report generation, time-constraints are treated like checks. If the
+            <a href="#att_TimeConstrainedSequence_comment" shape="rect">'Comment'</a> attribute starts with an '!' character, the
+            result will be logged in the report.
+          </p>
+          
+<p>
+            
+<span class="margin"><span class="note">Note</span></span> The function of this node is to check time constraints in the
+            user-acceptance range, i.e. between a few hundred milliseconds and a few seconds.
+            Real-time constraints of a few milliseconds or less are beyond its limits.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> All kinds of <a href="#sec_sequences" shape="rect">sequences</a>.</p>
+<p>
+<strong>Children:</strong> Any</p>
+<p>
+<strong>Execution:</strong> 
+          The <a href="#att_TimeConstrainedSequence_variable" shape="rect">'Variable definitions'</a> of the 'Sequence with time limit' are bound
+          and its child nodes executed one by one. After the execution of the
+          last child is complete, the variables are unbound again. The elapsed time is compared to
+          the given time limit.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.7"></a><a name="figure_38.7"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_TimeConstrainedSequence.png" target="_blank"><img src="images/att_TimeConstrainedSequence.png" alt="Sequence with time limit attributes" texscale=".66" width="393" height="532"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.7</a>:&nbsp;&nbsp;'Sequence with time limit' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_TimeConstrainedSequence_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        The name of a sequence is a kind of short description. It is displayed
+        in the tree view, so it should be concise and tell something about the
+        function of the sequence.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TimeConstrainedSequence_timelimit"></a>
+<dt>'Time limit for execution'</dt>
+<dd>
+            
+<p>
+              The time (in milliseconds) allowed for the execution of the sequence.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be negative.</p>
+</dd>
+<a name="att_TimeConstrainedSequence_checkrealtime"></a>
+<dt>'Check realtime'</dt>
+<dd>
+            
+<p>
+              Normally explicit delays like <a href="#att_TimeConstrainedSequence_delay" shape="rect">'Delay before/after'</a> or user interrupts
+              are deducted from the duration, before the time constraints are checked. To prevent
+              this deduction and therefore check the real-time, this attribute can be activated.
+            </p>
+          
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TimeConstrainedSequence_timeerror"></a>
+<dt>'Error level if time limit exceeded'</dt>
+<dd>
+      
+<p>
+        This attribute determines what happens in case the time limit is exceeded. If set to
+        "exception", a <a href="exceptions.html#ex_CheckFailedException" shape="rect"><code>CheckFailedException</code></a> will be thrown. Otherwise a message with
+        the respective error-level will be logged in the run-log.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TimeConstrainedSequence_variable"></a>
+<dt>'Variable definitions'</dt>
+<dd>
+      
+<p>
+        This is where you define the values of the variables that remain bound
+        during the execution of the sequence's child nodes (see <a href="user_variables.html#usec_variables">chapter 6</a>).  See <a href="user_gui.html#usec_tables">subsection 2.2.5</a> about how to
+        work with the table.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Variable names no, values yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TimeConstrainedSequence_maxerror"></a>
+<dt>'Maximum error level'</dt>
+<dd>
+      
+<p>
+        When a warning, error or exception occurs during a test run, the state
+        of the corresponding node of the run-log is set accordingly. This
+        state is normally propagated to the parent node in a way that ensures
+        that the error state of a run-log node represents the worst of its
+        child nodes' states. Using this attribute, the maximum error state
+        that the run-log node for a sequence will propagate, can be limited.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> This value has no effect on the way exceptions
+        are handled. It only affects the error states of the run-log nodes and
+        by that the exit code of QF-Test when run in batch mode
+        (see. <a href="user_installation.html#usec_execution">section 1.7</a>). It also has no effect on the
+        creation of compact run-logs (see command line argument
+        <a href="tech_execution.html#arg_compact" shape="rect"><code>-compact</code></a>).  The node for a sequence in which a warning, error
+        or exception occurs is never removed from a compact log, even if the
+        error is not propagated due to the setting of this attribute.
+      </p>
+      
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TimeConstrainedSequence_exectimeout"></a>
+<dt>'Execution timeout'</dt>
+<dd>
+      
+<p>
+        Time limit for the node's execution in milliseconds. If that limit expires
+        the execution of that node will get interrupted.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> &gt;= 0</p>
+</dd>
+<a name="att_TimeConstrainedSequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_TimeConstrainedSequence_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_TimeConstrainedSequence_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ExtraSequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ExtraSequence">38.2.7</a></span>
+</div>
+<a href="contents.html#toc_step_ExtraSequence">'Extras'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/extras.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            This node is a kind of clipboard or playground where the usual
+            restrictions on the parent of a node don't apply. You can add any
+            kind of node here to assemble and try out some test sequences.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> Root node</p>
+<p>
+<strong>Children:</strong> Any</p>
+<p>
+<strong>Execution:</strong> 
+          Cannot be executed
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.8"></a><a name="figure_38.8"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ExtraSequence.png" target="_blank"><img src="images/att_ExtraSequence.png" alt="Extras attributes" texscale=".66" width="393" height="144"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.8</a>:&nbsp;&nbsp;'Extras' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ExtraSequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_ExtraSequence_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="rootnode.html#sec_rootnode"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 38.1&nbsp;The test-suite and its structure" title="Previous Chapter: 38.1&nbsp;The test-suite and its structure"></a></td><td class="navicon"><a href="dependencies.html#sec_dependencies"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 38.3&nbsp;Dependencies" title="Next Page: 38.3&nbsp;Dependencies"></a></td><td class="navicon"><a href="dependencies.html#sec_dependencies"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 38.3&nbsp;Dependencies" title="Next Chapter: 38.3&nbsp;Dependencies"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 38&nbsp;Elements of a test-suite" title="Chapter Overview: 38&nbsp;Elements of a test-suite"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

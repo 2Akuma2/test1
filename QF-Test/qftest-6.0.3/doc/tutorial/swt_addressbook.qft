@@ -1,0 +1,729 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="root"
+          signature="302E0215008EECF7CB7A7B39B19987BD8D37709B456A506F5C021500D0989DD61331C0B2ABE56B0981F7979CFCA1F1B5"
+          version="6.0.3">
+  <include>qfs.qft</include>
+  <variable name="client">swt</variable>
+  <variable name="demoopt1">-noop</variable>
+  <variable name="demoopt2">-noop</variable>
+  <variable name="demoopt3">-noop</variable>
+  <variable name="demoopt4">-noop</variable>
+  <variable name="demoopt5">-secureXX</variable>
+  <DependencyReference id="_2zJ" reference="Dependencies.demoStarted"/>
+  <TestSet id="_2z+" name="Misc replay">
+    <TestCase id="_2+J" name="Help about">
+      <SelectionEventStep client="$(client)" component="MenuHelp"
+                          event="SELECTION" id="_2+L"/>
+      <SelectionEventStep client="$(client)" component="MenuHelp.About"
+                          event="SELECTION" id="_2+M"/>
+      <ComponentWaiter client="$(client)" component="comAboutAddress_Book"
+                       id="_2+N"/>
+      <SelectionEventStep client="$(client)" component="comAboutAddress_Book"
+                          detail="32" event="SELECTION" id="_2+O"/>
+    </TestCase>
+    <TestCase id="_2z-" name="Fill and check table">
+      <DependencyReference id="_2+G" reference="Dependencies.tableEmpty"/>
+      <ProcedureCall id="_2+1" procedure="table.addLines">
+        <variable name="singleEvents">true</variable>
+        <variable name="count">5</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_301" procedure="checks.checkTable"/>
+    </TestCase>
+    <TestCase id="_2-M" name="Load and save">
+      <Dependency id="_2-R" name="Files copied and demo started">
+        <DependencyReference id="_2-U" reference="Dependencies.demoStarted"/>
+      </Dependency>
+      <ProcedureCall id="_2-p" procedure="table.loadAddressBook">
+        <variable name="dir">${qftestJUI:suite.dir}</variable>
+        <variable name="file">default.adr</variable>
+        <variable name="overwrite">true</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_300" procedure="checks.checkTable"/>
+      <ProcedureCall id="_2-s" procedure="table.clearAddressbook"/>
+      <ProcedureCall id="_2-t" procedure="table.addLines">
+        <variable name="singleEvents">true</variable>
+        <variable name="count">5</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_302" procedure="checks.checkTable"/>
+      <ProcedureCall id="_303" procedure="table.saveAddressBook">
+        <variable name="dir">${qftestJUI:suite.dir}</variable>
+        <variable name="file">addressbook.adr</variable>
+        <variable name="overwrite">true</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_304" procedure="util.diff">
+        <variable name="parent">${qftestJUI:suite.dir}</variable>
+        <variable name="file1">default.adr</variable>
+        <variable name="file2">addressbook.adr</variable>
+        <variable name="expect">0</variable>
+      </ProcedureCall>
+    </TestCase>
+    <TestCase id="_30p" name="Load edit and check">
+      <Dependency id="_30q" name="Files copied and demo started">
+        <DependencyReference id="_30r" reference="Dependencies.demoStarted"/>
+      </Dependency>
+      <ProcedureCall id="_30s" procedure="table.loadAddressBook">
+        <variable name="dir">${qftestJUI:suite.dir}</variable>
+        <variable name="file">default.adr</variable>
+        <variable name="overwrite">true</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_30t" procedure="checks.checkTable"/>
+      <RepeatSequence count="5" id="_30z" var="row">
+        <ProcedureCall id="_30v" procedure="table.editLine">
+          <variable name="singleEvents">true</variable>
+          <variable name="lastName">ln$(row)</variable>
+        </ProcedureCall>
+      </RepeatSequence>
+      <ProcedureCall id="_30w" procedure="checks.checkEdited"/>
+    </TestCase>
+    <TestCase id="_30-" name="Load edit and check, single events">
+      <Dependency id="_310" name="Files copied and demo started">
+        <DependencyReference id="_311" reference="Dependencies.demoStarted"/>
+      </Dependency>
+      <ProcedureCall id="_312" procedure="table.loadAddressBook">
+        <variable name="dir">${qftestJUI:suite.dir}</variable>
+        <variable name="file">default.adr</variable>
+        <variable name="overwrite">true</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_313" procedure="checks.checkTable"/>
+      <RepeatSequence count="5" id="_314" var="row">
+        <ProcedureCall id="_315" procedure="table.editLine">
+          <variable name="singleEvents">true</variable>
+          <variable name="separateEvents">true</variable>
+          <variable name="lastName">ln$(row)</variable>
+        </ProcedureCall>
+      </RepeatSequence>
+      <ProcedureCall id="_316" procedure="checks.checkEdited"/>
+    </TestCase>
+  </TestSet>
+  <PackageRoot id="_2">
+    <Package id="_2yv" name="Dependencies">
+      <Dependency id="_4V" name="determineSWTArch">
+        <SetupSequence id="_4W">
+          <ServerScriptStep id="_4X">
+            <code>if rc.getBool("qftest", "windows"):
+    arch = "win32"
+else:
+    arch = "linux-gtk"
+if rc.lookup("system", "os.arch").endswith("64"):
+    arch += "-64"
+rc.setGlobal("arch", arch)</code>
+          </ServerScriptStep>
+        </SetupSequence>
+      </Dependency>
+      <Dependency id="_2yh" name="demoStarted">
+        <discriminator>client</discriminator>
+        <discriminator>sutJDK</discriminator>
+        <variable name="client"/>
+        <variable name="sutJDK">${system:java.home}</variable>
+        <DependencyReference id="_2yj"
+                             reference="Dependencies.determineSWTArch"/>
+        <SetupSequence id="_2yk">
+          <variable name="client">multi</variable>
+          <TryStep id="_2yl">
+            <ClientWaiter client="$(client)" id="_2ym" timeout="0"/>
+            <CatchSequence exception="ClientNotConnectedException" id="_2yn"
+                           maxerror="0">
+              <ProcedureCall id="_2yo" procedure="main.start"/>
+            </CatchSequence>
+          </TryStep>
+        </SetupSequence>
+        <CleanupSequence id="_2yp">
+          <TryStep id="_2yq">
+            <ClientWaiter client="$(client)" id="_2yr" timeout="0"/>
+            <CatchSequence exception="ClientNotConnectedException" id="_2ys"
+                           maxerror="0">
+              <ReturnStep id="_2yt"/>
+            </CatchSequence>
+          </TryStep>
+          <ProcedureCall id="_2yu" procedure="main.exit"/>
+        </CleanupSequence>
+      </Dependency>
+      <Dependency id="_2+8" name="tableEmpty">
+        <DependencyReference id="_2+F" reference="Dependencies.demoStarted"/>
+        <SetupSequence id="_2+9">
+          <ClientScriptStep client="$(client)" id="_2+E">
+            <code>table = rc.getComponent("Table")
+if table.getItemCount() == 0:
+    raise ReturnException</code>
+          </ClientScriptStep>
+          <ProcedureCall id="_2-L" procedure="table.clearAddressbook"/>
+        </SetupSequence>
+      </Dependency>
+    </Package>
+    <Package id="_2yw" name="main">
+      <Procedure id="_2yx" name="start">
+        <variable name="demoClass">de.qfs.apps.qftest.demo.swt.addressbook.AddressBook</variable>
+        <variable name="waitforComp">AddressBook</variable>
+        <comment>Start a demo and wait for its given component to appear.
+
+@param demoClass	The main demo class to be started
+@param waitforComp	A component to wait for to ensure full start.</comment>
+        <ServerScriptStep id="_2yg">
+          <code>import math
+rc.setGlobal("threadFactor", int(math.floor(math.sqrt(${qftestJUI:threads}))))
+
+# clear and repropagate client
+rc.setGlobal("client", None)
+rc.setGlobal("client", rc.lookup("client"))
+
+if ${qftestJUI:windows}:
+    rc.setLocal("java", "javaw.exe")
+else:
+    rc.setLocal("java", "java")
+</code>
+        </ServerScriptStep>
+        <JavaClientStarter class="$(demoClass)" client="$(client)"
+                           directory="." executable="$(sutJDK)/bin/$(java)"
+                           id="_2z0">
+          <parameter>-classpath</parameter>
+          <parameter>${system:java.class.path}${system:path.separator}${qftest:dir.version}/swt/$(arch)/4.7/swt.jar</parameter>
+          <parameter>-Djava.security.policy=qf.policy</parameter>
+          <parameter>-D-Xrunhprof:heap=all</parameter>
+          <parameter>-Djava.library.path=${qftest:dir.version}/swt/$(arch)/4.7/</parameter>
+          <arg>$(demoopt1)</arg>
+          <arg>$(demoopt2)</arg>
+          <arg>$(demoopt3)</arg>
+          <arg>$(demoopt4)</arg>
+          <arg>$(demoopt5)</arg>
+          <extraarg>-jythonport=$[18181 + ${qftestJUI:thread}]</extraarg>
+        </JavaClientStarter>
+        <ClientWaiter client="$(client)" id="_2yz"
+                      timeout="$[60000 * $(threadFactor)]"/>
+        <ComponentWaiter client="$(client)" component="$(waitforComp)"
+                         id="_2y+" timeout="$[60000 * $(threadFactor)]"/>
+        <ProcedureCall id="_2yd" procedure="main.cascadeWindow">
+          <variable name="id">$(waitforComp)</variable>
+        </ProcedureCall>
+      </Procedure>
+      <Procedure id="_1bz" name="exit">
+        <comment>Exit Multi demo
+</comment>
+        <TryStep id="_1c1" name="proper exit">
+          <WindowEventStep client="$(client)" component="AddressBook"
+                           event="WINDOW_CLOSING" id="_1dR"/>
+          <SelectionEventStep client="$(client)" component="comAddress_Book"
+                              detail="128" event="SELECTION" id="_2+R"/>
+          <CatchSequence exception="TestException" id="_1d-" maxerror="0"
+                         name="Ignore all"/>
+          <FinallySequence id="_1dv" name="Make sure it's dead">
+            <TryStep id="_1dw" name="has client terminated?">
+              <ProcessWaiter client="$(client)" id="_1dy"/>
+              <CatchSequence exception="ClientNotTerminatedException"
+                             id="_1dz" maxerror="0">
+                <ClientStopper client="$(client)" id="_1d+"/>
+              </CatchSequence>
+            </TryStep>
+          </FinallySequence>
+        </TryStep>
+      </Procedure>
+      <Procedure id="_2yY" name="cascadeWindow">
+        <comment>Cascade window depending on number of threads and thread ID so that windows are spread evenly across the screen.
+
+@param	id	The window id.</comment>
+        <IfSequence id="_2yZ" test="${qftestJUI:threads} &gt; 1">
+          <variable name="x"/>
+          <variable name="y"/>
+          <variable name="width"/>
+          <variable name="height"/>
+          <FetchGeometryStep client="$(client)" component="$(id)"
+                             heightvarname="height" id="_2yc" local="true"
+                             widthvarname="width"/>
+          <ServerScriptStep id="_2ya">
+            <code>from java.awt import Toolkit
+
+dim = Toolkit.getDefaultToolkit().getScreenSize()
+width = $(width)
+height = $(height)
+num = ${qftestJUI:threads}
+idx = ${qftestJUI:thread}
+x = (dim.width - width - 130) / (num - 1) * idx + 15
+y = (dim.height - height - 130) / (num - 1) * idx + 15
+rc.setLocal("x", x)
+rc.setLocal("y", y)
+</code>
+          </ServerScriptStep>
+          <ComponentEventStep client="$(client)" component="$(id)"
+                              event="COMPONENT_MOVED" id="_2yb" param1="$(x)"
+                              param2="$(y)"/>
+        </IfSequence>
+      </Procedure>
+    </Package>
+    <Package id="_2zZ" name="table">
+      <Procedure id="_2+T" name="loadAddressBook">
+        <variable name="dir">${qftestJUI:suite.dir}</variable>
+        <variable name="file">addressbook.adr</variable>
+        <variable name="overwrite">true</variable>
+        <SelectionEventStep client="$(client)" component="MenuFile.Open"
+                            event="SELECTION" id="_2+q"/>
+        <TryStep id="_2+Z">
+          <ComponentWaiter client="$(client)" component="comAddress_Book"
+                           id="_2+s" timeout="500"/>
+          <IfSequence id="_2+c" test="$(overwrite)">
+            <SelectionEventStep client="$(client)" component="comAddress_Book"
+                                detail="128" event="SELECTION" id="_2+t"/>
+            <ElseSequence id="_2+d">
+              <SelectionEventStep client="$(client)"
+                                  component="comAddress_Book" detail="256"
+                                  event="SELECTION" id="_2+y"/>
+              <ReturnStep id="_2+x"/>
+            </ElseSequence>
+          </IfSequence>
+          <CatchSequence exception="ComponentNotFoundException" id="_2+a"
+                         maxerror="0"/>
+        </TryStep>
+        <FileSelection client="$(client)" directory="$(dir)" engine="swt"
+                       file="$(file)" id="_2+W"/>
+      </Procedure>
+      <Procedure id="_2+f" name="saveAddressBook">
+        <variable name="dir">${qftestJUI:suite.dir}</variable>
+        <variable name="file">addressbook.adr</variable>
+        <variable name="overwrite">true</variable>
+        <SelectionEventStep client="$(client)" component="MenuFile.SaveAs"
+                            event="SELECTION" id="_2+g"/>
+        <FileSelection client="$(client)" directory="$(dir)" engine="swt"
+                       file="$(file)" id="_2+h"/>
+        <TryStep id="_2+i">
+          <ComponentWaiter client="$(client)" component="comSave_As" id="_2+j"
+                           timeout="500"/>
+          <IfSequence id="_2+k" test="$(overwrite)">
+            <SelectionEventStep client="$(client)" component="comSave_As"
+                                detail="64" event="SELECTION" id="_2+l"/>
+            <ElseSequence id="_2+m">
+              <SelectionEventStep client="$(client)" component="comSave_As"
+                                  detail="128" event="SELECTION" id="_2+n"/>
+            </ElseSequence>
+          </IfSequence>
+          <CatchSequence exception="ComponentNotFoundException" id="_2+o"
+                         maxerror="0"/>
+        </TryStep>
+      </Procedure>
+      <Procedure id="_2-I" name="clearAddressbook">
+        <SelectionEventStep client="$(client)"
+                            component="MenuFile.NewAddressBook"
+                            event="SELECTION" id="_2+B"/>
+        <TryStep id="_2-J">
+          <ComponentWaiter client="$(client)" component="comAddress_Book"
+                           id="_2+C" timeout="500"/>
+          <SelectionEventStep client="$(client)" component="comAddress_Book"
+                              detail="128" event="SELECTION" id="_2+D"/>
+          <CatchSequence exception="ComponentNotFoundException" id="_2-K"
+                         maxerror="0"/>
+        </TryStep>
+      </Procedure>
+      <Procedure id="_2za" name="addLine">
+        <variable name="singleEvents">true</variable>
+        <variable name="lastName">last name</variable>
+        <variable name="firstName">first name</variable>
+        <variable name="phone">phone</variable>
+        <variable name="homePhone">home phone</variable>
+        <variable name="email">email</variable>
+        <variable name="fax">fax</variable>
+        <SelectionEventStep client="$(client)" component="MenuFile.NewContact"
+                            event="SELECTION" id="_2zM"/>
+        <ComponentWaiter client="$(client)" component="DataEntry" id="_2zN"/>
+        <IfSequence id="_2zm" test="$(singleEvents)">
+          <TextInputStep clear="true" client="$(client)"
+                         component="DataEntry.Text-Last_Name" id="_2zn">
+            <text>$(lastName)</text>
+          </TextInputStep>
+          <TextInputStep clear="true" client="$(client)"
+                         component="DataEntry.Text-First_Name" id="_2zo">
+            <text>$(firstName)</text>
+          </TextInputStep>
+          <TextInputStep clear="true" client="$(client)"
+                         component="DataEntry.Text-Business_Phone" id="_2zp">
+            <text>$(phone)</text>
+          </TextInputStep>
+          <TextInputStep clear="true" client="$(client)"
+                         component="DataEntry.Text-Home_Phone" id="_2zq">
+            <text>$(homePhone)</text>
+          </TextInputStep>
+          <TextInputStep clear="true" client="$(client)"
+                         component="DataEntry.Text-Email" id="_2zr">
+            <text>$(email)</text>
+          </TextInputStep>
+          <TextInputStep clear="true" client="$(client)"
+                         component="DataEntry.Text-Fax" id="_2zs">
+            <text>$(fax)</text>
+          </TextInputStep>
+          <ElseSequence id="_2zt">
+            <TextInputStep clear="true" client="$(client)"
+                           component="DataEntry.Text-Last_Name" id="_2zu"
+                           single="false">
+              <text>$(lastName)</text>
+            </TextInputStep>
+            <TextInputStep clear="true" client="$(client)"
+                           component="DataEntry.Text-First_Name" id="_2zv"
+                           single="false">
+              <text>$(firstName)</text>
+            </TextInputStep>
+            <TextInputStep clear="true" client="$(client)"
+                           component="DataEntry.Text-Business_Phone" id="_2zw"
+                           single="false">
+              <text>$(phone)</text>
+            </TextInputStep>
+            <TextInputStep clear="true" client="$(client)"
+                           component="DataEntry.Text-Home_Phone" id="_2zx"
+                           single="false">
+              <text>$(homePhone)</text>
+            </TextInputStep>
+            <TextInputStep clear="true" client="$(client)"
+                           component="DataEntry.Text-Email" id="_2zy"
+                           single="false">
+              <text>$(email)</text>
+            </TextInputStep>
+            <TextInputStep clear="true" client="$(client)"
+                           component="DataEntry.Text-Fax" id="_2zz"
+                           single="false">
+              <text>$(fax)</text>
+            </TextInputStep>
+          </ElseSequence>
+        </IfSequence>
+        <MouseEventStep clicks="1" client="$(client)" component="DataEntry.OK"
+                        event="MOUSE_MPRC" id="_2zY" modifiers="16" x="16"
+                        y="10"/>
+      </Procedure>
+      <Procedure id="_2+z" name="addLines">
+        <variable name="count">10</variable>
+        <variable name="singleEvents">true</variable>
+        <variable name="lastName">last name</variable>
+        <variable name="firstName">first name</variable>
+        <variable name="phone">phone</variable>
+        <variable name="homePhone">home phone</variable>
+        <variable name="email">email</variable>
+        <variable name="fax">fax</variable>
+        <comment>Add a number of lines to the table.
+
+@param	count	The number of lines</comment>
+        <RepeatSequence count="$(count)" id="_2-G" name="Fill table with data"
+                        var="i">
+          <ProcedureCall id="_2-H" procedure="table.addLine">
+            <variable name="singleEvents">true</variable>
+            <variable name="lastName">$(lastName)$(i)</variable>
+            <variable name="firstName">$(firstName)$(i)</variable>
+            <variable name="phone">$(phone)$(i)</variable>
+            <variable name="homePhone">$(homePhone)$(i)</variable>
+            <variable name="email">$(email)$(i)</variable>
+            <variable name="fax">$(fax)$(i)</variable>
+          </ProcedureCall>
+        </RepeatSequence>
+      </Procedure>
+      <Procedure id="_305" name="editLine">
+        <variable name="row">0</variable>
+        <variable name="separateEvents">false</variable>
+        <variable name="singleEvents">true</variable>
+        <variable name="lastName">last name</variable>
+        <IfSequence id="_317" test="$(separateEvents)">
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="Table@Last Name&amp;$(row)"
+                          event="MOUSE_MOVED" id="_31B" modifiers="0" x="1"
+                          y="1"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="Table@Last Name&amp;$(row)"
+                          event="MOUSE_PRESSED" id="_31C" modifiers="4" x="1"
+                          y="1"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="Table@Last Name&amp;$(row)"
+                          event="MOUSE_RELEASED" id="_31D" modifiers="4"
+                          popup="true" x="1" y="1"/>
+          <ElseSequence id="_319">
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="Table@Last Name&amp;$(row)"
+                            event="MOUSE_MPRC" id="_30N" modifiers="4"
+                            popup="true" x="1" y="1"/>
+          </ElseSequence>
+        </IfSequence>
+        <SelectionEventStep client="$(client)" component="Popup.Edit"
+                            event="SELECTION" id="_30O"/>
+        <ComponentWaiter client="$(client)" component="DataEntry" id="_30P"/>
+        <IfSequence id="_30U" test="$(singleEvents)">
+          <TextInputStep clear="true" client="$(client)"
+                         component="DataEntry.Text-Last_Name" id="_30V">
+            <text>$(lastName)</text>
+          </TextInputStep>
+          <ElseSequence id="_30b">
+            <TextInputStep clear="true" client="$(client)"
+                           component="DataEntry.Text-Last_Name" id="_30c"
+                           single="false">
+              <text>$(lastName)</text>
+            </TextInputStep>
+          </ElseSequence>
+        </IfSequence>
+        <MouseEventStep clicks="1" client="$(client)" component="DataEntry.OK"
+                        event="MOUSE_MPRC" id="_30S" modifiers="16" x="1"
+                        y="1"/>
+      </Procedure>
+    </Package>
+    <Package id="_2-u" name="checks">
+      <comment>Some commonly used hard-coded checks</comment>
+      <Procedure id="_2-v" name="checkTable">
+        <CheckItemsStep client="$(client)" component="Table@Last Name"
+                        id="_2-w">
+          <item>last name0</item>
+          <item>last name1</item>
+          <item>last name2</item>
+          <item>last name3</item>
+          <item>last name4</item>
+        </CheckItemsStep>
+        <CheckItemsStep client="$(client)" component="Table@First Name"
+                        id="_2-x">
+          <item>first name0</item>
+          <item>first name1</item>
+          <item>first name2</item>
+          <item>first name3</item>
+          <item>first name4</item>
+        </CheckItemsStep>
+        <CheckItemsStep client="$(client)" component="Table@Business Phone"
+                        id="_2-y">
+          <item>phone0</item>
+          <item>phone1</item>
+          <item>phone2</item>
+          <item>phone3</item>
+          <item>phone4</item>
+        </CheckItemsStep>
+        <CheckItemsStep client="$(client)" component="Table@Home Phone"
+                        id="_2-z">
+          <item>home phone0</item>
+          <item>home phone1</item>
+          <item>home phone2</item>
+          <item>home phone3</item>
+          <item>home phone4</item>
+        </CheckItemsStep>
+        <CheckItemsStep client="$(client)" component="Table@Email" id="_2-+">
+          <item>email0</item>
+          <item>email1</item>
+          <item>email2</item>
+          <item>email3</item>
+          <item>email4</item>
+        </CheckItemsStep>
+        <CheckItemsStep client="$(client)" component="Table@Fax" id="_2--">
+          <item>fax0</item>
+          <item>fax1</item>
+          <item>fax2</item>
+          <item>fax3</item>
+          <item>fax4</item>
+        </CheckItemsStep>
+      </Procedure>
+      <Procedure id="_30i" name="checkEdited">
+        <CheckItemsStep client="$(client)" component="Table@Last Name"
+                        id="_30+">
+          <item>ln0</item>
+          <item>ln1</item>
+          <item>ln2</item>
+          <item>ln3</item>
+          <item>ln4</item>
+        </CheckItemsStep>
+        <CheckItemsStep client="$(client)" component="Table@First Name"
+                        id="_30k">
+          <item>first name0</item>
+          <item>first name1</item>
+          <item>first name2</item>
+          <item>first name3</item>
+          <item>first name4</item>
+        </CheckItemsStep>
+        <CheckItemsStep client="$(client)" component="Table@Business Phone"
+                        id="_30l">
+          <item>phone0</item>
+          <item>phone1</item>
+          <item>phone2</item>
+          <item>phone3</item>
+          <item>phone4</item>
+        </CheckItemsStep>
+        <CheckItemsStep client="$(client)" component="Table@Home Phone"
+                        id="_30m">
+          <item>home phone0</item>
+          <item>home phone1</item>
+          <item>home phone2</item>
+          <item>home phone3</item>
+          <item>home phone4</item>
+        </CheckItemsStep>
+        <CheckItemsStep client="$(client)" component="Table@Email" id="_30n">
+          <item>email0</item>
+          <item>email1</item>
+          <item>email2</item>
+          <item>email3</item>
+          <item>email4</item>
+        </CheckItemsStep>
+        <CheckItemsStep client="$(client)" component="Table@Fax" id="_30o">
+          <item>fax0</item>
+          <item>fax1</item>
+          <item>fax2</item>
+          <item>fax3</item>
+          <item>fax4</item>
+        </CheckItemsStep>
+      </Procedure>
+    </Package>
+    <Package id="_31E" name="util">
+      <Procedure id="_31F" name="diff">
+        <ProcessClientStarter client="diff" directory="$(parent)"
+                              executable="diff" id="_31H">
+          <parameter>$(file1)</parameter>
+          <parameter>$(file2)</parameter>
+        </ProcessClientStarter>
+        <TryStep id="_1dc">
+          <ProcessWaiter check="$(expect)" client="diff" id="_1dd"
+                         timeout="15000"/>
+          <CatchSequence exception="UnexpectedExitCodeException" id="_1de"
+                         maxerror="2"/>
+        </TryStep>
+      </Procedure>
+      <Procedure id="_1es" name="logMemory">
+        <variable name="sut">true</variable>
+        <comment>Log current memory use.
+
+@param	sut	True to log SUT memory for $(client), false for qftestJUI memory.
+@param	client	The name ot the SUT client in case sut is true.</comment>
+        <IfSequence id="_1et" test="$(sut)">
+          <ClientScriptStep client="$(client)" id="_1eu">
+            <code>from java.lang import Runtime, System
+
+System.gc()
+System.runFinalization()
+System.gc()
+total = Runtime.getRuntime().totalMemory()
+free = Runtime.getRuntime().freeMemory()
+used = (total - free) / 1024.0 / 1024.0
+rc.check(1, "!Memory usage for SUT client %s: %.1f MB" % (rc.lookup("client"), used))
+
+</code>
+          </ClientScriptStep>
+          <ElseSequence id="_1ev">
+            <ServerScriptStep id="_1ew">
+              <code>from java.lang import Runtime, System
+
+System.gc()
+System.runFinalization()
+System.gc()
+total = Runtime.getRuntime().totalMemory()
+free = Runtime.getRuntime().freeMemory()
+used = (total - free) / 1024.0 / 1024.0
+rc.check(1, "!Memory usage for qftestJUI: %.1f MB" % used)
+</code>
+            </ServerScriptStep>
+          </ElseSequence>
+        </IfSequence>
+      </Procedure>
+    </Package>
+  </PackageRoot>
+  <ExtraSequence id="_3">
+    <RepeatSequence count="100" id="_2+H">
+      <TestCall calledtest="Misc replay" id="_2+S"/>
+      <ProcedureCall id="_2+P" procedure="util.logMemory">
+        <variable name="sut">true</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_2+Q" procedure="util.logMemory">
+        <variable name="sut">false</variable>
+      </ProcedureCall>
+    </RepeatSequence>
+  </ExtraSequence>
+  <WindowList id="_4">
+    <WindowStep class="org.eclipse.swt.widgets.Shell" engine="swt"
+                feature="Address Book -Untitled" height="296" id="AddressBook"
+                name="AddressBook" uid="_31I" width="929">
+      <ComponentStep class="org.eclipse.swt.widgets.Table" classcount="1"
+                     classindex="0" height="221" id="Table" name="Table"
+                     uid="_31J" width="894" x="0" y="0"/>
+      <ComponentStep class="org.eclipse.swt.widgets.Menu" classcount="1"
+                     classindex="0" height="27" id="MenuBar" name="MenuBar"
+                     uid="_31K" width="917" x="0" y="0">
+        <ComponentStep class="org.eclipse.swt.widgets.MenuItem" classcount="4"
+                       classindex="0" feature="File" height="23" id="MenuFile"
+                       name="MenuFile" uid="_31L" width="36" x="3" y="2">
+          <ComponentStep class="org.eclipse.swt.widgets.MenuItem"
+                         classcount="9" classindex="0"
+                         feature="New Contact..." height="21"
+                         id="MenuFile.NewContact" name="MenuFile.NewContact"
+                         uid="_31M" width="273" x="0" y="0"/>
+          <ComponentStep class="org.eclipse.swt.widgets.MenuItem"
+                         classcount="9" classindex="3"
+                         feature="New Address Book" height="21"
+                         id="MenuFile.NewAddressBook"
+                         name="MenuFile.NewAddressBook" uid="_31N" width="273"
+                         x="0" y="50"/>
+          <ComponentStep class="org.eclipse.swt.widgets.MenuItem"
+                         classcount="9" classindex="6"
+                         feature="Save Address Book As..." height="0"
+                         id="MenuFile.SaveAs" name="MenuFile.SaveAs"
+                         uid="_31O" width="0" x="0" y="0"/>
+          <ComponentStep class="org.eclipse.swt.widgets.MenuItem"
+                         classcount="9" classindex="4"
+                         feature="Open Address Book..." height="0"
+                         id="MenuFile.Open" name="MenuFile.Open" uid="_31P"
+                         width="0" x="0" y="0"/>
+        </ComponentStep>
+        <ComponentStep class="org.eclipse.swt.widgets.MenuItem" classcount="4"
+                       classindex="3" feature="Help" height="23" id="MenuHelp"
+                       name="MenuHelp" uid="_31Q" width="43" x="137" y="2">
+          <ComponentStep class="org.eclipse.swt.widgets.MenuItem"
+                         classcount="1" classindex="0"
+                         feature="About Address Book..." height="21"
+                         id="MenuHelp.About" name="MenuHelp.About" uid="_31R"
+                         width="171" x="0" y="0"/>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="org.eclipse.swt.widgets.Menu" height="142"
+                     id="Table.Popup" name="Table.Popup" uid="_31S" width="60"
+                     x="0" y="0">
+        <ComponentStep class="org.eclipse.swt.widgets.MenuItem" classcount="8"
+                       classindex="2" feature="Edit..." height="20"
+                       id="Popup.Edit" name="Popup.Edit" uid="_31T" width="56"
+                       x="0" y="28"/>
+      </ComponentStep>
+    </WindowStep>
+    <WindowStep class="org.eclipse.swt.widgets.Shell" engine="swt"
+                height="235" id="DataEntry" modal="true" name="DataEntry"
+                uid="_31U" width="540">
+      <ComponentStep class="org.eclipse.swt.widgets.Composite" classcount="2"
+                     classindex="0" height="185" id="DataEntry.DataGrid"
+                     name="DataEntry.DataGrid" uid="_31V" width="530" x="5"
+                     y="5">
+        <ComponentStep class="org.eclipse.swt.widgets.Text" classcount="6"
+                       classindex="0" height="25"
+                       id="DataEntry.Text-Last_Name"
+                       name="DataEntry.Text-Last Name" uid="_31W" width="408"
+                       x="117" y="5"/>
+        <ComponentStep class="org.eclipse.swt.widgets.Text" classcount="6"
+                       classindex="1" height="25"
+                       id="DataEntry.Text-First_Name"
+                       name="DataEntry.Text-First Name" uid="_31X" width="408"
+                       x="117" y="35"/>
+        <ComponentStep class="org.eclipse.swt.widgets.Text" classcount="6"
+                       classindex="2" height="25"
+                       id="DataEntry.Text-Business_Phone"
+                       name="DataEntry.Text-Business Phone" uid="_31Y"
+                       width="408" x="117" y="65"/>
+        <ComponentStep class="org.eclipse.swt.widgets.Text" classcount="6"
+                       classindex="3" height="25"
+                       id="DataEntry.Text-Home_Phone"
+                       name="DataEntry.Text-Home Phone" uid="_31Z" width="408"
+                       x="117" y="95"/>
+        <ComponentStep class="org.eclipse.swt.widgets.Text" classcount="6"
+                       classindex="4" height="25" id="DataEntry.Text-Email"
+                       name="DataEntry.Text-Email" uid="_31a" width="408"
+                       x="117" y="125"/>
+        <ComponentStep class="org.eclipse.swt.widgets.Text" classcount="6"
+                       classindex="5" height="25" id="DataEntry.Text-Fax"
+                       name="DataEntry.Text-Fax" uid="_31b" width="408"
+                       x="117" y="155"/>
+      </ComponentStep>
+      <ComponentStep class="org.eclipse.swt.widgets.Composite" classcount="2"
+                     classindex="1" height="35" id="DataEntry.MainGrid"
+                     name="DataEntry.MainGrid" uid="_31c" width="99" x="220"
+                     y="195">
+        <ComponentStep class="org.eclipse.swt.widgets.Button" classcount="2"
+                       classindex="0" feature="OK" height="25"
+                       id="DataEntry.OK" name="DataEntry.OK" uid="_31d"
+                       width="31" x="5" y="5"/>
+      </ComponentStep>
+    </WindowStep>
+    <WindowStep class="org.eclipse.swt.widgets.MessageBox" engine="swt"
+                feature="Address Book -.*" id="comAddress_Book" modal="true"
+                regexp="true" uid="_31e"/>
+    <WindowStep class="org.eclipse.swt.widgets.MessageBox" engine="swt"
+                feature="AboutAddress Book -.*" id="comAboutAddress_Book"
+                modal="true" regexp="true" uid="_31f"/>
+    <WindowStep class="org.eclipse.swt.widgets.MessageBox" engine="swt"
+                feature="Save As" id="comSave_As" modal="true" uid="_31g"/>
+  </WindowList>
+</RootStep>

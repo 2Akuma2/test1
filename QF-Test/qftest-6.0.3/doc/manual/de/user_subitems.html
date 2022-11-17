@@ -1,0 +1,812 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Unterelemente: Adressierung relativ zur &uuml;bergeordneten Komponente</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_subitems"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="sec_bpCRGeneric.html#sec_bpCRGeneric"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 5.8&nbsp;Generische Komponenten" title="Vorheriges Kapitel: 5.8&nbsp;Generische Komponenten"></a></td><td class="navicon"><a href="user_troubleshooting.html#usec_troubleshooting"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 5.10&nbsp;L&ouml;sung von Problemen bei der Wiedererkennung" title="N&auml;chste Seite: 5.10&nbsp;L&ouml;sung von Problemen bei der Wiedererkennung"></a></td><td class="navicon"><a href="user_troubleshooting.html#usec_troubleshooting"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 5.10&nbsp;L&ouml;sung von Problemen bei der Wiedererkennung" title="N&auml;chstes Kapitel: 5.10&nbsp;L&ouml;sung von Problemen bei der Wiedererkennung"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 5&nbsp;Komponenten" title="Kapitel-&Uuml;bersicht: 5&nbsp;Komponenten"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_subitems">5.9</a></span>
+</div>
+<a href="contents.html#toc_usec_subitems">Unterelemente: Adressierung relativ zur &uuml;bergeordneten Komponente</a>
+</h4>
+      
+<p>
+        In QF-Test ist es m&ouml;glich, Komponenten relativ zu einer &uuml;bergeordneten
+        Komponente zu adressieren. Dies ist besonders dann interessant, wenn
+        die untergeordnete Komponente nur im Zusammenspiel mit der &uuml;bergeordneten
+        eindeutig angesprochen werden kann. Hier gibt es verschiedenste
+        Anwendungsf&auml;lle und auch unterschiedliche
+        M&ouml;glichkeiten der Implementierung.
+      </p>
+      
+<dl>
+        
+<dt>Adressierung &uuml;ber Index</dt>
+        
+<dd>
+          
+<p>
+            Bei Tabellen, Listen und B&auml;umen macht es Sinn, f&uuml;r die Unterelemente einen
+            Index zu verwenden. Die Hauptkomponente wird &uuml;ber die 'QF-Test ID der Komponente' oder
+            eine SmartID spezifiziert. Der Index f&uuml;r das Unterelement wird daran angeh&auml;ngt.
+            Beispiele: <code>listid@Eintrag</code>, <code>#Table@Spalten&uuml;berschrift&amp;5</code>.
+            Siehe <a href="#sec_directsubitemeasy">Adressierung mittels Index</a>.
+          </p>
+          
+<p>
+            Wenn die Hauptkomponente &uuml;ber eine SmartID adressiert wird, k&ouml;nnen Reiter in
+            <code>TabPanels</code> oder Listeneintr&auml;ge einer <code>ComboBox</code>
+            vereinfacht referenziert werden, zum Beispiel <code>#Tab:Tab1</code>
+            oder <code>#Item:EintragX</code>. Siehe <a href="#sec_directsubitemeasy">Adressierung mittels Index</a>.
+          </p>
+        
+</dd>
+        
+<dt>Adressierung des Unterelements mittels SmartID</dt>
+        
+<dd>
+          
+<p>
+            SmartIDs k&ouml;nnen an die 'QF-Test ID der Komponente' oder die SmartID, die eine &uuml;bergeordnete
+            Komponente identifiziert, angeh&auml;ngt werden. Als Trennzeichen
+            zwischen &uuml;ber- und untergeordneter Komponente wird <code>@</code>
+            verwendet. Die Verschachtelung kann auch mehrstufig sein. Die
+            einzelnen Komponenten k&ouml;nnen auch mit einem Index versehen werden.
+          </p>
+          
+<p>
+            Beispiele:
+            <code>#Dialog:@#OK</code>,
+            <code>comboboxid@#Button:</code>,
+            <code>#Table:&amp;0&amp;0@#CheckBox:</code>.
+          </p>
+        
+</dd>
+        
+<dt>Adressierung des Unterelements mittels QPath</dt>
+        
+<dd>
+          
+<p>
+            Der QPath kann &auml;hnlich wie die angeh&auml;ngte SmartID verwendet werden,
+            ist aber lang nicht so m&auml;chtig wie diese.
+            Ein QPath kann an eine 'QF-Test ID der Komponente' angeh&auml;ngt werden. Als Trennzeichen
+            dient <code>@:</code>. Die 'QF-Test ID der Komponente' kann auch mit einem
+            Index versehen sein.
+            Beispiele: <code>buttonid@:Icon</code>, <code>tableid&amp;0&amp;0@:CheckBox</code>
+            Weitere Informationen finden Sie in <a href="#usec_multilevelsubitemsqpath">Adressierung mit QPath</a>.
+          </p>
+        
+</dd>
+        
+<dt>
+<span class="margin"><a name="web_N73550"></a><span class="note">Web</span></span>Adressierung des Unterelements mittels XPath und CSS-Selektoren</dt>
+        
+<dd>
+          Bei Web-Anwendungen kann auch ein XPath und/oder ein CSS-Selektor an eine 'QF-Test ID der Komponente'
+          oder eine SmartID angeh&auml;ngt werden. Als Trennzeichen dient <code>@:xpath=</code>
+          beziehungsweise <code>@:css=</code>. Die 'QF-Test ID der Komponente' kann auch mit einem
+          Index versehen sein.
+          Beispiele: <code>genericDocument@:xpath=${quoteitem:$(xpath)}</code>.
+          Weitere Informationen finden Sie in <a href="#usec_xpath">Adressierung mit XPath und/oder CSS-Selektoren</a>.
+        </dd>
+        
+<dt>Geltungsbereich</dt>
+        
+<dd>
+          Auch &uuml;ber einen Geltungsbereich kann die &uuml;bergeordnete Komponente spezifiziert
+          werden. Siehe <a href="usec_scope.html#usec_scope">Geltungsbereich(Scope) (Preview)</a>.
+        </dd>
+        
+<dt>Aufnahme von Unterelementen als Knoten</dt>
+        
+<dd>
+          Bei Tabellen, Listen und B&auml;umen kann es auch Sinn machen, das
+          Unterelement als <a href="components.html#step_SubItemStep" shape="rect">'Element'</a> aufzunehmen.
+          Es h&auml;ngt von der jeweiligen Situation ab, ob ein Unterelement
+          &uuml;ber Index angesprochen wird oder es sinnvoller ist, es
+          aufzunehmen. Sie k&ouml;nnen beide
+          Methoden nach Belieben verwenden und auch mischen. Als Faustregel
+          gilt, dass 'Element' Knoten besser f&uuml;r Komponenten mit wenigen,
+          konstanten Elementen geeignet sind, wie z.B. die Spalten einer Tabelle
+          oder die Reiter eines <code>TabPanel</code>. Die Syntax ist
+          vorzuziehen, wenn QF-Test Variablen in Indizes verwendet werden oder wenn
+          die Namen von Elementen variieren oder editierbar sind. Die Option
+          <a href="opt_record.html#opt_subitemtype">Art der Unterelemente</a> legt fest, ob QF-Test beim Aufzeichnen
+          'Element' Knoten anlegt oder die 'QF-Test ID'-Syntax verwendet. Mit
+          der Standardeinstellung "Intelligent" folgt QF-Test obigen Regeln.
+          Weitere Informationen zur Aufnahme von Unterelementen finden Sie in
+          <a href="#usec_subitems_node">Adressierung mit 'Elemente' Knoten</a>.
+        </dd>
+        
+<dt>M&ouml;gliche Kombinationen</dt>
+        
+<dd>
+          
+<p>
+            Hinweis: In der nachfolgenden Aufstellung kann die SmartID der &uuml;bergeordneten
+            Komponente bereits aus geschachtelten
+            Referenzierungen besteht.
+          </p>
+          
+<a name="table_5.1"></a><a name="table_5.1"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth">
+              
+<tr>
+                
+<th texalign="p{1.25in}" rowspan="1" colspan="1">Referenzierung der &uuml;bergeordneten Komponente</th>
+                <th texalign="p{0.8in}" rowspan="1" colspan="1">Referenzierung der Unterkomponente</th>
+                <th rowspan="1" colspan="1">Beispiel</th>
+              
+</tr>
+              
+<tr>
+                
+<td texalign="p{1.25in}" rowspan="1" colspan="1">'QF-Test ID der Komponente'</td>
+                <td texalign="p{0.8in}" rowspan="1" colspan="1">Index</td>
+                <td rowspan="1" colspan="1">Listenelement mit Textindex: <code>listid@Eintrag</code></td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">SmartID</td>
+                <td rowspan="1" colspan="1">Index</td>
+                <td rowspan="1" colspan="1">Tabellenzelle mit numerischen Indizes: <code>#Table:&amp;0&amp;2</code></td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">'QF-Test ID der Komponente'</td>
+                <td rowspan="1" colspan="1">SmartID</td>
+                <td rowspan="1" colspan="1">Icon in Button: <code>buttonid@#Icon:</code></td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">SmartID</td>
+                <td rowspan="1" colspan="1">SmartID</td>
+                <td rowspan="1" colspan="1">Textfeld in Dialog: <code>#Dialog:@#TextField:</code></td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">SmartID mit Index</td>
+                <td rowspan="1" colspan="1">SmartID</td>
+                <td rowspan="1" colspan="1">Button in Tabellenzelle: <code>#Table:&amp;0&amp;2@#Button:</code></td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">'QF-Test ID der Komponente' mit Index</td>
+                <td rowspan="1" colspan="1">SmartID</td>
+                <td rowspan="1" colspan="1">Button in Tabellenzelle: <code>tableID&amp;0&amp;2@#Button:</code></td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">'QF-Test ID der Komponente' mit Index</td>
+                <td rowspan="1" colspan="1">QPath</td>
+                <td rowspan="1" colspan="1">Button in Tabellenzelle: <code>tableID&amp;0&amp;2@:Button</code></td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">'QF-Test ID der Komponente' mit oder ohne Index</td>
+                <td rowspan="1" colspan="1">XPath und/oder CSS-Selektor</td>
+                <td rowspan="1" colspan="1"><code>genericHtml@:css=${quoteitem:$(css)}</code></td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">SmartID mit oder ohne Index</td>
+                <td rowspan="1" colspan="1">XPath und/oder CSS-Selektor</td>
+                <td rowspan="1" colspan="1">
+                  <code>#genericDocument@:xpath=${quoteitem:$(xpath)}</code>
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Geltungsbereich</td>
+                <td rowspan="1" colspan="1">SmartID</td>
+                <td rowspan="1" colspan="1">Geltungsbereich als Doctag in einem 'Testschritt', SmartID im Check-Knoten</td>
+              
+</tr>
+            
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;5.1</a>:&nbsp;&nbsp;Adressierung von Unterelementen</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+</dd>
+      
+</dl>
+
+      
+<a name="sec_directsubitemeasy"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_directsubitemeasy">5.9.1</a></span>
+</div>
+<a href="contents.html#toc_sec_directsubitemeasy">Adressierung mittels Index</a>
+</h5>
+        
+<p>
+          Das Unterelement wird &uuml;ber eine
+          entsprechende Zeichenkettenfolge mithilfe einer speziellen Syntax
+          beschrieben. Die 'QF-Test ID der Komponente', die im Test verwendet wird, setzt sich hierbei aus der 'QF-Test ID' oder der SmartID der komplexen Komponente (Baum, Tabelle etc.), gefolgt von einem speziellen Trennzeichen, und dem Index des Unterelements zusammen.  Das
+          Trennzeichen legt dabei fest, ob es sich um einen numerischen Index,
+          einen Textindex oder einen regul&auml;ren Ausdruck (vgl. <a href="tech_regexp.html#sec_regexp">Abschnitt 45.3</a>) handelt:
+        </p>
+        
+<a name="table_5.2"></a><a name="table_5.2"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdcenterleft" border="1" cellspacing="0" cellpadding="5">
+            
+<tr>
+              
+<th rowspan="1" colspan="1">Trennzeichen</th>
+              <th rowspan="1" colspan="1">Index Format</th>
+            
+</tr>
+            
+<tr>
+              
+<td align="center" rowspan="1" colspan="1">@</td>
+              <td align="left" rowspan="1" colspan="1">Textindex</td>
+            
+</tr>
+            
+<tr>
+              
+<td align="center" rowspan="1" colspan="1">&amp;</td>
+              <td align="left" rowspan="1" colspan="1">Numerischer Index</td>
+            
+</tr>
+            
+<tr>
+              
+<td align="center" rowspan="1" colspan="1">%</td>
+              <td align="left" rowspan="1" colspan="1">Regul&auml;rer Ausdruck</td>
+            
+</tr>
+          
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;5.2</a>:&nbsp;&nbsp;Trennzeichen und Indexformat f&uuml;r den Zugriff auf
+          Unterelemente</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Um auf eine Zelle in einer Tabelle mit 'Prim&auml;rindex' und 'Sekund&auml;rindex'
+          zuzugreifen, h&auml;ngen Sie einfach ein weiteres Trennzeichen an, gefolgt
+          vom 'Sekund&auml;rindex'. Die beiden Indizes d&uuml;rfen dabei durchaus
+          verschiedenen Formaten angeh&ouml;ren.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span> Die besondere Bedeutung der Trennzeichen '@', '&amp;' und '%'
+          macht diese zu Sonderzeichen, die gesch&uuml;tzt werden m&uuml;ssen, wenn sie
+          selbst in einem Namen auftauchen. N&auml;heres zu diesem Thema finden Sie in
+          <a href="tech_quoting.html#sec_quoting">Abschnitt 45.5</a>.
+        </p>
+        
+<dl>
+          
+<dt>Negativer Index</dt>
+          
+<dd>
+            Es ist fast immer m&ouml;glich mit negativem Index die Z&auml;hlung von
+            hinten beginnen zu lassen.
+          </dd>
+
+          
+<dt>Beispiele</dt>
+          
+<dd>
+            
+<ul>
+              
+<li>
+                Wenn Ihre Testsuite einen 'Komponente' Knoten f&uuml;r
+                eine <code>Table</code> Komponente mit der 'QF-Test ID' <code>table</code>
+                hat und Sie einen Mausklick auf die Zelle in der 6. Zeile und in der
+                Spalte mit der &Uuml;berschrift "Name" abspielen wollen, legen Sie einen
+                <a href="events.html#step_MouseEventStep" shape="rect">'Mausevent'</a> an und setzen Sie sein
+                <a href="events.html#att_MouseEventStep_component" shape="rect">'QF-Test ID der Komponente'</a> Attribut auf den Wert
+                <code>table@Name&amp;5</code>.
+              </li>
+              
+<li>
+                
+<code>listid&amp;0</code> adressiert den ersten Eintrag in einer Liste &uuml;ber numerischen Index. Die Liste selbst wurde als Komponente aufgenommen.
+              </li>
+              
+<li>
+                
+<code>#listname@Europa</code> adressiert den Eintrag mit dem Text "Europa".
+                Die Liste selbst wird &uuml;ber ihren Bezeichner in einer SmartID referenziert.
+              </li>
+              
+<li>
+                
+<code>#Tree:@/Wurzel/Ast1/Ast1-2/Blatt</code> adressiert einen Baumpfad,
+                der &uuml;ber die Texte der jeweiligen Baumknoten spezifiziert ist.
+              </li>
+              
+<li>
+                
+<code>#Tree:%/W.*/A.*1/A.*\d-\d/B.*</code> adressiert einen Baumpfad,
+                der &uuml;ber regul&auml;re Ausdr&uuml;cke f&uuml;r die jeweiligen Baumknoten spezifiziert ist.
+              </li>
+              
+<li>
+                
+<code>#Tree&amp;/0/5/1/3/</code> adressiert einen Baumpfad,
+                der &uuml;ber die numerischen Indizes der jeweiligen Baumknoten spezifiziert ist.
+              </li>
+              
+<li>
+                
+<code>table&amp;-1&amp;-1</code> adressiert die
+                unterste Zelle in der rechten Tabellenspalte.
+              </li>
+            
+</ul>
+          
+</dd>
+
+          
+<dt>SmartIDs: Einfache Indizes f&uuml;r TabPanels und ComboBox-Listen</dt>
+          
+<dd>
+            
+<p>
+              Reiter in TabPanels m&uuml;ssten bei SmartIDs gem&auml;&szlig; der obigen Syntax
+              zum Beispiel &uuml;ber <code>#TabPanel:@Tab1</code> angesprochen werden,
+              wobei <code>Tab1</code> der Name des  Reiters ist. Alternativ kann
+              hier die Abk&uuml;rzung <code>#Tab:Tab1</code> verwendet werden. Wenn
+              keine andere Komponente die SmartID <code>#Tab1</code> hat, kann
+              der Reiter sogar einfach &uuml;ber <code>#Tab1</code> adressiert werden.
+            </p>
+            
+<p>
+              Wenn die ComboBox-Liste ge&ouml;ffnet ist, k&ouml;nnen die Listeneintr&auml;ge
+              gem&auml;&szlig; obiger Syntax mit <code>#List:@EintragX</code> angesprochen
+              werden. Als Abk&uuml;rzung ist auch <code>#Item:EintragX</code> m&ouml;glich.
+            </p>
+            
+<p>
+              Beide Abk&uuml;rzungen sind komfortabel,
+              die hohe Flexibilit&auml;t hat aber ihren Preis bei der Performance.
+              Wie hoch dieser ausf&auml;llt, h&auml;ngt von vielen Faktoren ab,
+              so dass die Abw&auml;gung Komfort/Performance im Einzelfall getroffen werden muss.
+            </p>
+          
+</dd>
+        
+</dl>
+      
+
+      
+<a name="usec_multilevelsubitemsqpath"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_multilevelsubitemsqpath">5.9.2</a></span>
+</div>
+<a href="contents.html#toc_usec_multilevelsubitemsqpath">Adressierung mit QPath</a>
+</h5>
+        
+<p>
+          Jedem 'QF-Test ID der Komponente' Attribut (mit oder ohne Unterelement) in einem Event oder Check
+          Knoten k&ouml;nnen ein oder mehrere Indizes der Form <code>@:ClassName&lt;idx&gt;</code> angeh&auml;ngt werden,
+          wobei <code>&lt;idx&gt;</code> optional ist. Dies weist QF-Test an, zun&auml;chst die Zielkomponente (und ggf.
+          das Unterelement) f&uuml;r den Teil des 'QF-Test ID der Komponente' Attributs vor dem <code>@:</code> zu ermitteln und
+          anschlie&szlig;end darin nach sichtbaren Komponenten der Klasse ClassName zu suchen. Ist
+          <code>&lt;idx&gt;</code> angegeben, wird dies als 0-basierter Index in die Liste der sichtbaren
+          Kandidaten interpretiert. Kein <code>&lt;idx&gt;</code> ist &auml;quivalent zu <code>&lt;0&gt;</code>.
+        </p>
+        
+<p>
+          Die QPath-Syntax erwartet nach dem <code>@:</code> eine generische Klasse. Eine &Uuml;bersicht der generischen Klassen finden
+          Sie im Kapitel <a href="tech_genclassesoverview.html#sec_genclassesoverview">Abschnitt 57.1</a>. Falls sich die Komponente nicht mit einer generischen Klasse
+          aufzeichnen l&auml;sst, muss man im QPath die vollst&auml;ndige Klassname angeben.
+          F&uuml;r JavaFX lauten einige davon zum Beispiel <code>ImageView</code>, <code>VBox</code>, <code>GridPane</code> oder <code>BorderPane</code>.
+        </p>
+        
+<p>
+          Das folgende Beispiel bezeichnet den zweiten <code>ImageView</code> auf der dritten Position einer Liste.
+          <code>
+            panelSecond.list&amp;3@:javafx.scene.image.ImageView&lt;1&gt;
+          </code>
+        
+</p>
+      
+
+      
+<a name="usec_xpath"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="web_N74171"></a><span class="note">Web</span></span><span class="numtitle"><a href="contents.html#toc_usec_xpath">5.9.3</a></span>
+</div>
+<a href="contents.html#toc_usec_xpath">Adressierung mit XPath und/oder CSS-Selektoren</a>
+</h5>
+        
+<span class="margin"><a name="new_N74174"></a><span class="note">4.1+</span></span>
+        
+<p>
+          XPath und CSS-Selektoren sind standardisierte Beschreibungen, um
+          Komponenten in Webbrowsern anzusprechen. (Offizielle Spezifikationen:
+          <a href="https://www.w3.org/TR/xpath/" shape="rect">https://www.w3.org/TR/xpath/</a> und
+          <a href="https://www.w3.org/TR/css3-selectors/" shape="rect">https://www.w3.org/TR/css3-selectors/</a>).
+        </p>
+        
+<p>
+          QF-Test unterst&uuml;tzt die Komponentenbeschreibung via XPaths und
+          CSS-Selektoren f&uuml;r Web-Elemente, um eine leichtere Migration bestehender Web-Tests anderer Tools
+          nach QF-Test zu erm&ouml;glichen.
+        </p>
+        
+<p>
+          Das Internet bietet bereits eine Vielzahl von Tutorials an, die die Komponentenerkennung
+          mithilfe von CSS-Selektoren (z.B.:
+          <a href="https://www.w3schools.com/cssref/css_selectors.asp" shape="rect">https://www.w3schools.com/cssref/css_selectors.asp</a>)
+          sowie die Komponentenerkennung mithilfe von XPaths (z.B.:
+          <a href="https://www.w3schools.com/xml/xpath_syntax.asp" shape="rect">https://www.w3schools.com/xml/xpath_syntax.asp</a>)
+          beschreiben. Insofern wird auf die Eigenheiten dieser Komponentenerkennung hier nicht
+          mehr explizit eingegangen.
+        </p>
+        
+<p>
+<b>Verwendung in der QF-Test ID</b>
+</p>
+        
+<p>
+          Angenommen in QF-Test soll eine Web-Komponente anhand des XPath "$(xpath)" oder eines
+          CSS-Selektors "$(css)" erkannt werden, so kann dies prinzipiell &uuml;ber mehrere Wege geschehen.
+          Am einfachsten/schnellsten ist es meist, den XPath bzw. den CSS-Selektor im <a href="events.html#att_MouseEventStep_component" shape="rect">'QF-Test ID der Komponente'</a>
+          Attribut eines beliebigen Event-Knotens zu spezifizieren. Hierzu wird die
+          folgende Syntax benutzt:
+        </p>
+        
+<p>
+          
+<code>
+genericHtml@:xpath=${quoteitem:$(xpath)}<br>
+genericHtml@:css=${quoteitem:$(css)}
+          </code>
+        
+</p>
+        
+<p>
+          bzw. gleichwertig:
+        </p>
+        
+<p>
+          
+<code>
+genericDocument@:xpath=${quoteitem:$(xpath)}<br>
+genericDocument@:css=${quoteitem:$(css)}
+          </code>
+        
+</p>
+        
+<p>
+          Die Syntax kann hierbei beliebig verschachtelt werden. Zum Beispiel kann man mithilfe von:
+        </p>
+        
+<p>
+          
+<code>
+genericDocument@:xpath=${quoteitem:$(xpath)}@:css=${quoteitem:$(css)}
+          </code>
+        
+</p>
+        
+<p>
+          QF-Test dazu anweisen zuerst mithilfe eines XPath nach einer Komponente zu suchen und dann
+          anschlie&szlig;end mithilfe eines CSS-Selektors nach einer Unterkomponente.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span> Bitte beachten Sie, dass die <code>@:xpath</code>/<code>@:css</code> aus nachvollziehbaren Gr&uuml;nden erwartet,
+          dass die verwendete XPath/CSS-Anweisung eine einzelne Komponente zur&uuml;ckliefert. Die Verwendung einer
+          XPath-Amnweisung die keine einzelne Komponente, sondern eine Zahl (Beispiel: <code>count(.//input[@id!='Google'])</code>)
+          oder einen Boolean (Beispiel: <code>nilled($in-xml//child[1])</code>) zur&uuml;ckliefert, kann deshalb unter Umst&auml;nden zu
+          unerwartetem Verhalten f&uuml;hren.
+        </p>
+        
+<p>
+<b>Verwendung in Skripten</b>
+</p>
+        
+<p>
+          Das <code>rc</code>-Modul erlaubt in SUT Skripten ebenfalls Web-Komponenten via XPath bzw.
+          CSS-Selektoren zu finden.
+        </p>
+        
+<a name="ex_xpath_css_sut_find"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>com = rc.getComponent("genericHtml") # or rc.getComponent("genericDocument")
+res = com.getByXPath(rc.lookup("xpath"))    # find subcomponent via xpath
+res = com.getByCSS(rc.lookup("css"))        # find subcomponent via css
+res = com.getAllByXPath(rc.lookup("xpath")) # find all subcomponent via xpath
+res = com.getAllByCSS(rc.lookup("css"))     # find all subcomponent via css</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;5.2:&nbsp;&nbsp;Finden von Komponenten anhand von XPath / CSS-Selektoren in Skripten</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Und um einen XPath zu benutzen, der keine Komponente(n) zur&uuml;ckliefert benutzen Sie bitte die <code>evalJS</code>-Funktion:
+        </p>
+        
+<a name="ex_xpath_no_components"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>node = rc.getComponent('genericDocument')
+print node.evalJS("""document.evaluate("count(.//input[@id='Google'])",
+document, null, 0, null).numberValue;""")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;5.3:&nbsp;&nbsp;Beispiel f&uuml;r den Aufruf von XPath-Selektoren, der keine Komponente zur&uuml;ckliefert</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+<b>Verwendung in Komponentenknoten</b>
+</p>
+        
+<p>
+          Innerhalb eines Komponente-Knotens kann QF-Test des Weiteren ebenfalls angewiesen werden,
+          dass f&uuml;r die Komponentenerkennung ein XPath bzw. CSS-Selektor verwendet werden soll.
+          Hierzu spezifiziert man ein wie folgt aussehendes Erkennungsmerkmal unter
+          "Weitere Merkmale":
+        </p>
+        
+<a name="figure_5.11"></a><a name="figure_5.11"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="" target="_blank">
+<table align="center" class="tdcenterleft" border="1" cellspacing="0" cellpadding="5">
+            
+<tr>
+              
+<td align="center" rowspan="1" colspan="1">Status</td><td rowspan="1" colspan="1">Muss &uuml;bereinstimmen</td>
+            
+</tr>
+            
+<tr>
+              
+<td align="center" rowspan="1" colspan="1">Regexp</td><td rowspan="1" colspan="1">Nein</td>
+            
+</tr>
+            
+<tr>
+              
+<td align="center" rowspan="1" colspan="1">Negieren</td><td rowspan="1" colspan="1">Nein</td>
+            
+</tr>
+            
+<tr>
+              
+<td align="center" rowspan="1" colspan="1">Name</td><td rowspan="1" colspan="1">qfs:item</td>
+            
+</tr>
+            
+<tr>
+              
+<td align="center" rowspan="1" colspan="1">Wert</td><td rowspan="1" colspan="1">@:xpath=${quoteitem:$(xpath)} oder @:css=${quoteitem:$(css)}</td>
+            
+</tr>
+          
+</table>
+</a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;5.11</a>:&nbsp;&nbsp;"Weitere Merkmale"-Attribute f&uuml;r die Komponentenerkennung anhand von XPath oder CSS-Selektoren.</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+<a name="usec_subitems_node"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_subitems_node">5.9.4</a></span>
+</div>
+<a href="contents.html#toc_usec_subitems_node">Adressierung mit 'Elemente' Knoten</a>
+</h5>
+        
+<p>
+          Ein 'Element' wird durch zwei Dinge definiert: die Komponente,
+          zu der es geh&ouml;rt, sowie einen Index innerhalb dieser Komponente. Der
+          Parentknoten des 'Elements' legt die Komponente fest. Der
+          Index kann entweder eine Zahl sein oder ein Text. Numerische Indizes
+          starten mit 0. So entspricht z.B. in einer <code>JList</code>
+          Komponente das Element mit Index 1 dem zweiten Listeneintrag. F&uuml;r
+          B&auml;ume sind einfache numerische Indizes nahezu unbrauchbar, da durch
+          das Ein- und Ausklappen von &Auml;sten die Indizes aller darunter liegenden
+          Knoten ver&auml;ndert werden.
+        </p>
+        
+<p>
+          Ein Textindex definiert ein Element durch den Text, den es in der
+          Oberfl&auml;che anzeigt. Ein Listenelement namens "Eintrag1" in einer
+          <code>JList</code> Komponente w&uuml;rde z.B. mit dem Textindex "Eintrag1"
+          aufgezeichnet. Die Textform ist flexibler als die numerische, kann
+          aber Probleme bereiten, wenn die angezeigten Texte der Elemente in
+          einer Komponente nicht eindeutig sind. In diesem Fall wird das erste
+          passende Element angesprochen. Ein Textindex kann auch als regul&auml;rer
+          Ausdruck (vgl. <a href="tech_regexp.html#sec_regexp">Abschnitt 45.3</a>) angegeben werden. Auch in
+          diesem Fall ist das Ziel das erste Element, das auf den regul&auml;ren
+          Ausdruck passt.
+        </p>
+        
+<p>
+          Die Option <a href="opt_record.html#opt_subitemformat">Format f&uuml;r Unterelemente</a> legt fest, welches
+          Format beim Aufzeichnen von Elementen verwendet wird.
+        </p>
+        
+<p>
+          Beinahe alle Arten von 'Element' haben nur einen Index. Dies
+          reicht f&uuml;r die Zelle einer <code>JTable</code> Komponente nicht, da
+          Tabellen zweidimensionale Strukturen sind. Entsprechend sind zwei
+          Indizes n&ouml;tig, um eine Zelle exakt zu beschreiben. Der erste, der
+          <a href="components.html#att_SubItemStep_primary" shape="rect">'Prim&auml;rindex'</a>, legt die Tabellenspalte fest, der
+          <a href="components.html#att_SubItemStep_secondary" shape="rect">'Sekund&auml;rindex'</a> die Zeile.
+        </p>
+        
+<a name="figure_5.12"></a><a name="figure_5.12"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/Items.png" target="_blank"><img src="images/Items.png" alt="Ein Element f&uuml;r ein Tabellenfeld" width="986" height="506" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;5.12</a>:&nbsp;&nbsp;Ein 'Element' f&uuml;r ein Tabellenfeld</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Auch Baumknoten nehmen eine Sonderstellung ein. Wie oben beschrieben
+          l&auml;sst sich die hierarchische Struktur nicht so leicht auf eine lineare
+          Struktur abbilden. Au&szlig;erdem treten in B&auml;umen oft Baumknoten mit den
+          gleichen Namen auf. Wenn man dagegen die direkten und indirekten
+          Parentknoten mit in den Namen einbezieht, l&auml;sst sich meistens
+          Eindeutigkeit erreichen.
+        </p>
+        
+<p>
+          QF-Test verwendet eine besondere Syntax um Baumknoten darzustellen. Ein
+          Index, der mit einem '/' Zeichen beginnt, wird als Pfadindex
+          interpretiert. Denken Sie dabei einfach an ein Dateisystem: Die Datei
+          namens "/tmp/file1" kann entweder flach als "file1" dargestellt
+          werden, was zu Konflikten mit anderen Dateien namens "file1" in
+          anderen Verzeichnissen f&uuml;hren kann. Alternativ kann der volle und
+          eindeutige Pfad "/tmp/file1" verwendet werden. QF-Test unterst&uuml;tzt auch
+          numerische Indizes mit dieser Syntax: Ein numerischer Index der Form
+          "/2/3" bezeichnet den vierten Kindknoten des dritten Kindknotens des
+          Wurzelknotens. Eine kombinierte Form um z.B. mittels "/tmp/2" den
+          dritten Knoten im "tmp" Knoten anzusprechen, ist derzeit nicht m&ouml;glich.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span> Diese spezielle Syntax macht das '/' Zeichen
+          zu einem Sonderzeichen f&uuml;r 'Elemente' in einer
+          Baumkomponente. Taucht dieses Zeichen selbst in einem Namen auf, muss
+          es daher gesch&uuml;tzt werden. N&auml;heres zu diesem Thema finden Sie in
+          <a href="tech_quoting.html#sec_quoting">Abschnitt 45.5</a>.
+        </p>
+        
+<p>
+          Alles was in <a href="user_componentstep.html#usec_componentstep">Abschnitt 5.5</a> zum 'QF-Test ID' Attribut
+          von 'Komponenten' gesagt wurde, trifft auch auf das
+          <a href="components.html#att_SubItemStep_id" shape="rect">'QF-Test ID'</a> Attribut eines 'Elements' zu. Dieses
+          Attribut muss eindeutig sein und wird von Events und Checks referenziert.
+        </p>
+        
+<p>
+          Wenn QF-Test die 'QF-Test ID' eines 'Elements' automatisch zuweist,
+          erzeugt es diese, indem es die 'QF-Test ID' der 'Komponente' des
+          Parentknotens nimmt und den Index (oder die Indizes) anh&auml;ngt. Diese Art
+          von 'QF-Test ID' ist normalerweise gut zu lesen und zu verstehen. Leider
+          ist sie aber auch die Quelle eines h&auml;ufigen Missverst&auml;ndnisses: Wenn
+          Sie den Index eines aufgezeichneten 'Elements' &auml;ndern wollen,
+          um auf ein anderes Element zu verweisen, d&uuml;rfen Sie
+          <strong>nicht</strong> das Attribut 'QF-Test ID der Komponente' des Knotens &auml;ndern,
+          der darauf verweist. Stattdessen m&uuml;ssen Sie
+          den 'Prim&auml;rindex' des 'Element' Knotens &auml;ndern.
+        </p>
+      
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="sec_bpCRGeneric.html#sec_bpCRGeneric"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 5.8&nbsp;Generische Komponenten" title="Vorheriges Kapitel: 5.8&nbsp;Generische Komponenten"></a></td><td class="navicon"><a href="user_troubleshooting.html#usec_troubleshooting"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 5.10&nbsp;L&ouml;sung von Problemen bei der Wiedererkennung" title="N&auml;chste Seite: 5.10&nbsp;L&ouml;sung von Problemen bei der Wiedererkennung"></a></td><td class="navicon"><a href="user_troubleshooting.html#usec_troubleshooting"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 5.10&nbsp;L&ouml;sung von Problemen bei der Wiedererkennung" title="N&auml;chstes Kapitel: 5.10&nbsp;L&ouml;sung von Problemen bei der Wiedererkennung"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 5&nbsp;Komponenten" title="Kapitel-&Uuml;bersicht: 5&nbsp;Komponenten"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Daemon security considerations</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_daemon_security"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_daemon_api.html#sec_daemon_api"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 51.2&nbsp;Daemon API" title="Previous Chapter: 51.2&nbsp;Daemon API"></a></td><td class="navicon"><a href="tech_procbuilderdef.html#sec_pbProcbuilderdef"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 52&nbsp;The Procedure Builder definition file" title="Next Page: 52&nbsp;The Procedure Builder definition file"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_daemon.html#sec_daemon"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 51&nbsp;Daemon mode" title="Chapter Overview: 51&nbsp;Daemon mode"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="margin"><a name="new_N188002"></a><span class="note">3.5+</span></span><span class="numtitle"><a href="contents.html#toc_sec_daemon_security">51.3</a></span>
+</div>
+<a href="contents.html#toc_sec_daemon_security">Daemon security considerations</a>
+</h4>
+        
+
+        
+<p>
+          Anybody with access to the QF-Test daemon can start any program on the daemon machine with
+          the rights of the user account that the daemon is running under, so care should be taken
+          to only allow trusted users to connect to the daemon.
+        </p>
+        
+<p>
+          Of course the QF-Test daemon should always be run on a machine that is protected from
+          outside access by a firewall. If all users that can access the machine behind the
+          firewall are trusted, that is sufficient. If the set of trusted users needs to be
+          limited further, please read on.
+        </p>
+        
+<p>
+          By default the QF-Test daemon uses SSL to secure the RMI connection. However, unless you
+          take additional precautions, this only means that the network traffic between the
+          daemon and its client is encrypted. To restrict access to certain users, one further
+          step is required.
+        </p>
+        
+<p>
+          Setting up SSL communication can be very complex. One usually has to learn about keys,
+          certificates, certificate authorities, chains of trust etc. Fortunately, this is a very
+          special case, and the fact that once a user has access to the QF-Test daemon he also has
+          control over the daemon's machine means that there is no distinction between the daemon
+          administrator and a daemon user. Without going into details, QF-Test normally uses a single
+          keystore file with a single self-signed certificate on both daemon and client side. More
+          complex scenarios are possible but beyond the scope of this manual. The default keystore
+          file is named <code>daemon.keystore</code> and provided in QF-Test's system directory or the version-specific
+          directory. By creating your own keystore as described below you can ensure that only
+          users that have read access to that keystore file can interact with the daemon.
+        </p>
+
+        
+        
+
+        
+<a name="sec_N188027"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N188027">51.3.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N188027">Creating your own keystore</a>
+</h5>
+          
+<p>
+            To create the keystore file you need a current JDK version 1.5 or higher, a JRE is not
+            sufficient. In a shell or console window, execute the following command (you may need
+            to prepend the path to the <code>keytool</code> program which resides in the JDK's
+            <code>bin</code> directory):
+          </p>
+          
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>keytool -keystore daemon.keystore -genkey -alias "qftest daemon"
+          -keyalg DSA -validity 999999</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;51.1:&nbsp;&nbsp;Creating a keystore for secure daemon communication</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+          
+</p>
+          
+<p>
+            For further information about the <code>keytool</code> command please see <a href="http://download.oracle.com/javase/6/docs/technotes/tools/solaris/keytool.html" shape="rect">http://download.oracle.com/javase/6/docs/technotes/tools/solaris/keytool.htm</a>.
+          </p>
+          
+<p>
+            When asked for the password for the keystore enter <code>123456</code>. When asked for
+            your name or organization, feel free to provide answers or not. For QF-Test these don't
+            make any difference. Of course you can provide a secure password instead of
+            <code>123456</code>, but that will only complicate starting the daemon and its client
+            and not contribute much to security. You could also use a shorter validity, but in
+            case the keystore file gets into the wrong hands, all you need to do is set up your
+            daemon and users with a new one, so the old one becomes useless.
+          </p>
+        
+
+        
+        
+
+        
+<a name="sec_N188079"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N188079">51.3.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N188079">Specifying the keystore</a>
+</h5>
+          
+<p>
+            You have several options to tell QF-Test to use your keystore instead of the default one:
+          </p>
+          
+<ul>
+            
+<li>
+              Save the file as <code>daemon.keystore</code> in QF-Test's system directory
+            </li>
+            
+<li>
+              Save the file as <code>daemon.keystore</code> in the
+              <a href="user_installation.html#usec_configfile" shape="rect">user configuration directory</a>.
+            </li>
+            
+<li>
+              Save the file wherever you like and provide its location to QF-Test via the
+              command line argument <a href="tech_execution.html#arg_keystore" shape="rect"><code>-keystore &lt;keystore file&gt;</code></a>.
+            </li>
+          
+</ul>
+          
+<p>
+            In case you specified your own password for the keystore you also need to specify that
+            via the command line argument <a href="tech_execution.html#arg_keypass" shape="rect"><code>-keypass &lt;keystore password&gt;</code></a>.
+          </p>
+          
+<p>
+            In case you would like to start the daemon without any SSL support, for example to
+            interact with a QF-Test version older than 3.5, either remove the
+            file called <code>daemon.keystore</code> from QF-Test's version specific directory or use
+            the command line argument in the form <code>-keystore=</code> to specify no keystore.
+          </p>
+        
+
+        
+        
+
+        
+<a name="sec_N188140"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N188140">51.3.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N188140">Specifying the keystore on the client side</a>
+</h5>
+          
+<p>
+            If you use <code>qftest -batch -calldaemon</code> to access the daemon or script nodes
+            from within QF-Test, the options for the client are the same as for the daemon.
+          </p>
+          
+<p>
+            To access the daemon over SSL from your own code via the daemon API you must set the
+            System properties <code>javax.net.ssl.keyStore</code> and
+            <code>javax.net.ssl.trustStore</code> to the keystore file and
+            <code>javax.net.ssl.keyStorePassword</code> to the password for the keystore file.
+            See <a href="tech_daemon_api.html#sec_daemon_api">section 51.2</a> for details about the daemon API and <a href="user_execdaemon.html#usec_execdaemon">section 22.2</a> for examples.
+          </p>
+        
+
+        
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_daemon_api.html#sec_daemon_api"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 51.2&nbsp;Daemon API" title="Previous Chapter: 51.2&nbsp;Daemon API"></a></td><td class="navicon"><a href="tech_procbuilderdef.html#sec_pbProcbuilderdef"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 52&nbsp;The Procedure Builder definition file" title="Next Page: 52&nbsp;The Procedure Builder definition file"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_daemon.html#sec_daemon"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 51&nbsp;Daemon mode" title="Chapter Overview: 51&nbsp;Daemon mode"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

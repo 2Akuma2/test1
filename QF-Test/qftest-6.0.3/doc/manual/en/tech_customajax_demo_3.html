@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Mapping of complex components like data-tables</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_customajax_demo_table"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_customajax_demo_2.html#sec_customajax_demo_genericclass_nested"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 47.1.10.2&nbsp;Advanced class mapping" title="Previous Chapter: 47.1.10.2&nbsp;Advanced class mapping"></a></td><td class="navicon"><a href="tech_customajax_demo.html#sec_N171030"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 47.1.10.4&nbsp;Next steps" title="Next Page: 47.1.10.4&nbsp;Next steps"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_customajax_demo.html#sec_customajax_demo"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 47.1.10&nbsp;Example for WebCarConfigurator" title="Chapter Overview: 47.1.10&nbsp;Example for WebCarConfigurator"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+            
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_customajax_demo_table">47.1.10.3</a></span>
+</div>
+<a href="contents.html#toc_sec_customajax_demo_table">Mapping of complex components like data-tables</a>
+</h5>
+            
+<p>
+              The previously described approach will work for
+              most standard components as buttons or checkboxes. But besides
+              those components there are also complex components in our
+              GUI. Those components represent data and we would like to address
+              their content by the sub-item syntax provided by QF-Test. Those components could be
+              tables, trees or lists. For those components we need to map the
+              dedicated class as well as the sub-item class. You will find the 
+              details in the following sections: <a href="tech_customajax_combobox.html#sec_customajax_combobox">Mapping of Comboboxes</a>, 
+              <a href="tech_customajax_list.html#sec_customajax_list">Mapping of Lists</a>, 
+              <a href="tech_customajax_table.html#sec_customajax_table">Mapping of Tables and TreeTables</a>,
+              <a href="tech_customajax_tabpanel.html#sec_customajax_tabpanel">Mapping of TabPanels and Accordions</a>,
+              <a href="tech_customajax_tree.html#sec_customajax_tree">Mapping of Trees</a>.
+
+            </p>
+            
+<a name="figure_47.13"></a><a name="figure_47.13"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="" target="_blank">
+<table border="0" cellspacing="10" cellpadding="0">
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1"><img src="images/WebCarConfigTable_table.png" alt="Current recording" texscale=".66" width="333" height="178"></td>
+                <td align="center" rowspan="1" colspan="1"><img src="images/WebCarConfigTableCustom_table.png" alt="Simplified recording" texscale=".66" width="294" height="146"></td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1">Current recording</td>
+                <td align="center" rowspan="1" colspan="1">Simplified recording</td>
+              
+</tr>
+            
+</table>
+</a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;47.13</a>:&nbsp;&nbsp;Simplification for complex components</td><td class="captionglue"></td>
+</tr>
+</table>
+            
+<p>
+              Our example is the table showing the cars of the
+              WebCarConfigurator. Again, we need to record some clicks on
+              the shown cars and analyze the recording. The standard recording
+              looks like this:
+            </p>
+            
+<a name="figure_47.14"></a><a name="figure_47.14"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/WebCarConfigTable.png" target="_blank"><img src="images/WebCarConfigTable.png" alt="WebCarConfigTable" width="966" height="753" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;47.14</a>:&nbsp;&nbsp;Recording of table in WebCarConfigurator</td><td class="captionglue"></td>
+</tr>
+</table>
+            
+<p>
+              The click was recorded on a <code>TD</code> component, which
+              is the child of a <code>TR</code> component, which is part of a
+              <code>TABLE</code> component. The recorded
+              <code>TD</code> component contains an extra feature
+              <code>class</code> with the value <code>dataCell</code>. The
+              <code>TR</code> component has the value <code>dataRow</code>,
+              and the <code>TABLE</code> has the value <code>dataTable</code> for that attribute.
+            </p>
+            
+<p>
+              When we select the nodes and observe the component highlighting in the SUT
+              we notice the following:
+             </p>
+            
+<p>
+              A <code>TD</code> node represents a cell, a
+              <code>TR</code> node represents a row of a table and a
+              <code>TABLE</code> node represents an entire table. Exactly those
+              nodes need to be investigated now in order to create a good
+              mapping to generic classes. QF-Test requires those three classes
+              plus the header row and a header cell to resolve a table, see
+              <a href="tech_customajax_table.html#sec_customajax_table">Mapping of Tables and TreeTables</a> for details.
+            </p>
+            
+<p>
+              Let's start with the <code>TABLE</code> node. This node has a
+              <code>class</code> attribute with the value
+              <code>dataTable</code>. This seems to be a clear sign that any
+              <code>dataTable</code> represents a table. So we select the call
+              to the <code>qfs.web.ajax.installCustomWebResolver</code> again
+              and we extend the parameter <code>genericClasses</code> to
+              <code>dataTable=Table,textfield=TextField,button=Button</code>.
+            </p>
+            
+<p>
+              The next step is the row of the table. After selecting the
+              <code>TR</code> node we can see that there is another
+              <code>class</code> attribute with the value
+              <code>dataRow</code>. This seems to be a clean-cut case.
+              Now we need to add that value to the procedure call
+              of <code>qfs.web.ajax.installCustomWebResolver</code> again
+              and we extend the parameter <code>genericClasses</code> to
+              <code>dataRow=TableRow,dataTable=Table,textfield=TextField,
+            button=Button</code>.
+            </p>
+            
+<p>
+              Next we need to analyze the <code>TD</code> node.
+              Again, we find the <code>class</code> attribute, this time
+              with the value <code>dataCell</code>. So, let's add this to our
+              procedure call as before. Now <code>genericClasses</code> looks
+              <code>dataCell=TableCell,dataRow=TableRow,dataTable=Table,
+              textfield=TextField,button=Button</code>.
+              Note that you are allowed to enter line breaks after each comma
+              to ensure a better readability.
+            </p>
+            
+<p>
+              Also, we would like QF-Test to recognize the column headers, so it can
+              use them as text index for the column when we record a table cell.
+              This time the <code>class</code> attribute is
+              <code>headerRow</code> for the header row and <code>headerCell</code>
+              for each column header. So we complete the
+              <code>genericClasses</code> parameter. It now reads
+              <code>headerRow=TableHeader, headerCell=TableHeaderCell, dataCell=TableCell, 
+              dataRow=TableRow, dataTable=Table, 
+              textfield=TextField, button=Button</code>.
+            </p>
+            
+<p>
+              We will now delete the previously recorded
+              components, run the
+              <code>qfs.web.ajax.installCustomWebResolver</code>, re-load the
+              web-page and re-record a click again.
+            </p>
+            
+<p>
+              As result we get a click with the typical QF-Test item syntax on a
+              component like <code>VehicleTable@Model&amp;0</code> (or any other
+              row, depending what you clicked on). In the recorded
+              components area you will just see the <code>Table</code> object and no
+              child component anymore
+              as they are now treated by QF-Test as items of a table.
+            </p>
+            
+<a name="figure_47.15"></a><a name="figure_47.15"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/WebCarConfigTableCustom.png" target="_blank"><img src="images/WebCarConfigTableCustom.png" alt="WebCarConfigTableCustom" width="966" height="753" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;47.15</a>:&nbsp;&nbsp;Recording of resolved table item in WebCarConfigurator</td><td class="captionglue"></td>
+</tr>
+</table>
+            
+<p>
+              After resolving this complex component we can proceed to the next section
+              for the next steps.
+            </p>
+          
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_customajax_demo_2.html#sec_customajax_demo_genericclass_nested"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 47.1.10.2&nbsp;Advanced class mapping" title="Previous Chapter: 47.1.10.2&nbsp;Advanced class mapping"></a></td><td class="navicon"><a href="tech_customajax_demo.html#sec_N171030"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 47.1.10.4&nbsp;Next steps" title="Next Page: 47.1.10.4&nbsp;Next steps"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_customajax_demo.html#sec_customajax_demo"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 47.1.10&nbsp;Example for WebCarConfigurator" title="Chapter Overview: 47.1.10&nbsp;Example for WebCarConfigurator"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

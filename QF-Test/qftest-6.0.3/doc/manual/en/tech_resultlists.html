@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Result lists</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_resultlists"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_imagealgorithmdetails.html#sec_imagealgorithmdetails"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 55&nbsp;Details about the algorithm for image comparison" title="Previous Chapter: 55&nbsp;Details about the algorithm for image comparison"></a></td><td class="navicon"><a href="tech_genericclasses.html#sec_genericclasses"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 57&nbsp;Generic classes" title="Next Page: 57&nbsp;Generic classes"></a></td><td class="navicon"><a href="tech_genericclasses.html#sec_genericclasses"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 57&nbsp;Generic classes" title="Next Chapter: 57&nbsp;Generic classes"></a></td><td class="navicon"><a href="technical.html#sec_technical"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: IV&nbsp;Technical reference" title="Chapter Overview: IV&nbsp;Technical reference"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="margin"><a name="new_N191234"></a><span class="note">3.2+</span></span><span class="numtitle"><a href="contents.html#toc_sec_resultlists">56</a></span>
+</div>
+<a href="contents.html#toc_sec_resultlists">Result lists</a>
+</h3>
+
+    
+
+    
+<a name="sec_resultlistIntro"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_resultlistIntro">56.1</a></span>
+</div>
+<a href="contents.html#toc_sec_resultlistIntro">Introduction</a>
+</h4>
+      
+<p>
+        Search operations like locating a reference or searching for a
+        particular value can produce large result sets, as can
+        operations like renaming components or procedures.
+        In order to provide a better overview of all affected nodes QF-Test
+        shows a mass result list at the end of such operations. This list
+        holds all nodes that have been touched by the respective operation.
+        Besides providing an overview that list allows
+        you to apply mass operations on all nodes quite easily.
+        Such mass operations could be toggling a mark at all found nodes or deleting all of
+        them from the test-suites. Those operations can be triggered by the
+        &raquo;<em>Edit</em>&laquo; menu or a the table's context menu.
+     </p>
+      
+<a name="figure_56.1"></a><a name="figure_56.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/dlg_StepReferences.png" target="_blank"><img src="images/dlg_StepReferences.png" alt="Sample references list" width="600" height="500" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;56.1</a>:&nbsp;&nbsp;Sample result list for 'Locate references'</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        The table comes with a context menu as well. This context menu allows you to
+        perform several actions on the shown nodes.
+        If you select entries in the result list and perform a right
+        mouse-click you can raise some very useful actions from that menu like jumping to the
+        node or disabling it. Depending on the type of the list there might
+        be specific actions which only make sense in that particular
+        context. A list of possible actions is provided in
+        <a href="#sec_resultlistActions">section 56.2</a>.
+      </p>
+      
+<p>
+        Such result lists are available for the following actions:
+      </p>
+      
+<ul>
+        
+<li>Once you press <em>Show result list</em> on the Search or Replace dialog.
+        </li>
+        
+<li>As result of the &raquo;<em>Locate reference</em>&laquo; action for callable nodes or components.
+        </li>
+        
+<li>As result of any command which updates several nodes.
+        </li>
+        
+<li>As result of any replacement action from the Replace dialog.</li>
+        
+<li>As result of several analyzing actions under the &raquo;<em>Additional node           operations</em>&laquo; menu.
+        </li>
+        
+<li>Once you open a list of breakpoints under &raquo;<em>Debugger</em>&laquo;-&raquo;<em>List of all breakpoints...</em>&laquo;.
+        </li>
+        
+<li>Once a duplicate QF-Test component ID gets inserted or a suite with
+          duplicate components get opened.</li>
+        
+<li>Once a node transformation changes the type of some child nodes.
+        </li>
+        
+<li>Once you press &raquo;<em>Edit</em>&laquo;-&raquo;<em>Open error list</em>&laquo; in the run-log.
+        </li>
+        
+<li>If you update components via  &raquo;<em>Update             components</em>&laquo; all errors will be shown in such a list.
+        </li>
+      
+</ul>
+      
+<p>
+        If you have lots of entries in the table you can also apply a filter
+        at the top for limiting the nodes to the given filter values.
+        Once you reset the filter you will see all nodes again.
+      </p>
+    
+
+    
+    
+
+    
+<a name="sec_resultlistActions"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_resultlistActions">56.2</a></span>
+</div>
+<a href="contents.html#toc_sec_resultlistActions">Specific list actions</a>
+</h4>
+      
+<a name="sec_resultlistActionAll"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_resultlistActionAll">56.2.1</a></span>
+</div>
+<a href="contents.html#toc_sec_resultlistActionAll">All types of lists</a>
+</h5>
+        
+<p>
+          Following actions are available on all types of lists:
+        <ul>
+          
+<li>Toggle mark</li>
+          
+<li>Toggle disabled state</li>
+          
+<li>Jump to node in test-suite</li>
+          
+<li>Set a breakpoint</li>
+          
+<li>Delete a node from the list only</li>
+          
+<li>Delete a node from test-suite</li>
+          
+<li>Store the result in a <code>.qcv</code> file, for details see
+          <a href="#sec_resultlistQCV">section 56.3</a>
+</li>
+          
+<li>If the according action affects only one node you can also jump
+          back to this.</li>
+        
+</ul>
+      
+</p>
+      
+      
+<a name="sec_resultlistActionReplace"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_resultlistActionReplace">56.2.2</a></span>
+</div>
+<a href="contents.html#toc_sec_resultlistActionReplace">Replacing</a>
+</h5>
+        
+<p>
+          The replacement list provides the capability of replacing only
+          the selected values.
+        </p>
+      
+      
+<a name="sec_resultlistActionErrorList"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_resultlistActionErrorList">56.2.3</a></span>
+</div>
+<a href="contents.html#toc_sec_resultlistActionErrorList">Error list</a>
+</h5>
+        
+<p>
+          The error list of the run-log provides capabilities to update
+          failing checks in a bunch. It doesn't allow to delete a node from
+          the run-log of course.
+        </p>
+      
+    
+
+    
+    
+
+    
+<a name="sec_resultlistQCV"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="margin"><a name="new_N191424"></a><span class="note">3.5+</span></span><span class="numtitle"><a href="contents.html#toc_sec_resultlistQCV">56.3</a></span>
+</div>
+<a href="contents.html#toc_sec_resultlistQCV">Exporting and loading results</a>
+</h4>
+      
+<p>
+        In case you have a very large result list that you need to work on within more than one
+        session, you can store its results in an
+        external file using the menu action &raquo;<em>Extras</em>&laquo;-&raquo;<em>Export</em>&laquo;. The export process creates a
+        <code>.qcv</code> file, which is more or less a CSV file holding the
+        information in a QF-Test internal format. To proceed with your work at a later time, simply load the
+        previously exported <code>.qcv</code> file via &raquo;<em>Operations</em>&laquo;-&raquo;<em>Load result list...</em>&laquo; into QF-Test.
+      </p>
+    
+
+    
+
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_imagealgorithmdetails.html#sec_imagealgorithmdetails"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 55&nbsp;Details about the algorithm for image comparison" title="Previous Chapter: 55&nbsp;Details about the algorithm for image comparison"></a></td><td class="navicon"><a href="tech_genericclasses.html#sec_genericclasses"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 57&nbsp;Generic classes" title="Next Page: 57&nbsp;Generic classes"></a></td><td class="navicon"><a href="tech_genericclasses.html#sec_genericclasses"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 57&nbsp;Generic classes" title="Next Chapter: 57&nbsp;Generic classes"></a></td><td class="navicon"><a href="technical.html#sec_technical"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: IV&nbsp;Technical reference" title="Chapter Overview: IV&nbsp;Technical reference"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

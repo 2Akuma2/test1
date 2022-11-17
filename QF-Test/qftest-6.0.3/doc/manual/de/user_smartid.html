@@ -1,0 +1,693 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>SmartID (Preview)</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_smartid"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_componentstep.html#usec_componentstep"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 5.5&nbsp;'Komponente' Knoten" title="Vorheriges Kapitel: 5.5&nbsp;'Komponente' Knoten"></a></td><td class="navicon"><a href="usec_scope.html#usec_scope"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 5.7&nbsp;Geltungsbereich(Scope) (Preview)" title="N&auml;chste Seite: 5.7&nbsp;Geltungsbereich(Scope) (Preview)"></a></td><td class="navicon"><a href="usec_scope.html#usec_scope"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 5.7&nbsp;Geltungsbereich(Scope) (Preview)" title="N&auml;chstes Kapitel: 5.7&nbsp;Geltungsbereich(Scope) (Preview)"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 5&nbsp;Komponenten" title="Kapitel-&Uuml;bersicht: 5&nbsp;Komponenten"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_smartid">5.6</a></span>
+</div>
+<a href="contents.html#toc_usec_smartid">SmartID (Preview)</a>
+</h4>
+      
+<p>
+        
+<span class="margin"><a name="new_N72488"></a><span class="note">6.0+</span></span>
+        <span class="margin"><a name="preview_N72491"></a><span class="note">Preview</span></span>
+        "Preview" bedeutet, dass das Feature in einer zuk&uuml;nftigen Version offiziell freigegeben
+        wird. Aktuell ist das Feature noch nicht vollst&auml;ndig umgesetzt, aber bereits
+        so weit ausgereift, dass es gro&szlig;en Mehrwert bringt
+        und die freigegebenen Funktionen ohne Sorge um R&uuml;ckw&auml;rtskompatibilit&auml;t genutzt werden
+        k&ouml;nnen.
+      </p>
+      
+<p>
+        SmartIDs erm&ouml;glichen eine flexible, einfache Wiedererkennung
+        von Komponenten, ohne dass die Wiedererkennungskriterien
+        abgespeichert werden. Dies verschlankt den aufgenommenen Komponentenbaum
+        in "Fenster und Komponenten" deutlich. Bei ausschlie&szlig;licher Verwendung
+        von SmartIDs wird der Komponentenbaum &uuml;berhaupt nicht mehr ben&ouml;tigt.
+        Es ist allerdings zu ber&uuml;cksichtigen, dass diese Flexibilit&auml;t
+        und Vereinfachung ihren Preis hat und - je nach Situation - die Performanz und Wartbarkeit beeintr&auml;chtigen kann.
+      </p>
+      
+<p>
+        SmartIDs verwenden die gleichen Wiedererkennungsmerkmale, die bei der
+        klassischen Komponentenerkennung in den <a href="user_componentstep.html#usec_componentstep">'Komponente' Knoten</a>
+        abgespeichert werden. Der Unterschied ist, dass
+        aus den m&ouml;glichen Wiedererkennungsmerkmalen eines oder mehrere explizit
+        ausgew&auml;hlt und an Stelle der Referenz zur aufgenommenen 'Komponente'
+        eingetragen werden. Zum Beispiel direkt im Attribut <a href="events.html#att_MouseEventStep_component" shape="rect">'QF-Test ID der Komponente'</a>
+        eines Mausklick-Knotens.
+      </p>
+      
+<p>
+        Die SmartID wird durch ein f&uuml;hrendes <code>#</code> gekennzeichnet.
+        Die einfachste Version der SmartID ist entweder der Name oder die
+        Beschriftung der Komponente mit einem vorangestellten <code>#</code>.
+        Zum Beispiel <code>#username</code>, um eine Komponente mit dem Namen
+        <code>username</code> anzusprechen oder <code>#Anwendername</code>,
+        wenn <code>Anwendername</code> die Beschriftung des Feldes ist.
+      </p>
+      
+<p>
+        Ziel der SmartIDs ist eine Verschlankung des Komponentenbaums - so
+        weit sinnvoll, aber nicht um jeden Preis.
+        Einfaches soll m&ouml;glichst einfach genutzt werden k&ouml;nnen,
+        aber wenn es schwierig ist, eine Komponente anzusprechen,
+        sind <a href="components.html#step_ComponentStep" shape="rect">'Komponente'</a> Knoten besser geeignet.
+        Die Themen "Eindeutigkeit" und "Performanz" k&ouml;nnen alternativ
+        &uuml;ber das Scope-Konzept adressiert werden, siehe <a href="usec_scope.html#usec_scope">Geltungsbereich(Scope) (Preview)</a>.
+      </p>
+      
+<p>
+        Die SmartID wird im Attribut 'QF-Test ID der Komponente' eingetragen, zum Beispiel
+        im Attribut <a href="events.html#att_MouseEventStep_component" shape="rect">'QF-Test ID der Komponente'</a> von Event- oder Check-Knoten.
+        Sie kann genauso wie die 'QF-Test ID der Komponente' in Variablen gespeichert,
+        in Parametern &uuml;bergeben oder in Skripten genutzt werden. Bei komplexen
+        Komponenten wie Tabellen, Listen oder B&auml;umen kann die SmartID ebenfalls
+        die 'QF-Test ID der Komponente' ersetzen. Der Index, der das Unterelement
+        bezeichnet, bleibt unver&auml;ndert. Im Anschluss an eine SmartID kann eine
+        darin enthaltene Komponente entweder &uuml;ber eine weitere SmartID oder
+        mittels XPath (<a href="user_subitems.html#usec_xpath">Adressierung mit XPath und/oder CSS-Selektoren</a>) adressiert werden.
+      </p>
+      
+<p>
+        SmartIDs k&ouml;nnen f&uuml;r alle Client-Technologien genutzt werden.
+      </p>
+      
+<p>
+        Wie bei generischen Komponenten ist zu ber&uuml;cksichtigen, dass die Aktualisierung nicht so komfortabel ist wie
+        bei <a href="user_componentstep.html#usec_componentstep">'Komponente' Knoten</a> Knoten. Allerdings steht in QF-Test eine m&auml;chtige "Suchen und Ersetzen" Funktionalit&auml;t zur Verf&uuml;gung,
+        um SmartIDs suite&uuml;bergreifend anzupassen.
+      </p>
+
+      
+<a name="sec_N72575"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N72575">5.6.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N72575">Anwendungsbereiche f&uuml;r SmartIDs</a>
+</h5>
+        
+<p>
+          Die Anwendungsbereiche sind die gleichen, in denen bisher
+          <a href="sec_bpCRGeneric.html#sec_bpCRGeneric">Generische Komponenten</a> zum Einsatz kamen. SmartIDs ersetzen
+          generische Komponenten weitgehend und sind einfacher zu nutzen als diese.
+        </p>
+        
+<dl>
+          
+<dt>Lesbarkeit</dt>
+          
+<dd>
+            
+<p>
+              Bei der direkten Aufnahme von Testf&auml;llen kann der Einsatz von SmartIDs
+              die aufgenommenen Event- und Checkknoten lesbarer machen. Insbesondere,
+              wenn die aufgenommenen Namen der Komponenten kryptisch sind und
+              stabile Beschriftungen vorhanden sind. In diesem Fall macht es
+              Sinn, die Reihenfolge f&uuml;r die Aufnahme der Wiedererkennungskriterien
+              auf "zuerst Beschriftung, dann Name" zu &auml;ndern, zum Beispiel in einem
+              Server Skript mittels
+              <table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>rc.setOption(Options.OPT_RECORD_SMARTID_PRIORITIES, "label,name")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;5.1:&nbsp;&nbsp;
+                  &Auml;ndern der Aufnahmereihenfolge von Wiedererkennungskriterien bei SmartIDs
+                </td><td class="captionglue"></td>
+</tr>
+</table>
+            
+</p>
+          
+</dd>
+
+          
+<dt>Ignorieren der Komponentenhierarchie</dt>
+          
+<dd>
+            
+<p>
+              Manche Anwendungen haben tief verschachtelte Komponentenhierarchien.
+              SmartIDs machen es einfach, den
+              Komponentenbaum zu reduzieren, was insbesondere dann hilfreich ist,
+              wenn die Komponentenhierarchie &uuml;ber die Versionen
+              hinweg nicht stabil bleibt. (Bisher wurden zu
+              diesem Zweck <a href="sec_bpCRGeneric.html#sec_bpCRGeneric">Generische Komponenten</a> eingesetzt. Dies ist auch weiterhin
+              m&ouml;glich, auch parallel zu SmartIDs.)
+            </p>
+          
+</dd>
+
+          
+<dt>Testgetriebene Entwicklung</dt>
+          
+<dd>
+            
+<p>
+              Bei testgesteuerter Entwicklung bieten SmartIDs den gro&szlig;en Vorteil,
+              dass keine <a href="user_componentstep.html#usec_componentstep">'Komponente' Knoten</a> Knoten angelegt werden m&uuml;ssen. Au&szlig;erdem
+              werden bei testgesteuerter Entwicklung h&auml;ufig die
+              <a href="usec_components_name.html#usec_components_identifier">Komponentenbezeichner</a> im technischen Design
+              festgelegt, die dann f&uuml;r die Testerstellung genutzt werden k&ouml;nnen.
+            </p>
+          
+</dd>
+
+          
+<dt>Schl&uuml;sselwort-basierende Tests</dt>
+          
+<dd>
+            Schl&uuml;sselwort-basierende Tests werden technisch &uuml;ber Prozeduraufrufe
+            und Parameter implementiert. Der Testersteller nimmt somit keine
+            Komponenten auf und ist f&uuml;r die Identifikation der Komponenten auf
+            visuelle Informationen aus dem GUI angewiesen. Dies kann die
+            Beschriftung der Komponente oder deren Funktion (Klasse) sein. Weitere
+            Informationen finden Sie in <a href="user_keyworddriven.html#usec_keyworddriven">Schl&uuml;sselwortgetriebenes bzw. Keyword-Driven Testing mit QF-Test</a>.
+          </dd>
+
+          
+<dt>Integration mit anderen Test-Tools</dt>
+          
+<dd>
+            Bei der Steuerung der Testausf&uuml;hrung seitens QF-Test &uuml;ber andere Test-Tools wie Robot Framework
+            k&ouml;nnen die Wiedererkennungskriterien direkt &uuml;ber SmartIDs spezifiziert werden.
+          </dd>
+        
+</dl>
+      
+
+      
+<a name="usec_smartid_class"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_smartid_class">5.6.2</a></span>
+</div>
+<a href="contents.html#toc_usec_smartid_class">SmartID-Syntax f&uuml;r 'Klasse'</a>
+</h5>
+        
+<p>
+          Die <a href="usec_componentclass.html#usec_componentclass">Klasse</a> wird in der SmartID
+          direkt nach dem <code>#</code>
+          angegeben und mit einem <code>:</code> abgeschlossen,
+          zum Beispiel <code>#Button:</code>.
+        </p>
+        
+<p>
+          F&uuml;r Komponentenklassen, mit denen der Anwender typischerweise interagiert,
+          muss die Klasse nicht explizit in der SmartID angegeben werden. Eine
+          Liste dieser Klassen finden Sie in <a href="sec_smartid_options_classes.html#sec_smartid_options_classes">Abschnitt 44.5.1</a>.
+          Bei diesen Klassen kann die SmartID auch einfach nur den
+          <a href="usec_components_name.html#usec_components_identifier">Komponentenbezeichner</a> oder die Komponentenbeschriftung
+          (entweder das <a href="usec_components_feature.html#usec_components_feature">Merkmal</a> oder das weitere Merkmal
+          <a href="usec_components_extrafeatures.html#usec_components_qfslabel">qfs:label</a>)
+          umfassen, zum Beispiel <code>#btnOK</code>, wenn der Name des Buttons
+          "btnOK" ist, oder <code>#Speichern</code>, wenn die Beschriftung
+          des Buttons "Speichern" lautet. Dies macht eine SmartID einfacher in der Handhabung,
+	  allerdings in gewissem Ma&szlig; auf Kosten der Performance, da ohne Angabe der Klasse mehr Kandidaten
+	  auf &Uuml;bereinstimmung mit der SmartID gepr&uuml;ft werden m&uuml;ssen.
+	  F&uuml;r nicht in der Liste enthaltene Klassen muss diese
+          in der SmartID explizit enthalten sein, zum Beispiel <code>#Panel:addresses</code>,
+          wobei "addresses" hier der Name des Panels ist.
+        </p>
+        
+<p>
+          Panels sind insofern ein Sonderfall, da sich Panels mit Beschriftung
+          f&uuml;r geschachtelte SmartIDs (siehe <a href="#usec_smartid_hierarchy">Abschnitt 5.6.7</a>)
+          oder Scopes  (siehe <a href="usec_scope.html#usec_scope">Abschnitt 5.7</a>) anbieten.
+          Daher geh&ouml;rt der Klassentyp <code>Panel:TitledPanel</code> zu den SmartID-Klassen
+          und muss nicht separat angegeben werden.
+        </p>
+        
+<p>
+          Wenn Sie zus&auml;tzlich zur generischen Klasse einen
+          vordefinierten Klassentyp verwenden,
+          k&ouml;nnen Sie diese Kombination wie gewohnt schreiben, zum Beispiel
+          <code>#Button:ComboBoxButton:</code>. Die vordefinierten Klassentypen
+          finden Sie in <a href="tech_genclassesproperties.html#sec_genclassesproperties">Eigenschaften von generischen Klassen</a>.
+          Bei eigenen Klassentypen muss der innere Doppelpunkt mittels
+          <code>\</code> gesch&uuml;tzt werden, zum Beispiel <code>#Panel\:myPanel:</code>.
+        </p>
+        
+<p>
+          Informationen zu Kombinationsm&ouml;glichkeiten finden Sie in
+          <a href="sec_smartid_syntax.html#sec_smartid_syntax">Abschnitt 44.3</a>.
+        </p>
+      
+
+      
+<a name="sec_N72734"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N72734">5.6.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N72734">SmartID-Syntax f&uuml;r 'Name'</a>
+</h5>
+        
+<p>
+          Ein <a href="usec_components_name.html#usec_components_name">Name</a> kann in der SmartID direkt
+          nach dem <code>#</code> angegeben werden, z.B. <code>#txtUsername</code>.
+          Wenn die Klasse der Komponente zu den <a href="tech_genericclasses.html#sec_genericclasses">Generische Klassen</a>
+          geh&ouml;rt, reicht die einfache Angabe des Namens. Ansonsten muss die
+          <a href="usec_componentclass.html#usec_componentclass">Klasse</a> vorangestellt werden, zum Beispiel
+          <code>#DIV:txtUsername</code>.
+        </p>
+        
+<p>
+          Der verwendete Name kann SmartID-spezifische Sonderzeichen
+           enthalten, diese
+          m&uuml;ssen jedoch mit einem vorangestellten <code>\</code> gesch&uuml;tzt werden.
+        </p>
+        
+<p>
+          Um zu erzwingen, dass der <a href="usec_components_name.html#usec_components_name">Name</a>
+          f&uuml;r die Komponentenerkennung verwendet wird,
+          kann in der SmartID <code>Name=</code> vorangestellt werden, zum Beispiel
+          <code>#Name=txtUsername</code>. Die Gro&szlig;-/Kleinschreibung muss beim Pr&auml;fix
+          <code>Name=</code> nicht beachtet werden.
+        </p>
+        
+<p>
+          Weitere Informationen zu Kombinationsm&ouml;glichkeiten finden Sie in
+          <a href="sec_smartid_syntax.html#sec_smartid_syntax">Abschnitt 44.3</a>.
+        </p>
+      
+
+      
+<a name="sec_N72794"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N72794">5.6.4</a></span>
+</div>
+<a href="contents.html#toc_sec_N72794">SmartID-Syntax f&uuml;r 'Merkmal'</a>
+</h5>
+        
+<p>
+          Das Wiedererkennungskriterium <a href="usec_components_feature.html#usec_components_feature">Merkmal</a>
+          kann in der SmartID direkt nach dem <code>#</code> angegeben werden,
+          zum Beispiel <code>#Anwendername</code>.
+          Wenn die Klasse der Komponente zu den <a href="tech_genericclasses.html#sec_genericclasses">Generische Klassen</a>
+          geh&ouml;rt, reicht die einfache Angabe des Merkmals. Ansonsten muss die
+          <a href="usec_componentclass.html#usec_componentclass">Klasse</a> vorangestellt werden, zum Beispiel
+          <code>#DIV:Anwendername</code>.
+        </p>
+        
+<p>
+          Das verwendete Merkmal kann SmartID-spezifische Sonderzeichen
+           enthalten, diese
+          m&uuml;ssen jedoch mit einem vorangestellten <code>\</code> gesch&uuml;tzt werden.
+        </p>
+        
+<p>
+          Um zu erzwingen, dass das Merkmal f&uuml;r die Komponentenerkennung
+          verwendet wird, kann dem Merkmal <code>Feature=</code>
+          vorangestellt werden, zum Beispiel <code>#Feature=Anwendername</code>.
+          Wenn es unwichtig ist, ob das Merkmal oder das weitere Merkmal
+          <a href="usec_components_extrafeatures.html#usec_components_qfslabel">qfs:label</a> verwendet wird,
+          kann <code>Label=</code> vorangestellt werden, zum Beispiel
+          <code>#Label=Anwendername</code>. Die Gro&szlig;-/Kleinschreibung
+          muss bei den Pr&auml;fixen <code>Feature=</code> und <code>Label=</code>
+          nicht beachtet werden.
+        </p>
+        
+<p>
+          Weitere Informationen zu Kombinationsm&ouml;glichkeiten finden Sie in
+          <a href="sec_smartid_syntax.html#sec_smartid_syntax">Abschnitt 44.3</a>.
+        </p>
+      
+
+      
+<a name="sec_N72863"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N72863">5.6.5</a></span>
+</div>
+<a href="contents.html#toc_sec_N72863">SmartID-Syntax f&uuml;r 'Weitere Merkmale'</a>
+</h5>
+        
+<p>
+          Wiedererkennungskriterien aus der Gruppe der <a href="usec_components_extrafeatures.html#usec_components_extrafeatures">Weitere Merkmale</a> stehen ebenfalls f&uuml;r die SmartID zur Verf&uuml;gung.
+        </p>
+        
+<p>
+          Auch hier m&uuml;ssen SmartID-spezifische Sonderzeichen  mit einem
+          vorangestellten <code>\</code> gesch&uuml;tzt werden.
+        </p>
+        
+<p>
+          Eine herausragende Stellung hat das weitere Merkmal
+          <a href="usec_components_extrafeatures.html#usec_components_qfslabel">qfs:label</a>, das die ermittelte
+          Beschriftung der Komponente enth&auml;lt.
+          Es kann in der SmartID direkt nach dem <code>#</code> angegeben werden,
+          zum Beispiel <code>#Anwendername</code>.
+          Wenn die Klasse der Komponente zu den <a href="tech_genericclasses.html#sec_genericclasses">Generische Klassen</a>
+          geh&ouml;rt, reicht die einfache Angabe der Beschriftung. Ansonsten muss die
+          <a href="usec_componentclass.html#usec_componentclass">Klasse</a> vorangestellt werden, zum Beispiel
+          <code>#DIV:Anwendername</code>.
+        </p>
+        
+<p>
+          Bei allen anderen weiteren Merkmalen muss der Name des
+          weiteren Merkmals, gefolgt von <code>=</code> und dem Wert
+          des weiteren Merkmals angegeben werden. Die Gro&szlig;- und Kleinschreibung
+          muss f&uuml;r die Namen des weiteren Merkmals ber&uuml;cksichtigt werden.
+        </p>
+        
+<p>
+          Beispiele:
+        </p>
+        
+<ul>
+          
+<li>
+             Die SmartID <code>#tooltip=Bitte erg&auml;nzen</code> referenziert
+             eine Komponente mit einem weiteren Merkmal mit dem Namen
+             <code>tooltip</code> und dem Wert <code>Bitte erg&auml;nzen</code>.
+          </li>
+          
+<li>
+            Die SmartID <code>#my\:foo=Irgend\&amp;etwas</code> referenziert
+             eine Komponente mit einem weiteren Merkmal mit dem Namen
+             <code>my:foo</code> und dem Wert <code>Irgend&amp;etwas</code>.
+          </li>
+        
+</ul>
+        
+<p>
+          Informationen zu Kombinationsm&ouml;glichkeiten finden Sie in
+          <a href="sec_smartid_syntax.html#sec_smartid_syntax">Abschnitt 44.3</a>.
+        </p>
+        
+<dl>
+          
+<dt>Weiteres Merkmal <code>qfs:label</code>
+</dt>
+          
+<dd>
+            Um zu erzwingen, dass <code>qfs:label</code> f&uuml;r die
+            Komponentenerkennung verwendet wird, kann in der SmartID
+            <code>qlabel=</code> vorgestellt werden, zum Beispiel
+            <code>#qlabel=Anwendername</code>. (<code>qlabel=</code>
+            wurde eingef&uuml;hrt, damit wegen des Doppelpunkts nicht die
+            umst&auml;ndlichere Schreibung <code>#qfs\:label</code> verwendet
+            werden muss.) Wenn es unwichtig ist, ob das Merkmal oder das
+            weitere Merkmal <code>qfs:label</code> verwendet wird,
+            kann <code>Label=</code> vorangestellt werden, zum Beispiel
+            <code>#Label=Anwendername</code>. Die Gro&szlig;- und Kleinschreibung
+            muss bei den Pr&auml;fixen <code>Label=</code> und <code>qlabel=</code>
+            nicht beachtet werden.
+          </dd>
+
+          
+<dt>Weitere Merkmale <code>qfs:text</code> und <code>text</code>
+</dt>
+          
+<dd>
+            
+<p>
+              Auch die weiteren Merkmale <code>qfs:text</code> und
+              <code>text</code> haben eine Sonderstellung.
+              Beide k&ouml;nnen &uuml;ber den Pr&auml;fix <code>text=</code>
+              vor dem eigentlichen Wert angesprochen werden. Wenn dediziert
+              <code>qfs:text</code> verwendet werden soll, k&ouml;nnen Sie
+              <code>qtext=</code> verwenden.
+            </p>
+            
+<p>
+              Beispiele: <code>#text=Anna</code>, <code>#qtext=Benno</code>
+            
+</p>
+            
+          
+</dd>
+
+          
+<dt>Weiteres Merkmal <code>qfs:type</code>
+</dt>
+          
+<dd>
+            Das weitere Merkmal <code>qfs:type</code> gibt den Typ einer
+            Klasse an. Wenn nicht einer der von QF-Test vordefinierten Typen (siehe
+            <a href="tech_genclassesproperties.html#sec_genclassesproperties">Eigenschaften von generischen Klassen</a>) verwendet wird,
+            m&uuml;ssen die darin enthaltenen Doppelpunkte mit <code>\</code> gesch&uuml;tzt werden.
+          </dd>
+        
+</dl>
+      
+
+      
+<a name="usec_smartid_index"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_smartid_index">5.6.6</a></span>
+</div>
+<a href="contents.html#toc_usec_smartid_index">SmartID mit Index</a>
+</h5>
+        
+<p>
+          Alle SmartIDs k&ouml;nnen mit einem Index versehen werden, wenn mehrere
+          Komponenten f&uuml;r die gleiche SmartID in Frage kommen. Dabei z&auml;hlt
+          die technische Reihenfolge der Komponenten in der Hierarchie.
+          Diese muss nicht der visuellen Reihenfolge entsprechen. Die Z&auml;hlung
+          des Index beginnt bei 0. Der Index wird in spitzen Klammern angegeben.
+          Wird kein Index angegeben, wird
+          implizit der Index 0 verwendet.
+        </p>
+        
+<p>
+          Beispiele: <code>#Name&lt;2&gt;</code>,
+          <code>#TextField:&lt;2&gt;</code>
+        
+</p>
+
+        
+<a name="usec_smartid_specialcases"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_smartid_specialcases">5.6.6.1</a></span>
+</div>
+<a href="contents.html#toc_usec_smartid_specialcases">Sonderf&auml;lle</a>
+</h5>
+          
+<p>
+            Bei Komponenten der Klasse <code>Label</code> gilt diese Reihenfolge
+            nicht. Da sie in den meisten F&auml;llen als Beschriftung anderer Komponentenklassen
+            genutzt werden und dort im Merkmal oder als weiteres Merkmal <code>"qfs:label"</code>
+            abgespeichert werden, werden die Komponenten der Klasse <code>Label</code>
+            nachrangig behandelt. Label Komponenten m&uuml;ssen daher explizit mit
+            vorangestellter Klasse <code>Label:</code> angesprochen, zum Beispiel
+            <code>#Label:Vorname</code> werden.
+          </p>
+          
+<p>
+            Informationen zur allgemeinen SmartID-Syntax finden Sie in
+            <a href="sec_smartid_syntax.html#sec_smartid_syntax">Abschnitt 44.3</a>.
+          </p>
+        
+      
+
+      
+<a name="usec_smartid_hierarchy"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_smartid_hierarchy">5.6.7</a></span>
+</div>
+<a href="contents.html#toc_usec_smartid_hierarchy">SmartID-Syntax f&uuml;r Komponentenhierarchien</a>
+</h5>
+        
+<p>
+          Die <a href="usec_components_hierarchy.html#usec_components_hierarchy">Komponentenhierarchie</a> kann auch mit
+          SmartIDs f&uuml;r die Wiedererkennung genutzt werden.
+          Als Trennzeichen zwischen den Hierarchieebenen dient <code>@</code>.
+        </p>
+        
+<p>
+          Beispiele:
+        </p>
+        
+<dl>
+          
+<dt>Komponente in Container</dt>
+          
+<dd>
+            Die SmartID <code>#Kundeninformationen@#Name</code> referenziert eine
+            Komponente mit der SmartID <code>#Name</code> in einer &uuml;bergeordneten
+            Komponente (zum Beispiel einem <code>TitledPanel</code>) mit der SmartID
+            <code>#Kundeninformationen</code>.
+          </dd>
+          
+<dt>Komponente in "normaler" Komponente</dt>
+          
+<dd>
+            Manchmal werden Komponenten wie zum Beispiel ein Button
+            keine guten eigenen Wiedererkennungsmerkmale besitzen,
+            &uuml;ber die Komponente, in der sie liegen, sehr gut angesprochen werden k&ouml;nnen.
+          </dd>
+          
+<dd>
+            Ein typisches Beispiel ist hier der Button zum Aufklappen der Liste
+            in einer ComboBox:
+          </dd>
+          
+<dd>
+            
+<code>#ComboBoxSmartID@#Button:</code>
+          
+</dd>
+          
+<dt>Komponente in Unterelement</dt>
+          
+<dd>
+              Links oder Buttons in Listen- oder Tabellenelementen k&ouml;nnen mit
+              verschachtelten SmartIDs adressiert werden:
+          </dd>
+          
+<dd>
+            
+<code>#ListenSmartID&amp;22@#Link:&lt;1&gt;</code>
+          
+</dd>
+          
+<dd>
+            Hierbei adressiert der Teil vor "@" ein Listenelement,
+            <code>#Link:&lt;1&gt;</code> adressiert den zweiten Link darin.
+          </dd>
+        
+</dl>
+      
+
+      
+<a name="usec_smartid_recordreplay"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_smartid_recordreplay">5.6.8</a></span>
+</div>
+<a href="contents.html#toc_usec_smartid_recordreplay">Aufnehmen und Abspielen von SmartIDs</a>
+</h5>
+        
+<p>
+          Wenn Sie SmartIDs aufnehmen wollen, haken Sie den Men&uuml;punkt
+          &raquo;<em>Aufnahme</em>&laquo;-&raquo;<em>SmartIDs aufnehmen</em>&laquo;
+          oder die Option 'SmartIDs aufnehmen' in der Rubrik &raquo;<em>Aufnahme</em>&laquo;-&raquo;<em>Komponenten</em>&laquo; an.
+        </p>
+        
+<p>
+          
+<span class="margin"><a name="preview_N73200"></a><span class="note">Preview</span></span>
+          F&uuml;r QF-Test ist die Aufnahme von SmartIDs technisch sehr anspruchsvoll. Seitens QFS bedarf
+          es noch einiger Erfahrung aus der Praxis mit konkreten Anwendungen, um sie mit geeigneten
+          Optionen zur Feinjustierung zu versehen. Aktuell k&ouml;nnen eventuell keine oder nicht optimale
+          SmartIDs aufgenommen werden.
+        </p>
+        
+<p>
+          Bei der Aufnahme von SmartIDs pr&uuml;ft QF-Test zun&auml;chst, ob ein
+          <a href="usec_components_name.html#usec_components_name">Name</a> vorhanden ist. Falls ja,
+          wird dieser f&uuml;r die SmartID verwendet. Wenn nicht, wird nach
+          einer Beschriftung gesucht (<a href="usec_components_feature.html#usec_components_feature">Merkmal</a>
+          oder <a href="usec_components_extrafeatures.html#usec_components_extrafeatures">Weitere Merkmale</a>.) Wenn die
+          ermittelte SmartID f&uuml;r mehrere Komponenten g&uuml;ltig ist, wird ein Index angef&uuml;gt.
+        </p>
+        
+<p>
+          Wenn bei der Aufnahme im SmartID-Modus erkannt wird, dass sich das GUI-Element
+          nicht f&uuml;r SmartIDs eignet, wird ganz klassisch ein <a href="user_componentstep.html#usec_componentstep">'Komponente' Knoten</a>
+          Knoten aufgenommen. Dies ist zum Beispiel der Fall, wenn dem GUI-Element
+          keine generische Klasse zugewiesen werden kann oder wenn QF-Test
+          f&uuml;r das GUI-Element weder <a href="usec_components_name.html#usec_components_name">Name</a>,
+          noch <a href="usec_components_feature.html#usec_components_feature">Merkmal</a> noch das weitere Merkmal
+          <a href="usec_components_extrafeatures.html#usec_components_qfslabel">qfs:label</a> ermitteln kann.
+        </p>
+        
+<p>
+          Wird eine Komponente der Klasse 'Label' aufgenommen, wird
+          immer zus&auml;tzlich die Klasse in die SmartID eingef&uuml;gt, da
+          sonst die Komponente, f&uuml;r die diese 'Label' Komponente als
+          Beschriftung dient, referenziert w&uuml;rde, zum Beispiel
+          <code>#Label:Stra&szlig;e</code>.
+        </p>
+        
+<p>
+          Das Abspielen von Knoten mit SmartIDs unterscheidet sich nicht von dem
+          mit aufgenommenen Komponenten. Es k&ouml;nnen beide Varianten innerhalb
+          eines Testfalls verwendet werden. SmartIDs k&ouml;nnen auch bei
+          aufgenommenen Komponenten zur Adressierung
+          untergeordneter Komponenten verwendet werden. Das Beispiel
+          <code>aufgenommeneListe&amp;10@#Button:</code> zeigt Kombination der
+          'QF-Test ID' einer aufgenommenen Liste mit Index und der SmartID des in dem
+          Listenelement liegenden Buttons.
+        </p>
+        
+      
+
+      
+<a name="usec_components_qftestid_as_smartid"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_components_qftestid_as_smartid">5.6.9</a></span>
+</div>
+<a href="contents.html#toc_usec_components_qftestid_as_smartid">'QF-Test ID' der Komponente als SmartID</a>
+</h5>
+        
+<p>
+          Es ist m&ouml;glich, die 'QF-Test ID' einer aufgenommenen 'Komponente'
+          auf eine SmartID inklusive vorangestelltem <code>#</code> Kennzeichen zu setzen. Dies kann genutzt werden,
+          um die SmartID quasi umzuleiten und die Komponentenerkennung klassisch &uuml;ber die
+          Wiedererkennungsmerkmale der aufgenommenen Komponente durchzuf&uuml;hren. Einzelne Komponenten
+          aufzunehmen macht insbesondere dann Sinn, wenn die SmartID lang und
+          umst&auml;ndlich wird, schlechte Performance hat oder schwer eindeutig zu machen ist.
+          Das SmartID-Kennzeichen <code>#</code> kann dann der
+          Einheitlichkeit halber genutzt werden, muss aber nicht.
+        </p>
+      
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_componentstep.html#usec_componentstep"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 5.5&nbsp;'Komponente' Knoten" title="Vorheriges Kapitel: 5.5&nbsp;'Komponente' Knoten"></a></td><td class="navicon"><a href="usec_scope.html#usec_scope"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 5.7&nbsp;Geltungsbereich(Scope) (Preview)" title="N&auml;chste Seite: 5.7&nbsp;Geltungsbereich(Scope) (Preview)"></a></td><td class="navicon"><a href="usec_scope.html#usec_scope"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 5.7&nbsp;Geltungsbereich(Scope) (Preview)" title="N&auml;chstes Kapitel: 5.7&nbsp;Geltungsbereich(Scope) (Preview)"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 5&nbsp;Komponenten" title="Kapitel-&Uuml;bersicht: 5&nbsp;Komponenten"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

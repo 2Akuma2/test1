@@ -1,0 +1,683 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Reports und Testdokumentation</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_report"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_datadriver.html#usec_datadriver"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 20&nbsp;Datengetriebenes Testen" title="Vorheriges Kapitel: 20&nbsp;Datengetriebenes Testen"></a></td><td class="navicon"><a href="user_testexecution.html#usec_testexecution"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 22&nbsp;Testausf&uuml;hrung" title="N&auml;chste Seite: 22&nbsp;Testausf&uuml;hrung"></a></td><td class="navicon"><a href="user_testexecution.html#usec_testexecution"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 22&nbsp;Testausf&uuml;hrung" title="N&auml;chstes Kapitel: 22&nbsp;Testausf&uuml;hrung"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch" title="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_report">21</a></span>
+</div>
+<a href="contents.html#toc_usec_report">Reports und Testdokumentation</a>
+</h3>
+    
+    
+    
+    
+<p>
+      Neben Testsuiten und Protokollen erstellt QF-Test noch eine Reihe weiterer Dokumente. Das
+      wichtigste davon ist der Report, der eine Gesamt&uuml;bersicht &uuml;ber die Ergebnisse eines oder
+      mehrerer Testl&auml;ufe liefert, sowie eine Aufstellung der daran beteiligten Testsuiten und
+      deren Einzelergebnissen. Der Report ist leicht zu lesen und ohne tiefere Kenntnis von QF-Test
+      zu verstehen. Er erg&auml;nzt damit das Protokoll, welches vor allem der Fehleranalyse dient und
+      ein gutes Verst&auml;ndnis von QF-Test erfordert.
+    </p>
+    
+<p>
+      Die folgende Abbildung zeigt ein Beispiel einer Zusammenfassung eines Reports:
+    </p>
+    
+<a name="figure_21.1"></a><a name="figure_21.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/report.png" target="_blank"><img src="images/report.png" alt="Report Beispiel" width="1036" height="793" texscale="1"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;21.1</a>:&nbsp;&nbsp;Beispiel Report</td><td class="captionglue"></td>
+</tr>
+</table>
+
+    
+<p>
+      Die anderen Dokumente sind eher statischer Natur. Sie beschreiben keine Testergebnisse,
+      sondern den Inhalt von Testsuiten. Ein <em>testdoc</em> Dokument gibt einen &Uuml;berblick &uuml;ber
+      die Struktur der <a href="sequences.html#step_TestSet" shape="rect">'Testfallsatz'</a> und <a href="sequences.html#step_TestCase" shape="rect">'Testfall'</a> Knoten einer oder mehrerer
+      Testsuiten. Es dient Test-Architekten und QS Projektleitern zur Dokumentation des aktuellen
+      Standes der Testentwicklung. Ein <em>pkgdoc</em> Dokument ist &auml;hnlich aufgebaut,
+      beschreibt stattdessen aber die Struktur der <a href="procedures.html#step_Package" shape="rect">'Package'</a>, <a href="procedures.html#step_Procedure" shape="rect">'Prozedur'</a> und
+      <a href="dependencies.html#step_Dependency" shape="rect">'Abh&auml;ngigkeit'</a> Knoten,
+      vergleichbar zu JavaDoc, welches zur Dokumentation von Java Bibliotheken genutzt wird.
+      Zielgruppe hierf&uuml;r sind die Mitarbeiter, welche die Tests implementieren und hierzu
+      Informationen zu bereits vorhandenen Prozeduren und deren Parameter ben&ouml;tigen.
+    </p>
+
+    
+
+    
+<a name="usec_reports"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_reports">21.1</a></span>
+</div>
+<a href="contents.html#toc_usec_reports">Reports</a>
+</h4>
+      
+<p>
+        Bevor wir n&auml;her auf das Erstellen von Reports eingehen k&ouml;nnen, m&uuml;ssen zun&auml;chst einige
+        grundlegende Konzepte erl&auml;utert und Begriffe definiert werden.
+      </p>
+      
+
+      
+<a name="sec_N89338"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N89338">21.1.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N89338">Reportkonzepte</a>
+</h5>
+
+        
+<p>
+          Ein Report ist das Ergebnis einer oder mehrerer <em>Testl&auml;ufe</em>. Ein Testlauf
+          umfasst die Ausf&uuml;hrung einer oder mehrerer Testsuiten, normalerweise gemeinsam in einem
+          Batch-Lauf. Ein Testlauf wird durch seine <em>Run-ID</em> identifiziert. Es ist m&ouml;glich
+          einen Testlauf in mehreren Schritten durchzuf&uuml;hren indem den Protokollen die selbe Run-ID
+          zugewiesen wird.
+        </p>
+        
+<p>
+          Ein Report kann einen <em>Reportnamen</em> haben. F&uuml;r einen Report, der einen einzelnen
+          Testlauf repr&auml;sentiert, stimmt dieser normalerweise mit der Run-ID des Testlaufs
+          &uuml;berein. F&uuml;r Reports, die mehrere Testl&auml;ufe zusammenfassen, kann ein eigener Name
+          festgelegt werden.
+        </p>
+        
+<p>
+          Reports k&ouml;nnen in verschiedenen Varianten erstellt werden: XML, HTML und JUnit. Die meisten Anwender
+          werden wohl die HTML Variante nutzen, welche in einem Browser dargestellt, ausgedruckt und archiviert
+          werden kann. Die XML Variante kann als Basis zur weiteren Verarbeitung der Testergebnisse dienen,
+          z.B. um diese in einer Datenbank zu sammeln oder um speziell angepasste HTML Reports zu
+          generieren. Wir empfehlen immer HTML und XML Reports gemeinsam zu erstellen, sofern Sie keinen guten
+          Grund f&uuml;r ein anderes Vorgehen haben.  JUnit Reports basieren auf dem JUnit XML Format, wie es <a href="http://ant.apache.org/" shape="rect">Apache Ant</a> mit Hilfe der JUnitReport Task erzeugt. Dieses Format
+          ist nicht so sch&ouml;n und detailliert wie bei den beiden anderen von QF-Test angebotenen Varianten, jedoch
+          wird es direkt von vielen Continuous Integration Tools verstanden und kann hilfreich f&uuml;r eine
+          schnelle Integration mit solchen sein.
+        </p>
+        
+<p>
+          Ein Report besteht aus einem Dokument mit der Zusammenfassung sowie je einem Dokument
+          pro Protokoll. Diese werden zusammen mit erg&auml;nzenden Dateien wie Icons,
+          Stylesheets und Bildschirmabbildern in einem gemeinsamen Verzeichnis abgelegt. Auf
+          Dateiebene repr&auml;sentiert dieses Verzeichnis den Report.
+        </p>
+        
+<p>
+          Die Anordnung der Dateien innerhalb des Report Verzeichnisses kann wie weiter unten
+          beschrieben &uuml;ber die Kommandozeile beeinflusst werden. Es gibt im Wesentlichen
+          zwei Varianten die Dateien anzuordnen: Analog zur Dateistruktur der urspr&uuml;nglichen
+          Testsuiten oder entsprechend der Struktur der Protokolldateien.
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_N89378"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N89378">21.1.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N89378">Inhalt von Reports</a>
+</h5>
+        
+<p>
+          Vor dem Gesamtergebnis enth&auml;lt ein Testbericht, wie oben gezeigt, eine
+          Zusammenfassung von wichtigen Systeminformationen und eine Legende mit der Bedeutung der
+          verwendeten Z&auml;hlersymbole (siehe auch <a href="user_capture.html#usec_executing">Abspielen von Tests</a>).
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span>Der Unterschied zwischen "In Tests verbrachte Zeit" und "Real verstrichene
+          Zeit" sind explizite Verz&ouml;gerungen in Knoten mittels 'Verz&ouml;gerung vorher/nachher' oder
+          Unterbrechungen durch den Benutzer.
+        </p>
+        
+<p>
+          Die Inhalte von Reports basieren auf den ausgef&uuml;hrten Testsuiten. Die Grobstruktur
+          entspricht deren <a href="sequences.html#step_TestSet" shape="rect">'Testfallsatz'</a> und <a href="sequences.html#step_TestCase" shape="rect">'Testfall'</a> Knoten. Die <a href="sequences.html#att_TestSet_comment" shape="rect">'Bemerkung'</a>
+          Attribute des Wurzelknotens, sowie der 'Testfallsatz' und 'Testfall' Knoten
+          unterst&uuml;tzen die selben Doctags wie die in <a href="#usec_testdoc">Abschnitt 21.2</a> beschriebenen
+          testdoc Dokumente. Zus&auml;tzlich kann &uuml;ber das Doctag '@title' in der 'Bemerkung' des
+          Wurzelknotens ein Titel f&uuml;r das Report-Dokument festgelegt werden, das f&uuml;r die jeweilige
+          Testsuite erstellt wird.
+        </p>
+        
+<p>
+          Falls <a href="tech_execution.html#arg_report.teststeps" shape="rect"><code>-report-teststeps</code></a> im Batchmodus oder die entsprechende Option im
+          interaktiven Dialog verwendet wird (Standard ist true), k&ouml;nnen 'Testf&auml;lle' mit Hilfe
+          von <a href="sequences.html#step_TestStep" shape="rect">'Testschritt'</a> Knoten weiter heruntergebrochen werden. Neben dem expliziten
+          Verpacken in 'Testschritt' Knoten k&ouml;nnen beliebige Knoten auch durch Angabe des Doctags
+          '@teststep', optional gefolgt von einem Namen, in der 'Bemerkung' des jeweiligen
+          Knotens als Testschritt ausgezeichnet werden. F&uuml;r 'Testschritt' Knoten werden au&szlig;erdem
+          die Doctags '@author', '@version' und '@since' unterst&uuml;tzt. Namen, Kommentare und Werte
+          von Doctags k&ouml;nnen Variablen enthalten, die zum Zeitpunkt der Ausf&uuml;hrung expandiert
+          werden, so dass der expandierte Wert im Report angezeigt wird. Dies ist speziell f&uuml;r
+          Testschritte in Prozeduren sehr hilfreich.
+        </p>
+        
+<p>
+          Ist das Auff&uuml;hren von Testschritten im Report aktiv, werden auch 'Vorbereitung',
+          'Aufr&auml;umen' und 'Abh&auml;ngigkeit' Knoten aufgef&uuml;hrt und Checks,
+          Bildschirmabbilder und Meldungen, darunter Warnungen, Fehler und Exceptions, passend in
+          die verschachtelten Schritte einsortiert. Wenn die Testsuiten ordentlich implementiert
+          sind kann der resultierende Report als einfach lesbare Zusammenfassung dessen dienen,
+          was w&auml;hrend der Ausf&uuml;hrung eines Tests vor sich ging.
+        </p>
+        
+<p>
+          Ob Warnungen und Checks im Report aufgef&uuml;hrt werden, h&auml;ngt von den
+          Kommandozeilenargumenten <a href="tech_execution.html#arg_report.warnings" shape="rect"><code>-report-warnings</code></a> und <a href="tech_execution.html#arg_report.checks" shape="rect"><code>-report-checks</code></a> bzw. deren
+          interaktiven Pendants ab. Warnungen zur Wiedererkennung von Komponenten werden nie
+          aufgef&uuml;hrt, da sie zu technisch sind und leicht den Report &uuml;berfluten k&ouml;nnten. F&uuml;r
+          Checks muss zwischen solchen unterschieden werden, die eine echte Verifikation
+          repr&auml;sentieren und solchen, die nur zur Steuerung des Tests dienen. Ein klassisches
+          Beispiel f&uuml;r letztere ist die &Uuml;berpr&uuml;fung, ob eine Checkbox bereits selektiert ist,
+          bevor auf diese geklickt wird. Normalerweise f&uuml;hrt QF-Test nur solche 'Check' Knoten
+          im Report auf, deren Ergebnisbehandlung dem Standard entspricht, d.h. 'Fehlerstufe der Meldung'
+          ist 'Fehler', es wird keine Exception geworfen und keine Ergebnisvariable gebunden. Alle
+          anderen werden als Helfer f&uuml;r die Teststeuerung interpretiert und erscheinen nicht im
+          Report. F&uuml;r F&auml;lle, in denen dieses Vorgehen nicht passt, kann ein 'Check' Knoten
+          explizit durch Angabe des Doctags '@report' in den Report aufgenommen, oder durch Angabe
+          von '@noreport' davon ausgeschlossen werden. Nat&uuml;rlich werden fehlgeschlagene Checks als
+          Warnung, Fehler oder Exception interpretiert (abh&auml;ngig von ihrem Attribut
+          'Fehlerstufe der Meldung') und k&ouml;nnen nicht vom Report ausgeschlossen werden, wenn Meldungen mit
+          der entsprechenden Fehlerstufe dort angezeigt werden.
+        </p>
+        
+<p>
+          Zus&auml;tzliche Meldungen, Checks und Bildschirmabbilder k&ouml;nnen mit Hilfe von Skripten in
+          den Report eingef&uuml;gt werden. Hierzu dienen die Methoden <code>rc.logMessage</code>,
+          <code>rc.check</code> mit Varianten und <code>rc.logImage</code>, die einen
+          optionalen <code>report</code> Parameter haben. Details finden Sie in der API
+          Dokumentation zum Runcontext in <a href="tech_scripting.html#sec_api_rc">Abschnitt 46.5</a>.
+        </p>
+
+      
+
+      
+      
+
+      
+<a name="sec_N89517"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N89517">21.1.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N89517">Reports erstellen</a>
+</h5>
+
+        
+<p>
+          Es gibt drei verschiedene Wege Reports zu erstellen:
+        </p>
+
+        
+<ul>
+          
+<li>
+            Interaktiv aus einem Protokoll &uuml;ber den Men&uuml;eintrag &raquo;<em>Datei</em>&laquo;-&raquo;<em>Report erstellen...</em>&laquo;.
+          </li>
+          
+<li>
+            Im Batchmodus als Ergebnis eines Testlaufs.
+          </li>
+          
+<li>
+            Im Batchmodus durch Transformation zuvor erstellter Protokolle.
+          </li>
+        
+</ul>
+
+        
+<p>
+          Die interaktive Variante ist einfach und bedarf keiner weiteren besonderen Erkl&auml;rungen.
+          W&auml;hlen Sie das Zielverzeichnis f&uuml;r den Report und entscheiden Sie sich f&uuml;r die XML
+          und/oder HTML Variante.
+        </p>
+        
+<p>
+          F&uuml;r die Reporterstellung im Batchmodus gibt es einige Kommandozeilen Optionen, welche in
+          <a href="tech_execution.html#sec_commandline">Abschnitt 40.2</a> erkl&auml;rt werden. Sehen wir uns nun zun&auml;chst die Variante
+          zur Erstellung eines Reports als Ergebnis eines Testlaufs an:
+        </p>
+
+        
+<p>
+          Die Kommandozeilen Syntax f&uuml;r einen normalen Testlauf im Batchmodus ist
+
+          <code>qftest -batch &lt;Testsuite&gt; [&lt;Testsuite&gt;...]</code>
+        
+</p>
+        
+<p>
+          Um einen kombinierten XML und HTML Report zu erstellen, verwenden Sie <a href="tech_execution.html#arg_report" shape="rect"><code>-report &lt;Verzeichnis&gt;</code></a>.  F&uuml;r das
+          Erzeugen der XML oder HTML Varianten alleine oder um diese zu trennen, dienen die Argumente
+          <a href="tech_execution.html#arg_report.xml" shape="rect"><code>-report-xml &lt;Verzeichnis&gt;</code></a> und/oder <a href="tech_execution.html#arg_report.html" shape="rect"><code>-report-html &lt;Verzeichnis&gt;</code></a>. F&uuml;r JUnit Reports funktioniert
+          <a href="tech_execution.html#arg_report.junit" shape="rect"><code>-report-junit &lt;Verzeichnis&gt;</code></a> entsprechend.
+        </p>
+        
+<p>
+          Die Run-ID eines Testlaufs wird mittels <a href="tech_execution.html#arg_runid" shape="rect"><code>-runid [&lt;ID&gt;]</code></a> angegeben, der Reportname mittels
+          <a href="tech_execution.html#arg_report.name" shape="rect"><code>-report-name &lt;Name&gt;</code></a>. Ist <code>-report-name &lt;Name&gt;</code> nicht angegeben entspricht der Reportname der
+          Run-ID.
+        </p>
+        
+<p>
+          Um die Dateien im Report Verzeichnis entsprechend den Testsuiten anzuordnen, verwenden
+          Sie <a href="tech_execution.html#arg_sourcedir" shape="rect"><code>-sourcedir &lt;Verzeichnis&gt;</code></a>. Eine Struktur auf Basis der Protokolle k&ouml;nnen Sie mittels
+          <a href="tech_execution.html#arg_runlogdir" shape="rect"><code>-runlogdir &lt;Verzeichnis&gt;</code></a> erreichen.
+        </p>
+        
+<p>
+          Ein typisches Beispiel einer Kommandozeile f&uuml;r einen Batch-Lauf, die Gebrauch von den in
+          <a href="tech_execution.html#sec_placeholders">Abschnitt 40.2.4</a> beschriebenen Platzhaltern macht, sieht etwa wie folgt
+          aus:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>qftest -batch -runid +M+d -runlog logs/+i -report report_+i
+        -sourcedir . suite1.qft subdir/suite2.qft</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;21.1:&nbsp;&nbsp;Erstellen eines Reports als Ergebnis eines Testlaufs</td><td class="captionglue"></td>
+</tr>
+</table>
+
+        
+<p>
+          Das Erstellen eines Reports als separaten Schritt aus bereits vorhandenen Protokollen
+          ist in vieler Hinsicht &auml;hnlich. Anstelle der Testsuiten m&uuml;ssen die zu transformierenden
+          Protokolle angegeben werden. Die Optionen <code>-runid [&lt;ID&gt;]</code> und <code>-sourcedir &lt;Verzeichnis&gt;</code> haben keinen
+          Effekt. Das folgende Beispiel zeigt, wie Sie einen Report zur Zusammenfassung der
+          Testergebnisse einer Woche erstellen k&ouml;nnen. Es wird davon ausgegangen, dass die
+          Protokolle unterhalb des <code>logdir</code> Verzeichnisses liegen, gegebenenfalls in
+          Unterverzeichnissen:
+        </p>
+
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>qftest -batch -genreport -report report_+M+d
+        -report.name week_of_+y+M+d logdir</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;21.2:&nbsp;&nbsp;Erstellen eines Reports f&uuml;r eine Wochen-Zusammenfassung</td><td class="captionglue"></td>
+</tr>
+</table>
+
+      
+
+      
+      
+
+      
+<a name="usec_customizingreports"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_customizingreports">21.1.4</a></span>
+</div>
+<a href="contents.html#toc_usec_customizingreports">Individualisierung von Reports</a>
+</h5>
+        
+<p>
+           Die XML und HTML Reports werden &uuml;ber eine XSL-Transformation des QF-Test Protokolls erzeugt. Durch die
+           Anpassung der XSLT Stylesheets k&ouml;nnen Inhalt und Struktur der erzeugten Dokument angepasst werden.
+        </p>
+        
+<p>
+          Weitere Informationen hierzu finden sie in unserem Blog-Artikel "Wie erstellt man kundenspezifische
+          HTML/XML/JUnit Reports?": <a href="https://www.qfs.de/blog/article/2019/02/28/wie-erstellt-man-kundenspezifische-htmlxmljunit-reports.html" shape="rect">https://www.qfs.de/blog/article/2019/02/28/wie-erstellt-man-kundenspezifische-htmlxmljunit-reports.html</a>
+        
+</p>
+        
+<p>
+	  Alternativ kann die Darstellung des HTML Reports durch g&auml;ngige Web-Techniken via JavaScript beeinflusst
+	  werden. Eine Datei namens <code>user.js</code> wird in das Report-Verzeichnis kopiert und in alle Seiten des
+	  HTML Reports eingebunden. Um die Darstellung anzupassen &uuml;berschreiben Sie diese Datei mir Ihrer eigenen
+	  Version nach Generierung des Reports. Ein Beispiel hierzu finden Sie im Kommentar der <code>user.js</code>
+	  Datei.
+	</p>
+      
+
+      
+    
+    
+    
+    
+<a name="usec_testdoc"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_testdoc">21.2</a></span>
+</div>
+<a href="contents.html#toc_usec_testdoc">Testdoc Dokumentation f&uuml;r 'Testfalls&auml;tze' und 'Testf&auml;lle'</a>
+</h4>
+      
+<p>
+        Die Dokumente vom Typ <em>testdoc</em> liefern eine &Uuml;bersicht &uuml;ber und Detailinformationen
+        zu den <a href="sequences.html#step_TestSet" shape="rect">'Testfallsatz'</a> und <a href="sequences.html#step_TestCase" shape="rect">'Testfall'</a> Knoten einer oder mehrerer Testsuiten.
+        Wenn <a href="sequences.html#step_TestStep" shape="rect">'Testschritte'</a> in 'Testf&auml;lle' enthalten sind, werden diese Schritte auch aufgef&uuml;hrt.
+        <a href="sequences.html#step_TestCall" shape="rect">'Testaufruf'</a> Knoten werden normalerweise bei der Testdoc Generierung ignoriert.
+        Mit <a href="tech_execution.html#arg_testdoc.followcalls" shape="rect"><code>-testdoc-followcalls</code></a>=true werden die referenzierten Ziele, also 'Testfall', 'Testfallsatz'
+        oder ganze Testsuiten, so eingebunden, als w&auml;ren diese Teil der Ausgangssuite.
+        </p>
+        
+<p>
+        Diese Dokumentation ist ein wichtiges Werkzeug f&uuml;r QS Projektleiter um den aktuellen Stand der
+        Testentwicklung im Blick zu behalten. Wie die Reports sind testdoc Dokumente als
+        Verzeichnis aufgebaut, mit einer Zusammenfassung und je einem detaillierten Dokument pro
+        Testsuite.
+      </p>
+      
+<p>
+        Ein testdoc Dokument f&uuml;r eine einzelne Testsuite kann interaktiv &uuml;ber den Eintrag
+        &raquo;<em>Testdoc Dokumentation erstellen...</em>&laquo; im &raquo;<em>Datei</em>&laquo;
+        Men&uuml; generiert werden. Das ist hilfreich um w&auml;hrend der Testentwicklung schnell &uuml;berpr&uuml;fen
+        zu k&ouml;nnen, ob alle Tests ordentlich dokumentiert sind.
+      </p>
+      
+<p>
+        F&uuml;r den Gebrauch als Referenz sind dagegen komplette S&auml;tze von Dokumenten &uuml;ber mehrere
+        Testsuiten aus einem gesamten Projekt vorzuziehen. Diese k&ouml;nnen durch Aufruf von QF-Test im
+        Batchmodus mit Hilfe des Kommandozeilenarguments <a href="tech_execution.html#arg_gendoc" shape="rect"><code>-gendoc</code></a> erstellt werden. In
+        seiner einfachsten Form sieht ein Aufruf zum Erstellen einer testdoc Dokumentation f&uuml;r
+        eine gesamte Verzeichnishierarchie so aus:
+      </p>
+      
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>qftest -batch -gendoc -testdoc test_documentation
+        directory/with/test-suites</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;21.3:&nbsp;&nbsp;Erstellen von testdoc Dokumentation</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Detaillierte Informationen zu den verf&uuml;gbaren Kommandozeilenargumenten finden Sie in
+        <a href="tech_execution.html#sec_execution">Kapitel 40</a>.
+      </p>
+      
+<p>
+        F&uuml;r optimale Ergebnisse k&ouml;nnen Sie in den <a href="sequences.html#att_TestSet_comment" shape="rect">'Bemerkung'</a> Attributen von
+        'Testfallsatz' und 'Testf&auml;lle' Knoten HTML Auszeichnungen verwenden und Doctags
+        einsetzen. Ein <em>Doctag</em> ist ein mit '@' beginnendes Schl&uuml;sselwort, manchmal gefolgt
+        von einem Namen und immer von einer Beschreibung. Dies ist ein bew&auml;hrtes Konzept von
+        JavaDoc, dem Format zur Dokumentation von Java Programmen (siehe <a href="http://www.oracle.com/technetwork/java/javase/documentation/index-137868.html#tag" shape="rect">http://www.oracle.com/technetwork/java/javase/documentation/index-137868.html#tag</a>).
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Die Doctags m&uuml;ssen nach der eigentlichen Beschreibung stehen, da Beschreibung,
+        welche nach den Doctags steht, ignoriert wird.
+        Weiterhin d&uuml;rfen keine Doctags innerhalb der Beschreibung vorkommen.
+      </p>
+      
+<p>
+        Die folgenden Doctags werden f&uuml;r 'Testfallsatz' und 'Testfall' Knoten unterst&uuml;tzt:
+      </p>
+      
+<dl>
+        
+<dt>@deprecated</dt>
+        
+<dd>
+          Gibt an, dass ein 'Testfallsatz' oder 'Testf&auml;lle' nicht l&auml;nger verwendet werden soll.
+          Die Beschreibung sollte erkl&auml;ren, seit wann und warum das der Fall ist und vor allem
+          angeben, was stattdessen verwendet werden soll.
+        </dd>
+        
+<dt>@condition</dt>
+        
+<dd>
+          Informelle Beschreibung der Bedingung unter welcher der Knoten ausgef&uuml;hrt oder
+          &uuml;bersprungen wird.
+        </dd>
+        
+<dt>@param</dt>
+        
+<dd>
+          Ein Prozedurparameter. Es folgen der Name des Parameters und seine Beschreibung.
+        </dd>
+        
+<dt>@charvar</dt>
+        
+<dd>
+          Eine charakteristische Variable. Es folgen der Name der Variable und ihre Beschreibung.
+        </dd>
+        
+<dt>@author</dt>
+        
+<dd>Autor des 'Testfallsatzes' oder 'Testfalls'.</dd>
+        
+<dt>@version</dt>
+        
+<dd>Version des 'Testfallsatzes' oder 'Testfalls'.</dd>
+        
+<dt>@since</dt>
+        
+<dd>Seit welcher Version dieser 'Testfallsatz' oder 'Testfall' verf&uuml;gbar ist.</dd>
+      
+</dl>
+      
+<p>
+        Neben den oben beschriebenen Doctags kann &uuml;ber das Doctag '@title' ein Titel f&uuml;r das
+        testdoc Dokument festgelegt werden, das f&uuml;r die jeweilige Testsuite erstellt wird.
+      </p>
+    
+
+    
+    
+
+    
+<a name="usec_pkgdoc"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_pkgdoc">21.3</a></span>
+</div>
+<a href="contents.html#toc_usec_pkgdoc">Pkgdoc Dokumentation f&uuml;r 'Packages', 'Prozeduren' und 'Abh&auml;ngigkeiten'</a>
+</h4>
+      
+<p>
+        Die Konzepte von <em>pkgdoc</em> Dokumenten und die Methoden f&uuml;r deren Erstellung sind
+        praktisch identisch zur testdoc Dokumentation. Im Unterschied zu dieser beschreibt pkgdoc
+        die <a href="procedures.html#step_Package" shape="rect">'Package'</a>, <a href="procedures.html#step_Procedure" shape="rect">'Prozedur'</a> und <a href="dependencies.html#step_Dependency" shape="rect">'Abh&auml;ngigkeit'</a> Knoten einer Testsuite.
+        Es dient
+        Test-Entwicklern als &Uuml;bersicht &uuml;ber die Prozeduren, die zur Implementierung von Tests zur
+        Verf&uuml;gung stehen.
+      </p>
+      
+<p>
+        Die <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html" shape="rect">Standardbibliothek
+          <code>qfs.qft</code></a> ist ein sch&ouml;nes Beispiel, wie ein pkgdoc Dokument aussehen
+        kann.
+      </p>
+      
+<p>
+        Ein pkgdoc Dokument kann ebenfalls interaktiv &uuml;ber &raquo;<em>Datei</em>&laquo;-&raquo;<em>HMTL/XML Pkgdoc erstellen...</em>&laquo; oder im Batchmodus
+        generiert werden. Auch hier finden Sie n&auml;here Informationen zu den verf&uuml;gbaren
+        Kommandozeilenargumenten in <a href="tech_execution.html#sec_execution">Kapitel 40</a>.
+      </p>
+      
+<p>
+        Wie das folgende Beispiel zeigt, k&ouml;nnen testdoc und pkgdoc auch gemeinsam in einem
+        einzigen Batch-Lauf erstellt werden:
+      </p>
+      
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>qftest -batch -gendoc -testdoc tests -pkgdoc procedures
+        directory/with/test-suites</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;21.4:&nbsp;&nbsp;Erstellen von testdoc und pkgdoc Dokumentation in einem Durchgang</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Nat&uuml;rlich unterst&uuml;tzt pkgdoc ebenso HTML Auszeichnungen und Doctags. Die folgenden Doctags
+        stehen f&uuml;r 'Packages', 'Prozeduren' und 'Abh&auml;ngigkeiten' zur Verf&uuml;gung:
+      </p>
+      
+<dl>
+        
+<dt>@deprecated</dt>
+        
+<dd>
+          Gibt an, dass ein 'Package', eine 'Prozedur' oder eine 'Abh&auml;ngigkeit' nicht
+          l&auml;nger verwendet werden soll. Die Beschreibung sollte erkl&auml;ren, seit wann und warum das
+          der Fall ist und vor allem angeben, was stattdessen verwendet werden soll.
+        </dd>
+        
+<dt>@param (nur 'Prozedur' und 'Abh&auml;ngigkeit')</dt>
+        
+<dd>
+          Ein Parameter f&uuml;r eine 'Prozedur' oder 'Abh&auml;ngigkeit'. Es folgen der Name des
+          Parameters und seine Beschreibung.
+        </dd>
+        
+<dt>@charvar (nur 'Abh&auml;ngigkeit')</dt>
+        
+<dd>
+          Eine charakteristische Variable. Es folgen der Name der Variable und ihre Beschreibung.
+        </dd>
+        
+<dt>@return (nur 'Prozedur')</dt>
+        
+<dd>Der R&uuml;ckgabewert der Prozedur.</dd>
+        
+<dt>@result (nur 'Prozedur' und 'Abh&auml;ngigkeit')</dt>
+        
+<dd>
+          Hier k&ouml;nnten Seiteneffekte wie das Setzen von globalen Variablen dokumentiert werden.
+        </dd>
+        
+<dt>@throws (nur 'Prozedur')</dt>
+        
+<dd>
+          Erwartete Exception. Es folgen der Name der Exception und die Beschreibung, in welchem
+          Fall diese geworfen wird.
+        </dd>
+        
+<dt>@catches (nur 'Abh&auml;ngigkeit')</dt>
+        
+<dd>
+          Eine Exception, die von der 'Abh&auml;ngigkeit' gefangen wird. Es folgen der Name der
+          Exception und die Beschreibung Ihrer Behandlung.
+        </dd>
+        
+<dt>@author</dt>
+        
+<dd>Autor des 'Packages' der 'Prozedur' oder der 'Abh&auml;ngigkeit'.</dd>
+        
+<dt>@version</dt>
+        
+<dd>Version des 'Packages' der 'Prozedur' oder der 'Abh&auml;ngigkeit'.</dd>
+        
+<dt>@since</dt>
+        
+<dd>
+          Seit welcher Version dieses 'Package' diese 'Prozedur' oder diese
+          'Abh&auml;ngigkeit' verf&uuml;gbar ist.
+        </dd>
+      
+</dl>
+      
+<p>
+        Neben den oben beschriebenen Doctags kann &uuml;ber das Doctag '@title' ein Titel f&uuml;r das
+        pkgdoc Dokument festgelegt werden, das f&uuml;r die jeweilige Testsuite erstellt wird.
+      </p>
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_datadriver.html#usec_datadriver"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 20&nbsp;Datengetriebenes Testen" title="Vorheriges Kapitel: 20&nbsp;Datengetriebenes Testen"></a></td><td class="navicon"><a href="user_testexecution.html#usec_testexecution"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 22&nbsp;Testausf&uuml;hrung" title="N&auml;chste Seite: 22&nbsp;Testausf&uuml;hrung"></a></td><td class="navicon"><a href="user_testexecution.html#usec_testexecution"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 22&nbsp;Testausf&uuml;hrung" title="N&auml;chstes Kapitel: 22&nbsp;Testausf&uuml;hrung"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch" title="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

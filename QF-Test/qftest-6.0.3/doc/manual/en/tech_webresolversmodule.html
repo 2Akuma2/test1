@@ -1,0 +1,832 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>The webResolvers module</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_webresolversmodule"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_resolversmodule.html#sec_resolversmodule"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 50.1&nbsp;The resolvers module" title="Previous Chapter: 50.1&nbsp;The resolvers module"></a></td><td class="navicon"><a href="tech_resolverregistry.html#sec_ResolverRegistry"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 50.3&nbsp;The ResolverRegistry" title="Next Page: 50.3&nbsp;The ResolverRegistry"></a></td><td class="navicon"><a href="tech_resolverregistry.html#sec_ResolverRegistry"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 50.3&nbsp;The ResolverRegistry" title="Next Chapter: 50.3&nbsp;The ResolverRegistry"></a></td><td class="navicon"><a href="tech_extensions.html#sec_extensions"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 50&nbsp;Extension APIs" title="Chapter Overview: 50&nbsp;Extension APIs"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_webresolversmodule">50.2</a></span>
+</div>
+<a href="contents.html#toc_sec_webresolversmodule">The <code class="moduledef">webResolvers</code> module</a>
+</h4>
+        
+        
+<p>
+          
+<span class="margin"><a name="new_N176863"></a><span class="note">4.2+</span></span>For most use cases, registering a resolver using the <code>resolvers</code> module
+          as described in the last chapter <a href="tech_resolversmodule.html#sec_resolversmodule">section 50.1</a> is the best way to
+          adapt the component recognition of QF-Test.
+          If the custom resolvers are used for a <em>web</em> context and heavily interacting with the
+          browser content directly, the <code>webResolvers</code> module provides an option to run
+          the resolver code directly in the browser.
+        </p>
+
+        
+        
+
+        
+<a name="sec_webresolvers_info"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_webresolvers_info">50.2.1</a></span>
+</div>
+<a href="contents.html#toc_sec_webresolvers_info">General Information</a>
+</h5>
+          
+<p>
+            
+<span class="margin"><span class="note">Note</span></span>
+            QF-Test internally caches the state of the displayed web page and runs most of the commands, which
+            are usually invoked in a resolver, on the cached representation of the web page.
+            This tremendously improves resolving time. Resolvers registered on the <code>webResolver</code>
+            module are always executed directly in the browser, which might slow down component recognition.
+            On the other hand, resolvers registered using the <code>webResolvers</code> module are convenient if it requires
+            several downcalls to the browser, i.e. if using the <code>getAttributeIfSpecified</code> method or
+            <code>evalJS(...)</code>.
+          </p>
+          
+<p>
+            In general, the <code>webResolvers</code> module mimics the <code>resolvers</code> module, so its
+            methods and their usage is similar to those described in the last chapter. In difference to those,
+            the methods have to be written as JavaScript functions, wrapped in Strings. The resolver code is then
+            directly executed in the browser, so its function arguments are also Browser objects and JavaScript objects.
+          </p>
+          
+<p>
+            
+<span class="margin"><span class="note">Note</span></span>If you write your SUT script in JavaScript, you can use a function directly as
+            argument for the register call. The given function will then be stringified and registered as resolver in
+            the browser. Be aware that this resolver function is executed in the browser, not in the QF-Test
+            SUT script environment, and variables are not shared between the two contexts.
+          </p>
+          
+<p>
+            The <code>webResolvers</code> module is limited to these resolvers types:
+          </p>
+          
+<ul>
+            
+<li>
+<code>NameResolver</code> as described in <a href="tech_resolversmodule.html#sec_nameresolver">subsection 50.1.6</a>
+</li>
+            
+<li>
+<code>ClassNameResolver</code> as described in <a href="tech_resolversmodule.html#sec_classnameresolver">subsection 50.1.8</a>
+</li>
+            
+<li>
+<code>GenericClassNameResolver</code> as described in <a href="tech_resolversmodule.html#sec_genericclassnameresolver">subsection 50.1.7</a>
+</li>
+            
+<li>
+<code>FeatureResolver</code> as described in <a href="tech_resolversmodule.html#sec_featureresolver">subsection 50.1.9</a>
+</li>
+            
+<li>
+<code>ExtraFeatureResolver</code> as described in <a href="tech_resolversmodule.html#sec_extrafeatureresolver">subsection 50.1.10</a>
+</li>
+            
+<li>
+<code>ItemNameResolver</code> as described in <a href="tech_resolversmodule.html#sec_itemnameresolver">subsection 50.1.11</a>
+</li>
+            
+<li>
+<code>ItemValueResolver</code> as described in <a href="tech_resolversmodule.html#sec_itemvalueresolver">subsection 50.1.12</a>
+</li>
+            
+<li>
+<code>InterestingParentResolver</code> as described in <a href="tech_resolversmodule.html#sec_interestingparentresolver">subsection 50.1.14</a>
+</li>
+            
+<li>
+<code>TooltipResolver</code> as described in <a href="tech_resolversmodule.html#sec_tooltipresolver">subsection 50.1.15</a>
+</li>
+            
+<li>
+<code>IdResolver</code> as described in <a href="tech_resolversmodule.html#sec_idresolver">subsection 50.1.16</a>
+</li>
+            
+<li>
+<code>EnabledResolver</code> as described in <a href="tech_resolversmodule.html#sec_enabledresolver">subsection 50.1.17</a>
+</li>
+            
+<li>
+<code>VisibilityResolver</code> as described in <a href="tech_resolversmodule.html#sec_visibilityresolver">subsection 50.1.18</a>
+</li>
+            
+<li>
+<code>MainTextResolver</code> as described in <a href="tech_resolversmodule.html#sec_maintextresolver">subsection 50.1.19</a>
+</li>
+            
+<li>
+<code>BusyApplicationDetector</code> as described in <a href="tech_resolversmodule.html#sec_busyapplicationdetector">subsection 50.1.23</a>
+</li>
+            
+<li>
+<code>ExtraFeatureMatcher</code> as described in <a href="tech_resolversmodule.html#sec_extrafeaturematcher">subsection 50.1.24.1</a>
+</li>
+          
+</ul>
+        
+        
+        
+        
+<a name="sec_webaddresolver"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_webaddresolver">50.2.2</a></span>
+</div>
+<a href="contents.html#toc_sec_webaddresolver"><code>addResolver</code></a>
+</h5>
+          
+<p>
+            The generic method <code>addResolver</code> has a central role in the
+            <code>webResolvers</code> module. The method registers a new resolver.
+            It identifies the type of the resolver using the name of the JavaScript function
+            which not always is equal to the name of the variable which references the function) and its parameter count.
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>addResolver(String resolverName, String function, Object target=None, ...):</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Register the <code>webResolver</code> determined by the given JavaScript function for the given
+                target(s). If another resolver was previously registered under the given name,
+                deregister that first.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">
+                The name under which to register the resolver.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>function</code></strong></td><td class="paramdesc">
+                The JavaScript function implementing the resolver. The name of the function defines the
+                type of the registered resolver.
+                Valid names are e.g.: <code>getName</code>, <code>getClassName</code>,
+                <code>getGenericClassName</code>, <code>getFeature</code>, <code>getExtraFeatures</code>,
+                <code>getItemName</code>, <code>getItemValue</code>, <code>isInterestingParent</code>,
+                <code>getTooltip</code>, <code>getId</code>, <code>isEnabled</code>, <code>isVisible</code>,
+                <code>getMainText</code>, <code>matchExtraFeature</code>, and <code>applicationIsBusy</code>.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>target</code></strong></td><td class="paramdesc">
+                One or more optional targets to register the resolver for. Each can be any of the following:
+                <ul>
+                  
+<li>An individual component</li>
+                  
+<li>The fully qualified tag name of a class</li>
+                
+</ul>
+                If no target is given a global resolver for all components is registered.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+        
+        
+        
+<a name="sec_webremoveresolver"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_webremoveresolver">50.2.3</a></span>
+</div>
+<a href="contents.html#toc_sec_webremoveresolver"><code>removeResolver</code></a>
+</h5>
+          
+<p>
+            The function <code>removeResolver</code> may be used to deregister resolvers installed
+            via the <code>webResolvers</code> module.
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void removeAll()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Deregister all resolvers registered via the <code>webResolvers</code> module from
+                all targets they were registered for.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void removeResolver(String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Deregister a resolver from all the targets it was registered for.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name the resolver was registered under.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+          
+<p>
+            The example first removes a resolver registered under the name "myName", then
+            deregisters all resolvers registered via the <code>webResolvers</code> module.
+          </p>
+          
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>webResolvers.removeResolver("myName")
+webResolvers.removeAll()</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.26:&nbsp;&nbsp;SUT script deregistering webResolvers</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+        
+        
+        
+<a name="sec_weblistresolver"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_weblistresolver">50.2.4</a></span>
+</div>
+<a href="contents.html#toc_sec_weblistresolver"><code>listNames</code></a>
+</h5>
+          
+<p>
+            Return a list of resolver names registered via the <code>webResolvers</code> module.
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>List&lt;String&gt; listNames()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                List the registered resolvers.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+          
+<p>
+            The example checks whether a certain resolver has been registered. If not, an error
+            message is written to the run log.
+          </p>
+          
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>if (! webResolvers.listNames().contains("specialNames")) {
+    rc.logError("Special names resolver not registered!")
+}</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.27:&nbsp;&nbsp;Groovy SUT script searching for a certain resolver registered via the <code>webResolvers</code> module</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+        
+        
+        
+<a name="sec_webresolvers_examples"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_webresolvers_examples">50.2.5</a></span>
+</div>
+<a href="contents.html#toc_sec_webresolvers_examples">Examples</a>
+</h5>
+          
+<p>
+            Since the role and usage of <em>webResolvers</em> is equal to those registered using the
+            <code>resolvers</code> module, we refer to the last chapter for a detailed description of the
+            specific resolvers. Here, we demonstrate the usage of <em>webResolvers</em> in selected examples:
+          </p>
+          
+          
+<a name="ex_webresolvers_nameresolver"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>getNameFunc = """
+function getName(node, name) {
+    if (! name) return node.getAttribute("__name__");
+}
+"""
+
+webResolvers.addResolver("myNames", getNameFunc, "DIV")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.28:&nbsp;&nbsp;Registering a <code>webNameResolver</code> in Jython</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+          
+          
+<a name="ex_webresolvers_featureresolver"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def getFeatureFunc = """
+function getFeature(node, feature) {
+    try {
+        var title = node.firstChild.textContent;
+        if (title) return title;
+    } catch (e) {}
+}
+"""
+
+webResolvers.addResolver("paneltitle", getFeatureFunc, "Panel")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.29:&nbsp;&nbsp;A <code>webFeatureResoler</code> registered using a Groovy SUT script</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+          
+          
+<a name="ex_webresolvers_extrafeatureresolver"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>function getExtraFeatures(node, features) {
+    try {
+        const myId = node.getAttribute("myId");
+        if (myId) {
+            features.add(ExtraFeature.STATE_MUST_MATCH,"myId", myId);
+            return features;
+        }
+    } catch (e) {}
+}
+
+webResolvers.addResolver("myId", getExtraFeatures);</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.30:&nbsp;&nbsp;
+              <code>webExtraFeatureResolver</code> adding an 'Extra feature' for a special attribute using a JavaScript SUT script
+            </td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<a name="ex_webresolvers_extrafeatureresolver_mod"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>function getExtraFeatures(node, features) {
+    const labelFeature == features.get("qfs:label");
+    if (labelFeature &amp;&amp; labelFeature.value == "bad name") {
+        labelFeature.value = "good name";
+        return features;
+    }
+}
+webResolvers.addResolver("get label example", getExtraFeatures,"TextField");</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.31:&nbsp;&nbsp;
+              <code>webExtraFeatureResolver</code> changing an existing 'Extra feature'
+            </td><td class="captionglue"></td>
+</tr>
+</table>
+          
+          
+          
+<a name="ex_webresolvers_itemnameresolver"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>getColumnIdFunc = """
+function getColumnId(table, item, name) {
+    var id;
+    if (item[1] &lt; 0 ) { // whole column addressed
+        id = table.getElementsByTagName("TH")[0].id;
+    }
+    if (id) return id;
+}
+"""
+
+webResolvers.addResolver("tableColumnId", getColumnIdFunc, "TableColumn")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.32:&nbsp;&nbsp;A <code>webItemNameResolver</code> registered using a Jython SUT script</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+          
+          
+<a name="ex_webresolvers_tooltipresolver"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def getTooltipFunc = """
+function getTooltip(node, tooltip) {
+    if (tooltip) {
+        var userLang = navigator.language || navigator.userLanguage;
+        if (userLang) {
+            return tooltip + "-" + userLang;
+        }
+    }
+}
+"""
+
+webResolvers.addResolver("tootip-lang", getTooltipFunc)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.33:&nbsp;&nbsp;A <code>webTooltipResoler</code> registered using a Groovy SUT script</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+          
+          
+<a name="ex_webresolvers_enabledresolver"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>function isEnabled(node) {
+    try {
+        return ! node.className.split(' ').contains("v-disabled");
+    } catch (e) {
+        return true;
+    }
+}
+
+webResolvers.addResolver("vEnabledResolver",isEnabledFunc);</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.34:&nbsp;&nbsp;A <code>webEnabledResolver</code>, registered using a JavaScript SUT script</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+          
+          
+<a name="ex_webresolvers_visibilityresolver"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>function isVisible(element, visible) {
+    const getOpacity = function(el) { // inner function, so it is part
+                                           // of the registered resolver
+        const style = window.getComputedStyle(el);
+        const opacity = style.getPropertyValue("opacity")
+        if (! opacity) return 1;
+        return parseFloat(opacity);
+    }
+    return visible &amp;&amp; getOpacity(element) &gt; 0;
+}
+
+webResolvers.addResolver("opacityResolver",isVisible);</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.35:&nbsp;&nbsp;A <code>webVisibilityResolver</code></td><td class="captionglue"></td>
+</tr>
+</table>
+          
+          
+          
+<a name="ex_webresolvers_maintextresolver"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>getMainTextFunc = """
+function getMainText(element,text) {
+    if (text) return text.replace("TO-DO","")
+}
+"""
+
+webResolvers.addResolver("removeMarkFromText",getMainTextFunc)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.36:&nbsp;&nbsp;A <code>webMainTextResolver</code>, registered in a Jython SUT script</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+          
+          
+<a name="ex_webresolvers_busypaneresolver"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>function isBusy(element) {
+    const overlay = element.getElementsByClassName("overlay")[0];
+    return !!overlay;
+}
+
+webResolvers.addResolver("overlayBusyResolver",isBusy);</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.37:&nbsp;&nbsp;A <code>webBusyPaneResolver</code></td><td class="captionglue"></td>
+</tr>
+</table>
+          
+          
+          
+<a name="ex_webresolvers_busyapplicationresolver"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>function applicationIsBusy() {
+    const tasks = $specialFramework.waitingTasks();
+    return tasks &amp;&amp; tasks.length() &gt; 0;
+}
+
+webResolvers.addResolver("taskChecker",applicationIsBusy);</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.38:&nbsp;&nbsp;A <code>webBusyApplicationDetector</code></td><td class="captionglue"></td>
+</tr>
+</table>
+          
+          
+          
+<a name="ex_webresolvers_extrafeaturematcher"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>function matchExtraFeature(element, name, value, regexp, negate) {
+    if (name != "my:label") return;
+    const label = element.getAttribute("my-label");
+    var match = false;
+    if (label) {
+        if (regexp) {
+           match = !! label.match(value);
+        } else {
+           match = (value == label);
+        }
+    }
+    return negate ? ! match : match;
+}
+
+webResolvers.addResolver("myLabelResolver", matchExtraFeature)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.39:&nbsp;&nbsp;A <code>webExtraFeatureMatcher</code></td><td class="captionglue"></td>
+</tr>
+</table>
+            
+<a name="ex_webresolvers_specextrafeaturematcher"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>function matchExtraFeature(element, name, value, regexp, negate) {
+    const label = element.getAttribute("my-label");
+    var match = false;
+    if (label) {
+        if (regexp) {
+           match = !! label.match(value);
+        } else {
+           match = (value == label);
+        }
+    }
+    return negate ? ! match : match;
+}
+
+webResolvers.addSpecificExtraFeatureMatcher("myLabelResolver",
+                               matchExtraFeature, "my:label");</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.40:&nbsp;&nbsp;Using <code>addSpecificExtraFeatureMatcher</code> for a <code>webExtraFeatureMatcher</code></td><td class="captionglue"></td>
+</tr>
+</table>
+            
+
+        
+        
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_resolversmodule.html#sec_resolversmodule"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 50.1&nbsp;The resolvers module" title="Previous Chapter: 50.1&nbsp;The resolvers module"></a></td><td class="navicon"><a href="tech_resolverregistry.html#sec_ResolverRegistry"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 50.3&nbsp;The ResolverRegistry" title="Next Page: 50.3&nbsp;The ResolverRegistry"></a></td><td class="navicon"><a href="tech_resolverregistry.html#sec_ResolverRegistry"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 50.3&nbsp;The ResolverRegistry" title="Next Chapter: 50.3&nbsp;The ResolverRegistry"></a></td><td class="navicon"><a href="tech_extensions.html#sec_extensions"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 50&nbsp;Extension APIs" title="Chapter Overview: 50&nbsp;Extension APIs"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

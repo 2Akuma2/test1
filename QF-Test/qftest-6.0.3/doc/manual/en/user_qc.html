@@ -1,0 +1,524 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>HP ALM - Quality Center</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_qc"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="user_testbench.html#usec_testbench"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 25.2&nbsp;Imbus TestBench" title="Next Page: 25.2&nbsp;Imbus TestBench"></a></td><td class="navicon"><a href="user_testbench.html#usec_testbench"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 25.2&nbsp;Imbus TestBench" title="Next Chapter: 25.2&nbsp;Imbus TestBench"></a></td><td class="navicon"><a href="user_testmanagement.html#usec_testmanagement"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 25&nbsp;Interaction with Test Management Tools" title="Chapter Overview: 25&nbsp;Interaction with Test Management Tools"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_qc">25.1</a></span>
+</div>
+<a href="contents.html#toc_usec_qc">HP ALM - Quality Center</a>
+</h4>
+
+      
+
+      
+<a name="usec_qcIntro"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_qcIntro">25.1.1</a></span>
+</div>
+<a href="contents.html#toc_usec_qcIntro">Introduction</a>
+</h5>
+        
+<p>
+          The current integration of QF-Test and HP ALM - Quality Center utilizes the
+          built-in VAPI-XP-TEST type of Quality Center.
+        </p>
+        
+<a name="figure_25.1"></a><a name="figure_25.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/alm_integration_en.png" target="_blank"><img src="images/alm_integration_en.png" alt="ALM-QC integration" width="739" height="291" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;25.1</a>:&nbsp;&nbsp;Integration with ALM - QualityCenter</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          The VAPI-XP-TEST type is intended to be an
+          automated test-case for any test-tool. QF-Test comes with a template file for
+          the VAPI-XP-TEST script, which is <code>qcVapiXPTemplate.txt</code>, see
+          <code>qftest-6.0.3/ext/qualitycenter</code>.  This script can be
+          used as template for all QF-Test tests in Quality Center. Please see <a href="#usec_qcStep">subsection 25.1.2</a> for a detailed step-by-step description.
+        </p>
+        
+<p>
+          The QF-Test VAPI-XP-TEST template script employs an external worker VBScript
+          script, called <code>qcTemplate.vbs</code>. This script is also part of the
+          QF-Test distribution (see
+          <code>qftest-6.0.3/ext/qualitycenter</code>) and has to be adapted
+          to your specific needs. So we encourage you to copy that file to a project
+          specific location and adapt it according to your needs.
+        </p>
+        
+<p>
+          The worker script launches QF-Test in batch mode on each test system locally,
+            i.e. it has to be accessible for each test system. As the test suite
+            files and the configuration files have to be available on the test system
+            too, we recommend to put all those files on a shared network drive or
+            into the version management system.
+        </p>
+        
+<p>
+          After the execution of the test the run-log of QF-Test will be appended to the
+          test instance as well as the status of the test will be set to the result.
+        </p>
+        
+<p>
+          You can also change the worker script to make use of a daemon call (for
+          details about the daemon mode, please see <a href="tech_daemon.html#sec_daemon">chapter 51</a>).  In
+          this case QF-Test will establish the network connection to the test system and
+          launch the test by itself. In case of the normal batch call Quality Center
+          establishes the connection to the test-system and triggers the local QF-Test
+          installation to perform the test. If you make use of the daemon call, the
+          worker script has to be located on the Quality Center system, but the test
+          suite still needs to be accessible on each test system.
+        </p>
+        
+<p>
+          If you do not make use of VBScript in your project, feel free to
+          port the QF-Test demo scripts to JScript or any other supported language.
+        </p>
+        
+<p>
+          The following figure shows the VAPI-XP-TEST test-case in Quality Center:
+        </p>
+        
+<a name="figure_25.2"></a><a name="figure_25.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/alm01_vapi-xp.png" target="_blank"><img src="images/alm01_vapi-xp.png" alt="VAPI-XP-TEST test-case             in HP ALM" width="1016" height="765" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;25.2</a>:&nbsp;&nbsp;QF-Test VAPI-XP-TEST test-case in HP ALM - QualityCenter</td><td class="captionglue"></td>
+</tr>
+</table>
+
+        
+         
+      
+      
+<a name="usec_qcStep"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_qcStep">25.1.2</a></span>
+</div>
+<a href="contents.html#toc_usec_qcStep">Step-by-step integration guide</a>
+</h5>
+        
+<p>
+          
+<strong>General steps to be performed on the the test system:</strong>
+        
+</p>
+        
+<ol>
+          
+<li>
+            Copy the template worker script from
+            <code>qftest-6.0.3/ext/qualitycenter/qcTemplate.vbs</code> to
+            your project location and rename it to a proper name. We recommend to use
+            the same path on all test-systems. Perhaps you should use a shared
+            network drive.
+          </li>
+          
+<li>
+            Within the worker script you can define certain default option, e.g.
+            whether the batch or daemon mode should be used as default and what
+            should be the name for the default run-log file. This also can be done at
+            a later stage, which might be recommendable when initially starting with
+            the integration process to keep things simple.
+          </li>
+        
+</ol>
+        
+<p>
+          
+<strong>Steps in Quality Center to create a test-case:</strong>
+        
+</p>
+        
+<ol>
+          
+<li>
+            Start Quality Center and log in to your project.
+          </li>
+          
+<li>
+            
+<p>
+              You might want to create a new test-set e.g. called "DemoTestSet" in the "Test plan" area.
+            </p>
+            
+<a name="figure_25.3"></a><a name="figure_25.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/alm02_new_testset.png" target="_blank"><img src="images/alm02_new_testset.png" alt="Create new testset" width="1016" height="765" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;25.3</a>:&nbsp;&nbsp;In Test plan create new Test-set</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              In this test-set create a new test with type VAPI-XP-TEST.
+            </p>
+            
+<a name="figure_25.4"></a><a name="figure_25.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/alm03_new_testcase.png" target="_blank"><img src="images/alm03_new_testcase.png" alt="Create new test of type VAPI-XP-TEST" width="1016" height="765" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;25.4</a>:&nbsp;&nbsp;Create new test of type VAPI-XP-TEST</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              
+<span class="margin"><span class="note">Note</span></span>On the HP VAPI-XP
+              Wizard window just press finish without any modifications. (That means
+              you have VBScript as script language and COM/DCOM Server Test as test
+              type).
+            </p>
+            
+<a name="figure_25.5"></a><a name="figure_25.5"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/alm04_testcase_wizard.png" target="_blank"><img src="images/alm04_testcase_wizard.png" alt="HP VAPI-XP Wizard" width="1016" height="765" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;25.5</a>:&nbsp;&nbsp;HP VAPI-XP Wizard</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              You will then get a new test as shown below.
+            </p>
+            
+<a name="figure_25.6"></a><a name="figure_25.6"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/alm05_testcase_details.png" target="_blank"><img src="images/alm05_testcase_details.png" alt="VAPI-XP test                 details" width="1016" height="765" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;25.6</a>:&nbsp;&nbsp;Test details</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              Change to the 'Test script' tab of the test and copy the content of the template file
+              <code>qftest-6.0.3/ext/qualitycenter/qcVapiXPTemplate.txt</code>
+              into the Script Viewer's text area.
+            </p>
+            
+<a name="figure_25.7"></a><a name="figure_25.7"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/alm06_testcase_template.png" target="_blank"><img src="images/alm06_testcase_template.png" alt="VAPI-XP-TEST script                 content" width="1016" height="765" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;25.7</a>:&nbsp;&nbsp;Copy template content to script text area</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            Within the script please do following adaptations:
+            <ul>
+              
+<li>
+                Change the <code>pathToModule</code> variable to the
+                location you have copied the worker script <code>qcTemplate.vbs</code> to.
+              </li>
+              
+<li>
+               Change the <code>testSuiteFile</code> variable to your desired test-suite file.
+              </li>
+              
+<li>
+                If you want to execute one specific test, you can also change
+                the <code>testCase</code> variable to the desired test-case name.
+              </li>
+            
+</ul>
+          
+</li>
+        
+</ol>
+        
+<p>
+          Please read the comments in the script carefully, because you can also use
+          test-case specific settings optionally.
+        </p>
+
+        
+<p>
+          
+<strong>Steps to be performed to run the sample test-case</strong>
+        
+</p>
+        
+<ol>
+          
+<li>
+            Change to the "Test lab" section in Quality Center.
+          </li>
+          
+<li>
+            
+<p>
+              You might want to create a new sample test-set.
+            </p>
+            
+<a name="figure_25.8"></a><a name="figure_25.8"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/alm07_testlab_set.png" target="_blank"><img src="images/alm07_testlab_set.png" alt="New set in test-lab" width="1016" height="765" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;25.8</a>:&nbsp;&nbsp;New test-set in Test lab section</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            Add the test-case to the new test-sets' execution grid by choosing it from the test plan
+            structure.
+            <a name="figure_25.9"></a><a name="figure_25.9"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/alm08_testlab_choose.png" target="_blank"><img src="images/alm08_testlab_choose.png" alt="Add test to test-set" width="1016" height="765" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;25.9</a>:&nbsp;&nbsp;Add test to execution grid</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              Now you can launch the test-case. Ensure the "Run all tests locally" checkbox is activated
+              unless you really have a remote system with a QF-Test environment already set up.
+            </p>
+            
+<a name="figure_25.10"></a><a name="figure_25.10"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/alm09_testlab_run.png" target="_blank"><img src="images/alm09_testlab_run.png" alt="Run the test" width="1016" height="765" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;25.10</a>:&nbsp;&nbsp;Run the test</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            
+<p>
+              Now Quality Center should start the test run - possibly on your machine, then you should see
+              the SUT coming up after some time, actions being performed and closed at the end. When the
+              run has finished, the result is noted down with the test: Passed or Failed.
+            </p>
+            
+<a name="figure_25.11"></a><a name="figure_25.11"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/alm10_testlab_passed.png" target="_blank"><img src="images/alm10_testlab_passed.png" alt="Test result" width="1016" height="765" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;25.11</a>:&nbsp;&nbsp;Test result</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+          
+<li>
+            After the test has terminated, in addition to the result the run-log of the test will be
+            uploaded as attachment to the test instance.
+          </li>
+          
+<li>
+            
+<p>
+              To view the run-log, please double-click to
+              the test in the execution grid, then change to "Runs" and again double-click at the
+              paper-clip attachments symbol for the respective test-run.
+            </p>
+            
+<a name="figure_25.12"></a><a name="figure_25.12"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/alm11_testlab_log.png" target="_blank"><img src="images/alm11_testlab_log.png" alt="Uploaded run-log" width="1016" height="765" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;25.12</a>:&nbsp;&nbsp;Uploaded run-log</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</li>
+        
+</ol>
+        
+         
+      
+      
+<a name="usec_qcHelp"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_qcHelp">25.1.3</a></span>
+</div>
+<a href="contents.html#toc_usec_qcHelp">Troubleshooting</a>
+</h5>
+        
+<p>
+          First of all we need to state that we are not QualityCenter experts. Therefore there might be
+          better and advance options for troubleshooting. Hence we want to at least provide some hints we
+          used so far.
+        </p>
+        
+<p>
+          Unfortunately the process output during the test execution in QualityCenter is only visible for a fraction of
+          time, not allowing a direct analysis. Therefore we need to find a work around.
+        </p>
+        
+<p>
+          The text editor of the VAPI-XP-TEST node in the "Test plan" area allows to directly execute the
+          script. Then in the output area below the output gets visible permanently showing possibly
+          something helpful.
+        </p>
+        
+<a name="figure_25.13"></a><a name="figure_25.13"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/alm12_testcase_debugrun.png" target="_blank"><img src="images/alm12_testcase_debugrun.png" alt="VAPI-XP-TEST script             debug run" width="1016" height="765" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;25.13</a>:&nbsp;&nbsp;Script debug run</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          But the direct execution from the script node needs to be handled with care. Of course it is not
+          considered as a real test run, so no run-log can be uploaded which results in a
+          respective Run-time error "Object required" in the output. Don't get confused by that!
+        </p>
+        
+<p>
+          For more debugging, additional statements like <code>TDOutput.Print "Some text"</code> can be
+          added to both the test script and the worker script. By this you can see how far the script runs
+          until a possible error occurs.
+        </p>
+        
+<p>
+          The text script editor has a "Syntax check" button which is helpful for validation after every
+          change.
+        </p>
+
+      
+      
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="user_testbench.html#usec_testbench"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 25.2&nbsp;Imbus TestBench" title="Next Page: 25.2&nbsp;Imbus TestBench"></a></td><td class="navicon"><a href="user_testbench.html#usec_testbench"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 25.2&nbsp;Imbus TestBench" title="Next Chapter: 25.2&nbsp;Imbus TestBench"></a></td><td class="navicon"><a href="user_testmanagement.html#usec_testmanagement"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 25&nbsp;Interaction with Test Management Tools" title="Chapter Overview: 25&nbsp;Interaction with Test Management Tools"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,756 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="root"
+          signature="302E021500CAEAB92DF5B530CBFCC2725C756455E25C2EC2EB021500AC2B421DF1E2479FE51C72F370F9EAC974C76919"
+          version="6.0.3">
+  <include>qfs.qft</include>
+  <variable name="buggyMode">false</variable>
+  <variable name="executable">"${qftest:suite.dir}/CarConfigWpf.exe"</variable>
+  <comment>@author tm, QFS</comment>
+  <TestSet id="_1" name="CarConfigurator WPF Demo">
+    <DependencyReference id="_3DW"
+                         reference="dependencies.sutStartedAndReset"/>
+    <TestSet id="_3DX" name="Prices">
+      <comment>Check the Prices without specials or accessories</comment>
+      <DataDriver id="_3DZ">
+        <TableDataBinder id="_3Da" name="models and prices">
+          <TableBinderColumn title="refModel" width="174">
+            <data>Rolo</data>
+            <data>Minigolf</data>
+            <data>Rassant</data>
+            <data>Rassant Family</data>
+            <data>I5</data>
+          </TableBinderColumn>
+          <TableBinderColumn title="refPrice" width="174">
+            <data>$ 12,300.00</data>
+            <data>$ 15,000.00</data>
+            <data>$ 17,000.00</data>
+            <data>$ 18,500.00</data>
+            <data>$ 29,000.00</data>
+          </TableBinderColumn>
+        </TableDataBinder>
+      </DataDriver>
+      <TestCase id="_3Db" name="Prices in main and options table">
+        <TestStep id="_3Fn" name="Price check in main window">
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="TabbedPane@Vehicles" event="MOUSE_MPRC"
+                          id="_2JOZ" modifiers="16"/>
+          <ComponentWaiter client="$(client)" component="VehicleTable"
+                           id="_2JRG"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="VehicleTable@Model@$(refModel)"
+                          event="MOUSE_MPRC" id="_2JQ0" modifiers="16"/>
+          <CheckStringStep client="$(client)" component="CalculatedPrice"
+                           id="_2JQ1">
+            <text>$(refPrice
+)</text>
+          </CheckStringStep>
+        </TestStep>
+        <TestStep id="_3Fo" name="Price check in dialog">
+          <ProcedureCall id="_2JRP"
+                         procedure="mainwindow.OpenVehiclesDialog"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="VehiclesTable@Name@$(refModel)"
+                          event="MOUSE_MPRC" id="_2JQd" modifiers="16"/>
+          <CheckStringStep client="$(client)" component="VehicleName"
+                           id="_2JQh">
+            <text>$(refModel)</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="VehiclePrice"
+                           id="_2JQi">
+            <text>$[ "$(refPrice)"[2:] ]</text>
+            <comment>check without symbol "$" </comment>
+          </CheckStringStep>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="CancelButton" event="MOUSE_MPRC"
+                          id="_2JRL" modifiers="16"/>
+          <ComponentWaiter absence="true" client="$(client)"
+                           component="VehiclesDialog" id="_2JRM"/>
+        </TestStep>
+      </TestCase>
+    </TestSet>
+    <TestCase id="_3Dn" name="vehicle modifications">
+      <TestStep id="_3Do" name="new vehicle">
+        <ProcedureCall id="_2JRQ" procedure="mainwindow.OpenVehiclesDialog"/>
+        <TextInputStep clear="true" client="$(client)" component="VehicleName"
+                       id="_2JQo">
+          <text>Testvehicle</text>
+        </TextInputStep>
+        <TextInputStep clear="true" client="$(client)"
+                       component="VehiclePrice" id="_2JQq">
+          <text>9999</text>
+        </TextInputStep>
+        <MouseEventStep clicks="1" client="$(client)" component="NewButton"
+                        event="MOUSE_MPRC" id="_2JQs" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)" component="OkButton"
+                        event="MOUSE_MPRC" id="_2JQu" modifiers="16"/>
+        <ComponentWaiter absence="true" client="$(client)"
+                         component="VehiclesDialog" id="_2JRR"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="VehicleTable@Model@Testvehicle"
+                        event="MOUSE_MPRC" id="_2JRS" modifiers="16"/>
+        <CheckStringStep client="$(client)" component="CalculatedPrice"
+                         id="_2JRT">
+          <text>$$ 9,999.00</text>
+        </CheckStringStep>
+      </TestStep>
+      <TestStep id="_3D+" name="change vehicle">
+        <ProcedureCall id="_2JRb" procedure="mainwindow.OpenVehiclesDialog"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="VehiclesTable@Name@I5" event="MOUSE_MPRC"
+                        id="_2JRU" modifiers="16"/>
+        <TextInputStep clear="true" client="$(client)"
+                       component="VehiclePrice" id="_2JRV" single="false">
+          <text>7000</text>
+        </TextInputStep>
+        <MouseEventStep clicks="1" client="$(client)" component="ChangeButton"
+                        event="MOUSE_MPRC" id="_2JRW" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)" component="OkButton"
+                        event="MOUSE_MPRC" id="_2JRX" modifiers="16"/>
+        <ComponentWaiter absence="true" client="$(client)"
+                         component="VehiclesDialog" id="_2JRY"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="VehicleTable@Model@I5" event="MOUSE_MPRC"
+                        id="_2JRZ" modifiers="16"/>
+        <CheckStringStep client="$(client)" component="CalculatedPrice"
+                         id="_2JRa" timeout="5000">
+          <text>$$ 7,000.00</text>
+        </CheckStringStep>
+      </TestStep>
+      <TestStep id="_3E8" name="delete vehicle">
+        <ProcedureCall id="_2JRc" procedure="mainwindow.OpenVehiclesDialog"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="VehiclesTable@Name@Testvehicle"
+                        event="MOUSE_MPRC" id="_2JRd" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)" component="DeleteButton"
+                        event="MOUSE_MPRC" id="_2JRe" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)" component="OkButton"
+                        event="MOUSE_MPRC" id="_2JRf" modifiers="16"/>
+        <ComponentWaiter absence="true" client="$(client)"
+                         component="VehiclesDialog" id="_2JRg"/>
+        <TryStep id="_2JN+"
+                 name="The Testvehicle should not appera in the list anymore">
+          <ComponentWaiter client="$(client)"
+                           component="VehicleTable@Model@Testvehicle"
+                           id="_2JHB" timeout="100"/>
+          <ProcedureCall id="_2JO0" procedure="qfs.run-log.logError">
+            <variable name="message">Testvehicle is still accessible in list.</variable>
+            <variable name="withScreenshots">true</variable>
+          </ProcedureCall>
+          <CatchSequence exception="IndexNotFoundException" id="_2JN-"
+                         maxerror="0"/>
+        </TryStep>
+      </TestStep>
+    </TestCase>
+    <TestCase id="_3EG" name="specials including accessories">
+      <RepeatSequence count="${default:countSpecials:4}" id="_3EH"
+                      name="All specials - if not limited through variable &#34;countSpecials&#34;"
+                      var="special">
+        <RepeatSequence count="${default:countVehicles:5}" id="_3EI"
+                        name="All vehicles - if not limited through &#34;countVehicles&#34;"
+                        var="vehicle">
+          <variable name="finalPrice"/>
+          <ProcedureCall id="_3EJ" procedure="mainwindow.menu.reset"/>
+          <ProcedureCall id="_3EK" predelay="1000"
+                         procedure="mainwindow.selectVehicle">
+            <variable name="vehicle">$(vehicle)</variable>
+          </ProcedureCall>
+          <ProcedureCall id="_3Fa" procedure="mainwindow.selectSpecial">
+            <variable name="special">$(special)</variable>
+          </ProcedureCall>
+          <ProcedureCall id="_3Fb" local="true"
+                         procedure="mainwindow.readFinalPrice"
+                         retvarname="finalPrice"/>
+          <IfSequence id="_3Fg" name="special is Gomera"
+                      test="&#34;$(special)&#34; == &#34;1&#34;">
+            <ProcedureCall id="_3Ge"
+                           procedure="mainwindow.AccessoriesPanel.selectAccessoriesOfGomera"/>
+            <ElseifSequence id="_3EP" name="Special is Jazz"
+                            test="&#34;$(special)&#34; == &#34;2&#34;">
+              <ProcedureCall id="_3Gf"
+                             procedure="mainwindow.AccessoriesPanel.selectAccessoriesOfJazz"/>
+            </ElseifSequence>
+            <ElseifSequence id="_3ET" name="Special is Luxus"
+                            test="&#34;$(special)&#34; == &#34;3&#34;">
+              <ProcedureCall id="_3Gg"
+                             procedure="mainwindow.AccessoriesPanel.selectAccessoriesOfLuxus"/>
+            </ElseifSequence>
+          </IfSequence>
+          <ProcedureCall id="_3Gk" procedure="mainwindow.checkFinalPrice"/>
+        </RepeatSequence>
+      </RepeatSequence>
+    </TestCase>
+  </TestSet>
+  <PackageRoot id="_3">
+    <Package id="_3Cr" name="dependencies">
+      <comment>Package for the dependencies
+</comment>
+      <Dependency id="_1xuh" name="sutStarted">
+        <variable name="program">${qftest:dir.version}/demo/carConfigWpf/CarConfigWpf.exe</variable>
+        <SetupSequence id="_1xui"
+                       name="some client with WinDriver classes and libraries">
+          <SetGlobalStep id="_1xv5" varname="client">
+            <default>carconfigWPF</default>
+          </SetGlobalStep>
+          <TryStep id="_1xuj">
+            <ClientWaiter client="$(client)" id="_1xuk" timeout="0"/>
+            <CatchSequence exception="ClientNotConnectedException" id="_1xul"
+                           maxerror="0">
+              <WinClientStarter class="de.qfs.apps.qfwin.QFWin"
+                                client="$(client)" id="_1xx0"
+                                windowsprogram="$(program)">
+                <parameter>-lang</parameter>
+                <parameter>en</parameter>
+              </WinClientStarter>
+              <ClientWaiter client="$(client)" id="_1xuw" timeout="30000"/>
+            </CatchSequence>
+          </TryStep>
+        </SetupSequence>
+        <CleanupSequence id="_1xv2">
+          <ClientStopper client="$(client)" id="_1xv3"/>
+          <ProcessWaiter client="$(client)" id="_1xv4"/>
+        </CleanupSequence>
+      </Dependency>
+      <Dependency id="_2JFh" name="isWindows">
+        <comment>Check if the operation system is windows otherwise stop test execution.</comment>
+        <SetupSequence id="_2JFg">
+          <IfSequence id="_2JFj" test="not ${qftest:windows}">
+            <ProcedureCall id="_2JFf"
+                           procedure="qfs.dialogs.showInformationMessageDialog">
+              <variable name="title">MS Windows only</variable>
+              <variable name="msg">This test-suite demonstrates procedures of the 
+qfs.autowin package, which works on MS Windows only!</variable>
+              <variable name="timeout">20000</variable>
+              <variable name="alwaysOnTop">True</variable>
+              <variable name="wraplength">160</variable>
+            </ProcedureCall>
+            <ProcedureCall id="_2JFk"
+                           procedure="qfs.utils.testrun.stop.stopTestRun"/>
+          </IfSequence>
+        </SetupSequence>
+      </Dependency>
+      <Dependency forcedcleanup="true" id="_3Cw" name="sutStartedAndReset">
+        <comment>Starts and reset the SUT to the initial state and set the buggy-flag depending on the global variable "buggyMode"</comment>
+        <DependencyReference id="_2JFl" reference="dependencies.isWindows"/>
+        <DependencyReference id="_2JFm" reference="dependencies.sutStarted">
+          <variable name="program">${qftest:dir.version}/demo/carConfigWpf/CarConfigWpf.exe</variable>
+        </DependencyReference>
+        <SetupSequence id="_3Aj" name="Reset">
+          <ProcedureCall id="_3Ak" procedure="mainwindow.menu.reset"/>
+          <ProcedureCall id="_2JPp" procedure="mainwindow.menu.setBuggy">
+            <variable name="isBuggy">$(buggyMode)</variable>
+          </ProcedureCall>
+        </SetupSequence>
+      </Dependency>
+    </Package>
+    <Package id="_3Fp" name="mainwindow">
+      <comment>Procedures for actions in main window.</comment>
+      <Package id="_3Fq" name="menu">
+        <comment>Procedures for menu actions</comment>
+        <Procedure id="_38o" name="reset">
+          <comment>click File -&gt; Reset to restore the initial state.</comment>
+          <ProcedureCall id="_2JRJ"
+                         procedure="mainwindow.menu.selectMenuitem">
+            <variable name="menu">File</variable>
+            <variable name="menuitem">Reset</variable>
+          </ProcedureCall>
+          <ProcedureCall id="_2JRj" procedure="qfs.win.combobox.setValue">
+            <variable name="menu">File</variable>
+            <variable name="menuitem">Reset</variable>
+            <variable name="id">${id:aComboboxButton}</variable>
+            <variable name="listId">${id:aComboboxList}</variable>
+            <variable name="value"/>
+            <variable name="separator">@</variable>
+            <variable name="btnX"/>
+            <variable name="btnY"/>
+            <variable name="itemX"/>
+            <variable name="itemY"/>
+          </ProcedureCall>
+        </Procedure>
+        <Procedure id="_2JPq" name="selectMenuitem">
+          <variable name="menu"/>
+          <variable name="menuitem"/>
+          <comment>Select the menu item from the given menu.
+The procedure make use of a generic component.
+
+@param menu		The label of the menu to be selected.
+@param menuitem	The label of the menu item to be selected.</comment>
+          <SetGlobalStep id="_2JPv" local="true" varname="item">
+            <default>$(menu)</default>
+          </SetGlobalStep>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="genericMenuitem" event="MOUSE_MPRC"
+                          id="_2JRH" modifiers="16"/>
+          <SetGlobalStep id="_2JRI" local="true" varname="item">
+            <default>$(menuitem)</default>
+          </SetGlobalStep>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="genericMenuitem" event="MOUSE_MPRC"
+                          id="_2JPs" modifiers="16"/>
+        </Procedure>
+        <Procedure id="_1p6t" name="setBuggy">
+          <variable name="isBuggy">False</variable>
+          <comment>Set the given state to Help -&gt; Buggy.
+
+@param	isBuggy	If set to true, the buggy mode is activated.
+</comment>
+          <SetGlobalStep id="_2JQj" local="true" varname="item">
+            <default>Help</default>
+          </SetGlobalStep>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="genericMenuitem" event="MOUSE_MPRC"
+                          id="_2JPK" modifiers="16"/>
+          <TryStep id="_2JPD" name="buggy mode set correcty?">
+            <SetGlobalStep id="_2JP+" local="true" varname="item">
+              <default>Buggy</default>
+            </SetGlobalStep>
+            <CheckBooleanStep checktype="checked" client="$(client)"
+                              component="genericMenuitem" id="_2JPB"
+                              raise="true" state="$(isBuggy)"/>
+            <BasicSequence id="_2JPn"
+                           name="Close the menu by clicking the menu item again">
+              <SetGlobalStep id="_2JQk" local="true" varname="item">
+                <default>Help</default>
+              </SetGlobalStep>
+              <MouseEventStep clicks="1" client="$(client)"
+                              component="genericMenuitem" event="MOUSE_MPRC"
+                              id="_2JPo" modifiers="16"/>
+            </BasicSequence>
+            <CatchSequence exception="CheckFailedException" id="_2JPE"
+                           maxerror="0">
+              <MouseEventStep clicks="1" client="$(client)"
+                              component="genericMenuitem" event="MOUSE_MPRC"
+                              id="_2JPk" modifiers="16"/>
+            </CatchSequence>
+          </TryStep>
+        </Procedure>
+      </Package>
+      <Package id="_3Fw" name="AccessoriesPanel">
+        <comment>Procedures for actions in the Accessories Tab</comment>
+        <Procedure id="_3Fx" name="selectAccessoriesOfGomera">
+          <comment>Select the Accessories of special 'Gomera'.</comment>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="TabbedPane@Accessories"
+                          event="MOUSE_MPRC" id="_2JOg" modifiers="16"/>
+          <ComponentWaiter client="$(client)" component="AccessoryTable"
+                           id="_2JRk" raise="false"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AccessoryTable@&amp;2" event="MOUSE_MPRC"
+                          id="_2JRl" modifiers="16"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AccessoryTable@&amp;3" event="MOUSE_MPRC"
+                          id="_2JRm" modifiers="16"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AccessoryTable@&amp;5" event="MOUSE_MPRC"
+                          id="_2JRn" modifiers="16"/>
+          <CheckBooleanStep checktype="checked" client="$(client)"
+                            component="AddAccessoryPriceChkbox" id="_2JRo"/>
+        </Procedure>
+        <Procedure id="_3Fy" name="selectAccessoriesOfJazz">
+          <comment>Select the Accessories of special 'Jazz'.</comment>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="TabbedPane@Accessories"
+                          event="MOUSE_MPRC" id="_2JOf" modifiers="16"/>
+          <ComponentWaiter client="$(client)" component="AccessoryTable"
+                           id="_2JRq" raise="false"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AccessoryTable@&amp;3" event="MOUSE_MPRC"
+                          id="_2JRr" modifiers="16"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AccessoryTable@&amp;6" event="MOUSE_MPRC"
+                          id="_2JRs" modifiers="16"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AccessoryTable@&amp;7" event="MOUSE_MPRC"
+                          id="_2JRt" modifiers="16"/>
+          <CheckBooleanStep checktype="checked" client="$(client)"
+                            component="AddAccessoryPriceChkbox" id="_2JRu"/>
+        </Procedure>
+        <Procedure id="_3Fz" name="selectAccessoriesOfLuxus">
+          <comment>Select the Accessories of special 'Luxus'.</comment>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="TabbedPane@Accessories"
+                          event="MOUSE_MPRC" id="_2JOe" modifiers="16"/>
+          <ComponentWaiter client="$(client)" component="AccessoryTable"
+                           id="_2JRv" raise="false"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AccessoryTable@&amp;2" event="MOUSE_MPRC"
+                          id="_2JRw" modifiers="16"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AccessoryTable@&amp;4" event="MOUSE_MPRC"
+                          id="_2JRx" modifiers="16"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AccessoryTable@&amp;5" event="MOUSE_MPRC"
+                          id="_2JRy" modifiers="16"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AccessoryTable@&amp;6" event="MOUSE_MPRC"
+                          id="_2JRz" modifiers="16"/>
+          <CheckBooleanStep checktype="checked" client="$(client)"
+                            component="AddAccessoryPriceChkbox" id="_2JR+"/>
+        </Procedure>
+      </Package>
+      <Procedure id="_3A9" name="selectVehicle">
+        <variable name="vehicle"/>
+        <comment>Selects a vehicle
+
+@param vehicle The Index of the vehicle.
+</comment>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="TabbedPane@Vehicles" event="MOUSE_MPRC"
+                        id="_2JOa" modifiers="16" x="10" y="10"/>
+        <ComponentWaiter client="$(client)" component="VehicleTable"
+                         id="_2JRh"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="VehicleTable@Model&amp;$(vehicle)"
+                        event="MOUSE_MPRC" id="_2JRi" modifiers="16"/>
+      </Procedure>
+      <Procedure id="_3FK" name="selectSpecial">
+        <variable name="special"/>
+        <comment>Selects a Special
+
+@param special	The index of the special</comment>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="TabbedPane@Specials" event="MOUSE_MPRC"
+                        id="_2JOc" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="SpecialsCombo" event="MOUSE_MPRC"
+                        id="_2JIW" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="SpecialsCombo&amp;$(special)"
+                        event="MOUSE_MPRC" id="_2JO+" modifiers="16"/>
+      </Procedure>
+      <Procedure id="_2J9m" name="readFinalPrice">
+        <comment>Reads the final price
+
+@return Returns the final price.</comment>
+        <FetchTextStep client="$(client)" component="CalculatedPrice"
+                       id="_2JIh" local="true" varname="finalPrice"/>
+        <ReturnStep id="_2JAw" retval="$(finalPrice)"/>
+      </Procedure>
+      <Procedure id="_2JAx" name="checkFinalPrice">
+        <variable name="finalPrice"/>
+        <comment>Checks the final price.
+
+@param finalPrice	The expected final price</comment>
+        <CheckStringStep client="$(client)" component="CalculatedPrice"
+                         id="_2JJ7">
+          <text>$(finalPrice)</text>
+        </CheckStringStep>
+      </Procedure>
+      <Procedure id="_2JRO" name="OpenVehiclesDialog">
+        <ProcedureCall id="_2JRN" procedure="mainwindow.menu.selectMenuitem">
+          <variable name="menu">Options</variable>
+          <variable name="menuitem">Vehicles...</variable>
+        </ProcedureCall>
+        <ComponentWaiter client="$(client)" component="VehiclesDialog"
+                         id="_2JRK"/>
+      </Procedure>
+    </Package>
+  </PackageRoot>
+  <ExtraSequence id="_4"/>
+  <WindowList id="_5">
+    <WindowStep class="Window" engine="win" feature="CarConfigurator WPF"
+                height="462" id="CarConfiguratorWPF" name="CarConfiguratorWPF"
+                uid="_2JQ8" width="364">
+      <extrafeature name="id" negate="false" regexp="false" state="0">CarConfiguratorWPF</extrafeature>
+      <extrafeature name="patterns" negate="false" regexp="false" state="0">Window Transform LegacyIAccessible SynchronizedInput</extrafeature>
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">WPF.Window</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Window</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">Uia.Window</extrafeature>
+      <ComponentStep class="MenuBar" classcount="1" classindex="0" height="26"
+                     id="menubar" name="menubar" uid="_2JQ9" width="348" x="8"
+                     y="31">
+        <extrafeature name="id" negate="false" regexp="false" state="0">menubar</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">LegacyIAccessible SynchronizedInput</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">WPF.Menu</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">MenuBar</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.Menu</extrafeature>
+        <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Menu:MenuBar</extrafeature>
+        <ComponentStep class="MenuItem" feature="$(item)" id="genericMenuitem"
+                       uid="_2JQA" x="-" y="-">
+          <extrafeature name="id" negate="false" regexp="false" state="0">mFile</extrafeature>
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">ExpandCollapse LegacyIAccessible SynchronizedInput</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">WPF.MenuItem</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">MenuItem</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">$(item)</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.MenuItem</extrafeature>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="TabPanel" classcount="1" classindex="0"
+                     height="268" id="TabbedPane" name="TabbedPane"
+                     uid="_2JS9" width="348" x="8" y="57">
+        <extrafeature name="id" negate="false" regexp="false" state="0">TabbedPane</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">Selection LegacyIAccessible ItemContainer SynchronizedInput</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">WPF.TabControl</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">TabPanel</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Base price</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.TabControl</extrafeature>
+        <ComponentStep class="TabItem" classcount="3" classindex="0"
+                       feature="Vehicles" height="20" id="VehicleTablePanel"
+                       name="VehicleTablePanel" uid="_2JSD" width="61" x="0"
+                       y="0">
+          <extrafeature name="id" negate="false" regexp="false" state="0">VehicleTablePanel</extrafeature>
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">SelectionItem LegacyIAccessible SynchronizedInput</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">WPF.TabItem</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">TabItem</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.TabItem</extrafeature>
+          <extrafeature name="qfs:type" negate="false" regexp="false"
+                        state="0">Panel:TabPanelContent</extrafeature>
+          <ComponentStep class="Table" classcount="1" classindex="0"
+                         height="197" id="VehicleTable" name="VehicleTable"
+                         uid="_2JSE" width="326" x="11" y="60">
+            <extrafeature name="id" negate="false" regexp="false" state="0">VehicleTable</extrafeature>
+            <extrafeature name="patterns" negate="false" regexp="false"
+                          state="0">Selection Scroll Grid Table LegacyIAccessible ItemContainer SynchronizedInput</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">WPF.DataGrid</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Table</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Vehicles</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">Uia.DataGrid</extrafeature>
+          </ComponentStep>
+        </ComponentStep>
+        <ComponentStep class="TabItem" classcount="3" classindex="1"
+                       feature="Specials" height="20" id="SpecialsPanel"
+                       name="SpecialsPanel" uid="_2JSF" width="61" x="57"
+                       y="0">
+          <extrafeature name="id" negate="false" regexp="false" state="0">SpecialsPanel</extrafeature>
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">SelectionItem LegacyIAccessible SynchronizedInput</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">WPF.TabItem</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">TabItem</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.TabItem</extrafeature>
+          <extrafeature name="qfs:type" negate="false" regexp="false"
+                        state="0">Panel:TabPanelContent</extrafeature>
+          <ComponentStep class="ComboBox" classcount="1" classindex="0"
+                         height="23" id="SpecialsCombo" name="SpecialsCombo"
+                         uid="_2JSG" width="326" x="-46" y="60">
+            <extrafeature name="id" negate="false" regexp="false" state="0">SpecialsCombo</extrafeature>
+            <extrafeature name="patterns" negate="false" regexp="false"
+                          state="0">Selection ExpandCollapse LegacyIAccessible ItemContainer SynchronizedInput</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">WPF.ComboBox</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">ComboBox</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Specials</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">Uia.ComboBox</extrafeature>
+          </ComponentStep>
+        </ComponentStep>
+        <ComponentStep class="TabItem" classcount="3" classindex="2"
+                       feature="Accessories" height="20"
+                       id="AccessoryTablePanel" name="AccessoryTablePanel"
+                       uid="_2JSH" width="81" x="114" y="0">
+          <extrafeature name="id" negate="false" regexp="false" state="0">AccessoryTablePanel</extrafeature>
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">SelectionItem LegacyIAccessible SynchronizedInput</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">WPF.TabItem</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">TabItem</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.TabItem</extrafeature>
+          <extrafeature name="qfs:type" negate="false" regexp="false"
+                        state="0">Panel:TabPanelContent</extrafeature>
+          <ComponentStep class="Table" classcount="1" classindex="0"
+                         height="168" id="AccessoryTable"
+                         name="AccessoryTable" uid="_2JSI" width="326"
+                         x="-103" y="60">
+            <extrafeature name="id" negate="false" regexp="false" state="0">AccessoryTable</extrafeature>
+            <extrafeature name="patterns" negate="false" regexp="false"
+                          state="0">Selection Scroll Grid Table LegacyIAccessible ItemContainer SynchronizedInput</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">WPF.DataGrid</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Table</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Accessories</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">Uia.DataGrid</extrafeature>
+          </ComponentStep>
+          <ComponentStep class="CheckBox" classcount="1" classindex="0"
+                         feature="Add accessories price to final price"
+                         height="25" id="AddAccessoryPriceChkbox"
+                         name="AddAccessoryPriceChkbox" uid="_2JSJ"
+                         width="326" x="-103" y="240">
+            <extrafeature name="id" negate="false" regexp="false" state="0">AddAccessoryPriceChkbox</extrafeature>
+            <extrafeature name="patterns" negate="false" regexp="false"
+                          state="0">Toggle LegacyIAccessible SynchronizedInput</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">WPF.CheckBox</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">CheckBox</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Add accessories price to final price</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">Uia.CheckBox</extrafeature>
+          </ComponentStep>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="TextField" classcount="4" classindex="3"
+                     height="26" id="CalculatedPrice" name="CalculatedPrice"
+                     uid="_2JSC" width="82" x="269" y="426">
+        <extrafeature name="id" negate="false" regexp="false" state="0">CalculatedPrice</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">Value Scroll Text LegacyIAccessible SynchronizedInput</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">WPF.TextBox</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">TextField</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Final price</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.Edit</extrafeature>
+      </ComponentStep>
+    </WindowStep>
+    <WindowStep class="Dialog" engine="win" feature="Edit Vehicles"
+                height="303" id="VehiclesDialog" modal="true"
+                name="VehiclesDialog" uid="_2JQZ" width="437">
+      <extrafeature name="id" negate="false" regexp="false" state="0">VehiclesDialog</extrafeature>
+      <extrafeature name="patterns" negate="false" regexp="false" state="0">Window Transform LegacyIAccessible SynchronizedInput</extrafeature>
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">WPF.Window</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Dialog</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">Uia.Window</extrafeature>
+      <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Window:Dialog</extrafeature>
+      <ComponentStep class="Table" classcount="1" classindex="0" height="146"
+                     id="VehiclesTable" name="VehiclesTable" uid="_2JS1"
+                     width="317" x="16" y="73">
+        <extrafeature name="id" negate="false" regexp="false" state="0">VehiclesTable</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">Selection Scroll Grid Table LegacyIAccessible ItemContainer SynchronizedInput</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">WPF.ListView</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Table</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Vehicles</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.DataGrid</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="Button" classcount="5" classindex="3"
+                     feature="Cancel" height="26" id="CancelButton"
+                     name="CancelButton" uid="_2JS2" width="80" x="341"
+                     y="227">
+        <extrafeature name="id" negate="false" regexp="false" state="0">CancelButton</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">Invoke LegacyIAccessible SynchronizedInput</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">WPF.Button</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Button</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Cancel</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.Button</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="TextField" classcount="3" classindex="0"
+                     height="16" id="VehicleName" name="VehicleName"
+                     uid="_2JS3" width="181" x="16" y="263">
+        <extrafeature name="id" negate="false" regexp="false" state="0">VehicleName</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">Value Scroll Text LegacyIAccessible SynchronizedInput</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">WPF.TextBox</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">TextField</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Vehicle name</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.Edit</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="TextField" classcount="3" classindex="2"
+                     height="16" id="VehiclePrice" name="VehiclePrice"
+                     uid="_2JS4" width="70" x="263" y="263">
+        <extrafeature name="id" negate="false" regexp="false" state="0">VehiclePrice</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">Value Scroll Text LegacyIAccessible SynchronizedInput</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">WPF.TextBox</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">TextField</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Price</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.Edit</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="Button" classcount="5" classindex="0"
+                     feature="New" height="26" id="NewButton" name="NewButton"
+                     uid="_2JS5" width="80" x="341" y="39">
+        <extrafeature name="id" negate="false" regexp="false" state="0">NewButton</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">Invoke LegacyIAccessible SynchronizedInput</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">WPF.Button</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Button</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">New</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.Button</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="Button" classcount="5" classindex="4" feature="OK"
+                     height="26" id="OkButton" name="OkButton" uid="_2JS6"
+                     width="80" x="341" y="261">
+        <extrafeature name="id" negate="false" regexp="false" state="0">OkButton</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">Invoke LegacyIAccessible SynchronizedInput</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">WPF.Button</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Button</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">OK</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.Button</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="Button" classcount="5" classindex="1"
+                     feature="Change" height="26" id="ChangeButton"
+                     name="ChangeButton" uid="_2JS7" width="80" x="341"
+                     y="73">
+        <extrafeature name="id" negate="false" regexp="false" state="0">ChangeButton</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">Invoke LegacyIAccessible SynchronizedInput</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">WPF.Button</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Button</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Change</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.Button</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="Button" classcount="5" classindex="2"
+                     feature="Delete" height="26" id="DeleteButton"
+                     name="DeleteButton" uid="_2JS8" width="80" x="341"
+                     y="107">
+        <extrafeature name="id" negate="false" regexp="false" state="0">DeleteButton</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">Invoke LegacyIAccessible SynchronizedInput</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">WPF.Button</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Button</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Delete</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.Button</extrafeature>
+      </ComponentStep>
+    </WindowStep>
+  </WindowList>
+</RootStep>

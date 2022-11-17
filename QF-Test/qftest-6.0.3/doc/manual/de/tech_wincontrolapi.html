@@ -1,0 +1,763 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Windows Control API</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_win_api"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_webdriversutapi.html#sec_webdriversutapi"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 50.12&nbsp;WebDriverConnection SUT API" title="Vorheriges Kapitel: 50.12&nbsp;WebDriverConnection SUT API"></a></td><td class="navicon"><a href="tech_daemon.html#sec_daemon"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 51&nbsp;Daemon Modus" title="N&auml;chste Seite: 51&nbsp;Daemon Modus"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_extensions.html#sec_extensions"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 50&nbsp;APIs f&uuml;r Erweiterungen" title="Kapitel-&Uuml;bersicht: 50&nbsp;APIs f&uuml;r Erweiterungen"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="margin"><a name="new_N184857"></a><span class="note">5.0+</span></span><span class="numtitle"><a href="contents.html#toc_sec_win_api">50.13</a></span>
+</div>
+<a href="contents.html#toc_sec_win_api">Windows Control API</a>
+</h4>
+        
+<p>
+          Die Elemente von nativen Windows-Anwendungen werden im Test durch Java-Objekte
+          der Klasse <code>WinControl</code> repr&auml;sentiert. Diese stellt zum Beispiel f&uuml;r
+          die Entwicklung eigener Resolver verschiedene Methoden &ouml;ffentlich zur Verf&uuml;gung.
+        </p>
+        
+
+        
+<a name="sec_win_api_winc"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_win_api_winc">50.13.1</a></span>
+</div>
+<a href="contents.html#toc_sec_win_api_winc">Die <code class="classdef">WinControl</code> Klasse</a>
+</h5>
+            
+<p>
+              Es folgt eine alphabetische Aufstellung aller Methoden der
+              <code>WinControl</code> Klasse.
+            </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>WinControl getAncestorByUiaType(String typeName)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Sucht ein Vorg&auml;nger-Control mit dem angegeben UIAutomation-Typ.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>typeName</code></strong></td><td class="paramdesc">
+                  Der Typ als Suchkriterium.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Der Vorg&auml;nger oder <code>null</code>.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>WinControl getChild(int index)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefert das Kind des Controls mit dem angegebenen Index.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>index</code></strong></td><td class="paramdesc">
+                  Der Index des Kind-Controls.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Das Kind.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>IllegalArgumentException</code></strong></td><td class="throwdesc">
+                Wenn der Index negativ ist oder gr&ouml;&szlig;er/gleich der Anzahl der Kind-Controls.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int getChildCount()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefert die Anzahl an Kind-Controls.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Die Anzahl der Kind-Controls.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>WinControl[] getChildren()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefert alle Kind-Controls des <code>WinControls</code>.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Ein Array mit allen Kind-Controls.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>WinControl[] getChildrenByUiaClassName(String className)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefert alle Kinder des Controls mit dem angegebenen UIAutomation-Klassennamen.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>className</code></strong></td><td class="paramdesc">
+                  Der Klassenname.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Ein Array mit den Kind-Controls.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>WinControl[] getChildrenByUiaType(String typeName)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefert alle Kinder des Controls mit dem angegebenen UIAutomation-Typs.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>typeName</code></strong></td><td class="paramdesc">
+                  Der UIAutomation-Typ.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Ein Array mit den Kind-Controls.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>WinControl[] getElementsByClassName(String className)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefert alle untergeordneten Controls zur&uuml;ck, die den angegeben Klassennamen haben.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>className</code></strong></td><td class="paramdesc">
+                  Der Klassenname als Suchkriterium.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Ein Array von <code>WinControl</code> Objekten, welche das aktuelle Control als
+                  Vorg&auml;nger und den angegebenen Klassennamen haben.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>WinControl[] getElementsByClassName(String[] classNames)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefert alle untergeordneten Controls zur&uuml;ck, die einen der angegeben Klassennamen haben.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>classNames</code></strong></td><td class="paramdesc">
+                  Passende Klassennamen als Suchkriterium.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Ein Array von <code>WinControl</code> Objekten, welche das aktuelle Control als
+                  Vorg&auml;nger und einen der angegebenen Klassennamen haben.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>WinControl[] getElementsByClassName(String[] classNames, String[] stopClassNames)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefert alle untergeordneten Controls zur&uuml;ck, die einen der angegeben Klassennamen haben,
+                  aber bricht die Suche bei jedem Control ab, welches einen Klassennamen aus <code>stopClassNames</code> hat.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>classNames</code></strong></td><td class="paramdesc">
+                  Passende Klassennamen als Suchkriterium.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>stopClassNames</code></strong></td><td class="paramdesc">
+                  Klassennamen als Stop-Kriterium f&uuml;r die Tiefensuche.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Ein Array mit passenden Nachfolger-Controls.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String[] getGenericClassNames()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefert die generischen Klassennamen des Controls.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Ein String-Array mit den Klassennamen des Controls.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int getHwnd()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefert das native Windows-Handle des Controls.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Das native Windows-Handle.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int[] getLocation()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefert die (physikalische) Pixel-Position des Controls in seinem Eltern-Control.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Ein Array mit den X- und Y-Koordinaten.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int[] getLocationOnScreen()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefert die (physikalische) Pixel-Position des Controls auf dem Bildschirm.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Ein Array mit den X- und Y-Koordinaten, der Breite und der H&ouml;he.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>WinControl getNextSibling()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefert den n&auml;chsten Nachbarn des Controls zur&uuml;ck.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Das n&auml;chste Nachbar-Control oder <code>null</code>, wenn es keine weiteren Nachbarn mehr gibt.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getPatterns()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefert alle Pattern des Controls (mit Leerzeichen getrennt). Die Methode <code>hasPattern()</code>
+                  ist zu bevorzugen, damit man nicht mit dem genauen Format des Strings arbeiten muss.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Eine Zeichenkette mit den Pattern.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int[] getSize()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefert die (physikalische) Gr&ouml;&szlig;e des Elements.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Ein Feld mit der Breite und H&ouml;he.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getTextOrValue()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefert den "Wert" eines Elements, der sich meist aus dem Value- oder Text-Pattern ergibt,
+                  falls verf&uuml;gbar. Der Wert kann sich aus aus dem Text der Kind-Controls oder in einigen
+                  F&auml;llen aus dem Automation Name ergeben.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Ein Wert oder <code>null</code>.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>WinControl getTopAncestor()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefert den obersten Vorg&auml;nger des Controls.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Der obersten Vorg&auml;nger oder <code>null</code>.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getUiaClassName()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                Liefert den Klassennamen des <code>WinControl</code>s. Dieser ergibt sich aus dem UIAutomation-Klassennamen,
+                dem ein PRefix vorangestellt ist, um Verwechslungen mit den generischen QF-Test Klassennamen vorzubeugen.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Eine Zeichenkette mit dem Klassennamen des Controls.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>AutomationBase getUiaControl()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Erstellt f&uuml;r das <code>WinControl</code> ein <code>AutomationBase</code>,
+                  welches dann mit der <code>uiauto</code>-Skriptbibliothek verwendet werden kann (<a href="tech_uiauto.html#usec_uiauto">Kapitel 48</a>).
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Das <code>AutomationBase</code>-Objekt.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getUiaDescription()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefert die UIAutomation-Beschreibung des Controls. Wenn es keine
+                  FullDescription gibt, wird als Fallback die Beschreibung aus der
+                  Accessibility Schnittstelle zur&uuml;ckgeliefert.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Die Beschreibung oder ein leerer String.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getUiaHelp()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefert den Hilfetext des Controls.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Der Hilfetext oder ein leerer String.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getUiaId()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefer die UIAutomation-ID des Controls.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Die ID, wenn gesetzt, sonst <code>null</code>.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getUiaName()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefert den UIAutomation-Name des Controls.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  Der Name, falls gesetzt, sonst <code>null</code>.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getUiaType()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefert den Typ des <code>WinControl</code>s. Dieser ergibt sich aus dem Namen
+                  des UIAutomation-Typs, erg&auml;nzt um ein Pr&auml;fix <code>Uia.</code>,
+                  um Verwechslungen mit den generischen QF-Test Klassennamen vorzubeugen.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Eine Zeichenkette mit dem Typ des Controls.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>boolean hasPattern(String pattern)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  &Uuml;berpr&uuml;ft, ob das zugrundeligende Automation Element das angegebene Pattern unterst&uuml;tzt.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>pattern</code></strong></td><td class="paramdesc">
+                  Das Pattern, z.B. "Invoke", "ExpandCollapse" usw.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  <code>true</code> wenn das Element das Pattern unterst&uuml;tzt, sonst <code>false</code>.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>boolean isMatchingClass(String className)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Pr&uuml;ft, ob dem Cantrol die angebene Klasse zugeordnet ist.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>className</code></strong></td><td class="paramdesc">
+                  Der zu pr&uuml;fende Klassenname.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  <code>true</code> wenn dem Control die angebene Klasse zugeordnet ist, sonst <code>false</code>.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>boolean isMatchingClass(String[] classNames)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Pr&uuml;ft, ob das Cantrol eine der angebenen Klassen zugeordnet ist.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>classNames</code></strong></td><td class="paramdesc">
+                  Die zu pr&uuml;fende Klassennamen.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  <code>true</code> wenn dem Control eine der angebenen Klassen zugeordnet ist, sonst <code>false</code>.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>boolean isShowing()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                
+<p>
+                  Liefer die Sichtbarkeit des Elements.
+                </p>
+              
+</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                  <code>true</code>, wenn das Control als "Sichtbar auf dem Bildschirm" angesehen wird,
+                  sonst <code>false</code>.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+
+        
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_webdriversutapi.html#sec_webdriversutapi"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 50.12&nbsp;WebDriverConnection SUT API" title="Vorheriges Kapitel: 50.12&nbsp;WebDriverConnection SUT API"></a></td><td class="navicon"><a href="tech_daemon.html#sec_daemon"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 51&nbsp;Daemon Modus" title="N&auml;chste Seite: 51&nbsp;Daemon Modus"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_extensions.html#sec_extensions"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 50&nbsp;APIs f&uuml;r Erweiterungen" title="Kapitel-&Uuml;bersicht: 50&nbsp;APIs f&uuml;r Erweiterungen"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

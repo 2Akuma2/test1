@@ -1,0 +1,1377 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Recording options</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_opt_record"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="opt_general.html#sec_opt_general"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 37.1&nbsp;General options" title="Previous Chapter: 37.1&nbsp;General options"></a></td><td class="navicon"><a href="opt_play.html#sec_opt_play"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 37.3&nbsp;Replay options" title="Next Page: 37.3&nbsp;Replay options"></a></td><td class="navicon"><a href="opt_play.html#sec_opt_play"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 37.3&nbsp;Replay options" title="Next Chapter: 37.3&nbsp;Replay options"></a></td><td class="navicon"><a href="options.html#sec_options"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 37&nbsp;Options" title="Chapter Overview: 37&nbsp;Options"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_opt_record">37.2</a></span>
+</div>
+<a href="contents.html#toc_sec_opt_record">Recording options</a>
+</h4>
+      
+      
+<p>
+        The following options determine which kinds of events are recorded and
+        which filters are applied, how components are recorded and arranged,
+        and how sub-items are handled.
+      </p>
+      
+<a name="figure_37.11"></a><a name="figure_37.11"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_Record.png" target="_blank"><img src="images/opt_Record.png" alt="Recording options" texscale=".66" width="393" height="217"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.11</a>:&nbsp;&nbsp;Recording options</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<dl class="option">
+        
+
+        
+        
+<a name="opt_recordshowhelpbutton"></a>
+<dt>Show initial quickstart help on record button (User)</dt>
+<dd>
+            
+<p>
+              Controls the display of an initial question mark on the record button in order to directly lead
+              new users to the quickstart wizard.
+            </p>
+          
+</dd>
+
+        
+        
+
+        
+        
+<a name="opt_hotkeyrecord"></a>
+<dt>Hotkey for recording (User)</dt>
+<dd>SUT script name: OPT_RECORD_HOTKEY<br>
+            
+<p>
+              Event recording can be directly started/stopped by pressing a key in the SUT.
+              The key to be used for this function is set through this option.
+              To set an option, click into the field and press the desired key combination.
+              The default key is [F11].
+            </p>
+          
+</dd>
+
+        
+        
+
+        
+        
+<a name="opt_usetrueclientname"></a>
+<dt>Keep variables in recorded client names (System)</dt>
+<dd>
+            
+<p>
+              This option is very useful if the client name assigned to your
+              SUT contains variables (e.g. <code>$(client)</code>), which
+              generally makes sense when creating procedures. If this option
+              is set, the client attribute of all recorded nodes is set to the
+              unexpanded <a href="processes.html#att_SUTClientStarter_client" shape="rect">'Client'</a> value of the
+              <a href="processes.html#step_SUTClientStarter" shape="rect">'Start SUT client'</a> node through which the SUT was started.
+            </p>
+          
+</dd>
+
+        
+        
+
+        
+        
+<a name="opt_insertatselection"></a>
+<dt>Insert recording at current selection (User)</dt>
+<dd>
+            
+<p>
+              Depending on what you are currently working on, it may or may
+              not make sense to add newly recorded sequences directly at the
+              current insertion mark. If you deactivate this option, new
+              recordings are placed in a new <a href="sequences.html#step_BasicSequence" shape="rect">'Sequence'</a> under
+              <a href="sequences.html#step_ExtraSequence" shape="rect">'Extras'</a>.
+            </p>
+          
+</dd>
+
+        
+        
+
+        
+        
+<a name="opt_hotkeycheck"></a>
+<dt>Hotkey for checks (User)</dt>
+<dd>SUT script name: OPT_RECORD_CHECK_HOTKEY<br>
+            
+<p>
+              To simplify recording a sequence of events with interspersed
+              checks, you can switch between plain recording and recording
+              checks by pressing a key in the SUT. The key that triggers
+              this switch is set through this option.
+              To set an option, click into the field and press the desired key combination.
+              The default key is [F12].
+            </p>
+          
+</dd>
+
+        
+        
+
+        
+        
+<a name="opt_highlightduringcheck"></a>
+<dt>Highlight components when checking (User)</dt>
+<dd>SUT script name: OPT_RECORD_CHECK_HIGHLIGHT<br>
+            
+<p>
+              When QF-Test is recording checks, it can give visual feedback on
+              the component the mouse is currently over by inverting its
+              foreground and background colors. Rarely this may have unwanted
+              visual side effects, so you can turn that feature off with this
+              option.
+            </p>
+          
+</dd>
+
+        
+        
+
+        
+        
+<a name="opt_showemptyrecordingmessage"></a>
+<dt>Show message if no events were recorded (User)</dt>
+<dd>Server script name: OPT_SHOW_EMPTY_RECORDING_MESSAGE<br>
+            
+<p>
+              When starting to record and stopping without interacting with the SUT in between,
+              a message is shown indicating that no events were recorded.
+              By deactivating this option that message can be suppressed.
+            </p>
+          
+</dd>
+
+        
+      
+</dl>
+      
+
+      
+<a name="sec_opt_recordevents"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_opt_recordevents">37.2.1</a></span>
+</div>
+<a href="contents.html#toc_sec_opt_recordevents">Events to record</a>
+</h5>
+        
+        
+<p>
+          These options specify which kinds of events are recorded and which
+          aren't. You should not tinker with these unless you know what you
+          are doing.
+        </p>
+        
+<a name="figure_37.12"></a><a name="figure_37.12"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_RecordEvents.png" target="_blank"><img src="images/opt_RecordEvents.png" alt="Events to record" texscale=".66" width="417" height="184"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.12</a>:&nbsp;&nbsp;Options for events to record</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl class="option">
+          
+
+          
+          
+<a name="opt_recordmousemprc"></a>
+<dt>Abstract 'Mouse click' events (System)</dt>
+<dd>
+              
+<p>
+                Activating this option causes a sequence of <code>MOUSE_MOVED</code>,
+                <code>MOUSE_PRESSED</code>, <code>MOUSE_RELEASED</code> and <code>MOUSE_CLICKED</code> events to be
+                recorded as a single 'Mouse click' pseudo event (see <a href="events.html#step_MouseEventStep">subsection 38.8.1</a>).
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_recordmousemprcsimple"></a>
+<dt>
+<span class="margin"><a name="new_N101195"></a><span class="note">4.1+</span></span>Simplified 'Mouse click' recording (System)</dt>
+<dd>
+              
+<p>
+                When recording 'Mouse click' events, this option should also be activated. Except for Drag&amp;Drop and
+                special case <code>MOUSE_MOVED</code> events, recording is then based primarily on <code>MOUSE_PRESSED</code> events, turned into
+                'Mouse clicks'. This gives best results in most cases, even when QF-Test receives too few or too many
+                events from the SUT. If this option is turned off, the algorithm from QF-Test 4.0 and older is used. This
+                is worth a try in case a recorded sequence cannot be replayed directly.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_recordkeyptr"></a>
+<dt>Abstract 'Keystroke' events (System)</dt>
+<dd>
+              
+<p>
+                This option lets you record a sequence of <code>KEY_PRESSED</code>,
+                <code>KEY_TYPED</code> and <code>KEY_RELEASED</code> events (or just <code>KEY_PRESSED</code> and
+                <code>KEY_RELEASED</code> for function keys) as a single 'Keystroke' pseudo
+                event (see <a href="events.html#step_KeyEventStep">subsection 38.8.2</a>).
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_repositionmouseevents"></a>
+<dt>
+              Record MouseEvents without coordinates where possible
+             (System)</dt>
+<dd>SUT script name: OPT_RECORD_REPOSITION_MOUSE_EVENTS<br>
+              
+<p>
+                For many types of components and sub-items it doesn't matter
+                where exactly a MouseEvent occurs. However, if large values
+                are recorded for the X or Y coordinate of a
+                <a href="events.html#step_MouseEventStep" shape="rect">'Mouse event'</a>, there's the danger that the event might
+                miss its target upon replay if the component has shrunk a
+                little due to font changes or because the window has been
+                resized. This is also a possible source for problems when
+                converting a recorded sequence to a <a href="procedures.html#step_Procedure" shape="rect">'Procedure'</a> with
+                variable target components.
+              </p>
+              
+<p>
+                If this option is activated, QF-Test ignores the coordinates
+                of recorded MouseEvents if it thinks that the
+                coordinates don't matter for the target component, e.g. for
+                all kinds of buttons, for menu items, table cells, list items
+                and tree nodes. For the latter QF-Test distinguishes between
+                clicks on the node itself and on the expand/collapse toggle.
+                When MouseEvents without coordinates are played back, QF-Test targets
+                the center of the respective component or item except that the X coordinate for
+                items is limited to 5 because item bounds cannot always be calculated correctly.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_convertwindowopenwait"></a>
+<dt>
+              Convert opening of a window into <a href="miscnodes.html#step_ComponentWaiter" shape="rect">'Wait for component to appear'</a>
+             (System)</dt>
+<dd>
+              
+<p>
+                When replaying a sequence during which a new window is opened,
+                it may be useful to allow for a longer than usual delay until
+                the window is opened. By activating this option, a recorded
+                <code>WINDOW_OPENED</code> event will be turned into a <a href="miscnodes.html#step_ComponentWaiter" shape="rect">'Wait for component to appear'</a>
+                node automatically.
+              </p>
+              
+<p>
+                
+<span class="margin"><a name="web_N101331"></a><span class="note">Web</span></span>
+                For web clients this option causes a <a href="miscnodes.html#step_DocumentWaiter" shape="rect">'Wait for document to load'</a> node to be inserted
+                whenever loading of a document completes. This is important for proper
+                synchronization when navigating to another page.
+              </p>
+            
+</dd>
+
+          
+        
+</dl>
+      
+
+      
+      
+
+      
+<a name="sec_opt_packevents"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_opt_packevents">37.2.2</a></span>
+</div>
+<a href="contents.html#toc_sec_opt_packevents">Events to pack</a>
+</h5>
+        
+        
+<p>
+          In order to keep the amount of raw
+          event data generated during normal use of a Java GUI manageable,
+          QF-Test employs a set of recording filters and packers. These do
+          their best to keep everything needed for successful replay and throw
+          away the rest. To get an impression of the actual data behind a
+          recorded sequence, try recording a short sequence with all of these
+          turned off, and with <a href="#opt_recordmousemprc" shape="rect">'Mouse click'</a>
+          and <a href="#opt_recordkeyptr" shape="rect">'Keystroke'</a> pseudo events disabled.
+        </p>
+        
+<a name="figure_37.13"></a><a name="figure_37.13"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_Packing.png" target="_blank"><img src="images/opt_Packing.png" alt="Events to pack" texscale=".66" width="468" height="336"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.13</a>:&nbsp;&nbsp;Options for events to pack</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl class="option">
+          
+
+          
+          
+<a name="opt_packmousemoved"></a>
+<dt>
+<code>MOUSE_MOVED</code> events (System)</dt>
+<dd>SUT script name: OPT_RECORD_PACK_MOUSE_MOVED<br>
+              
+<p>
+                
+<code>MOUSE_MOVED</code> events are especially frequent. Every mouse cursor
+                motion generates a handful of these. Under most circumstances,
+                only the last of a consecutive series of <code>MOUSE_MOVED</code> events is
+                actually useful, so all events except the last one are
+                dropped, if this option is activated. An example where this is
+                not advisable is recording some freehand drawing in a graphics
+                application.
+              </p>
+              
+<p>
+                
+<span class="margin"><span class="note">Note</span></span> One might think that <code>MOUSE_MOVED</code> events
+                are completely useless, since <code>MOUSE_PRESSED</code> or <code>MOUSE_RELEASED</code>
+                events have their own set of coordinates, but this is not the
+                case. Some Java components require a <code>MOUSE_MOVED</code> event before
+                a <code>MOUSE_PRESSED</code> event is recognized.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_packmousedragged"></a>
+<dt>
+<code>MOUSE_DRAGGED</code> events (System)</dt>
+<dd>SUT script name: OPT_RECORD_PACK_MOUSE_DRAGGED<br>
+              
+<p>
+                
+<code>MOUSE_DRAGGED</code> events are like <code>MOUSE_MOVED</code> events, but with one
+                mouse button held down. Similarly, only the last of a series
+                of <code>MOUSE_DRAGGED</code> events is recorded unless you turn off this
+                option, except for special cases (see next option).
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_draghover"></a>
+<dt>Mouse drag hover delay (System)</dt>
+<dd>SUT script name: OPT_RECORD_MOUSE_DRAGGED_HOVER<br>
+              
+<p>
+                There are situations where not only the final target of a
+                mouse drag is of interest, but intermediate points as
+                well. The most common is invoking a menu item in a sub-menu.
+              </p>
+              
+<p>
+                
+<span class="margin"><span class="note">Note</span></span> As of QF-Test 1.05.2, the following no longer applies because
+                <code>MOUSE_MOVED</code> or <code>MOUSE_DRAGGED</code> events that are required
+                for opening sub-menus are not "optimized away" anymore. However, there may be
+                other situations where intermediate stops are useful when recording drags.
+              </p>
+              
+<a name="figure_37.14"></a><a name="figure_37.14"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_DragHover.png" target="_blank"><img src="images/opt_DragHover.png" alt="Dragging to a sub-menu" texscale=".66" width="442" height="289"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.14</a>:&nbsp;&nbsp;Dragging to a sub-menu</td><td class="captionglue"></td>
+</tr>
+</table>
+              
+<p>
+                As illustrated above, creating a new 'Test call' node for a suite could be
+                done by clicking on the &raquo;<em>Insert</em>&laquo; menu
+                button, dragging the mouse to the &raquo;<em>Test and Sequence nodes</em>&laquo; item for the sub-menu, so the sub-menu
+                pops up, then dragging on to the &raquo;<em>Testcall</em>&laquo;
+                menu item and releasing the mouse button.  Normally such a
+                sequence would be reduced to a press, a drag to the final
+                &raquo;<em>Testcall</em>&laquo; item and a release. It would fail
+                to replay, since the sub-menu would never be popped up. To
+                work correctly, an additional drag to the &raquo;<em>Test and Sequence nodes</em>&laquo; item must be recorded.
+              </p>
+              
+<p>
+                For that reason QF-Test recognizes a <code>MOUSE_DRAGGED</code> event as
+                important if you hover over an intermediate component for a
+                while during the drag. The delay (in milliseconds) needed to
+                recognize such an event is set through this option.
+              </p>
+              
+<p>
+                To record the above example correctly with this option set to
+                1000, you'd have to click on the &raquo;<em>Insert</em>&laquo; menu button, drag to the &raquo;<em>Test and Sequence nodes</em>&laquo; item and keep the mouse pointer stationary
+                for one second, then move on to the &raquo;<em>TestCall</em>&laquo; sub-menu item and release the mouse button.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_maxdragmprc"></a>
+<dt>Maximum drag distance for 'Mouse click' event (System)</dt>
+<dd>
+              
+<p>
+                It sometimes happens unintentionally that the mouse cursor is
+                moved between pressing the mouse button and releasing it. This
+                movement may be registered as a <code>MOUSE_DRAGGED</code> event, depending
+                on the JDK version and the distance of the move. QF-Test is
+                able to compensate for small movements and still convert the click
+                into an abstract 'Mouse click' event. This option defines the maximum
+                distance between pressing and releasing the mouse button that
+                QF-Test will ignore. Every <code>MOUSE_DRAGGED</code> event above that
+                distance will be left unchanged.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_packtextinput"></a>
+<dt>Collect key events into a 'Text input' node (System)</dt>
+<dd>
+              
+<p>
+                Another example where a lot of events are generated is
+                entering a short string of text into a text field. Each
+                character typed leads to at least one <code>KEY_PRESSED</code>, one
+                <code>KEY_TYPED</code> and one <code>KEY_RELEASED</code> event. For additional fun,
+                the <code>KEY_RELEASED</code> events may arrive out of order or not at
+                all, depending on operating system and JDK version.
+              </p>
+              
+<p>
+                If this option is activated, sequences of KeyEvents on a text
+                component (to be exact: a component whose class is derived
+                from <code>java.awt.TextField</code> or
+                <code>javax.swing.text.JTextField</code>) are converted into a
+                <a href="events.html#step_TextInputStep" shape="rect">'Text input'</a> node. Only true character input is packed,
+                function or control keys or key combinations with
+                [Control] or [Alt]
+                are left unchanged.
+              </p>
+              
+<p>
+                When the packed sequence is replayed, only <code>KEY_TYPED</code> events
+                are generated. <code>KEY_PRESSED</code> and <code>KEY_RELEASED</code> events cannot be
+                generated, since the required key code is system dependent and
+                cannot be determined from the character alone. This is not a
+                problem however, since text components usually handle only
+                <code>KEY_TYPED</code> events and some special keys.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_textinputclear"></a>
+<dt>Automatically set 'Clear...' attribute of recorded
+              'Text input' nodes (System)</dt>
+<dd>
+              
+<p>
+                This option determines the value of the
+                <a href="events.html#att_TextInputStep_clear" shape="rect">'Clear target component first'</a> attribute of a recorded
+                <a href="events.html#step_TextInputStep" shape="rect">'Text input'</a> node. If the option is not set, the
+                attribute will not be set either. Otherwise, the 'Clear target component first'
+                attribute is set if and only if the text field or text area
+                was empty before the input started.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_textinputsingle"></a>
+<dt>Always set 'Replay single events' attribute of recorded
+              'Text input' nodes (System)</dt>
+<dd>
+              
+<p>
+                This option determines the value of the
+                <a href="events.html#att_TextInputStep_single" shape="rect">'Replay single events'</a> attribute of a recorded
+                <a href="events.html#step_TextInputStep" shape="rect">'Text input'</a> node. If the option is set, the attribute
+                will be set and vice versa. The conservative way is to keep
+                the option set, but for a typical application that does not
+                add its own KeyListeners to text fields it should be safe to
+                turn it off so as to speed up replay of 'Text input' nodes.
+              </p>
+            
+</dd>
+
+          
+        
+</dl>
+      
+
+      
+      
+
+      
+<a name="sec_opt_recordcomponents"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_opt_recordcomponents">37.2.3</a></span>
+</div>
+<a href="contents.html#toc_sec_opt_recordcomponents">Components</a>
+</h5>
+        
+        
+<p>
+          General information regarding the settings for recording of class names:
+        </p>
+        
+<p>
+          QF-Test can record classes of component in various ways, therefore it
+          organizes component classes in various categories. Those categories
+          are called as the specific class, the technology-specific system class, the
+          generic class and the dedicated type of the generic class. Each
+          category is recorded at <a href="components.html#att_ComponentStep_extrafeatures" shape="rect">'Extra features'</a>.
+        </p>
+        
+<p>
+          The option <a href="#opt_recordgenericclass">Record generic class names for components</a> is checked by
+          default. Using this option allows you to record generic classes in
+          order to share and re-use your tests when testing a different
+          technology with just minor changes to the existing
+          tests.
+        </p>
+        
+<p>
+<span class="margin"><a name="swing_N101789"></a><span class="note">Swing</span></span>
+          In case you work with one Java engine only and you prefer to work
+          with the "real" Java classes, you could also work without the
+          generic class recording. In this case you should consider to
+          check the option <a href="#opt_dontrecordcustom">Record system class only</a>. This option
+          makes QF-Test record the technology-specific system class instead of
+          the derived class. If you switch off this option you will get the
+          derived class which enables you to make a very well targeted
+          recognition but could cause maintenance efforts in case of changes
+          coming from refactoring. In case to derived classes were obfuscated
+          you must not set this option.
+        </p>
+        
+<a name="figure_37.15"></a><a name="figure_37.15"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_Components.png" target="_blank"><img src="images/opt_Components.png" alt="Recording components" texscale=".66" width="401" height="424"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.15</a>:&nbsp;&nbsp;Options for recording components</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl class="option">
+          
+
+          
+          
+<a name="opt_hotkeycomponent"></a>
+<dt>Hotkey for components (User)</dt>
+<dd>SUT script name: OPT_RECORD_COMPONENT_HOTKEY<br>
+              
+<p>
+                This option defines the key for a very useful functionality:
+                recording components directly from the SUT. Pressing this
+                key in the SUT will switch it to "component recording" mode,
+                regardless of whether event recording is currently activated
+                or not.
+                To set an option, click into the field and press the desired key combination.
+                The default key is [Shift-F11].
+              </p>
+              
+<p>
+                In this mode, clicking on a component with the mouse
+                will cause the component to be recorded and added to the
+                test-suite if it was unknown before. If more than one
+                test-suite is currently opened, the menu item
+                &raquo;<em>Record</em>&laquo;-&raquo;<em>Receive&nbsp;components</em>&laquo;
+                determines the suite that will receive the components.  The
+                <a href="components.html#att_ComponentStep_id" shape="rect">'QF-Test ID'</a> of the <a href="components.html#step_ComponentStep" shape="rect">'Component'</a> is put on
+                the clipboard so it can be pasted into any text field with
+                [Control-V]. This latter
+                feature is very handy when creating an event or a check from
+                scratch.
+              </p>
+              
+<a name="figure_37.16"></a><a name="figure_37.16"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/componentrecording.png" target="_blank"><img src="images/componentrecording.png" width="168" height="156" alt="Popup menu for recording components" texscale="1"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.16</a>:&nbsp;&nbsp;Popup menu for recording components</td><td class="captionglue"></td>
+</tr>
+</table>
+              
+<p>
+                You can also record a whole component hierarchy at once by
+                clicking with the right mouse button instead. This will bring
+                up a popup menu with the following four options:
+              </p>
+              
+<dl>
+                
+<dt>Component only</dt>
+                
+<dd>
+                  This is similar to clicking with the left mouse button. Only
+                  the selected component is recorded.
+                </dd>
+                
+<dt>Component and children</dt>
+                
+<dd>
+                  The selected component and all components contained therein
+                  are recorded.
+                </dd>
+                
+<dt>Whole window</dt>
+                
+<dd>
+                  Records every component in the whole window.
+                </dd>
+                
+<dt>Suggest names</dt>
+                
+<dd>
+                  This is a special feature to improve the collaboration
+                  between testers and developers in deciding which components
+                  should have names set with <code>setName()</code>. All
+                  components in the whole window are recorded and put into a
+                  test-suite of their own. Each unnamed component for which a
+                  name will improve testability is marked with a name of the
+                  form "SUGGESTED NAME (n): suggestion". The running count in
+                  braces is just used to avoid duplicates. The suggested name
+                  is built from the component's class and other available
+                  information. It should be taken with a grain of salt.
+                </dd>
+                
+<dt>Show methods</dt>
+                
+<dd>
+                  This is another special feature that brings up a component inspector window
+                  showing the attributes and methods of the selected component's class. See
+                  <a href="user_componentinspection.html#usec_componentinspection">section 5.12</a> for further information.
+                </dd>
+              
+</dl>
+              
+<p>
+                Normally "component recording" mode is turned off by either
+                pressing the hotkey again or by selecting a component. If you
+                want to record multiple single components, hold down an
+                additional modifier key when switching to "component
+                recording" mode. That way selecting a component will not turn off
+                the mode, only pressing the hotkey again will.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_recordgenericclass"></a>
+<dt>
+<span class="margin"><a name="new_N101938"></a><span class="note">4.0+</span></span>Record generic class names for components (System)</dt>
+<dd>SUT script name: OPT_RECORD_COMPONENT_GENERIC_CLASS<br>
+              
+<p>
+                Where possible QF-Test assigns generic class names to components like "Button",
+                "Table" or "Tree" in addition to the actual Java, DOM or AJAX specific class names
+                like "javax.swing.JButton", "javafx.scene.control.Button", "INPUT" or
+                "X-BUTTON". These generic class names are more descriptive and robust, improve
+                compatibility between different UIs and enable creation of generic utility
+                procedures. Generic class names can be used for component recognition or
+                registering resolvers. If this option is active, generic class names are recorded
+                where available.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_dontrecordcustom"></a>
+<dt>Record system class only (System)</dt>
+<dd>SUT script name: OPT_RECORD_COMPONENT_SYSTEM_CLASS_ONLY<br>
+              
+<p>
+                If this option is set, QF-Test does not record any custom classes
+                for <a href="components.html#step_ComponentStep" shape="rect">'Components'</a>. Instead it moves up the class
+                hierarchy until it encounters a system class and records that.
+                Set this option if the class names of your custom GUI classes
+                tend to differ between releases.
+              </p>
+              
+<p>
+                
+<span class="margin"><span class="note">Note</span></span> You must activate this option if you
+                intend to obfuscate the jar files of your application or if
+                you are using a custom class loader to load your application's
+                GUI classes.
+              </p>
+              
+<p>
+<span class="margin"><a name="web_N101984"></a><span class="note">Web</span></span>
+                This option does not apply to web SUTs.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_tolerantclassmatch"></a>
+<dt>
+<span class="margin"><a name="new_N102005"></a><span class="note">4.0+</span></span>Match any class when recording components (System)</dt>
+<dd>SUT script name: OPT_RECORD_TOLERANT_CLASS_MATCH<br>
+              
+<p>
+                For compatibility with older QF-Test versions that did not have generic classes, QF-Test
+                now matches against several classes of a component when recording, the concrete
+                class, the generic class and the system class. This is very useful if you want to
+                retain as many of your old components as possible. If you would rather get new
+                components based on generic classes in new recordings you should deactivate this
+                option. Components recorded for the first time will always be recorded with the
+                class determined by the preceding two options <a href="#opt_recordgenericclass">Record generic class names for components</a> and <a href="#opt_dontrecordcustom">Record system class only</a>.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_validaterecordedcomponents"></a>
+<dt>
+<span class="margin"><a name="new_N102038"></a><span class="note">3.5+</span></span>Validate component recognition during recording (System)</dt>
+<dd>SUT script name: OPT_VALIDATE_RECORDED_COMPONENTS<br>
+              
+<p>
+                In case non-unique names are assigned to components QF-Test can still distinguish
+                between these components with the help of the <a href="components.html#att_ComponentStep_extrafeatures" shape="rect">'Extra feature'</a>
+                <code>qfs:matchindex</code> that specifies the index of the component with the
+                given name. If this option is set, QF-Test will check the name of the component
+                during recording and try to assign <code>qfs:matchindex</code> correctly.
+              </p>
+              
+<p>
+                
+<span class="margin"><span class="note">Note</span></span>
+
+                You should only deactivate this option if you are sure that component names are
+                "reasonably unique" and the component validation significantly impacts performance
+                during recording.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_converthtml"></a>
+<dt>
+<span class="margin"><a name="swing_N102082"></a><span class="note">Swing</span></span>
+              Convert HTML components to plain text
+             (System)</dt>
+<dd>SUT script name: OPT_RECORD_COMPONENT_CONVERT_HTML<br>
+              
+<p>
+                Swing supports HTML markup in various kinds of labels,
+                buttons and sub-elements of complex components.  For component
+                identification and validation, the HTML markup is often not
+                useful and will clutter up things. If this option is set, QF-Test
+                converts HTML to normal text by removing all HTML markup so
+                only the actual text content is left.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_nameoverriderec"></a>
+<dt>Name override mode (record) (System)</dt>
+<dd>Server or SUT script name: OPT_RECORD_COMPONENT_NAME_OVERRIDE<br>Possible Values: VAL_NAME_OVERRIDE_EVERYTHING, VAL_NAME_OVERRIDE_HIERARCHY, VAL_NAME_OVERRIDE_PLAIN<br>
+              
+<p>
+                
+<span class="margin"><span class="note">Note</span></span> There are two versions of this option which are closely
+                related. This one is effective during recording, the <a href="opt_play.html#opt_nameoverride">other one</a> during replay. Obviously, both options
+                should always have the same value. There's one exception though: When migrating
+                from one setting to another, QF-Test's components have to be updated. During that
+                process, keep the replay option at the old setting and change this option to the
+                new one. Be sure to update the replay setting after updating the components.
+              </p>
+              
+<p>
+                This option determines the weight given to the names of components for recording.
+                Possible choices are:
+              </p>
+              
+<p>
+                
+<strong>Override everything</strong>
+<br>
+                This is the most effective and adaptable way of searching components, but it
+                requires that the names of the components are unique, at least within the same
+                window. If that uniqueness is given, use this choice.<br>
+                
+<span class="margin"><a name="web_N102141"></a><span class="note">Web</span></span>Don't use this value for a web page with frames. Use "Hierarchical
+                resolution" instead.
+              </p>
+              
+<p>
+                
+<strong>Hierarchical resolution</strong>
+<br>
+                This choice should be used if component names are not unique on a per-window
+                basis, but naming is still used consistently so that two components with identical
+                names have at least parent components or ancestors with distinct names.
+                That way, component recognition is still tolerant to a lot of change, but if
+                a named component is moved to a different named parent in the SUT, the test-suite
+                will have to be updated to reflect the change.
+              </p>
+              
+<p>
+                
+<strong>Plain attribute</strong>
+<br>
+                If there are components with identical names in the SUT within the same parent
+                component you must use this setting. The name will still play an important role in
+                component recognition, but not much more than the <a href="components.html#att_ComponentStep_feature" shape="rect">'Feature'</a>
+                attribute.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_rcpnames"></a>
+<dt>
+<span class="margin"><a name="swt_N102182"></a><span class="note">SWT</span></span>
+              Automatic component names for Eclipse/RCP applications (System)</dt>
+<dd>SUT script name: OPT_RECORD_COMPONENT_AUTOMATIC_RCP_NAMES<br>
+              
+<p>
+                Eclipse and applications based on the Rich Client Platform (RCP) have a complex
+                GUI with support for changing perspectives. Such a change causes components to be
+                rearranged which can make it hard for QF-Test to recognize them unless names are set
+                at least on the major components. This is further complicated by the fact that the
+                structure of the components is not what it appears to be - the main components are
+                all arranged in a relatively flat hierarchy within the workbench. On the upside,
+                RCP based applications have a uniform inner structure based on <code>Views</code>
+                and <code>Editors</code>, many of which are named.
+              </p>
+              
+<p>
+                If this option is turned on, QF-Test will do its best to automatically associate GUI
+                elements with their RCP counterparts and assign names based on that association.
+                This can drastically improve component recognition for such applications. However,
+                if some names thus assigned turn out not to be reliable over time, they can also
+                interfere. In such a case, names can be assigned to the affected components either
+                using <code>setData</code> as described in <a href="user_components.html#usec_components">chapter 5</a> or
+                with the help of a <code>NameResolver</code> as described in <a href="tech_resolversmodule.html#sec_nameresolver">subsection 50.1.6</a>. Both will override automatically generated names.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_nesting"></a>
+<dt>Component hierarchy (System)</dt>
+<dd>Server script name: OPT_RECORD_COMPONENT_HIERARCHY<br>Possible Values: VAL_RECORD_HIERARCHY_INTELLIGENT, VAL_RECORD_HIERARCHY_FULL, VAL_RECORD_HIERARCHY_FLAT<br>
+              
+<p>
+                QF-Test supports three different kinds of views for the
+                components of the SUT. For more information about their
+                effect on component recognition, see <a href="tech_recognition.html#sec_recognition">section 44.1</a>.
+              </p>
+              
+<p>
+                The flat view collects all components of a window as direct
+                child nodes of the respective <a href="components.html#step_WindowStep" shape="rect">'Window'</a> node. The
+                advantage of this view is that structural changes of the
+                component hierarchy have little effect on component
+                recognition. This is also its greatest disadvantage: since
+                structural information is not available, this view gives
+                reasonable recognition quality only if <code>setName()</code>
+                is used ubiquitously. Another drawback is the lack of
+                clearness.
+              </p>
+              
+<p>
+                The complement to the flat view is the full hierarchy.  It
+                includes every single component of the SUT's GUI, emulating
+                all parent/child relationships. This view can be a useful tool
+                for developers or testers that want to gain insights into the
+                SUT's structure, but is not very applicable for testing,
+                since structural changes affect it too much. As long as you
+                don't change the GUI however, it will give you excellent
+                recognition without the help of <code>setName()</code>.
+              </p>
+              
+<p>
+                A compromise between flat and full hierarchy is available
+                through the choice "Intelligent". For this view only the
+                "interesting" components of the SUT are recorded.
+                "Interesting" in this case means that either the user can
+                interact with the component, or it is located at some
+                important point in the hierarchy, like the children of a split
+                pane or a tabbed pane. In some later version of QF-Test this
+                decision may be made configurable as well.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_addwindowid"></a>
+<dt>Prepend QF-Test ID of window parent to component QF-Test ID (System)</dt>
+<dd>Server script name: OPT_RECORD_COMPONENT_PREPEND_WINDOW_ID<br>
+              
+<p>
+                If selected, QF-Test prepends the 'QF-Test ID' of the <a href="components.html#step_WindowStep" shape="rect">'Window'</a> parent of a
+                <a href="components.html#step_ComponentStep" shape="rect">'Component'</a> to its <a href="components.html#att_ComponentStep_id" shape="rect">'QF-Test ID'</a> during recording. This is useful
+                to disambiguate QF-Test IDs of components with identical names in different windows.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_addparentid"></a>
+<dt>Prepend parent QF-Test ID to component QF-Test ID (System)</dt>
+<dd>Server script name: OPT_RECORD_COMPONENT_PREPEND_PARENT_ID<br>Possible Values: VAL_RECORD_COMPONENT_PREPEND_PARENT_ALWAYS, VAL_RECORD_COMPONENT_PREPEND_PARENT_NAMED, VAL_RECORD_COMPONENT_PREPEND_PARENT_FEATURE, VAL_RECORD_COMPONENT_PREPEND_PARENT_NEVER<br>
+              
+<p>
+                When a <a href="components.html#step_ComponentStep" shape="rect">'Component'</a> is recorded for the first time,
+                QF-Test assigns an automatically generated
+                <a href="components.html#att_ComponentStep_id" shape="rect">'QF-Test ID'</a>. The QF-Test ID of a direct or indirect parent
+                node may be prepended to this QF-Test ID. This is useful to
+                distinguish between similar components that don't have a name
+                of their own.
+              </p>
+              
+<p>
+                Example: Imagine two <code>JScrollPanes</code>, one named
+                "TreeScrollPane" and the other named
+                "DetailScrollPane". Without this functionality, their vertical
+                scrollbars would get the QF-Test IDs "scrollbarVertical" and
+                "scrollbarVertical2". With this function turned on, the IDs
+                would be "TreeScrollPane.scrollbarVertical" and
+                "DetailScrollPane".scrollbarVertical". That way it is
+                immediately obvious which component is the target of an event.
+              </p>
+              
+<p>
+                There are four possible settings:
+              </p>
+              
+<ul>
+                
+<li>
+                  "Never" turns this option off.
+                </li>
+                
+<li>
+                  "Nearest named ancestor" is a useful setting, if your
+                  developers have assigned names to all major components with
+                  the Java method <code>setName</code>. A component that
+                  doesn't have a name of its own, gets the QF-Test ID of its
+                  nearest named ancestor node prepended.
+                </li>
+                
+<li>
+                  If <code>setName</code> is used sparingly or not at all, it
+                  is better to set this option to "Nearest ancestor with name
+                  or feature". That way either the name or a distinctive
+                  feature of an ancestor node will be applicable.
+                </li>
+                
+<li>
+                  "Always" is only useful if the option <a href="#opt_nesting" shape="rect">Component hierarchy</a> is set to
+                  "Flat". With this setting, every component gets the QF-Test ID of
+                  its parent node prepended, which can lead to unusably long
+                  QF-Test IDs when components are nested deeply.
+                </li>
+              
+</ul>
+            
+</dd>
+
+          
+        
+</dl>
+      
+
+      
+      
+
+      
+<a name="sec_opt_relativeevents"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_opt_relativeevents">37.2.4</a></span>
+</div>
+<a href="contents.html#toc_sec_opt_relativeevents">Recording sub-items</a>
+</h5>
+        
+        
+<p>
+          Events on complex components like tables or trees can be
+          recorded relative to a sub-item of the component.
+        </p>
+        
+<a name="figure_37.17"></a><a name="figure_37.17"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_SubItems.png" target="_blank"><img src="images/opt_SubItems.png" alt="Recording sub-items" texscale=".66" width="393" height="235"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.17</a>:&nbsp;&nbsp;Options for recording sub-items</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl class="option">
+          
+
+          
+          
+<a name="opt_subitemmouseevents"></a>
+<dt>Record sub-items as event targets (System)</dt>
+<dd>SUT script name: OPT_RECORD_SUBITEM<br>
+              
+<p>
+                This option activates recording sub-items. When turned off, events on complex
+                components are no different from events on simple components.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_multilevelsubitems"></a>
+<dt>
+<span class="margin"><a name="new_N102478"></a><span class="note">4.0+</span></span>Multi-level sub-items (System)</dt>
+<dd>Server or SUT script name: OPT_RECORD_SUBITEM_MULTILEVEL<br>
+              
+<p>
+                Via this option you can completely disable multi-level sub-items (even for
+                replay). However, you should only turn this feature off in case you are running
+                into problems caused by test-suites that contain unquoted special characters like
+                '@' or '%' in textual sub-item indexes. Even then it is preferable to update the
+                test-suites with properly quoted items, possibly using the special variable syntax
+                ${quoteitem:...} (see <a href="user_variables.html#usec_externaldata">section 6.5</a>).
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_subitemformat"></a>
+<dt>Sub-item format (System)</dt>
+<dd>SUT script name: OPT_RECORD_SUBITEM_FORMAT<br>Possible Values: VAL_RECORD_SUBITEM_FORMAT_INTELLIGENT, VAL_RECORD_SUBITEM_FORMAT_TEXT, VAL_RECORD_SUBITEM_FORMAT_NUMBER<br>
+              
+<p>
+                When recording an event for a sub-item, the
+                <a href="components.html#step_SubItemStep" shape="rect">'Item's'</a> index can be defined
+                <a href="components.html#att_SubItemStep_astext" shape="rect">'As string'</a> or <a href="components.html#att_SubItemStep_asnumber" shape="rect">'As number'</a>.
+              </p>
+              
+<p>
+                The third choice, "Intelligent", causes QF-Test to record the
+                index in the format most appropriate for the item. If the
+                name of the item is unique within the complex component,
+                a string index is recorded, a numeric index otherwise.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_subitemtype"></a>
+<dt>Sub-item type (System)</dt>
+<dd>Server script name: OPT_RECORD_SUBITEM_TYPE<br>Possible Values: VAL_RECORD_SUBITEM_TYPE_INTELLIGENT, VAL_RECORD_SUBITEM_TYPE_NODE, VAL_RECORD_SUBITEM_TYPE_SYNTAX<br>
+              
+<p>
+                With this option you control whether a <a href="components.html#step_SubItemStep" shape="rect">'Item'</a> node is created
+                for a sub-element during event recording
+                or the element is referenced directly in the attribute
+                <a href="events.html#att_MouseEventStep_component" shape="rect">'QF-Test component ID'</a>
+                of the <a href="events.html#step_MouseEventStep" shape="rect">'Mouse event'</a> node.
+                (see <a href="user_subitems.html#usec_subitems">section 5.9</a>).
+              </p>
+              
+<p>
+                Choosing "Intelligent" will only cause a node to be created if the Index
+                is given <a href="components.html#att_SubItemStep_astext" shape="rect">as text</a>
+                and the sub-element is not editable in the SUT.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_subitempath"></a>
+<dt>Represent tree node as path (System)</dt>
+<dd>SUT script name: OPT_RECORD_SUBITEM_TREE_PATH<br>
+              
+<p>
+                It is not uncommon that trees have identically named nodes
+                under different parent nodes, e.g. a file system with the
+                directories <code>/tmp</code> and <code>/usr/tmp</code>. By
+                using a path format in the <a href="components.html#step_SubItemStep" shape="rect">'Items'</a> for tree nodes
+                QF-Test can make full use of the hierarchical structure to
+                distinguish between these nodes. The slash character
+                '/' is used as separator.
+              </p>
+              
+<p>
+                If this option is deactivated, trees will be treated as flat
+                lists.
+              </p>
+            
+</dd>
+
+          
+        
+</dl>
+      
+
+      
+      
+
+      
+<a name="sec_opt_procbuilder"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_opt_procbuilder">37.2.5</a></span>
+</div>
+<a href="contents.html#toc_sec_opt_procbuilder">Recording procedures</a>
+</h5>
+        
+        
+<p>
+          The following options determine the configuration of the Procedure Builder which is
+          described in detail in <a href="user_procbuilder.html#usec_procbuilder">Automated Creation of Basic Procedures</a>.
+        </p>
+        
+<a name="figure_37.18"></a><a name="figure_37.18"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_Procbuilder.png" target="_blank"><img src="images/opt_Procbuilder.png" alt="Procedure Builder options" texscale=".66" width="393" height="118"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.18</a>:&nbsp;&nbsp;Procedure Builder options</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl class="option">
+          
+
+          
+          
+<a name="opt_hotkeyprocedure"></a>
+<dt>Hotkey for procedure recording (User)</dt>
+<dd>SUT script name: OPT_RECORD_PROCEDURE_HOTKEY<br>
+              
+<p>
+                This option defines a key for turning on automatic procedure recording directly in the SUT.
+                To set a hotkey, click into the field and press the desired key combination.
+                The default key is [Shift-F12].
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_pbconffile"></a>
+<dt>
+              Configuration file for recorded procedures
+             (System)</dt>
+<dd>
+              
+<p>
+                Here you can specify your own template file for the Procedure Builder. If a
+                relative path is given, QF-Test looks for the definition file in the directory that
+                QF-Test was started from and in the default include directory.
+              </p>
+            
+</dd>
+
+          
+        
+</dl>
+
+      
+      
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="opt_general.html#sec_opt_general"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 37.1&nbsp;General options" title="Previous Chapter: 37.1&nbsp;General options"></a></td><td class="navicon"><a href="opt_play.html#sec_opt_play"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 37.3&nbsp;Replay options" title="Next Page: 37.3&nbsp;Replay options"></a></td><td class="navicon"><a href="opt_play.html#sec_opt_play"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 37.3&nbsp;Replay options" title="Next Chapter: 37.3&nbsp;Replay options"></a></td><td class="navicon"><a href="options.html#sec_options"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 37&nbsp;Options" title="Chapter Overview: 37&nbsp;Options"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

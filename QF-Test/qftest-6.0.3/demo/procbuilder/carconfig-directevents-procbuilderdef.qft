@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="root"
+          signature="302E0215008BFAA0A7C07E00CB1F625A579C8C0E573240E264021500D4972E47ED469D0AB20E187D0485CC254A24157F"
+          version="6.0.3">
+  <include>qfs.qft</include>
+  <PackageRoot id="_4">
+    <Package id="_7d" name="procbuilder">
+      <Package id="_5e" name="javax_swing_AbstractButton">
+        <Package id="_5zc" name="&lt;IHIERARCHY_NAME&gt;">
+          <Package id="_3gW" name="press">
+            <comment>@EXCEPT=javax.swing.JMenuItem,javax.swing.JCheckBoxMenuItem,javax.swing.JCheckBox,javax.swing.JButton,javax.swing.JRadioButton</comment>
+            <Procedure id="_3gX" name="press_&lt;COMPNAME&gt;">
+              <MouseEventStep clicks="1" client="$(client)"
+                              component="&lt;COMPID&gt;" event="MOUSE_MPRC"
+                              id="_63b" modifiers="16"/>
+            </Procedure>
+          </Package>
+          <Package id="_3gZ" name="check">
+            <comment>@EXCEPT=javax.swing.JMenuItem,javax.swing.JCheckBoxMenuItem,javax.swing.JCheckBox,javax.swing.JButton,javax.swing.JRadioButton</comment>
+            <Package id="_3ga" name="enabled">
+              <Procedure id="_3gb" name="checkEnabledStatus_&lt;COMPNAME&gt;">
+                <variable name="enabled">&lt;CURRENTENABLEDSTATE&gt;</variable>
+                <variable name="throwExc">false</variable>
+                <variable name="reportName"/>
+                <variable name="timeout">3000</variable>
+                <comment>Check, whether component is enabled.
+
+@param enabled   true, if component is expected to be enabled.
+	    false, if component is not expected to be enabled.
+
+@param throwExc  true, if an exception should be thrown on failure.
+	     false, if an error should be logged on failure.
+@param reportName 	Name for the check in the report.
+@param timeout	Timeout for the checked condition to happen.</comment>
+                <CheckBooleanStep checktype="enabled" client="$(client)"
+                                  component="&lt;COMPID&gt;" id="_63e"
+                                  name="$(reportName)" raise="$(throwExc)"
+                                  state="$(enabled)" timeout="$(timeout)"/>
+              </Procedure>
+            </Package>
+          </Package>
+        </Package>
+      </Package>
+      <Package id="_63" name="javax_swing_JButton">
+        <Package id="_5zb" name="&lt;IHIERARCHY_NAME&gt;">
+          <Package id="_64" name="press">
+            <comment>@EXCEPT=javax.swing.JMenuItem,javax.swing.JCheckBoxMenuItem,javax.swing.JMenu</comment>
+            <Procedure id="_65" name="press_&lt;COMPNAME&gt;">
+              <MouseEventStep clicks="1" client="$(client)"
+                              component="&lt;COMPID&gt;" event="MOUSE_MPRC"
+                              id="_63c" modifiers="16"/>
+            </Procedure>
+          </Package>
+          <Package id="_67" name="check">
+            <comment>@EXCEPT=javax.swing.JMenuItem,javax.swing.JCheckBoxMenuItem,javax.swing.JMenu</comment>
+            <Package id="_79" name="enabled">
+              <Procedure id="_68" name="checkEnabledStatus_&lt;COMPNAME&gt;">
+                <variable name="enabled">&lt;CURRENTENABLEDSTATE&gt;</variable>
+                <variable name="throwExc">false</variable>
+                <variable name="reportName"/>
+                <variable name="timeout">3000</variable>
+                <comment>Check, whether component is enabled.
+
+@param enabled   true, if component is expected to be enabled.
+	    false, if component is not expected to be enabled.
+
+@param throwExc  true, if an exception should be thrown on failure.
+	     false, if an error should be logged on failure.
+@param reportName 	Name for the check in the report.
+@param timeout	Timeout for the checked condition to happen.</comment>
+                <CheckBooleanStep checktype="enabled" client="$(client)"
+                                  component="&lt;COMPID&gt;" id="_63f"
+                                  name="$(reportName)" raise="$(throwExc)"
+                                  state="$(enabled)" timeout="$(timeout)"/>
+              </Procedure>
+            </Package>
+          </Package>
+        </Package>
+      </Package>
+      <Package id="_3q" name="javax_swing_JCheckBox">
+        <Package id="_5za" name="&lt;IHIERARCHY_NAME&gt;">
+          <Package id="_62t" name="get">
+            <Procedure id="_62u" name="getValue_&lt;COMPNAME&gt;">
+              <comment>Return the value of a checkbox.
+It's either 1, if box is selected of 0, if box is not selected.
+
+@return  The current value.</comment>
+              <CheckBooleanStep checktype="checked" client="$(client)"
+                                component="&lt;COMPID&gt;" errorlevel="0"
+                                id="_1l9A" local="true"
+                                resvarname="currentValue" timeout="0"/>
+              <ReturnStep id="_62w" retval="$(currentValue)"/>
+            </Procedure>
+          </Package>
+          <Package id="_3r" name="set">
+            <Procedure id="_3s" name="set_&lt;COMPNAME&gt;">
+              <variable name="check">true</variable>
+              <comment>Select or deselect the checkbox.
+
+@param check  true, if checkbox should be checked.
+	false, if checkbox should not be checked.</comment>
+              <ProcedureCall id="_3t" procedure="qfs.swing.checkbox.set">
+                <variable name="id">${id:&lt;COMPID&gt;}</variable>
+                <variable name="check">$(check)</variable>
+              </ProcedureCall>
+            </Procedure>
+          </Package>
+          <Package id="_3u" name="check">
+            <Package id="_7B" name="selected">
+              <Procedure id="_45" name="checkSelectedStatus_&lt;COMPNAME&gt;">
+                <variable name="selected">&lt;CURRENTSELECTEDSTATE&gt;</variable>
+                <variable name="throwExc">false</variable>
+                <variable name="reportName"/>
+                <variable name="timeout">3000</variable>
+                <comment>Check, whether checkbox is selected.
+
+@param selected  true, if checkbox is expected to be checked.
+	    false, if checkbox is not expected to be checked.
+
+@param throwExc  true, if an exception should be thrown on failure.
+	     false, if an error should be logged on failure.
+@param reportName 	Name for the check in the report.
+@param timeout	Timeout for the checked condition to happen.</comment>
+                <CheckBooleanStep checktype="checked" client="$(client)"
+                                  component="&lt;COMPID&gt;" id="_6Pe"
+                                  name="$(reportName)" raise="$(throwExc)"
+                                  state="$(selected)" timeout="$(timeout)"/>
+              </Procedure>
+            </Package>
+          </Package>
+        </Package>
+      </Package>
+      <Package id="_6D" name="javax_swing_JCheckBoxMenuItem">
+        <Package id="_63Z" name="&lt;IHIERARCHY_NAME&gt;">
+          <Package id="_62q" name="select">
+            <Procedure id="_62r" name="select_&lt;COMPNAME&gt;">
+              <variable name="checkItemValue">true</variable>
+              <comment>Select the menu-item.</comment>
+              <ProcedureCall id="_62s"
+                             procedure="qfs.swing.menu.selectCheckMenuItemInHierarchy">
+                <variable name="menu">&lt;MHIERARCHY&gt;</variable>
+                <variable name="checkItem">${id:&lt;COMPID&gt;}</variable>
+                <variable name="menustringSeparator">&lt;QFS&gt;</variable>
+                <variable name="checkItemValue">$(checkItemValue)</variable>
+              </ProcedureCall>
+            </Procedure>
+          </Package>
+        </Package>
+      </Package>
+      <Package id="_4X" name="javax_swing_JComboBox">
+        <Package id="_5zZ" name="&lt;IHIERARCHY_NAME&gt;">
+          <Package id="_62x" name="get">
+            <Procedure id="_62y" name="getValue_&lt;COMPNAME&gt;">
+              <comment>Return the value of a combobox.
+
+@return  The current value.</comment>
+              <FetchTextStep client="$(client)" component="&lt;COMPID&gt;"
+                             id="_1l95" local="true" varname="currentText"/>
+              <ReturnStep id="_1l96" retval="$(currentText)"/>
+            </Procedure>
+          </Package>
+          <Package id="_3Zi" name="set">
+            <Procedure id="_3Zj" name="set_&lt;COMPNAME&gt;">
+              <variable name="value"/>
+              <comment>Set a value in the combobox.
+
+@param value   The value to be set.</comment>
+              <ProcedureCall id="_3Zk"
+                             procedure="qfs.swing.combobox.setValueViaSUTScript">
+                <variable name="id">${id:&lt;COMPID&gt;}</variable>
+                <variable name="value">$(value)</variable>
+              </ProcedureCall>
+            </Procedure>
+          </Package>
+          <Package id="_3Zl" name="check">
+            <Package id="_3Zm" name="text">
+              <Procedure id="_3Zn" name="checkText_&lt;COMPNAME&gt;">
+                <variable name="text">&lt;CURRENTVALUE&gt;</variable>
+                <variable name="regexp">false</variable>
+                <variable name="throwExc">false</variable>
+                <variable name="negate">false</variable>
+                <variable name="reportName"/>
+                <comment>Check the text of the component.
+
+@param text   the expected text.
+@param regexp true, if check should use a regular expression.
+	 false, if the text should match exactly.
+@param negate  true, if anything but the given text is allowed in the component.
+	  false, if no negative check has to be performed.
+@param throwExc  true, if an exception should be thrown on failure.
+	     false, if an error should be logged on failure.
+@param reportName 	Name for the check in the report.
+@param timeout	Timeout for the checked condition to happen.</comment>
+                <CheckStringStep client="$(client)" component="&lt;COMPID&gt;"
+                                 id="_6PX" name="$(reportName)"
+                                 notcheck="$(negate)" raise="$(throwExc)"
+                                 regexp="$(regexp)" timeout="$(timeout)">
+                  <text>$(text)</text>
+                </CheckStringStep>
+              </Procedure>
+            </Package>
+          </Package>
+        </Package>
+      </Package>
+      <Package id="_5D" name="javax_swing_JDialog">
+        <Package id="_5zm" name="&lt;IHIERARCHY_NAME&gt;">
+          <Package id="_5E" name="set-window">
+            <Procedure id="_5F" name="set_&lt;COMPNAME&gt;">
+              <variable name="append">false</variable>
+              <variable name="clear">true</variable>
+              <comment>@FORCHILDREN
+Fill the components of the dialog.</comment>
+              <TextInputStep clear="true" client="$(client)"
+                             component="&lt;CCOMPID&gt;" id="TextField"
+                             uid="_1l9J">
+                <text>$(&lt;CCOMPID&gt;)</text>
+                <comment>@CONDITION groovy &lt;CCURRENTEDITABLESTATE&gt; == true</comment>
+              </TextInputStep>
+              <TextInputStep clear="true" client="$(client)"
+                             component="&lt;CCOMPID&gt;" id="TextArea"
+                             uid="_1l9K">
+                <text>$(&lt;CCOMPID&gt;)</text>
+                <comment>@CONDITION groovy &lt;CCURRENTEDITABLESTATE&gt; == true</comment>
+              </TextInputStep>
+              <ProcedureCall id="_5K"
+                             procedure="javax_swing_JComboBox.&lt;IHIERARCHY_NAME&gt;.set.set_&lt;CCOMPNAME&gt;">
+                <variable name="value">$(&lt;CCOMPID&gt;)</variable>
+                <variable name="&lt;CCOMPID&gt;"/>
+              </ProcedureCall>
+              <ProcedureCall id="_5L"
+                             procedure="javax_swing_JCheckBox.&lt;IHIERARCHY_NAME&gt;.set.set_&lt;CCOMPNAME&gt;">
+                <variable name="check">$(&lt;CCOMPID&gt;)</variable>
+                <variable name="&lt;CCOMPID&gt;"/>
+              </ProcedureCall>
+            </Procedure>
+          </Package>
+          <Package id="_5H" name="check-window">
+            <Procedure id="_5I" name="checkText_AllElements">
+              <variable name="regexp">false</variable>
+              <comment>@FORCHILDREN
+Check the text of all components of the dialog.</comment>
+              <CheckStringStep client="$(client)" component="&lt;CCOMPID&gt;"
+                               id="TextField" uid="_63j">
+                <text>$(&lt;CCOMPID&gt;)</text>
+              </CheckStringStep>
+              <CheckStringStep client="$(client)" component="&lt;CCOMPID&gt;"
+                               id="TextArea" uid="_63k">
+                <text>$(&lt;CCOMPID&gt;)</text>
+              </CheckStringStep>
+              <CheckStringStep client="$(client)" component="&lt;CCOMPID&gt;"
+                               id="ComboBox" uid="_1l9M">
+                <text>$(&lt;CCOMPID&gt;)</text>
+              </CheckStringStep>
+            </Procedure>
+          </Package>
+          <Package id="_5U" name="wait">
+            <Procedure id="_5a" name="waitForDialog">
+              <variable name="timeout">30000</variable>
+              <variable name="throwExc">true</variable>
+              <comment>Wait for the dialog.
+
+@param timeout  Timeout for waiting for dialog.
+@param throwExc  true, if an exception should be thrown in case of an error.
+	     false, if an error should be logged in case of an error.</comment>
+              <ComponentWaiter client="$(client)" component="&lt;COMPID&gt;"
+                               id="_5d" raise="$(throwExc)"
+                               timeout="$(timeout)"/>
+            </Procedure>
+            <Procedure id="_5-x" name="waitForDialogForAbsence">
+              <variable name="timeout">30000</variable>
+              <variable name="throwExc">true</variable>
+              <comment>Wait till the dialog disappears.
+
+@param timeout  Timeout for disappearance of the dialog.
+@param throwExc  true, if an exception should be thrown in case of an error.
+	     false, if an error should be logged in case of an error.</comment>
+              <ComponentWaiter absence="true" client="$(client)"
+                               component="&lt;COMPID&gt;" id="_5-y"
+                               raise="$(throwExc)" timeout="$(timeout)"/>
+            </Procedure>
+          </Package>
+        </Package>
+      </Package>
+      <Package id="_6g" name="javax_swing_JFrame">
+        <Package id="_5zu" name="&lt;IHIERARCHY_NAME&gt;">
+          <Package id="_6h" name="set-window">
+            <Procedure id="_6i" name="set_&lt;COMPNAME&gt;">
+              <variable name="append">false</variable>
+              <variable name="clear">true</variable>
+              <comment>@FORCHILDREN
+Fill the components of the frame with the recorded default values.</comment>
+              <TextInputStep clear="true" client="$(client)"
+                             component="&lt;CCOMPID&gt;" id="TextField"
+                             uid="_1l9N">
+                <text>$(&lt;CCOMPID&gt;)</text>
+                <comment>@CONDITION groovy &lt;CCURRENTEDITABLESTATE&gt; == true</comment>
+              </TextInputStep>
+              <TextInputStep clear="true" client="$(client)"
+                             component="&lt;CCOMPID&gt;" id="TextArea"
+                             uid="_1l9O">
+                <text>$(&lt;CCOMPID&gt;)</text>
+                <comment>@CONDITION groovy &lt;CCURRENTEDITABLESTATE&gt; == true</comment>
+              </TextInputStep>
+              <ProcedureCall id="_1l9P"
+                             procedure="javax_swing_JComboBox.&lt;IHIERARCHY_NAME&gt;.set.set_&lt;CCOMPNAME&gt;">
+                <variable name="value">$(&lt;CCOMPID&gt;)</variable>
+                <variable name="&lt;CCOMPID&gt;"/>
+              </ProcedureCall>
+              <ProcedureCall id="_1l9Q"
+                             procedure="javax_swing_JCheckBox.&lt;IHIERARCHY_NAME&gt;.set.set_&lt;CCOMPNAME&gt;">
+                <variable name="check">$(&lt;CCOMPID&gt;)</variable>
+                <variable name="&lt;CCOMPID&gt;"/>
+              </ProcedureCall>
+            </Procedure>
+          </Package>
+          <Package id="_7F" name="check-window">
+            <Procedure id="_1l9R" name="checkText_AllElements">
+              <variable name="regexp">false</variable>
+              <comment>@FORCHILDREN
+Check the text of all components of the dialog.</comment>
+              <CheckStringStep client="$(client)" component="&lt;CCOMPID&gt;"
+                               id="TextField" uid="_1l9S">
+                <text>$(&lt;CCOMPID&gt;)</text>
+              </CheckStringStep>
+              <CheckStringStep client="$(client)" component="&lt;CCOMPID&gt;"
+                               id="TextArea" uid="_1l9T">
+                <text>$(&lt;CCOMPID&gt;)</text>
+              </CheckStringStep>
+              <CheckStringStep client="$(client)" component="&lt;CCOMPID&gt;"
+                               id="ComboBox" uid="_1l9U">
+                <text>$(&lt;CCOMPID&gt;)</text>
+              </CheckStringStep>
+            </Procedure>
+          </Package>
+          <Package id="_5-z" name="wait">
+            <Procedure id="_5-+" name="waitForDialog">
+              <variable name="timeout">30000</variable>
+              <variable name="throwExc">true</variable>
+              <comment>Wait for the frame.
+
+@param timeout  Timeout for waiting for dialog.
+@param throwExc  true, if an exception should be thrown in case of an error.
+	     false, if an error should be logged in case of an error.</comment>
+              <ComponentWaiter client="$(client)" component="&lt;COMPID&gt;"
+                               id="_5--" raise="$(throwExc)"
+                               timeout="$(timeout)"/>
+            </Procedure>
+            <Procedure id="_600" name="waitForDialogForAbsence">
+              <variable name="timeout">30000</variable>
+              <variable name="throwExc">true</variable>
+              <comment>Wait till the frame disappears.
+
+@param timeout  Timeout for disappearance of the dialog.
+@param throwExc  true, if an exception should be thrown in case of an error.
+	     false, if an error should be logged in case of an error.</comment>
+              <ComponentWaiter absence="true" client="$(client)"
+                               component="&lt;COMPID&gt;" id="_601"
+                               raise="$(throwExc)" timeout="$(timeout)"/>
+            </Procedure>
+          </Package>
+        </Package>
+      </Package>
+      <Package id="_5-u" name="javax_swing_JMenuItem">
+        <Package id="_63a" name="&lt;IHIERARCHY_NAME&gt;">
+          <Package id="_3Q" name="select">
+            <Procedure id="_3R" name="select_&lt;COMPNAME&gt;">
+              <comment>Select the menu-item.</comment>
+              <ProcedureCall id="_3S"
+                             procedure="qfs.swing.menu.selectMenuItemInHierarchy">
+                <variable name="menu">&lt;MHIERARCHY&gt;</variable>
+                <variable name="item">${id:&lt;COMPID&gt;}</variable>
+                <variable name="menustringSeparator">&lt;QFS&gt;</variable>
+              </ProcedureCall>
+            </Procedure>
+          </Package>
+        </Package>
+      </Package>
+      <Package id="_3x" name="javax_swing_JRadioButton">
+        <Package id="_5zY" name="&lt;IHIERARCHY_NAME&gt;">
+          <Package id="_62-" name="get">
+            <Procedure id="_630" name="getValue_&lt;COMPNAME&gt;">
+              <comment>Return the value of a radio button.
+It's either 1, if radio button is selected of 0, if radio button is not selected.
+
+@return  The current value.</comment>
+              <CheckBooleanStep checktype="checked" client="$(client)"
+                                component="&lt;COMPID&gt;" errorlevel="0"
+                                id="_1l9V" local="true"
+                                resvarname="currentValue" timeout="0"/>
+              <ReturnStep id="_1l9W" retval="$(currentValue)"/>
+            </Procedure>
+          </Package>
+          <Package id="_3y" name="set">
+            <Procedure id="_3z" name="press_&lt;COMPNAME&gt;">
+              <variable name="select">false</variable>
+              <IfSequence id="_1l9Y" test="$(select)">
+                <MouseEventStep clicks="1" client="$(client)"
+                                component="&lt;COMPID&gt;" event="MOUSE_MPRC"
+                                id="_1l9X" modifiers="16"/>
+              </IfSequence>
+            </Procedure>
+          </Package>
+          <Package id="_42" name="check">
+            <Package id="_7D" name="selected">
+              <Procedure id="_43" name="checkSelectedStatus_&lt;COMPNAME&gt;">
+                <variable name="selected">&lt;CURRENTSELECTEDSTATE&gt;</variable>
+                <variable name="throwExc">false</variable>
+                <variable name="reportName"/>
+                <variable name="timeout">3000</variable>
+                <comment>Check, whether radiobutton is selected.
+
+@param selected  true, if radiobutton is expected to be checked.
+	    false, if radiobutton is not expected to be checked.
+
+@param throwExc  true, if an exception should be thrown on failure.
+	     false, if an error should be logged on failure.
+@param reportName 	Name for the check in the report.
+@param timeout	Timeout for the checked condition to happen.</comment>
+                <CheckBooleanStep checktype="checked" client="$(client)"
+                                  component="&lt;COMPID&gt;" id="_1l9Z"
+                                  name="$(reportName)" raise="$(throwExc)"
+                                  state="$(selected)" timeout="$(timeout)"/>
+              </Procedure>
+            </Package>
+          </Package>
+        </Package>
+      </Package>
+      <Package id="_6y" name="javax_swing_JTabbedPane">
+        <Package id="_5zQ" name="&lt;IHIERARCHY_NAME&gt;">
+          <Package id="_3Xm" name="select">
+            <Procedure id="_3Xn" name="selectTab_&lt;COMPNAME&gt;">
+              <variable name="separator">@</variable>
+              <variable name="value"/>
+              <comment>Select a tab.
+
+@param value	The item of the tabfolder.
+@param separator	@ if the tab folder should be addressed by the full text.
+		&amp; if the tab folder should be addressed by an index.
+		% if the tab folder should be addressed by an regular expression.</comment>
+              <ProcedureCall id="_3Xo"
+                             procedure="qfs.swing.tabbedpane.selectTab">
+                <variable name="id">${id:&lt;COMPID&gt;}</variable>
+                <variable name="separator">$(separator)</variable>
+                <variable name="value">$(value)</variable>
+              </ProcedureCall>
+              <MouseEventStep clicks="1" client="$(client)"
+                              component="&lt;COMPID&gt;$(separator)$(value)"
+                              event="MOUSE_MPRC" id="_6Pu" modifiers="16"/>
+            </Procedure>
+          </Package>
+        </Package>
+      </Package>
+      <Package id="_47" name="javax_swing_JTable">
+        <Package id="_5zd" name="&lt;IHIERARCHY_NAME&gt;">
+          <Package id="_633" name="check">
+            <Package id="_63B" name="table">
+              <Procedure id="_634" name="checkRowCount_&lt;COMPNAME&gt;">
+                <variable name="compareValue">0</variable>
+                <variable name="compareMode">=</variable>
+                <variable name="errorLevel">ERROR</variable>
+                <variable name="appearInReport">1</variable>
+                <comment>Check the number of rows of a table according to a specified comparison mode.
+It uses the method JTable.getRowCount() to get the number.</comment>
+                <ProcedureCall id="_635" local="true"
+                               procedure="qfs.swing.table.checks.checkNumberOfRows"
+                               retvarname="rowcount">
+                  <variable name="id">${id:&lt;COMPID&gt;}</variable>
+                  <variable name="compareValue">$(compareValue)</variable>
+                  <variable name="compareMode">$(compareMode)</variable>
+                  <variable name="errorLevel">$(errorLevel)</variable>
+                  <variable name="appearInReport">$(appearInReport)</variable>
+                </ProcedureCall>
+              </Procedure>
+            </Package>
+          </Package>
+          <Package id="_3b3" name="count">
+            <Procedure id="_3b4" name="getRowCount_&lt;COMPNAME&gt;">
+              <comment>Return the number of rows of the table.
+
+@return the amount of the rows of the table.</comment>
+              <ProcedureCall id="_3b5" local="true"
+                             procedure="qfs.swing.table.getRowCount"
+                             retvarname="rowCount">
+                <variable name="id">${id:&lt;COMPID&gt;}</variable>
+              </ProcedureCall>
+              <ReturnStep id="_5-v" retval="$(rowCount)"/>
+            </Procedure>
+            <Procedure id="_3b6" name="getColumnCount_&lt;COMPNAME&gt;">
+              <comment>Return the number of columns of the table.
+
+@return the amount of the columns of the table.</comment>
+              <ProcedureCall id="_3b7" local="true"
+                             procedure="qfs.swing.table.getColumnCount"
+                             retvarname="colCount">
+                <variable name="id">${id:&lt;COMPID&gt;}</variable>
+              </ProcedureCall>
+              <ReturnStep id="_5-w" retval="$(colCount)"/>
+            </Procedure>
+          </Package>
+          <Package id="_3ay" name="select">
+            <Procedure id="_3az" name="selectCell_&lt;COMPNAME&gt;">
+              <variable name="column"/>
+              <variable name="row"/>
+              <variable name="columnSeparator">@</variable>
+              <variable name="rowSeparator">@</variable>
+              <comment>Select a cell in the table.
+
+@param column	The column of the table.
+@param row		The row of the table.
+@param columnSeparator	@ if then column should be addressed by the full text.
+		&amp; if the column should be addressed by an index.
+		% if the column should be addressed by an regular expression.
+@param rowSeparator	@ if then row should addressed by the full text.
+		&amp; if the row should be addressed by an index.
+		% if the row should be addressed by an regular expression.</comment>
+              <MouseEventStep clicks="1" client="$(client)"
+                              component="&lt;COMPID&gt;$(columnSeparator)$(column)$(rowSeparator)$(row)"
+                              event="MOUSE_MPRC" id="_4ot" modifiers="16"/>
+            </Procedure>
+          </Package>
+        </Package>
+      </Package>
+      <Package id="_4I" name="javax_swing_JTree">
+        <Package id="_63X" name="&lt;IHIERARCHY_NAME&gt;">
+          <Package id="_63Y" name="actions">
+            <Procedure id="_4M" name="expand_&lt;COMPNAME&gt;">
+              <variable name="node"/>
+              <variable name="separator">@</variable>
+              <comment>Expand a node of the tree.
+
+@param node	The node of the tree.
+@param separator	@ if then node should be addressed by the full text.
+		&amp; if the node should be addressed by an index.
+		% if the node should be addressed by an regular expression.</comment>
+              <ProcedureCall id="_4N" procedure="qfs.swing.tree.expandNode">
+                <variable name="id">${id:&lt;COMPID&gt;}</variable>
+                <variable name="node">$(node)</variable>
+                <variable name="separator">$(separator)</variable>
+              </ProcedureCall>
+            </Procedure>
+            <Procedure id="_4O" name="collapse_&lt;COMPNAME&gt;">
+              <variable name="node"/>
+              <variable name="separator">@</variable>
+              <comment>Collapse a node of the tree.
+
+@param node	The node of the tree.
+@param separator	@ if then node should be addressed by the full text.
+		&amp; if the node should be addressed by an index.
+		% if the node should be addressed by an regular expression.</comment>
+              <ProcedureCall id="_4P" procedure="qfs.swing.tree.collapseNode">
+                <variable name="id">${id:&lt;COMPID&gt;}</variable>
+                <variable name="node">$(node)</variable>
+                <variable name="separator">$(separator)</variable>
+              </ProcedureCall>
+            </Procedure>
+          </Package>
+          <Package id="_4J" name="select">
+            <Procedure id="_4K" name="selectNode_&lt;COMPNAME&gt;">
+              <variable name="node"/>
+              <variable name="separator">@</variable>
+              <comment>Select a node of the tree.
+
+@param node	The node of the tree.
+@param separator	@ if then node should be addressed by the full text.
+		&amp; if the node should be addressed by an index.
+		% if the node should be addressed by an regular expression.</comment>
+              <MouseEventStep clicks="1" client="$(client)"
+                              component="&lt;COMPID&gt;$(separator)$(node)"
+                              event="MOUSE_MPRC" id="_4p7" modifiers="16"/>
+            </Procedure>
+          </Package>
+        </Package>
+      </Package>
+      <Package id="_B" name="javax_swing_text_JTextComponent">
+        <Package id="_5zP" name="&lt;IHIERARCHY_NAME&gt;">
+          <Package id="_63N" name="get">
+            <Procedure id="_63O" name="getText_&lt;COMPNAME&gt;">
+              <comment>Return the text of a textcomponent.
+
+@return  The current text.</comment>
+              <FetchTextStep client="$(client)" component="&lt;COMPID&gt;"
+                             id="_1l8v" local="true" varname="currentText"/>
+              <ReturnStep id="_1l8w" retval="$(currentText)"/>
+            </Procedure>
+          </Package>
+          <Package id="_3cR" name="set">
+            <Procedure id="_3cS" name="set_&lt;COMPNAME&gt;">
+              <variable name="text"/>
+              <variable name="append">false</variable>
+              <comment>Set the text of the component.
+
+@param text	The text to set.
+@param append	true, if text should be appended.
+		false, if given text should overwritte current content.
+</comment>
+              <TextInputStep clear="not $(append)" client="$(client)"
+                             component="&lt;COMPID&gt;" id="_1l9a">
+                <text>$(text)</text>
+              </TextInputStep>
+            </Procedure>
+          </Package>
+          <Package id="_3cU" name="check">
+            <Package id="_3cV" name="text">
+              <Procedure id="_3cW" name="checkText_&lt;COMPNAME&gt;">
+                <variable name="text">&lt;CURRENTVALUE&gt;</variable>
+                <variable name="regexp">false</variable>
+                <variable name="throwExc">false</variable>
+                <variable name="negate">false</variable>
+                <variable name="reportName"/>
+                <variable name="timeout">3000</variable>
+                <comment>Check the text of the component.
+
+@param text   the expected text.
+@param regexp true, if check should use a regular expression.
+	 false, if the text should match exactly.
+@param negate  true, if anything but the given text is allowed in the component.
+	  false, if no negative check has to be performed.
+@param throwExc  true, if an exception should be thrown on failure.
+	     false, if an error should be logged on failure.
+@param reportName 	Name for the check in the report.</comment>
+                <CheckStringStep client="$(client)" component="&lt;COMPID&gt;"
+                                 id="_1l9b" name="$(reportName)"
+                                 notcheck="$(negate)" raise="$(throwExc)"
+                                 regexp="$(regexp)" timeout="$(timeout)">
+                  <text>$(text)</text>
+                </CheckStringStep>
+              </Procedure>
+            </Package>
+          </Package>
+        </Package>
+      </Package>
+    </Package>
+  </PackageRoot>
+  <ExtraSequence id="_5"/>
+  <WindowList id="_6"/>
+</RootStep>

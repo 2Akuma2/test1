@@ -1,0 +1,455 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Datengetriebenes Testen: Einen Test-case mit unterschiedlichen
+    Testdatens&auml;tzen starten</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2002-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_DataDriven"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="dependencies.html#sec_AdvDeps"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 29&nbsp;Abh&auml;ngigkeiten: Automatisches Sicherstellen der korrekten
+    Vorbedingungen jedes Testfalles" title="N&auml;chste Seite: 29&nbsp;Abh&auml;ngigkeiten: Automatisches Sicherstellen der korrekten
+    Vorbedingungen jedes Testfalles"></a></td><td class="navicon"><a href="dependencies.html#sec_AdvDeps"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 29&nbsp;Abh&auml;ngigkeiten: Automatisches Sicherstellen der korrekten
+    Vorbedingungen jedes Testfalles" title="N&auml;chstes Kapitel: 29&nbsp;Abh&auml;ngigkeiten: Automatisches Sicherstellen der korrekten
+    Vorbedingungen jedes Testfalles"></a></td><td class="navicon"><a href="advanced.html#sec_advanced"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: V&nbsp;Weiterf&uuml;hrende Features von QF-Test" title="Kapitel-&Uuml;bersicht: V&nbsp;Weiterf&uuml;hrende Features von QF-Test"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_DataDriven">28</a></span>
+</div>
+<a href="contents.html#toc_sec_DataDriven">Datengetriebenes Testen: Einen 'Test-case' mit unterschiedlichen
+    Testdatens&auml;tzen starten</a>
+</h3>
+
+    
+<p>
+    Dieses Kapitel erkl&auml;rt, wie man datengetriebenes Testen mit QF-Test verwirklichen kann.
+    </p>
+    
+<p>
+    Sie finden unter <code>qftest-6.0.3/doc/tutorial/advanced-demos/de/datadrivenTesting.qft</code> die hier
+    gezeigten Testf&auml;lle.
+    </p>
+    
+<p>
+     In der zweiten mitgelieferten Testsuite
+        <code>qftest-6.0.3/doc/tutorial/datadriver.qft</code> finden Sie weitere Beispiele, wie das Auslesen
+        einer Exceldatei oder einer Schleife um Testf&auml;lle.
+      </p>
+    
+<p>
+    Bitte achten Sie darauf, dass Sie alle Testsuiten vorher in einen projektspezifischen Ordner kopieren und diese dort modifizieren.
+    </p>
+
+    
+
+    
+<a name="sec_dataDriven"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_dataDriven">28.1</a></span>
+</div>
+<a href="contents.html#toc_sec_dataDriven">Situation</a>
+</h4>
+      
+<p>
+      Die Anwender des JCarConfigurator k&ouml;nnen unterschiedliche Rabattstufen gew&auml;hren. Der Testdesigner hat drei Rabattstufen
+        definiert, die getestet werden sollen.
+      </p>
+      
+<p>
+      Diese Rabattstufen sind 0%, 10% und 15%.
+      </p>
+      
+<p>
+        Der Ablauf, um einen Rabatt zu gew&auml;hren, ist f&uuml;r jede dieser drei Rabattstufen derselbe. Daher k&ouml;nnen wir denselben
+        Testfall benutzen, um diese zu testen. Der einzige Unterschied ist der eingegebene Rabattsatz und der zu pr&uuml;fende
+        Preis. Wir sollten denselben Testfall f&uuml;r jede Rabattstufe benutzen, um Seiteneffekte zu vermeiden, die bei
+        unterschiedlichen Implementierungen der Testf&auml;lle auftreten k&ouml;nnen. Dar&uuml;ber hinaus sparen wir uns auch den
+        Implementierungsaufwand zum Erstellen mehrerer Testf&auml;lle.
+      </p>
+      
+<p>
+      Der logische Testfall, d.h. die Schritte des Testfalles, sehen folgenderma&szlig;en aus:
+      </p>
+      
+<ol>
+        
+<li>Starten des SUTs.</li>
+        
+<li>Ein Modell ausw&auml;hlen.</li>
+        
+<li>Den Rabatt eingeben.</li>
+        
+<li>Pr&uuml;fen, ob der Rabatt f&uuml;r die Preiskalkulation herangezogen wurde.</li>
+        
+<li>Das SUT stoppen.</li>
+      
+</ol>
+      
+<p>
+      Die folgenden Abschnitte zeigen nun die Implementierung dieses Szenarios.
+      </p>
+    
+
+    
+    
+
+    
+<a name="sec_dataDrivenTrad"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_dataDrivenTrad">28.2</a></span>
+</div>
+<a href="contents.html#toc_sec_dataDrivenTrad">Die traditionelle Methode f&uuml;r datengetriebenes Testen</a>
+</h4>
+      
+<p>
+      In QF-Test steht ein 'Testfall' f&uuml;r einen Testablauf zusammen mit einem speziellen Testdatensatz. Wenn man zwei
+        Testdatens&auml;tze testen m&ouml;chte, so muss man zwei 'Testf&auml;lle' erstellen. Diese Testf&auml;lle k&ouml;nnen auch in einem
+        'Testfallsatz' zusammengefasst werden.
+      </p>
+      
+<p>
+       Bei der konventionellen L&ouml;sung implementiert man also einen 'Testfall' pro Rabattstufe. Das sieht dann so aus:
+      </p>
+      
+<a name="fig_dataDrivenTrad1"></a><a name="figure_28.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DatadriverOldStyle.png" target="_blank"><img texscale=".66" src="images/DatadriverOldStyle.png" width="376" height="98"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;28.1</a>:&nbsp;&nbsp;Konventionelle Methode f&uuml;r datengetriebenes Testen</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Wir sehen f&uuml;r jede der drei Rabattstufen genau einen 'Testfall' Knoten. Diese drei Knoten sind in einem
+        'Testfallsatz' zusammengefasst. Der 'Testfallsatz' Knoten beinhaltet auch die 'Vorbereitung' und die
+        'Aufr&auml;umen' Knoten, welche das SUT vor jedem 'Testfall' starten und nach jedem 'Testfall' stoppen. Dies
+        geschieht, um sicherzustellen, dass die Vorbedingungen jedes einzelnen Testfalles dieselben sind. Wenn Sie die SUT
+        nicht nach jedem Testfall neu starten wollen, dann k&ouml;nnen Sie die drei Testf&auml;lle in einem weiteren 'Testfallsatz'
+        zusammenfassen, wie Sie hier sehen k&ouml;nnen:
+      </p>
+      
+<a name="fig_dataDrivenTrad2"></a><a name="figure_28.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DatadriverOldStyleTestSet.png" target="_blank"><img texscale=".66" src="images/DatadriverOldStyleTestSet.png" width="297" height="114"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;28.2</a>:&nbsp;&nbsp;Konventionelle Methode mit einem verschachtelten 'Testfallsatz'</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Das Kapitel <a href="dependencies.html#sec_AdvDeps">Abh&auml;ngigkeiten: Automatisches Sicherstellen der korrekten
+    Vorbedingungen jedes Testfalles</a> zeigt Ihnen eine elegantere und effizientere Art, Vor- und Nachbedingungen
+        von Testf&auml;llen zu organisieren.
+      </p>
+      
+<p>
+      Wie Sie sich sicher vorstellen k&ouml;nnen, wird es mit dieser Methode ziemlich m&uuml;hsam sein, die Testdaten zu
+        verwalten. Insbesondere, wenn Sie eine neue Rabattstufe anlegen oder eine Stufe wegf&auml;llt. Ein weiterer Nachteil dieses
+        Ansatzes ist, dass die Testdaten in QF-Test gehalten werden.
+      </p>
+      
+<p>
+      Das n&auml;chste Kapitel <a href="#sec_dataDriver20">Datentreiberkonzept</a> zeigt Ihnen nun, wie Testsuiten organisiert werden k&ouml;nnen, in
+        denen nur ein 'Testfall' implementiert wird und die Testdaten unabh&auml;ngig vom 'Testfall' abgelegt werden.
+      </p>
+    
+
+    
+    
+
+  
+<a name="sec_dataDriver20"></a>
+    
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_dataDriver20">28.3</a></span>
+</div>
+<a href="contents.html#toc_sec_dataDriver20">Datentreiberkonzept</a>
+</h4>
+    
+<p>
+      Wenn man nun einen Testfall starten m&ouml;chte, der mehrere Testdatens&auml;tze verwendet, muss man zuerst die Testdatens&auml;tze in
+      einer Datenquelle definieren. Diese Datenquelle muss innerhalb eines 'Datentreiber' Knotens definiert werden. QF-Test
+      bietet Standardverkn&uuml;pfungen f&uuml;r Datenbanktabellen, CSV Dateien, Excel Dateien und f&uuml;r innerhalb von QF-Test definierte
+      Datentabellen an. Die QF-Test Datentabelle speichert die Testdaten in der Testsuite selbst. Wir werden diese
+      Datenquelle f&uuml;r unser folgendes Beispiel nutzen. Jede andere
+      Datenquellenart, z.B. XML Dateien, kann mit einem
+      selbstimplementierten Skript angebunden werden.
+      </p>
+    
+<p>
+      F&uuml;gen Sie zuerst einen neuen 'Testfallsatz' in die Testsuite ein. Sie k&ouml;nnen den Namen frei w&auml;hlen.
+      </p>
+      
+<p>
+        Ein 'Datentreiber' Knoten kann in einen 'Testfallsatz' mittels Rechtsklick
+        und Auswahl von &raquo;<em>Knoten einf&uuml;gen</em>&laquo;-&raquo;<em>Datentreiber</em>&laquo;-&raquo;<em>Datentreiber</em>&laquo; eingef&uuml;gt werden. Sie m&uuml;ssen nur noch einen
+        Namen f&uuml;r diesen Knoten definieren. Die eigentliche Testdatenquelle kann als Kindknoten des 'Datentreiber' Knotens
+        eingef&uuml;gt werden. In unserem Fall werden wir eine 'Datentabelle' mittels Rechtsklick und Auswahl von &raquo;<em>Knoten einf&uuml;gen</em>&laquo;-&raquo;<em>Datentreiber</em>&laquo;-&raquo;<em>Datentabelle</em>&laquo; einf&uuml;gen. Sie sollten nun diesen Dialog erhalten:
+        </p>
+      
+<a name="fig_dataDriver20Dt1"></a><a name="figure_28.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DataTableDialog.png" target="_blank"><img texscale=".66" src="images/DataTableDialog.png" width="436" height="543"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;28.3</a>:&nbsp;&nbsp;Dialog f&uuml;r eine Datentabelle</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+      Zuerst m&uuml;ssen wir einen Namen f&uuml;r diese Datenquelle spezifizieren. Wir sollten auch eine 'Z&auml;hlervariable'
+        definieren. Die Z&auml;hlervariable beinhaltet den Index des aktuell verwendeten Datensatzes w&auml;hrend der Testausf&uuml;hrung.
+      </p>
+      
+<p>
+      Der n&auml;chste Schritt ist die Definition der Testdaten. Daf&uuml;r klicken Sie auf den Knopf 'Spalte einf&uuml;gen'. Das ist der
+        erste Knopf im 'Daten' Bereich. Dann m&uuml;ssen Sie einen Namen f&uuml;r diese Spalten definieren. Setzen Sie den Namen auf
+        'rabatt'. Danach dr&uuml;cken Sie auf 'OK' und die Spalte sollte eingef&uuml;gt worden sein. Diese Spalte wird sp&auml;ter der
+        Variablenname in den Tests sein.
+      </p>
+      
+<p>
+      Nun klicken Sie auf den 'Zeile einf&uuml;gen' Knopf, um eine neue Zeile einzuf&uuml;gen. Jede Zeile wird f&uuml;r einen eigenen
+        Testdatensatz stehen, d.h., dass wir jetzt drei Zeilen einf&uuml;gen m&uuml;ssen. Die erste Zeile soll 0%, die zweite 10% und
+        die dritte 15% beinhalten.
+      </p>
+      
+<p>
+        Die Tabelle sollte nun so aussehen:
+      </p>
+      
+<a name="fig_dataDriver20Dt2"></a><a name="figure_28.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DatatableDiscount.png" target="_blank"><img texscale=".66" src="images/DatatableDiscount.png" width="944" height="476"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;28.4</a>:&nbsp;&nbsp;Die gef&uuml;llte Datentabelle</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+      Nun kommen wir zur eigentlichen Implementierung des Testfalles. Daf&uuml;r m&uuml;ssen wir nur einen 'Testfall' zum 'Testfallsatz'
+        hinzuf&uuml;gen.
+  </p>
+  
+<p>
+<span class="margin"><span class="note">Hinweis</span></span> Wenn sie einen 'Testfall' zu einem 'Testfallsatz' hinzuf&uuml;gen wollen, dann
+        m&uuml;ssen Sie auf den geschlossenen 'Datentreiber' klicken, um den 'Testfall' einzuf&uuml;gen.
+      </p>
+      
+<p>
+       Der 'Testfall' wird die Prozeduraufrufe f&uuml;r die ben&ouml;tigten Testschritte beinhalten. Sie k&ouml;nnen auch die
+        'Vorbereitung' und die 'Aufr&auml;umen' Knoten aus dem vorigen 'Testfallsatz' in den neuen 'Testfallsatz' kopieren.
+       Der gesamte 'Testfallsatz' sollte nun so ausschauen:
+      </p>
+      
+<a name="fig_dataDriver20TestSet"></a><a name="figure_28.5"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DatadriverTestSet.png" target="_blank"><img texscale=".66" src="images/DatadriverTestSet.png" width="442" height="98"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;28.5</a>:&nbsp;&nbsp;'Testfallsatz' mit 'Datentreiber'</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+      Jetzt m&uuml;ssen wir noch die Variable 'rabatt', welche in der Datentabelle definiert wurde, verwenden. Wir sollten diese
+        Variable als Parameter f&uuml;r den 'setzeRabatt' Prozeduraufruf hinzuf&uuml;gen.
+      Wenn wir das gemacht haben, sollte unser Test so aussehen:
+        </p>
+      
+<a name="fig_dataDriver20ParamTree"></a><a name="figure_28.6"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DatadriverSetDiscountParam.png" target="_blank"><img texscale=".66" src="images/DatadriverSetDiscountParam.png" width="944" height="476"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;28.6</a>:&nbsp;&nbsp;Der <code>$(rabatt)</code> Parameter</td><td class="captionglue"></td>
+</tr>
+</table>
+  
+<p>
+      Nun sind wir bereit den 'Testfallsatz' zu starten.
+        </p>
+      
+<p>
+      Nach der Ausf&uuml;hrung der Tests sollten wir mindestens zwei Fehler
+        bekommen. Diese Fehler kommen daher, dass das
+        'Endpreis' Textfeld nat&uuml;rlich unterschiedliche Werte enth&auml;lt wir aber immer denselben Wert pr&uuml;fen. In unserem
+        Fall sollte also der erwartete Wert f&uuml;r das 'Endpreis' Textfeld als zweite Spalte in die 'Datentabelle' eingef&uuml;gt werden.
+      </p>
+      
+<a name="fig_dataDriver20Full"></a><a name="figure_28.7"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DatatableDiscountPrice.png" target="_blank"><img texscale=".66" src="images/DatatableDiscountPrice.png" width="944" height="476"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;28.7</a>:&nbsp;&nbsp;Vollst&auml;ndige Datentabelle</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Ein weiterer Nachteil ist, dass wir im HTML Report und im Protokoll immer denselben Testfallnamen sehen. Um dies zu
+        vermeiden, sollten wir die Eigenschaft 'Name f&uuml;r Protokoll und Report' des 'Testfall' Knotens editieren. In dieser
+        Eigenschaft sollten wir zumindest eine datensatz-spezifische Variable verwenden, z.B. 'rabatt' in unserem Fall. Lassen
+        Sie uns dieses Attribut also auf 'Rabattstufe: $(rabatt)' setzen.
+      </p>
+      
+<a name="fig_dataDriver20NRR"></a><a name="figure_28.8"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DatadriverRunlog.png" target="_blank"><img texscale=".66" src="images/DatadriverRunlog.png" width="944" height="476"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;28.8</a>:&nbsp;&nbsp;Name f&uuml;r Protokoll und Report Eigenschaft</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+      Wenn wir den Test nun ausf&uuml;hren, sollten wir keine Fehler mehr erhalten und im Protokoll sowie im HTML Report
+        sollte jeder Testfall einen eigenen Namen haben. Das erzeugte Protokoll sollte folgenderma&szlig;en aussehen:
+      </p>
+      
+<a name="fig_dataDriver20HTML"></a><a name="figure_28.9"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DatadriverRunlogWithRunLogAttr.png" target="_blank"><img texscale=".66" src="images/DatadriverRunlogWithRunLogAttr.png" width="462" height="242"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;28.9</a>:&nbsp;&nbsp;Protokoll mit unterschiedlichen Namen f&uuml;r 'Testf&auml;lle'</td><td class="captionglue"></td>
+</tr>
+</table>
+  
+<p>
+      Wenn Sie nur einen 'Testfall' mit einem Datensatz ausf&uuml;hren m&ouml;chten, ohne den gesamten 'Testfallsatz' auszuf&uuml;hren, dann
+    sollten Sie Defaultwerte als globale Variablen des 'Testsuite' Knoten definieren.
+  </p>
+  
+<p>
+    
+<span class="margin"><span class="note">Hinweis</span></span> Wenn der Name der Variable im 'Datentreiber' der selbe ist, wie der des Prozedurparameters,
+    dann k&ouml;nnen Sie die Variablendefinition beim 'Prozeduraufruf' weglassen. Das kann gemacht werden, weil die Variablen des
+    'Datentreiber' Knotens auch auf den Variablenstack von QF-Test gelegt werden und so jeder Schritt innerhalb des
+    'Testfall' Knotens auf diese Variablen zugreifen kann. Sie k&ouml;nnen eine solche Implementierung im 'Testfallsatz'
+    'Datengetriebener Test mit optimierten Prozeduraufrufen' in der Demotestsuite
+    <code>qftest-6.0.3/doc/tutorial/advanced-demos/de/datadrivenTesting.qft</code> sehen.
+  </p>
+      
+<p>
+      In der Demotestsuite
+    <code>qftest-6.0.3/doc/tutorial/advanced-demos/de/datadrivenTesting.qft</code>
+      finden Sie auch einen 'Testfallsatz', der eine CSV Datei als Datenquelle nutzt.
+      </p>
+    
+
+    
+    
+
+    
+<a name="dataDrivenSummary"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_dataDrivenSummary">28.4</a></span>
+</div>
+<a href="contents.html#toc_dataDrivenSummary">Zusammenfassung</a>
+</h4>
+      
+<p>
+      Das 'Datentreiber' Konzept von QF-Test erm&ouml;glicht es dem Benutzer, logische Testf&auml;lle zu erstellen und die Testdaten von
+        der eigentlichen Testimplementierung separiert zu halten.
+      </p>
+  
+<p>Es ist auch m&ouml;glich, verschachtelte 'Datentreiber' Knoten in 'Testf&auml;lle' zu verwenden. Dies kann realisiert werden, indem man einen 'Testschritt' Knoten zu einem 'Testfall' hinzuf&uuml;gt. Der 'Testschritt' Knoten kann dann den 'Datentreiber' beinhalten.
+  </p>
+      
+<p>
+      Eine detaillierte Beschreibung von datengetriebenem Testen finden Sie im Handbuch im Kapitel <a href="../../manual/de/datadriver.html#sec_datadriver" shape="rect">Datengetriebenes
+        Testen</a>.
+    </p>
+    
+<p>
+     In der zweiten mitgelieferten Testsuite
+        <code>qftest-6.0.3/doc/tutorial/datadriver.qft</code> finden Sie weitere Beispiele, wie das Auslesen
+        einer Exceldatei oder einer Schleife um Testf&auml;lle.
+      </p>
+    
+
+    
+
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="dependencies.html#sec_AdvDeps"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 29&nbsp;Abh&auml;ngigkeiten: Automatisches Sicherstellen der korrekten
+    Vorbedingungen jedes Testfalles" title="N&auml;chste Seite: 29&nbsp;Abh&auml;ngigkeiten: Automatisches Sicherstellen der korrekten
+    Vorbedingungen jedes Testfalles"></a></td><td class="navicon"><a href="dependencies.html#sec_AdvDeps"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 29&nbsp;Abh&auml;ngigkeiten: Automatisches Sicherstellen der korrekten
+    Vorbedingungen jedes Testfalles" title="N&auml;chstes Kapitel: 29&nbsp;Abh&auml;ngigkeiten: Automatisches Sicherstellen der korrekten
+    Vorbedingungen jedes Testfalles"></a></td><td class="navicon"><a href="advanced.html#sec_advanced"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: V&nbsp;Weiterf&uuml;hrende Features von QF-Test" title="Kapitel-&Uuml;bersicht: V&nbsp;Weiterf&uuml;hrende Features von QF-Test"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 2002-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

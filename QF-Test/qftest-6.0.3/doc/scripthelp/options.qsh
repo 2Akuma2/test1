@@ -1,0 +1,2497 @@
+/**
+ @script sut
+ @context Options
+ @description Public Extension API for setting and getting option values at runtime.  @author      Gregor Schmid, Pascal Bihler
+ */
+class SutOptions{
+    
+    /**
+     "awt"
+     */
+    VAL_SCREENSHOT_TECHNOLOGY_AWT
+    /**
+     "fx"
+     */
+    VAL_SCREENSHOT_TECHNOLOGY_FX
+    /**
+     "native"
+     */
+    VAL_SCREENSHOT_TECHNOLOGY_NATIVE
+    /**
+     Use this value for the OPT_DEFAULT_SCREENSHOT_TECHNOLOGY option to create screenshots
+of the browser and browser components in browsers connected by CDP or WebDriver via
+the corresponding driver. Falls back to "awt" for full screenshots.
+     */
+    VAL_SCREENSHOT_TECHNOLOGY_DRIVER
+    /**
+     Default Jython encoding for the codec Python module. From 5.3 on default changes to
+true if there is no existing system configuration.
+
+@author gs
+@since 3.3 with default latin-1
+@since 5.3 with default utf-8.
+     */
+    OPT_JYTHON_DEFAULT_ENCODING
+    /**
+     Jython setting for forced unicode literals. Default changes to
+true if there is no existing system configuration.
+
+@author gs
+@since 5.3
+     */
+    OPT_JYTHON_UNICODE_LITERALS
+    /**
+     Disable to restrict the usable EcmaScript level to the native support
+of the underlying engine (Oracle Nashorn)
+     */
+    OPT_USE_MODERN_ES
+    /**
+     This option lets you set the number of edits that can be undone in a test-suite or run-log.
+     */
+    OPT_USE_UNDO_LIMIT
+    /**
+     Whether QF-Test should log a warnings for BaseImageHandler failures.
+     */
+    OPT_IMG_HANDLER_LOG_WARNING
+    /**
+     Whether to enable SmartID without # if Component node doesn't exist.
+
+@author gs
+@since 5.5.0
+     */
+    OPT_SMARTID_WITHOUT_MARKER
+    /**
+     Allows to use wrong wait-for-document-load behavior.
+
+@author pb
+@since 5.4.0
+     */
+    OPT_WEB_RESET_DOCUMENT_KNOWN_STATE_DURING_RESCAN
+    /**
+     Hotkey for checks
+     */
+    OPT_RECORD_CHECK_HOTKEY
+    /**
+     Highlight components when checking
+     */
+    OPT_RECORD_CHECK_HIGHLIGHT
+    /**
+     Old style image grab (from before version 2)
+     */
+    OPT_RECORD_CHECK_IMAGE_OLD_STYLE
+    /**
+     Convert opening of a window into Wait for component to appear
+     */
+    OPT_RECORD_WINDOW_OPENED
+    /**
+     Pack MOUSE_MOVED events
+     */
+    OPT_RECORD_PACK_MOUSE_MOVED
+    /**
+     MOUSE_DRAGGED events
+     */
+    OPT_RECORD_PACK_MOUSE_DRAGGED
+    /**
+     Mouse drag hover delay
+     */
+    OPT_RECORD_MOUSE_DRAGGED_HOVER
+    /**
+     Record MouseEvents without coordinates where possible
+     */
+    OPT_RECORD_REPOSITION_MOUSE_EVENTS
+    /**
+     Hotkey for components
+     */
+    OPT_RECORD_COMPONENT_HOTKEY
+    /**
+     Record generic class names for components
+@since 4.0
+     */
+    OPT_RECORD_COMPONENT_GENERIC_CLASS
+    /**
+     
+     */
+    OPT_RECORD_COMPONENT_PLAF_INDEPENDENT
+    /**
+     Record system class only
+     */
+    OPT_RECORD_COMPONENT_SYSTEM_CLASS_ONLY
+    /**
+     Validate component recognition during recording
+     */
+    OPT_VALIDATE_RECORDED_COMPONENTS
+    /**
+     Convert HTML components to plain text
+     */
+    OPT_RECORD_COMPONENT_CONVERT_HTML
+    /**
+     Name override mode (record)
+     */
+    OPT_RECORD_COMPONENT_NAME_OVERRIDE
+    /**
+     1
+     */
+    VAL_NAME_OVERRIDE_EVERYTHING
+    /**
+     2
+     */
+    VAL_NAME_OVERRIDE_HIERARCHY
+    /**
+     3
+     */
+    VAL_NAME_OVERRIDE_PLAIN
+    /**
+     Automatic component names for Eclipse/RCP applications
+     */
+    OPT_RECORD_COMPONENT_AUTOMATIC_RCP_NAMES
+    /**
+     Record sub-items as event targets
+     */
+    OPT_RECORD_SUBITEM
+    /**
+     Multi-level sub-items
+     */
+    OPT_RECORD_SUBITEM_MULTILEVEL
+    /**
+     1
+     */
+    VAL_RECORD_SUBITEM_FORMAT_INTELLIGENT
+    /**
+     2
+     */
+    VAL_RECORD_SUBITEM_FORMAT_TEXT
+    /**
+     3
+     */
+    VAL_RECORD_SUBITEM_FORMAT_NUMBER
+    /**
+     Sub-item format
+     */
+    OPT_RECORD_SUBITEM_FORMAT
+    /**
+     Represent tree node as path
+     */
+    OPT_RECORD_SUBITEM_TREE_PATH
+    /**
+     Hotkey for procedure recording
+     */
+    OPT_RECORD_PROCEDURE_HOTKEY
+    /**
+     Hotkey for recording
+     */
+    OPT_RECORD_HOTKEY
+    /**
+     Whether to use legacy qfs:label resolution
+
+@author sl,ys,gs
+@since 5.4
+     */
+    OPT_QFSLABEL_LEGACY
+    /**
+     "PROGRAMMERSETLABEL,CONTAINEDTEXT,LABELLEFT,LABELTOP,LABELRIGHT,LABELBOTTOM,LABELTOPLEFT,LABELINHERITED,TOOLTIP,IMAGEDESCRIPTION,ENGINELABEL,WINDOWTITLE"
+     */
+    VAL_QFSLABEL_ALL_LABEL_TYPES
+    /**
+     Label type candidates for best label
+
+@author sl,ys,gs
+@since 5.4.3
+     */
+    OPT_QFSLABEL_LABEL_TYPES
+    /**
+     Whether to use geometry of label text for qfs:label resolution.
+
+New Label Option, irrelevant for legacy label.
+
+@author sl,ys,gs
+@since 5.4.2
+     */
+    OPT_QFSLABEL_USE_LABEL_TEXT_GEOMETRY
+    /**
+     Allowed positional label score
+
+New Label Option, irrelevant for legacy label.
+
+@author sl,ys,gs
+@since 5.4.3
+     */
+    OPT_QFSLABEL_MAX_POSITIONAL_LABEL_SCORE
+    /**
+     Allowed horizontal distance from qfs:label to element in pixels
+
+New Label Option, irrelevant for legacy label.
+
+@author sl,ys,gs
+@since 5.4
+     */
+    OPT_QFSLABEL_MAX_HORIZONTAL_DISTANCE
+    /**
+     Allowed vertical distance from qfs:label to element in pixels
+
+New Label Option, irrelevant for legacy label.
+
+@author sl,ys,gs
+@since 5.4
+     */
+    OPT_QFSLABEL_MAX_VERTICAL_DISTANCE
+    /**
+     Allowed vertical distance from qfs:label to element in pixels for label topleft
+
+New Label Option, irrelevant for legacy label.
+
+@author sl,ys,gs
+@since 5.4.3
+     */
+    OPT_QFSLABEL_MAX_VERTICAL_LABEL_TOPLEFT_DISTANCE
+    /**
+     Whether to use left edge to left edge distance for label left
+
+New Label Option, irrelevant for legacy label.
+
+@author sl,ys,gs
+@since 5.4.2
+     */
+    OPT_QFSLABEL_LABEL_LEFT_LEFT_EDGES_DISTANCE
+    /**
+     Allows to increase weight of distance in positional label score calculation
+or not to take a distance into account at all (0)
+
+New Label Option, irrelevant for legacy label.
+
+@author sl,ys,gs
+@since 5.4.2
+     */
+    OPT_QFSLABEL_DISTANCE_SCORE_WEIGHT
+    /**
+     Allows to increase weight of path in positional label score calculation
+or not to take a path into account at all (0)
+
+New Label Option, irrelevant for legacy label.
+
+@author sl,ys,gs
+@since 5.4
+     */
+    OPT_QFSLABEL_PATH_SCORE_WEIGHT
+    /**
+     Allows to increase weight of overlap in positional label score calculation
+or not to take an overlap into account at all (0)
+
+New Label Option, irrelevant for legacy label.
+
+@author sl,ys,gs
+@since 5.4
+     */
+    OPT_QFSLABEL_OVERLAP_SCORE_WEIGHT
+    /**
+     Allows to increase weight of distance between begin edge of label and correspondent component
+in positional label score calculation
+or not to take the distance into account at all (0)
+
+New Label Option, irrelevant for legacy label.
+
+@author sl,ys,gs
+@since 5.4.2
+     */
+    OPT_QFSLABEL_BEGIN_EDGE_SCORE_WEIGHT
+    /**
+     Allows to increase weight of positional type prio in positional label score calculation
+or not to take a positional type prio into account at all (0)
+
+New Label Option, irrelevant for legacy label.
+
+@author sl,ys,gs
+@since 5.4
+     */
+    OPT_QFSLABEL_POSITIONAL_LABEL_TYPE_PRIO_WEIGHT
+    /**
+     Allows to set prio between label types for generic class in form:
+genericClass1=positional,tooltip,imageDescription\ngenericClass2=tooltip,positional
+
+When a type, not mentioned in option for a generic class, labels of the type will not be taken in consideration for the elements of the class.
+
+New Label Option, irrelevant for legacy label.
+
+@author sl,ys,gs
+@since 5.4
+     */
+    VAL_DEFAULT_PRIO_BASE_LABEL_TYPE_PRIO
+    /**
+     
+     */
+    VAL_LOWER_POSITIONAL_PRIO_BASE_LABEL_TYPE_PRIO
+    /**
+     
+     */
+    OPT_QFSLABEL_GCL_TO_BASE_LABEL_TYPE_PRIO
+    /**
+     Allows to set prio between positional label types for generic class in form:
+label_left,label_top,label_right,label_bottom\ngenericClass1=label_left,label_right\ngenericClass2=labelTop,labelBottom
+
+When a type, not mentioned in option for a generic class, labels of the type will not be taken in consideration for the elements of the class.
+
+New Label Option, irrelevant for legacy label.
+
+@author sl,ys,gs
+@since 5.4
+     */
+    VAL_DEFAULT_POSITIONAL_LABEL_TYPE_PRIO
+    /**
+     
+     */
+    VAL_RIGHT_FIRST_POSITIONAL_LABEL_TYPE_PRIO
+    /**
+     
+     */
+    VAL_NO_BOTTOM_POSITIONAL_LABEL_TYPE_PRIO
+    /**
+     
+     */
+    OPT_QFSLABEL_GCL_TO_POSITIONAL_LABEL_TYPE_PRIO
+    /**
+     1
+     */
+    VAL_PLAY_EXCEPTION_LEVEL_WARNING
+    /**
+     2
+     */
+    VAL_PLAY_EXCEPTION_LEVEL_ERROR
+    /**
+     3
+     */
+    VAL_PLAY_EXCEPTION_LEVEL_EXCEPTION
+    /**
+     How to handle exceptions in the SUT
+     */
+    OPT_PLAY_SUT_EXCEPTION_LEVEL
+    /**
+     Automatically perform garbage collection in the SUT
+     */
+    OPT_PLAY_SUT_GARBAGE_COLLECTION
+    /**
+     
+     */
+    OPT_PLAY_ACTIVATE_SUT_WINDOWS
+    /**
+     Raise SUT windows automatically
+     */
+    OPT_PLAY_RAISE_SUT_WINDOWS
+    /**
+     Force window to the top when raising
+     */
+    OPT_PLAY_RAISE_SUT_WINDOWS_FORCED
+    /**
+     New version to force window to the top on WINDOWS
+     */
+    OPT_PLAY_FORCED_RAISE_WITH_CONTROL
+    /**
+     Delay after using new version to force window to the top on WINDOWS
+     */
+    OPT_PLAY_DELAY_AFTER_RAISE_WITH_CONTROL
+    /**
+     New version to force window to the top on Linux
+     */
+    OPT_PLAY_LINUX_FORCED_RAISE_WITH_TOPMOST
+    /**
+     Check for modal dialogs
+     */
+    OPT_PLAY_CHECK_MODAL
+    /**
+     Actually move mouse cursor
+     */
+    OPT_PLAY_MOVE_MOUSE_CURSOR
+    /**
+     Delay for hard events during replay (ms)
+     */
+    OPT_PLAY_DELAY_HARD_EVENTS
+    /**
+     Scroll automatically to display sub-items
+     */
+    OPT_PLAY_SCROLL_ITEM
+    /**
+     Extra padding (area to make visible beyond target point) for automatic scrolling
+     */
+    OPT_PLAY_SCROLL_PADDING
+    /**
+     Expand tree nodes as needed
+     */
+    OPT_PLAY_EXPAND_TREE
+    /**
+     
+     */
+    OPT_PLAY_FORCE_FOCUS
+    /**
+     Throw DisabledComponentException
+     */
+    OPT_PLAY_THROW_DISABLED_EXCEPTION
+    /**
+     1
+     */
+    VAL_PLAY_THREAD_LEVEL_WARNING
+    /**
+     2
+     */
+    VAL_PLAY_THREAD_LEVEL_ERROR
+    /**
+     3
+     */
+    VAL_PLAY_THREAD_LEVEL_EXCEPTION
+    /**
+     How to handle events coming from the wrong thread
+     */
+    OPT_PLAY_WRONG_THREAD_ERROR_LEVEL
+    /**
+     Strict Thread checking
+     */
+    OPT_PLAY_WRONG_THREAD_STRICT
+    /**
+     Maximum number of thread errors to log per SUT client
+     */
+    OPT_PLAY_WRONG_THREAD_MAX_ERRORS
+    /**
+     Generic retry for Swing.
+
+@author gs
+@since 5.5
+     */
+    OPT_SWING_PREFER_GENERIC_RETRY
+    /**
+     QFT-493 and QFT-4449 Whether to use JTable View column index by default.
+
+@author gs
+@since 6.0.0
+     */
+    OPT_SWING_TABLE_USE_VIEW_COLUMN
+    /**
+     Tolerance for checking images
+     */
+    OPT_PLAY_IMAGE_TOLERANCE
+    /**
+     
+     */
+    OPT_PLAY_GTK_IMAGE_TOLERANCE
+    /**
+     Name override mode (replay)
+     */
+    OPT_PLAY_RECOGNITION_NAME_OVERRIDE
+    /**
+     Log warning for missing name
+<p>
+If this option is set, a warning will be logged whenever a component is targeted
+that does not have a name, but QF-Test "thinks" it should have one.
+     */
+    OPT_PLAY_WARN_MISSING_NAME
+    /**
+     Log warning for ambiguous name
+<p>
+If the option Name override mode (replay) is  set  to  "Override  everything"  or
+"Hierarchical resolution", a warning will be logged whenever QF-Test encounters
+more than one potential target components with the same name.  That warning
+can be suppressed with the help of this option.
+     */
+    OPT_PLAY_WARN_AMBIGUOUS_NAME
+    /**
+     Log warning for feature mismatch
+<p>
+If this option is activated, feature mismatches are logged  as  warnings,
+notifying  you  that  it  may  be  a  good  idea  to  update  the affected components.
+     */
+    OPT_PLAY_WARN_FEATURE_MISMATCH
+    /**
+     Log warning for extra feature mismatch
+<p>
+If this option is activated, extra feature mismatches are logged as warnings,
+notifying you that it may be a good idea to update the affected components.
+     */
+    OPT_PLAY_WARN_EXTRA_FEATURE_MISMATCH
+    /**
+     Log warning for structure mismatch
+<p>
+If this option is activated, structure mismatches are logged as warnings,
+notifying you that it may be a good idea to update the affected components.
+     */
+    OPT_PLAY_WARN_STRUCTURE_MISMATCH
+    /**
+     Log warning for intermediate named ancestor
+<p>
+If  this  option  is  activated,  interferences through intermediate named
+ancestors are logged as warnings, notifying you that it may be a good idea
+to update the affected components.
+     */
+    OPT_PLAY_WARN_NAMED_ANCESTOR
+    /**
+     Enable second-class warnings, logged as normal - by default non-compactifiable - messages.
+     */
+    OPT_PLAY_COMPONENT_WARNINGS
+    /**
+     The bonus given to the component probability in case of a name match.
+Value must be within the range [0,100], defaults to 90.
+     */
+    OPT_PLAY_RECOGNITION_BONUS_NAME
+    /**
+     The penalty given to the component probability in case of a name mismatch.
+Value must be within the range [0,100], defaults to 0.
+     */
+    OPT_PLAY_RECOGNITION_PENALTY_NAME
+    /**
+     The bonus given to the component probability in case of a feature match.
+Value must be within the range [0,100], defaults to 80.
+     */
+    OPT_PLAY_RECOGNITION_BONUS_FEATURE
+    /**
+     The penalty given to the component probability in case of a feature mismatch.
+Value must be within the range [0,100], defaults to 55.
+     */
+    OPT_PLAY_RECOGNITION_PENALTY_FEATURE
+    /**
+     The bonus given to the component probability in case of an extra feature match.
+Value must be within the range [0,100], defaults to 70.
+     */
+    OPT_PLAY_RECOGNITION_BONUS_EXTRAFEATURE
+    /**
+     The penalty given to the component probability in case of an extra feature mismatch.
+Value must be within the range [0,100], defaults to 55.
+     */
+    OPT_PLAY_RECOGNITION_PENALTY_EXTRAFEATURE
+    /**
+     The bonus given to the component probability in case of a structural match.
+Value must be within the range [0,100], defaults to 70.
+     */
+    OPT_PLAY_RECOGNITION_BONUS_STRUCTURE
+    /**
+     The penalty given to the component probability in case of a structural mismatch.
+Value must be within the range [0,100], defaults to 60.
+     */
+    OPT_PLAY_RECOGNITION_PENALTY_STRUCTURE
+    /**
+     The penalty given to the component probability in case of a wrong dialog modality.
+Value must be within the range [0,100], defaults to 0.
+     */
+    OPT_PLAY_RECOGNITION_PENALTY_MODAL
+    /**
+     The penalty given to the component probability in case of the component being invisible.
+Value must be within the range [0,100], defaults to 75.
+     */
+    OPT_PLAY_RECOGNITION_PENALTY_INVISIBLE
+    /**
+     The minimum component probability required to accept a component match.
+Value must be within the range [0,100], defaults to 50.
+     */
+    OPT_PLAY_RECOGNITION_MINIMUM_PROBABILITY
+    /**
+     Default before delay (ms)
+<p>
+Set the delay in milliseconds before the execution of a node. If a node defines its own delay before,
+its value overrides this default.
+     */
+    OPT_PLAY_DELAY_BEFORE
+    /**
+     Default after delay (ms)
+<p>
+Set the delay in milliseconds after the execution of a node. If a node defines its own delay after,
+its value overrides this default.
+     */
+    OPT_PLAY_DELAY_AFTER
+    /**
+     Delay (ms)
+<p>
+After each single movement of the mouse cursor during drag and drop
+QF-Test will for the specified number of milliseconds
+     */
+    OPT_PLAY_DND_DELAY
+    /**
+     Interpolation step size
+<p>
+The size of the steps for interpolation of mouse movement during drag and drop.
+Set this to 0 to turn interpolation off.
+     */
+    OPT_PLAY_DND_STEP
+    /**
+     To avoid needless slowdown of tests, long distance mouse movement can be accelerated during drag and drop
+     */
+    OPT_PLAY_DND_ACCELERATION
+    /**
+     To ensure that small movements as well as the start end end of each movement remain precise,
+acceleration is turned off for movements that require less than this threshold's number of steps during drag and drop.
+     */
+    OPT_PLAY_DND_THRESHOLD
+    /**
+     Delay (ms)
+<p>
+After each single movement of the mouse cursor outside a drag and drop operation
+QF-Test will for the specified number of milliseconds
+     */
+    OPT_PLAY_MOVEMOUSE_DELAY
+    /**
+     Interpolation step size
+<p>
+The size of the steps for interpolation of mouse movement outside a drag and drop operation.
+Set this to 0 to turn interpolation off.
+     */
+    OPT_PLAY_MOVEMOUSE_STEP
+    /**
+     To avoid needless slowdown of tests, long distance mouse movement can be accelerated outside a drag and drop operation
+     */
+    OPT_PLAY_MOVEMOUSE_ACCELERATION
+    /**
+     To ensure that small movements as well as the start end end of each movement remain precise,
+acceleration is turned off for movements that require less than this threshold's number of steps
+outside a drag and drop operation.
+     */
+    OPT_PLAY_MOVEMOUSE_THRESHOLD
+    /**
+     Wait for GUI engine (ms)
+<p>
+This option is useful only for multi-engine SUTs, it adds a fixed waiting time after
+the first engine is connected.
+     */
+    OPT_PLAY_TIMEOUT_ENGINE
+    /**
+     Wait for non-existent component (ms)
+     */
+    OPT_PLAY_TIMEOUT_COMPONENT
+    /**
+     Wait for non-existent item (ms)
+     */
+    OPT_PLAY_TIMEOUT_ITEM
+    /**
+     Wait for modal dialog (ms)
+     */
+    OPT_PLAY_TIMEOUT_MODAL
+    /**
+     Wait for 'busy' GlassPane (ms)
+     */
+    OPT_PLAY_TIMEOUT_GLASSPANE
+    /**
+     Wait for button/menu enable (ms)
+     */
+    OPT_PLAY_TIMEOUT_ENABLED
+    /**
+     Wait for focus (ms)
+     */
+    OPT_PLAY_TIMEOUT_FOCUS
+    /**
+     Poll interval for component wait (ms)
+     */
+    OPT_PLAY_POLL_COMPONENT
+    /**
+     Sub-item poll interval (ms)
+     */
+    OPT_PLAY_POLL_ITEM
+    /**
+     Retry check interval (ms)
+     */
+    OPT_PLAY_POLL_CHECK
+    /**
+     When set to true, Tooltips are regarded visible, even when the ToolTipManager is disabled
+This is the behavior of QF-Test before version 4.2
+
+@since 4.2
+     */
+    OPT_PLAY_QUERY_TOOLTIP_MANAGER_ENABLED_STATE
+    /**
+     Whether to perform thread checks for FX.
+
+@author gs
+@since 5.1
+     */
+    OPT_FX_CHECK_DISPATCH_THREAD
+    /**
+     0
+     */
+    VAL_JIB_REPLAY_SWING_SOFT_MOUSE_SCROLL_VISIBLE_IGNORE
+    /**
+     1
+     */
+    VAL_JIB_REPLAY_SWING_SOFT_MOUSE_SCROLL_VISIBLE_WARNING
+    /**
+     2
+     */
+    VAL_JIB_REPLAY_SWING_SOFT_MOUSE_SCROLL_VISIBLE_ERROR
+    /**
+     3
+     */
+    VAL_JIB_REPLAY_SWING_SOFT_MOUSE_SCROLL_VISIBLE_EXCEPTION
+    /**
+     
+     */
+    OPT_WEB_RECORD_GENERIC_CLASS
+    /**
+     
+     */
+    OPT_WEB_RECORD_CLIENT_REQUEST_STEP
+    /**
+     
+     */
+    OPT_WEB_ID_AS_NAME
+    /**
+     
+     */
+    OPT_WEB_SUPPRESS_NUMERALS
+    /**
+     
+     */
+    OPT_WEB_LIMIT_URL
+    /**
+     
+     */
+    OPT_WEB_RETARGET_MOUSE_EVENT
+    /**
+     
+     */
+    OPT_WEB_TOLERATE_INTERMEDIATE_PARENT
+    /**
+     
+     */
+    OPT_WEB_TEST_VISIBILITY
+    /**
+     
+     */
+    OPT_WEB_CHECK_VIA_BROWSER
+    /**
+     
+     */
+    OPT_WEB_TRACK_HTTP_REQUESTS
+    /**
+     Extra Timeout in sync for HTTP Request Events ("AJAX sync")
+     */
+    OPT_WEB_HTTP_REQUEST_TIMEOUT
+    /**
+     
+     */
+    OPT_WEB_HTTP_REQUEST_TIMEOUT_DC
+    /**
+     
+     */
+    OPT_WEB_JAVASCRIPT_ERROR_LEVEL
+    /**
+     1
+     */
+    VAL_WEB_JAVASCRIPT_LEVEL_WARNING
+    /**
+     2
+     */
+    VAL_WEB_JAVASCRIPT_LEVEL_ERROR
+    /**
+     
+     */
+    OPT_WEB_JAVASCRIPT_MAX_ERRORS
+    /**
+     
+     */
+    OPT_WEB_JAVASCRIPT_ERROR_FILTERS
+    /**
+     When an OPTION element contains a "label" attribute, this is used as text
+value of the option in the browser. Setting this option to "false" ignores
+the "label" attribute (default for Firefox <= v76 and Internet Explorer <= v6)
+
+@since 5.4
+     */
+    OPT_WEB_USE_OPTION_LABEL
+    /**
+     Whether getText methods should also traverse into input, selects or textarea components in case
+nodes mapped to generic classes contain such complex nodes.
+
+@author mm
+@since 4.2
+     */
+    OPT_WEB_TEXT_DONT_TRAVERSE_ALL_NODES_FOR_GENERICS
+    /**
+     Whether to ignore "aria-*" and "role" attributes when evaluating and resolving DOMNodes.
+Should be used only for backwards compatibilty.
+
+@author mme
+@since 5.4.0
+     */
+    OPT_WEB_IGNORE_ARIA_ATTRIBUTES
+    /**
+     When set to true, all clicks are sent as hard events.
+     */
+    OPT_HARD_MOUSE_EVENTS
+    /**
+     When set to true, clicks are never sent as hard events.
+     */
+    OPT_NO_HARD_MOUSE_EVENTS
+    /**
+     When set to true, soft clicks are sent to the window directly.
+     */
+    OPT_WEB_SEMI_HARD_EVENTS
+    /**
+     When set to true, ensure that a click event is received for a semi-hard MPRC.
+     */
+    OPT_PLAY_VALIDATE_SEMI_HARD_CLICK
+    /**
+     Comma-separated list of classes for which to validate semi-hard click.
+     */
+    OPT_PLAY_VALIDATE_SEMI_HARD_CLASSES
+    /**
+     Maximum number of retries for a failed semi-hard click.
+     */
+    OPT_PLAY_VALIDATE_SEMI_HARD_MAX_RETRIES
+    /**
+     Extra sync timeout when checking for a semi-hard click.
+     */
+    OPT_PLAY_VALIDATE_SEMI_HARD_EXTRA_SYNC
+    /**
+     Error level for messages logged when retrying for a missing semi-hard click.
+     */
+    OPT_PLAY_VALIDATE_SEMI_HARD_WARNING_LEVEL
+    /**
+     Error level for messages logged when retries for a missing semi-hard click are exceeded.
+     */
+    OPT_PLAY_VALIDATE_SEMI_HARD_ERROR_LEVEL
+    /**
+     QFT-3558 QFT-4108 Comma-separated list of classes for which to override a semi-hard click with soft click. E.g.
+"Button,CheckBox". The reason is that (at least) "native" buttons need to be armed in order to fire. A mouseout
+between the mousedown and mouseup will prevent that. This can be caused by the real mouse cursor firing from a
+random location or the target button moving between down and up. Soft clicks are practically immune.
+     */
+    OPT_PLAY_OVERRIDE_SEMI_HARD_WITH_SOFT_CLASSES
+    /**
+     Whether to scroll semi-hard target visible even though replaying a soft click.
+     */
+    OPT_PLAY_OVERRIDE_SEMI_HARD_WITH_SOFT_SCROLL_VISIBLE
+    /**
+     When set to true, keyEvents are delivered on OS-level.
+Currently only used for non-headless, non-remote CDP- or WebDriver-connected browsers.
+     */
+    OPT_HARD_KEY_EVENTS
+    /**
+     When set to true, the "document complete" message in JXBrowser is already triggered on page load.
+This helps with single-page-applications to work around a JXBrowser bug not calling the correct
+handler after navigation.
+
+@since 5.0
+     */
+    OPT_JX_COMPLETE_ON_LOAD
+    /**
+     The url of a frame is matched against this option's regular expression
+and if the test does not fail, the frame is handled by QF-Test. Currently supported
+in CDP and WebDriver mode.
+
+@since 5.3
+     */
+    OPT_WEB_IGNORE_FRAMES_URL
+    /**
+     When set to true, QF-Test tries to work around the chromedriver bug 1077, but this slows down
+execution by 50%, so it should only be enabled for cases when an external window close, e.g. by
+javascript, is expected.
+     */
+    OPT_WEBDRIVER_CHROME_EXPECT_EXTERNAL_WINDOWCLOSE
+    /**
+     When set to true, QF-Test dispatches click events marked as "Semihard"
+directly using the WebDriver or CDP protocol. This is the standard behaviour
+for remote or headless browsers.
+     */
+    OPT_WEB_DISPATCH_SEMIHARD_BY_HOST
+    /**
+     Sets the level of the firefox marionette logging output. Possible values are:
+[fatal, error, warn, info, config, debug, trace]
+     */
+    OPT_WEBDRIVER_MARIONETTE_LOGLEVEL
+    /**
+     When set to true, QF-Test disables the Geo-Location API in the browser started in WebDriver mode.
+Currently only supported for Firefox and Google Chrome.
+     */
+    OPT_WEBDRIVER_DISABLE_GEO_API
+    /**
+     When set to true, QF-Test hides the Chrome infobar about Chrome being controlled with automated
+Test software also with Chrome 76 and newer.
+
+@author mh
+@since 4.7
+     */
+    OPT_WEBDRIVER_CHROME_HIDE_INFOBARS
+    /**
+     When set to true, QF-Test redirects all requests to "file://"- URLs to a localhost proxy,
+if requested via WebDriver connections. Defaults to true for Safari, Edge and Chrome, false otherwise.
+     */
+    OPT_WEBDRIVER_PROXY_FILE
+    /**
+     If the url a window opened with matches this non-empty regular expression, the window is not handled by
+QF-Test in webdriver mode and completely ignored.
+     */
+    OPT_WEBDRIVER_IGNORE_SRC
+    /**
+     Only if the url a window opened with matches this non-empty regular expression, the window is handled by
+QF-Test in webdriver mode, others are completely ignored.
+     */
+    OPT_WEBDRIVER_FIXATE_SRC
+    /**
+     Since QF-Test 4.5, the Safari Extension is not supported anymore, so this option is deprecated
+and ignored.
+     */
+    OPT_WEBDRIVER_SAFARI_USE_EXTENSION
+    /**
+     0
+     */
+    VAL_ERRORSTATE_IGNORE
+    /**
+     1
+     */
+    VAL_ERRORSTATE_MESSAGE
+    /**
+     2
+     */
+    VAL_ERRORSTATE_WARNING
+    /**
+     3
+     */
+    VAL_ERRORSTATE_ERROR
+    /**
+     1
+     */
+    VAL_WEB_SYNC_DEFAULT
+    /**
+     150
+     */
+    VAL_WEB_SYNC_DEFAULT_MOZILLA_WEBDRIVER
+    /**
+     
+     */
+    VAL_WEB_SYNC_BETWEEN_SOFT_MOUSE_EVENTS
+    /**
+     150
+     */
+    VAL_WEB_SYNC_BETWEEN_SOFT_MOUSE_EVENTS_FIREFOX_55
+    /**
+     0
+     */
+    VAL_WEB_MIN_DELAY_BETWEEN_SOFT_MOUSE_EVENTS
+    /**
+     0
+     */
+    VAL_WEB_MIN_DELAY_BETWEEN_SEMI_HARD_EVENTS
+    /**
+     20
+     */
+    VAL_WEB_MIN_DELAY_BETWEEN_SEMI_HARD_EVENTS_MOZILLA_WEBDRIVER
+    /**
+     0
+     */
+    VAL_WEB_MIN_DELAY_BETWEEN_HARD_EVENTS
+    /**
+     50
+     */
+    VAL_WEB_MIN_DELAY_BETWEEN_HARD_EVENTS_MOZILLA_WEBDRIVER
+    /**
+     150
+     */
+    VAL_WEB_MIN_DELAY_AFTER_AUTO_SCROLL
+    /**
+     When set to true, browsers are controlled as if they are headless, e.g. no robot interaction
+is performed.
+
+@since 5.3.0
+     */
+    OPT_WEB_ASSUME_HEADLESS
+    /**
+     Control the behavior of compareExtraFeatures in Web. There was an "old" behavior which
+treats '_' as blanks. For 4.2 we will switch this off.
+     */
+    OPT_WEB_TREAT_UNDERSCORES_AS_BLANKS_IN_EF
+    /**
+     Do not wrap javascript statements in eval when testing a JXBrowser. This is especially
+useful if a Content Security policy is set.
+
+@since 5.2.2
+     */
+    OPT_WEB_JX_DIRECT_EVAL
+    /**
+     If possible (i.e. in CDP connection mode and with restrictions in WebDriver and QF-Driver mode)
+the content of closed and open shadow DOM trees is resolved. This option can be used to restrict
+this resolution. Valid values: "none", "open", "all". Defaults to "all". Must be set before page load.
+
+@since 5.3
+     */
+    OPT_WEB_RESOLVE_SHADOW_DOMS
+    /**
+     When set to "physical", slottable nodes are references as children of the parent nodes, and
+shadowRoots are handled as an additional child of its host.
+<p>
+When set to "logical", assignedNodes are handled as children of it slot (and the "real" children
+only when no other elements are assigned), and the children of a shadow root are handled as children
+of its host.
+<p>
+When set to "legacy", the children of a shadow root are handled as additional children
+of its host, as QF-Test did until version 6.0.
+
+@since 6.0.0
+     */
+    OPT_WEB_DOM_TRAVERSE_STRATEGY
+    /**
+     <p>
+If set, any text that an SUT client prints to its stdout or stderr stream is
+also logged in the run-log.
+
+@since 3.0
+@author gs
+</p>
+     */
+    OPT_LOG_CONTENT_SPLIT_IO
+    /**
+     Whether to record SmartIDs.
+
+@author gs
+@since 5.1.0
+     */
+    OPT_RECORD_SMARTID
+    /**
+     Whether to record SmartIDs without # marker.
+
+@author gs
+@since 5.5.0
+     */
+    OPT_RECORD_SMARTID_WITHOUT_MARKER
+    /**
+     How to record SmartIDs - priority default name,label - also supported are feature and qlabel.
+
+@author gs
+@since 5.1.0
+     */
+    OPT_RECORD_SMARTID_PRIORITIES
+    /**
+     How to record SmartIDs - whether to include match string.
+
+@author gs
+@since 5.1.0
+     */
+    OPT_RECORD_SMARTID_MATCHSTRING
+    /**
+     Whether to validate SmartID during recording to determine an index and avoid SmartIDs that don't work at all.
+
+@author tmax
+@since 5.1.0
+     */
+    OPT_RECORD_SMARTID_VALIDATE
+    /**
+     Whether to move up the tree to create a parent SmartID plus @#Class:&lt;idx&gt;
+
+@author gs
+@since 5.3.2
+     */
+    OPT_RECORD_SMARTID_NESTED
+    /**
+     Comma-separated list of classes that should be added during recording e.g. because they have a lower bias.
+Order matters so a StringSetOption won't work.
+
+@author gs
+@since 5.2.1
+     */
+    OPT_RECORD_SMARTID_CLASSES_TO_KEEP
+    /**
+     Default value for {@link #OPT_PLAY_TIMEOUT_DEADLOCK}.
+     */
+    DEFVAL_PLAY_TIMEOUT_DEADLOCK
+    /**
+     Whether to skip scrolling if target spot is visible. This used to be the default for SWT but is in contrast
+to other engines.
+
+@author gs
+@since 5.1
+     */
+    OPT_PLAY_SWT_SCROLL_SHORTCUT
+    /**
+     Extra delay when scrolling Gtk Control
+
+@author gs
+@since 5.1
+     */
+    OPT_PLAY_SWT_GTK_SCROLL_DELAY
+    /**
+     Whether to perform thread checks for SWT.
+
+@author gs
+@since 5.1
+     */
+    OPT_SWT_CHECK_DISPATCH_THREAD
+    /**
+     Whether to perform gtk_events_pending thread checks for SWT GTK.
+
+@author gs
+@since 5.1.1
+     */
+    OPT_PLAY_SWT_SYNC_CALL_GTK_EVENTS_PENDING
+    /**
+     Whether to sync between key events for SWT GTK.
+
+@author gs
+@since 6.0.0
+     */
+    OPT_PLAY_SWT_GTK_SYNC_BETWEEN_KEY_EVENTS
+    /**
+     How long to dealy between replaying Whether key events for SWT GTK.
+
+@author gs
+@since 6.0.0
+     */
+    OPT_PLAY_SWT_GTK_KEY_EVENT_DELAY
+    /**
+     Whether to skip pending event sync for TAB key in SWT on Windows.
+
+@author gs
+@since 6.0.2
+     */
+    OPT_PLAY_SWT_WIN_TAB_SKIP_PENDING
+    /**
+     1
+     */
+    VAL_PLAY_SCRIPT_JYTHON_SAVE_ON_ERROR
+    /**
+     2
+     */
+    VAL_PLAY_SCRIPT_JYTHON_SAVE_IF_CHANGED
+    /**
+     3
+     */
+    VAL_PLAY_SCRIPT_JYTHON_SAVE_ALWAYS
+    /**
+     <p>
+Value for {@link #OPT_LOG_SHOW}.
+</p>
+This choice causes &qt; to open the run-log when it begins executing a test
+sequence.
+     */
+    VAL_SHOW_LOG_AT_START
+    /**
+     <p>
+Value for {@link #OPT_LOG_SHOW}.
+</p>
+With this choice the run-log is shown after replay is finished.
+     */
+    VAL_SHOW_LOG_AFTER_END
+    /**
+     <p>
+Value for {@link #OPT_LOG_SHOW}.
+</p>
+The run-log is shown only if an uncaught exception is thrown.
+     */
+    VAL_SHOW_LOG_ON_EXCEPTION
+    /**
+     <p>
+Value for {@link #OPT_LOG_SHOW}.
+</p>
+The run-log is not displayed automatically.
+     */
+    VAL_DONT_SHOW_LOG
+    /**
+     1
+     */
+    VAL_LOG_DURATION_INDICATORS_KIND_DURATION
+    /**
+     2
+     */
+    VAL_LOG_DURATION_INDICATORS_KIND_REALTIME
+    /**
+     3
+     */
+    VAL_LOG_DURATION_INDICATORS_KIND_BOTH
+    /**
+     Default license timeout when running daemon in normal mode that allocates licenses when creating a RunContext.
+     */
+    VAL_DAEMON_LICENSE_TIMEOUT_RUNCONTEXT
+    /**
+     Default license timeout when running daemon in on-demand mode that allocates licenses when starting a test.
+     */
+    VAL_DAEMON_LICENSE_TIMEOUT_ONDEMAND
+    /**
+     Android replay options.
+     */
+    VAL_ANDROID_REPLAY_INTELLIGENT
+    /**
+     1
+     */
+    VAL_ANDROID_REPLAY_ADB
+    /**
+     2
+     */
+    VAL_ANDROID_REPLAY_TELNET
+    /**
+     3
+     */
+    VAL_ANDROID_REPLAY_CONNECTION
+    
+    /** Sets an option to a given value on the default level */
+    setOption(name, value)
+    /**
+     * Test whether an option has been set at script level.
+     * @param name The name of the option to test as defined in the 'Options' class.
+     * @return True if the option has been set, false otherwise
+     */
+    isOptionSet(name)
+    /** Unsets an option */
+    unsetOption(name)
+    /**
+     * Returns an option's value or the option's default value, if the value is null
+     * <p>
+     * Throws an Exception if the default value of the object cannot be determined
+     */
+    getValue(optionName)
+    /** Returns an option's value, or def, if the option is not set */
+    getValue(optionName, def)
+    /**
+     * Returns an option's value as boolean, or the option's default value, if the value is null or not a Boolean.
+     * <p>
+     * Throws an Exception if the default value of the object cannot be cast to a boolean
+     */
+    getBoolean(optionName)
+    /** Returns an option's value as boolean, or def if the option is not set, null or not Boolean */
+    getBoolean(optionName, def)
+    /** Returns the Keystroke from a KeyOption */
+    getKeyStroke(optionName)
+    /** Returns the Keystroke from a KeyOption as String */
+    getKeyStrokeAsString(optionName)
+    /**
+     * Returns an option's value as String, or the option's default value, if the value is null or not a String.
+     * <p>
+     * Throws an Exception if the default value of the object cannot be cast to a String
+     */
+    getString(optionName)
+    /** Returns an option's value as String, or def if the option is not set, null or not String */
+    getString(optionName, def)
+    /**
+     * Returns an option's value as int, or the option's default value, if the value is null or not an Integer.
+     * <p>
+     * Throws an Exception if the default value of the object cannot be cast to an int
+     */
+    getInt(optionName)
+    /** Returns an option's value as int, or def if the option is not set, null or not Integer */
+    getInt(optionName, def)
+    /**
+     * Returns an option's value as File or the option's default value, if the value is null or not a File.
+     * <p>
+     * Throws an Exception if the default value of the object cannot be cast to a File
+     */
+    getFile(optionName)
+    /** Returns an option's value as File, or def if the option is not set, null or not File */
+    getFile(optionName, def)
+    /**
+     * Returns the file type of a FileOption
+     * <p>
+     * Throws an Exception if the option is null or not a FileOption
+     */
+    getFileType(optionName)
+    /** Returns the file type of a FileOption or or def if the option is null or not a FileOption */
+    getFileType(optionName, def)
+    /**
+     * Returns an option's value as Enum or the option's default value, if the value is null or not a Enum.
+     * <p>
+     * Throws an Exception if the default value of the object cannot be cast to a Enum
+     */
+    getEnum(optionName)
+    /** Returns an option's value as Enum, or def if the option is not set, null or not Enum */
+    getEnum(optionName, def)
+    /**
+     * Test whether a special option (StringSet, StringMap...) contains a given key
+     * 
+     * @param   optionName      The name of the option.
+     * @param   key             The key to look for.
+     * 
+     * @return  True if the option is special and contains the key, false otherwise.
+     */
+    contains(optionName, key)
+    /**
+     * Get the value for a given key from a StringMapOption.
+     * 
+     * @param   optionName      The name of the option.
+     * @param   key             The key to look for.
+     * 
+     * @return  The value if the key is defined, the default value of the option otherwise.
+     */
+    getValueForKey(optionName, key)
+    /** */
+    getKeys(optionName)
+    /** */
+    getDefaultKeyValue(optionName)
+    /** */
+    setValue(optionName, key, value)
+    /** */
+    removeKey(optionName, key)
+}
+/**
+ @script server
+ @context Options
+ @description Public Extension API for setting and getting option values at runtime.  @author      Gregor Schmid, Pascal Bihler
+ */
+class ServerOptions{
+    
+    /**
+     "awt"
+     */
+    VAL_SCREENSHOT_TECHNOLOGY_AWT
+    /**
+     "fx"
+     */
+    VAL_SCREENSHOT_TECHNOLOGY_FX
+    /**
+     "native"
+     */
+    VAL_SCREENSHOT_TECHNOLOGY_NATIVE
+    /**
+     Use this value for the OPT_DEFAULT_SCREENSHOT_TECHNOLOGY option to create screenshots
+of the browser and browser components in browsers connected by CDP or WebDriver via
+the corresponding driver. Falls back to "awt" for full screenshots.
+     */
+    VAL_SCREENSHOT_TECHNOLOGY_DRIVER
+    /**
+     <p>
+If no dedicated engine is responsible for taking screenshot, the specified technology is used.
+Defaults to "awt".
+</p>
+
+@author pb
+@since 4.5.0
+     */
+    OPT_DEFAULT_SCREENSHOT_TECHNOLOGY
+    /**
+     Default Jython encoding for the codec Python module. From 5.3 on default changes to
+true if there is no existing system configuration.
+
+@author gs
+@since 3.3 with default latin-1
+@since 5.3 with default utf-8.
+     */
+    OPT_JYTHON_DEFAULT_ENCODING
+    /**
+     Jython setting for forced unicode literals. Default changes to
+true if there is no existing system configuration.
+
+@author gs
+@since 5.3
+     */
+    OPT_JYTHON_UNICODE_LITERALS
+    /**
+     Disable to restrict the usable EcmaScript level to the native support
+of the underlying engine (Oracle Nashorn)
+     */
+    OPT_USE_MODERN_ES
+    /**
+     This option lets you set the number of edits that can be undone in a test-suite or run-log.
+     */
+    OPT_USE_UNDO_LIMIT
+    /**
+     Whether QF-Test should log a warnings for BaseImageHandler failures.
+     */
+    OPT_IMG_HANDLER_LOG_WARNING
+    /**
+     Whether to enable SmartID without # if Component node doesn't exist.
+
+@author gs
+@since 5.5.0
+     */
+    OPT_SMARTID_WITHOUT_MARKER
+    /**
+     Multi-level sub-items
+     */
+    OPT_RECORD_SUBITEM_MULTILEVEL
+    /**
+     "PROGRAMMERSETLABEL,CONTAINEDTEXT,LABELLEFT,LABELTOP,LABELRIGHT,LABELBOTTOM,LABELTOPLEFT,LABELINHERITED,TOOLTIP,IMAGEDESCRIPTION,ENGINELABEL,WINDOWTITLE"
+     */
+    VAL_QFSLABEL_ALL_LABEL_TYPES
+    /**
+     Allows to set prio between label types for generic class in form:
+genericClass1=positional,tooltip,imageDescription\ngenericClass2=tooltip,positional
+
+When a type, not mentioned in option for a generic class, labels of the type will not be taken in consideration for the elements of the class.
+
+New Label Option, irrelevant for legacy label.
+
+@author sl,ys,gs
+@since 5.4
+     */
+    VAL_DEFAULT_PRIO_BASE_LABEL_TYPE_PRIO
+    /**
+     
+     */
+    VAL_LOWER_POSITIONAL_PRIO_BASE_LABEL_TYPE_PRIO
+    /**
+     Allows to set prio between positional label types for generic class in form:
+label_left,label_top,label_right,label_bottom\ngenericClass1=label_left,label_right\ngenericClass2=labelTop,labelBottom
+
+When a type, not mentioned in option for a generic class, labels of the type will not be taken in consideration for the elements of the class.
+
+New Label Option, irrelevant for legacy label.
+
+@author sl,ys,gs
+@since 5.4
+     */
+    VAL_DEFAULT_POSITIONAL_LABEL_TYPE_PRIO
+    /**
+     
+     */
+    VAL_RIGHT_FIRST_POSITIONAL_LABEL_TYPE_PRIO
+    /**
+     
+     */
+    VAL_NO_BOTTOM_POSITIONAL_LABEL_TYPE_PRIO
+    /**
+     0
+     */
+    VAL_JIB_REPLAY_SWING_SOFT_MOUSE_SCROLL_VISIBLE_IGNORE
+    /**
+     1
+     */
+    VAL_JIB_REPLAY_SWING_SOFT_MOUSE_SCROLL_VISIBLE_WARNING
+    /**
+     2
+     */
+    VAL_JIB_REPLAY_SWING_SOFT_MOUSE_SCROLL_VISIBLE_ERROR
+    /**
+     3
+     */
+    VAL_JIB_REPLAY_SWING_SOFT_MOUSE_SCROLL_VISIBLE_EXCEPTION
+    /**
+     Sets the level of the firefox marionette logging output. Possible values are:
+[fatal, error, warn, info, config, debug, trace]
+     */
+    OPT_WEBDRIVER_MARIONETTE_LOGLEVEL
+    /**
+     1
+     */
+    VAL_WEB_SYNC_DEFAULT
+    /**
+     150
+     */
+    VAL_WEB_SYNC_DEFAULT_MOZILLA_WEBDRIVER
+    /**
+     
+     */
+    VAL_WEB_SYNC_BETWEEN_SOFT_MOUSE_EVENTS
+    /**
+     150
+     */
+    VAL_WEB_SYNC_BETWEEN_SOFT_MOUSE_EVENTS_FIREFOX_55
+    /**
+     0
+     */
+    VAL_WEB_MIN_DELAY_BETWEEN_SOFT_MOUSE_EVENTS
+    /**
+     0
+     */
+    VAL_WEB_MIN_DELAY_BETWEEN_SEMI_HARD_EVENTS
+    /**
+     20
+     */
+    VAL_WEB_MIN_DELAY_BETWEEN_SEMI_HARD_EVENTS_MOZILLA_WEBDRIVER
+    /**
+     0
+     */
+    VAL_WEB_MIN_DELAY_BETWEEN_HARD_EVENTS
+    /**
+     50
+     */
+    VAL_WEB_MIN_DELAY_BETWEEN_HARD_EVENTS_MOZILLA_WEBDRIVER
+    /**
+     150
+     */
+    VAL_WEB_MIN_DELAY_AFTER_AUTO_SCROLL
+    /**
+     For this view only the "interesting" components of the SUT are recorded.
+     */
+    VAL_RECORD_HIERARCHY_INTELLIGENT
+    /**
+     The full hierarchy includes every single component of the SUTs GUI, emulating
+all parent/child relationships.
+     */
+    VAL_RECORD_HIERARCHY_FULL
+    /**
+     The flat view collects all components of a window as direct child nodes of
+the respective WindowStep node.
+     */
+    VAL_RECORD_HIERARCHY_FLAT
+    /**
+     Option to set the kind of view for the components of the
+SUT.
+{@link #VAL_RECORD_HIERARCHY_INTELLIGENT}
+{@link #VAL_RECORD_HIERARCHY_FULL}
+{@link #VAL_RECORD_HIERARCHY_FLAT}
+     */
+    OPT_RECORD_COMPONENT_HIERARCHY
+    /**
+     Value for {@link #OPT_RECORD_SUBITEM_TYPE}.
+     */
+    VAL_RECORD_SUBITEM_TYPE_INTELLIGENT
+    /**
+     Value for {@link #OPT_RECORD_SUBITEM_TYPE}.
+     */
+    VAL_RECORD_SUBITEM_TYPE_NODE
+    /**
+     Value for {@link #OPT_RECORD_SUBITEM_TYPE}.
+     */
+    VAL_RECORD_SUBITEM_TYPE_SYNTAX
+    /**
+     <p>
+There are two ways to address a sub-item: either
+through a special syntax or by creating an 'Item' node. This option
+determines the method to use in recorded events.
+</p>
+<p>
+Possible Values are:
+<li>{@link #VAL_RECORD_SUBITEM_TYPE_INTELLIGENT}
+<li>{@link #VAL_RECORD_SUBITEM_TYPE_NODE}
+<li>{@link #VAL_RECORD_SUBITEM_TYPE_SYNTAX} (default)
+</p>
+     */
+    OPT_RECORD_SUBITEM_TYPE
+    /**
+     Value for {@link #OPT_RECORD_PROCEDURE_VERSION}.
+     */
+    VAL_RECORD_PROCEDURE_CURRENT_VERSION
+    /**
+     Value for {@link #OPT_RECORD_PROCEDURE_VERSION}.
+     */
+    VAL_RECORD_PROCEDURE_OLD_VERSION
+    /**
+     Value for {@link #OPT_RECORD_PROCEDURE_VERSION}.
+     */
+    VAL_RECORD_PROCEDURE_VERSION_5_3_PARTLY_BACKWARDS_COMPATIBLE
+    /**
+     Value for {@link #OPT_RECORDING_PROCESSOR_LOGLEVEL}.
+     */
+    VAL_RECORDING_PROCESSOR_LOGLEVEL_ALL
+    /**
+     Value for {@link #OPT_RECORDING_PROCESSOR_LOGLEVEL}.
+     */
+    VAL_RECORDING_PROCESSOR_LOGLEVEL_NONE
+    /**
+     Value for {@link #OPT_RECORDING_PROCESSOR_LOGDEFNAME}.
+     */
+    VAL_RECORDING_PROCESSOR_LOGDEFNAME_ALL
+    /**
+     If selected, QF-Test prepends the ID of the WindowStep parent of a
+ComponentStep to its ID during recording.
+     */
+    OPT_RECORD_COMPONENT_PREPEND_WINDOW_ID
+    /**
+     <p>
+Value for {@link #OPT_RECORD_COMPONENT_PREPEND_PARENT_ID}.
+</p>
+<p>
+"Never" turns this option off.
+</p>
+     */
+    VAL_RECORD_COMPONENT_PREPEND_PARENT_NEVER
+    /**
+     <p>
+Value for {@link #OPT_RECORD_COMPONENT_PREPEND_PARENT_ID}.
+</p>
+<p>
+"Nearest named ancestor" For components with the Java method
+<code>setName</code>. A component that doesn't have a name of its own, gets
+the QF-Test ID of its nearest named ancestor node prepended.
+</p>
+     */
+    VAL_RECORD_COMPONENT_PREPEND_PARENT_NAMED
+    /**
+     <p>
+Value for {@link #OPT_RECORD_COMPONENT_PREPEND_PARENT_ID}.
+</p>
+<p>
+If <code>setName</code> is used sparingly or not at all, it is better to set
+this option to "Nearest ancestor with name or feature". That way either the
+name or a distinctive feature of an ancestor node will be applicable.
+</p>
+     */
+    VAL_RECORD_COMPONENT_PREPEND_PARENT_FEATURE
+    /**
+     <p>
+Value for {@link #OPT_RECORD_COMPONENT_PREPEND_PARENT_ID}.
+</p>
+<p>
+"Always" is only useful if the option {@link #OPT_RECORD_COMPONENT_HIERARCHY}
+is set to "Flat". With this setting, every component gets the QF-Test ID of
+its parent node prepended, which can lead to unusable long QF-Test IDs when
+components are nested deeply.
+</p>
+     */
+    VAL_RECORD_COMPONENT_PREPEND_PARENT_ALWAYS
+    /**
+     <p>
+When a ComponentStep is recorded for the first time, QF-Test assigns an
+automatically generated ID. The QF-Test ID of a direct or indirect parent
+node may be prepended to this QF-Test ID. This is useful to distinguish
+between similar components that don't have a name of their own.
+</p>
+<p>
+Possible Values are:
+<li>{@link #VAL_RECORD_COMPONENT_PREPEND_PARENT_NEVER}
+<li>{@link #VAL_RECORD_COMPONENT_PREPEND_PARENT_NAMED}
+<li>{@link #VAL_RECORD_COMPONENT_PREPEND_PARENT_FEATURE} (default)
+<li>{@link #VAL_RECORD_COMPONENT_PREPEND_PARENT_ALWAYS}
+</p>
+     */
+    OPT_RECORD_COMPONENT_PREPEND_PARENT_ID
+    /**
+     Whether to record SmartIDs.
+
+@author gs
+@since 5.1.0
+     */
+    OPT_RECORD_SMARTID
+    /**
+     Whether to record SmartIDs without # marker.
+
+@author gs
+@since 5.5.0
+     */
+    OPT_RECORD_SMARTID_WITHOUT_MARKER
+    /**
+     How to record SmartIDs - priority default name,label - also supported are feature and qlabel.
+
+@author gs
+@since 5.1.0
+     */
+    OPT_RECORD_SMARTID_PRIORITIES
+    /**
+     How to record SmartIDs - whether to include match string.
+
+@author gs
+@since 5.1.0
+     */
+    OPT_RECORD_SMARTID_MATCHSTRING
+    /**
+     Comma-separated list of classes that should be added during recording e.g. because they have a lower bias.
+Order matters so a StringSetOption won't work.
+
+@author gs
+@since 5.2.1
+     */
+    OPT_RECORD_SMARTID_CLASSES_TO_KEEP
+    /**
+     When recording SmartIDs, keep component info as reference.
+
+@author gs
+@since 5.3.2
+     */
+    OPT_RECORD_SMARTID_KEEP_INFO
+    /**
+     When recording SmartIDs and keeping the info, disabled it.
+
+@author gs
+@since 5.3.2
+     */
+    OPT_RECORD_SMARTID_INFO_DISABLED
+    /**
+     Whether to log scope push/pop.
+
+@author gs
+@since 5.4
+     */
+    OPT_RUNLOG_SMARTID_LOG_SCOPE
+    /**
+     Default value for {@link #OPT_PLAY_TIMEOUT_DEADLOCK}.
+     */
+    DEFVAL_PLAY_TIMEOUT_DEADLOCK
+    /**
+     If the SUT does not react for the given time, a {@link de.qfs.apps.qftest.shared.exceptions.DeadlockTimeoutException} is
+thrown. Setting this value to 0 will suppress deadlock detection.
+     */
+    OPT_PLAY_TIMEOUT_DEADLOCK
+    /**
+     The call stack size is a limit for the nesting depth of BasicSequences or
+ProcedureCall during replay. This limit is needed to detect and handle
+endless recursion. When the nesting depth exceeds the call stack size, a
+{@link StackOverflowException} is thrown. The default value of 200 should be
+sufficient but can be increased for very complex tests.
+     */
+    OPT_PLAY_CALLSTACK_SIZE
+    /**
+     Execution of TestCase nodes should not be nested because such TestCases
+cannot be listed properly in the report. If this option is active, a warning
+is logged in case a TestCase is executed within another TestCase.
+     */
+    OPT_PLAY_WARN_NESTED_TEST_CASE
+    /**
+     <p>
+Value for {@link #OPT_PLAY_ERROR_STATE_DISABLED_COMPONENT}.
+</p>
+<p>
+Log a warning message.
+</p>
+     */
+    VAL_PLAY_DISABLED_COMPONENT_WARNING
+    /**
+     <p>
+Value for {@link #OPT_PLAY_ERROR_STATE_DISABLED_COMPONENT}.
+</p>
+<p>
+Log a error message.
+</p>
+     */
+    VAL_PLAY_DISABLED_COMPONENT_ERROR
+    /**
+     <p>
+Value for {@link #OPT_PLAY_ERROR_STATE_DISABLED_COMPONENT}.
+</p>
+<p>
+Throw a {@link de.qfs.apps.qftest.shared.exceptions.DisabledComponentStepException}.
+</p>
+     */
+    VAL_PLAY_DISABLED_COMPONENT_EXCEPTION
+    /**
+     <p>
+In case you replay an event on a component, which is disabled you can
+configure QF-Test's behavior for that case.
+</p>
+<p>
+Possible Values are:
+<li>{@link #VAL_PLAY_DISABLED_COMPONENT_WARNING}
+<li>{@link #VAL_PLAY_DISABLED_COMPONENT_ERROR} (default)
+<li>{@link #VAL_PLAY_DISABLED_COMPONENT_EXCEPTION}
+</p>
+     */
+    OPT_PLAY_ERROR_STATE_DISABLED_COMPONENT
+    /**
+     <p>
+Value for {@link #OPT_PLAY_ERROR_STATE_EXECUTION_TIMEOUT}.
+</p>
+<p>
+Log a warning message and run through possible cleanup nodes.
+</p>
+     */
+    VAL_PLAY_EXECUTION_TIMEOUT_WARNING
+    /**
+     <p>
+Value for {@link #OPT_PLAY_ERROR_STATE_EXECUTION_TIMEOUT}.
+</p>
+<p>
+Log an error message and run through possible cleanup nodes.
+</p>
+     */
+    VAL_PLAY_EXECUTION_TIMEOUT_ERROR
+    /**
+     <p>
+Value for {@link #OPT_PLAY_ERROR_STATE_EXECUTION_TIMEOUT}.
+</p>
+<p>
+Throw an {@link de.qfs.apps.qftest.shared.exceptions.ExecutionTimeoutExpiredException} and run through possible cleanup nodes.
+</p>
+     */
+    VAL_PLAY_EXECUTION_TIMEOUT_EXCEPTION
+    /**
+     <p>
+Value for {@link #OPT_PLAY_ERROR_STATE_EXECUTION_TIMEOUT}.
+</p>
+<p>
+Log a warning message and stop the node immediately.
+</p>
+     */
+    VAL_PLAY_EXECUTION_TIMEOUT_WARNING_IMMEDIATE
+    /**
+     <p>
+Value for {@link #OPT_PLAY_ERROR_STATE_EXECUTION_TIMEOUT}.
+</p>
+<p>
+Log an error message and stop the node immediately.
+</p>
+     */
+    VAL_PLAY_EXECUTION_TIMEOUT_ERROR_IMMEDIATE
+    /**
+     <p>
+Value for {@link #OPT_PLAY_ERROR_STATE_EXECUTION_TIMEOUT}.
+</p>
+<p>
+Throw an
+{@link de.qfs.apps.qftest.shared.exceptions.ExecutionTimeoutExpiredException}
+and stop the node immediately.
+</p>
+     */
+    VAL_PLAY_EXECUTION_TIMEOUT_EXCEPTION_IMMEDIATE
+    /**
+     <p>
+In case of an exceeding execution timeout, you can configure QF-Test's
+behavior for that case.
+</p>
+<p>
+Possible Values are:
+<li>{@link #VAL_PLAY_EXECUTION_TIMEOUT_WARNING}
+<li>{@link #VAL_PLAY_EXECUTION_TIMEOUT_ERROR} (default)
+<li>{@link #VAL_PLAY_EXECUTION_TIMEOUT_EXCEPTION}
+<li>{@link #VAL_PLAY_EXECUTION_TIMEOUT_WARNING_IMMEDIATE}
+<li>{@link #VAL_PLAY_EXECUTION_TIMEOUT_ERROR_IMMEDIATE}
+<li>{@link #VAL_PLAY_EXECUTION_TIMEOUT_EXCEPTION_IMMEDIATE}
+</p>
+
+@since 4.1.0
+@author mm
+     */
+    OPT_PLAY_ERROR_STATE_EXECUTION_TIMEOUT
+    /**
+     Timeout for SUT shutdown before killing it.
+
+@author gs
+     */
+    OPT_PLAY_KILL_PROCESS_TIMEOUT
+    /**
+     When terminating a process, kill its whole process tree.
+
+@author gs
+     */
+    OPT_PLAY_KILL_PROCESS_TREE
+    /**
+     This option limits the number of menu items for terminated clients that are
+kept in the "Clients menu.
+
+@author gs
+     */
+    OPT_PLAY_MAX_CLIENTS
+    /**
+     The maximum amount of text (in kilobyte) that the individual client terminal
+will hold. If the limit is exceeded, old text will be removed when new text
+arrives. A value of 0 means no limit.
+
+@since 3.0
+@author gs
+     */
+    OPT_PLAY_TERMINAL_SIZE
+    /**
+     This is a complex option which you should hopefully never care about. When an
+SUT client launches another process that itself connects to QF-Test, the new
+SUT client is identified by the name of the original SUT client with a ':'
+and a numeric ID appended. The first ID will always be 2, with increasing
+numbers for additional sub-processes.
+     */
+    OPT_PLAY_REUSE_SUT_IDS
+    /**
+     Mechanism for connecting to an SUT, based on Java agents. It is far more
+powerful and flexible than the older mechanisms and should not be turned off
+without a very good reason.
+
+@since 4.0
+@author gs
+     */
+    OPT_PLAY_CONNECT_VIA_AGENT
+    /**
+     Instrument the EventQueue class which has less impact on the SUT, handles
+border cases well and is preferable in almost all situations. In case of
+connection problems, the old mechanism can be used by turning off this
+option.
+
+@since 4.1
+@author gs
+     */
+    OPT_PLAY_INSTRUMENT_EVENT_QUEUE
+    /**
+     With this option activated there is no need to instrument standard JDKs/JREs
+in order to connect to an AWT/Swing SUT.
+
+@since 3.1.4
+@author gs
+     */
+    OPT_PLAY_IMPLICIT_INSTRUMENTATION
+    /**
+     Whether to prefer to connect to SWT without instrumentation.
+
+@author gs
+@since 4.5
+     */
+    OPT_PLAY_SWT_VIA_AGENT
+    /**
+     Which GTK version to prefer.
+
+@author gs
+@since 4.5
+     */
+    OPT_PLAY_SWT_PREFERRED_GTK_VERSION
+    /**
+     Whether to activate XSync if GTK2 is used.
+
+@author gs
+@since 4.5
+     */
+    OPT_PLAY_SWT_GTK2_XSYNC
+    /**
+     This option defines a default timeout for CheckStep nodes that have no
+timeout attribute set and that represent an actual check in the report
+instead of being used for test control flow, i.e. checks that don't throw an
+exception and don't set a result variable or that have a @report doctag.
+
+@author gs
+     */
+    OPT_PLAY_CHECK_TIMEOUT
+    /**
+     This option defines a default timeout for CheckStep nodes that have no
+timeout attribute set and that represent an actual check in the report
+instead of being used for test control flow, i.e. checks that don't throw an
+exception and don't set a result variable or that have a @report doctag.
+
+@author gs
+     */
+    OPT_WEB_PREPARE_IMAGE_CHECK_DELAY
+    /**
+     If this option is set, QF-Test will highlight the associated component in the
+SUT whenever a ComponentStep node or a node that references a ComponentStep
+is selected.
+
+@author mm
+     */
+    OPT_PLAY_HIGHLIGHT_COMPONENTS
+    /**
+     Whether expressions in BooleanVariableOptionEdit attributes should be evaluated (since 4.2) or
+just the boolean value should be read (pre 4.2).
+The expansion is actually right to evaluate expressions, but due to backward compatibility
+we might set this back to old behavior.
+
+@author mm
+@since 4.2
+     */
+    OPT_PLAY_DONT_EVALUATE_BOOLEAN_OPTIONS
+    /**
+     If this option is set, QF-Test will raise the suite after replay or when an error occurs and a dialog is shown.
+
+@author mm
+     */
+    OPT_PLAY_RAISE_SUITE_AFTER_REPLAY
+    /**
+     1
+     */
+    VAL_PLAY_SCRIPT_JYTHON_SAVE_ON_ERROR
+    /**
+     2
+     */
+    VAL_PLAY_SCRIPT_JYTHON_SAVE_IF_CHANGED
+    /**
+     3
+     */
+    VAL_PLAY_SCRIPT_JYTHON_SAVE_ALWAYS
+    /**
+     In interactive mode, Jython scripts being executed can get saved to a temporary file for debugging. By default
+this happens on error only. Alternatives are to save whenever the executed code changes (i.e. different scripts
+or edited script) or always to override the temp file even if changed in an outside editor.
+
+@author gs
+     */
+    OPT_PLAY_SCRIPT_JYTHON_SAVE
+    /**
+     Whether to append the QF-Test bin directory to PATH on SUT startup.
+
+@author gs
+@since 4.5
+     */
+    OPT_PLAY_ADD_QFTEST_BIN_DIR_TO_PATH
+    /**
+     Whether to append the bin directory of the Java program used for QF-Test to PATH on SUT startup.
+
+@author gs
+@since 4.5
+     */
+    OPT_PLAY_ADD_JRE_BIN_DIR_TO_PATH
+    /**
+     <p>
+Value for {@link #OPT_LOG_SHOW}.
+</p>
+This choice causes &qt; to open the run-log when it begins executing a test
+sequence.
+     */
+    VAL_SHOW_LOG_AT_START
+    /**
+     <p>
+Value for {@link #OPT_LOG_SHOW}.
+</p>
+With this choice the run-log is shown after replay is finished.
+     */
+    VAL_SHOW_LOG_AFTER_END
+    /**
+     <p>
+Value for {@link #OPT_LOG_SHOW}.
+</p>
+The run-log is shown only if an uncaught exception is thrown.
+     */
+    VAL_SHOW_LOG_ON_EXCEPTION
+    /**
+     <p>
+Value for {@link #OPT_LOG_SHOW}.
+</p>
+The run-log is not displayed automatically.
+     */
+    VAL_DONT_SHOW_LOG
+    /**
+     <p>
+Whether to save the log-file compressed or non-compressed format. This will
+change the file the extension to <code>.qrz</code> or <code>.qrl</code>.
+</p>
+
+@author gs
+     */
+    OPT_LOG_SAVE_COMPRESSED
+    /**
+     <p>
+By turning this option off you can temporarily
+disable support for split run-logs in order to get a normal, single run-log
+without having to modify any 'Name for separate run-log' attributes.
+</p>
+<p>
+See manual for further information about split
+run-logs.
+</p>
+@since 3.0
+@author gs
+     */
+    OPT_LOG_SAVE_SPLIT
+    /**
+     <p>
+This option determines the format in which split
+run-logs are created in interactive mode. It has no effect if the option
+'Automatically save run-logs (User)' is turned off.
+</p>
+<p>
+See manual for further information about split
+run-logs.
+</p>
+
+@since 3.0
+@author gs
+     */
+    OPT_LOG_SAVE_SPLIT_ZIP
+    /**
+     <p>
+When execution of a Test case or Test set has finished and the approximate
+size of the run-log pertaining to that node is larger than the threshold
+specified in this option, the run-log is split off and saved automatically. A
+value of 0 prevents automatic splitting.
+</p>
+<p>
+See manual for further information about split
+run-logs.
+</p>
+
+@since 3.4
+@author gs
+     */
+    OPT_LOG_AUTO_SPLIT_SIZE
+    /**
+     <p>
+This option specifies the name to use for an external log when it is split
+off automatically after execution of a Test case has finished as described
+in the previous option. Variables can be used as well as the '%...'
+placeholders documented for the attribute 'Name for separate run-log'.
+</p>
+<p>
+See manual for further information about split
+run-logs.
+</p>
+@since 3.4
+@author mm
+     */
+    OPT_LOG_AUTO_SPLIT_TESTCASE_NAME
+    /**
+     <p>
+This option specifies the name to use for an external log when it is split
+off automatically after execution of a Test set has finished. Variables can be used
+as well as the '%...' placeholders.
+</p>
+<p>
+See manual for further information about split
+run-logs.
+</p>
+
+@since 3.4
+@author mm
+     */
+    OPT_LOG_AUTO_SPLIT_TESTSET_NAME
+    /**
+     Whether to limit the characters for the file name of a split log to 7 bit to avoid cross-platform-mount issues.
+
+@since 5.2.2
+@author gs
+     */
+    OPT_LOG_SPLIT_FILE_NAME_LIMIT_7_BIT
+    /**
+     <p>
+If this option is activated, every variable
+expansion is logged.
+</p>
+
+@author gs
+     */
+    OPT_LOG_CONTENT_VARIABLE_EXPANSION
+    /**
+     <p>
+Setting this option will cause all direct and indirect parent nodes to be
+logged in addition to the target component node for every event, check, etc.
+</p>
+
+@author gs
+     */
+    OPT_LOG_CONTENT_PARENT_COMPONENTS
+    /**
+     <p>
+If this option is activated, the actual html sourcecode is logged into event log.
+</p>
+
+@author fs
+     */
+    OPT_WEB_LOG_HTML_STRUCTURE
+    /**
+     Value for {@link #OPT_LOG_CONTENT_SUT_LEVEL}.
+     */
+    VAL_LOG_SUT_LEVEL_MESSAGE
+    /**
+     Value for {@link #OPT_LOG_CONTENT_SUT_LEVEL}.
+     */
+    VAL_LOG_SUT_LEVEL_WARNING
+    /**
+     Value for {@link #OPT_LOG_CONTENT_SUT_LEVEL}.
+     */
+    VAL_LOG_SUT_LEVEL_ERROR
+    /**
+     Log level for the SUT
+<p>
+The  level  for  automatically  generated  messages  in  the  SUT  during  replay,  e.g.
+details for component recognition. Only messages with the respective level, i.e.
+plain messages, warnings or errors will be logged.
+<p>
+Possible Values are:
+<li> {@link #VAL_LOG_SUT_LEVEL_MESSAGE}
+<li> {@link #VAL_LOG_SUT_LEVEL_WARNING} (default)
+<li> {@link #VAL_LOG_SUT_LEVEL_ERROR}
+     */
+    OPT_LOG_CONTENT_SUT_LEVEL
+    /**
+     <p>
+This option determines the number of recent internal events to keep. Setting
+it to 0 disables the feature altogether.
+</p>
+
+@author gs
+     */
+    OPT_LOG_CONTENT_DIAGNOSIS
+    /**
+     <p>
+The maximum number of screenshots that QF-Test takes and stores in the
+run-log during a test-run on situations of exception or errors. Setting this
+value to 0 disables taking screenshots entirely, a negative value means
+unlimited screenshots.
+</p>
+
+@author gs
+     */
+    OPT_LOG_CONTENT_SCREENSHOT_MAX
+    /**
+     <p>
+If this option is set, each partial log of a split run-log may contain the
+maximum number of screenshots defined above without affecting the count for
+the main run-log. Otherwise the limit applies for the sum of all parts
+belonging to the same main run-log.
+</p>
+
+@author gs
+     */
+    OPT_LOG_CONTENT_SCREENSHOT_PER_SPLIT_LOG
+    /**
+     <p>
+Activating this option causes QF-Test to take an image of the whole screen
+and save it in the run-log when a screenshot is triggered by an exception or
+error.
+</p>
+
+@author gs
+     */
+    OPT_LOG_CONTENT_SCREENSHOT_FULLSCREEN
+    /**
+     <p>
+Activating this option causes QF-Test to take whole-screen images only from desktops
+where SUT or QF-Test windows are shown.
+</p>
+
+@author gs
+@since  5.3
+     */
+    OPT_LOG_CONTENT_SCREENSHOT_RELEVANT_ONLY
+    /**
+     <p>
+Activating this option causes QF-Test to record images of all windows and
+dialogs of the SUT and store them in the run-log when screenshots are
+triggered due to exceptions or errors.
+</p>
+
+@author gs
+     */
+    OPT_LOG_CONTENT_SCREENSHOT_WINDOW
+    /**
+     <p>
+If this option is activated, QF-Test will store the expected and actual
+images as well as the transformed images for successful advanced image checks
+in the run-log. Otherwise these details are kept for failed image checks
+only.
+</p>
+
+@since 3.4
+@author gs
+     */
+    OPT_LOG_CONTENT_SCREENSHOT_ADVANCED_ALWAYS
+    /**
+     <p>
+If this option is activated, QF-Test will store new images in test-suites
+and run-logs compressed by the webp image algorithm. This decreases the
+file size and the memory required for QF-Test at the cost of a certain
+delay when images are compressed/decompressed.
+</p>
+
+@since 4.4
+@author pb
+     */
+    OPT_LOG_CONTENT_COMPRESS_SCREENSHOTS
+    /**
+     <p>
+If this option is activated, QF-Test will compress screenshots in parallel
+</p>
+
+@since 4.6.0
+@author pb
+     */
+    OPT_LOG_CONTENT_COMPRESS_SCREENSHOTS_PARALLEL
+    /**
+     <p>
+If this option is activated screenshots of every client window are logged,
+even if the error does not come from the client context.
+</p>
+
+@since 4.3.0
+@author ys, tl
+     */
+    OPT_LOG_CONTENT_SCREENSHOT_ALL_WINDOWS
+    /**
+     <p>
+If set to true, not only for errors and exceptions, but also for warnings screenshots
+are logged in the run-log and report
+</p>
+
+@since 6.0
+     */
+    OPT_LOG_CONTENT_WARNING_SCREENSHOTS
+    /**
+     Create compact run-log
+     */
+    OPT_LOG_CONTENT_COMPACT
+    /**
+     Don't create run-log. In batch mode this option is ignored.
+     */
+    OPT_LOG_CONTENT_SUPPRESS
+    /**
+     Whether to show suite change icons in the run-log tree.
+
+@since 5.3
+@author gs
+     */
+    OPT_LOG_SHOW_SUITE_CHANGE_ICON
+    /**
+     Whether to show dirstat like duration bars.
+
+@since 5.3
+@author gs
+     */
+    OPT_LOG_DURATION_INDICATORS
+    /**
+     1
+     */
+    VAL_LOG_DURATION_INDICATORS_KIND_DURATION
+    /**
+     2
+     */
+    VAL_LOG_DURATION_INDICATORS_KIND_REALTIME
+    /**
+     3
+     */
+    VAL_LOG_DURATION_INDICATORS_KIND_BOTH
+    /**
+     How to show dirstat like duration bars.
+
+@since 6.0
+@author gs
+     */
+    OPT_LOG_DURATION_INDICATORS_KIND
+    /**
+     Whether to show tooltips for dirstat like duration bars.
+
+@since 5.3
+@author gs
+     */
+    OPT_LOG_DURATION_INDICATORS_TOOLTIPS
+    /**
+     Output from an SUT client tends to accumulate and can consume a lot of
+memory. If this option is activated, individually logged SUT output for
+events that are no longer of interest can be removed along with the events in
+compact run-logs.
+
+@since 3.0
+@author gs
+     */
+    OPT_LOG_CONTENT_COMPACTIFY_SPLIT_IO
+    /**
+     Whether to activate line wrap in exception messages
+
+@since 5.3
+@author gs
+     */
+    OPT_LOG_WRAP_EXCEPTION_MESSAGE
+    /**
+     Whether to treat empty nodes in the log as leaves.
+
+@since 5.3
+@author gs
+     */
+    OPT_LOG_HIDE_EXPANDER_FOR_EMPTY_NODES
+    /**
+     <p>
+On Windows or macOS systems the native file chooser is more advanced and more
+convenient to use than the Swing file chooser so QF-Test uses the native one
+by default. In case you prefer the Swing file chooser you can get it back by
+deactivating this option.
+</p>
+
+@since 3.5
+@author fs
+     */
+    OPT_USE_NATIVE_FILECHOOSER
+    /**
+     Whether trees should paint lines
+
+@author gs
+@since 5.3
+     */
+    OPT_TREE_PAINT_LINES
+    /**
+     <p>
+When a set of variable bindings is pushed onto a variable stack, any
+additional variable references in the values of these variables can either be
+expanded immediately, or the values can be left unchanged to be expanded
+lazily as needed.
+</p>
+
+@since 3.0
+@author gs
+     */
+    OPT_VARIABLE_IMMEDIATE_BINDING
+    /**
+     <p>
+If this option is activated, variables that cannot be
+bound immediately due to references to not-yet-defined variables are bound
+lazily instead and a warning is issued.
+</p>
+
+@since 3.0
+@author gs
+     */
+    OPT_VARIABLE_LAZY_FALLBACK
+    /**
+     Default license timeout when running daemon in normal mode that allocates licenses when creating a RunContext.
+     */
+    VAL_DAEMON_LICENSE_TIMEOUT_RUNCONTEXT
+    /**
+     Default license timeout when running daemon in on-demand mode that allocates licenses when starting a test.
+     */
+    VAL_DAEMON_LICENSE_TIMEOUT_ONDEMAND
+    /**
+     Android replay options.
+     */
+    VAL_ANDROID_REPLAY_INTELLIGENT
+    /**
+     1
+     */
+    VAL_ANDROID_REPLAY_ADB
+    /**
+     2
+     */
+    VAL_ANDROID_REPLAY_TELNET
+    /**
+     3
+     */
+    VAL_ANDROID_REPLAY_CONNECTION
+    
+    /** Sets an option to a given value on the default level */
+    setOption(name, value)
+    /**
+     * Test whether an option has been set at script level.
+     * @param name The name of the option to test as defined in the 'Options' class.
+     * @return True if the option has been set, false otherwise
+     */
+    isOptionSet(name)
+    /** Unsets an option */
+    unsetOption(name)
+    /**
+     * Returns an option's value or the option's default value, if the value is null
+     * <p>
+     * Throws an Exception if the default value of the object cannot be determined
+     */
+    getValue(optionName)
+    /** Returns an option's value, or def, if the option is not set */
+    getValue(optionName, def)
+    /**
+     * Returns an option's value as boolean, or the option's default value, if the value is null or not a Boolean.
+     * <p>
+     * Throws an Exception if the default value of the object cannot be cast to a boolean
+     */
+    getBoolean(optionName)
+    /** Returns an option's value as boolean, or def if the option is not set, null or not Boolean */
+    getBoolean(optionName, def)
+    /** Returns the Keystroke from a KeyOption */
+    getKeyStroke(optionName)
+    /** Returns the Keystroke from a KeyOption as String */
+    getKeyStrokeAsString(optionName)
+    /**
+     * Returns an option's value as String, or the option's default value, if the value is null or not a String.
+     * <p>
+     * Throws an Exception if the default value of the object cannot be cast to a String
+     */
+    getString(optionName)
+    /** Returns an option's value as String, or def if the option is not set, null or not String */
+    getString(optionName, def)
+    /**
+     * Returns an option's value as int, or the option's default value, if the value is null or not an Integer.
+     * <p>
+     * Throws an Exception if the default value of the object cannot be cast to an int
+     */
+    getInt(optionName)
+    /** Returns an option's value as int, or def if the option is not set, null or not Integer */
+    getInt(optionName, def)
+    /**
+     * Returns an option's value as File or the option's default value, if the value is null or not a File.
+     * <p>
+     * Throws an Exception if the default value of the object cannot be cast to a File
+     */
+    getFile(optionName)
+    /** Returns an option's value as File, or def if the option is not set, null or not File */
+    getFile(optionName, def)
+    /**
+     * Returns the file type of a FileOption
+     * <p>
+     * Throws an Exception if the option is null or not a FileOption
+     */
+    getFileType(optionName)
+    /** Returns the file type of a FileOption or or def if the option is null or not a FileOption */
+    getFileType(optionName, def)
+    /**
+     * Returns an option's value as Enum or the option's default value, if the value is null or not a Enum.
+     * <p>
+     * Throws an Exception if the default value of the object cannot be cast to a Enum
+     */
+    getEnum(optionName)
+    /** Returns an option's value as Enum, or def if the option is not set, null or not Enum */
+    getEnum(optionName, def)
+    /**
+     * Test whether a special option (StringSet, StringMap...) contains a given key
+     * 
+     * @param   optionName      The name of the option.
+     * @param   key             The key to look for.
+     * 
+     * @return  True if the option is special and contains the key, false otherwise.
+     */
+    contains(optionName, key)
+    /**
+     * Get the value for a given key from a StringMapOption.
+     * 
+     * @param   optionName      The name of the option.
+     * @param   key             The key to look for.
+     * 
+     * @return  The value if the key is defined, the default value of the option otherwise.
+     */
+    getValueForKey(optionName, key)
+    /** */
+    getKeys(optionName)
+    /** */
+    getDefaultKeyValue(optionName)
+    /** */
+    setValue(optionName, key, value)
+    /** */
+    removeKey(optionName, key)
+}

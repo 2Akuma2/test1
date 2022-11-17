@@ -1,0 +1,1502 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>
+          Implementierung eigener Unterelemente mit dem ItemResolver Interface
+        </title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_itemresolvers"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_resolverregistry.html#sec_ResolverRegistry"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 50.3&nbsp;Die ResolverRegistry" title="Vorheriges Kapitel: 50.3&nbsp;Die ResolverRegistry"></a></td><td class="navicon"><a href="tech_checkers.html#sec_checkers"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 50.5&nbsp;
+          Implementierung eigener Checks mit dem Checker Interface
+        " title="N&auml;chste Seite: 50.5&nbsp;
+          Implementierung eigener Checks mit dem Checker Interface
+        "></a></td><td class="navicon"><a href="tech_checkers.html#sec_checkers"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 50.5&nbsp;
+          Implementierung eigener Checks mit dem Checker Interface
+        " title="N&auml;chstes Kapitel: 50.5&nbsp;
+          Implementierung eigener Checks mit dem Checker Interface
+        "></a></td><td class="navicon"><a href="tech_extensions.html#sec_extensions"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 50&nbsp;APIs f&uuml;r Erweiterungen" title="Kapitel-&Uuml;bersicht: 50&nbsp;APIs f&uuml;r Erweiterungen"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="margin"><a name="new_N177950"></a><span class="note">3.1+</span></span><span class="numtitle"><a href="contents.html#toc_sec_itemresolvers">50.4</a></span>
+</div>
+<a href="contents.html#toc_sec_itemresolvers">
+          Implementierung eigener Unterelemente mit dem <code>ItemResolver</code> Interface
+        </a>
+</h4>
+        
+
+        
+<p>
+          Wie in <a href="user_subitems.html#usec_subitems">Abschnitt 5.9</a> beschrieben, ist QF-Test in der Lage, jenseits
+          der Struktur von GUI Elementen mit Unterelementen zu arbeiten, die selbst keine GUI
+          Elemente sind, z.B. die Zellen einer Tabelle, Knoten in einem Baum oder Zeichnungen auf
+          einem Canvas. Solche Unterelemente werden mit Hilfe des <code>ItemResolver</code>
+          Mechanismus implementiert, &uuml;ber den Sie auch Ihre eigenen spezifischen Unterelemente
+          erstellen k&ouml;nnen.
+        </p>
+        
+<p>
+          Das <code>ItemResolver</code> Interface ist deutlich komplexer als die einfachen
+          <code>NameResolver2</code> oder <code>FeatureResolver2</code> Interfaces aus dem
+          vorhergehenden Abschnitt und es kann nicht ohne gute Programmierkenntnisse und
+          Verst&auml;ndnis der zu Grunde liegenden Konzepte implementiert werden. Au&szlig;erdem sind
+          <code>ItemResolver</code> und die im n&auml;chsten Abschnitt beschriebenen
+          <code>Checker</code> eng miteinander verkn&uuml;pft und sollten gemeinsam implementiert
+          werden, wenn Sie Ihre Unterelemente auch &uuml;berpr&uuml;fen k&ouml;nnen wollen.
+        </p>
+        
+<p>
+          Lassen Sie sich davon aber nicht abschrecken, denn andererseits ist dieser Mechanismus
+          sehr m&auml;chtig und wenn Ihre <code>ItemResolver</code> erst einmal implementiert und
+          registriert sind, integrieren sie sich so nahtlos in QF-Test, dass kein Unterschied
+          zwischen standard und nicht-standard Unterelementen zu erkennen ist.
+        </p>
+    
+<p>
+      Sie finden im Verzeichnis
+      <code>qftest-6.0.3/Jython/Lib</code> unter QF-Tests
+      Wurzelverzeichnis einige Beispielimplementierungen, wie <code>ktable.py</code>
+     oder <code>gef.py</code>. Beide Resolver sind zwar f&uuml;r SWT
+      spezifische Tabellen, das Konzept allerdings ist bei allen Engines
+      das gleiche.
+    </p>
+
+        
+        
+
+        
+<a name="sec_N178010"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N178010">50.4.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N178010"><code>ItemResolver</code> Konzepte</a>
+</h5>
+          
+<p>
+            Bevor Sie mit der Umsetzung eines <code>ItemResolvers</code> beginnen k&ouml;nnen, m&uuml;ssen
+            Sie sich &uuml;ber die Art der Unterelemente klar werden, die Ihr GUI Element enthalten
+            kann. Es k&ouml;nnte mehr als eine Art geben, so dass diese Entscheidung willk&uuml;rlich ist.
+            So haben wir z.B. Unterelemente f&uuml;r Swing, SWT und JavaFX Tabellen so implementiert, dass
+            sowohl einzelne Zellen, als auch ganze Spalten als Unterelemente unterst&uuml;tzt werden.
+            Letzteres ist sehr hilfreich, weil damit Checks f&uuml;r komplette Spalten m&ouml;glich sind.
+          </p>
+          
+<p>
+            Als n&auml;chstes m&uuml;ssen Sie entscheiden, wie Sie die Unterelemente intern darstellen
+            wollen. Sie k&ouml;nnen jede Art von <code>Object</code> verwenden, da QF-Test niemals auf
+            Ihre interne Repr&auml;sentation zugreift, sondern diese lediglich zwischen den Methoden
+            Ihres <code>ItemResolvers</code> hin und her reicht. Was am besten funktioniert, h&auml;ngt
+            von der API des GUI Elements ab. Wenn dieses bereits ein Konzept f&uuml;r Unterelemente
+            bietet, ist es vermutlich am besten, diese Klassen zu verwenden.
+          </p>
+          
+<p>
+            Die wichtigste Entscheidung ist, wie Sie ein Unterelement gegen&uuml;ber QF-Test
+            repr&auml;sentieren. Wie in <a href="user_subitems.html#usec_subitems">Abschnitt 5.9</a> beschrieben, kann der Anwender
+            ein Unterelement &uuml;ber einen numerischen oder einen textuellen Index adressieren, wobei
+            letzterer auch ein regul&auml;rer Ausdruck (vgl. <a href="tech_regexp.html#sec_regexp">Abschnitt 45.3</a>)
+            sein kann. Sie m&uuml;ssen also zwischen einem
+            Unterelement und seinem Index (oder seinen Indizes) eine bidirektionale Abbildung
+            erm&ouml;glichen, d.h. Sie m&uuml;ssen folgende Fragen beantworten k&ouml;nnen:
+          </p>
+          
+<ul>
+            
+<li>
+              Was ist der numerische und was der textuelle Index f&uuml;r ein gegebenes Unterelement?
+            </li>
+            
+<li>
+              Welches Unterelement passt am besten zu einem gegebenen numerischen oder textuellen
+              Index?
+            </li>
+          
+</ul>
+          
+<p>
+            Die Kernpunkte bei der Vergabe von Namen f&uuml;r Unterelemente sind die gleichen wie bei
+            normalen GUI Elementen. Arbeiten Sie hierzu bitte <a href="usec_components_name.html#usec_components_identifier">Abschnitt 5.4.2.1</a> und
+            <a href="usec_components_name.html#usec_howtosetname">Abschnitt 5.4.2.2</a> gr&uuml;ndlich durch bevor Sie fortfahren.
+          </p>
+          
+<p>
+            Ein einzelner numerischer oder textueller Index wird durch ein
+            <code>SubItemIndex</code> Objekt repr&auml;sentiert. Das aktuelle Konzept unterst&uuml;tzt die
+            Adressierung eines Unterelements mittels eines prim&auml;ren und eines sekund&auml;ren Index. In
+            der Zukunft hoffen wir, Indizes mit beliebiger Tiefe behandeln zu k&ouml;nnen, so dass ein
+            Knoten in einem Baum statt &uuml;ber einen einzelnen Pfad auch &uuml;ber einen gemischten Index
+            wie "tree@Root&amp;1%Name:.*" angesprochen werden k&ouml;nnte. Daher ist der gesamte Index
+            ein Array von <code>SubItemIndex</code> Objekten, auch wenn dessen L&auml;nge aktuell auf
+            ein oder zwei Objekte beschr&auml;nkt ist.
+          </p>
+          
+<p>
+            Die meisten Unterelemente haben eine Geometrie, also eine Position und eine Gr&ouml;&szlig;e.
+            Die Koordinaten eines Unterelements beziehen sich immer auf die obere linke Ecke des
+            GUI Elements, zu dem sie geh&ouml;ren, unabh&auml;ngig davon, ob dieses gescrollt wird. Dadurch
+            h&auml;ngen die Koordinaten nicht von der aktuellen Scrollposition ab. F&uuml;r Unterelemente,
+            f&uuml;r die Geometrie keinen Sinn macht oder nicht ermittelt werden kann, k&ouml;nnen
+            Koordinaten ignoriert werden und die Methoden <code>getItemLocation</code>
+            und <code>getItemSize</code> sollten einfach [0,0] zur&uuml;ckliefern.
+          </p>
+        
+
+        
+        
+
+        
+<a name="sec_N178083"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N178083">50.4.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N178083">Das <code class="interfacedef">ItemResolver</code> Interface</a>
+</h5>
+          
+<p>
+            Die Methoden des Interface
+            <code>de.qfs.apps.qftest.extensions.items.ItemResolver</code> teilen sich in drei
+            Kategorien auf: Erkennen eines Unterelements, die Beziehung zwischen einem
+            Unterelement und seinem Index und dem Auslesen von Informationen aus bzw. Ausf&uuml;hren
+            von Aktionen auf einem Unterelement.
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Object getItem(Object element, int x, int y)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert ein Unterelement f&uuml;r ein GUI Element an einer bestimmten Position. F&uuml;r
+                Unterelemente ohne Geometrie k&ouml;nnen die Koordinaten ignoriert und das Unterelement
+                aufgrund von anderen Eigenschaften bestimmt werden, z.B. anhand der Selektion.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">Das GUI Element, dessen Unterelement bestimmt werden soll.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>x</code></strong></td><td class="paramdesc">Die X Koordinate relativ zum GUI Element.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>y</code></strong></td><td class="paramdesc">Die Y Koordinate relativ zum GUI Element.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Ein beliebiges Objekt, welches das Unterelement repr&auml;sentiert, oder null falls es
+                kein Unterelement an der angegebenen Stelle gibt.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int getItemCount(Object element, Object item)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert die Anzahl der Unterelemente des GUI Elements auf der jeweils n&auml;chsten
+                Ebene. Diese Methode wird aktuell zwar nicht verwendet, sollte
+                aber wenn m&ouml;glich korrekt implementiert werden. In der Zukunft k&ouml;nnte dies z.B.
+                f&uuml;r einen 'Anzahl auslesen' Knoten analog zu <a href="queries.html#step_FetchIndexStep" shape="rect">'Index auslesen'</a> oder
+                <a href="queries.html#step_FetchTextStep" shape="rect">'Text auslesen'</a> genutzt werden.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">Das GUI Element, f&uuml;r das die Zahl der Unterelemente
+              ermittelt werden soll.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>item</code></strong></td><td class="paramdesc">
+                Null um die Anzahl der Unterelemente auf oberster Ebene zu erhalten, ein
+                Unterelement um die Anzahl von dessen Unterelementen der n&auml;chsten Ebene zu
+                ermitteln.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Die Anzahl von Unterelementen oder -1 falls es keine weitere Ebene gibt.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Object getItemForIndex(Object element, SubItemIndex[] idx)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert ein Unterelement zu einem gegebenen Index.<br>
+                
+<span class="margin"><a name="new_N178176"></a><span class="note">4.0+</span></span>
+                Am Ende dieser Prozedur ist ggf. ein Aufruf von <code>setIndexesResolved</code>
+                notwendig, falls mehr als ein Index aufgel&ouml;st wurde.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">Das GUI Element, dessen Unterelement bestimmt werden soll.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>idx</code></strong></td><td class="paramdesc">Der Index oder die Indizes f&uuml;r das Unterelement.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Das Unterelement, das dem Index am besten entspricht.</td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>IndexNotFoundException</code></strong></td><td class="throwdesc">
+                Falls kein Unterelement zum angegebenen Index passt. Verwenden Sie f&uuml;r diesen Fall
+                den Konstruktor
+                
+                 
+               <code>de.qfs.apps.qftest.shared.exceptions.IndexNotFoundException(SubItemIndex)</code>.
+                
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>SubItemIndex[] getItemIndex(Object element, Object item, int type)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert den/die <code>SubItemIndex(es)</code> f&uuml;r ein Unterelement eines GUI Elements.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">Das GUI Element, zu dem das Unterelement geh&ouml;rt.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>item</code></strong></td><td class="paramdesc">Das Unterelement dessen Index ermittelt werden soll.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>type</code></strong></td><td class="paramdesc">
+                Die Art des zu bestimmenden Index. M&ouml;gliche Werte sind <code>INTELLIGENT</code>,
+                <code>AS_STRING</code> und <code>AS_NUMBER</code>, alle in der Klasse
+                <code>SubItemIndex</code> definiert. Sofern nicht nur eine Art von Index
+                unterst&uuml;tzt wird, sollte ein textueller Index f&uuml;r <code>AS_STRING</code> und ein
+                numerischer Index f&uuml;r <code>AS_NUMBER</code> geliefert werden. Beim Typ
+                <code>INTELLIGENT</code> k&ouml;nnen Sie frei entscheiden, welcher Art von Index das
+                Unterelement am besten repr&auml;sentiert. Auch ein gemischter Index ist m&ouml;glich, z.B.
+                ein Spaltentitel plus numerischer Zeilenindex f&uuml;r eine Zelle in einer Tabelle.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Ein Array von <code>SutItemIndex</code> Objekten. Aktuell sind nur Arrays mit
+                einem oder zwei Elementen erlaubt.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int[] getItemLocation(Object element, Object item)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert die Position eines Unterelements relativ zum GUI Element.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">Das GUI Element, zu dem das Unterelement geh&ouml;rt.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>item</code></strong></td><td class="paramdesc">Das Unterelement dessen Position ermittelt werden soll.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Die Position des Unterelements als int Array der Form [X,Y]. Die Position muss
+                immer relativ zur oberen linken Ecke des GUI Elements sein, auch wenn diese Ecke
+                aktuell nicht sichtbar ist, z.B. wenn das GUI Element gescrollt wird. F&uuml;r
+                Unterelemente ohne Geometrie liefern Sie einfach [0,0].
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int[] getItemSize(Object element, Object item)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Liefert die Gr&ouml;&szlig;e eines Unterelements relativ zum GUI Element.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">Das GUI Element, zu dem das Unterelement geh&ouml;rt.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>item</code></strong></td><td class="paramdesc">Das Unterelement dessen Gr&ouml;&szlig;e ermittelt werden soll.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Die Gr&ouml;&szlig;e des Unterelements als int Array der Form [Breite,H&ouml;he]. F&uuml;r
+                Unterelemente ohne Geometrie liefern Sie einfach [0,0].
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getItemValue(Object element, Object item)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert den Wert eines Unterelements f&uuml;r einen Text-Check.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">Das GUI Element, zu dem das Unterelement geh&ouml;rt.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>item</code></strong></td><td class="paramdesc">Das Unterelement dessen Wert ermittelt werden soll.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Ein String entsprechend dem Wert des Unterelements, sein Inhalt, Label, etc.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Boolean repositionMouseEvent(Object element, Object item, int[] pos)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                &Auml;ndert die Koordinaten eines Mausevents auf ein Unterelement eines GUI Elements zu
+                einer standard Position, &uuml;blicherweise die Mitte der Komponente, sofern die
+                Koordinaten bei der Wiedergabe keine Rolle spielen. Diese Methode wird nur
+                aufgerufen, wenn die Option <a href="opt_record.html#opt_repositionmouseevents">
+              Mausevents ohne Koordinaten aufnehmen wo m&ouml;glich
+            </a> aktiviert
+                ist. Ob es sicher ist, die Koordinaten zu &uuml;berschreiben, kann von den
+                urspr&uuml;nglichen Koordinaten abh&auml;ngen. So &auml;ndert QF-Test z.B. die Koordinaten f&uuml;r
+                Events auf einen Baumknoten ab, sofern diese positiv sind und damit in den Knoten
+                zeigen. Negative Koordinaten k&ouml;nnten einen Klick auf den Schalter zum
+                Ein-/Ausklappen bedeuten und bleiben unver&auml;ndert.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">Das GUI Element, zu dem das Unterelement geh&ouml;rt.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>item</code></strong></td><td class="paramdesc">Das Ziel-Unterelement f&uuml;r den Event.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>pos</code></strong></td><td class="paramdesc">
+                Die Koordinaten des Events als int Array der Form [X,Y]. Die Werte k&ouml;nnen direkt
+                im Array manipuliert werden. Sie k&ouml;nnen entweder gezielt Koordinaten f&uuml;r einen
+                bestimmten Punkt angeben oder [Integer.MAX_VALUE,Integer.MAX_VALUE] um die
+                Koordinaten zu ignorieren, so dass der Event sp&auml;ter auf die Mitte abgespielt wird.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Boolean.TRUE falls die Position ge&auml;ndert wurde, Boolean.FALSE falls die Position
+                nicht ge&auml;ndert wurde. Null um zu signalisieren, dass dieser Resolver das Element
+                nicht behandelt.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>BadItemException</code></strong></td><td class="throwdesc">
+                Falls das Element und der Item Typ nicht zusammen passen (sollte niemals passieren).
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Boolean scrollItemVisible(Object element, Object item, int x, int y)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Scrollt ein GUI Element so, dass ein Unterelement sichtbar wird. Wenn m&ouml;glich
+                sollte das Unterelement komplett sichtbar gemacht werden. Falls es nicht in den
+                sichtbaren Bereich passt, sollte zumindest die angegebene Position dargestellt
+                werden. In den meisten F&auml;llen k&ouml;nnen Sie einfach null zur&uuml;ckgeben und QF-Test das
+                Scrollen selbst &uuml;berlassen. Manchmal kann Scrollen allerdings nicht generisch
+                implementiert werden, z.B. bei SWT Tabellen mit sichtbarem Header. F&uuml;r GUI
+                Elemente, die Scrollen gar nicht unterst&uuml;tzen, liefern Sie einfach Boolean.FALSE.
+                Wird Boolean.TRUE geliefert, ruft QF-Test die Methode nach kurzer Zeit ein weiteres
+                mal auf, da SWT nicht immer die gew&uuml;nschte Position &uuml;bernimmt. Im Idealfall sollte
+                die Position dann stimmen und FALSE geliefert werden. Nach drei Versuchen mit TRUE
+                gibt QF-Test aus und melden einen Fehler.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">Das GUI Element, zu dem das Unterelement geh&ouml;rt.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>item</code></strong></td><td class="paramdesc">Das Unterelement, das sichtbar gemacht werden soll.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>x</code></strong></td><td class="paramdesc">
+                Die X-Koordinate relativ zum Unterelement, die in jedem Fall sichtbar sein muss.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>y</code></strong></td><td class="paramdesc">
+                Die Y-Koordinate relativ zum Unterelement, die in jedem Fall sichtbar sein muss.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Boolean.TRUE falls die Scroll-Position des GUI Elements ver&auml;ndert wurde,
+                Boolean.FALSE falls die Scroll-Position unver&auml;ndert ist oder nicht gescrollt
+                werden kann. Null um zu signalisieren, dass QF-Test das GUI Element selbst scrollen
+                soll.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setIndexesResolved(int num)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Informiert die Registry &uuml;ber die Anzahl der w&auml;hrend der Indexbestimmung in
+                <code>getItemForIndex</code> aufgel&ouml;sten Indizes. Wird diese Methode am Ende von
+                <code>getItemForIndex</code> nicht aufgerufen, geht die Registry von einem
+                Index aus.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>num</code></strong></td><td class="paramdesc">
+                Die Anzahl der aufgel&ouml;sten Indizes.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+
+        
+        
+
+        
+<a name="sec_N178430"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N178430">50.4.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N178430">Die Klasse <code class="classdef">SubItemIndex</code></a>
+</h5>
+          
+<p>
+            Wie im vorhergehenden Abschnitt erkl&auml;rt, repr&auml;sentiert ein
+            <code>de.qfs.apps.qftest.shared.data.SubItemIndex</code> einen (partiellen) Index f&uuml;r
+            ein Unterelement eines GUI Elements. Diese Klasse definiert einige Konstanten mit
+            folgender Bedeutung:
+          </p>
+          
+<dl>
+            
+<dt>STRING</dt>
+            
+<dd>Dies ist ein textueller Index</dd>
+            
+<dt>NUMBER</dt>
+            
+<dd>Dies ist ein numerischer Index</dd>
+            
+<dt>REGEXP</dt>
+            
+<dd>Dies ist ein regul&auml;rer Ausdruck (vgl. <a href="tech_regexp.html#sec_regexp">Abschnitt 45.3</a>), passend zu einem textuellen Index</dd>
+            
+<dt>INTELLIGENT</dt>
+            
+<dd>Ermittle den Typ von Index, der am besten zum Unterelement passt</dd>
+            
+<dt>AS_STRING</dt>
+            
+<dd>Ermittle einen textuellen Index</dd>
+            
+<dt>AS_NUMBER</dt>
+            
+<dd>Ermittle einen numerischen Index</dd>
+          
+</dl>
+          
+<p>
+            Sie stellt au&szlig;erdem folgende Methoden bereit:
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>SubItemIndex SubItemIndex(String index)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Erstellt einen neuen <code>SubItemIndex</code> vom Typ <code>STRING</code>.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>index</code></strong></td><td class="paramdesc">Der textuelle Index.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>SubItemIndex SubItemIndex(int index)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Erstellt einen neuen <code>SubItemIndex</code> vom Typ <code>NUMBER</code>.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>index</code></strong></td><td class="paramdesc">Der numerische Index.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int asNumber()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert den Index als Zahl.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Der numerische Index.</td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>IndexFormatException</code></strong></td><td class="throwdesc">
+                Falls der Index nicht vom Typ <code>NUMBER</code> ist oder nicht als Integer
+                geparst werden kann.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getIndex()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert den Index als String.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Der Index, konvertiert in einen String.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getType()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert den Typ des Index.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Der Typ des Index, <code>STRING</code>, <code>NUMBER</code> oder
+                <code>REGEXP</code>.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>boolean matches(String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Pr&uuml;ft, ob der Index zum Namen eines Unterelements passt.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">Der zu pr&uuml;fende Name.</td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                True falls der Index nicht numerisch ist und zum angegebenen Namen passt.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="throws"><strong>Exceptions</strong></td>
+</tr>
+<tr>
+<td class="throwname"><strong><code>IndexFormatException</code></strong></td><td class="throwdesc">
+                Falls der Index einen ung&uuml;ltigen regul&auml;ren Ausdruck enth&auml;lt.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+
+        
+        
+
+        
+<a name="sec_itemregistry"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_itemregistry">50.4.4</a></span>
+</div>
+<a href="contents.html#toc_sec_itemregistry">Die <code class="classdef">ItemRegistry</code></a>
+</h5>
+          
+<p>
+            Wenn Ihr <code>ItemResolver</code> implementiert und instanziiert ist, muss er bei der
+            <code>ItemRegistry</code> registriert werden. Die Klasse
+            <code>de.qfs.apps.qftest.extensions.items.ItemRegistry</code> bietet hierzu folgende
+            Methoden:
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>static ItemRegistry instance()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Es gibt immer nur ein einziges <code>ItemRegistry</code> Objekt und diese Methode
+                ist der einzige Weg, Zugriff auf diese Singleton Instanz erlangen.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">Die <code>ItemRegistry</code> Singleton Instanz.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void registerItemNameResolver2(Object element, ItemNameResolver2 resolver)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Registriert einen <code>ItemNameResolver2</code> f&uuml;r ein spezifisches GUI Element. Der
+                Resolver beeintr&auml;chtigt nicht die Garbage Collection und wird automatisch
+                entfernt, wenn die Komponente nicht mehr erreichbar ist.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+                Das GUI Element f&uuml;r das registriert wird.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>resolver</code></strong></td><td class="paramdesc">
+                Der zu registrierende Resolver.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void registerItemNameResolver2(String clazz, ItemNameResolver2 resolver)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Registriert einen <code>ItemNameResolver2</code> f&uuml;r eine spezifische
+                Klasse von GUI Elementen.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>clazz</code></strong></td><td class="paramdesc">
+                Der Name der Klasse f&uuml;r die registriert wird.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>resolver</code></strong></td><td class="paramdesc">
+                Der zu registrierende Resolver.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void registerItemResolver(Object element, ItemResolver resolver)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Registriert einen <code>ItemResolver</code> f&uuml;r ein spezifisches GUI Element. Der
+                Resolver beeintr&auml;chtigt nicht die Garbage Collection und wird automatisch
+                entfernt, wenn die Komponente nicht mehr erreichbar ist.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+                Das GUI Element f&uuml;r das registriert wird.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>resolver</code></strong></td><td class="paramdesc">
+                Der zu registrierende Resolver.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void registerItemResolver(String clazz, ItemResolver resolver)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Registriert einen <code>ItemResolver</code> f&uuml;r eine spezifische
+                Klasse von GUI Elementen.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>clazz</code></strong></td><td class="paramdesc">
+                Der Name der Klasse f&uuml;r die registriert wird.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>resolver</code></strong></td><td class="paramdesc">
+                Der zu registrierende Resolver.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void registerItemValueResolver2(Object element, ItemValueResolver2 resolver)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Registriert einen <code>ItemValueResolver2</code> f&uuml;r ein spezifisches GUI Element. Der
+                Resolver beeintr&auml;chtigt nicht die Garbage Collection und wird automatisch
+                entfernt, wenn die Komponente nicht mehr erreichbar ist.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+                Das GUI Element f&uuml;r das registriert wird.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>resolver</code></strong></td><td class="paramdesc">
+                Der zu registrierende Resolver.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void registerItemValueResolver2(String clazz, ItemValueResolver2 resolver)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Registriert einen <code>ItemValueResolver2</code> f&uuml;r eine spezifische
+                Klasse von GUI Elementen.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>clazz</code></strong></td><td class="paramdesc">
+                Der Name der Klasse f&uuml;r die registriert wird.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>resolver</code></strong></td><td class="paramdesc">
+                Der zu registrierende Resolver.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void unregisterItemNameResolver2(Object element, ItemNameResolver2 resolver)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Entfernt einen <code>ItemNameResolver2</code> f&uuml;r ein spezifisches GUI Element.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+                Das GUI Element f&uuml;r das entfernt wird.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>resolver</code></strong></td><td class="paramdesc">
+                Der zu entfernende Resolver.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void unregisterItemNameResolver2(String clazz, ItemNameResolver2 resolver)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Entfernt einen <code>ItemNameResolver2</code> f&uuml;r eine spezifische
+                Klasse von GUI Elementen.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>clazz</code></strong></td><td class="paramdesc">
+                Der Name der Klasse f&uuml;r die entfernt wird.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>resolver</code></strong></td><td class="paramdesc">
+                Der zu entfernende Resolver.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void unregisterItemResolver(Object element, ItemResolver resolver)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Entfernt einen <code>ItemResolver</code> f&uuml;r ein spezifisches GUI Element.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+                Das GUI Element f&uuml;r das entfernt wird.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>resolver</code></strong></td><td class="paramdesc">
+                Der zu entfernende Resolver.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void unregisterItemResolver(String clazz, ItemResolver resolver)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Entfernt einen <code>ItemResolver</code> f&uuml;r eine spezifische
+                Klasse von GUI Elementen.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>clazz</code></strong></td><td class="paramdesc">
+                Der Name der Klasse f&uuml;r die entfernt wird.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>resolver</code></strong></td><td class="paramdesc">
+                Der zu entfernende Resolver.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void unregisterItemValueResolver2(Object element, ItemValueResolver2 resolver)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Entfernt einen <code>ItemValueResolver2</code> f&uuml;r ein spezifisches GUI Element.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>element</code></strong></td><td class="paramdesc">
+                Das GUI Element f&uuml;r das entfernt wird.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>resolver</code></strong></td><td class="paramdesc">
+                Der zu entfernende Resolver.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void unregisterItemValueResolver2(String clazz, ItemValueResolver2 resolver)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Entfernt einen <code>ItemValueResolver2</code> f&uuml;r eine spezifische
+                Klasse von GUI Elementen.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>clazz</code></strong></td><td class="paramdesc">
+                Der Name der Klasse f&uuml;r die entfernt wird.
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>resolver</code></strong></td><td class="paramdesc">
+                Der zu entfernende Resolver.
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+
+        
+        
+
+        
+<a name="sec_itemrepresentation"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_itemrepresentation">50.4.5</a></span>
+</div>
+<a href="contents.html#toc_sec_itemrepresentation">Standard Repr&auml;sentation von Unterelementen</a>
+</h5>
+          
+<p>
+            F&uuml;r die Implementierung der Interfaces <code>ItemNameResolver2</code>,
+            <code>ItemValueResolver2</code> und <code>Checker</code> ist es wichtig, die Art der
+            Objekte zu kennen, die ein Unterelement intern repr&auml;sentieren, denn dies sind die
+            Objekte, die an die Methoden <code>getItemName</code>, <code>getItemValue</code>,
+            <code>getCheckData</code> und <code>getCheckDataAndItem</code> &uuml;bergeben werden.
+          </p>
+
+        
+<p>
+<span class="margin"><a name="fx_N179004"></a><span class="note">JavaFX</span></span>
+        Die folgende Tabelle f&uuml;hrt die komplexen Komponenten von JavaFX und die von QF-Test's
+            standard <code>ItemResolvern</code> verwendete Repr&auml;sentation der jeweiligen
+            Unterelemente auf.
+          </p>
+
+      
+
+          
+<a name="table_50.1"></a><a name="table_50.1"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="2" texwidth="\linewidth">
+              
+<tr>
+                
+<th rowspan="1" colspan="1">GUI element class</th>
+                <th rowspan="1" colspan="1">Item type</th>
+              
+</tr>
+          
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Accordion</code></td>
+                <td rowspan="1" colspan="1"><code>Integer</code> Index</td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>ChoiceBox</code></td>
+                <td rowspan="1" colspan="1"><code>Integer</code> Index</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>ComboBox</code></td>
+                <td rowspan="1" colspan="1"><code>Integer</code> Index</td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>ListView</code></td>
+                <td rowspan="1" colspan="1"><code>Integer</code> Index</td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>TabPane</code></td>
+                <td rowspan="1" colspan="1"><code>Integer</code> Index</td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>TableView</code></td>
+                <td rowspan="1" colspan="1"><code>int</code> Array [column,row] wobei row &lt; 0 eine ganze Spalte repr&auml;sentiert</td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>TableHeaderRow</code></td>
+                <td rowspan="1" colspan="1"><code>Integer</code> Spaltenindex</td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>TextArea</code></td>
+                <td rowspan="1" colspan="1"><code>Integer</code> Zeile</td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>TreeView</code></td>
+                <td rowspan="1" colspan="1"><code>TreeItem</code> Objekt</td>
+              
+</tr>
+            
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;50.1</a>:&nbsp;&nbsp;Interne Repr&auml;sentation f&uuml;r Unterlement von JavaFX Komponenten</td><td class="captionglue"></td>
+</tr>
+</table>
+
+      
+
+
+          
+<p>
+<span class="margin"><a name="swing_N179187"></a><span class="note">Swing</span></span>
+            Die folgende Tabelle f&uuml;hrt die komplexen Komponenten von Swing und die von QF-Test's
+            standard <code>ItemResolvern</code> verwendete Repr&auml;sentation der jeweiligen
+            Unterelemente auf.
+          </p>
+          
+
+          
+<a name="table_50.2"></a><a name="table_50.2"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="2" texwidth="\linewidth">
+              
+<tr>
+                
+<th rowspan="1" colspan="1">GUI Element Klasse</th>
+                <th rowspan="1" colspan="1">Art des Unterelements</th>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JComboBox</code></td>
+                <td rowspan="1" colspan="1"><code>Integer</code> Index</td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JList</code></td>
+                <td rowspan="1" colspan="1"><code>Integer</code> Index</td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTabbedPane</code></td>
+                <td rowspan="1" colspan="1"><code>Integer</code> Index</td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTable</code></td>
+                <td rowspan="1" colspan="1"><code>int</code> Array [column,row] wobei row &lt; 0 eine ganze Spalte repr&auml;sentiert</td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTableHeader</code></td>
+                <td rowspan="1" colspan="1"><code>Integer</code> Spaltenindex</td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTextArea</code></td>
+                <td rowspan="1" colspan="1"><code>Integer</code> Zeile</td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTree</code></td>
+                <td rowspan="1" colspan="1"><code>TreePath</code> Pfad</td>
+              
+</tr>
+            
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;50.2</a>:&nbsp;&nbsp;Interne Repr&auml;sentation f&uuml;r Unterlement von Swing Komponenten</td><td class="captionglue"></td>
+</tr>
+</table>
+
+          
+          
+<p>
+<span class="margin"><a name="swt_N179338"></a><span class="note">SWT</span></span>
+            Die folgende Tabelle f&uuml;hrt die komplexen GUI Elemente von SWT und die von QF-Test's
+            standard <code>ItemResolvern</code> verwendete Repr&auml;sentation der jeweiligen
+            Unterelemente auf.
+          </p>
+          
+
+          
+<a name="table_50.3"></a><a name="table_50.3"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="2" texwidth="\linewidth">
+              
+<tr>
+                
+<th rowspan="1" colspan="1">GUI Element Klasse</th>
+                <th rowspan="1" colspan="1">Art des Unterelements</th>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>CCombo</code></td>
+                <td rowspan="1" colspan="1"><code>Integer</code> Index</td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Combo</code></td>
+                <td rowspan="1" colspan="1"><code>Integer</code> Index</td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>CTabFolder</code></td>
+                <td rowspan="1" colspan="1"><code>Integer</code> Index</td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>List</code></td>
+                <td rowspan="1" colspan="1"><code>Integer</code> Index</td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>StyledText</code></td>
+                <td rowspan="1" colspan="1"><code>Integer</code> Zeile</td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>TabFolder</code></td>
+                <td rowspan="1" colspan="1"><code>Integer</code> Index</td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Table</code></td>
+                <td rowspan="1" colspan="1">
+                  <code>int</code> Array [Spalte,Zeile] oder nur <code>Integer</code> um eine Spalte
+                  zu repr&auml;sentieren
+                </td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Text</code></td>
+                <td rowspan="1" colspan="1"><code>Integer</code> Zeile</td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Tree</code></td>
+                <td rowspan="1" colspan="1">
+                  <code>Object</code> Array [<code>Integer</code> Spalte,<code>TreeItem</code>
+                  Zeile] oder nur <code>Integer</code> um eine Spalte zu repr&auml;sentieren
+                </td>
+              
+</tr>
+            
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;50.3</a>:&nbsp;&nbsp;Interne Repr&auml;sentation f&uuml;r Unterlement von SWT GUI Elementen</td><td class="captionglue"></td>
+</tr>
+</table>
+
+          
+          
+<p>
+<span class="margin"><a name="web_N179535"></a><span class="note">Web</span></span>
+            Die folgende Tabelle f&uuml;hrt die komplexen GUI Elemente f&uuml;r Web und die von QF-Test's
+            standard <code>ItemResolvern</code> verwendete Repr&auml;sentation der jeweiligen
+            Unterelemente auf.
+          </p>
+          
+
+          
+<a name="table_50.4"></a><a name="table_50.4"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="2" texwidth="\linewidth">
+              
+<tr>
+                
+<th rowspan="1" colspan="1">GUI Element Klasse</th>
+                <th rowspan="1" colspan="1">Art des Unterelements</th>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>SELECT</code> Knoten</td>
+                <td rowspan="1" colspan="1"><code>OPTION</code> Knoten</td>
+              
+</tr>
+
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>TEXTAREA</code> Knoten</td>
+                <td rowspan="1" colspan="1"><code>Integer</code> Zeile</td>
+              
+</tr>
+
+            
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;50.4</a>:&nbsp;&nbsp;Interne Repr&auml;sentation f&uuml;r Unterlement von Web GUI Elementen</td><td class="captionglue"></td>
+</tr>
+</table>
+
+          
+        
+
+        
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_resolverregistry.html#sec_ResolverRegistry"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 50.3&nbsp;Die ResolverRegistry" title="Vorheriges Kapitel: 50.3&nbsp;Die ResolverRegistry"></a></td><td class="navicon"><a href="tech_checkers.html#sec_checkers"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 50.5&nbsp;
+          Implementierung eigener Checks mit dem Checker Interface
+        " title="N&auml;chste Seite: 50.5&nbsp;
+          Implementierung eigener Checks mit dem Checker Interface
+        "></a></td><td class="navicon"><a href="tech_checkers.html#sec_checkers"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 50.5&nbsp;
+          Implementierung eigener Checks mit dem Checker Interface
+        " title="N&auml;chstes Kapitel: 50.5&nbsp;
+          Implementierung eigener Checks mit dem Checker Interface
+        "></a></td><td class="navicon"><a href="tech_extensions.html#sec_extensions"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 50&nbsp;APIs f&uuml;r Erweiterungen" title="Kapitel-&Uuml;bersicht: 50&nbsp;APIs f&uuml;r Erweiterungen"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

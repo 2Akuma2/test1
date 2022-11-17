@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Einfache Klassenzuweisung auf Basis des class Attributs</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_customajax_demo_genericclass1"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_customajax_demo_2.html#sec_customajax_demo_genericclass_nested"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 47.1.10.2&nbsp;Fortgeschrittene Klassenzuweisung" title="N&auml;chste Seite: 47.1.10.2&nbsp;Fortgeschrittene Klassenzuweisung"></a></td><td class="navicon"><a href="tech_customajax_demo_2.html#sec_customajax_demo_genericclass_nested"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 47.1.10.2&nbsp;Fortgeschrittene Klassenzuweisung" title="N&auml;chstes Kapitel: 47.1.10.2&nbsp;Fortgeschrittene Klassenzuweisung"></a></td><td class="navicon"><a href="tech_customajax_demo.html#sec_customajax_demo"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 47.1.10&nbsp;Beispiel f&uuml;r den WebCarConfigurator" title="Kapitel-&Uuml;bersicht: 47.1.10&nbsp;Beispiel f&uuml;r den WebCarConfigurator"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+            
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_customajax_demo_genericclass1">47.1.10.1</a></span>
+</div>
+<a href="contents.html#toc_sec_customajax_demo_genericclass1">Einfache Klassenzuweisung auf Basis des <code>class</code> Attributs</a>
+</h5>
+            
+<p>
+              F&uuml;r den Anfang wollen wir den '-5%' Button in der rechten unteren Ecke
+              auf die generische Klasse 'Button' abbilden. Die aufgef&uuml;hrten Tabelle visualisiert
+              unsere Zielsetzung. Auf der linken Seite finden Sie die aktuelle Aufzeichnung
+              und auf der rechten Seite finden Sie unsere Wunschaufzeichnung.
+            </p>
+            
+<a name="figure_47.7"></a><a name="figure_47.7"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="" target="_blank">
+<table border="0" cellspacing="10" cellpadding="0">
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1"><img src="images/WebCarConfig5Custom1_table.png" alt="Aktuelle Aufzeichnung" texscale=".66" width="338" height="162"></td>
+                <td align="center" rowspan="1" colspan="1"><img src="images/WebCarConfig5Custom2_table.png" alt="Verbesserte Aufzeichnung" texscale=".66" width="373" height="146"></td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1">Aktuelle Aufzeichnung</td>
+                <td align="center" rowspan="1" colspan="1">Verbesserte Aufzeichnung</td>
+              
+</tr>
+            
+</table>
+</a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;47.7</a>:&nbsp;&nbsp;Verbesserung durch einfache Klassenzuweisung</td><td class="captionglue"></td>
+</tr>
+</table>
+            
+<p>
+              Zuerst sollten Sie einen Text-Check oder einen Mausklick auf
+              diesen Button aufzeichnen. Danach springen Sie mittels
+              Rechtsklick und Auswahl von &raquo;<em>Komponente finden</em>&laquo; zur aufgezeichneten
+              Komponente. Hier k&ouml;nnen wir sehen, dass wir eine Komponente von
+              der Klasse <code>DIV</code> mit einem leeren Namen aufgezeichnet
+              haben. In den weiteren Merkmalen k&ouml;nnen wir nichts N&uuml;tzliches
+              finden. Besonders auffallend ist, dass nirgends die
+              Information &uuml;ber den aktuellen Text von '-5%' auffindbar ist.
+              Demzufolge hat QF-Test keine guten Anhaltspunkte um diese
+              Komponente stabil wiederzuerkennen. Es bleiben nur die
+              Geometrie- und Strukturinformationen.
+              Jetzt versuchen wir diese Komponenten zum einen f&uuml;r QF-Test stabiler erkennbar
+              und zum anderen ihre Benennung lesbarer zu machen.
+            </p>
+            
+<a name="figure_47.8"></a><a name="figure_47.8"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/WebCarConfig5Custom1.png" target="_blank"><img src="images/WebCarConfig5Custom1.png" alt="WebCarConfigDiv5" width="966" height="753" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;47.8</a>:&nbsp;&nbsp;Aufzeichnung des '-5%' Buttons im WebCarConfigurator</td><td class="captionglue"></td>
+</tr>
+</table>
+            
+<p>
+              Wenn wir uns die Komponente n&auml;her anschauen, k&ouml;nnen wir in den
+              weiteren Merkmalen das Merkmal <code>class</code> mit dem Wert
+              <code>button</code> finden. Wir k&ouml;nnen also annehmen, dass jeder
+              Button dieses spezielle Attribut besitzt.
+              Insbesondere, wenn wir unsere Annahme an weiteren Buttons der Applikation &uuml;berpr&uuml;ft haben.
+            </p>
+            
+<p>
+              Nun f&uuml;gen wir einen Prozeduraufruf f&uuml;r
+                  <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.ajax.installCustomWebResolver"><code>qfs.web.ajax.installCustomWebResolver</code></a>
+              aus der Standardbibliothek <code>qfs.qft</code> unter den Extrasequenzen ein.
+              Nachdem wir vorhin herausgefunden haben, dass das <code>class</code>
+              Attribut die relevanten Informationen beinhaltet, k&ouml;nnen wir den
+              Parameter <code>genericClasses</code>
+              mit dem Wert <code>button=Button</code> versehen. Der Ausdruck
+              <code>button=Button</code> bedeutet, dass jede Komponente, die den Wert <code>button</code>
+              im Attribut <code>class</code> besitzt, von nun an die QF-Test-generische Klasse
+              <code>Button</code> zugewiesen bekommt. Diese Zuweisung wird bei der n&auml;chsten Aufzeichnung
+              QF-Test nun veranlassen, das Standardverhalten f&uuml;r Buttons bei dieser Komponente heranzuziehen.
+              F&uuml;hren Sie hierzu den Prozeduraufruf von
+              <code>qfs.web.ajax.installCustomWebResolver</code> aus und zeichnen die Komponente nochmals auf. Sie
+              werden jetzt folgende Aufzeichnung erhalten:
+            </p>
+            
+<a name="figure_47.9"></a><a name="figure_47.9"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/WebCarConfig5Custom2.png" target="_blank"><img src="images/WebCarConfig5Custom2.png" alt="WebCarConfig5Custom2" width="966" height="753" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;47.9</a>:&nbsp;&nbsp;Aufzeichnung mit genericClasses im WebCarConfigurator</td><td class="captionglue"></td>
+</tr>
+</table>
+            
+<p>Bei dieser neuen Aufzeichnung erhalten Sie einen Klick auf eine Komponente mit der QF-Test ID
+              <code>button-5_</code>. Diese Komponente hat nun
+              die Klasse <code>Button</code> und der Text '-5%' wurde als
+              Merkmal und sogar als weiteres Merkmal <code>qfs:label</code>
+              erkannt.
+              Diese Komponente wird von QF-Test ab jetzt als Button
+              behandelt. Nat&uuml;rlich sollten Sie den Entwicklern immer noch
+              vorschlagen, eine vern&uuml;nftige ID zu vergeben und somit eine Eindeutigkeit
+              bei der Komponentenerkennung zu erreichen, weil die ID von QF-Test als Name der Komponente verwendet wird.
+            </p>
+            
+<p>
+              Diese 'einfache' Zuweisung kann in vielen F&auml;llen bereits ausreichend sein, besonders
+              f&uuml;r Buttons, MenuItems oder Checkboxen. Falls in Ihrem Fall das Attribut nicht <code>class</code>
+              sondern z.B. <code>role</code> ist, dann f&uuml;llen Sie statt dem Parameter <code>genericClasses</code>
+              den Parameter <code>attributesToGenericClasses</code> mit einem Wert wie <code>role=button=Button</code>.
+              In einigen F&auml;llen kann aber die Information &uuml;ber die Klasse nicht in der letzten Komponente im Baum,
+              sondern in einer Komponente weiter oben in der Hierarchie zu finden sein. Wie man so eine Situation
+              aufl&ouml;st, finden Sie im n&auml;chsten Abschnitt.
+            </p>
+          
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_customajax_demo_2.html#sec_customajax_demo_genericclass_nested"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 47.1.10.2&nbsp;Fortgeschrittene Klassenzuweisung" title="N&auml;chste Seite: 47.1.10.2&nbsp;Fortgeschrittene Klassenzuweisung"></a></td><td class="navicon"><a href="tech_customajax_demo_2.html#sec_customajax_demo_genericclass_nested"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 47.1.10.2&nbsp;Fortgeschrittene Klassenzuweisung" title="N&auml;chstes Kapitel: 47.1.10.2&nbsp;Fortgeschrittene Klassenzuweisung"></a></td><td class="navicon"><a href="tech_customajax_demo.html#sec_customajax_demo"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 47.1.10&nbsp;Beispiel f&uuml;r den WebCarConfigurator" title="Kapitel-&Uuml;bersicht: 47.1.10&nbsp;Beispiel f&uuml;r den WebCarConfigurator"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

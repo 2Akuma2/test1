@@ -1,0 +1,1241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Details about the algorithm for image comparison</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_imagealgorithmdetails"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_transformdetails.html#sec_transformdetails"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 54&nbsp;Details about transforming nodes" title="Previous Chapter: 54&nbsp;Details about transforming nodes"></a></td><td class="navicon"><a href="tech_resultlists.html#sec_resultlists"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 56&nbsp;Result lists" title="Next Page: 56&nbsp;Result lists"></a></td><td class="navicon"><a href="tech_resultlists.html#sec_resultlists"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 56&nbsp;Result lists" title="Next Chapter: 56&nbsp;Result lists"></a></td><td class="navicon"><a href="technical.html#sec_technical"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: IV&nbsp;Technical reference" title="Chapter Overview: IV&nbsp;Technical reference"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="margin"><a name="new_N190058"></a><span class="note">3.3+</span></span><span class="numtitle"><a href="contents.html#toc_sec_imagealgorithmdetails">55</a></span>
+</div>
+<a href="contents.html#toc_sec_imagealgorithmdetails">Details about the algorithm for image comparison</a>
+</h3>
+
+    
+
+    
+<a name="sec_imagealgorithmIntro"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_imagealgorithmIntro">55.1</a></span>
+</div>
+<a href="contents.html#toc_sec_imagealgorithmIntro">Introduction</a>
+</h4>
+      
+<p>
+        The classic <a href="checks.html#step_CheckImageStep" shape="rect">'Check image'</a> node is only minimally tolerant towards deviations. Using the
+        default algorithm of comparing pixel by pixel it is not possible to check images that
+        are generated in a not-quite-deterministic way or differ in size.
+      </p>
+      
+<p>
+        By using the attribute <a href="checks.html#att_CheckImageStep_algorithm" shape="rect">'Algorithm for image comparison'</a> it is possible to define a special
+        algorithm which is tolerant towards certain image deviations. The attribute must start
+        with the algorithm definition in the form <b>algorithm=&lt;algorithm&gt;</b> followed by all
+        required parameters, separated by semicolons. Parameters may be defined in any
+        order, and use of variables is possible, e.g.:
+      </p>
+      
+<p>
+    
+      
+<code>algorithm=&lt;algo&gt;;parameter1=value1;parameter2=value2;expected=$(expected)</code>
+    
+    
+      
+</p>
+      
+<p>
+<span class="margin"><a name="new_N190099"></a><span class="note">3.5.1+</span></span>
+        Since QF-Test 3.5.1 the definition does not need so start with algorithm=&lt;algorithm&gt;
+        but can simply begin with &lt;algorithm&gt;.<br>
+        It is also no longer necessary to define the parameter 'expected'. QF-Test uses a default value
+        if it is not set. Please see below for more information.
+      </p>
+      
+<p>
+        A detailed description of the available algorithms and their parameters is provided in the
+        following section.
+        For illustration, explanations are based on their effects on the following image:
+      </p>
+      
+<a name="figure_55.1"></a><a name="figure_55.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/imgAdv_classic.png" target="_blank"><img src="images/imgAdv_classic.png" alt="Original image" width="262" height="147" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;55.1</a>:&nbsp;&nbsp;Original image</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        In the related run-log
+        (see <a href="user_debugging.html#usec_runlog">section 7.1</a>)
+        of a failed check you have the opportunity to analyze the results of the algorithm
+        as well as the result of probability calculation.<br>
+        If you activate the option <a href="opt_log.html#opt_screenshotsadvancedok">Log successful advanced image checks</a> all tolerant
+        image checks will be logged for further analysis.
+      </p>
+    
+
+    
+    
+
+    
+<a name="sec_imagealgorithmDescription"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_imagealgorithmDescription">55.2</a></span>
+</div>
+<a href="contents.html#toc_sec_imagealgorithmDescription">Description of algorithms</a>
+</h4>
+      
+
+      
+<a name="sec_imageAlgorithmDescriptionClassic"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_imageAlgorithmDescriptionClassic">55.2.1</a></span>
+</div>
+<a href="contents.html#toc_sec_imageAlgorithmDescriptionClassic">Classic image check</a>
+</h5>
+        
+<dl>
+          
+<dt>Description</dt>
+          
+<dd>
+            The classic - or default - image check compares the color value of every single
+            expected and actual pixel. If at least one expected pixel differs from the actual
+            pixel the check fails. The option <a href="opt_play.html#opt_imagefuzz">
+              Tolerance for checking images</a> defines the
+            tolerance for comparing pixel values.
+          </dd>
+          
+<dt>Purpose</dt>
+          
+<dd>
+            This pixel based check is suitable if you expect an exact image match with minimal
+            tolerances or any deviations. Whenever your application renders the component not
+            fully deterministically, this algorithm is not suitable.
+          </dd>
+          
+<dt>Example</dt>
+          
+<dd>
+            The classic image check doesn't transform the image, thus the result looks
+            identical to the original image.
+          </dd>
+        
+</dl>
+        
+<a name="figure_55.2"></a><a name="figure_55.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/imgAdv_classic.png" target="_blank"><img src="images/imgAdv_classic.png" alt="classic image check" width="262" height="147" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;55.2</a>:&nbsp;&nbsp;Classic image check</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          The classic image check is used when the <a href="checks.html#att_CheckImageStep_algorithm" shape="rect">'Algorithm for image comparison'</a> attribute is empty.
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_imageAlgorithmDescriptionIdentity"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_imageAlgorithmDescriptionIdentity">55.2.2</a></span>
+</div>
+<a href="contents.html#toc_sec_imageAlgorithmDescriptionIdentity">Pixel-based identity check</a>
+</h5>
+        
+<dl>
+          
+<dt>Description</dt>
+          
+<dd>
+            This algorithm is similar to the classic algorithm, but accepts an amount of unexpected pixels.
+            It splits every pixel in it's three sub-pixels red, green and blue.
+            Afterwards it checks every actual color value against the expected color value.
+            The final result is the amount of identical pixels divided by the total amount of pixels.
+            The calculated result is checked against an expected value.
+          </dd>
+          
+<dt>Purpose</dt>
+          
+<dd>
+            If your images are not rendered fully deterministic but you accept a certain
+            percentage of unexpected pixels, this algorithm may be useful.<br>
+            But it is not suitable, if the actual images are used to have shifts or distortions.
+          </dd>
+         
+<dt>Example</dt>
+          
+<dd>
+            The result image of the exemplary algorithm<br>
+            
+<code>algorithm=identity;expected=0.95</code>
+<br>
+            looks identical to the original image because this algorithm does not
+            manipulate the image.
+          </dd>
+        
+</dl>
+        
+<a name="figure_55.3"></a><a name="figure_55.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/imgAdv_identity.png" target="_blank"><img src="images/imgAdv_identity.png" alt="Pixel-based identity check" width="262" height="147" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;55.3</a>:&nbsp;&nbsp;Pixel-based identity check</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl>
+          
+<dt>Parameters</dt>
+          
+<dd>
+            
+<dl>
+              
+<dt>algorithm=identity</dt>
+              
+<dd>
+                The 'Pixel based identity check' should be used.
+              </dd>
+              
+<dt>expected (optional, but recommended)</dt>
+              
+<dd>
+                Defines which probability you expect.<br>
+                Valid values are between 0.0 and 1.0. If not defined, use 0.98.
+              </dd>
+              
+<dt>resize (optional)</dt>
+              
+<dd>
+                Defines, if the actual image should be resized before calculation to match
+                the size of the expected image.<br>
+                Valid values are "true" and "false".
+              </dd>
+                          
+<dt>find (optional)</dt>
+              
+<dd>
+                Defines an image-in-image search.<br>
+                A detailed description of this parameter can be found in <a href="#sec_imageAlgorithmFunctionImageFind">subsection 55.3.1</a>.
+              </dd>
+            
+</dl>
+          
+</dd>
+        
+</dl>
+      
+
+      
+      
+
+      
+<a name="sec_imageAlgorithmDescriptionSimilarity"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_imageAlgorithmDescriptionSimilarity">55.2.3</a></span>
+</div>
+<a href="contents.html#toc_sec_imageAlgorithmDescriptionSimilarity">Pixel-based similarity check</a>
+</h5>
+        
+<dl>
+          
+<dt>Description</dt>
+          
+<dd>
+            This algorithm splits every pixel in it's three sub-pixels red, green and blue.
+            Afterwards it checks every actual color value against the expected color value to
+            calculate a percental similarity. All percental deviations are added up and used for
+            calculation. The final result is the average deviation over all color values and
+            all pixels. The calculated result is checked against an expected value.
+          </dd>
+          
+<dt>Purpose</dt>
+          
+<dd>
+            If your images are not rendered fully deterministic but you accept a certain
+            deviation, this algorithm is a possible candidate for your purpose.<br>
+            If you accept deviations for some pixels, but the average deviation all over the image
+            is small, this algorithm is also suitable.<br>
+            But it is not suitable, if the actual images are used to have shifts or distortions.
+          </dd>
+         
+<dt>Example</dt>
+          
+<dd>
+            The result image of the exemplary algorithm<br>
+            
+<code>algorithm=similarity;expected=0.95</code>
+<br>
+            looks identical to the original image because this algorithm does not
+            manipulate the image.
+          </dd>
+        
+</dl>
+        
+<a name="figure_55.4"></a><a name="figure_55.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/imgAdv_similarity.png" target="_blank"><img src="images/imgAdv_similarity.png" alt="Pixel-based similarity check" width="262" height="147" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;55.4</a>:&nbsp;&nbsp;Pixel-based similarity check</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl>
+          
+<dt>Parameters</dt>
+          
+<dd>
+            
+<dl>
+              
+<dt>algorithm=similarity</dt>
+              
+<dd>
+                The 'Pixel based similarity check' should be used.
+              </dd>
+              
+<dt>expected (optional, but recommended)</dt>
+              
+<dd>
+                Defines which probability you expect.<br>
+                Valid values are between 0.0 and 1.0. If not defined, use 0.98.
+              </dd>
+              
+<dt>resize (optional)</dt>
+              
+<dd>
+                Defines, if the actual image should be resized before calculation to match
+                the size of the expected image.<br>
+                Valid values are "true" and "false".
+              </dd>
+                          
+<dt>find (optional)</dt>
+              
+<dd>
+                Defines an image-in-image search.<br>
+                A detailed description of this parameter can be found in <a href="#sec_imageAlgorithmFunctionImageFind">subsection 55.3.1</a>.
+              </dd>
+            
+</dl>
+          
+</dd>
+        
+</dl>
+      
+
+      
+      
+
+      
+<a name="sec_imageAlgorithmDescriptionBlock"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_imageAlgorithmDescriptionBlock">55.2.4</a></span>
+</div>
+<a href="contents.html#toc_sec_imageAlgorithmDescriptionBlock">Block-based identity check</a>
+</h5>
+        
+<dl>
+          
+<dt>Description</dt>
+          
+<dd>
+            This algorithm partitions the image into quadratic blocks with a selectable size.
+            The color value of each of these blocks is calculated as the average of the color
+            values of the pixels the block contains.
+
+            If the width or height of the image is not a multiple of the block size, the blocks at
+            the right and bottom edge are cropped and weighted accordingly.<br>
+
+            The actual blocks are checked against the expected blocks. The final result is the
+            amount of identical blocks divided by the total amount of blocks.
+          </dd>
+          
+<dt>Purpose</dt>
+          
+<dd>
+            This algorithm's purpose is to check an image which only differs at some parts but is
+            identical at the remaining parts.
+          </dd>
+          
+<dt>Example</dt>
+          
+<dd>
+            The exemplary algorithm<br>
+            
+<code>algorithm=block;size=10;expected=0.95</code>
+<br>
+            results in the following image:
+          </dd>
+        
+</dl>
+        
+<a name="figure_55.5"></a><a name="figure_55.5"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/imgAdv_block.png" target="_blank"><img src="images/imgAdv_block.png" alt="Block-based identity check" width="262" height="147" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;55.5</a>:&nbsp;&nbsp;Block-based identity check</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl>
+          
+<dt>Parameters</dt>
+          
+<dd>
+            
+<dl>
+              
+<dt>algorithm=block</dt>
+              
+<dd>
+                The algorithm 'Block-based identity check' should be used.
+              </dd>
+              
+<dt>size</dt>
+              
+<dd>
+                Defines the size of each block.<br>
+                Valid values are between 1 and the image size.
+              </dd>
+              
+<dt>expected (optional, but recommended)</dt>
+              
+<dd>
+                Defines the minimal match probability for the check to succeed.<br>
+                Valid values are between 0.0 and 1.0. If not defined, use 0.98.
+              </dd>
+              
+<dt>resize (optional)</dt>
+              
+<dd>
+                Defines, if the actual image should be resized before calculation to match
+                the size of the expected image.<br>
+                Valid values are "true" and "false".
+              </dd>
+                          
+<dt>find (optional)</dt>
+              
+<dd>
+                Defines an image-in-image search.<br>
+                A detailed description of this parameter can be found in <a href="#sec_imageAlgorithmFunctionImageFind">subsection 55.3.1</a>.
+              </dd>
+            
+</dl>
+          
+</dd>
+        
+</dl>
+      
+
+      
+      
+
+      
+<a name="sec_imageAlgorithmDescriptionBlockSimilarity"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_imageAlgorithmDescriptionBlockSimilarity">55.2.5</a></span>
+</div>
+<a href="contents.html#toc_sec_imageAlgorithmDescriptionBlockSimilarity">Block-based similarity check</a>
+</h5>
+        
+<dl>
+          
+<dt>Description</dt>
+          
+<dd>
+            This algorithm also partitions the image in quadratic blocks with a selectable size.
+            The color value of each of these blocks is calculated as the average of the color
+            values of the pixels the block contains.
+
+            If the width or height of the image is not a multiple of the block size, the blocks at
+            the right and bottom edge are cropped and weighted accordingly.<br>
+
+            The color value of each expected block is checked against the actual block.
+            Their color values are analyzed for percental similarity. The final result is the
+            average similarity of all blocks with their weight taken into account.
+          </dd>
+          
+<dt>Purpose</dt>
+          
+<dd>
+            This algorithm is suitable for checking images with similar color variances.
+          </dd>
+          
+<dt>Example</dt>
+          
+<dd>
+            The exemplary algorithm<br>
+            
+<code>algorithm=blocksimilarity;size=5;expected=0.95</code>
+<br>
+            results in the following image:
+          </dd>
+        
+</dl>
+        
+<a name="figure_55.6"></a><a name="figure_55.6"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/imgAdv_blocksimilarity.png" target="_blank"><img src="images/imgAdv_blocksimilarity.png" alt="Block-based similarity check" width="262" height="147" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;55.6</a>:&nbsp;&nbsp;Block-based similarity check</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl>
+          
+<dt>Parameters</dt>
+          
+<dd>
+            
+<dl>
+              
+<dt>algorithm=blocksimilarity</dt>
+              
+<dd>
+                The algorithm 'Block-based similarity check' should be used.
+              </dd>
+              
+<dt>size</dt>
+              
+<dd>
+                Defines the size of each block.<br>
+                Valid values are between 1 and the image size.
+              </dd>
+              
+<dt>expected (optional, but recommended)</dt>
+              
+<dd>
+                Defines the minimal match probability for the check to succeed.<br>
+                Valid values are between 0.0 and 1.0. If not defined, use 0.98.
+              </dd>
+              
+<dt>resize (optional)</dt>
+              
+<dd>
+                Defines, if the actual image should be resized before calculation to match
+                the size of the expected image.<br>
+                Valid values are "true" and "false".
+              </dd>
+                          
+<dt>find (optional)</dt>
+              
+<dd>
+                Defines an image-in-image search.<br>
+                A detailed description of this parameter can be found in <a href="#sec_imageAlgorithmFunctionImageFind">subsection 55.3.1</a>.
+              </dd>
+            
+</dl>
+          
+</dd>
+        
+</dl>
+      
+
+      
+      
+
+      
+<a name="sec_imageAlgorithmDescriptionHistogram"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_imageAlgorithmDescriptionHistogram">55.2.6</a></span>
+</div>
+<a href="contents.html#toc_sec_imageAlgorithmDescriptionHistogram">Histogram check</a>
+</h5>
+        
+<dl>
+          
+<dt>Description</dt>
+          
+<dd>
+            To create a histogram, an image is first broken into its three base colors red, green
+            and blue. Then the color values for each pixel are analyzed to partition them into a
+            definable amount of categories (known as buckets when talking about histograms).
+            The actual fill level of each bucket is compared to the expected level. The result of
+            the algorithm is a comparison of the relative frequencies of color categories.
+          </dd>
+          
+<dt>Purpose</dt>
+          
+<dd>
+            Histograms are used for many scenarios. For example it is possible to check for
+            color tendencies or do brightness analyses.<br>
+            However, histograms are not suitable for checking rather plain-colored images.
+          </dd>
+          
+<dt>Example</dt>
+          
+<dd>
+            The exemplary algorithm<br>
+            
+<code>algorithm=histogram;buckets=64;expected=0.95</code>
+<br>
+            results in the following image:
+          </dd>
+        
+</dl>
+        
+<a name="figure_55.7"></a><a name="figure_55.7"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/imgAdv_histogram.png" target="_blank"><img src="images/imgAdv_histogram.png" alt="Histogram" width="256" height="200" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;55.7</a>:&nbsp;&nbsp;Histogram</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl>
+          
+<dt>Parameters</dt>
+          
+<dd>
+            
+<dl>
+              
+<dt>algorithm=histogram</dt>
+              
+<dd>
+                A 'Histogram' should be used for this image check.
+              </dd>
+              
+<dt>buckets</dt>
+              
+<dd>
+                Defines how many buckets to use.<br>
+                Valid values are a power of 2 between 2 and 256.
+              </dd>
+              
+<dt>expected (optional, but recommended)</dt>
+              
+<dd>
+                Defines the minimal match probability for the check to succeed.<br>
+                Valid values are between 0.0 and 1.0. If not defined, use 0.98.
+              </dd>
+              
+<dt>resize (optional)</dt>
+              
+<dd>
+                Defines, if the actual image should be resized before calculation to match
+                the size of the expected image.<br>
+                Valid values are "true" and "false".
+              </dd>
+                          
+<dt>find (optional)</dt>
+              
+<dd>
+                Defines an image-in-image search.<br>
+                A detailed description of this parameter can be found in <a href="#sec_imageAlgorithmFunctionImageFind">subsection 55.3.1</a>.
+              </dd>
+            
+</dl>
+          
+</dd>
+        
+</dl>
+      
+
+      
+      
+
+      
+<a name="sec_imageAlgorithmDescriptionDCT"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_imageAlgorithmDescriptionDCT">55.2.7</a></span>
+</div>
+<a href="contents.html#toc_sec_imageAlgorithmDescriptionDCT">Analysis with Discrete Cosine Transformation</a>
+</h5>
+        
+<dl>
+          
+<dt>Description</dt>
+          
+<dd>
+            The Discrete Cosine Transformation is a real-valued, discrete, linear, orthogonal
+            transformation which transforms the discrete signal from local range to frequency range.<br>
+            After transforming an image, you can eliminate low-order (fast oscillating) frequencies.
+            The remaining high-order (slow oscillating) frequencies with the steady component
+            (zeroth frequency = 0*cos(x) + y) can now be analyzed.
+            You can define how many frequencies per basic color should be used for this image check.
+            You can also specify a tolerance to accept cosine-oscillations as identical which actually differ.
+            Low-order frequencies get weighted less than high-order frequencies when calculating the
+            result.
+          </dd>
+          
+<dt>Purpose</dt>
+          
+<dd>
+            The Discrete Cosine Transformation is suitable for many kinds of image checks, which
+            require certain tolerances. The more frequencies are used for analysis the sharper the
+            image check is.
+          </dd>
+          
+<dt>Example</dt>
+          
+<dd>
+            The exemplary algorithm<br>
+            
+<code>algorithm=dct;frequencies=20;tolerance=0.1;expected=0.95</code>
+<br>
+            results in the following image:
+          </dd>
+        
+</dl>
+        
+<a name="figure_55.8"></a><a name="figure_55.8"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/imgAdv_dct.png" target="_blank"><img src="images/imgAdv_dct.png" alt="Analysis with Discrete Cosine Transformation" width="262" height="147" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;55.8</a>:&nbsp;&nbsp;Analysis with Discrete Cosine Transformation</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl>
+          
+<dt>Parameters</dt>
+          
+<dd>
+            
+<dl>
+              
+<dt>algorithm=dct</dt>
+              
+<dd>
+                'Analysis with Discrete Cosine Transformation' should be used for this image check.
+              </dd>
+              
+<dt>frequencies</dt>
+              
+<dd>
+                Defines how many frequencies to analyze.<br>
+
+                Valid values are between 0 (steady component only) and the area of the image.<br>
+                The less frequencies are analyzed the more tolerant the check is. The tolerance is
+                also dependent on the size of the image.
+              </dd>
+              
+<dt>tolerance</dt>
+              
+<dd>
+                Defines the (non-linear) tolerance for accepting different cosine-oscillations as
+                identical.<br>
+                Valid values are between 0.0 and 1.0.<br>
+                The value 1.0 means every image matches every other image, because the maximum
+                difference of each frequency is tolerated. A value of 0.0 means frequencies only
+                match if they are exactly the same. A value of 0.1 is a good starting point
+                because only quite similar frequencies are accepted as identical.
+              </dd>
+              
+<dt>expected (optional, but recommended)</dt>
+              
+<dd>
+                Defines the minimal match probability for the check to succeed.<br>
+                Valid values are between 0.0 and 1.0. If not defined, use 0.98.
+              </dd>
+              
+<dt>resize (optional)</dt>
+              
+<dd>
+                Defines, if the actual image should be resized before calculation to match
+                the size of the expected image.<br>
+                Valid values are "true" and "false".
+              </dd>
+                          
+<dt>find (optional)</dt>
+              
+<dd>
+                Defines an image-in-image search.<br>
+                A detailed description of this parameter can be found in <a href="#sec_imageAlgorithmFunctionImageFind">subsection 55.3.1</a>.
+              </dd>
+            
+</dl>
+          
+</dd>
+        
+</dl>
+      
+
+      
+      
+
+      
+<a name="sec_imageAlgorithmDescriptionDCTBlock"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_imageAlgorithmDescriptionDCTBlock">55.2.8</a></span>
+</div>
+<a href="contents.html#toc_sec_imageAlgorithmDescriptionDCTBlock">Block-based analysis with Discrete Cosine Transformation</a>
+</h5>
+        
+<dl>
+          
+<dt>Description</dt>
+          
+<dd>
+            When using this algorithm the image is first partitioned into quadratic blocks with a
+            selectable size (see <a href="#sec_imageAlgorithmDescriptionBlock">subsection 55.2.4</a>).
+
+            Afterwards every partition is analyzed using a Discrete Cosine
+            Transformation (see <a href="#sec_imageAlgorithmDescriptionDCT">subsection 55.2.7</a>).
+            The final result is the average of all results of these Discrete Cosine Transformations
+            with consideration of the blocks and their weight.
+          </dd>
+          
+<dt>Purpose</dt>
+          
+<dd>
+            The Discrete Cosine Transformation used on the whole image deviates strongly in case of
+            significant brightness differences occurring in the middle of the image because then
+            the steady component (zeroth frequency), which is the highest weighted part, varies
+            strongly. The partitioning circumvents this behavior because now only the affected
+            partitions result in intense deviations while the other partitions stay untouched.
+          </dd>
+          
+<dt>Example</dt>
+          
+<dd>
+            The exemplary algorithm<br>
+        
+          
+<code>algorithm=dctblock;size=32;frequencies=4;tolerance=0.1;expected=0.95</code>
+<br>
+        
+        
+            results in the following image:
+          </dd>
+        
+</dl>
+        
+<a name="figure_55.9"></a><a name="figure_55.9"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/imgAdv_dctblock.png" target="_blank"><img src="images/imgAdv_dctblock.png" alt="Block-based analysis with Discrete Cosine Transformation" width="262" height="147" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;55.9</a>:&nbsp;&nbsp;Block-based analysis with Discrete Cosine Transformation</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl>
+          
+<dt>Parameters</dt>
+          
+<dd>
+            
+<dl>
+              
+<dt>algorithm=dctblock</dt>
+              
+<dd>
+                'Blocks for analysis with Discrete Cosine Transformation' should be used for this
+                image check.
+              </dd>
+              
+<dt>size</dt>
+              
+<dd>
+                Defines the size of each block.<br>
+                Valid values are between 1 and the image size.
+              </dd>
+              
+<dt>frequencies</dt>
+              
+<dd>
+                Defines how many frequencies to analyze.<br>
+
+                Valid values are between 0 (steady component only) and the area of a block.<br>
+                The less frequencies are analyzed the more tolerant the check is. The tolerance is
+                also dependent on the size of the image.
+              </dd>
+              
+<dt>tolerance</dt>
+              
+<dd>
+                Defines the (non-linear) tolerance for accepting different cosine-oscillations as
+                identical.<br>
+                Valid values are between 0.0 and 1.0.<br>
+                The value 1.0 means every image matches every other image, because the maximum
+                difference of each frequency is tolerated. A value of 0.0 means frequencies only
+                match if they are exactly the same. A value of 0.1 is a good starting point
+                because only quite similar frequencies are accepted as identical.
+              </dd>
+              
+<dt>expected (optional, but recommended)</dt>
+              
+<dd>
+                Defines the minimal match probability for the check to succeed.<br>
+                Valid values are between 0.0 and 1.0. If not defined, use 0.98.
+              </dd>
+              
+<dt>resize (optional)</dt>
+              
+<dd>
+                Defines, if the actual image should be resized before calculation to match
+                the size of the expected image.<br>
+                Valid values are "true" and "false".
+              </dd>
+                          
+<dt>find (optional)</dt>
+              
+<dd>
+                Defines an image-in-image search.<br>
+                A detailed description of this parameter can be found in <a href="#sec_imageAlgorithmFunctionImageFind">subsection 55.3.1</a>.
+              </dd>
+            
+</dl>
+          
+</dd>
+        
+</dl>
+      
+      
+<a name="sec_imageAlgorithmDescriptionBilinear"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_imageAlgorithmDescriptionBilinear">55.2.9</a></span>
+</div>
+<a href="contents.html#toc_sec_imageAlgorithmDescriptionBilinear">Bilinear Filter</a>
+</h5>
+        
+<dl>
+          
+<dt>Description</dt>
+          
+<dd>
+            This algorithm shrinks the image to a chooseable percental size.
+            Afterwards the image gets resized to its original size by use of a bilinear filter.
+            This filter effects a blurring, because every color value is calculated by use
+            of neighbor pixels.<br>
+            The final result is the average deviation over all color values and
+            all pixels of this transformed images.
+          </dd>
+          
+<dt>Purpose</dt>
+          
+<dd>
+            Depending on the chosen sharpness the images loose any desired image information.
+            Thus this algorithm is valuable for nearly any scenario.
+          </dd>
+          
+<dt>Example</dt>
+          
+<dd>
+            The exemplary algorithm<br>
+            
+<code>algorithm=bilinear;sharpness=0.2;expected=0.95</code>
+<br>
+            results in the following image:
+          </dd>
+        
+</dl>
+        
+<a name="figure_55.10"></a><a name="figure_55.10"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/imgAdv_bilinear.png" target="_blank"><img src="images/imgAdv_bilinear.png" alt="Bilinear Filter" width="262" height="147" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;55.10</a>:&nbsp;&nbsp;Bilinear Filter</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl>
+          
+<dt>Parameters</dt>
+          
+<dd>
+            
+<dl>
+              
+<dt>algorithm=bilinear</dt>
+              
+<dd>
+                A 'Bilinear Filter' should be used for this image check.
+              </dd>
+              
+<dt>sharpness</dt>
+              
+<dd>
+                Defines the sharpness of this bilinear filter.<br>
+
+                Valid values are between 0.0 (complete loss of information) and 1.0 (no loss of information).<br>
+
+                The sharpness is a linear parameter. This means a value of 0.5 eliminates exactly half
+                (plus minus rounding to entire pixels) of information.
+              </dd>
+              
+<dt>expected (optional, but recommended)</dt>
+              
+<dd>
+                Defines the minimal match probability for the check to succeed.<br>
+                Valid values are between 0.0 and 1.0. If not defined, use 0.98.
+              </dd>
+              
+<dt>resize (optional)</dt>
+              
+<dd>
+                Defines, if the actual image should be resized before calculation to match
+                the size of the expected image.<br>
+                Valid values are "true" and "false".
+              </dd>
+                          
+<dt>find (optional)</dt>
+              
+<dd>
+                Defines an image-in-image search.<br>
+                A detailed description of this parameter can be found in <a href="#sec_imageAlgorithmFunctionImageFind">subsection 55.3.1</a>.
+              </dd>
+            
+</dl>
+          
+</dd>
+        
+</dl>
+      
+
+      
+    
+
+    
+    
+
+    
+<a name="sec_imagealgorithmFunctions"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_imagealgorithmFunctions">55.3</a></span>
+</div>
+<a href="contents.html#toc_sec_imagealgorithmFunctions">Description of special functions</a>
+</h4>
+      
+<a name="sec_imageAlgorithmFunctionImageFind"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_imageAlgorithmFunctionImageFind">55.3.1</a></span>
+</div>
+<a href="contents.html#toc_sec_imageAlgorithmFunctionImageFind">Image-in-image search</a>
+</h5>
+                
+<dl>
+          
+<dt>Description</dt>
+          
+<dd>
+            The image-in-image search allows to find an expected image within a (larger) image.
+                    The check is successful when the expected image can be found anywhere using the defined algorithm.
+                        Furthermore, you can determine the position of the match.<br>
+                        The following combination of parameters are valid:
+                  </dd>
+                  
+<p>
+                        
+<code>find=best</code> or <code>find=anywhere</code>
+<br>
+                        
+<code>find=best(resultX, resultY)</code> or <code>find=anywhere(resultX, resultY)</code>
+                  
+</p>
+                  
+<dt>Purpose</dt>
+          
+<dd>
+            The image-in-image search allows to compare images if you don't know the exact position and thus cannot define an offset.
+                        The search can be combined with any algorithm and is thus valuable for any purpose.
+                  </dd>
+                  
+<dt>Example</dt>
+          
+<dd>
+            The exemplary algorithm<br>
+            
+<code>algorithm=similarity;expected=0.95;find=best(resultX,resultY)</code>
+<br>
+            uses pixel-based similarity check (see <a href="#sec_imageAlgorithmDescriptionSimilarity">subsection 55.2.3</a>)
+                        to find an image of Q as part of the full image. The got image with highlighted region can be found within the run-log.
+                        Besides, the variables resultX and resultY are set to the location of the found image.
+          </dd>
+                
+</dl>
+                
+<a name="figure_55.11"></a><a name="figure_55.11"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/imgAdv_findExp.png" target="_blank"><img src="images/imgAdv_findExp.png" alt="Image-in-image search: Expected image" width="58" height="61" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;55.11</a>:&nbsp;&nbsp;Image-in-image search: Expected image</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<a name="figure_55.12"></a><a name="figure_55.12"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/imgAdv_findGot.png" target="_blank"><img src="images/imgAdv_findGot.png" alt="Image-in-image search: Got image" width="262" height="147" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;55.12</a>:&nbsp;&nbsp;Image-in-image search: Got image</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl>
+                  
+<dt>Parameters</dt>
+                  
+<dd>
+                    
+<dl>
+              
+<dt>find=best</dt>
+              
+<dd>
+                Defines that the <i>best</i> match should be used.
+                          </dd>
+                          
+<dt>find=anyhwere</dt>
+              
+<dd>
+                            Defines that the <i>first</i> match which exceeds the expected match probability should be used.<br>
+                                The image-in-image search uses multiple threads and thus finding anywhere is non-deterministic.
+                          </dd>
+                          
+<dt>resultX</dt>
+              
+<dd>
+                
+<code>resultX</code> is the name of a QF-Test variable which holds the x-position of the found image.<br>
+                                If a variable for the x-position is defined, a variable for the y-position has to be defined as well (see syntax above).
+                          </dd>
+                          
+<dt>resultY</dt>
+              
+<dd>
+                
+<code>resultY</code> is the name of a QF-Test variable which holds the y-position of the found image.
+                                If a variable for the y-position is defined, a variable for the x-position has to be defined as well (see syntax above).
+                          </dd>
+                        
+</dl>
+                  
+</dd>
+                
+</dl>
+          
+    
+        
+
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_transformdetails.html#sec_transformdetails"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 54&nbsp;Details about transforming nodes" title="Previous Chapter: 54&nbsp;Details about transforming nodes"></a></td><td class="navicon"><a href="tech_resultlists.html#sec_resultlists"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 56&nbsp;Result lists" title="Next Page: 56&nbsp;Result lists"></a></td><td class="navicon"><a href="tech_resultlists.html#sec_resultlists"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 56&nbsp;Result lists" title="Next Chapter: 56&nbsp;Result lists"></a></td><td class="navicon"><a href="technical.html#sec_technical"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: IV&nbsp;Technical reference" title="Chapter Overview: IV&nbsp;Technical reference"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

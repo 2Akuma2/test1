@@ -1,0 +1,2088 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Replay options</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_opt_play"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="opt_record.html#sec_opt_record"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 37.2&nbsp;Recording options" title="Previous Chapter: 37.2&nbsp;Recording options"></a></td><td class="navicon"><a href="opt_android.html#sec_opt_android"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 37.4&nbsp;Android" title="Next Page: 37.4&nbsp;Android"></a></td><td class="navicon"><a href="opt_android.html#sec_opt_android"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 37.4&nbsp;Android" title="Next Chapter: 37.4&nbsp;Android"></a></td><td class="navicon"><a href="options.html#sec_options"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 37&nbsp;Options" title="Chapter Overview: 37&nbsp;Options"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_opt_play">37.3</a></span>
+</div>
+<a href="contents.html#toc_sec_opt_play">Replay options</a>
+</h4>
+      
+      
+<p>
+        The following settings change the way test-suites are executed.
+      </p>
+      
+<a name="figure_37.19"></a><a name="figure_37.19"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_Replay.png" target="_blank"><img src="images/opt_Replay.png" alt="Replay options" texscale=".66" width="393" height="484"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.19</a>:&nbsp;&nbsp;Replay options</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<dl class="option">
+        
+
+        
+        
+<a name="opt_panickey"></a>
+<dt>(Don't) Panic key (User)</dt>
+<dd>Server or SUT script name: OPT_PLAY_DONT_PANIC_HOTKEY<br>
+            
+<p>
+              When running a test at full speed it can be rather difficult to
+              get the focus to QF-Test's window and interrupt the test so you
+              can do something different without having all these windows
+              flashing around the screen. This is all the more true when the
+              options <a href="#opt_hardmousemoves">Actually move mouse cursor</a> or <a href="#opt_automaticraise">Raise SUT windows automatically</a> are activated or when running in
+              batch mode.
+            </p>
+            
+<p>
+              This option lets you define a key combination (the default being
+              [Alt-F12]) that will instantly
+              pause all running tests if it is pressed in any SUT or
+              QF-Test window (unless multiple QF-Test instances are run
+              simultaneously, of course). Pressing the same key combination
+              again will resume all tests, unless you manually resume or stop
+              any of them. In that case its effect is automatically reset to
+              suspend tests.
+            </p>
+            
+<p>
+              To set a hotkey, click into the field and press the desired key combination.
+            </p>
+          
+</dd>
+
+        
+        
+
+        
+        
+<a name="opt_callstacksize"></a>
+<dt>Call stack size (System)</dt>
+<dd>Server script name: OPT_PLAY_CALLSTACK_SIZE<br>
+            
+<p>
+              The call stack size is a limit for the nesting depth of
+              <a href="sequences.html#step_BasicSequence" shape="rect">'Sequences'</a> or <a href="procedures.html#step_ProcedureCall" shape="rect">'Procedure calls'</a> during replay. This
+              limit is needed to detect and handle endless recursion. When the
+              nesting depth exceeds the call stack size, a
+              <a href="exceptions.html#ex_StackOverflowException" shape="rect"><code>StackOverflowException</code></a> is thrown. The default value of 200 should be
+              sufficient but can be increased for very complex tests.
+            </p>
+          
+</dd>
+
+        
+        
+
+        
+        
+<a name="opt_warnnestedtestcase"></a>
+<dt>Log warning for nested test-cases (System)</dt>
+<dd>Server script name: OPT_PLAY_WARN_NESTED_TEST_CASE<br>
+            
+<p>
+              Execution of <a href="sequences.html#step_TestCase" shape="rect">'Test-case'</a> nodes should not be nested because such 'Test-cases'
+              cannot be listed properly in the report. If this option is active, a warning is
+              logged in case a 'Test-case' is executed within another 'Test-case'.
+            </p>
+          
+</dd>
+
+        
+        
+
+        
+        
+<a name="opt_markrunningsteps"></a>
+<dt>Mark nodes during replay (User)</dt>
+<dd>
+            
+<p>
+              If set, tree nodes that are currently executed are marked with
+              an arrow.
+            </p>
+          
+</dd>
+
+        
+        
+
+        
+        
+<a name="opt_printrunningsteps"></a>
+<dt>Show replay messages in status line (User)</dt>
+<dd>
+            
+<p>
+              Determines whether the name of the currently executing node is
+              shown in the status line.
+            </p>
+          
+</dd>
+
+        
+        
+
+        
+        
+<a name="opt_raiseafter"></a>
+<dt>Raise test-suite window after replay (User)</dt>
+<dd>
+            
+<p>
+              This option is mainly used together with the option <a href="#opt_automaticraise" shape="rect">Raise SUT windows
+              automatically</a>. It causes the window of a test-suite to be
+              raised after a test run.
+            </p>
+            
+<p>
+              See also option <a href="#opt_forcedraise">Force window to the top when raising</a>.
+            </p>
+          
+</dd>
+
+        
+        
+
+        
+        
+<a name="opt_minimize"></a>
+<dt>Minimize test-suite window during replay (User)</dt>
+<dd>
+            
+<p>
+              If this option is set, QF-Test will minimize the window of a
+              test-suite while its tests are being executed. The window will
+              pop back up automatically when the test is stopped or suspended.
+              This feature is especially useful on Windows 2000/XP systems
+              where programs are prohibited from bringing their windows to the
+              top so QF-Test cannot raise the windows of the SUT.
+            </p>
+          
+</dd>
+
+        
+        
+
+        
+        
+<a name="opt_showmessageafter"></a>
+<dt>Show message dialog after (User)</dt>
+<dd>
+            
+<p>
+              After replay is finished, the status line shows the number of
+              errors and warnings that occurred. If an uncaught exception was
+              thrown, an error dialog is displayed. Additionally, a message
+              dialog can be displayed in case of warnings or errors or every time a run is finished. This
+              option sets the minimum error level that triggers such a
+              message dialog.
+            </p>
+          
+</dd>
+
+        
+        
+
+        
+        
+<a name="opt_selectonerror"></a>
+<dt>Always locate the source of an error (User)</dt>
+<dd>
+            
+<p>
+              When an exception is thrown during replay, the node that caused
+              the exception will be made visible and selected. If you don't
+              like this, you can turn this feature off and locate the node via
+              the &raquo;<em>Run</em>&laquo;-&raquo;<em>Find&nbsp;last&nbsp;error&nbsp;source...</em>&laquo; menu item instead.
+            </p>
+          
+</dd>
+
+        
+        
+
+        
+        
+<a name="opt_passwordsalt"></a>
+<dt>
+<span class="margin"><a name="new_N103074"></a><span class="note">3.0+</span></span>Salt for crypting passwords (System)</dt>
+<dd>
+            
+<p>
+              QF-Test can store encrypted passwords in the <a href="events.html#att_TextInputStep_text" shape="rect">'Text'</a> attribute of a
+              <a href="events.html#step_TextInputStep" shape="rect">'Text input'</a> node for a password field or the <a href="events.html#att_SelectionEventStep_detail" shape="rect">'Detail'</a>
+              attribute of a <a href="events.html#step_SelectionEventStep" shape="rect">'Selection'</a> used for a login dialog in a web SUT. When
+              such passwords are en- or decrypted, QF-Test combines the key with the salt specified
+              in this option. Without this salt, anybody with sufficient knowledge is able to
+              decrypt your passwords to get the plain-text version.
+            </p>
+            
+<p>
+              
+<span class="margin"><span class="note">Note</span></span> Don't let this option give you a false sense of security. Anybody that
+              gains access to this salt and anybody that can execute your tests can also gain
+              access to the plain-text version of the password. However, encrypting passwords is
+              still useful to prevent obvious plain-text passwords getting stored in test-suites
+              and run-logs, and encrypted passwords are reasonably safe from someone who only gets
+              hold of a test-suite or run-log without access to this salt.
+            </p>
+          
+</dd>
+
+    
+        
+
+    
+    
+<a name="opt_errorstatedisabledcomponent"></a>
+<dt>
+<span class="margin"><a name="new_N103139"></a><span class="note">4.0+</span></span>How to handle disabled components (System)</dt>
+<dd>Server script name: OPT_PLAY_ERROR_STATE_DISABLED_COMPONENT<br>Possible Values: VAL_PLAY_DISABLED_COMPONENT_WARNING, VAL_PLAY_DISABLED_COMPONENT_ERROR, VAL_PLAY_DISABLED_COMPONENT_EXCEPTION<br>
+        
+<p>
+          In case you replay an event on a component, which is disabled
+          you can configure QF-Test's behavior for that case. You can
+            </p>
+        
+<ul>
+          
+<li>Log a warning message</li>
+          
+<li>Log an error message</li>
+          
+<li>Throw a <a href="exceptions.html#ex_DisabledComponentStepException" shape="rect"><code>DisabledComponentStepException</code></a>
+</li>
+        
+</ul>
+      
+</dd>
+
+        
+        
+
+    
+    
+<a name="opt_errorstateexecutiontimeout"></a>
+<dt>
+<span class="margin"><a name="new_N103201"></a><span class="note">4.1+</span></span>How to handle exceeded execution timeout (System)</dt>
+<dd>Server script name: OPT_PLAY_ERROR_STATE_EXECUTION_TIMEOUT<br>Possible Values: VAL_PLAY_EXECUTION_TIMEOUT_WARNING, VAL_PLAY_EXECUTION_TIMEOUT_ERROR, VAL_PLAY_EXECUTION_TIMEOUT_EXCEPTION, VAL_PLAY_EXECUTION_TIMEOUT_WARNING_IMMEDIATE, VAL_PLAY_EXECUTION_TIMEOUT_ERROR_IMMEDIATE, VAL_PLAY_EXECUTION_TIMEOUT_EXCEPTION_IMMEDIATE<br>
+        
+<p>
+          In case of an exceeding execution timeout,
+          you can configure QF-Test's behavior for that case. You can
+            </p>
+        
+<ul>
+          
+<li>Log a warning message and run through possible cleanup nodes.</li>
+          
+<li>Log an error message and run through possible cleanup nodes.</li>
+          
+<li>Throw an <a href="exceptions.html#ex_ExecutionTimeoutExpiredException" shape="rect"><code>ExecutionTimeoutExpiredException</code></a> and run through possible cleanup nodes.</li>
+          
+<li>Log a warning message and stop the node immediately.</li>
+          
+<li>Log an error message and stop the node immediately.</li>
+          
+<li>Throw an <a href="exceptions.html#ex_ExecutionTimeoutExpiredException" shape="rect"><code>ExecutionTimeoutExpiredException</code></a> and stop the node immediately.</li>
+        
+</ul>
+        
+<p>
+       The definition of running cleanup nodes includes that Cleanup and Catch nodes get executed.
+       Stopping the node immediately stands for not executing possible Cleanup and Catch nodes at the end.
+        </p>
+      
+</dd>
+
+        
+
+      
+</dl>
+      
+
+      
+<a name="sec_opt_clients"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_opt_clients">37.3.1</a></span>
+</div>
+<a href="contents.html#toc_sec_opt_clients">Client options</a>
+</h5>
+        
+        
+<p>
+          Various settings for process and SUT clients can be adjusted with the following options:
+        </p>
+        
+<a name="figure_37.20"></a><a name="figure_37.20"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_Clients.png" target="_blank"><img src="images/opt_Clients.png" alt="Client options" texscale=".66" width="393" height="328"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.20</a>:&nbsp;&nbsp;Client options</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl class="option">
+          
+
+          
+          
+<a name="opt_askstopclients"></a>
+<dt>
+              Ask whether to stop clients before exiting
+             (User)</dt>
+<dd>
+              
+<p>
+                If there are still active clients upon exit of QF-Test, these
+                are terminated after asking for confirmation. If this option is
+                turned off, the clients are terminated unconditionally.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_killprocesstree"></a>
+<dt>
+              When terminating a process, kill its whole process tree
+             (System)</dt>
+<dd>Server script name: OPT_PLAY_KILL_PROCESS_TREE<br>
+              
+<p>
+                The process of an SUT or a helper program started during a test can be terminated
+                via a <a href="processes.html#step_ClientStopper" shape="rect">'Stop client'</a> node or manually via the &raquo;<em>Client</em>&laquo;
+                menu. In case of an SUT, QF-Test first tries to communicate with it and initiate a
+                clean <code>System.exit</code> call. Non-Java programs have to be killed. If the
+                program has started further child processes these may or may not get terminated by
+                a normal shutdown or kill, depending on circumstances.
+              </p>
+              
+<p>
+                It is normally undesirably to keep such processes around as they might interfere
+                with other tests or lock files that need to be removed or overwritten. Unless
+                this option is disabled, QF-Test will try to determine the whole process hierarchy
+                for any program it started and make sure that the main process and all child
+                processes get killed explicitly.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_numclients"></a>
+<dt>Number of terminated clients in menu (User)</dt>
+<dd>Server script name: OPT_PLAY_MAX_CLIENTS<br>
+              
+<p>
+                This option limits the number of menu items for terminated
+                clients that are kept in the &raquo;<em>Clients</em>&laquo;
+                menu.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_clientoutputsize"></a>
+<dt>
+<span class="margin"><a name="new_N103388"></a><span class="note">3.0+</span></span>Maximum size of client terminal (kB) (User)</dt>
+<dd>Server or SUT script name: OPT_PLAY_TERMINAL_SIZE<br>
+              
+<p>
+                The maximum amount of text (in kilobyte) that the individual client terminal will
+                hold. If the limit is exceeded, old text will be removed when new text arrives. A
+                value of 0 means no limit.
+              </p>
+              
+<p>
+                
+<span class="margin"><span class="note">Note</span></span> This option also determines the amount of output available for the
+                special variables <code>${qftest:client.output.&lt;name&gt;}</code>,
+                <code>${qftest:client.stdout.&lt;name&gt;}</code> and
+                <code>${qftest:client.stderr.&lt;name&gt;}</code>.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_flashcomponent"></a>
+<dt>Highlight selected component in the SUT (User)</dt>
+<dd>Server script name: OPT_PLAY_HIGHLIGHT_COMPONENTS<br>
+              
+<p>
+                If this option is set, QF-Test will highlight the associated
+                component in the SUT whenever a <a href="components.html#step_ComponentStep" shape="rect">'Component'</a> node or a
+                node that references a 'Component' is selected.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_clientexceptionlevel"></a>
+<dt>How to handle exceptions in the SUT (System)</dt>
+<dd>SUT script name: OPT_PLAY_SUT_EXCEPTION_LEVEL<br>Possible Values: VAL_PLAY_EXCEPTION_LEVEL_WARNING, VAL_PLAY_EXCEPTION_LEVEL_ERROR, VAL_PLAY_EXCEPTION_LEVEL_EXCEPTION<br>
+              
+<p>
+                Exceptions that are thrown during event handling in the SUT are
+                typically a sure sign for a bug in the SUT. This option
+                determines what to do if such an exception is caught. You can
+              </p>
+              
+<ul>
+                
+<li>Log a warning message</li>
+                
+<li>Log an error message</li>
+                
+<li>Throw an <a href="exceptions.html#ex_UnexpectedClientException" shape="rect"><code>UnexpectedClientException</code></a>
+</li>
+              
+</ul>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_reusesubclientids"></a>
+<dt>Reuse IDs for SUT clients in nested sub-processes (System)</dt>
+<dd>Server script name: OPT_PLAY_REUSE_SUT_IDS<br>
+              
+<p>
+                This is a complex option which you should hopefully never care about. When an SUT
+                client launches another process that itself connects to QF-Test, the new SUT client is
+                identified by the name of the original SUT client with a ':' and a numeric ID
+                appended. The first ID will always be 2, with increasing numbers for additional
+                sub-processes.
+              </p>
+              
+<p>
+                When a sub-process terminates and another sub-process connects, QF-Test can either
+                reuse the ID of the terminated process or continue incrementing to create a new ID.
+              </p>
+              
+<p>
+                In most cases it is preferable to reuse the sub-process ID. The most common case
+                is a single sub-process that is started, terminated, then started again. By
+                activating this option you can always address the single sub-process with the same
+                client name.
+              </p>
+              
+<p>
+                In a more complex situation, multiple sub-processes may be launched and terminated
+                more or less at random, depending on progression of the test-run. In such a case,
+                always incrementing the ID for a new process is more deterministic.
+              </p>
+              
+<p>
+                In either case the ID counter will be reset when the original SUT client is started
+                anew.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_garbagecollectsut"></a>
+<dt>Automatically perform garbage collection in the SUT (System)</dt>
+<dd>SUT script name: OPT_PLAY_SUT_GARBAGE_COLLECTION<br>
+              
+<p>
+                By default QF-Test performs a full garbage collection in the SUT once every few
+                hundred <a href="control.html#step_ClientScriptStep" shape="rect">'SUT script'</a> executions. This is necessary due to a limitation
+                in Java's default garbage collection mechanism that allows an OutOfMemoryError to
+                happen for the so called PermGen space, even though the required memory could
+                easily be reclaimed by a garbage collection.
+              </p>
+              
+<p>
+                When you are trying to analyze the memory performance of your application, these
+                explicit garbage collections might influence the results. For that case you can
+                disable QF-Test's garbage collection via this option.
+              </p>
+            
+</dd>
+
+          
+        
+</dl>
+      
+
+      
+      
+
+      
+<a name="sec_opt_terminal"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_opt_terminal">37.3.2</a></span>
+</div>
+<a href="contents.html#toc_sec_opt_terminal">Terminal options</a>
+</h5>
+        
+        
+<p>
+          Various settings for the shared terminal can be adjusted with the following options:
+        </p>
+        
+<a name="figure_37.21"></a><a name="figure_37.21"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_Terminal.png" target="_blank"><img src="images/opt_Terminal.png" alt="Terminal options" texscale=".66" width="393" height="510"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.21</a>:&nbsp;&nbsp;Terminal options</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl class="option">
+          
+
+          
+          
+<a name="opt_terminalsize"></a>
+<dt>Maximum size of shared terminal (kB) (User)</dt>
+<dd>Server script name: OPT_PLAY_SHARED_TERMINAL_SIZE<br>
+              
+<p>
+                The maximum amount of text (in kilobyte) that the shared
+                terminal will hold. If the limit is exceeded, old text will be
+                removed when new text arrives. A value of 0 means no limit.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_terminalregexpsuppress"></a>
+<dt>
+<span class="margin"><a name="new_N103644"></a><span class="note">4.0+</span></span>Regular expression to suppress display of certain text (User)</dt>
+<dd>
+              
+<p>
+                By defining a regular expression for this option, certain text in the terminal output can be
+                suppressed.
+              </p>
+              
+<p>
+                Default value is empty.<br>
+                See also <a href="tech_regexp.html#sec_regexp">Regular expressions</a>.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_terminalrichtext"></a>
+<dt>
+<span class="margin"><a name="new_N103677"></a><span class="note">4.0+</span></span>Use rich text terminal (User)</dt>
+<dd>
+              
+<p>
+                If activated the rich text terminal allowing monospaced font type and coloring of given regular
+                expressions. Deactivate this option if you want to switch back to the simple terminal as it were
+                before QF-Test version 4.
+              </p>
+              
+<p>
+                
+<span class="margin"><span class="note">Note</span></span>QF-Test needs to be restarted in order to make a change in this option become
+                visible.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_terminalfontsize"></a>
+<dt>
+<span class="margin"><a name="new_N103707"></a><span class="note">4.0+</span></span>Terminal font size (pt) (User)</dt>
+<dd>
+              
+<p>
+                This option lets you set the font size (as point value) used within the shared terminal.
+              </p>
+              
+<p>
+                This option only has an effect if the <a href="#opt_terminalrichtext">Use rich text terminal</a> is active.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_terminalmonospaced"></a>
+<dt>
+<span class="margin"><a name="new_N103738"></a><span class="note">4.0+</span></span>Use monospaced font (User)</dt>
+<dd>
+              
+<p>
+                If activated the rich text terminal will use a monospaced font.
+              </p>
+              
+<p>
+                This option only has an effect if the <a href="#opt_terminalrichtext">Use rich text terminal</a> is active.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_terminalregexpcoloring"></a>
+<dt>
+<span class="margin"><a name="new_N103769"></a><span class="note">4.0+</span></span>Regular expression coloring (User)</dt>
+<dd>
+              
+<p>
+                If activated the shared terminal output is processed for given regular expressions to be
+                highlighted in different colors.
+              </p>
+              
+<p>
+                This option only has an effect if <a href="#opt_terminalrichtext">Use rich text terminal</a> and <a href="#opt_terminalregexpcoloring">Regular expression coloring</a> are active.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_terminalregexpcolor0"></a>
+<dt>
+<span class="margin"><a name="new_N103803"></a><span class="note">4.0+</span></span>Regular expression for red highlighting (User)</dt>
+<dd>
+              
+<p>
+                This option allows to define a regular expression for output to be shown in red color.
+              </p>
+              
+<p>
+                This option only has an effect if <a href="#opt_terminalrichtext">Use rich text terminal</a> and <a href="#opt_terminalregexpcoloring">Regular expression coloring</a> are active.
+              </p>
+              
+<p>
+                Default value is:<br>
+                (?md).+Exception\b.*\n(?%gt;\n?^(?%gt;\sat|Caused by:)\s.+\n)+|.*(?i)exception(?%gt;s)?\b.*<br>
+                With this also typical Java stack traces will be highlighted.<br>
+                See also <a href="tech_regexp.html#sec_regexp">Regular expressions</a>.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_terminalregexpcolor1"></a>
+<dt>
+<span class="margin"><a name="new_N103849"></a><span class="note">4.0+</span></span>Regular expression for orange highlighting (User)</dt>
+<dd>
+              
+<p>
+                This option allows to define a regular expression for output to be shown in orange color. The
+                default regular expression matches error log output and lines containing respective text.
+              </p>
+              
+<p>
+                This option only has an effect if <a href="#opt_terminalrichtext">Use rich text terminal</a> and <a href="#opt_terminalregexpcoloring">Regular expression coloring</a> are active.
+              </p>
+              
+<p>
+                Default value is:<br>
+                (?md)^[1-2] \(\d\d:\d\d:\d\d\.\d\d\d\) .*|.*(?i)(?%gt;error(?%gt;s)?|fehler)\b.*<br>
+                With this also error log messages will be highlighted.<br>
+                See also <a href="tech_regexp.html#sec_regexp">Regular expressions</a>.
+              </p>
+              
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_terminalregexpcolor2"></a>
+<dt>
+<span class="margin"><a name="new_N103895"></a><span class="note">4.0+</span></span>Regular expression for yellow highlighting (User)</dt>
+<dd>
+              
+<p>
+                This option allows to define a regular expression for output to be shown in yellow color. The
+                default regular expression matches with typical stack traces and exceptions.
+              </p>
+              
+<p>
+                This option only has an effect if <a href="#opt_terminalrichtext">Use rich text terminal</a> and <a href="#opt_terminalregexpcoloring">Regular expression coloring</a> are active.
+              </p>
+              
+<p>
+                Default value is:<br>
+                (?md)^[3-4] \(\d\d:\d\d:\d\d\.\d\d\d\) .*|.*(?i)(?%gt;warning(?%gt;s)?|warnung(?%gt;en)?)\b.*<br>
+                With this also warning log messages will be highlighted.<br>
+                See also <a href="tech_regexp.html#sec_regexp">Regular expressions</a>.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_terminalregexpcolor3"></a>
+<dt>
+<span class="margin"><a name="new_N103941"></a><span class="note">4.0+</span></span>Regular expression for blue highlighting (User)</dt>
+<dd>
+              
+<p>
+                This option allows to define a regular expression for output to be shown in blue color. The default
+                regular expression matches with typical stack traces and exceptions.
+              </p>
+              
+<p>
+                This option only has an effect if <a href="#opt_terminalrichtext">Use rich text terminal</a> and <a href="#opt_terminalregexpcoloring">Regular expression coloring</a> are active.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_terminalregexpcolor4"></a>
+<dt>
+<span class="margin"><a name="new_N103975"></a><span class="note">4.0+</span></span>Regular expression for green highlighting (User)</dt>
+<dd>
+              
+<p>
+                This option allows to define a regular expression for output to be shown in green color. The default
+                regular expression matches with typical stack traces and exceptions.
+              </p>
+              
+<p>
+                This option only has an effect if <a href="#opt_terminalrichtext">Use rich text terminal</a> and <a href="#opt_terminalregexpcoloring">Regular expression coloring</a> are active.
+              </p>
+            
+</dd>
+
+          
+        
+</dl>
+      
+
+      
+      
+
+      
+<a name="sec_opt_replayevents"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_opt_replayevents">37.3.3</a></span>
+</div>
+<a href="contents.html#toc_sec_opt_replayevents">Event handling</a>
+</h5>
+        
+        
+<p>
+          These options influence some details of how events are simulated in
+          the SUT during replay.
+        </p>
+        
+<a name="figure_37.22"></a><a name="figure_37.22"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_ReplayEvents.png" target="_blank"><img src="images/opt_ReplayEvents.png" alt="Events" texscale=".66" width="393" height="491"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.22</a>:&nbsp;&nbsp;Event handling options</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl class="option">
+          
+
+          
+          
+<a name="opt_automaticraise"></a>
+<dt>Raise SUT windows automatically (System)</dt>
+<dd>SUT script name: OPT_PLAY_RAISE_SUT_WINDOWS<br>
+              
+<p>
+                If this option is set, windows of the SUT for which a
+                MouseEvent or KeyEvent is replayed will be raised
+                automatically when they get activated. This eases switching
+                between QF-Test and the SUT to visually verify that a
+                sequence is replaying correctly.
+              </p>
+              
+<p>
+                See also options <a href="#opt_raiseafter">Raise test-suite window after replay</a> and <a href="#opt_forcedraise">Force window to the top when raising</a>.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_forcedraise"></a>
+<dt>
+<span class="margin"><a name="new_N104081"></a><span class="note">3.4.1+</span></span>Force window to the top when raising (System)</dt>
+<dd>SUT script name: OPT_PLAY_RAISE_SUT_WINDOWS_FORCED<br>
+              
+<p>
+                
+<span class="margin"><span class="note">Note</span></span>
+                This option only has an effect on Windows systems.
+              </p>
+              
+<p>
+                Windows only allows an application to bring one of its own windows to the front if
+                that application currently has the focus. This can make it difficult for QF-Test to
+                raise SUT windows and to automatically switch between the SUT and QF-Test. If this
+                option is activated, QF-Test temporarily sets the "always on top" attribute to force
+                windows to the top.
+              </p>
+              
+<p>
+                See also options <a href="#opt_raiseafter">Raise test-suite window after replay</a> and <a href="#opt_automaticraise">Raise SUT windows automatically</a>.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_checkmodaldialog"></a>
+<dt>Check for modal dialogs (System)</dt>
+<dd>SUT script name: OPT_PLAY_CHECK_MODAL<br>
+              
+<p>
+                A modal dialog is a window that blocks all input to other
+                windows until it is closed. It is often used to display an
+                error message or request user input.
+              </p>
+              
+<p>
+                Because the events simulated by QF-Test are artificial, they
+                are not blocked by a modal dialog and can reach any
+                window. This is normally not desirable, since the existence of
+                a modal dialog may signal an unexpected error. Activating this
+                option causes QF-Test to check for modal dialogs itself
+                before replaying MouseEvents or KeyEvents. If such an event is
+                targeted to a window that is blocked by a modal dialog, a
+                <a href="exceptions.html#ex_ModalDialogException" shape="rect"><code>ModalDialogException</code></a> is thrown.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_hardmousemoves"></a>
+<dt>Actually move mouse cursor (System)</dt>
+<dd>SUT script name: OPT_PLAY_MOVE_MOUSE_CURSOR<br>
+              
+<p>
+                If this option is set, the mouse cursor is actually moved
+                across the screen as MouseEvents are simulated. This feature
+                requires a working AWT robot.
+              </p>
+              
+<p>
+                While this option is mainly intended to give visual feedback,
+                it can have a positive impact on test reliability because it
+                reduces side-effects through events from the underlying system
+                that might interfere with the automated test. However, for
+                tests where precise mouse movement is essential, for example a
+                drawing tool, this option should be turned off.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_blockhardevents"></a>
+<dt>Delay for hard events during replay (ms) (System)</dt>
+<dd>SUT script name: OPT_PLAY_DELAY_HARD_EVENTS<br>
+              
+<p>
+                During event replay QF-Test blocks or delays some "hard" events, i.e. events that
+                come directly from the system, for example when the user is moving the mouse
+                cursor. This is done to prevent them from interfering with the SUT in an unlucky
+                moment. Popup windows, which are used for menus and combo boxes among other
+                things, are especially sensitive to such events which can cause them to pop down
+                accidentally. Therefore, these filters improve testing stability considerably.
+              </p>
+              
+<p>
+                This option sets the maximum time that such events may be delayed. In the unlikely
+                case that the filters have unwanted side effects with your application, you can
+                turn them off by setting the value to 0.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+
+          
+          
+
+          
+          
+<a name="opt_autoscroll"></a>
+<dt>Scroll automatically to display sub-items (System)</dt>
+<dd>SUT script name: OPT_PLAY_SCROLL_ITEM<br>
+              
+<p>
+                If this option is set, accessing a sub-item of a complex
+                component inside a scroll pane will automatically cause the
+                sub-item to be scrolled into view. In that case you can remove
+                most recorded events on scroll bars or scroll buttons, which
+                are not required for correct replay.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_treeexpand"></a>
+<dt>Expand tree nodes as needed (System)</dt>
+<dd>SUT script name: OPT_PLAY_EXPAND_TREE<br>
+              
+<p>
+                When accessing nodes of a tree component as
+                hierarchic sub-items it is possible to select a node that is
+                not visible because one of its ancestral nodes is not
+                expanded. If this option is set, all ancestors of the node
+                will be expanded as needed. Otherwise this situation leads to
+                a <a href="exceptions.html#ex_ComponentNotFoundException" shape="rect"><code>ComponentNotFoundException</code></a>.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_throwdisabled"></a>
+<dt>Throw DisabledComponentException (System)</dt>
+<dd>SUT script name: OPT_PLAY_THROW_DISABLED_EXCEPTION<br>
+              
+<p>
+                If QF-Test replays events on a component that is not enabled,
+                these events are ignored silently. In most cases this
+                indicates an error which is signaled by throwing a
+                <a href="exceptions.html#ex_DisabledComponentException" shape="rect"><code>DisabledComponentException</code></a>.
+              </p>
+              
+<p>
+                Old test-suites may not be prepared to deal with this
+                exception. These test-suites should be fixed, but as a quick
+                workaround <code>DisabledComponentExceptions</code> can be suppressed
+                by deactivating this option.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_imagefuzz"></a>
+<dt>
+<span class="margin"><a name="swt_N104309"></a><span class="note">SWT</span></span>
+              Tolerance for checking images (System)</dt>
+<dd>SUT script name: OPT_PLAY_IMAGE_TOLERANCE<br>
+              
+<p>
+                
+<span class="margin"><span class="note">Note</span></span>
+                Initially this option was intended for SWT/Gtk only but it turned out to be
+                universally applicable and useful.
+              </p>
+              
+<p>
+                Image rendering in Java applications and web browsers is not always fully
+                deterministic. Even within the same session on a display with limited color depth
+                the RGB values of an icon image can vary slightly and it becomes worse when
+                running tests on different machines. Graphics driver, JDK version and operating
+                system settings also play a role. This makes strict image checks almost unusable
+                in some cases.
+              </p>
+              
+<p>
+                To work around the problem, this option defines a tolerance setting for default
+                image checks. For a pixel's red, green and blue color values a deviation from
+                the expected value by the given amount is tolerated. Thus exact image checking for
+                the default algorithm can be enforced by setting this value to 0 but it is
+                preferable to use the "identity" check algorithm instead (see <a href="tech_imagealgorithmdetails.html#sec_imagealgorithmdetails">Details about the algorithm for image comparison</a>). The default setting of 5 is a good compromise,
+                allowing checks with differences that are normally not visually perceivable to
+                succeed.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_threaderror"></a>
+<dt>
+<span class="margin"><a name="swing_N104355"></a><span class="note">Swing</span></span>
+              How to handle events coming from the wrong thread (System)</dt>
+<dd>SUT script name: OPT_PLAY_WRONG_THREAD_ERROR_LEVEL<br>Possible Values: VAL_PLAY_THREAD_LEVEL_WARNING, VAL_PLAY_THREAD_LEVEL_ERROR, VAL_PLAY_THREAD_LEVEL_EXCEPTION<br>
+              
+<p>
+                It is a rather common mistake in Swing based Java applications to access GUI
+                components from the wrong thread. Since Swing is not thread-safe, such calls may
+                only be made from the AWT event dispatch thread. Otherwise the potential
+                consequences are race conditions, leading to very subtle and hard-to-debug errors,
+                or deadlocks, freezing the application and making it unusable. Background
+                information about this topic is available from<br>
+                
+<a href="http://download.oracle.com/javase/tutorial/uiswing/concurrency/index.html" shape="rect">
+                  http://download.oracle.com/javase/tutorial/uiswing/concurrency/index.html
+                </a>,
+                specifically the sections on "Initial Threads" and "The Event Dispatch Thread".
+              </p>
+              
+<p>
+                When QF-Test registers an event on a thread other than the AWT event dispatch thread
+                it issues an error message including a stack trace which can be useful in fixing
+                the problem. This set of options defines the severity of the message, whether to
+                perform strict checking and a maximum for the number of messages to log.
+              </p>
+              
+<p>
+                The possible choices for the option "Error level" are "Error" and "Warning". We
+                strongly suggest that you keep the default setting of "Error" and make sure that
+                such problems are fixed sooner rather than later because they represent a serious
+                risk.
+              </p>
+            
+</dd>
+          
+          
+<a name="opt_threadstrict"></a>
+<dt>
+<span class="margin"><a name="swing_N104390"></a><span class="note">Swing</span></span>
+              Strict checking (System)</dt>
+<dd>SUT script name: OPT_PLAY_WRONG_THREAD_STRICT<br>
+              
+<p>
+                If strict checking for wrong thread errors is activated, error or warning messages
+                will be issued for all kinds of events triggered from the wrong thread. Otherwise
+                the problem will be ignored for "less relevant" events. Which events are
+                considered more or less relevant is arbitrary, based on the fact that there's a
+                lot of Java literature (including early Java documentation from Sun) claiming that
+                it is safe to create components on any thread and that thread-safety only needs to
+                be enforced once a component is made visible. A lot of code follows this pattern
+                and the risk for causing problems in this case is indeed minimal. In the presence
+                of such code disabling "Strict checking" will cause error messages to be logged
+                only for the more relevant problems. If you want to get rid of all thread
+                violations - as we recommend - you should turn strict checking on.
+              </p>
+            
+</dd>
+          
+          
+<a name="opt_threadmaxerrors"></a>
+<dt>
+<span class="margin"><a name="swing_N104412"></a><span class="note">Swing</span></span>
+              Maximum number of errors to log per SUT client (System)</dt>
+<dd>SUT script name: OPT_PLAY_WRONG_THREAD_MAX_ERRORS<br>
+              
+<p>
+                In case an SUT contains code that violates thread safety it is possible that a
+                very large number of events are triggered from the wrong thread. Logging all those
+                errors can significantly impact test performance, yet logging more than the
+                first few errors does not really contribute much. The option "Maximum number of
+                errors to log per SUT client" limits the possible number of error messages for
+                this case.
+              </p>
+            
+</dd>
+
+          
+        
+</dl>
+      
+
+      
+      
+
+      
+<a name="sec_opt_recognition"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_opt_recognition">37.3.4</a></span>
+</div>
+<a href="contents.html#toc_sec_opt_recognition">Component recognition</a>
+</h5>
+        
+        
+<p>
+          How component recognition works - and the impact of these options on
+          it - is explained in <a href="tech_recognition.html#sec_recognition">section 44.1</a>. The
+          pre-defined values should give good results. If you experience
+          problems with component recognition, you can try to improve it by
+          adjusting the probabilities.
+        </p>
+        
+<a name="figure_37.23"></a><a name="figure_37.23"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_Recognition.png" target="_blank"><img src="images/opt_Recognition.png" alt="Component recognition" texscale=".66" width="413" height="519"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.23</a>:&nbsp;&nbsp;Component recognition options</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          The name of a component plays a special role. The following
+          option affects the impact of names:</p>
+        
+<dl class="option">
+          
+
+          
+          
+<a name="opt_nameoverride"></a>
+<dt>Name override mode (replay) (System)</dt>
+<dd>SUT script name: OPT_PLAY_RECOGNITION_NAME_OVERRIDE<br>Possible Values: VAL_NAME_OVERRIDE_EVERYTHING, VAL_NAME_OVERRIDE_HIERARCHY, VAL_NAME_OVERRIDE_PLAIN<br>
+              
+<p>
+                
+<span class="margin"><span class="note">Note</span></span> There are two versions of this option which are closely
+                related. This one is effective during replay, the <a href="opt_record.html#opt_nameoverriderec">other one</a> during recording. Obviously, both
+                options should always have the same value. There's one exception though: When
+                migrating from one setting to another, QF-Test's components have to be updated.
+                During that process, keep this option at the old setting and change the record
+                option to the new one. Be sure to update the replay setting after updating the
+                components.
+              </p>
+              
+<p>
+                This option determines the weight given to the names of components for component
+                recognition. Possible choices are:
+              </p>
+              
+<p>
+                
+<strong>Override everything</strong>
+<br>
+                This is the most effective and adaptable way of searching components, but it
+                requires that the names of the components are unique, at least within the same
+                window. If that uniqueness is given, use this choice.<br>
+                
+<span class="margin"><a name="web_N104513"></a><span class="note">Web</span></span>Don't use this value for a web page with frames. Use "Hierarchical
+                resolution" instead.
+              </p>
+              
+<p>
+                
+<strong>Hierarchical resolution</strong>
+<br>
+                This choice should be used if component names are not unique on a per-window
+                basis, but naming is still used consistently so that two components with identical
+                names have at least parent components or ancestors with distinct names.
+                That way, component recognition is still tolerant to a lot of change, but if
+                a named component is moved to a different named parent in the SUT, the test-suite
+                will have to be updated to reflect the change.
+              </p>
+              
+<p>
+                
+<strong>Plain attribute</strong>
+<br>
+                If there are components with identical names in the SUT within the same parent
+                component you must use this setting. The name will still play an important role in
+                component recognition, but not much more than the <a href="components.html#att_ComponentStep_feature" shape="rect">'Feature'</a>
+                attribute.
+              </p>
+            
+</dd>
+
+          
+        
+</dl>
+        
+<p>
+          The algorithm for component recognition is very tolerant and biased towards finding a match. If the best
+          match is not perfect QF-Test logs information about the encountered differences, either as a warning or a
+          plain message, depending on the following options:
+        </p>
+        
+<dl class="option">
+          
+
+          
+          
+<a name="opt_warnformissingname"></a>
+<dt>Log missing name (System)</dt>
+<dd>SUT script name: OPT_PLAY_WARN_MISSING_NAME<br>
+              
+<p>
+                If this option is set, a message will be logged whenever a
+                component is targeted that does not have a name, but QF-Test "thinks"
+                it should have one.
+                A plausible name is suggested where possible.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_warnforduplicatename"></a>
+<dt>Log ambiguous name (System)</dt>
+<dd>SUT script name: OPT_PLAY_WARN_AMBIGUOUS_NAME<br>
+              
+<p>
+                If the option <a href="#opt_nameoverride">Name override mode (replay)</a> is set to "Override everything"
+                or "Hierarchical resolution", a message is logged whenever QF-Test encounters
+                more than one potential target components with the same name. That message can be
+                suppressed with the help of this option.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_warnforfeaturemismatch"></a>
+<dt>Log feature mismatch (System)</dt>
+<dd>SUT script name: OPT_PLAY_WARN_FEATURE_MISMATCH<br>
+              
+<p>
+                A component is considered to have a "feature mismatch" if it is determined by QF-Test
+                as the target best suited for an event or check even though at one or more levels
+                of the hierarchy the recorded <a href="components.html#att_ComponentStep_feature" shape="rect">'Feature'</a> attribute did not match
+                the current state of the component. If this option is activated, feature
+                mismatches are logged, notifying you that it may be a good idea to
+                update the affected components.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_warnforextrafeaturemismatch"></a>
+<dt>Log extra feature mismatch (System)</dt>
+<dd>SUT script name: OPT_PLAY_WARN_EXTRA_FEATURE_MISMATCH<br>
+              
+<p>
+                An "extra feature mismatch" is similar to a feature mismatch as explained above,
+                except that it applies to extra features with status "should match". If this
+                option is activated, extra feature mismatches are logged, notifying
+                you that it may be a good idea to update the affected components.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_warnforstructuremismatch"></a>
+<dt>Log structure mismatch (System)</dt>
+<dd>SUT script name: OPT_PLAY_WARN_STRUCTURE_MISMATCH<br>
+              
+<p>
+                A "structure mismatch" is similar to a feature mismatch as explained above, except
+                that instead of the feature it is the structure information represented by the
+                attributes <a href="components.html#att_ComponentStep_structure" shape="rect">'Class index'</a> and <a href="components.html#att_ComponentStep_structure" shape="rect">'Class count'</a> where
+                the mismatch occurred. If this option is activated, structure mismatches are
+                logged, notifying you that it may be a good idea to update the
+                affected components.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_warnforintermediatenamedancestor"></a>
+<dt>Log intermediate named ancestor (System)</dt>
+<dd>SUT script name: OPT_PLAY_WARN_NAMED_ANCESTOR<br>
+              
+<p>
+                An "intermediate named ancestor" is a direct or indirect parent component of the
+                target component in the SUT which is not part of the component hierarchy in QF-Test
+                even though it has a name. If the option <a href="#opt_nameoverride">Name override mode (replay)</a> is set
+                to "Hierarchical resolution", this is considered as a mismatch, comparable to a
+                feature or structure mismatch. If this option is activated, interferences through
+                intermediate named ancestors are logged, notifying you that it may be
+                a good idea to update the affected components.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_componentwarnings"></a>
+<dt>
+<span class="margin"><a name="new_N104734"></a><span class="note">4.2+</span></span>Log warning instead of message (System)</dt>
+<dd>SUT script name: OPT_PLAY_COMPONENT_WARNINGS<br>
+              
+<p>
+                If this option is activated, deviations from the expected values during component recognition are
+                logged as warnings instead of plain messages. It can be useful to temporarily activate this option to
+                increase the visibility of such deviations, either to update the respective component information or
+                to seek out false positive matches. For normal testing this creates too much noise and tends to
+                obscure more interesting warnings.
+              </p>
+            
+</dd>
+
+          
+        
+</dl>
+
+        
+<p>
+          For an explanation of the remaining options for component recognition please refer to
+          <a href="tech_recognition.html#sec_recognition">section 44.1</a>. The respective SUT script names for these options
+          are:<br>
+          OPT_PLAY_RECOGNITION_BONUS_NAME<br>
+          OPT_PLAY_RECOGNITION_PENALTY_NAME<br>
+          OPT_PLAY_RECOGNITION_BONUS_FEATURE<br>
+          OPT_PLAY_RECOGNITION_PENALTY_FEATURE<br>
+          OPT_PLAY_RECOGNITION_BONUS_EXTRAFEATURE<br>
+          OPT_PLAY_RECOGNITION_PENALTY_EXTRAFEATURE<br>
+          OPT_PLAY_RECOGNITION_BONUS_STRUCTURE<br>
+          OPT_PLAY_RECOGNITION_PENALTY_STRUCTURE<br>
+          OPT_PLAY_RECOGNITION_PENALTY_MODAL<br>
+          OPT_PLAY_RECOGNITION_MINIMUM_PROBABILITY
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_opt_delays"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_opt_delays">37.3.5</a></span>
+</div>
+<a href="contents.html#toc_sec_opt_delays">Delays</a>
+</h5>
+        
+        
+<p>
+          Here values can be set for various delays.
+        </p>
+        
+<a name="figure_37.24"></a><a name="figure_37.24"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_Delays.png" target="_blank"><img src="images/opt_Delays.png" alt="Delays" texscale=".66" width="393" height="335"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.24</a>:&nbsp;&nbsp;Delay options</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl class="option">
+          
+                        
+                        
+          
+<a name="opt_defaultdelay"></a>
+<dt>Default delays (ms) (System)</dt>
+<dd>Server script name: OPT_PLAY_DELAY_BEFORE, OPT_PLAY_DELAY_AFTER<br>
+              
+<p>
+                These two options set the delay in milliseconds before and
+                after the execution of a node. If a node defines its own
+                <a href="sequences.html#att_BasicSequence_delay" shape="rect">'Delay before/after'</a>, its value overrides this default.
+              </p>
+              
+<p>
+                These options are useful to slow a test down so you'll be able
+                to follow it.
+              </p>
+            
+</dd>
+        
+</dl>
+
+        
+
+        
+<a name="sec_opt_robot"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_opt_robot">37.3.5.1</a></span>
+</div>
+<a href="contents.html#toc_sec_opt_robot">Drag&amp;Drop and interpolation of mouse movement</a>
+</h5>
+          
+<p>
+            Simulating Drag&amp;Drop is non-trivial. It is made possible
+            only by generating "hard" mouse events that actually move the
+            mouse cursor.
+            On Windows systems, some mouse drivers can interfere with
+            these "hard" events. See <a href="tech_draganddop.html#sec_draganddrop">section 45.1</a> for
+            further details about Drag&amp;Drop.
+          </p>
+          
+<p>
+            To make Drag&amp;Drop as reliable as possible, movement of the mouse
+            cursor is highly configurable. Since the requirements for
+            Drag&amp;Drop and hard mouse events differ from those for general mouse moves which
+            only provide visual feedback, two sets of options are
+            provided. The settings for demo mouse moves are ignored unless
+            the respective option <a href="#opt_hardmousemoves">Actually move mouse cursor</a> is activated.
+          </p>
+          
+<p>
+            Typically movements for Drag&amp;Drop and hard events should be slower and involve
+            more interpolation steps than those for demo moves,
+            which could slow down a test considerably. All of the
+            following values influence the overall speed of mouse moves. A
+            little experimentation may be required to get the desired
+            effect.
+          </p>
+          
+<dl class="option">
+            
+            
+            
+<a name="opt_robotdelay"></a>
+<dt>Delay (ms) (System)</dt>
+<dd>SUT script name: OPT_PLAY_DND_DELAY, OPT_PLAY_MOVEMOUSE_DELAY<br>
+                
+<p>
+                  After each single movement of the mouse cursor QF-Test will
+                  wait for the specified number of milliseconds. This value
+                  should be between 2 and 20 if interpolation is enabled and
+                  between 20 and 200 if interpolation is turned off. With
+                  interpolation, 10 is a good value for Drag&amp;Drop and 5 for demo
+                  mouse moves.
+                </p>
+              
+</dd>
+
+            
+            
+            
+<a name="opt_robotstep"></a>
+<dt>Interpolation step size (System)</dt>
+<dd>SUT script name: OPT_PLAY_DND_STEP, OPT_PLAY_MOVEMOUSE_STEP<br>
+                
+<p>
+                  The size of the steps for interpolation of mouse movement.
+                  Set this to 0 to turn interpolation off. Good values are
+                  between 1 and 3 for Drag&amp;Drop and between 2 and 10 for demo mouse
+                  moves.
+                </p>
+              
+</dd>
+
+            
+            
+            
+<a name="opt_robotacceleration"></a>
+<dt>Acceleration (System)</dt>
+<dd>SUT script name: OPT_PLAY_DND_ACCELERATION, OPT_PLAY_MOVEMOUSE_ACCELERATION<br>
+                
+<p>
+                  To avoid needless slowdown of tests, long distance mouse
+                  movement can be accelerated. A value of 0 turns off
+                  acceleration. Useful values range from 1 for very little
+                  acceleration to 10 or more for high acceleration. Good
+                  values are between 3 and 5 for Drag&amp;Drop and between 6 and 20
+                  for demo mouse moves.
+                </p>
+              
+</dd>
+
+            
+            
+            
+<a name="opt_robotthreshold"></a>
+<dt>Acceleration threshold (System)</dt>
+<dd>SUT script name: OPT_PLAY_DND_THRESHOLD, OPT_PLAY_MOVEMOUSE_THRESHOLD<br>
+                
+<p>
+                  To ensure that small movements as well as the start end end
+                  of each movement remain precise, acceleration is turned off
+                  for movements that require less than this threshold's number
+                  of steps. Good values are between 4 and 8 for Drag&amp;Drop and
+                  between 0 and 6 for demo mouse moves.
+                </p>
+              
+</dd>
+          
+</dl>
+        
+
+        
+      
+
+      
+      
+
+      
+<a name="sec_opt_autodelay"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_opt_autodelay">37.3.6</a></span>
+</div>
+<a href="contents.html#toc_sec_opt_autodelay">Timeouts</a>
+</h5>
+        
+        
+<p>
+          These timeouts are essential for reliable replay of tests under
+          varying conditions. They define how long QF-Test waits for a
+          component to be in the proper state for an event before throwing an
+          exception.
+        </p>
+        
+<p>
+          Don't make these values too small, so a little hiccup due to high
+          load won't interrupt a test needlessly. QF-Test continues as soon
+          as the conditions for replaying an event are met, so higher values
+          for the timeouts won't slow down execution (except for focus, see
+          below). On the other hand, don't set any values higher than a few
+          seconds or you'll have to wait too long until you finally get an
+          error message when a component is truly not found.
+        </p>
+        
+<a name="figure_37.25"></a><a name="figure_37.25"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_Timeouts.png" target="_blank"><img src="images/opt_Timeouts.png" alt="Timeouts" texscale=".66" width="393" height="615"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.25</a>:&nbsp;&nbsp;Timeout options</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl class="option">
+          
+
+          
+          
+<a name="opt_deadlocktimeout"></a>
+<dt>Deadlock detection (s) (System)</dt>
+<dd>Server script name: OPT_PLAY_TIMEOUT_DEADLOCK<br>
+              
+<p>
+                If the SUT does not react for the given time, a
+                <a href="exceptions.html#ex_DeadlockTimeoutException" shape="rect"><code>DeadlockTimeoutException</code></a> is thrown. Setting this value
+                to 0 will suppress deadlock detection.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_waitforengine"></a>
+<dt>Wait for GUI engine (ms) (System)</dt>
+<dd>SUT script name: OPT_PLAY_TIMEOUT_ENGINE<br>
+              
+<p>
+                This option is useful only for multi-engine SUTs, like Eclipse with embedded
+                AWT/Swing components. A <a href="processes.html#step_ClientWaiter" shape="rect">'Wait for client to connect'</a> node finishes as soon as the first GUI
+                engine connects to QF-Test, unless its <a href="processes.html#att_ClientWaiter_engine" shape="rect">'GUI engine'</a> attribute specifies
+                to wait for a specific engine. To prevent a subsequent <a href="miscnodes.html#step_ComponentWaiter" shape="rect">'Wait for component to appear'</a> node
+                for a component of the wrong engine from failing immediately, QF-Test first waits for
+                the time specified with this option to give the second GUI engine a chance to
+                connect also.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_waitforcomponent"></a>
+<dt>Wait for non-existent component (ms) (System)</dt>
+<dd>SUT script name: OPT_PLAY_TIMEOUT_COMPONENT<br>
+              
+<p>
+                The maximum time in milliseconds that QF-Test waits for the target component of an
+                event to become visible. When the connection between QF-Test and the SUT is
+                established, this option is temporarily set to at least 30000 ms so as to allow
+                the SUT time for its initialization.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_waitforsubitem"></a>
+<dt>Wait for non-existent item (ms) (System)</dt>
+<dd>SUT script name: OPT_PLAY_TIMEOUT_ITEM<br>
+              
+<p>
+                If an event is targeted on a sub-item of a complex component,
+                QF-Test first waits for the component to become visible. Then
+                it gives the SUT the chance to make the intended sub-item
+                available before this timeout is exceeded.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_defaultchecktimeout"></a>
+<dt>Default timeout for checks (ms) (System)</dt>
+<dd>Server script name: OPT_PLAY_CHECK_TIMEOUT<br>
+              
+<p>
+                This option defines a default timeout for 'Check' nodes that have no
+                <a href="checks.html#att_CheckStringStep_timeout" shape="rect">'Timeout'</a> attribute set and that represent an actual check in
+                the report instead of being used for test control flow, i.e. checks that don't
+                throw an exception and don't set a result variable or that have a @report doctag.
+              </p>
+              
+<p>
+                If your tests include a lot of 'Check' nodes without explicitly defined
+                'Timeout' that are expected to fail - which is unlikely for the actual checks
+                described above - you may be able speed up test execution by setting this value to
+                0. However, it would be preferable to set the 'Timeout' attribute of the
+                respective nodes to 0 instead and leave this option unchanged because it increases
+                general stability of check execution.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_waitformodal"></a>
+<dt>Wait for modal dialog (ms) (System)</dt>
+<dd>SUT script name: OPT_PLAY_TIMEOUT_MODAL<br>
+              
+<p>
+                If an event is targeted at a window that is blocked by a modal dialog, a
+                <a href="exceptions.html#ex_ModalDialogException" shape="rect"><code>ModalDialogException</code></a> will be thrown. However, modal dialogs are often
+                temporary, informing the user about some ongoing processing. If this option is set
+                to a non-zero value, QF-Test will wait for the given time before it throws the
+                exception. If the modal dialog disappears before the time limit is exceeded, the
+                test will continue immediately. This greatly simplifies handling of temporary
+                modal dialogs.
+              </p>
+              
+<p>
+                
+<span class="margin"><span class="note">Note</span></span> If the option <a href="opt_record.html#opt_convertwindowopenwait">
+              Convert opening of a window into <a href="miscnodes.html#step_ComponentWaiter" shape="rect">'Wait for component to appear'</a>
+            </a>
+                is activated, recording a sequence of events during which a temporary dialog is
+                displayed may result in a <a href="miscnodes.html#step_ComponentWaiter" shape="rect">'Wait for component to appear'</a> node for that dialog. If the
+                dialog is displayed for a short time only, it is best to remove such nodes to
+                avoid timing issues. If the SUT employs temporary modal dialogs often it may be
+                best to disable the option <a href="opt_record.html#opt_convertwindowopenwait">
+              Convert opening of a window into <a href="miscnodes.html#step_ComponentWaiter" shape="rect">'Wait for component to appear'</a>
+            </a>.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_waitforbusy"></a>
+<dt>
+<span class="margin"><a name="swing_N105254"></a><span class="note">Swing</span></span>Wait for 'busy' GlassPane (ms) (System)</dt>
+<dd>SUT script name: OPT_PLAY_TIMEOUT_GLASSPANE<br>
+              
+<p>
+                As an alternative to temporary modal dialogs some applications employ a so called
+                GlassPane together with a 'busy' mouse cursor (typically in the form of an
+                hourglass) to inform the user that the application is busy. The GlassPane is an
+                invisible component that covers an entire window. If an event is delivered to such
+                a window, the GlassPane will typically intercept it, preventing normal event
+                processing, which can throw a test-run severely off course.
+              </p>
+              
+<p>
+                QF-Test handles this case automatically by waiting until the GlassPane disappears
+                before delivering an event, performing a check, etc. If the timeout given in this
+                option is exceeded and the GlassPane is still active, a <a href="exceptions.html#ex_BusyPaneException" shape="rect"><code>BusyPaneException</code></a> is
+                thrown.
+              </p>
+              
+<p>
+                If the value of this option is set to 0, GlassPane checking is disabled and the
+                event is delivered regardless. A <code>BusyPaneException</code> is never thrown in this
+                case.
+              </p>
+              
+<p>
+                The <a href="miscnodes.html#step_ComponentWaiter" shape="rect">'Wait for component to appear'</a> node is a special case. When waiting for a component
+                (not its absence) covered by a busy GlassPane, the <a href="miscnodes.html#att_ComponentWaiter_timeout" shape="rect">'Timeout'</a>
+                attribute of the node overrides this option and is used to wait for both, the
+                appearance of the component and the removal of the busy GlassPane. Thus it is
+                possible to handle cases where the SUT is expected to be busy for an exceptionally
+                long time on an individual basis without changing the default timeout of this
+                option.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_waitforactivation"></a>
+<dt>Wait for button/menu enable (ms) (System)</dt>
+<dd>SUT script name: OPT_PLAY_TIMEOUT_ENABLED<br>
+              
+<p>
+                A MouseEvent on a button or menu item is simply ignored, if
+                the component is not enabled. This could lead to unwanted side
+                effects during a test, so QF-Test waits until the component
+                is enabled or the specified timeout is exceeded. If the
+                component does not become activated within the given time, a
+                <a href="exceptions.html#ex_DisabledComponentException" shape="rect"><code>DisabledComponentException</code></a> is thrown unless the option
+                <a href="#opt_throwdisabled">Throw DisabledComponentException</a> is deactivated.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_waitforfocus"></a>
+<dt>Wait for focus (ms) (System)</dt>
+<dd>SUT script name: OPT_PLAY_TIMEOUT_FOCUS<br>
+              
+<p>
+                If set, this timeout causes QF-Test to wait for a component to get the keyboard focus
+                before it simulates any KeyEvents on it. This option actually can slow down a test
+                noticeably if a component fails to get the focus, so don't set it higher than
+                about 100. A good value is 20.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_componentpollinterval"></a>
+<dt>Poll interval for component wait (ms) (System)</dt>
+<dd>SUT script name: OPT_PLAY_POLL_COMPONENT<br>
+              
+<p>
+                When waiting for a component in the SUT to appear, QF-Test
+                can't always rely on Java's event mechanism. Instead it has
+                to repeatedly scan the SUT for the component. This option
+                determines the interval between searches.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_subitempollinterval"></a>
+<dt>Sub-item poll interval (ms) (System)</dt>
+<dd>SUT script name: OPT_PLAY_POLL_ITEM<br>
+              
+<p>
+                When waiting for a non-existent sub-item in the SUT,
+                QF-Test can't rely on the event mechanism. Instead it has to
+                repeatedly search the complex component for the sub-item. This
+                option determines the interval between searches.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_checkpollinterval"></a>
+<dt>Retry check interval (ms) (System)</dt>
+<dd>SUT script name: OPT_PLAY_POLL_CHECK<br>
+              
+<p>
+                If a <a href="checks.html#sec_checks" shape="rect">Check</a> fails for which a
+                <a href="checks.html#att_CheckStringStep_timeout" shape="rect">'Timeout'</a> is defined, QF-Test repeatedly
+                queries the component's state until either it matches the
+                given values or the time is up. The interval to wait between
+                queries is set with this option.
+              </p>
+            
+</dd>
+        
+</dl>
+
+        
+      
+
+      
+      
+
+      
+<a name="sec_opt_replaybw"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_opt_replaybw">37.3.7</a></span>
+</div>
+<a href="contents.html#toc_sec_opt_replaybw">Backward compatibility</a>
+</h5>
+        
+        
+<p>
+        These options can re-set QF-Test to older behavior. Those settings have changed that much that QF-Test cannot keep backward compatibility over all versions.
+        </p>
+        
+<a name="figure_37.26"></a><a name="figure_37.26"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_ReplayBackwardCompatibility.png" target="_blank"><img src="images/opt_ReplayBackwardCompatibility.png" alt="Options for replay backward compatibility" texscale=".66" width="393" height="126"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.26</a>:&nbsp;&nbsp;Options for replay backward compatibility</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl class="option">
+
+        
+
+        
+        
+<a name="opt_evaluatevariablebooleanoptions"></a>
+<dt>
+<span class="margin"><a name="new_N105491"></a><span class="note">4.2+</span></span>Don't evaluate variable boolean attributes (before 4.2) (System)</dt>
+<dd>Server script name: OPT_PLAY_DONT_EVALUATE_BOOLEAN_OPTIONS<br>
+            
+<p>
+            Expressions in values of attributes with variable boolean values will be evaluated by Jython since 4.2.0. Such attributes are attributes like the 'Replay as "hard" event' attribute of 'Mouse event' node or the 'Modal' attribute of 'Window' nodes.
+            </p>
+          
+</dd>
+
+        
+        
+
+        
+        
+<a name="opt_usegnuregexp"></a>
+<dt>Use old-style GNU regexps (before 3.1) (System)</dt>
+<dd>Server or SUT script name: OPT_USE_GNU_REGEXP<br>
+            
+<p>
+              Since version 3.1 QF-Test uses the standard Java regular expression syntax by default.
+              In case this causes problems with regular expressions in older tests, you can switch
+              back to using the GNU regexp package via this option. For further information about
+              regular expressions please see <a href="tech_regexp.html#sec_regexp">section 45.3</a>.
+            </p>
+          
+</dd>
+
+        
+        
+
+        
+        
+<a name="opt_brokengrabimage"></a>
+<dt>
+<span class="margin"><a name="swing_N105558"></a><span class="note">Swing</span></span> Old style image grab (before 2) (System)</dt>
+<dd>SUT script name: OPT_RECORD_CHECK_IMAGE_OLD_STYLE<br>
+            
+<p>
+              When recording images for <a href="checks.html#step_CheckImageStep" shape="rect">'Check image'</a> nodes, non-opaque components used to
+              be recorded with a black background. Thus, the image could deviate from what the
+              user was seeing. This error has been corrected and normally the background is now
+              recorded correctly. If this option is activated, the old, broken mechanism is used
+              instead which may be useful if many checks for non-opaque components have already
+              been recorded using that method.
+            </p>
+          
+</dd>
+
+        
+
+        
+</dl>
+        
+
+        
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="opt_record.html#sec_opt_record"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 37.2&nbsp;Recording options" title="Previous Chapter: 37.2&nbsp;Recording options"></a></td><td class="navicon"><a href="opt_android.html#sec_opt_android"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 37.4&nbsp;Android" title="Next Page: 37.4&nbsp;Android"></a></td><td class="navicon"><a href="opt_android.html#sec_opt_android"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 37.4&nbsp;Android" title="Next Chapter: 37.4&nbsp;Android"></a></td><td class="navicon"><a href="options.html#sec_options"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 37&nbsp;Options" title="Chapter Overview: 37&nbsp;Options"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

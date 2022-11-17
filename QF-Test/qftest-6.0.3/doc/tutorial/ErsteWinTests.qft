@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="root"
+          signature="302E0215009B3A67A7C6D2D06E3B64131504A2D7E38ADCBA25021500BB58ACD9A32097B768EF860352F923025A711033"
+          version="6.0.3">
+  <include>qfs.qft</include>
+  <comment>Diese Testsuite wird im Teil III des QF-Test Tutorials verwendet zum Testen von nativen Windows Desktop-Anwendungen.</comment>
+  <TestSet id="_1" name="Einfache Tests">
+    <SetupSequence id="_1O" name="Demoprogramm starten">
+      <SetGlobalStep id="_1P" varname="client">
+        <default>carconfigForms</default>
+      </SetGlobalStep>
+      <BasicSequence id="_1p8Y" name="Demoprogramm wenn nötig starten">
+        <ClientWaiter client="$(client)" id="_1Q" local="true" raise="false"
+                      resvarname="isSUTRunning" timeout="1">
+          <comment>Dieser Knoten prüft, ob das SUT bereits läuft. Das Ergebnis der Prüfung wird in der Variable isSUTRunning gespeichert. Diese Variable enthält entweder true, wenn das SUT läuft oder false, wenn das SUT nicht läuft. Im folgenden IF-Knoten wird diese Variable ausgewertet.</comment>
+        </ClientWaiter>
+        <IfSequence id="_1R" name="SUT starten, wenn notwendig"
+                    test="not $(isSUTRunning)">
+          <WinClientStarter class="de.qfs.apps.qfwin.QFWin" client="$(client)"
+                            id="_1S"
+                            windowsprogram="${qftest:dir.version}\demo\carconfigForms\carconfigForms.exe -lang de"/>
+          <ClientWaiter client="$(client)" id="_1T"/>
+        </IfSequence>
+      </BasicSequence>
+    </SetupSequence>
+    <TestCase id="_d" name="Erster">
+      <TestStep id="_2" name="Zurücksetzen">
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="menuitemDatei" event="MOUSE_MPRC"
+                        id="_1pA6" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="menuitemZurücksetzen" event="MOUSE_MPRC"
+                        id="_1pA8" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="TabbedPane@Fahrzeuge" event="MOUSE_MPRC"
+                        id="_1pA9" modifiers="16"/>
+      </TestStep>
+      <TestStep id="_M" name="Modell I5 wählen">
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="VehicleTable@Modell@I5" event="MOUSE_MPRC"
+                        id="_1pAD" modifiers="16"/>
+      </TestStep>
+      <TestStep id="_e" name="Sondermodell Jazz wäheln">
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="TabbedPane@Sondermodelle"
+                        event="MOUSE_MPRC" id="_1pAG" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="SpecialsCombo" event="MOUSE_MPRC"
+                        id="_1pAH" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="SpecialsCombo@Jazz" event="MOUSE_MPRC"
+                        id="_1pAI" modifiers="16"/>
+      </TestStep>
+      <TestStep id="_j" name="Endpreis prüfen">
+        <CheckStringStep client="$(client)" component="CalculatedPrice"
+                         id="_1pAK">
+          <text>30.049,00 &#8364;</text>
+        </CheckStringStep>
+      </TestStep>
+    </TestCase>
+    <TestCase id="_q" name="Zweiter (mit Fehler)">
+      <TestStep id="_1p8J" name="Zurücksetzen">
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="menuitemDatei" event="MOUSE_MPRC"
+                        id="_1p8K" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="menuitemZurücksetzen" event="MOUSE_MPRC"
+                        id="_1pAL" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="TabbedPane@Fahrzeuge" event="MOUSE_MPRC"
+                        id="_1pAM" modifiers="16"/>
+      </TestStep>
+      <TestStep id="_1p7X" name="Modell I5 wählen">
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="VehicleTable@Modell@I5" event="MOUSE_MPRC"
+                        id="_1pAN" modifiers="16"/>
+      </TestStep>
+      <TestStep id="_15" name="10% Rabatt gewähren">
+        <TextInputStep clear="true" client="$(client)"
+                       component="DiscountValue" id="_1p8S">
+          <text>10%</text>
+        </TextInputStep>
+      </TestStep>
+      <TestStep id="_-" name="Endpreis prüfen (verursacht Fehler)">
+        <CheckStringStep client="$(client)" component="CalculatedPrice"
+                         id="_1p8X">
+          <text>29.000,00 &#8364;</text>
+        </CheckStringStep>
+      </TestStep>
+    </TestCase>
+    <CleanupSequence id="_o" name="Demo beenden">
+      <ClientStopper client="$(client)" id="_1p7o"/>
+      <ProcessWaiter client="$(client)" id="_1p7p"/>
+    </CleanupSequence>
+  </TestSet>
+  <PackageRoot id="_3"/>
+  <ExtraSequence id="_4"/>
+  <WindowList id="_5">
+    <WindowStep class="Window" engine="win" feature="CarConfigurator Forms"
+                height="445" id="CarConfiguratorForms"
+                name="CarConfiguratorForms" uid="_1pA1" width="381">
+      <extrafeature name="id" negate="false" regexp="false" state="0">CarConfiguratorForms</extrafeature>
+      <extrafeature name="patterns" negate="false" regexp="false" state="0">Window Transform LegacyIAccessible</extrafeature>
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">WinForm.WindowsForms10.Window.8.app.0.34f5582_r9_ad1</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Window</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">Uia.Window</extrafeature>
+      <ComponentStep class="MenuBar" classcount="1" classindex="0"
+                     feature="menuBar" height="24" id="MenuBar" name="MenuBar"
+                     uid="_1pA2" width="365" x="8" y="31">
+        <extrafeature name="id" negate="false" regexp="false" state="0">MenuBar</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">LegacyIAccessible</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">WinForm.WindowsForms10.Window.8.app.0.34f5582_r9_ad1</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">MenuBar</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.MenuBar</extrafeature>
+        <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Menu:MenuBar</extrafeature>
+        <ComponentStep class="MenuItem" classcount="4" classindex="0"
+                       feature="Datei" height="20" id="menuitemDatei"
+                       uid="_1pA3" width="44" x="7" y="2">
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">Invoke LegacyIAccessible</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">Win.MenuItem</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">MenuItem</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">Datei</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.MenuItem</extrafeature>
+          <ComponentStep class="MenuItem" classcount="2" classindex="0"
+                         feature="Zurücksetzen" height="22"
+                         id="menuitemZurücksetzen" uid="_1pA4" width="139"
+                         x="0" y="21">
+            <extrafeature name="patterns" negate="false" regexp="false"
+                          state="0">Invoke LegacyIAccessible</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">Win.MenuItem</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">MenuItem</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Zurücksetzen</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">Uia.MenuItem</extrafeature>
+          </ComponentStep>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="TabPanel" classcount="1" classindex="0"
+                     height="252" id="TabbedPane" name="TabbedPane"
+                     uid="_1pA5" width="365" x="8" y="58">
+        <extrafeature name="id" negate="false" regexp="false" state="0">TabbedPane</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">Selection LegacyIAccessible</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">WinForm.WindowsForms10.SysTabControl32.app.0.34f5582_r9_ad1</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">TabPanel</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Preis Basismodell</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.TabControl</extrafeature>
+        <ComponentStep class="Panel" classcount="1" classindex="0"
+                       feature="Fahrzeuge" height="226" id="VehicleTablePanel"
+                       name="VehicleTablePanel" uid="_1pAB" width="357" x="4"
+                       y="22">
+          <extrafeature name="id" negate="false" regexp="false" state="0">VehicleTablePanel</extrafeature>
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">LegacyIAccessible</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">WinForm.WindowsForms10.Window.8.app.0.34f5582_r9_ad1</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Panel</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.Pane</extrafeature>
+          <ComponentStep class="Table" classcount="1" classindex="0"
+                         feature="DataGridView" height="187" id="VehicleTable"
+                         name="VehicleTable" uid="_1pAC" width="336" x="10"
+                         y="30">
+            <extrafeature name="id" negate="false" regexp="false" state="0">VehicleTable</extrafeature>
+            <extrafeature name="patterns" negate="false" regexp="false"
+                          state="0">LegacyIAccessible</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">WinForm.WindowsForms10.Window.8.app.0.34f5582_r9_ad1</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Table</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Fahrzeuge</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">Uia.Table</extrafeature>
+          </ComponentStep>
+        </ComponentStep>
+        <ComponentStep class="Panel" classcount="1" classindex="0"
+                       feature="Sondermodelle" height="226" id="SpecialsPanel"
+                       name="SpecialsPanel" uid="_1pAE" width="357" x="4"
+                       y="22">
+          <extrafeature name="id" negate="false" regexp="false" state="0">SpecialsPanel</extrafeature>
+          <extrafeature name="patterns" negate="false" regexp="false"
+                        state="0">LegacyIAccessible</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">WinForm.WindowsForms10.Window.8.app.0.34f5582_r9_ad1</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Panel</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">Uia.Pane</extrafeature>
+          <ComponentStep class="ComboBox" classcount="1" classindex="0"
+                         feature="Sondermodelle" height="21"
+                         id="SpecialsCombo" name="SpecialsCombo" uid="_1pAF"
+                         width="335" x="10" y="27">
+            <extrafeature name="id" negate="false" regexp="false" state="0">SpecialsCombo</extrafeature>
+            <extrafeature name="patterns" negate="false" regexp="false"
+                          state="0">Value LegacyIAccessible</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">WinForm.WindowsForms10.COMBOBOX.app.0.34f5582_r9_ad1</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">ComboBox</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Sondermodelle</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">Uia.ComboBox</extrafeature>
+          </ComponentStep>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="TextField" classcount="4" classindex="0"
+                     feature="Endpreis" height="13" id="CalculatedPrice"
+                     name="CalculatedPrice" uid="_1pAJ" width="117" x="242"
+                     y="412">
+        <extrafeature name="id" negate="false" regexp="false" state="0">CalculatedPrice</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">Value LegacyIAccessible</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">WinForm.WindowsForms10.EDIT.app.0.34f5582_r9_ad1</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">TextField</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Endpreis</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.Edit</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="TextField" classcount="4" classindex="3"
+                     feature="Rabatt" height="20" id="DiscountValue"
+                     name="DiscountValue" uid="_1pAO" width="62" x="296"
+                     y="376">
+        <extrafeature name="id" negate="false" regexp="false" state="0">DiscountValue</extrafeature>
+        <extrafeature name="patterns" negate="false" regexp="false" state="0">Value LegacyIAccessible</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">WinForm.WindowsForms10.EDIT.app.0.34f5582_r9_ad1</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">TextField</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Rabatt</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">Uia.Edit</extrafeature>
+      </ComponentStep>
+    </WindowStep>
+  </WindowList>
+</RootStep>

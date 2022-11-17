@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Verbesserte Komponentenerkennung mittels CustomWebResolver</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_customajax"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_customajax_mapping_general.html#sec_customajax_mapping_general"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 47.1.1&nbsp;Generelle Konfigurationsm&ouml;glichkeiten" title="N&auml;chste Seite: 47.1.1&nbsp;Generelle Konfigurationsm&ouml;glichkeiten"></a></td><td class="navicon"><a href="tech_ajax.html#sec_ajax"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 47.2&nbsp;Besondere Unterst&uuml;tzung f&uuml;r verschiedene Webframeworks" title="N&auml;chstes Kapitel: 47.2&nbsp;Besondere Unterst&uuml;tzung f&uuml;r verschiedene Webframeworks"></a></td><td class="navicon"><a href="tech_web.html#sec_web"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 47&nbsp;Web" title="Kapitel-&Uuml;bersicht: 47&nbsp;Web"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_customajax">47.1</a></span>
+</div>
+<a href="contents.html#toc_sec_customajax">Verbesserte Komponentenerkennung mittels <code>CustomWebResolver</code></a>
+</h4>
+
+        
+        
+<p>
+          
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+          Video: <a href="https://www.qfs.de/de/yt/customwebresolver-47.html" class="videolink" target="_blank">'CustomWebResolver in
+          QF-Test'</a>.
+        </p>
+        
+<p>
+          HTML ist eine sehr flexible Sprache um den Inhalt und Aufbau einer
+          Webseite zu beschreiben. Allerdings gibt es keine wirklichen Standards
+          im Hinblick auf die Art und Weise wie Komponenten, die einen Button,
+          ein Textfeld oder eine Tabelle, die Daten repr&auml;sentiert,
+          aufgebaut werden sollen. Aus diesem Grund erstellt
+          nahezu jedes Webframework seine Komponenten auf seine eigene Art. Dies bedeutet, dass
+          die HTML Struktur der Seite, der so genannte DOM Baum, je nach Framework unterschiedlich aussieht.
+          Damit nun QF-Test die jeweiligen Objekte als Buttons oder Tabellen identifizieren kann, braucht es
+          eine Art &Uuml;bersetzungstabelle zwischen den Eigenschaften der Webseite und dem QF-Test Vokabular.
+        </p>
+        
+<p>
+          QF-Test bietet hierf&uuml;r einen generischen, konfigurierbaren Ansatz, den
+          <code>CustomWebResolver</code>, an. Dieser erlaubt es QF-Test, die
+          Komponentenerkennung ohne zu gro&szlig;en Aufwand individuell an die Spezifika Ihrer Webseite anzupassen.
+        </p>
+        
+<p>
+          Die Komponentenerkennung sollte vor der Erstellung von Testf&auml;llen gepr&uuml;ft und
+          gegebenenfalls optimiert werden. Empfohlene Vorgehensweise:
+        </p>
+        
+<ol>
+          
+<li>
+            Aufnahme von GUI-Objekten, mit denen im Test interagiert werden soll, auf
+            unterschiedlichen Webseiten der Applikation.
+          </li>
+          
+<li>
+            Pr&uuml;fung der aufgenommenen QF-Test Komponenten,
+            <ul>
+              
+<li>
+                ob diesen <a href="tech_genericclasses.html#sec_genericclasses">Generische Klassen</a> zugewiesen wurden,
+              </li>
+              
+<li>
+                ob sie ausreichend Wiedererkennungsmerkmale aufweisen ('Name' und 'Merkmal'
+            Attribute, <code>qfs:label</code> in 'Weitere Merkmale')
+              </li>
+              
+<li>
+                wie tief die Komponentenhierarchie ist
+              </li>
+              
+<li>
+                ob komplexe Komponenten, also Tabellen, Listen, B&auml;ume etc, als solche
+            erkannt wurden und Unterelemente &uuml;ber Index referenziert werden.
+              </li>
+            
+</ul>
+            Detaillierte Informationen zur Standardaufnahme von
+            Web-Objekten und Entscheidungskriterien, ob die Standardaufnahme ausreichend ist,
+            finden Sie in <a href="user_webtesting.html#usec_web_components">Erkennung von Web-Komponenten und Toolkits</a>.
+          </li>
+          
+<li>
+            Falls Schwachstellen identifiziert werden,
+            Untersuchung der jeweiligen GUI-Objekte auf unterschiedlichen Webseiten
+            und Identifizierung der charakteristischen Attribute
+            einer bestimmten Objektklasse und "guter" Attribute f&uuml;r 'Name' und 'Merkmal'
+            Attribute.
+          </li>
+          
+<li>
+            Konfiguration der Komponentenzuordnung, siehe <a href="tech_custom_web_resolver.html#sec_custom_web_resolver">Die Prozedur <code>installCustomWebResolver</code></a>.
+          </li>
+        
+</ol>
+        
+        
+
+        
+<h5 class="header-container h5">
+<div class="downlink">
+<a href="tech_customajax_mapping_general.html#sec_customajax_mapping_general"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="tech_customajax_mapping_general.html#sec_customajax_mapping_general">47.1.1</a></span>
+</div>
+<a href="tech_customajax_mapping_general.html#sec_customajax_mapping_general">Generelle Konfigurationsm&ouml;glichkeiten</a>
+</h5>
+        
+        
+
+        
+<h5 class="header-container h5">
+<div class="downlink">
+<a href="tech_customajax_analysis.html#sec_customajax_analysis"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="tech_customajax_analysis.html#sec_customajax_analysis">47.1.2</a></span>
+</div>
+<a href="tech_customajax_analysis.html#sec_customajax_analysis">Untersuchung einer Webseite</a>
+</h5>
+
+        
+        
+        
+<h5 class="header-container h5">
+<div class="downlink">
+<a href="tech_custom_web_resolver.html#sec_custom_web_resolver"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="tech_custom_web_resolver.html#sec_custom_web_resolver">47.1.3</a></span>
+</div>
+<a href="tech_custom_web_resolver.html#sec_custom_web_resolver">Die Prozedur <code>installCustomWebResolver</code></a>
+</h5>
+
+        
+        
+
+        
+<h5 class="header-container h5">
+<div class="downlink">
+<a href="tech_customajax_demo_resolver.html#sec_customajax_demo_resolver"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="tech_customajax_demo_resolver.html#sec_customajax_demo_resolver">47.1.4</a></span>
+</div>
+<a href="tech_customajax_demo_resolver.html#sec_customajax_demo_resolver"><code>installCustomWebResolver</code> - Erweiterung eines Webframework-Resolvers</a>
+</h5>
+        
+<h5 class="header-container h5">
+<div class="downlink">
+<a href="tech_customajax_table.html#sec_customajax_table"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="tech_customajax_table.html#sec_customajax_table">47.1.5</a></span>
+</div>
+<a href="tech_customajax_table.html#sec_customajax_table"><code>installCustomWebResolver</code> - Tabelle und TreeTable</a>
+</h5>
+        
+<h5 class="header-container h5">
+<div class="downlink">
+<a href="tech_customajax_tree.html#sec_customajax_tree"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="tech_customajax_tree.html#sec_customajax_tree">47.1.6</a></span>
+</div>
+<a href="tech_customajax_tree.html#sec_customajax_tree"><code>installCustomWebResolver</code> - Baum und TreeTable</a>
+</h5>
+        
+<h5 class="header-container h5">
+<div class="downlink">
+<a href="tech_customajax_list.html#sec_customajax_list"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="tech_customajax_list.html#sec_customajax_list">47.1.7</a></span>
+</div>
+<a href="tech_customajax_list.html#sec_customajax_list"><code>installCustomWebResolver</code> - Liste</a>
+</h5>
+        
+<h5 class="header-container h5">
+<div class="downlink">
+<a href="tech_customajax_combobox.html#sec_customajax_combobox"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="tech_customajax_combobox.html#sec_customajax_combobox">47.1.8</a></span>
+</div>
+<a href="tech_customajax_combobox.html#sec_customajax_combobox"><code>installCustomWebResolver</code> - Combobox</a>
+</h5>
+        
+<h5 class="header-container h5">
+<div class="downlink">
+<a href="tech_customajax_tabpanel.html#sec_customajax_tabpanel"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="tech_customajax_tabpanel.html#sec_customajax_tabpanel">47.1.9</a></span>
+</div>
+<a href="tech_customajax_tabpanel.html#sec_customajax_tabpanel"><code>installCustomWebResolver</code> - TabPanel und Accordion</a>
+</h5>
+        
+<h5 class="header-container h5">
+<div class="downlink">
+<a href="tech_customajax_demo.html#sec_customajax_demo"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="tech_customajax_demo.html#sec_customajax_demo">47.1.10</a></span>
+</div>
+<a href="tech_customajax_demo.html#sec_customajax_demo">Beispiel f&uuml;r den WebCarConfigurator</a>
+</h5>
+        
+
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_customajax_mapping_general.html#sec_customajax_mapping_general"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 47.1.1&nbsp;Generelle Konfigurationsm&ouml;glichkeiten" title="N&auml;chste Seite: 47.1.1&nbsp;Generelle Konfigurationsm&ouml;glichkeiten"></a></td><td class="navicon"><a href="tech_ajax.html#sec_ajax"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 47.2&nbsp;Besondere Unterst&uuml;tzung f&uuml;r verschiedene Webframeworks" title="N&auml;chstes Kapitel: 47.2&nbsp;Besondere Unterst&uuml;tzung f&uuml;r verschiedene Webframeworks"></a></td><td class="navicon"><a href="tech_web.html#sec_web"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 47&nbsp;Web" title="Kapitel-&Uuml;bersicht: 47&nbsp;Web"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

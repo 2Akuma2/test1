@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Simple class mapping</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_customajax_demo_genericclass1"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_customajax_demo_2.html#sec_customajax_demo_genericclass_nested"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 47.1.10.2&nbsp;Advanced class mapping" title="Next Page: 47.1.10.2&nbsp;Advanced class mapping"></a></td><td class="navicon"><a href="tech_customajax_demo_2.html#sec_customajax_demo_genericclass_nested"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 47.1.10.2&nbsp;Advanced class mapping" title="Next Chapter: 47.1.10.2&nbsp;Advanced class mapping"></a></td><td class="navicon"><a href="tech_customajax_demo.html#sec_customajax_demo"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 47.1.10&nbsp;Example for WebCarConfigurator" title="Chapter Overview: 47.1.10&nbsp;Example for WebCarConfigurator"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+            
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_customajax_demo_genericclass1">47.1.10.1</a></span>
+</div>
+<a href="contents.html#toc_sec_customajax_demo_genericclass1">Simple class mapping</a>
+</h5>
+            
+<p>
+              To begin with the example, we resolve the recognition of the '-5%'
+              button in the right bottom corner. The figure below shows our goal. On the left we find the
+              current recording without simplification steps, on the right we see the desired recording.
+            </p>
+            
+<a name="figure_47.7"></a><a name="figure_47.7"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="" target="_blank">
+<table border="0" cellspacing="10" cellpadding="0">
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1"><img src="images/WebCarConfig5Custom1_table.png" alt="Current recording" texscale=".66" width="338" height="162"></td>
+                <td align="center" rowspan="1" colspan="1"><img src="images/WebCarConfig5Custom2_table.png" alt="Simplified recording" texscale=".66" width="373" height="146"></td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1">Current recording</td>
+                <td align="center" rowspan="1" colspan="1">Simplified recording</td>
+              
+</tr>
+            
+</table>
+</a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;47.7</a>:&nbsp;&nbsp;Simplification due to simple class mapping</td><td class="captionglue"></td>
+</tr>
+</table>
+            
+<p>
+              First you should record a simple text check or a mouse click to that
+              button. Then jump to the recorded components via &raquo;<em>Locate component</em>&laquo;. There you can see that you got a
+              component of the class <code>DIV</code> and an empty name.
+              The other attributes don't provide anything useful.
+              Please note especially QF-Test didn't record the actual text of '-5%' in any
+              attribute. This means QF-Test has no good information for recognizing that
+              component. There is just the geometry and the structure information. Now let's
+              make this component more readable to us and the component
+              recognition more robust.
+            </p>
+            
+<a name="figure_47.8"></a><a name="figure_47.8"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/WebCarConfigDiv5.png" target="_blank"><img src="images/WebCarConfigDiv5.png" alt="WebCarConfigDiv5" width="966" height="753" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;47.8</a>:&nbsp;&nbsp;Recording of '-5%' button in WebCarConfigurator</td><td class="captionglue"></td>
+</tr>
+</table>
+            
+<p>
+              When analyzing the recorded component more in detail we
+              discover that there is an extra feature <code>class</code> with
+              the value <code>button</code>. Now we can assume that a button in our project
+              will have that particular attribute. Especially after verifying the assumption
+              for further buttons.
+            </p>
+            
+<p>
+              So, please insert a procedure call to
+                  <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.ajax.installCustomWebResolver"><code>qfs.web.ajax.installCustomWebResolver</code></a>
+              from the
+              standard library <code>qfs.qft</code> below the Extras node.
+              As we detected the <code>class</code> attribute contains the
+              class information for QF-Test. Having detected this, we can set the parameter
+              <code>genericClasses</code> to <code>button=Button</code>.
+               The expression <code>button=Button</code> means
+              that any component of the class <code>button</code> will be assigned a
+              generic class called <code>Button</code>.
+              This will make QF-Test record the default features for
+              buttons when we re-record the components.
+              Run the procedure
+              <code>qfs.web.ajax.installCustomWebResolver</code> and re-record the
+              component. You will get the following recording:
+            </p>
+            
+<a name="figure_47.9"></a><a name="figure_47.9"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/WebCarConfig5Custom2.png" target="_blank"><img src="images/WebCarConfig5Custom2.png" alt="WebCarConfig5Custom2" width="966" height="753" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;47.9</a>:&nbsp;&nbsp;Recording with genericClasses in WebCarConfigurator</td><td class="captionglue"></td>
+</tr>
+</table>
+            
+<p>
+              As you can see you got a click on component
+              <code>button-5_</code>. When you jump to the recorded component
+              you can see the class <code>Button</code>
+              has been assigned the '-5%' for the feature as well and
+              and we even got the extra feature
+              <code>qfs:label</code> with that text. This
+              component will now be treated as button by QF-Test. Of course, you should
+              advise the development team to assign a dedicated ID to that
+              button as well.
+            </p>
+            
+<p>
+              This simple assignment of one value can be sufficient for lots of cases, especially
+              for buttons, menu-items or checkboxes. If your web-page doesn't contain that information
+              in the attribute <code>class</code>, but in the attribute <code>role</code>, then you need
+              to fill the parameter <code>attributesToGenericClasses</code> with the value <code>role=button=Button</code>
+              instead of <code>genericClasses</code>.
+              In some cases the information about the specific class will not be part of the leaf component, but
+              in a parent component. The next section shows how to cope with this challenge.
+            </p>
+          
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_customajax_demo_2.html#sec_customajax_demo_genericclass_nested"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 47.1.10.2&nbsp;Advanced class mapping" title="Next Page: 47.1.10.2&nbsp;Advanced class mapping"></a></td><td class="navicon"><a href="tech_customajax_demo_2.html#sec_customajax_demo_genericclass_nested"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 47.1.10.2&nbsp;Advanced class mapping" title="Next Chapter: 47.1.10.2&nbsp;Advanced class mapping"></a></td><td class="navicon"><a href="tech_customajax_demo.html#sec_customajax_demo"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 47.1.10&nbsp;Example for WebCarConfigurator" title="Chapter Overview: 47.1.10&nbsp;Example for WebCarConfigurator"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

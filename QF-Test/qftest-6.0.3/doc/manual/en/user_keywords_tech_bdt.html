@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Behavior-Driven Testing (BDT) from technical perspective</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="user_keywords_tech_bdt"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="user_keywords_business_bdt.html#user_keywords_business_bdt"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 28.4.2&nbsp;Behavior-Driven Testing (BDT) from business perspective" title="Next Page: 28.4.2&nbsp;Behavior-Driven Testing (BDT) from business perspective"></a></td><td class="navicon"><a href="user_keywords_business_bdt.html#user_keywords_business_bdt"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 28.4.2&nbsp;Behavior-Driven Testing (BDT) from business perspective" title="Next Chapter: 28.4.2&nbsp;Behavior-Driven Testing (BDT) from business perspective"></a></td><td class="navicon"><a href="user_keywords_bdt.html#usec_keywords_bdt"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 28.4&nbsp;Behavior-driven testing (BDT)" title="Chapter Overview: 28.4&nbsp;Behavior-driven testing (BDT)"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_user_keywords_tech_bdt">28.4.1</a></span>
+</div>
+<a href="contents.html#toc_user_keywords_tech_bdt">Behavior-Driven Testing (BDT) from technical perspective</a>
+</h5>
+
+        
+<p>
+        Describing a test-case from a technical perspective using Behavior-Driven Testing (BDT) uses
+        more or less elementary actions for designing a test-case.
+         You can find a sample test-suite at <code>qftest-6.0.3/demo/keywords/behaviordriven/</code>
+        <code>BehaviorDrivenTesting.qft</code>.
+        The respective test-plan can be found at <code>qftest-6.0.3/demo/keywords/behaviordriven/</code>
+        <code>createvehicle.xlsx</code>.
+        Please take care to copy the demo folder to a project-related folder first and modify them there.
+        </p>
+        
+<p>
+        The "Create vehicle" test-case looks like this if it's described in the BDT manner from a technical view:
+        </p>
+        
+<ol>
+            
+<li>Given SUT is running</li>
+            
+<li>Given vehicles dialog is opened</li>
+            
+<li>When vehicle name is set to &lt;name&gt;</li>
+            
+<li>And vehicle price is set to &lt;price&gt;</li>
+            
+<li>And button new clicked</li>
+            
+<li>And button ok clicked</li>
+            
+<li>Then row with &lt;name&gt; and &lt;formatted-price&gt; appears in table</li>
+            
+<li>And column model has value &lt;name&gt;</li>
+            
+<li>And column price has value &lt;formatted-price&gt;</li>
+        
+</ol>
+        
+<p>
+        BDT requires to use the terms <code>Given</code>, <code>When</code>, <code>And</code> and <code>Then</code> at the beginning of any sentence.
+        You will find more information about this approach in the testing literature.
+        </p>
+        
+<p>
+        QF-Test requires matching procedures for above test-steps, so we need to build respective procedures again.
+        It's an established method to divide the BDT-keywords in separate packages.
+        The provided test-suite therefore contains the packages <code>Given</code>, <code>When_And</code> and <code>Then</code>.
+        </p>
+        
+<a name="fig_keywords_bdt"></a><a name="figure_28.6"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/keywords_bdt.png" target="_blank"><img texscale=".66" src="images/keywords_bdt.png" width="966" height="753"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;28.6</a>:&nbsp;&nbsp;Test-suite Behavior-driven testing technical</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+        The provided sample test-suite contains all procedures in the respective packages, e.g. a procedure <code>vehicles dialog opened</code> inside the package
+        <code>Given</code>. In order to prevent annoying typos a Server-script <code>read test-steps and fix typos</code> formats any steps to lower case and tries
+        to replace multiple blanks by one. This script is called directly before the procedure call of <code>$(teststep)</code>.
+        </p>
+        
+<p>
+        In order to run the test-case on multiple test-data the sample was extended.
+        </p>
+        
+<p>
+        Of course you can apply the concept of generic component recognition as described in the previous section (see <a href="user_keywords_components.html#usec_keywords_components">section 28.3</a>).
+        To that end you would need to specify a very exact
+        description or implement a script filtering the target components from the
+        test-step itself.
+        </p>
+
+        
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="user_keywords_business_bdt.html#user_keywords_business_bdt"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 28.4.2&nbsp;Behavior-Driven Testing (BDT) from business perspective" title="Next Page: 28.4.2&nbsp;Behavior-Driven Testing (BDT) from business perspective"></a></td><td class="navicon"><a href="user_keywords_business_bdt.html#user_keywords_business_bdt"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 28.4.2&nbsp;Behavior-Driven Testing (BDT) from business perspective" title="Next Chapter: 28.4.2&nbsp;Behavior-Driven Testing (BDT) from business perspective"></a></td><td class="navicon"><a href="user_keywords_bdt.html#usec_keywords_bdt"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 28.4&nbsp;Behavior-driven testing (BDT)" title="Chapter Overview: 28.4&nbsp;Behavior-driven testing (BDT)"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,580 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Testausf&uuml;hrung im Daemonmodus</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_execdaemon"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_execbatch.html#usec_execbatch"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 22.1&nbsp;Testausf&uuml;hrung im Batchmodus" title="Vorheriges Kapitel: 22.1&nbsp;Testausf&uuml;hrung im Batchmodus"></a></td><td class="navicon"><a href="user_rerun.html#usec_rerun"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 22.3&nbsp;Erneute Ausf&uuml;hrung von Knoten (Rerun)" title="N&auml;chste Seite: 22.3&nbsp;Erneute Ausf&uuml;hrung von Knoten (Rerun)"></a></td><td class="navicon"><a href="user_rerun.html#usec_rerun"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 22.3&nbsp;Erneute Ausf&uuml;hrung von Knoten (Rerun)" title="N&auml;chstes Kapitel: 22.3&nbsp;Erneute Ausf&uuml;hrung von Knoten (Rerun)"></a></td><td class="navicon"><a href="user_testexecution.html#usec_testexecution"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 22&nbsp;Testausf&uuml;hrung" title="Kapitel-&Uuml;bersicht: 22&nbsp;Testausf&uuml;hrung"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_execdaemon">22.2</a></span>
+</div>
+<a href="contents.html#toc_usec_execdaemon">Testausf&uuml;hrung im Daemonmodus</a>
+</h4>
+      
+
+      
+<p>
+        Im Daemon Modus gestartet lauscht QF-Test auf RMI Verbindungen und stellt dar&uuml;ber ein
+        Interface f&uuml;r die verteilte Ausf&uuml;hrung von Tests zur Verf&uuml;gung. Dies kann f&uuml;r die
+        Testdurchf&uuml;hrung in einem verteilten Lasttest Szenario (vgl. <a href="user_loadtest.html#usec_loadtest">Kapitel 29</a>)
+        ebenso hilfreich sein wie f&uuml;r die Integration mit vorhandenen Testmanagement- oder
+        Testdurchf&uuml;hrungs-Werkzeugen (vgl. <a href="user_testmanagement.html#usec_testmanagement">Kapitel 25</a>).
+      </p>
+      
+<p>
+<span class="margin"><span class="note">Hinweis</span></span>GUI Tests ben&ouml;tigen eine aktive Benutzersession um korrekt ausgef&uuml;hrt werden zu k&ouml;nnen.
+        Sie finden im Kapitel <a href="bp_testsyssetup.html#sec_bpTestsyssetup">Aufsetzen von Testsystemen</a> n&uuml;tzliche Tipps und Tricks f&uuml;r die Einrichtung Ihrer Testsysteme.
+        Der technische Hintergrund ist in <a href="faq.html#faq_14" shape="rect">FAQ 14</a> beschrieben.
+      </p>
+
+      
+      
+
+      
+<a name="sec_N90576"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N90576">22.2.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N90576">Starten des Daemons</a>
+</h5>
+        
+<p>
+          
+<strong>!!! Warnung !!!</strong>
+        
+</p>
+        
+<p>
+          Jeder, der Zugriff auf den QF-Test Daemon hat, kann auf dessen Rechner Programme mit den
+          Rechten des Benutzerkontos starten, unter dem der Daemon l&auml;uft. Daher sollte Zugriff nur
+          berechtigten Nutzern gew&auml;hrt werden.
+        </p>
+        
+<p>
+          Wenn Sie den Daemon nicht in einer sicheren Umgebung betreiben, in der jeder Nutzer als
+          berechtigt gilt, oder wenn Sie eine eigene Bibliothek zum Zugriff auf den Daemon
+          entwickeln, sollten Sie unbedingt
+          <strong><a href="tech_daemon_security.html#sec_daemon_security">Abschnitt 51.3</a> lesen</strong>. Darin ist beschrieben, wie
+          Sie die Kommunikation mit dem Daemon mittels SSL absichern k&ouml;nnen.
+        </p>
+        
+<p>
+          Um mit dem Daemon arbeiten zu k&ouml;nnen, muss er zun&auml;chst auf irgendeinem Rechner im
+          Netzwerk gestartet werden (das kann nat&uuml;rlich auch <code>localhost</code> sein):
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>qftest -batch -daemon -daemonport 12345</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;22.9:&nbsp;&nbsp;Starten des QF-Test Daemon</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p> 
+<span class="margin"><span class="note">Hinweis</span></span>
+          Wichtiger Hinweise zur Kompatibilit&auml;t:
+        </p>
+        
+<p> 
+<span class="margin"><a name="new_N90621"></a><span class="note">3.5+</span></span>
+
+          Beginnend mit QF-Test Version 3.5 wird f&uuml;r die Kommunikation mit dem Daemon standardm&auml;&szlig;ig
+          SSL verwendet. Um mit einer QF-Test Version &auml;lter als 3.5 interagieren zu k&ouml;nnen, muss der
+          Daemon mit leerem Kommandozeilenargument <a href="tech_execution.html#arg_keystore" shape="rect"><code>-keystore &lt;Keystore-Datei&gt;</code></a> in folgender Form gestartet
+          werden:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>qftest -batch -keystore= -daemon -daemonport 12345</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;22.10:&nbsp;&nbsp;Starten des QF-Test Daemon ohne SSL</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          L&auml;sst man das Argument <code>-daemonport</code> weg, lauscht der Daemon auf Port 3543.
+          Ob der Daemon erfolgreich gestartet wurde, kann man z. B. mit dem Programm
+          <code>netstat</code> pr&uuml;fen:
+        </p>
+        
+<p>
+          
+<span class="margin"><a name="windows_N90651"></a><span class="note">Windows</span></span><code>netstat -a -p tcp -n | findstr "12345"</code>
+        
+</p>
+        
+<p>
+          
+            
+<span class="margin"><a name="linux_N90658"></a><span class="note">Linux</span></span><code>netstat -a --tcp --numeric-ports | grep 12345</code>
+          
+          
+        
+</p>
+        
+<p>
+          Will man den Daemon auf einem entfernten Rechner starten, bieten sich zum Beispiel ssh
+          oder VNC an. Ob und wie das ggf. in Ihrem Netzwerk funktioniert, wei&szlig; der
+          Netzwerkadministrator. Um die folgenden Beispiele nachzuvollziehen, reicht aber auch
+          ein lokaler Daemon.
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_calldaemon"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N90676"></a><span class="note">3.0+</span></span><span class="numtitle"><a href="contents.html#toc_usec_calldaemon">22.2.2</a></span>
+</div>
+<a href="contents.html#toc_usec_calldaemon">Steuern des Daemons &uuml;ber die QF-Test Kommandozeile</a>
+</h5>
+        
+<p>
+          Die einfachste M&ouml;glichkeit, den lauschenden Daemon anzusprechen bietet die
+          Kommandozeile, indem man QF-Test im sogenannten <em>calldaemon</em> Modus startet. Das
+          folgende Beispiel pr&uuml;ft, ob der Daemon an der angegebenen Host-/Portkombination
+          erreichbar ist:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>qftestc -batch -calldaemon -daemonhost localhost -daemonport 12345 -ping</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;22.11:&nbsp;&nbsp;Pingen eines QF-Test Daemon</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Anders als das obige <code>netstat</code> Kommando funktioniert <code>-ping</code>
+          auch &uuml;ber Rechnergrenzen hinweg (auf dem lokalen Rechner kann man das Argument
+          <code>-daemonhost</code> einfach weglassen).
+        </p>
+        
+<p>
+          Auf &auml;hnliche Weise wie man eine Testsuite im Batchmodus ausf&uuml;hrt, kann man nun einen Daemon
+          dazu bringen, einen bestimmten Testfall auszuf&uuml;hren und ein Protokoll des Testlaufs
+          zu schreiben:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>qftest -batch -calldaemon -daemonhost somehost -daemonport 12345 -runlog c:\mylogs\+b -suitedir c:\mysuites suiteA.qft#"Mein Testfall"</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;22.12:&nbsp;&nbsp;Ausf&uuml;hrung eines Testfalls mit dem QF-Test Daemon</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span> Anders als im Batchmodus wird beim Verwendung eines Daemons ein
+          'Testfall' oder ein 'Testfallsatz' (andere Knotentypen sind nicht erlaubt) stets &uuml;ber
+          seinen qualifizierten Namen angesprochen, z.B. "Mein Testfallsatz.Mein Testfall" (zur
+          Erinnerung: Beim Batchmodus wird <code>-test &lt;ID&gt;</code> verwendet). Will man
+          die komplette Testsuite <code>suiteA.qft</code> ausf&uuml;hren, so l&auml;sst man die Angabe des
+          Testfalls einfach weg oder schreibt <code>suiteA.qft#.</code>.
+        </p>
+        
+<p>
+          Wird der Daemon auf einem entfernen Rechner gestartet, gibt man diesen bei der
+          Ausf&uuml;hrung von <code>calldaemon</code> &uuml;ber den Parameter <code>-daemonhost</code>
+          explizit an (Vorgabe ist <code>-daemonhost localhost</code>). Man beachte, dass sich
+          dabei der Parameter <code>-suitedir</code> auf den entfernten Rechner bezieht (auf dem
+          der Daemon l&auml;uft), w&auml;hrend <code>-runlog</code> eine lokale Datei bezeichnet.
+        </p>
+        
+<p>
+<span class="margin"><a name="new_N90758"></a><span class="note">3.4+</span></span>
+          Gerade dann, wenn man die Testausf&uuml;hrung nicht so leicht beobachten kann, bietet es
+          sich an, zus&auml;tzlich das Argument <code>-verbose</code> anzugeben, um so
+          Statusinformationen auf der Konsole angezeigt zu bekommen (auf Windows muss dazu
+          <code>qftestc</code> verwendet werden).
+        </p>
+        
+<p>
+          Ein Daemon, lokal oder entfernt, l&auml;sst sich &uuml;ber das <em>calldaemon</em> Kommando
+          <code>-terminate</code> wieder beenden:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>qftest -batch -calldaemon -daemonport 12345 -daemonhost localhost -terminate</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;22.13:&nbsp;&nbsp;Beenden eines QF-Test Daemon</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Eine vollst&auml;ndige &Uuml;bersicht &uuml;ber die <em>calldaemon</em>-Parameter finden Sie im Kapitel <a href="tech_execution.html#sec_execution">Kommandozeilenargumente und R&uuml;ckgabewerte</a>.
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_N90800"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N90800">22.2.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N90800">Steuern des Daemons &uuml;ber die Daemon API</a>
+</h5>
+        
+
+        
+<p>
+          Das Ansprechen des Daemons &uuml;ber die QF-Test Kommandozeile ist auf der einen Seite ganz
+          praktisch, auf der anderen jedoch bietet sie nur eingeschr&auml;nkte M&ouml;glichkeiten. Um die
+          daemonischen F&auml;higkeiten voll auszureizen, muss man sich der Daemon-API
+          bedienen. Wir werden diese hier beispielhaft vorstellen, die vollst&auml;ndige
+          Schnittstelle ist in <a href="tech_daemon.html#sec_daemon">Kapitel 51</a> beschrieben.
+        </p>
+
+        
+        
+
+        
+<p>
+          F&uuml;r erste Experimente mit der Daemon-API bietet sich ein 'Server Skript' Knoten
+          an:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>from de.qfs.apps.qftest.daemon import DaemonRunContext
+from de.qfs.apps.qftest.daemon import DaemonLocator
+
+host = "localhost"
+port = 12345
+# Leading r means raw string to allow normal backslashes in the path string.
+testcase = r"c:\mysuites\suiteA.qft#Mein Testfall"
+timeout = 60 * 1000
+
+def calldaemon(host, port, testcase, timeout=0):
+    daemon = DaemonLocator.instance().locateDaemon(host, port)
+    trd = daemon.createTestRunDaemon()
+    context = trd.createContext()
+    context.runTest(testcase)
+    if not context.waitForRunState(DaemonRunContext.STATE_FINISHED, timeout):
+        # Run did not finish, terminate it
+        context.stopRun()
+        if not context.waitForRunState(DaemonRunContext.STATE_FINISHED, 5000):
+            # Context is deadlocked
+            raise UserException("No reply from daemon RunContext.")
+        rc.logError("Daemon call did not terminate and had to be stopped.")
+    result = context.getResult()
+    log = context.getRunLog()
+    rc.addDaemonLog(log)
+    context.release()
+    return result
+
+result = calldaemon(host, port, testcase, timeout)
+rc.logMessage("Result from daemon: %d" %result)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;22.14:&nbsp;&nbsp;Daemon-API im 'Server Skript'</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Das Skript zeigt den grundlegenden Mechanismus der Daemon-Ansteuerung:
+        </p>
+        
+<ul>
+          
+<li>
+            Zun&auml;chst muss mit <code>locateDaemon</code> ein laufender Daemon gefunden werden.
+          </li>
+          
+<li>
+            &Uuml;ber den Aufruf von <code>createTestRunDaemon</code> wird eine Umgebung f&uuml;r Testl&auml;ufe
+            bereitgestellt.
+          </li>
+          
+<li>
+            Zur eigentlichen Testausf&uuml;hrung ben&ouml;tigt man ein Context-Objekt
+            (<code>createContext</code>). Hierzu wird eine (Runtime-)Lizenz ben&ouml;tigt.
+          </li>
+          
+<li>
+            &Uuml;ber den Context l&auml;sst sich der Testlauf starten (<code>runTest</code>) und dessen
+            Zustand abfragen. <code>waitForRunState</code> wartet w&auml;hrend der (in Millisekunden)
+            angegebenen Zeitspanne, bis ein bestimmter Zustand eingetreten ist; hier wird eine
+            Minute lang darauf gewartet, dass der Testlauf abschlie&szlig;t.
+          </li>
+          
+<li>
+            Schlie&szlig;lich, nach Ende des Testlaufs, liefert der Context &uuml;ber die Methode
+            <code>getResult</code> einen R&uuml;ckgabewert, der Auskunft &uuml;ber das Ergebnis des
+            Testlaufs gibt (vgl. <a href="tech_execution.html#sec_exitcodes">R&uuml;ckgabewerte von QF-Test</a>).
+          </li>
+          
+<li>
+            Dar&uuml;ber hinaus kann man &uuml;ber den Context auch das Protokoll des Testlaufs abholen und
+            mittels der <code>rc</code>-Methode <code>addDaemonLog</code> in das lokale
+            Protokoll einf&uuml;gen.
+          </li>
+        
+</ul>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span> Das Beispielskript verzichtet aus Gr&uuml;nden der
+          &Uuml;bersichtlichkeit auf jegliche Fehlerbehandlung. Gerade beim Arbeiten mit einem
+          Daemon sollte man aber jeden Aufruf auf eventuelle Fehler &uuml;berpr&uuml;fen.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span> Ein Nachteil ist mit der Daemon-Steuerung aus einem
+          'Server Skript' verbunden: Es wird eine zus&auml;tzliche QF-Test Lizenz ben&ouml;tigt,
+          um den Skript-Knoten interaktiv oder im Batchmodus auszuf&uuml;hren. Das gilt
+          allerdings nicht, wenn man den oben beschriebenen <em>calldaemon</em> Modus verwendet
+          oder sich au&szlig;erhalb von QF-Test mit dem Daemon verbindet (siehe unten).
+        </p>
+
+        
+        
+
+        
+<p>
+          Die Verwendung der Daemon-API ist nicht auf 'Server Skripte' beschr&auml;nkt.
+          Au&szlig;erhalb von QF-Test kann der Daemon &uuml;ber ein Java-Programm oder, einfacher noch, ein
+          Groovy-Skript angesprochen werden. Das folgende Groovy-Beispiel arbeitet mit mehreren
+          Daemon-Instanzen und kann daher auch als Ausgangspunkt f&uuml;r Lasttests dienen. Nehmen
+          wir an, dass auf verschiedenen Rechnern jeweils ein QF-Test Daemon gestartet wurde. Jeder
+          der Daemonen soll einen bestimmten Testfall ausf&uuml;hren und f&uuml;r jeden der Testl&auml;ufe soll ein
+          Protokoll abgelegt werden (<code>daemon1.qrl, ..., daemonN.qrl</code>). Die Testsuite
+          mit dem auszuf&uuml;hrenden Testfall sei allen Daemon-Instanzen &uuml;ber ein Netzlaufwerk (hier
+          <code>z:</code>) zug&auml;nglich.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>import de.qfs.apps.qftest.daemon.DaemonLocator
+import de.qfs.apps.qftest.daemon.DaemonRunContext
+
+def testcase = "z:\\mysuites\\suiteA.qft#Mein Testfall"
+def logfile = "c:\\mylogs\\daemon"
+def timeout = 120 * 1000
+def keystore = "z:\\mysuites\\mydaemon.keystore"
+def password = "strengGeheim"
+
+def locator = DaemonLocator.instance()
+locator.setKeystore(keystore)
+locator.setKeystorePassword(password)
+def daemons = locator.locateDaemons(10000)
+def contexts = []
+// Start tests
+for (daemon in daemons) {
+    def trd = daemon.createTestRunDaemon()
+    trd.setGlobal('machines', daemons.size().toString())
+    def context = trd.createContext()
+    contexts &lt;&lt; context
+    context.runTest(testcase)
+}
+// Wait for tests to terminate
+for (i in 0..&lt;contexts.size()) {
+    def context = contexts[i]
+    context.waitForRunState(DaemonRunContext.STATE_FINISHED, timeout)
+    byte[] runlog = context.getRunLog()
+    def fos = new FileOutputStream("$logfile${i + 1}.qrl")
+    fos.write(runlog)
+    fos.close()
+    context.release()
+}
+</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;22.15:&nbsp;&nbsp;Groovy-Daemon-Skript <code>CallDaemon.groovy</code></td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Zur Ausf&uuml;hrung des Groovy-Skripts werden die QF-Test-Bibliotheken <code>qftest.jar</code>, <code>qfshared.jar</code> und
+          <code>qflib.jar</code> ben&ouml;tigt und au&szlig;erdem die Groovy-Bibliothek, die auch
+          Bestandteil der QF-Test Installation ist. Das folgende Befehlsskript zeigt, wie das geht:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>@echo off
+setlocal
+set qftestdir=c:\programs\qftest\qftest-6.0.3
+set qflibdir=%qftestdir%\qflib
+set classpath=%qftestdir%\lib\groovy-all.jar
+set classpath=%classpath%;%qflibdir%\qftest.jar;%qflibdir%\qfshared.jar;%qflibdir%\qflib.jar
+java -cp %classpath% groovy.ui.GroovyMain CallDaemon</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;22.16:&nbsp;&nbsp;Befehlsskript <code>calldaemon.bat</code> zur Ausf&uuml;hrung von
+          Calldaemon.groovy</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Der <code>DaemonLocator</code> kann beim externen Zugriff den Keystore zur Sicherung der Kommunikation
+          nur automatisch ermitteln, wenn die Datei <code>qftest.jar</code> (wie in diesem Befehlsskript) direkt aus
+          dem QF-Test-Verzeichnis geladen wird. Alternativ kann der Keystore wie im Groovy-Skript gezeigt mit
+          <code>setKeystore</code> und <code>setKeystorePassword</code> direkt gesetzt werden, oder
+          indirekt &uuml;ber die System-Properties <code>javax.net.ssl.keyStore</code> und <code>javax.net.ssl.keyStorePassword</code>.
+        </p>
+        
+<p>
+          Damit aus dem Daemon-Beispiel ein Lasttest wird (vgl. <a href="user_loadtest.html#usec_loadtest">Kapitel 29</a>),
+          m&uuml;ssen die Testl&auml;ufe an mindestens einer Stelle innerhalb von "Mein Testfall"
+          synchronisiert werden (z. B. nach dem Starten des SUT). Dazu dient die
+          <code>rc</code>-Methode <code>syncThreads</code>:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def machines = rc.getNum('machines')
+rc.syncThreads('startup', 60000, -1, machines)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;22.17:&nbsp;&nbsp;Groovy 'Server Skript' Knoten zur Synchronisation der Testl&auml;ufe</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Die Variable <code>machines</code> bezeichnet die Anzahl der Rechner. Sie wird zum
+          Beispiel im 'Testsuite' Knoten mit einem Vorgabewert von <code>1</code> definiert.
+          Bei der Ausf&uuml;hrung der Testl&auml;ufe wird sie mit dem aktuellen Wert &uuml;berschrieben.
+        </p>
+
+        
+
+      
+
+      
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_execbatch.html#usec_execbatch"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 22.1&nbsp;Testausf&uuml;hrung im Batchmodus" title="Vorheriges Kapitel: 22.1&nbsp;Testausf&uuml;hrung im Batchmodus"></a></td><td class="navicon"><a href="user_rerun.html#usec_rerun"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 22.3&nbsp;Erneute Ausf&uuml;hrung von Knoten (Rerun)" title="N&auml;chste Seite: 22.3&nbsp;Erneute Ausf&uuml;hrung von Knoten (Rerun)"></a></td><td class="navicon"><a href="user_rerun.html#usec_rerun"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 22.3&nbsp;Erneute Ausf&uuml;hrung von Knoten (Rerun)" title="N&auml;chstes Kapitel: 22.3&nbsp;Erneute Ausf&uuml;hrung von Knoten (Rerun)"></a></td><td class="navicon"><a href="user_testexecution.html#usec_testexecution"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 22&nbsp;Testausf&uuml;hrung" title="Kapitel-&Uuml;bersicht: 22&nbsp;Testausf&uuml;hrung"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

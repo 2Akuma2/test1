@@ -1,0 +1,237 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Hints on setting up test-systems</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_bpTestsyssetup"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="bp_effecientwork.html#sec_bpEffectiveWork"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 34&nbsp;Efficient working techniques" title="Previous Chapter: 34&nbsp;Efficient working techniques"></a></td><td class="navicon"><a href="bp_testexec.html#sec_bpTestExec"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 36&nbsp;Test execution" title="Next Page: 36&nbsp;Test execution"></a></td><td class="navicon"><a href="bp_testexec.html#sec_bpTestExec"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 36&nbsp;Test execution" title="Next Chapter: 36&nbsp;Test execution"></a></td><td class="navicon"><a href="bp_bestpractices.html#sec_BestP"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: II&nbsp;Best Practices" title="Chapter Overview: II&nbsp;Best Practices"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpTestsyssetup">35</a></span>
+</div>
+<a href="contents.html#toc_sec_bpTestsyssetup">Hints on setting up test-systems</a>
+</h3>
+
+      
+<p>
+      This chapter provides some hints how to set-up your test-systems and processes in order to get a stable test execution.
+      </p>
+
+        
+
+      
+<a name="sec_bpTaskScheduler"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpTaskScheduler">35.1</a></span>
+</div>
+<a href="contents.html#toc_sec_bpTaskScheduler">Using the task scheduler</a>
+</h4>
+        
+<p>
+        In order to execute tests or similar processes on a regular basis it is very common to set-up a Windows service.
+        Unfortunately those services have the disadvantage that they don't run in an active Windows user session. Because of this such processes
+        should never be started as services, because running GUI tests without an active user session brings up very
+        subtle problems during test-execution. You can find further technical details at <a href="faq.html#faq_14" shape="rect">FAQ 14</a>.
+        </p>
+        
+<p>
+        We recommend to define a scheduled task via the task scheduler instead of using services.
+        This can be directly applied via the graphical UI of the task scheduler.
+        The following instruction should work on Windows 7, Windows 8, Windows 8.1 and Windows 10. There might be a few differences
+        depending on the exact operation system:
+        </p>
+        
+<ol>
+            
+<li>Start the Windows Task scheduler via 'System Control Panel' -&gt; 'Administrative Tools' -&gt; 'Task Scheduler'.</li>
+            
+<li>Click "Create Task" on the right.</li>
+            
+<li>At the "General" tab define a "Name", e.g. QF-Test.</li>
+            
+<li>Now click at the "Change User or Group" button and select the user for the session which should be used to run QF-Test.
+            Do not use the System- or Service session but a real user session.</li>
+            
+<li>Press OK to close the dialog.</li>
+            
+<li>Now select "Run only when user is logged in".</li>
+            
+<li>Do not select "Run with highest privileges".</li>
+            
+<li>Choose the correct Windows version for your task.</li>
+            
+<li>Now select the "Triggers" tab. Click "New.." and define the desired time/trigger at "Begin the task".</li>
+            
+<li>Click "OK" to close.</li>
+            
+<li>Now select the "Actions" tab, click at "New." and specify
+            "Start a program" as "Action" and "Browse" to the .cmd or .bat file you've just created.</li>
+            
+<li>Press "OK" to close this dialog.</li>
+            
+<li>You can now have a look at the "Conditions" and "Settings" tab if you need anything else from your side.</li>
+            
+<li>If you have finished the setup press "OK" and the task has been created.</li>
+        
+</ol>
+        
+<p>
+        It is very important that the user which is configured to run that process is logged in correctly. This user can
+        be logged in manually or automatically (see <a href="#sec_bpAutoLogonWin">section 35.3</a>). It is recommended to use a virtual system
+        for running GUI tests. On such virtual systems the user needs to be logged in only on the guest system and the host can be locked.
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_bpRemoteAccess"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpRemoteAccess">35.2</a></span>
+</div>
+<a href="contents.html#toc_sec_bpRemoteAccess">Remote access to Windows systems</a>
+</h4>
+        
+<p>
+          Accessing remote Windows systems via RDP is subject to some restrictions and requires a dedicated
+          configuration of your systems. That's because the implemented RDP server of Windows desktop versions allows only one active user. Thus the (virtual) monitor will be locked as soon as you access the system via RDP. After closing the RDP session the monitor of the test-system remains locked. Usually you cannot use a graphical user interface at a locked screen, thus you cannot test it, too.
+        </p>
+        
+<p>
+<span class="margin"><span class="note">Note</span></span>
+          On Windows 10 or Windows Server 2016 systems you can make use of RDP if you modify
+          the Registry.
+          Therefore navigate to <code>HKEY_CURRENT_USER\Software\Microsoft\Terminal Server Client</code> or
+          <code>HKEY_LOCAL_MACHINE\Software\Microsoft\Terminal Server Client</code> and add a new value <code>RemoteDesktop_SuppressWhenMinimized</code> as <code>DWORD</code> having the value <code>2</code>.
+          Once that setting has been set you are allowed to minimize RDP connections, but you have to keep
+          the connection alive. The tests will still fail if you disconnect or close the session.
+        </p>
+        
+<p>
+          Instead of this approach you should use the capabilities your virtual server provides.
+          For VMware server the vSphere client would be the first choice.
+          With VirtualBox you can connect to VirtualBox with RDP (not with the Windows client).
+          Of course this kind of RDP connection has not the impacts on the test-system as explained above.
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_bpAutoLogonWin"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpAutoLogonWin">35.3</a></span>
+</div>
+<a href="contents.html#toc_sec_bpAutoLogonWin">Automated logon on Windows systems</a>
+</h4>
+        
+<p>
+          A simple possibility to get an active user session is to logon a test user automatically after start-up of your system.
+          This chapter describes how to configure your system for that purpose.
+        </p>
+        
+<p>
+<span class="margin"><span class="note">Note</span></span>
+          An automatic logon at Windows is always a security risk.
+          Therefore you have to ensure that the corresponding test-systems are not accessible from outside the test environment.
+        </p>
+        
+<p>
+          Although this guidance is generally valid it will be used commonly together with virtual
+          systems which will be accessed remotely. What to keep in mind for this remote access will
+          be explained at <a href="#sec_bpRemoteAccess">section 35.2</a>.
+        </p>
+        
+<p>
+          The following method is running with Windows 7, Windows 8, Windows 8.1 and Windows 10.
+          There might be a few differences depending on the exact operation system:
+        </p>
+        
+<ol>
+          
+<li>Start the command line interface with administrator privileges.</li>
+
+          
+<li>Enter <code>control userpasswords2</code>.</li>
+
+          
+<li>Now the dialog 'User Accounts' appears.</li>
+
+          
+<li>Remove the check at the checkbox 'Users must enter user name
+              and password'.</li>
+
+          
+<li>In the next appearing dialog ('Automatic Logon') enter the user
+          password twice.</li>
+
+          
+<li>Click the 'Ok' button to finish the configuration.</li>
+        
+</ol>
+        
+<p>
+          Of course also other methods exist to get the same result. Thus you could modify the corresponding registry entry directly.
+          Or you could download the 'Autologon' tool from Microsoft from
+          <a href="https://technet.microsoft.com/en-us/sysinternals/bb963905" shape="rect">https://technet.microsoft.com/en-us/sysinternals/bb963905</a>.
+          But all those different methods lead to the same result, which is the modified registry entry.
+          We recommend to use the method explained above as in this way no download is needed and a type mismatch in the registry entry is avoided.
+          By the way, an automated logon will never run for domain users. In fact this would be quite awkward in conjunction
+          with test-system. This may be an information which may calm your administrators down.
+        </p>
+      
+
+      
+         
+
+      
+<a name="sec_bpUnix"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpUnix">35.4</a></span>
+</div>
+<a href="contents.html#toc_sec_bpUnix">Test execution on Unix</a>
+</h4>
+        
+<p>
+          On Unix systems you can set-up virtual displays using tools like VNC server.
+          A very useful window manager for those displays could be xfce.
+        </p>
+      
+
+      
+
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="bp_effecientwork.html#sec_bpEffectiveWork"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 34&nbsp;Efficient working techniques" title="Previous Chapter: 34&nbsp;Efficient working techniques"></a></td><td class="navicon"><a href="bp_testexec.html#sec_bpTestExec"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 36&nbsp;Test execution" title="Next Page: 36&nbsp;Test execution"></a></td><td class="navicon"><a href="bp_testexec.html#sec_bpTestExec"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 36&nbsp;Test execution" title="Next Chapter: 36&nbsp;Test execution"></a></td><td class="navicon"><a href="bp_bestpractices.html#sec_BestP"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: II&nbsp;Best Practices" title="Chapter Overview: II&nbsp;Best Practices"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

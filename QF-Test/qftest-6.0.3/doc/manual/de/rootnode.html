@@ -1,0 +1,282 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Die Testsuite und ihre Struktur</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_rootnode"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="sequences.html#sec_sequences"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 38.2&nbsp;Test und Sequenz Knoten" title="N&auml;chste Seite: 38.2&nbsp;Test und Sequenz Knoten"></a></td><td class="navicon"><a href="sequences.html#sec_sequences"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 38.2&nbsp;Test und Sequenz Knoten" title="N&auml;chstes Kapitel: 38.2&nbsp;Test und Sequenz Knoten"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite" title="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_rootnode">38.1</a></span>
+</div>
+<a href="contents.html#toc_sec_rootnode">Die Testsuite und ihre Struktur</a>
+</h4>
+        
+<p>
+          Eine Testsuite kann aus mehr als 60 verschieden Arten von Knoten
+          bestehen, die in diesem Kapitel einzeln aufgef&uuml;hrt werden. Jeder
+          Knoten hat bestimmte Eigenschaften, darunter seine Attribute, die
+          QF-Test in der Detailansicht des Editors darstellt. F&uuml;r jedes Attribut
+          wird angegeben, ob bei der Ausf&uuml;hrung eine Variablenexpansion
+          durchgef&uuml;hrt wird (vgl. <a href="user_variables.html#usec_variables">Kapitel 6</a>) und welchen
+          Einschr&auml;nkungen der Wert des Attributs unterworfen ist.
+        </p>
+        
+<p>
+          Weitere Eigenschaften von Knoten sind m&ouml;gliche Einschr&auml;nkungen bzgl.
+          zul&auml;ssiger Parent- und Childknoten, sowie das Verhalten des Knotens
+          bei der Ausf&uuml;hrung.
+        </p>
+        
+<a name="step_RootStep"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_RootStep">38.1.1</a></span>
+</div>
+<a href="contents.html#toc_step_RootStep">'Testsuite'</a>
+</h5>
+          
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/root.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+              
+<p>
+                Der Wurzelknoten des Baums repr&auml;sentiert die Testsuite selbst.
+                Seine grundlegende Struktur ist fest definiert. Der
+                Wurzelknoten enth&auml;lt eine beliebige Anzahl von <a href="sequences.html#step_TestSet" shape="rect">'Testfalls&auml;tze'</a> oder <a href="sequences.html#step_TestCase" shape="rect">'Testf&auml;lle'</a>,
+                gefolgt von den <a href="procedures.html#step_PackageRoot" shape="rect">'Prozeduren'</a>, den
+                <a href="sequences.html#step_ExtraSequence" shape="rect">'Extrasequenzen'</a> und dem <a href="components.html#step_WindowList" shape="rect">'Fenster und Komponenten'</a> Knoten.
+                Bei seiner Ausf&uuml;hrung werden die 'Testfalls&auml;tze' der obersten Ebene
+                der Reihe nach ausgef&uuml;hrt.
+              </p>
+            
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Keiner</p>
+<p>
+<strong>Kinder:</strong> 
+              Eine beliebige Anzahl von <a href="sequences.html#step_TestSet" shape="rect">'Testfalls&auml;tze'</a> oder <a href="sequences.html#step_TestSet" shape="rect">'Testfalls&auml;tze'</a>, gefolgt von den
+              <a href="procedures.html#step_PackageRoot" shape="rect">'Prozeduren'</a>, den <a href="sequences.html#step_ExtraSequence" shape="rect">'Extrasequenzen'</a> und dem
+              <a href="components.html#step_WindowList" shape="rect">'Fenster und Komponenten'</a> Knoten.
+            </p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+              Die 'Testfallsatz' Knoten der obersten Ebene werden der Reihe nach
+              ausgef&uuml;hrt.
+            </p>
+          
+
+          
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.1"></a><a name="figure_38.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_RootStep.png" target="_blank"><img src="images/att_RootStep.png" alt="Testsuite Attribute" texscale=".66" width="393" height="445"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.1</a>:&nbsp;&nbsp;'Testsuite' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_RootStep_name"></a>
+<dt>'Name'</dt>
+<dd>
+                
+<p>
+		  Eine Art Kurzkommentar f&uuml;r die Testsuite. Der Name wird in der
+		  Baumdarstellung der Testsuite angegeben und sollte etwas &uuml;ber die
+		  Funktion der Testsuite aussagen.
+                </p>
+              
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_RootStep_includes"></a>
+<dt>'Include Dateien'</dt>
+<dd>
+                
+<p>
+                  Dies ist eine Liste von Testsuiten, auf die sich diese
+                  Testsuite bezieht. Kann eine Referenz auf eine
+                  <a href="components.html#step_ComponentStep" shape="rect">'Komponente'</a> oder eine <a href="procedures.html#step_Procedure" shape="rect">'Prozedur'</a> nicht in
+                  der aktuellen Suite aufgel&ouml;st werden, werden die hier
+                  angegebenen Testsuiten der Reihe nach abgesucht. Beim
+                  Aufnehmen von neuen Komponenten sucht QF-Test zun&auml;chst die
+                  'Include Dateien' nach einem entsprechenden 'Komponente'
+                  Knoten ab, bevor es einen neuen anlegt.
+                </p>
+                
+<p>
+                  Dateinamen k&ouml;nnen absolut oder relativ angegeben werden,
+                  wobei relative Dateinamen relativ zu dieser Testsuite oder
+                  zu Verzeichnissen des Bibliothekspfades aufgel&ouml;st werden
+                  (vgl. Option <a href="opt_general.html#opt_libpath">Verzeichnisse mit Testsuite Bibliotheken</a>).
+                </p>
+                
+<p>
+                  Wenn Sie an diesem Attribut &Auml;nderungen vornehmen bietet QF-Test anschlie&szlig;end an,
+                  alle betroffenen Knoten an die ge&auml;nderten Includes anzupassen, so dass exakt die
+                  selben Knoten referenziert werden wie vorher. Dies ist z.B. dann sinnvoll, wenn
+                  Sie eine Suite zu den Includes hinzuf&uuml;gen oder daraus entfernen und die
+                  zugeh&ouml;rigen Referenzen auf 'Prozeduren' und 'Komponenten' implizit bzw.
+                  explizit machen wollen, ohne die Funktionalit&auml;t zu ver&auml;ndern. Wenn Sie
+                  allerdings eine Suite umbenannt oder in ein anderes Verzeichnis verschoben haben
+                  und nun die Includes an die neuen Gegebenheiten anpassen, w&auml;hlen Sie "Nein", so
+                  dass die vormals impliziten Referenzen auf die alte Suite nun auf die neue Suite
+                  verweisen.
+                </p>
+              
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_RootStep_dependencies"></a>
+<dt>'Abh&auml;ngige Dateien (umgekehrte Includes)'</dt>
+<dd>
+                
+<p>
+                  Diese Liste von Testsuiten ist das Gegenst&uuml;ck zu den
+                  'Include Dateien'. Sie hat keinen Einfluss auf die Ausf&uuml;hrung
+                  von Tests, sondern dient QF-Test als Hinweis darauf, welche
+                  Testsuiten von 'Komponenten' in dieser Testsuite
+                  abh&auml;ngig sind, weil sie diese Suite &uuml;ber 'Include Dateien'
+                  einbinden oder durch explizite Referenzen. Diese Information
+                  wird herangezogen, wenn 'QF-Test IDs' von 'Komponenten'
+                  ge&auml;ndert werden (z.B. durch die Funktion "Komponenten
+                  aktualisieren", siehe <a href="usec_component_maintenance.html#usec_update_components">Abschnitt 5.11.2</a>). Die 'QF-Test ID der Komponente'
+                  Attribute von abh&auml;ngigen Knoten m&uuml;ssen in diesem Fall
+                  angepasst werden. Alle aktuell geladenen Testsuiten werden automatisch auf
+                  Abh&auml;ngigkeiten gepr&uuml;ft. Zus&auml;tzlich l&auml;dt QF-Test die hier
+                  aufgef&uuml;hrten Testsuiten automatisch nach und &uuml;berpr&uuml;ft sie
+                  ebenfalls.
+                </p>
+                
+<p>
+                  Dateinamen k&ouml;nnen absolut oder relativ angegeben werden,
+                  wobei relative Dateinamen relativ zu dieser Testsuite oder
+                  zu Verzeichnissen des Bibliothekspfades aufgel&ouml;st werden
+                  (vgl. Option <a href="opt_general.html#opt_libpath">Verzeichnisse mit Testsuite Bibliotheken</a>).
+                </p>
+                
+<p>
+                  
+<span class="margin"><span class="note">Hinweis</span></span> Wie bei den 'Include Dateien'
+                  werden die 'Abh&auml;ngigen Dateien' auch indirekt aufgel&ouml;st. Hat
+                  z.B. Suite A die abh&auml;ngige Suite B und diese wiederum die
+                  abh&auml;ngige Suite C, so wird bei &Auml;nderungen an A sowohl B
+                  als auch C nachgeladen und &uuml;berpr&uuml;ft.
+                </p>
+              
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_RootStep_variable"></a>
+<dt>'Variablen Definitionen'</dt>
+<dd>
+      
+<p>
+        Diese Variablendefinitionen sind mit den Suite Variablen in den
+        <a href="opt_vars.html#sec_opt_vars">Variablen</a> Einstellungen der global Optionen
+        identisch. N&auml;heres zur Arbeit mit der Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>. Eine detaillierte Erkl&auml;rung zur Definition und
+        Verwendung von Variablen finden Sie in <a href="user_variables.html#usec_variables">Kapitel 6</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Namen der Variablen nein, Werte ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_RootStep_exectimeout"></a>
+<dt>'Maximale Ausf&uuml;hrungszeit'</dt>
+<dd>
+      
+<p>
+        Zeit in Millisekunden, die der Knoten maximal ausgef&uuml;hrt werden soll.
+        Nach Ablauf dieser Zeit wird der Knoten abgebrochen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> &gt;= 0</p>
+</dd>
+<a name="att_RootStep_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+          
+        
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="sequences.html#sec_sequences"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 38.2&nbsp;Test und Sequenz Knoten" title="N&auml;chste Seite: 38.2&nbsp;Test und Sequenz Knoten"></a></td><td class="navicon"><a href="sequences.html#sec_sequences"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 38.2&nbsp;Test und Sequenz Knoten" title="N&auml;chstes Kapitel: 38.2&nbsp;Test und Sequenz Knoten"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite" title="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

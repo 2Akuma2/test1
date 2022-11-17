@@ -1,0 +1,476 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Organizing test-suites</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_bpOrganize"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="bp_howtostart.html#sec_bpHowToStart"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 32&nbsp;How to start a testing project" title="Previous Chapter: 32&nbsp;How to start a testing project"></a></td><td class="navicon"><a href="bp_effecientwork.html#sec_bpEffectiveWork"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 34&nbsp;Efficient working techniques" title="Next Page: 34&nbsp;Efficient working techniques"></a></td><td class="navicon"><a href="bp_effecientwork.html#sec_bpEffectiveWork"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 34&nbsp;Efficient working techniques" title="Next Chapter: 34&nbsp;Efficient working techniques"></a></td><td class="navicon"><a href="bp_bestpractices.html#sec_BestP"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: II&nbsp;Best Practices" title="Chapter Overview: II&nbsp;Best Practices"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpOrganize">33</a></span>
+</div>
+<a href="contents.html#toc_sec_bpOrganize">Organizing test-suites</a>
+</h3>
+
+      
+<p>
+        One of the most challenging tasks in a project is keeping the test-suites maintainable over
+        a long period of time. Especially if some window or workflow changes significantly the
+        maintenance effort should be kept to a minimum.
+      </p>
+      
+<p>
+        It is also worth thinking about how to minimize the creation efforts of tests that contain
+        a lot of similar or even the same steps. A typical use-case is launching the SUT or the
+        login process or a very important and basic workflow like navigating to a certain part of
+        the SUT.
+      </p>
+      
+<p>
+        Another aspect to think about is how to efficiently organize test-suites if different
+        people work in your testing project.
+      </p>
+      
+<p>
+<span class="margin"><a name="new_N97654"></a><span class="note">3.5+</span></span>
+        In any case you should create your test-suites within a QF-Test project
+        as described in <a href="projects.html#usec_projects">chapter 9</a>. This feature provides
+        a better overview over your test-suites and directories.
+      </p>
+      
+<p>
+        The following sections show some best practices how to keep your tests maintainable,
+        extensible and well-organized.
+      </p>
+
+      
+
+      
+<a name="sec_bpOrganizingTests"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpOrganizingTests">33.1</a></span>
+</div>
+<a href="contents.html#toc_sec_bpOrganizingTests">Organizing tests</a>
+</h4>
+        
+<p>
+          In chapter <a href="user_organization.html#usec_testcase">section 8.2</a> we describe the concepts of 'Test-set' and
+          'Test-case' nodes. A 'Test-case' node stands for one dedicated test-case and its
+          test-data. A typical 'Test-case' could be derived from a use-case, a requirement or a
+          defect description in your environment, e.g 'Calculate the price for vehicle xyz at 10%
+          discount' for the JCarConfigurator application.
+        </p>
+        
+<p>
+          'Test-set' nodes are collections of 'Test-sets' and 'Test-cases' which can be used for
+          organizing test-cases, e.g. 'Tests for calculating prices'.
+        </p>
+        
+<p>
+          'Test-step' nodes represent the individual test-steps of a 'Test-case' like 'Open window'
+          or 'Check calculation'.
+        </p>
+        
+<p>
+          If you have an external description of the 'Test-case' or any other associated
+          information which might be important for it, it is recommended to add an HTML link to it
+          in the 'Comment' attribute of the 'Test-case'. You will see that link in the report
+          later. It is even possible to create a separate test documentation using the menu action
+          &raquo;<em>File</em>&laquo;-&raquo;<em>Create testdoc documentation</em>&laquo;.
+          More details about documentation can be found in <a href="user_report.html#usec_report">chapter 21</a>.
+        </p>
+        
+<p>
+<span class="margin"><a name="new_N97733"></a><span class="note">3.1+</span></span>The report and test documentation also contain the
+          'Test-step' nodes which are used in a 'Test-case'.
+        </p>
+        
+<p>
+          If a 'Test-case' consists of lots of 'Procedure calls' or 'Sequences', you should
+          organize the single test-steps in 'Test-step' nodes. Those 'Test-step' nodes have the
+          advantage that you can really see every significant step in the QF-Test window and also in
+          the report later.
+        </p>
+        
+<p>
+          If you want to put several nodes into a 'Test-step' you can pack the respective nodes
+          into a 'Test-step' via selecting them, perform a right-mouse click and selecting
+          &raquo;<em>Pack nodes</em>&laquo;-&raquo;<em>TestStep</em>&laquo;.
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_bpModul"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpModul">33.2</a></span>
+</div>
+<a href="contents.html#toc_sec_bpModul">Modularization</a>
+</h4>
+        
+<p>
+          One of the most important concepts for effective test automation is modularization.
+          Modularization here means placing reusable sequences in a dedicated location and calling
+          these whenever possible. This concept enables you to create a sequence only once and
+          reuse it as often as you require it in your tests without re-recording the same steps
+          all the time. Changes in the SUT that require an update of the tests that rely on such a
+          sequence, e.g. a change to some basic workflow, can then be handled by updating just the
+          procedure in a single location instead of many identical sequences spread all over the
+          test-suites.
+        </p>
+        
+<p>
+          The modularization concept in QF-Test is implemented via 'Procedure' nodes. Procedures
+          are well described in <a href="user_organization.html#usec_procedures">section 8.5</a>.
+        </p>
+        
+<p>
+          If you have lots of test cases, it is best to have almost every test-step as a
+          'Procedure' and create those procedures up front, if possible. With those procedures in
+          place you can fill your test-cases very fast by just adding the respective
+          'Procedure call' nodes.
+        </p>
+        
+<p>
+          In larger projects it is useful to have 'Procedures' at different level, e.g. component
+          specific procedures like 'Click OK' and workflow oriented procedures like 'Create a
+          vehicle'.
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_bpParam"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpParam">33.3</a></span>
+</div>
+<a href="contents.html#toc_sec_bpParam">Parameterization</a>
+</h4>
+        
+<p>
+          The concept of modularization enables you to maintain test-steps at a single location in
+          your test-suites. But how to use different test data for different tests?
+        </p>
+        
+<p>
+          If you have a 'Procedure' that can be called with different test data, e.g. a typical
+          'Login' process with name and password or the 'Select accessory' procedure of the
+          JCarConfigurator, you can use variables within the QF-Test nodes. Those variables should be
+          used at places where test data is usually being accessed. In most cases variables will
+          be used for 'Text input' nodes or for selections of items in a list or a table or
+          tree nodes.
+        </p>
+        
+<p>
+          If a procedure requires variables you should define the required variables in its list
+          of <a href="procedures.html#att_Procedure_variable" shape="rect">'Variable definitions'</a>. This is to ensure that you get a list of all required
+          parameters whenever you add a respective 'Procedure call' node for that 'Procedure' to
+          your tests. Some customers even set dummy default values for parameters so they can
+          recognize immediately when a parameter has not been initialized by the calling test.
+        </p>
+        
+<p>
+          The next step is to move those variables from the 'Procedure call' either into the
+          <a href="sequences.html#att_TestCase_variable" shape="rect">'Variable definitions'</a> section of the 'Test-case' node or to put the test data into a
+          'Data driver' node with a 'Data table' or using an external data source.
+        </p>
+        
+<p>
+          The usage of variables and parameters is well described in <a href="user_organization.html#usec_procedures">section 8.5</a>. Parameters can also be created automatically, please see
+          <a href="user_organization.html#usec_procedures_Param">subsection 8.5.4</a>. You can find more details about the data driver
+          concept for loading test data from a data source in <a href="user_datadriver.html#usec_datadriver">chapter 20</a>.
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_bpWork"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpWork">33.4</a></span>
+</div>
+<a href="contents.html#toc_sec_bpWork">Working in multiple test-suites</a>
+</h4>
+        
+<p>
+          Up to now you have read about using the modularization and parameterization concept to
+          avoid unnecessary and redundant work in the creation process of your tests. You should
+          have recognized that those concepts will reduce the maintenance efforts of your
+          test-suites by changing or updating only one single sequence instead of several ones.
+          But we still do not know how to organize our work for different test engineers or for a
+          very large project with a lot of GUI elements.
+        </p>
+        
+<p>
+          The answer for an effective working organization comes again from the software
+          development area and it is to use several 'libraries' for different areas and different
+          responsibilities.
+        </p>
+        
+<p>
+          Importing other test-suites into a test-suite enables you to follow that encapsulation
+          approach. A typical organization of test-suites in your project could look like this:
+        </p>
+        
+<a name="fig_advBpLibs"></a><a name="figure_33.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/bp_libraryStructure.png" target="_blank"><img texscale=".66" src="images/bp_libraryStructure.png" width="581" height="446"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;33.1</a>:&nbsp;&nbsp;Structure of multiple test-suites</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Level 0 is the level that contains test-steps (i.e. 'Procedures') which are required for
+          nearly all test-cases in your projects. Such test-steps could be 'Launch SUT' or
+          'Perform the login'.
+        </p>
+        
+<p>
+          Level 1 contains test-steps for a specific part of the SUT. For the
+          JCarConfigurator you can think about a test-suite 'Vehicles' containing 'Procedures'
+          like 'Create a vehicle', 'Remove a vehicle' and another test-suite 'Accessories', which
+          contains 'Procedures' like 'Create an accessory' or 'Remove an accessory'.
+        </p>
+        
+<p>
+          Level 2 is the test-case level. It contains 'Test-cases' and 'Test-sets' for the
+          respective area of your software, e.g. 'Tests for vehicle creation' or 'Tests for
+          accessory creation'. Of course you could also have a test-suite like 'Integration
+          tests' which refers to test-steps from different test-suites at level 1 and level 0.
+        </p>
+        
+<p>
+          Level 3 is the so called scenario level. Those test-suites usually just contain
+          'Test calls' to level 2 and stand for different scenarios within your test project, e.g.
+          'Nightly test scenario', 'Defect verification scenario' or 'Quick-test build
+          verification'.
+        </p>
+        
+        
+<p>
+<span class="margin"><span class="note">Note</span></span>
+
+          The structure described in this document is of course just one possible solution for
+          handling test-suites in a project and is not a strict rule you have to follow. You could
+          also think about splitting level 1 into a GUI-element level and a workflow level or
+          merge level 2 and level 3 to one level. Which structure you finally implement also
+          depends on the experience and knowledge of the test-engineers working in your project.
+        </p>
+        
+<p>
+          The including area of level 1 test-suites looks like this:
+        </p>
+        
+<a name="fig_advBpIncludes"></a><a name="figure_33.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/bp_Includes.png" target="_blank"><img texscale=".66" src="images/bp_Includes.png" width="984" height="576"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;33.2</a>:&nbsp;&nbsp;Including test-suites of level 1</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          You can find a detailed description of how to include test-suites in <a href="user_distributed.html#usec_suitereference">section 23.1</a> and <a href="tech_includes.html#tsec_includes">section 45.6</a>.
+        </p>
+        
+<p>
+          In <a href="bp_effecientwork.html#sec_bpExtendingSuites">section 34.5</a> you can find a step-by-step description how to
+          extend an already existing test-suite and in <a href="bp_effecientwork.html#sec_bpWorkWithComponents">section 34.4</a>
+          you can find strategies of handling components in such a scenario.
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_bpRoles"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpRoles">33.5</a></span>
+</div>
+<a href="contents.html#toc_sec_bpRoles">Roles and responsibilities</a>
+</h4>
+        
+<p>
+          If you take a closer look at the organization shown in the previous section <a href="#sec_bpWork">section 33.4</a> you may recognize that it is also possible to organize your
+          test-suites based on different knowledge levels of test engineers.
+        </p>
+        
+<a name="fig_advBpLibsRoles"></a><a name="figure_33.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/bp_libraryStructureRoles.png" target="_blank"><img texscale=".66" src="images/bp_libraryStructureRoles.png" width="740" height="524"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;33.3</a>:&nbsp;&nbsp;Structure of different test-suites with roles</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Level 0 and level 1 require a good knowledge in working with QF-Test but not a deep
+          knowledge of the SUT. On the other hand level 2 and level 3 require a very good
+          knowledge of the SUT and the planned test-cases but those engineers usually do not
+          require a very deep knowledge of QF-Test as long as they just use procedures from level 0
+          and level 1.
+        </p>
+        
+<p>
+          Test engineers working in level 0 and level 1 should be capable of implementing scripts
+          or control structures like the 'Try'/'Catch' concept which enables them to
+          create strong and powerful test libraries. At least the engineers working on level 0,
+          but also recommended for engineers working on level 1, should have a good knowledge
+          about component recognition in QF-Test. Please see <a href="user_components.html#usec_components">chapter 5</a>,
+          <a href="user_subitems.html#usec_subitems">section 5.9</a> and <a href="bp_componentrecognition.html#sec_bpComponentRecognition">section 5.3</a>.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Note</span></span>
+
+          Even if you are working alone on a project it is strongly recommended to split the tests
+          and procedures into different levels because maintenance will become easier than with
+          everything kept in one huge test-suite.
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_bpTSHandlingComponents"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpTSHandlingComponents">33.6</a></span>
+</div>
+<a href="contents.html#toc_sec_bpTSHandlingComponents">Managing components at different levels</a>
+</h4>
+        
+<p>
+          If you follow the approach suggested in the previous section (<a href="#sec_bpWork">section 33.4</a>) you have to define where the components belong. There are two
+          possibilities:
+        </p>
+        
+<ol>
+          
+<li>Put all components into level 0.</li>
+          
+<li>Split the components like the procedures into several levels.</li>
+        
+</ol>
+        
+<p>
+          Storing all components in level 0 is the most simple solution but this could cause you
+          to update level 0 very often, just because one single component in your project changes.
+          You have to assign responsible persons to keep that structure cleanly.
+        </p>
+        
+<p>
+          In big projects you may consider storing the common components like the login dialog or
+          the main frame menus, that are important for everyone, in level 0. Components specific
+          to a certain area, e.g. a dedicated vehicle dialog, appear only in the test-suite that
+          holds the procedures operating on those components.
+        </p>
+        
+<p>
+          The workflow for moving components between test-suites is described in <a href="bp_effecientwork.html#sec_bpWorkWithComponents">section 34.4</a> and the workflow for extending existing test-suites is
+          described in <a href="bp_effecientwork.html#sec_bpExtendingSuites">section 34.5</a>.
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_bpRevInclude"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpRevInclude">33.7</a></span>
+</div>
+<a href="contents.html#toc_sec_bpRevInclude">Reverse includes</a>
+</h4>
+        
+<p>
+          
+<span class="margin"><a name="new_N98103"></a><span class="note">3.5+</span></span>
+          You don't need to care about <a href="rootnode.html#att_RootStep_dependencies" shape="rect">'Dependencies'</a> of test-suites belonging to a QF-Test project as described in <a href="projects.html#usec_projects">chapter 9</a>, because QF-Test automatically resolves dependent suites. So,
+          if you use the concept of projects, you can skip this chapter.
+        </p>
+        
+<p>
+          If you work in different test-suites in your project you might sometimes want to rename
+          a 'Procedure' or a 'Test-case'. If you do that you may encounter some troubles in
+          updating the references to that 'Procedure' or 'Test-case' in other test-suites. If you
+          want to keep the other files also being updated after renaming such an element you have
+          to maintain the <a href="rootnode.html#att_RootStep_dependencies" shape="rect">'Dependencies'</a> attribute of the root node of the library
+          test-suite.
+        </p>
+        
+<p>
+          If you follow the approach described in section <a href="#sec_bpWork">section 33.4</a>, you should
+          ensure that level 0 contains a reverse include to level 1, level 1 should contain one to
+          level 2 and level 2 should contain another one to level 3. A sample from the provided
+          demo test-suites is shown in <a href="#fig_advBpIncludes">figure&nbsp;33.2</a>.
+        </p>
+      
+
+      
+
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="bp_howtostart.html#sec_bpHowToStart"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 32&nbsp;How to start a testing project" title="Previous Chapter: 32&nbsp;How to start a testing project"></a></td><td class="navicon"><a href="bp_effecientwork.html#sec_bpEffectiveWork"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 34&nbsp;Efficient working techniques" title="Next Page: 34&nbsp;Efficient working techniques"></a></td><td class="navicon"><a href="bp_effecientwork.html#sec_bpEffectiveWork"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 34&nbsp;Efficient working techniques" title="Next Chapter: 34&nbsp;Efficient working techniques"></a></td><td class="navicon"><a href="bp_bestpractices.html#sec_BestP"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: II&nbsp;Best Practices" title="Chapter Overview: II&nbsp;Best Practices"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

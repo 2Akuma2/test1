@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Weitere Merkmale</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_components_extrafeatures"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="usec_components_feature.html#usec_components_feature"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 5.4.3&nbsp;Merkmal" title="Vorheriges Kapitel: 5.4.3&nbsp;Merkmal"></a></td><td class="navicon"><a href="usec_components_index.html#usec_components_index"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 5.4.5&nbsp;Index" title="N&auml;chste Seite: 5.4.5&nbsp;Index"></a></td><td class="navicon"><a href="usec_components_index.html#usec_components_index"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 5.4.5&nbsp;Index" title="N&auml;chstes Kapitel: 5.4.5&nbsp;Index"></a></td><td class="navicon"><a href="user_component_recognition_criteria.html#usec_component_recognition_criteria"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 5.4&nbsp;Wiedererkennungskriterien" title="Kapitel-&Uuml;bersicht: 5.4&nbsp;Wiedererkennungskriterien"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_components_extrafeatures">5.4.4</a></span>
+</div>
+<a href="contents.html#toc_usec_components_extrafeatures">Weitere Merkmale</a>
+</h5>
+        
+<p>
+          In der Tabelle <a href="components.html#att_ComponentStep_extrafeatures" shape="rect">'Weitere Merkmale'</a> werden unterschiedliche
+          Informationen, die f&uuml;r die Wiedererkennung der Komponente n&uuml;tzlich
+          sein k&ouml;nnen, abgespeichert.
+          Unter dem Link zu <a href="components.html#att_ComponentStep_extrafeatures" shape="rect">'Weitere Merkmale'</a> finden Sie eine Aufstellung
+          der standardm&auml;&szlig;ig erzeugten Eintr&auml;ge. Sie k&ouml;nnen
+          aber auch eigene &uuml;ber einen <code>ExtraFeatureResolver</code>
+          (siehe <a href="tech_resolversmodule.html#sec_extrafeatureresolver">Abschnitt 50.1.10</a>) hinzuf&uuml;gen.
+        </p>
+        
+<p>
+          Einige der weiteren Merkmale werden prophylaktisch aufgezeichnet
+          und im Normalfall gar nicht f&uuml;r die Komponentenerkennung genutzt.
+          Dies betrifft haupts&auml;chlich Informationen zur Komponentenklasse, die QF-Test
+          f&uuml;r die Ableitung der <a href="usec_componentclass.html#usec_componentclassgeneric">Generische Klassen</a>
+          nutzt. Sie erhalten standardm&auml;&szlig;ig den Status 'Ignorieren'.
+          Dieser kann umgestellt werden, wenn in Spezialf&auml;llen der Originalwert
+          von Interesse ist.
+        </p>
+        
+<p>
+          Bei den 'Weiteren Merkmalen' ist <code>qfs:label</code> f&uuml;r die
+          Wiedererkennung interessant.
+        </p>
+
+        
+
+        
+<a name="usec_components_qfslabel"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_components_qfslabel">5.4.4.1</a></span>
+</div>
+<a href="contents.html#toc_usec_components_qfslabel">qfs:label</a>
+</h5>
+          
+<p>
+            Einfluss auf die Komponentenerkennung hat das weitere Merkmal
+            <code>qfs:label</code>. Bei der Komponentenanalyse wird je nach
+            generischer Klasse
+            eine Beschriftung zur Komponente gesucht und hier gespeichert. Bei einem
+            Button ist dies zun&auml;chst der eigene Text, an zweiter Stelle ein
+            programmatisch zugeordnetes Label. Die n&auml;chste Wahl ist eine Komponente
+            mit der Klasse <code>Label</code> in der N&auml;he, dann der Tooltip,
+            dann die Icon-Beschreibung. Die genaue Auswahl h&auml;ngt von der
+            generischen Klasse der Komponente ab und kann in
+            <a href="tech_genericclasses.html#sec_genericclasses">Generische Klassen</a> nachgelesen werden.
+          </p>
+          
+<p>
+            Der Einfluss des weiteren Merkmals <code>qfs:label</code> auf die 'QF-Test ID' der
+            Komponente ist in <a href="tech_qftestid.html#sec_qftestid_creation">Generierung der 'QF-Test ID' der Komponente</a> beschrieben.
+          </p>
+          
+<p>
+            Komponenten k&ouml;nnen in einer <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a> auch direkt
+            &uuml;ber das <code>qfs:label</code> adressiert werden, ohne Aufnahme eines
+            <a href="user_componentstep.html#usec_componentstep">'Komponente' Knoten</a>.
+          </p>
+        
+
+        
+        
+
+        
+<a name="usec_components_qfstext"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_components_qfstext">5.4.4.2</a></span>
+</div>
+<a href="contents.html#toc_usec_components_qfstext">qfs:text</a>
+</h5>
+          
+<p>
+            
+<code>qfs:text</code> enth&auml;lt den Textinhalt der Komponente.
+              Dies dient als Zusatzinformation f&uuml;r Textfelder oder PDF-Komponenten,
+              die seit QF-Test Version 5.3 ohne zus&auml;tzlichen Resolver
+              f&uuml;r die Komponentenerkennung genutzt werden kann.
+          </p>
+        
+
+        
+
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="usec_components_feature.html#usec_components_feature"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 5.4.3&nbsp;Merkmal" title="Vorheriges Kapitel: 5.4.3&nbsp;Merkmal"></a></td><td class="navicon"><a href="usec_components_index.html#usec_components_index"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 5.4.5&nbsp;Index" title="N&auml;chste Seite: 5.4.5&nbsp;Index"></a></td><td class="navicon"><a href="usec_components_index.html#usec_components_index"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 5.4.5&nbsp;Index" title="N&auml;chstes Kapitel: 5.4.5&nbsp;Index"></a></td><td class="navicon"><a href="user_component_recognition_criteria.html#usec_component_recognition_criteria"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 5.4&nbsp;Wiedererkennungskriterien" title="Kapitel-&Uuml;bersicht: 5.4&nbsp;Wiedererkennungskriterien"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

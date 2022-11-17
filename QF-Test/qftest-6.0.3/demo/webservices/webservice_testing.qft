@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="root"
+          signature="302D02142C0F13C6C39AF57B5F6231436288990F75DBCAD5021500832AF5F886C3919FBD12394BFEDE7E2A6173DA2D"
+          version="6.0.3">
+  <include>qfs.qft</include>
+  <comment>Demo test-suite for the web-services testing feature
+
+The suite uses the free echo service kindly hosted on https://httpbin.org.
+
+@author QFS
+@since 4.3.0</comment>
+  <TestCase id="_2" name="Verify GET - Text">
+    <SetupSequence id="_1jvV" name="Set Variables">
+      <SetGlobalStep id="_1jv5" varname="url">
+        <default>http://httpbin.org/base64/aGVsbG8gd29ybGQNCg%3D%3D</default>
+      </SetGlobalStep>
+      <SetGlobalStep id="_Q" varname="expectedCode">
+        <default>200</default>
+      </SetGlobalStep>
+      <SetGlobalStep id="_S" varname="expectedBody">
+        <default>hello world
+</default>
+      </SetGlobalStep>
+    </SetupSequence>
+    <RequestStep id="_N" logresponse="true" requestmethod="GET"
+                 responseheaders="responseHeaders" responsevar="responseBody"
+                 statuscodevar="responseCode" url="$(url)">
+      <headers header="Accept">application/json</headers>
+    </RequestStep>
+    <ProcedureCall id="_1jwC" procedure="checkReponseCode">
+      <variable name="got">$(responseCode)</variable>
+      <variable name="expected">$(expectedCode)</variable>
+      <variable name="compareMode">=</variable>
+    </ProcedureCall>
+    <ProcedureCall id="_1jv4" procedure="checkResponseBodyAsText">
+      <variable name="expectedBody">$(expectedBody)</variable>
+      <variable name="responseBody">$(responseBody)</variable>
+      <variable name="checkMessage">HTTP response for $(url) failed!</variable>
+      <variable name="errorLevel">ERROR</variable>
+      <variable name="appearInReport">1</variable>
+      <comment>
+</comment>
+    </ProcedureCall>
+    <ProcedureCall id="_1jvM" procedure="checkHttpResponseHeader">
+      <variable name="responseHeaders">$(responseHeaders)</variable>
+      <variable name="expectedHeaderName">Server</variable>
+      <variable name="expectedHeaderValue">gunicorn/.*</variable>
+      <variable name="regexp">true</variable>
+      <variable name="checkMessage"/>
+      <variable name="errorLevel">ERROR</variable>
+      <variable name="appearInReport">1</variable>
+    </ProcedureCall>
+    <ProcedureCall id="_1jvN" procedure="checkHttpResponseHeader">
+      <variable name="responseHeaders">$(responseHeaders)</variable>
+      <variable name="expectedHeaderName">Content-Type</variable>
+      <variable name="expectedHeaderValue">text/html; charset=utf-8</variable>
+      <variable name="checkMessage"/>
+      <variable name="errorLevel">ERROR</variable>
+      <variable name="appearInReport">1</variable>
+    </ProcedureCall>
+    <CleanupSequence id="_1jvW" name="Reset Variables">
+      <ProcedureCall id="_1jvX"
+                     procedure="qfs.utils.variables.deleteAllGlobalVariables"/>
+    </CleanupSequence>
+  </TestCase>
+  <TestCase id="_1jvY" name="URL Parameters - JSON">
+    <SetupSequence id="_1jvZ" name="Set Variables">
+      <SetGlobalStep id="_1jva" varname="url">
+        <default>http://httpbin.org/get</default>
+      </SetGlobalStep>
+      <SetGlobalStep id="_1jvb" varname="expectedCode">
+        <default>200</default>
+      </SetGlobalStep>
+      <SetGlobalStep id="_1jvc" varname="expectedBody">
+        <default>{
+  "args": {
+    "code": "200", 
+    "delay": "300", 
+    "duration": "300", 
+    "numbytes": "10"
+  }, 
+  "headers": {
+    "Accept": "application/json", 
+    "Host": "httpbin.org", 
+    "User-Agent": "Java/1.8.0_74"
+  }, 
+  "origin": "95.90.102.58", 
+  "url": "http://httpbin.org/get?numbytes=10&amp;duration=300&amp;delay=300&amp;code=200"
+}
+</default>
+      </SetGlobalStep>
+    </SetupSequence>
+    <RequestStep id="_1jvd" logresponse="true" requestmethod="GET"
+                 responseheaders="responseHeaders" responsevar="responseBody"
+                 statuscodevar="responseCode" url="$(url)">
+      <variable name="numbytes">10</variable>
+      <variable name="duration">300</variable>
+      <variable name="delay">300</variable>
+      <variable name="code">200</variable>
+      <headers header="Accept">application/json</headers>
+    </RequestStep>
+    <ProcedureCall id="_1jwA" procedure="checkReponseCode">
+      <variable name="got">$(responseCode)</variable>
+      <variable name="expected">$(expectedCode)</variable>
+      <variable name="compareMode">=</variable>
+    </ProcedureCall>
+    <ProcedureCall id="_1jwb" procedure="checkResponseAsJSON">
+      <variable name="expectedBody">$(expectedBody)</variable>
+      <variable name="responseBody">$(responseBody)</variable>
+      <variable name="checkMessage">HTTP response for $(url) failed!</variable>
+      <variable name="errorLevel">ERROR</variable>
+      <variable name="appearInReport">1</variable>
+    </ProcedureCall>
+    <ProcedureCall id="_1jvf" procedure="checkHttpResponseHeader">
+      <variable name="responseHeaders">$(responseHeaders)</variable>
+      <variable name="expectedHeaderName">Server</variable>
+      <variable name="expectedHeaderValue">gunicorn/.*</variable>
+      <variable name="regexp">true</variable>
+      <variable name="checkMessage"/>
+      <variable name="errorLevel">ERROR</variable>
+      <variable name="appearInReport">1</variable>
+    </ProcedureCall>
+    <ProcedureCall id="_1jvg" procedure="checkHttpResponseHeader">
+      <variable name="responseHeaders">$(responseHeaders)</variable>
+      <variable name="expectedHeaderName">Content-Type</variable>
+      <variable name="expectedHeaderValue">application/json</variable>
+      <variable name="checkMessage"/>
+      <variable name="errorLevel">ERROR</variable>
+      <variable name="appearInReport">1</variable>
+    </ProcedureCall>
+    <CleanupSequence id="_1jvh" name="Reset Variables">
+      <ProcedureCall id="_1jvi"
+                     procedure="qfs.utils.variables.deleteAllGlobalVariables"/>
+    </CleanupSequence>
+  </TestCase>
+  <TestCase id="_1jvj" name="POST with Payload - JSON">
+    <SetupSequence id="_1jvk" name="Set Variables">
+      <SetGlobalStep id="_1jvl" varname="url">
+        <default>http://httpbin.org/post</default>
+      </SetGlobalStep>
+      <SetGlobalStep id="_1jvm" varname="expectedCode">
+        <default>200</default>
+      </SetGlobalStep>
+      <SetGlobalStep id="_1jvn" varname="expectedBody">
+        <default>{
+  "args": {}, 
+  "data": "{\"menu\": {\n  \"id\": \"file\",\n  \"value\": \"File\",\n  \"popup\": {\n    \"menuitem\": [\n      {\"value\": \"New\", \"onclick\": \"CreateNewDoc()\"},\n      {\"value\": \"Open\", \"onclick\": \"OpenDoc()\"},\n      {\"value\": \"Close\", \"onclick\": \"CloseDoc()\"}\n    ]\n  }\n}}", 
+  "files": {}, 
+  "form": {}, 
+  "headers": {
+    "Accept": "application/json", 
+    "Content-Type": "application/json", 
+    "Host": "httpbin.org"
+  }, 
+  "json": {
+    "menu": {
+      "id": "file", 
+      "popup": {
+        "menuitem": [
+          {
+            "onclick": "CreateNewDoc()", 
+            "value": "New"
+          }, 
+          {
+            "onclick": "OpenDoc()", 
+            "value": "Open"
+          }, 
+          {
+            "onclick": "CloseDoc()", 
+            "value": "Close"
+          }
+        ]
+      }, 
+      "value": "File"
+    }
+  }, 
+  "url": "http://httpbin.org/post"
+}
+</default>
+      </SetGlobalStep>
+    </SetupSequence>
+    <RequestStep id="_1jvo" logresponse="true"
+                 payload="{&#34;menu&#34;: {&#10;  &#34;id&#34;: &#34;file&#34;,&#10;  &#34;value&#34;: &#34;File&#34;,&#10;  &#34;popup&#34;: {&#10;    &#34;menuitem&#34;: [&#10;      {&#34;value&#34;: &#34;New&#34;, &#34;onclick&#34;: &#34;CreateNewDoc()&#34;},&#10;      {&#34;value&#34;: &#34;Open&#34;, &#34;onclick&#34;: &#34;OpenDoc()&#34;},&#10;      {&#34;value&#34;: &#34;Close&#34;, &#34;onclick&#34;: &#34;CloseDoc()&#34;}&#10;    ]&#10;  }&#10;}}"
+                 requestmethod="POST" responseheaders="responseHeaders"
+                 responsevar="responseBody" statuscodevar="responseCode"
+                 url="$(url)">
+      <headers header="Accept">application/json</headers>
+      <headers header="Content-Type">application/json</headers>
+    </RequestStep>
+    <ProcedureCall id="_1jw9" procedure="checkReponseCode">
+      <variable name="got">$(responseCode)</variable>
+      <variable name="expected">$(expectedCode)</variable>
+      <variable name="compareMode">=</variable>
+    </ProcedureCall>
+    <ProcedureCall id="_1jwY" procedure="checkResponseAsJSON">
+      <variable name="expectedBody">$(expectedBody)</variable>
+      <variable name="responseBody">$(responseBody)</variable>
+      <variable name="checkMessage">HTTP response for $(url) failed!</variable>
+      <variable name="errorLevel">ERROR</variable>
+      <variable name="appearInReport">1</variable>
+    </ProcedureCall>
+    <ProcedureCall id="_1jvq" procedure="checkHttpResponseHeader">
+      <variable name="responseHeaders">$(responseHeaders)</variable>
+      <variable name="expectedHeaderName">Server</variable>
+      <variable name="expectedHeaderValue">gunicorn/.*</variable>
+      <variable name="regexp">true</variable>
+      <variable name="checkMessage"/>
+      <variable name="errorLevel">ERROR</variable>
+      <variable name="appearInReport">1</variable>
+    </ProcedureCall>
+    <ProcedureCall id="_1jvr" procedure="checkHttpResponseHeader">
+      <variable name="responseHeaders">$(responseHeaders)</variable>
+      <variable name="expectedHeaderName">Content-Type</variable>
+      <variable name="expectedHeaderValue">application/json</variable>
+      <variable name="checkMessage"/>
+      <variable name="errorLevel">ERROR</variable>
+      <variable name="appearInReport">1</variable>
+    </ProcedureCall>
+    <CleanupSequence id="_1jvs" name="Reset Variables">
+      <ProcedureCall id="_1jvt"
+                     procedure="qfs.utils.variables.deleteAllGlobalVariables"/>
+    </CleanupSequence>
+  </TestCase>
+  <TestCase id="_1jvu" name="HTML form that submits to /post - JSON">
+    <SetupSequence id="_1jvv" name="Set Variables">
+      <SetGlobalStep id="_1jvw" varname="url">
+        <default>http://httpbin.org/post</default>
+      </SetGlobalStep>
+      <SetGlobalStep id="_1jvx" varname="expectedCode">
+        <default>200</default>
+      </SetGlobalStep>
+      <SetGlobalStep id="_1jvy" varname="expectedBody">
+        <default>{
+  "args": {}, 
+  "data": "{\"menu\": {\n  \"id\": \"file\",\n  \"value\": \"File\",\n  \"popup\": {\n    \"menuitem\": [\n      {\"value\": \"New\", \"onclick\": \"CreateNewDoc()\"},\n      {\"value\": \"Open\", \"onclick\": \"OpenDoc()\"},\n      {\"value\": \"Close\", \"onclick\": \"CloseDoc()\"}\n    ]\n  }\n}}", 
+  "files": {}, 
+  "form": {}, 
+  "headers": {
+    "Accept": "application/json", 
+    "Content-Length": "241", 
+    "Content-Type": "application/json", 
+    "Host": "httpbin.org", 
+    "User-Agent": "Java/1.8.0_74"
+  }, 
+  "json": {
+    "menu": {
+      "id": "file", 
+      "popup": {
+        "menuitem": [
+          {
+            "onclick": "CreateNewDoc()", 
+            "value": "New"
+          }, 
+          {
+            "onclick": "OpenDoc()", 
+            "value": "Open"
+          }, 
+          {
+            "onclick": "CloseDoc()", 
+            "value": "Close"
+          }
+        ]
+      }, 
+      "value": "File"
+    }
+  }, 
+  "origin": "95.90.102.58", 
+  "url": "http://httpbin.org/post"
+}
+</default>
+      </SetGlobalStep>
+    </SetupSequence>
+    <RequestStep id="_1jvz" logresponse="true"
+                 payload="{&#34;menu&#34;: {&#10;  &#34;id&#34;: &#34;file&#34;,&#10;  &#34;value&#34;: &#34;File&#34;,&#10;  &#34;popup&#34;: {&#10;    &#34;menuitem&#34;: [&#10;      {&#34;value&#34;: &#34;New&#34;, &#34;onclick&#34;: &#34;CreateNewDoc()&#34;},&#10;      {&#34;value&#34;: &#34;Open&#34;, &#34;onclick&#34;: &#34;OpenDoc()&#34;},&#10;      {&#34;value&#34;: &#34;Close&#34;, &#34;onclick&#34;: &#34;CloseDoc()&#34;}&#10;    ]&#10;  }&#10;}}"
+                 requestmethod="POST" responseheaders="responseHeaders"
+                 responsevar="responseBody" statuscodevar="responseCode"
+                 url="$(url)">
+      <variable name="topping">bacon</variable>
+      <variable name="size">medium</variable>
+      <variable name="delivery">11:00</variable>
+      <variable name="custtel">+4915423234897</variable>
+      <variable name="custname">Billy</variable>
+      <variable name="custemail">my_acc@gmail.com</variable>
+      <variable name="comments">Fast!</variable>
+      <headers header="Accept">application/json</headers>
+      <headers header="origin">1.1.1.1</headers>
+      <headers header="Content-Type">application/json</headers>
+    </RequestStep>
+    <ProcedureCall id="_1jwB" procedure="checkReponseCode">
+      <variable name="got">$(responseCode)</variable>
+      <variable name="expected">$(expectedCode)</variable>
+      <variable name="compareMode">=</variable>
+    </ProcedureCall>
+    <ProcedureCall id="_1jwa" procedure="checkResponseAsJSON">
+      <variable name="expectedBody">$(expectedBody)</variable>
+      <variable name="responseBody">$(responseBody)</variable>
+      <variable name="checkMessage">HTTP response for $(url) failed!</variable>
+      <variable name="errorLevel">ERROR</variable>
+      <variable name="appearInReport">1</variable>
+    </ProcedureCall>
+    <ProcedureCall id="_1jv-" procedure="checkHttpResponseHeader">
+      <variable name="responseHeaders">$(responseHeaders)</variable>
+      <variable name="expectedHeaderName">Server</variable>
+      <variable name="expectedHeaderValue">gunicorn/.*</variable>
+      <variable name="regexp">true</variable>
+      <variable name="checkMessage"/>
+      <variable name="errorLevel">ERROR</variable>
+      <variable name="appearInReport">1</variable>
+    </ProcedureCall>
+    <ProcedureCall id="_1jw0" procedure="checkHttpResponseHeader">
+      <variable name="responseHeaders">$(responseHeaders)</variable>
+      <variable name="expectedHeaderName">Content-Type</variable>
+      <variable name="expectedHeaderValue">application/json</variable>
+      <variable name="checkMessage"/>
+      <variable name="errorLevel">ERROR</variable>
+      <variable name="appearInReport">1</variable>
+    </ProcedureCall>
+    <ProcedureCall id="_1jwD" procedure="getHeaderValue">
+      <variable name="headers">$(responseHeaders)</variable>
+      <variable name="headerName">Server</variable>
+    </ProcedureCall>
+    <CleanupSequence id="_1jw1" name="Reset Variables">
+      <ProcedureCall id="_1jw2"
+                     procedure="qfs.utils.variables.deleteAllGlobalVariables"/>
+    </CleanupSequence>
+  </TestCase>
+  <TestCase id="_1jwr" name="SOAP">
+    <comment>Followed the guides from 
+http://blog.getpostman.com/2014/08/22/making-soap-requests-using-postman/</comment>
+    <RequestStep id="_1jws" logresponse="true"
+                 payload="&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;&#10;&lt;SOAP-ENV:Envelope xmlns:SOAP-ENV=&#34;http://schemas.xmlsoap.org/soap/envelope/&#34; xmlns:ns1=&#34;http://tempuri.org&#34;&gt;&#10;  &lt;SOAP-ENV:Body&gt;&#10;    &lt;ns1:AddInteger&gt;&#10;      &lt;ns1:Arg1&gt;23&lt;/ns1:Arg1&gt;&#10;      &lt;ns1:Arg2&gt;19&lt;/ns1:Arg2&gt;&#10;    &lt;/ns1:AddInteger&gt;&#10;  &lt;/SOAP-ENV:Body&gt;&#10;&lt;/SOAP-ENV:Envelope&gt;&#10;"
+                 requestmethod="POST" responseheaders="responseHeaders"
+                 responsevar="responseBody" statuscodevar="responseCode"
+                 url="https://www.crcind.com/csp/samples/SOAP.Demo.CLS">
+      <headers header="Content-Type">text/xml</headers>
+      <headers header="SOAPAction">""</headers>
+    </RequestStep>
+    <ServerScriptStep id="_2JFD" name="Print response">
+      <code>import xml.dom.minidom
+
+responseBody = rc.lookup("responseBody").encode('utf-8')
+
+dom = xml.dom.minidom.parseString(responseBody)
+print dom.toprettyxml()</code>
+    </ServerScriptStep>
+  </TestCase>
+  <TestCase id="_1jwc" name="How to set Proxy">
+    <variable name="proxyHost">localhost</variable>
+    <variable name="proxyPort">6789</variable>
+    <ServerScriptStep id="_6Kn" interpreter="groovy"
+                      name="Set HTTP(S) Proxy JAVA Variables">
+      <code>//HTTPS
+System.setProperty("https.proxyHost", rc.lookup("proxyHost"));
+System.setProperty("https.proxyPort", rc.lookup("proxyPort"));
+
+//HTTP
+System.setProperty("http.proxyHost", rc.lookup("proxyHost"));
+System.setProperty("http.proxyPort", rc.lookup("proxyPort"));
+
+</code>
+    </ServerScriptStep>
+    <RequestStep id="_1jwp" logresponse="true" requestmethod="POST"
+                 responseheaders="responseHeaders" responsevar="responseBody"
+                 statuscodevar="responseCode" url="https://httpbin.org/post">
+      <headers header="Accept">application/json</headers>
+    </RequestStep>
+    <ServerScriptStep id="_6L4" interpreter="groovy"
+                      name="Unset HTTP(S)  Proxy JAVA Variables">
+      <code>// System.clearProperty("http.proxyHost");
+// System.clearProperty("http.proxyPort");
+System.clearProperty("https.proxyHost");
+System.clearProperty("https.proxyPort");
+</code>
+    </ServerScriptStep>
+  </TestCase>
+  <TestCase expectedfail="true" id="_1jwt" name="Download File">
+    <variable name="proxyHost">localhost</variable>
+    <variable name="proxyPort">6789</variable>
+    <Dependency forcedcleanup="true" id="_2JFB" name="Work in tempfolder">
+      <SetupSequence id="_2JF8" name="Get tempfolder">
+        <ServerScriptStep id="_2JF9" name="Set tempfolder">
+          <code>import tempfile
+
+tempfolder = tempfile.mkdtemp()
+
+rc.setLocal("tempfolder",tempfolder)</code>
+        </ServerScriptStep>
+      </SetupSequence>
+      <CleanupSequence id="_2JFA" name="Remove tempfolder">
+        <ProcedureCall id="_2JFC" procedure="qfs.shellutils.removeDirectory">
+          <variable name="directory">$(tempfolder)</variable>
+        </ProcedureCall>
+      </CleanupSequence>
+    </Dependency>
+    <TryStep id="_2JFE">
+      <ServerScriptStep id="_2JFG"
+                        name="Limit log variable length - for demonstration purposes">
+        <code># the default of the option is 100 kb
+rc.setOption(Options.OPT_MAX_HTTPRESP_BODY_VARIABLE_SIZE,100)</code>
+      </ServerScriptStep>
+      <RequestStep id="_1jwv" logresponse="true" requestmethod="POST"
+                   responsefile="$(tempfolder)"
+                   responseheaders="responseHeaders"
+                   responsevar="responseBody" statuscodevar="responseCode"
+                   url="https://archive.qfs.de/qftest/manual/icons/qftest.png">
+        <headers header="Accept">application/json</headers>
+      </RequestStep>
+      <ServerScriptStep id="_2JFK" name="Log downloaded file">
+        <code>import imagewrapper
+
+iw = imagewrapper.ImageWrapper(rc)
+
+tempfolder = rc.lookup("tempfolder")
+ir = iw.loadPng("%s/qftest.png" % tempfolder)
+rc.logImage(ir, title="Downloaded File")</code>
+      </ServerScriptStep>
+      <FinallySequence id="_2JFH">
+        <ServerScriptStep id="_2JFI" name="Unset limit">
+          <code>rc.unsetOption(Options.OPT_MAX_HTTPRESP_BODY_VARIABLE_SIZE)</code>
+        </ServerScriptStep>
+      </FinallySequence>
+    </TryStep>
+  </TestCase>
+  <PackageRoot id="_3">
+    <Procedure id="_1jw8" name="checkReponseCode">
+      <variable name="expected">200</variable>
+      <variable name="got"/>
+      <variable name="compareMode">=</variable>
+      <variable name="checkMessage"/>
+      <variable name="errorLevel">ERROR</variable>
+      <variable name="appearInReport">1</variable>
+      <comment>Check the response code.
+More about response codes: https://tools.ietf.org/html/rfc7231.
+
+@param expected	the expected number
+@param got 		variable assigned to the HTTP Status Code
+
+@return	nothing, or the difference of the verified
+
+@param	checkMessage		The message, which should be written into the run-log for that check.
+@param 	errorLevel   		The kind of error, which should be logged. Either EXCEPTION, ERROR, WARNING or MESSAGE.
+@param 	appearInReport   	Flag, whether to show check in report, if a message or warning are set as errorLevel.
+
+@author	QFS, pv
+</comment>
+      <ProcedureCall id="_X" procedure="qfs.check.compareTwoNumbers">
+        <variable name="got">$(responseCode)</variable>
+        <variable name="expected">$(expectedCode)</variable>
+        <variable name="compareMode">=</variable>
+        <variable name="checkMessage">$(checkMessage)</variable>
+        <variable name="errorLevel">$(errorLevel)</variable>
+        <variable name="appearInReport">$(appearInReport)</variable>
+      </ProcedureCall>
+    </Procedure>
+    <Procedure id="_W" name="checkResponseBodyAsText">
+      <variable name="responseBody"/>
+      <variable name="expectedBody"/>
+      <variable name="checkMessage"/>
+      <variable name="errorLevel">ERROR</variable>
+      <variable name="appearInReport">1</variable>
+      <comment>Check response body. Be carefull, white spaces are also taken into account.
+
+@param responseBody
+@param expectedBody
+
+@return	nothing, or the difference of the verified
+
+@param	checkMessage		The message, which should be written into the run-log for that check.
+@param 	errorLevel   		The kind of error, which should be logged. Either EXCEPTION, ERROR, WARNING or MESSAGE.
+@param 	appearInReport   	Flag, whether to show check in report, if a message or warning are set as errorLevel.
+
+@author	QFS, pv
+</comment>
+      <ProcedureCall id="_1jvD" procedure="helper._compareBodyWithDiff">
+        <variable name="got">$(responseBody)</variable>
+        <variable name="expected">$(expectedBody)</variable>
+        <variable name="checkMessage">$(checkMessage)</variable>
+        <variable name="errorLevel">$(errorLevel)</variable>
+        <variable name="appearInReport">$(appearInReport)</variable>
+      </ProcedureCall>
+    </Procedure>
+    <Procedure id="_1jwV" name="checkResponseAsJSON">
+      <variable name="responseBody"/>
+      <variable name="expectedBody"/>
+      <variable name="checkMessage"/>
+      <variable name="errorLevel">ERROR</variable>
+      <variable name="appearInReport">1</variable>
+      <comment>Check response body as a JSON String.
+
+@param responseBody
+@param expectedBody
+
+@return	nothing, or the difference of the verified
+
+@param	checkMessage		The message, which should be written into the run-log for that check.
+@param 	errorLevel   		The kind of error, which should be logged. Either EXCEPTION, ERROR, WARNING or MESSAGE.
+@param 	appearInReport   	Flag, whether to show check in report, if a message or warning are set as errorLevel.
+
+@author	QFS, pv
+</comment>
+      <ServerScriptStep id="_1jwX"
+                        name="Compare JSON. Ignore the following entries &#34;User-Agent&#34;,&#34;origin&#34;,&#34;Content-Length&#34;">
+        <code>def findDiff(d1, d2, ignore_keys, path=""):
+    for k in d1.keys():
+        if k in ignore_keys:
+            continue
+        if not d2.has_key(k):
+            print 'Path to JSON object -&gt; {1}: \n Missing JSON object "{0}" in received JSON'.format(k, path)
+            rc.logError('Path to JSON object -&gt; {1}: \n Missing JSON object "{0}" in received JSON'.format(k, path))
+        else:
+            if type(d1[k]) is dict:
+                if path == "":
+                    path = k
+                else:
+                    path = path + "-&gt;" + k
+                findDiff(d1[k],d2[k], ignore_keys, path)
+            else:
+                if d1[k] != d2[k]:
+                    print 'Path to JSON object -&gt; {3}: \n  for key "{0}" expected "{1}" \n  got "{2}"'.format(k,d1[k],d2[k], path)
+                    rc.logError('Path to JSON object -&gt; {3}: \n  for key "{0}" expected "{1}" \n  got "{2}"'.format(k,d1[k],d2[k], path))
+                    
+
+import json
+got = rc.getStr("responseBody")
+expected = rc.getStr("expectedBody")
+if got != expected:
+    gotJSON = ""
+    expectedJSON = ""
+    try:
+        gotJSON = json.loads(got)        
+    except ValueError:
+        #not a valid JSON
+        rc.logError("The received data not a valid JSON")
+    try:        
+        expectedJSON = json.loads(expected)
+    except ValueError:
+        #not a valid JSON
+        rc.logError("The expected data is not a valid JSON")
+    findDiff(expectedJSON, gotJSON, ignore_keys = {"User-Agent","origin","Content-Length"}, path="")
+else:
+    print "no diff"
+</code>
+      </ServerScriptStep>
+    </Procedure>
+    <Procedure id="_1jv8" name="checkHttpResponseHeader">
+      <variable name="responseHeaders"/>
+      <variable name="expectedHeaderName"/>
+      <variable name="expectedHeaderValue"/>
+      <variable name="regexp">false</variable>
+      <variable name="checkMessage">FAILED</variable>
+      <variable name="errorLevel">ERROR</variable>
+      <variable name="appearInReport">1</variable>
+      <comment>Check one header at a time. 
+
+@param responseHeaders 		The 'HTTP Headers' variable from the 'Server HTTP request'.
+@param expectedHeaderName		The expected response header name.
+@param expectedHeaderValue	The expected response header value.
+@param regexp		If the expected header value is given as a regular expression
+@param	checkMessage		The message, which should be written into the run-log for that check.
+@param 	errorLevel   		The kind of error, which should be logged. Either EXCEPTION, ERROR, WARNING or MESSAGE.
+@param 	appearInReport   	Flag, whether to show check in report, if a message or warning are set as errorLevel.
+
+@author	QFS, pv</comment>
+      <ServerScriptStep id="_1jvB">
+        <code>import re
+
+headers = rc.getStr("responseHeaders")
+expectedName = rc.getStr("expectedHeaderName")
+expectedValue = rc.getStr("expectedHeaderValue")
+regexp = rc.getBool("regexp")
+
+if not (headers or expectedName or expectedValue):
+    rc.logError("Provide all parameters!")
+
+if expectedName in headers:
+    ### If this splitting yields unexpected results, tweak it to fit your headers characters
+    value = headers.split(expectedName+"=[",1)[1].split("], ")[0].rstrip(']]')
+    if regexp:
+        pattern = re.compile(expectedValue)
+        if not pattern.match(value):
+            rc.logError("Failed! Header {} does not match {}, GOT {}".format(expectedName, expectedValue, value))
+    else:
+        if value != expectedValue:  
+            rc.logError("Failed! Header {} Expected {}, GOT {}".format(expectedName, expectedValue, value))
+else:
+    rc.logError("Failed! Header {} not found".format(expectedName))
+</code>
+      </ServerScriptStep>
+    </Procedure>
+    <Procedure id="_1jw3" name="getHeaderValue">
+      <variable name="headers"/>
+      <variable name="headerName"/>
+      <comment>Get  one header value based on header name
+
+@param headers 		The 'HTTP Headers' variable from the 'Server HTTP request'.
+@param headerName		The header name to look for
+
+@return 
+
+@param	checkMessage		The message, which should be written into the run-log for that check.
+@param 	errorLevel   		The kind of error, which should be logged. Either EXCEPTION, ERROR, WARNING or MESSAGE.
+@param 	appearInReport   	Flag, whether to show check in report, if a message or warning are set as errorLevel.
+
+@author	QFS, pv</comment>
+      <ServerScriptStep id="_1jw6">
+        <code>headers= rc.getStr("headers")
+name = rc.getStr("headerName")
+
+if name in headers:
+    ### If this splitting yields unexpected results, tweak it to fit your headers characters
+    value = headers.split(name+"=[",1)[1].split("], ")[0].rstrip(']]')
+    rc.setGlobal('result', value)    </code>
+      </ServerScriptStep>
+      <ReturnStep id="_1jw5" retval="$(result)"/>
+    </Procedure>
+    <Package id="_1jvO" name="helper">
+      <Procedure id="_1ju-" name="_compareBodyWithDiff">
+        <variable name="got"/>
+        <variable name="expected"/>
+        <variable name="checkMessage"/>
+        <variable name="errorLevel">ERROR</variable>
+        <variable name="appearInReport">1</variable>
+        <ServerScriptStep id="_1jv0" name="perform check">
+          <code>import difflib
+
+if not rc.getStr('expected'):
+    rc.logError("Failed!  Missing expected")
+elif not rc.getStr('got'):
+    rc.logError("Failed!  Missing got")
+else:
+    differ = difflib.unified_diff(rc.getStr('expected').splitlines(), rc.getStr('got').splitlines())
+    diff_value = ''.join(differ)
+    if diff_value:
+        rc.logError("Failed!  '{}'".format(diff_value)) 
+</code>
+        </ServerScriptStep>
+      </Procedure>
+    </Package>
+  </PackageRoot>
+  <ExtraSequence id="_4"/>
+  <WindowList id="_5"/>
+</RootStep>

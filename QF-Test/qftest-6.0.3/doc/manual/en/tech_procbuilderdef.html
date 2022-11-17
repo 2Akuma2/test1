@@ -1,0 +1,868 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>The Procedure Builder definition file</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_pbProcbuilderdef"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_daemon.html#sec_daemon"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 51&nbsp;Daemon mode" title="Previous Chapter: 51&nbsp;Daemon mode"></a></td><td class="navicon"><a href="tech_manualstep.html#sec_mtAPI"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 53&nbsp;The ManualStepDialog" title="Next Page: 53&nbsp;The ManualStepDialog"></a></td><td class="navicon"><a href="tech_manualstep.html#sec_mtAPI"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 53&nbsp;The ManualStepDialog" title="Next Chapter: 53&nbsp;The ManualStepDialog"></a></td><td class="navicon"><a href="technical.html#sec_technical"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: IV&nbsp;Technical reference" title="Chapter Overview: IV&nbsp;Technical reference"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_pbProcbuilderdef">52</a></span>
+</div>
+<a href="contents.html#toc_sec_pbProcbuilderdef">The Procedure Builder definition file</a>
+</h3>
+
+      For general information about the Procedure Builder, please see chapter
+      <a href="user_procbuilder.html#usec_procbuilder">chapter 24</a>.
+
+      
+
+      <a name="sec_pbProcbuilderdefVar"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_pbProcbuilderdefVar">52.1</a></span>
+</div>
+<a href="contents.html#toc_sec_pbProcbuilderdefVar">Placeholders</a>
+</h4>
+	
+<p>
+	  In the definition of procedures, packages and even in the nodes of the procedures, you can use placeholders.
+	  The following table shows all placeholders and their meaning:
+	</p>
+        
+<a name="table_52.1"></a><a name="table_52.1"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth" valign="center">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Placeholder</th>
+            <th rowspan="1" colspan="1">Description</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;COMPID&gt;</td>
+            <td rowspan="1" colspan="1">
+              The QF-Test ID of the component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;COMPNAME&gt;</td>
+            <td rowspan="1" colspan="1">
+              The name of the component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;COMPFEATURE&gt;</td>
+            <td rowspan="1" colspan="1">
+              The feature of the component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;COMPCLASS&gt;</td>
+            <td rowspan="1" colspan="1">
+              The recorded class of the component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;COMPTKCLASS&gt;</td>
+            <td rowspan="1" colspan="1">
+              The toolkit specific class of the component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;COMPSYSCLASS&gt;</td>
+            <td rowspan="1" colspan="1">
+              The system class of the component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;COMPGENCLASS&gt;</td>
+            <td rowspan="1" colspan="1">
+              The generic class of the component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;COMPEF-name-of-extra-feature&gt;</td>
+            <td rowspan="1" colspan="1">
+              The value of the given extra feature
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;CURRENTVALUE&gt;</td>
+            <td rowspan="1" colspan="1">
+              The current value of the component, e.g. the text of a text-field or the current selection of a combo-box etc.
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;CURRENTENABLEDSTATE&gt;</td>
+            <td rowspan="1" colspan="1">
+              The current enabled state of the component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;CURRENTSELECTEDSTATE&gt;</td>
+            <td rowspan="1" colspan="1">
+              The current selectable state of the component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;CURRENTEDITABLESTATE&gt;</td>
+            <td rowspan="1" colspan="1">
+              The current editable state of the component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;PCOMPID&gt;</td>
+            <td rowspan="1" colspan="1">
+              The QF-Test ID of the parent component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;PCOMPNAME&gt;</td>
+            <td rowspan="1" colspan="1">
+              The name of the parent component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;PCOMPFEATURE&gt;</td>
+            <td rowspan="1" colspan="1">
+              The feature of the parent component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;PCOMPCLASS&gt;</td>
+            <td rowspan="1" colspan="1">
+              The class of the parent component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;PCOMPEF-name-of-extrafeature&gt;</td>
+            <td rowspan="1" colspan="1">
+              The value of the given extra feature of the parent component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;GPCOMPID&gt;</td>
+            <td rowspan="1" colspan="1">
+              The QF-Test ID of the grandparent component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;GPCOMPNAME&gt;</td>
+            <td rowspan="1" colspan="1">
+              The name of the grandparent component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;GPCOMPFEATURE&gt;</td>
+            <td rowspan="1" colspan="1">
+              The feature of the grandparent component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;GPCOMPCLASS&gt;</td>
+            <td rowspan="1" colspan="1">
+              The class of the grandparent component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;GPCOMPEF-name-of-extrafeature&gt;</td>
+            <td rowspan="1" colspan="1">
+              The value of the given extra feature of the grandparent component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;ENGINE&gt;</td>
+            <td rowspan="1" colspan="1">
+              The engine's name, either 'awt', 'swt', 'web' or 'fx'.
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;ENGINE2&gt;</td>
+            <td rowspan="1" colspan="1">
+          The alternative engine's name, either 'swing', 'swt', 'web' or 'fx'.
+            </td>
+          
+</tr>
+          
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;52.1</a>:&nbsp;&nbsp;Placeholders for component procedures</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>For procedures of container or composite components you can also
+        use placeholders for the child components. Please see following table
+        for those additional variables:
+        </p>
+        
+<a name="table_52.2"></a><a name="table_52.2"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth" valign="center">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Variable</th>
+            <th rowspan="1" colspan="1">Description</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;CCOMPID&gt;</td>
+            <td rowspan="1" colspan="1">
+              The QF-Test ID of the child component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;CCOMPNAME&gt;</td>
+            <td rowspan="1" colspan="1">
+              The name of the child component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;CCOMPFEATURE&gt;</td>
+            <td rowspan="1" colspan="1">
+              The feature of the child component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;CCOMPCLASS&gt;</td>
+            <td rowspan="1" colspan="1">
+              The recorded class of the child component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;CCOMPTKCLASS&gt;</td>
+            <td rowspan="1" colspan="1">
+              The toolkit class of the child component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;CCOMPSYSCLASS&gt;</td>
+            <td rowspan="1" colspan="1">
+              The system class of the child component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;CCOMPGENCLASS&gt;</td>
+            <td rowspan="1" colspan="1">
+              The generic class of the child component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;CCOMPEF-name-of-extrafeature&gt;</td>
+            <td rowspan="1" colspan="1">
+              The value of the given extra feature
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;CCURRENTVALUE&gt;</td>
+            <td rowspan="1" colspan="1">
+              The current value of the child component, e.g. the text of a text-field or the current selection of a combo-box etc.
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;CCURRENTENABLEDSTATE&gt;</td>
+            <td rowspan="1" colspan="1">
+              The current enabled state of the child component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;CCURRENTSELECTEDSTATE&gt;</td>
+            <td rowspan="1" colspan="1">
+              The current selectable state of the child component
+            </td>
+          
+</tr>
+           
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;CCURRENTEDITABLESTATE&gt;</td>
+            <td rowspan="1" colspan="1">
+              The current editable state of the child component
+            </td>
+          
+</tr>
+          
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;52.2</a>:&nbsp;&nbsp;Additional placeholders for container procedures</td><td class="captionglue"></td>
+</tr>
+</table>
+
+    
+      
+<a name="sec_pbProcbuilderFallbacks"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N188776"></a><span class="note">4.1.3+</span></span><span class="numtitle"><a href="contents.html#toc_sec_pbProcbuilderFallbacks">52.1.1</a></span>
+</div>
+<a href="contents.html#toc_sec_pbProcbuilderFallbacks">Fallback values for placeholders</a>
+</h5>
+      
+<p>In many projects procedure and parameter names will be generated using the placeholders
+      <code>COMPNAME</code>, <code>COMPFEATURE</code> or
+       <code>COMPEF-qfs:label</code>. Those placeholders are used because readable names or meaningful labels exist.
+        But in some cases those placeholders cannot be filled by every component, e.g. a new implemented button has no
+        meaningful name yet or QF-Test cannot determine a useful label for a textfield. In such cases you could consider implementing
+        resolvers but those need to be stable and robust again. Instead you can specify so called fallback values for any
+        placeholder now. The values of those fallback definition will be used whenever the actual placeholder has no value.
+      </p>
+      
+<p>
+      You can specify them in the 'Comment' attribute of the configured 'Package' and 'Procedure' nodes.
+      Therefore, you need to write <code>@fallback_</code> and then the name of the placeholder.
+        Afterwards you define the fallback placeholders. So, a placeholder for <code>COMPNAME</code> looks like
+      <code>@fallback_COMPNAME COMPFEATURE</code>. You can see that the value of the placeholder
+      <code>COMPFEATURE</code> will be taken into account, if no value for <code>COMPNAME</code> could be detected.
+      You can also specify several fallback placeholders using a comma separated list like
+      <code>@fallback_COMPEF-qfs:label COMPFEATURE,COMPNAME</code>.
+      </p>
+      
+
+      
+      
+
+    
+      
+      
+<a name="sec_pbProcbuilderdefCond"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_pbProcbuilderdefCond">52.2</a></span>
+</div>
+<a href="contents.html#toc_sec_pbProcbuilderdefCond">Conditions for Package and Procedure Definition</a>
+</h4>
+      
+<p>You can influence the creation of packages and procedures via using the 'Comment' attribute of the 'Package' or 'Procedure' node.
+      </p>
+        
+<a name="table_52.3"></a><a name="table_52.3"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth" valign="center">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Comment-Attribute</th>
+            <th rowspan="1" colspan="1">Description</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">@ABSOLUTECALL</td>
+            <td rowspan="1" colspan="1">
+              This doctag can be used in procedures generating procedure calls via @FORCHILDREN
+              when you do not want QF-Test to prefix the specified procedure call
+              by <code>procbuilder</code>.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">@CONDITION</td>
+            <td rowspan="1" colspan="1">
+             Specifies a dedicated condition for creating packages or
+              procedures. You can define conditions as Jython, Groovy, JavaScript or
+              regular expression. Please see below for further details.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">@EXCEPT</td>
+            <td rowspan="1" colspan="1">
+            Specifies, whether the package or the procedure should be defined for a certain class
+            or not. This construct might be useful, if you define a package or procedure
+            for an abstract class and the procedures should not be created for
+            all of its descendants.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">@FORCECREATION</td>
+            <td rowspan="1" colspan="1">
+              This doctag can be used in procedures generating procedure calls via @FORCHILDREN
+              when you want QF-Test to create the procedure call
+              once in the procedure, irrespective of child components.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">@FORCHILDREN</td>
+            <td rowspan="1" colspan="1">
+              When you set this doctag for 'Procedure' nodes you can specify 'Procedure calls'
+              in the body of the 'Procedure' where you prefix the 'Procedure name'
+              by the class name of the child components for which the 'Procedure call' should
+              be created. When
+              generating the procedures, QF-Test will create the respective 'Procedure call'
+              for each component matching the class the 'Procedure call' was prefixed with.
+              Example: If you place a 'Procedure call' with the 'Procedure name' <code>TextField.setText</code>
+              in a procedure flagged with @FORCHILDREN QF-Test will generate a 'Procedure' node with
+              'Procedure calls' to <code>setText</code> for each child component
+              with the 'Class name' <code>TextField</code>.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">@NOTINHERIT</td>
+            <td rowspan="1" colspan="1">
+              If this value is set, then this package or procedure is only defined for the
+              exact class and not for its descendants.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">@SUBITEM</td>
+            <td rowspan="1" colspan="1">
+            This value is only valid for menu actions up-to-now.
+            If this flag is set, then the according package or procedure will be created for sub-items on the second
+            level of a menu only.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">@SWTSTYLE</td>
+            <td rowspan="1" colspan="1">
+              Evaluate the style attribute of a given SWT-button. This SWT
+              specific attribute sometimes is needed because SWT distinguishes
+                between check-boxes, buttons or radio-buttons only via
+                the style attribute. For SWT-buttons you can define something
+                like <code>@SWTSTYLE=PUSH</code> or <code>@SWTSTYLE=RADIO</code> for radio buttons.
+            </td>
+          
+</tr>
+          
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;52.3</a>:&nbsp;&nbsp;Comment attributes for procedure creation</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_pbProcbuilderdefHier"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_pbProcbuilderdefHier">52.3</a></span>
+</div>
+<a href="contents.html#toc_sec_pbProcbuilderdefHier">Interpretation of the Component Hierarchy</a>
+</h4>
+      
+<p>It might be interesting to make use of the component-hierarchy in the
+      package structure. This approach allows the tester to locate the
+      component-specific procedures quite easy. If you want to create
+      component-hierarchy packages, you can use two placeholders in the
+          package-names:
+      </p>
+        
+<a name="table_52.4"></a><a name="table_52.4"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth" valign="center">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Hierarchy-Placeholder</th>
+            <th rowspan="1" colspan="1">Description</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;HIERARCHY&gt;</td>
+            <td rowspan="1" colspan="1">
+                Create packages for the full component-hierarchy by using the
+                'QF-Test component ID'.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;HIERARCHY_NAME&gt;</td>
+            <td rowspan="1" colspan="1">
+                Create packages for the full component-hierarchy by using the
+            name of the component. If a component in the hierarchy has no
+            name, the component won't get taken into account.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;HIERARCHY_FEATURE&gt;</td>
+            <td rowspan="1" colspan="1">
+                Create packages for the full component-hierarchy by using the
+            recorded feature of the component. If a component in the hierarchy
+            has no feature, the component won't get taken into account.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;IHIERARCHY&gt;</td>
+            <td rowspan="1" colspan="1">
+                Create packages only for interesting components in the
+                component-hierarchy by using the 'QF-Test component ID'. An interesting component is a
+                component with a feature.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;IHIERARCHY_NAME&gt;</td>
+            <td rowspan="1" colspan="1">
+                Create packages only for interesting components in the
+                component-hierarchy by using the name of the component.
+                An interesting component is a
+                component with a feature.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;IHIERARCHY_FEATURE&gt;</td>
+            <td rowspan="1" colspan="1">
+                Create packages only for interesting components in the
+                component-hierarchy by using the feature of the component.
+            An interesting component is a
+                component with a feature.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;MHIERARCHY&gt;</td>
+            <td rowspan="1" colspan="1">
+                Create packages only for menu components in the
+                component-hierarchy by using the 'QF-Test component ID'.
+            It only takes components into account, which act as menu or menu-item.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;MHIERARCHY_NAME&gt;</td>
+            <td rowspan="1" colspan="1">
+                Create packages only for menu components in the
+                component-hierarchy by using the component-name.
+            It only takes components into account, which act as menu or
+                menu-item. If no name is set, the component will be ignored.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">&lt;MHIERARCHY_FEATURE&gt;</td>
+            <td rowspan="1" colspan="1">
+                Create packages only for menu components in the
+                component-hierarchy by using the component-feature.
+            It only takes components into account, which act as menu or
+                menu-item. If no feature is set, the component will be ignored.
+            </td>
+          
+</tr>
+          
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;52.4</a>:&nbsp;&nbsp;Hierarchy placeholders</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+      
+
+  
+<a name="sec_pbProcbuilderDefDetCond"></a>
+    
+<h4 class="header-container h4">
+<div>
+<span class="margin"><a name="new_N189215"></a><span class="note">3.4+</span></span><span class="numtitle"><a href="contents.html#toc_sec_pbProcbuilderDefDetCond">52.4</a></span>
+</div>
+<a href="contents.html#toc_sec_pbProcbuilderDefDetCond">Details about the @CONDITION tag</a>
+</h4>
+    
+<p>Using the <code>@CONDITION</code> tag allows you to
+      configure, whether a dedicated node should be created or not during
+      creation time.
+    </p>
+    
+<p>Such conditions might be used to check a certain name or for appearance
+      of a dedicated letter in the feature. If this condition is not fulfilled,
+      the node won't be created. You can use all known
+      placeholders, e.g. &lt;COMPID&gt; or &lt;CCOMPNAME&gt;.
+    </p>
+    
+<a name="table_52.5"></a><a name="table_52.5"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth" valign="center">
+        
+<tr>
+          
+<th rowspan="1" colspan="1">Value of Condition</th>
+          <th rowspan="1" colspan="1">Meaning</th>
+        
+</tr>
+        
+<tr>
+          
+<td align="left" rowspan="1" colspan="1">@CONDITION  jython "&lt;COMPFEATURE&gt;".startswith("abc")</td>
+          <td rowspan="1" colspan="1">
+            Here we define a Jython condition, which will create the according
+            node, if the feature of the current component starts with 'abc'.
+            It is possible to use any string or comparing method of Jython.
+          </td>
+        
+</tr>
+        
+<tr>
+          
+<td align="left" rowspan="1" colspan="1">@CONDITION  groovy "&lt;COMPFEATURE&gt;".startsWith("abc")</td>
+          <td rowspan="1" colspan="1">
+            Here we define a Groovy condition, which will create the according
+            node, if the feature of the current component starts with 'abc'.
+            It is possible to use any string or comparing method of Groovy.
+          </td>
+        
+</tr>
+        
+<tr>
+          
+<td align="left" rowspan="1" colspan="1">@CONDITION  javascript "&lt;COMPFEATURE&gt;".startsWith("abc")</td>
+          <td rowspan="1" colspan="1">
+            Here we define a JavaScript condition, which will create the according
+            node, if the feature of the current component starts with 'abc'.
+            It is possible to use any string or comparing method of JavaScript.
+          </td>
+        
+</tr>
+        
+<tr>
+          
+<td align="left" rowspan="1" colspan="1">@CONDITION  regexp "&lt;COMPFEATURE&gt;" =~ "abc.*"</td>
+          <td rowspan="1" colspan="1">
+            Here we define a regular expression, which will create the according
+            node, if the feature of the current component starts with 'abc'.
+            It is possible to use all capabilities of Java regular expressions.
+          </td>
+        
+</tr>
+        
+<tr>
+          
+<td align="left" rowspan="1" colspan="1">@CONDITION  regexp "&lt;COMPFEATURE&gt;" !~ "abc.*"</td>
+          <td rowspan="1" colspan="1">
+            Here we define a regular expression condition, which will create the according
+            node, if the feature of the current component does not start with 'abc'.
+            It is possible to use all capabilities of Java regular expressions.
+          </td>
+        
+</tr>
+      
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;52.5</a>:&nbsp;&nbsp;Samples for the @CONDITION tag</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+      If you need more than one row, you have to use a '\` at the end of
+      the first row.
+    </p>
+  
+
+  
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_daemon.html#sec_daemon"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 51&nbsp;Daemon mode" title="Previous Chapter: 51&nbsp;Daemon mode"></a></td><td class="navicon"><a href="tech_manualstep.html#sec_mtAPI"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 53&nbsp;The ManualStepDialog" title="Next Page: 53&nbsp;The ManualStepDialog"></a></td><td class="navicon"><a href="tech_manualstep.html#sec_mtAPI"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 53&nbsp;The ManualStepDialog" title="Next Chapter: 53&nbsp;The ManualStepDialog"></a></td><td class="navicon"><a href="technical.html#sec_technical"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: IV&nbsp;Technical reference" title="Chapter Overview: IV&nbsp;Technical reference"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

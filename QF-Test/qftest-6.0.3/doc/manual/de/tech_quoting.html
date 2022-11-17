@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Sch&uuml;tzen von Sonderzeichen (quoting)</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_quoting"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_linebreaks.html#sec_linebreaks"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 45.4&nbsp;Zeilenumbr&uuml;che in Unix und Windows" title="Vorheriges Kapitel: 45.4&nbsp;Zeilenumbr&uuml;che in Unix und Windows"></a></td><td class="navicon"><a href="tech_includes.html#tsec_includes"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 45.6&nbsp;Aufl&ouml;sen von Include Dateien" title="N&auml;chste Seite: 45.6&nbsp;Aufl&ouml;sen von Include Dateien"></a></td><td class="navicon"><a href="tech_includes.html#tsec_includes"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 45.6&nbsp;Aufl&ouml;sen von Include Dateien" title="N&auml;chstes Kapitel: 45.6&nbsp;Aufl&ouml;sen von Include Dateien"></a></td><td class="navicon"><a href="tech_misc.html#tsec_miscellaneous"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 45&nbsp;Technische Details zu verschiedenen Themen" title="Kapitel-&Uuml;bersicht: 45&nbsp;Technische Details zu verschiedenen Themen"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_quoting">45.5</a></span>
+</div>
+<a href="contents.html#toc_sec_quoting">Sch&uuml;tzen von Sonderzeichen (<em>quoting</em>)</a>
+</h4>
+        
+<p>
+          Ein immer wiederkehrendes Problem bei komplexen Systemen ist die
+          Behandlung von Sonderzeichen, d.h. von Zeichen, die f&uuml;r das jeweilige
+          System eine besondere Bedeutung haben. Einfachstes Beispiel sind
+          Leerzeichen in Dateinamen. Um solche Dateien auf der Kommandozeile
+          anzugeben, m&uuml;ssen Sie diese entweder in Anf&uuml;hrungsstriche stellen,
+          oder unter Unix mit einem
+          <em>Backslash</em> '\' sch&uuml;tzen.
+        </p>
+        
+<p>
+          Da auch QF-Test einerseits Sonderzeichen f&uuml;r verschiedene Aufgaben
+          einsetzt, andererseits aber Zeichenketten vom SUT lesen muss, die
+          beliebige Zeichen enthalten k&ouml;nnen, f&uuml;hrt auch hier kein Weg an einem
+          Quoting Mechanismus vorbei. Dass QF-Test auf verschiedenen
+          Betriebssystemen l&auml;uft und seinerseits z.B. <a href="tech_regexp.html#sec_regexp" shape="rect">regul&auml;re Ausdr&uuml;cke</a> mit eigenen Sonderzeichen
+          verwendet, macht die Sache nicht einfacher. Daher versucht QF-Test,
+          quoting so einfach wie m&ouml;glich zu halten und auf die Stellen zu
+          reduzieren, bei denen es sich nicht vermeiden l&auml;sst. Au&szlig;erdem werden
+          bei der Aufnahme vom SUT gelesene Zeichenfolgen korrekt gesch&uuml;tzt.
+        </p>
+        
+<p>
+          Das wichtigste Sonderzeichen f&uuml;r QF-Test ist das Dollarzeichen '$'
+          f&uuml;r die Variablenexpansion. Variablensyntax kann in fast allen
+          Attributen verwendet werden. Wenn Sie irgendwo ein echtes '$'-Zeichen
+          ben&ouml;tigen, m&uuml;ssen Sie es verdoppeln.
+        </p>
+        
+<p>
+          Beispiel: Um den Inhalt eines Textfeldes mittels eines Checks auf den
+          Text "4 US$" zu &uuml;berpr&uuml;fen, m&uuml;ssen Sie im Attribut
+          <a href="checks.html#att_CheckStringStep_text" shape="rect">'Text'</a> den Wert "4 US$$" angeben.
+        </p>
+        
+<p>
+          Andere Sonderzeichen werden nur an besonderen Stellen eingesetzt und
+          m&uuml;ssen und d&uuml;rfen auch nur dort gesch&uuml;tzt werden. Dies sind das
+          '#'-Zeichen zum suite&uuml;bergreifenden Zugriff auf <a href="procedures.html#step_Procedure" shape="rect">'Prozeduren'</a>
+          und <a href="components.html#step_ComponentStep" shape="rect">'Komponenten'</a>, sowie die Zeichen '@', '&amp;' und '%'
+          f&uuml;r die <a href="user_subitems.html#sec_directsubitemeasy" shape="rect">spezielle Syntax f&uuml;r
+          Unterelemente</a>.  Da es sich hierbei um Trennzeichen handelt, k&ouml;nnen
+          Sie nicht durch Verdoppelung gesch&uuml;tzt werden. Daher folgt QF-Test
+          der Konvention, den Backslash '\' zu verwenden, was auch diesen selbst
+          zum Sonderzeichen macht. Damit das unter Windows nicht zur
+          Quotingh&ouml;lle mit Dateinamen f&uuml;hrt, interpretiert QF-Test den
+          Backslash nur dort, wo diese Zeichen ihre besondere Bedeutung haben
+          und selbst dort ist ein Backslash, der nicht von einem Sonderzeichen
+          gefolgt wird, ein ganz normales Zeichen.
+        </p>
+        
+<p>
+          Pr&auml;zise hei&szlig;t das, dass Sie die Zeichen '#' und '\' im Attribut
+          <a href="procedures.html#att_ProcedureCall_procedure" shape="rect">'Name der Prozedur'</a> eines <a href="procedures.html#step_ProcedureCall" shape="rect">'Prozeduraufrufs'</a> sch&uuml;tzen
+          m&uuml;ssen, sowie die Zeichen '#', '\', '@', '&amp;' und '%' in den
+          Attributen <a href="events.html#att_MouseEventStep_component" shape="rect">'QF-Test ID der Komponente'</a> von Events und Checks, sowie
+          <a href="components.html#att_SubItemStep_primary" shape="rect">'Prim&auml;rindex'</a> und <a href="components.html#att_SubItemStep_secondary" shape="rect">'Sekund&auml;rindex'</a> von
+          <a href="components.html#step_SubItemStep" shape="rect">'Elementen'</a>. Bedenken Sie insbesondere, dass der Backslash
+          auch zum Quoten von Sonderzeichen in <a href="tech_regexp.html#sec_regexp" shape="rect">regul&auml;ren
+          Ausdr&uuml;cken</a> verwendet wird. Um einen echten Backslash in einen
+          regul&auml;ren Ausdruck f&uuml;r ein Unterelement zu bekommen, m&uuml;ssen Sie diesen
+          zun&auml;chst selbst f&uuml;r den regul&auml;ren Ausdruck quoten (also '\\') und
+          diese beiden Backslashes noch einmal f&uuml;r QF-Test selbst (also
+          '\\\\').
+        </p>
+        
+<p>
+          Leider ist damit noch nicht alles gesagt. QF-Test verwendet in
+          Unterelementen f&uuml;r die Knoten von <code>JTree</code> Komponenten das
+          Zeichen '/' als Trennzeichen f&uuml;r die Pfade der Knoten. F&uuml;r Baumknoten
+          m&uuml;ssen Sie daher dieses Zeichen zus&auml;tzlich sch&uuml;tzen, wenn Sie ein
+          echtes '/' Zeichen ben&ouml;tigen. F&uuml;r Unterelemente anderer Komponenten
+          ist dies nicht n&ouml;tig.
+        </p>
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_linebreaks.html#sec_linebreaks"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 45.4&nbsp;Zeilenumbr&uuml;che in Unix und Windows" title="Vorheriges Kapitel: 45.4&nbsp;Zeilenumbr&uuml;che in Unix und Windows"></a></td><td class="navicon"><a href="tech_includes.html#tsec_includes"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 45.6&nbsp;Aufl&ouml;sen von Include Dateien" title="N&auml;chste Seite: 45.6&nbsp;Aufl&ouml;sen von Include Dateien"></a></td><td class="navicon"><a href="tech_includes.html#tsec_includes"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 45.6&nbsp;Aufl&ouml;sen von Include Dateien" title="N&auml;chstes Kapitel: 45.6&nbsp;Aufl&ouml;sen von Include Dateien"></a></td><td class="navicon"><a href="tech_misc.html#tsec_miscellaneous"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 45&nbsp;Technische Details zu verschiedenen Themen" title="Kapitel-&Uuml;bersicht: 45&nbsp;Technische Details zu verschiedenen Themen"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

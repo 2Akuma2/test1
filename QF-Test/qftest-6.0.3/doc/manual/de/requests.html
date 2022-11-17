@@ -1,0 +1,640 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>HTTP Requests</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_requests"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="miscnodes.html#sec_miscnodes"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 38.11&nbsp;Verschiedenes" title="Vorheriges Kapitel: 38.11&nbsp;Verschiedenes"></a></td><td class="navicon"><a href="components.html#sec_windows"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 38.13&nbsp;Fenster, Komponenten und Elemente" title="N&auml;chste Seite: 38.13&nbsp;Fenster, Komponenten und Elemente"></a></td><td class="navicon"><a href="components.html#sec_windows"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 38.13&nbsp;Fenster, Komponenten und Elemente" title="N&auml;chstes Kapitel: 38.13&nbsp;Fenster, Komponenten und Elemente"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite" title="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_requests">38.12</a></span>
+</div>
+<a href="contents.html#toc_sec_requests">HTTP Requests</a>
+</h4>
+    
+<p>
+      Dieser Abschnitt befasst sich mit der M&ouml;glichkeit HTTP Requests mittels QFTest abzusenden.
+    </p>
+    
+
+    
+<a name="step_RequestStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_RequestStep">38.12.1</a></span>
+</div>
+<a href="contents.html#toc_step_RequestStep">'Server HTTP Request'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/request.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+<span class="margin"><a name="web_N147644"></a><span class="note">Web</span></span>
+            Dieser sehr spezielle Knoten bietet eine einfache M&ouml;glichkeit, einen
+            Web-Request direkt via HTTP/HTTPS an einen Webserver abzusetzen. Die Verwendung ist bei
+            Lasttests oder Szenarien mit Verarbeitung von Massendaten (z.B. Ausf&uuml;llen von
+            Formularen) sehr hilfreich, da beim Abspielen die Simulation von Nutzereingaben im SUT
+            und die damit verbundene Abh&auml;ngigkeit von den Ladezeiten des SUT entfallen. Die
+            Verwendung von Requests stellt somit eine Erg&auml;nzung der in <a href="user_loadtest.html#usec_loadtest">Kapitel 29</a> und <a href="datadriver.html#sec_datadriver">Abschnitt 38.4</a> beschriebenen Funktionalit&auml;t
+            f&uuml;r Lasttests und datengetriebenes Testen dar.
+          </p>
+          
+<p>
+            Wenn der vom Server zur&uuml;ckgegebene Statuscode 400 oder gr&ouml;&szlig;er ist, wird eine
+            Exception geworfen. Die Fehlerstufe kann mit dem Attribut 'Fehlerstufe bei HTTP-Statuscode &gt;= 400' ver&auml;ndert werden.
+            Detailinformationen zu den verschiedenen Statuscodes k&ouml;nnen sie
+            unter <a href="http://www.w3.org/Protocols/HTTP/HTRESP.html" shape="rect">http://www.w3.org/Protocols/HTTP/HTRESP.html</a> nachlesen.
+            Zus&auml;tzlich k&ouml;nnen Sie die Antwort des Servers einer Variablen zuweisen und &uuml;ber das
+            Attribut 'Antwort des Servers in Protokoll schreiben' diese Antwort auch im Protokoll ablegen.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Der Request wird via HTTP/HTTPS direkt von QF-Test aus
+          an die angegebene URL geschickt. Wenn der vom Server zur&uuml;ckgegebene Statuscode gr&ouml;&szlig;er/gleich 400 ist
+          wird eine Exception geworfen. Dieses Verhalten kann &uuml;ber das Attribut 'Fehlerstufe bei HTTP-Statuscode &gt;= 400' beeinflusst werden.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.79"></a><a name="figure_38.79"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_RequestStep.png" target="_blank"><img src="images/att_RequestStep.png" alt="Server HTTP Request Attribute" texscale=".66" width="393" height="869"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.79</a>:&nbsp;&nbsp;'Server HTTP Request' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_RequestStep_url"></a>
+<dt>'URL'</dt>
+<dd>
+       
+<p>
+         Die URL, an die der Request gesendet werden soll, exklusive der Parameter.
+         Als Protokoll sind sowohl HTTP als auch HTTPS zul&auml;ssig.
+       </p>
+       
+<p>
+        Internationalisierte Domainnamen (IDN) werden in der URL ebenso wie
+        Pfade beginnend mit 'file:///' nicht unterst&uuml;tzt.
+       </p>
+     
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_RequestStep_method"></a>
+<dt>'Methode'</dt>
+<dd>
+            
+            
+<p>
+              &Uuml;ber dieses Attribut legen Sie die Methode des Requests fest: GET, POST, OPTIONS, PUT, DELETE, HEAD oder TRACE.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_RequestStep_requestparameter"></a>
+<dt>'Parameters'</dt>
+<dd>
+            
+            
+<p>
+              Hier k&ouml;nnen Sie die Parameter f&uuml;r den Request definieren. Die Paremeter werden bei der Ausf&uuml;hrung
+              kodiert &uuml;bertragen (URL-Kodierung). N&auml;heres zur Arbeit mit der Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_RequestStep_headers"></a>
+<dt>'Headers'</dt>
+<dd>
+            
+            
+<p>
+              Mit dieser Tabelle k&ouml;nnen benutzerdefinierte Header spezifiziert werden.
+              Dazu muss der Name des Header-Felds und dessen Wert angegeben werden.
+              N&auml;heres zur Arbeit mit der Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Yes</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> None</p>
+</dd>
+<a name="att_RequestStep_payload"></a>
+<dt>'Payload'</dt>
+<dd>
+            
+            
+<p>
+              F&uuml;r die Methoden POST, PUT, DELETE bzw. HEAD, kann zus&auml;tzlich Payload in Form von XML, JSON oder Text angegeben werden.
+              Daf&uuml;r muss der Content-Type Header an das entsprechende Format angepasst werden.
+              Die Informationen dazu sind hier zu finden:
+               <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type" shape="rect">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type</a>.
+
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Yes</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> None</p>
+</dd>
+<a name="att_RequestStep_statuscodevar"></a>
+<dt>'Variable f&uuml;r den HTTP-Statuscode'</dt>
+<dd>
+            
+            
+<p>
+              Der Name der Variable welcher der HTTP-Statuscode als Wert
+              zugewiesen wird (vgl. <a href="user_variables.html#usec_variables">Kapitel 6</a>).
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_RequestStep_attResponseheaders"></a>
+<dt>'Variable f&uuml;r den Header der Antwort'</dt>
+<dd>
+            
+            
+<p>
+              Der Name der Variable welcher die Header der Antwort als Wert
+              zugewiesen werden (vgl. <a href="user_variables.html#usec_variables">Kapitel 6</a>).
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_RequestStep_responsevar"></a>
+<dt>'Variable f&uuml;r den Antworttext'</dt>
+<dd>
+            
+            
+<p>
+              Der Name der Variable welcher der Body des Servers (HTTP-Response) als Wert
+              zugewiesen wird (vgl. <a href="user_variables.html#usec_variables">Kapitel 6</a>).
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_RequestStep_Local"></a>
+<dt>'Lokale Variable'</dt>
+<dd>
+      
+<p>
+        Ist dieses Attribut nicht gesetzt, werden die Variablen in den globalen Definitionen
+        gebunden. Andernfalls wird - sofern vorhanden - jeweils die oberste aktuelle Definition der
+        Variablen &uuml;berschrieben, sofern diese innerhalb des aktuellen <a href="procedures.html#step_Procedure" shape="rect">'Prozedur'</a>,
+        <a href="dependencies.html#step_Dependency" shape="rect">'Abh&auml;ngigkeit'</a> oder <a href="sequences.html#step_TestCase" shape="rect">'Testfall'</a> Knotens liegt. Gibt es keine solche Definition,
+        wird eine neue Definition im aktuellen 'Prozedur', 'Abh&auml;ngigkeit' oder 'Testfall'
+        Knoten angelegt, oder, falls kein solcher existiert, im obersten Knoten auf dem Variablen-Stapel
+	mit Fallback auf die globalen Definitionen. Eine
+        Erl&auml;uterung dieser Begriffe und weitere Details zu Variablen finden Sie in <a href="user_variables.html#usec_variables">Kapitel 6</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_RequestStep_logresponse"></a>
+<dt>'Antwort des Servers in Protokoll schreiben'</dt>
+<dd>
+            
+            
+<p>
+              Ist dieses Attribut gesetzt, wird zus&auml;tzlich zum Status-Code die
+              Antwort des Servers (HTTP-Response) in das Protokoll geschrieben.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_RequestStep_responsefile"></a>
+<dt>'Antwort in Datei speichern'</dt>
+<dd>
+            
+            
+<p>
+              Hier kann eine Datei angegeben werden, in welche die Antwort des Servers geschrieben wird.
+              Dadurch k&ouml;nnen Dateien heruntergeladen werden.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> QF-Test muss in die Datei schreiben k&ouml;nnen.</p>
+</dd>
+<a name="att_RequestStep_statuscodeerrorlevel"></a>
+<dt>'Fehlerstufe bei HTTP-Statuscode &gt;= 400'</dt>
+<dd>
+            
+            
+<p>
+              Hier kann die Fehlerstufe von HTTP-Statuscodes, die gr&ouml;&szlig;er/gleich 400 sind, eingestellt werden.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_RequestStep_timeout"></a>
+<dt>'Wartezeit'</dt>
+<dd>
+      
+<p>
+        Zeit in Millisekunden, die maximal verstreichen darf, bis der HTTP Request erfolgreich durchgef&uuml;hrt wurde. Lassen Sie
+        das Attribut leer wenn Sie unbegrenzt auf die Durchf&uuml;hrung warten wollen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht negativ sein.</p>
+</dd>
+<a name="att_RequestStep_timeerror"></a>
+<dt>'Fehlerstufe bei Zeit&uuml;berschreitung'</dt>
+<dd>
+      
+<p>
+        Dieses Attribut legt fest, was bei &Uuml;berschreitung des Zeitlimits passiert. Ist der
+        Wert "Exception", wird eine <a href="exceptions.html#ex_CheckFailedException" shape="rect"><code>CheckFailedException</code></a> geworfen. Andernfalls wird
+        eine Meldung mit der entsprechenden Fehlerstufe in das Protokoll geschrieben.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_RequestStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_RequestStep_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_RequestStep_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ClientRequestStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ClientRequestStep">38.12.2</a></span>
+</div>
+<a href="contents.html#toc_step_ClientRequestStep">'Browser HTTP Request'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/request.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+<span class="margin"><a name="web_N148311"></a><span class="note">Web</span></span>
+            Dieser sehr spezielle Knoten bietet eine einfache M&ouml;glichkeit, einen GET oder POST
+            Request direkt via HTTP/HTTPS an einen Webserver abzusetzen. Die Verwendung ist bei
+            Lasttests oder Szenarien mit Verarbeitung von Massendaten (z.B. Ausf&uuml;llen von
+            Formularen) sehr hilfreich, da beim Abspielen die Simulation von Nutzereingaben im SUT
+            und die damit verbundene Abh&auml;ngigkeit von den Ladezeiten des SUT entfallen. Die
+            Verwendung von Requests stellt somit eine Erg&auml;nzung der in <a href="user_loadtest.html#usec_loadtest">Kapitel 29</a> und <a href="datadriver.html#sec_datadriver">Abschnitt 38.4</a> beschriebenen Funktionalit&auml;t
+            f&uuml;r Lasttests und datengetriebenes Testen dar.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Der GET/POST Request wird via HTTP/HTTPS direkt vom Browser aus
+          an die angegebene URL geschickt. Die Ergebnisse des Requests werden im Browser angezeigt.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.80"></a><a name="figure_38.80"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ClientRequestStep.png" target="_blank"><img src="images/att_ClientRequestStep.png" alt="Browser HTTP Request Attribute" texscale=".66" width="393" height="498"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.80</a>:&nbsp;&nbsp;'Browser HTTP Request' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ClientRequestStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Der Name unter dem der Java Prozess des SUT gestartet wurde,
+        in dem der Request ausgef&uuml;hrt werden soll.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_ClientRequestStep_component"></a>
+<dt>'QF-Test ID der Komponente'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID der <a href="components.html#step_WebPageStep" shape="rect">'Webseite'</a> in welcher der Request abgespielt werden soll.
+      </p>
+      
+<p>
+        Der "Komponente ausw&auml;hlen" Button
+	<img src="../icons/select_component.png" style="vertical-align: text-bottom" alt="[Komponente ausw&auml;hlen]" title="Komponente ausw&auml;hlen" width="20" height="20" texscale=".66">
+        &ouml;ffnet einen Dialog, in dem Sie die Komponente (siehe <a href="user_components.html#usec_components">Kapitel 5</a>) direkt ausw&auml;hlen
+        k&ouml;nnen. Diesen erreichen Sie auch mittels [Shift-Return] oder [Alt-Return], sofern sich der Fokus im Textfeld befindet. Alternativ
+        k&ouml;nnen Sie den gew&uuml;nschten Knoten mittels [Strg-C] bzw.
+        &raquo;<em>Bearbeiten</em>&laquo;-&raquo;<em>Kopieren</em>&laquo;
+        kopieren und seine QF-Test ID durch dr&uuml;cken von
+        [Strg-V] in das Textfeld
+        einf&uuml;gen.
+      </p>
+      
+<p>
+        Dieses Attribut unterst&uuml;tzt ein spezielles Format, das es erlaubt,
+        Komponenten in anderen Testsuiten zu referenzieren (siehe 
+        <a href="user_distributed.html#usec_suitereference">Abschnitt 23.1</a>).  Des weiteren
+        k&ouml;nnen Unterelemente von Knoten direkt angegeben werden, ohne dass ein
+        eigener Knoten daf&uuml;r vorhanden sein muss (siehe <a href="user_subitems.html#usec_subitems">Abschnitt 5.9</a>). 
+        Bei der Verwendung
+        von SmartIDs k&ouml;nnen Sie ein GUI-Element direkt
+        &uuml;ber seine Wiedererkennungsmerkmale adressieren. Weitere Informationen
+        hierzu finden Sie in <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a> und 
+        <a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">'Komponente' Knoten versus SmartID</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_ClientRequestStep_url"></a>
+<dt>'URL'</dt>
+<dd>
+       
+<p>
+         Die URL, an die der Request gesendet werden soll, exklusive der Parameter.
+         Als Protokoll sind sowohl HTTP als auch HTTPS zul&auml;ssig.
+       </p>
+       
+<p>
+        Internationalisierte Domainnamen (IDN) werden in der URL ebenso wie
+        Pfade beginnend mit 'file:///' nicht unterst&uuml;tzt.
+       </p>
+     
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_ClientRequestStep_method"></a>
+<dt>'Methode'</dt>
+<dd>
+            
+            
+<p>
+              &Uuml;ber dieses Attribut legen Sie die Methode des Requests fest, GET oder POST.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ClientRequestStep_parameters"></a>
+<dt>'Programm-Parameter'</dt>
+<dd>
+            
+            
+<p>
+              Hier k&ouml;nnen Sie die Parameter f&uuml;r den Request definieren. Die Paremeter werden bei der Ausf&uuml;hrung kodiert &Uuml;bertragung (URL-Kodierung). N&auml;heres zur Arbeit mit der
+              Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ClientRequestStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_ClientRequestStep_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_ClientRequestStep_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="miscnodes.html#sec_miscnodes"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 38.11&nbsp;Verschiedenes" title="Vorheriges Kapitel: 38.11&nbsp;Verschiedenes"></a></td><td class="navicon"><a href="components.html#sec_windows"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 38.13&nbsp;Fenster, Komponenten und Elemente" title="N&auml;chste Seite: 38.13&nbsp;Fenster, Komponenten und Elemente"></a></td><td class="navicon"><a href="components.html#sec_windows"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 38.13&nbsp;Fenster, Komponenten und Elemente" title="N&auml;chstes Kapitel: 38.13&nbsp;Fenster, Komponenten und Elemente"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite" title="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

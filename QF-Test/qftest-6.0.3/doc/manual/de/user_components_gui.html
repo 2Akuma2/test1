@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Komponenten eines GUI</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_components_gui"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 5.2&nbsp;'Komponente' Knoten versus SmartID" title="N&auml;chste Seite: 5.2&nbsp;'Komponente' Knoten versus SmartID"></a></td><td class="navicon"><a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 5.2&nbsp;'Komponente' Knoten versus SmartID" title="N&auml;chstes Kapitel: 5.2&nbsp;'Komponente' Knoten versus SmartID"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 5&nbsp;Komponenten" title="Kapitel-&Uuml;bersicht: 5&nbsp;Komponenten"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_components_gui">5.1</a></span>
+</div>
+<a href="contents.html#toc_usec_components_gui">Komponenten eines GUI</a>
+</h4>
+      
+<p>
+        Die grafische Oberfl&auml;che (<em>Graphical User Interface</em>, kurz
+        <em>GUI</em>) einer Applikation besteht aus einem oder mehreren
+        Fenstern, die verschiedene Komponenten beinhalten. Diese Komponenten
+        sind ineinander verschachtelt und bilden eine hierarchische
+        Struktur. Komponenten, die andere Komponenten enthalten, hei&szlig;en
+        Container. Da QF-Test selbst eine komplexe Applikation mit grafischer
+        Oberfl&auml;che ist, kann das Hauptfenster gut als Beispiel dienen:
+      </p>
+      
+<a name="figure_5.1"></a><a name="figure_5.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/TestSuite.png" target="_blank"><img src="images/TestSuite.png" alt="Komponenten einer GUI" width="986" height="872" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;5.1</a>:&nbsp;&nbsp;Komponenten eines GUI</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Das Fenster (<em>window</em>) enth&auml;lt eine Men&uuml;leiste (<em>menu
+        bar</em>), welche wiederum die Men&uuml;s (<em>menu</em>) f&uuml;r QF-Test enth&auml;lt.
+        Darunter befindet sich die Werkzeugleiste (<em>toolbar</em>) mit den
+        Kn&ouml;pfen (<em>toolbar buttons</em>). Der Hauptteil bedient sich einer
+        <em>split pane</em> um die Baumansicht und die Detailansicht zu
+        trennen. Die Baumansicht besteht aus einer Beschriftung
+        (<em>label</em>) "Testsuite" und dem Baum (<em>tree</em>). Die
+        Detailansicht enth&auml;lt selbst wieder eine komplexe Hierarchie von
+        verschiedenen Komponenten wie Textfeldern (<em>text field</em>),
+        Kn&ouml;pfen (<em>button</em>), einer Tabelle (<em>table</em>), etc. Dabei
+        gibt es noch eine ganze Reihe von Komponenten, welche man nicht auf
+        den ersten Blick erkennt. So steckt der Baum z.B. in einer <em>scroll
+        pane</em>, die <em>scroll bars</em> anzeigt, wenn der Baum zu gro&szlig; f&uuml;r
+        seinen Bereich wird. Verschiedene <em>panes</em> dienen lediglich als
+        Container und Hintergrund f&uuml;r andere Komponenten, z.B. der Bereich,
+        der die "OK" und "Abbrechen" Kn&ouml;pfe enth&auml;lt.
+      </p>
+      
+<p>
+        Sofern nicht explizit anders angegeben bezieht sich der Begriff "Komponente"
+        in diesem Handbuch auf die Elemente eines GUI, egal, wie die einzelnen
+        Komponenten in der jeweiligen GUI Technologie genannt werden.
+      </p>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 5.2&nbsp;'Komponente' Knoten versus SmartID" title="N&auml;chste Seite: 5.2&nbsp;'Komponente' Knoten versus SmartID"></a></td><td class="navicon"><a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 5.2&nbsp;'Komponente' Knoten versus SmartID" title="N&auml;chstes Kapitel: 5.2&nbsp;'Komponente' Knoten versus SmartID"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 5&nbsp;Komponenten" title="Kapitel-&Uuml;bersicht: 5&nbsp;Komponenten"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

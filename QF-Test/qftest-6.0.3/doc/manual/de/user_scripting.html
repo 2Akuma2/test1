@@ -1,0 +1,2386 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Skripting</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_scripting"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_stdlib.html#usec_stdlib"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 10&nbsp;Standardbibliothek" title="Vorheriges Kapitel: 10&nbsp;Standardbibliothek"></a></td><td class="navicon"><a href="user_unittests.html#usec_unittests"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 12&nbsp;Unit Tests" title="N&auml;chste Seite: 12&nbsp;Unit Tests"></a></td><td class="navicon"><a href="user_unittests.html#usec_unittests"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 12&nbsp;Unit Tests" title="N&auml;chstes Kapitel: 12&nbsp;Unit Tests"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch" title="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_scripting">11</a></span>
+</div>
+<a href="contents.html#toc_usec_scripting">Skripting</a>
+</h3>
+    
+    
+<p>
+      
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+      Das Video <a href="https://www.qfs.de/de/yt/skripting-basics-45.html" class="videolink" target="_blank">'Skripting in QF-Test'
+      (Grundlagen)</a> behandelt die Grundlagen des Skriptens.
+    </p>
+    
+<p>
+      Das Video <a href="https://www.qfs.de/de/yt/skripting-advanced-47.html" class="videolink" target="_blank">'Skripting in QF-Test'
+      (Fortgeschritten)</a> zeigt weitere M&ouml;glichkeiten des Skriptens.
+    </p>
+    
+<p>
+      Es ist einer der gro&szlig;en Vorteile von QF-Test, dass komplexe Tests erstellt werden k&ouml;nnen,
+      ohne eine einzige Zeile Code zu schreiben. Allerdings gibt es Dinge, die sich mit einem
+      GUI alleine nicht bewerkstelligen lassen. F&uuml;r ein Programm, das Daten in eine Datenbank
+      schreibt, k&ouml;nnte es z.B. sinnvoll sein, zu &uuml;berpr&uuml;fen, ob die Daten korrekt geschrieben
+      wurden. Oder man k&ouml;nnte Testdaten aus einer Datenbank oder einer Datei lesen und mit
+      diesen einen Test ausf&uuml;hren. All das und mehr wird mit Hilfe der m&auml;chtigen Skriptsprachen
+      Jython, Groovy und JavaScript erm&ouml;glicht.
+    </p>
+    
+<p>
+<span class="margin"><a name="new_N82122"></a><span class="note">4.2+</span></span>Jython ist von Anfang an dabei, Groovy seit QF-Test Version 3.
+      Ab Version 4.2 kann man auch JavaScript als Skriptsprache verwenden. Es ist eine Frage des Geschmacks,
+      welcher dieser Sprachen man den Vorzug
+      gibt. Wer jedoch bereits mit Java vertraut ist, wird sich wahrscheinlich eher mit Groovy
+      denn mit Jython anfreunden. Web Entwickler werden vermutlich JavaScript verwenden.</p>
+    
+<p>
+      In diesem Kapitel werden zun&auml;chst die Grundlagen der Skriptintegration
+      und die in allen Skriptsprachen zur Verf&uuml;gung stehenden Module beschrieben.
+      Auf die Besonderheiten der Sprachen <a href="#usec_groovy">Groovy Skripting</a>, <a href="#usec_jythonbasics">Jython Skripting</a> und <a href="#usec_javascript">JavaScript Skripting</a>
+      wird in den jeweiligen Abschnitten eingegangen.
+    </p>
+    
+<p>
+<span class="margin"><a name="new_N82139"></a><span class="note">3.0+</span></span>
+      Die Skriptsprache eines Knotens wird nun mit dem Attribut
+      <a href="control.html#att_ServerScriptStep_interpreter" shape="rect">'Skriptsprache'</a> eines <a href="control.html#step_ServerScriptStep" shape="rect">'Server Skript'</a> oder
+      <a href="control.html#step_ClientScriptStep" shape="rect">'SUT Skript'</a> Knotens festgelegt. Somit k&ouml;nnen also alle drei Sprachen innerhalb
+      einer Testsuite parallel verwendet werden. Welche Sprache als Standard verwendet werden
+      soll, kann &uuml;ber die Option <a href="opt_general.html#opt_defaultscriptlanguage">Voreingestellte Sprache f&uuml;r Skript Knoten</a> eingestellt werden.
+    </p>
+
+    
+    
+
+    
+<a name="sec_generalscripting"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_generalscripting">11.1</a></span>
+</div>
+<a href="contents.html#toc_sec_generalscripting">Allgemeines</a>
+</h4>
+      
+<p>
+        Beim Skripting ist die Herangehensweise von QF-Test genau umgekehrt zu
+        der anderer GUI Testprogramme. Anstatt den gesamten Test durch ein
+        Skript zu steuern, bettet QF-Test kleine Skripte in die Testsuite
+        ein. Dies geschieht mit Hilfe der Knoten <a href="control.html#step_ServerScriptStep" shape="rect">'Server Skript'</a> und
+        <a href="control.html#step_ClientScriptStep" shape="rect">'SUT Skript'</a>.
+      </p>
+      
+<p>
+        Beiden Knoten gemeinsam ist das Attribut <a href="control.html#att_ServerScriptStep_code" shape="rect">'Skript'</a>
+        f&uuml;r den eigentlichen Programmcode.
+      </p>
+      
+<a name="figure_11.1"></a><a name="figure_11.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/CompletionWindow.png" target="_blank"><img src="images/CompletionWindow.png" alt="Detailansicht eines Server Skript Knotens mit Hilfefenster" texscale=".66" width="550" height="376"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;11.1</a>:&nbsp;&nbsp;Detailansicht eines 'Server Skript' Knotens
+             mit Hilfefenster f&uuml;r <code>rc</code>-Methoden</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+<span class="margin"><a name="new_N82219"></a><span class="note">3.0+</span></span>
+        Der in QF-Test integrierte Skripteditor verf&uuml;gt &uuml;ber ein paar n&uuml;tzliche
+        Eigenschaften, die das Eingeben des Codes erleichtern. Reservierte
+        Schl&uuml;sselw&ouml;rter, eingebaute Funktionen, Standard-Objekttypen,
+        Literale und Kommentare werden farblich hervorgehoben. Innerhalb von Bl&ouml;cken
+        werden Codezeilen automatisch einger&uuml;ckt und am Blockende wieder ausger&uuml;ckt.
+        Mit Hilfe von [TAB] k&ouml;nnen auch mehrere markierte Zeilen
+        von Hand ein- oder ausger&uuml;ckt ([Shift-TAB])
+        werden.
+      </p>
+      
+<p>
+        Das vielleicht - zumindest f&uuml;r den QF-Test Neuling - wichtigste Feature des integrierten
+        Editors ist jedoch die Eingabehilfe f&uuml;r viele eingebaute Methoden. Gibt man
+        beispielsweise <code>rc.</code> ein (und ggf. zus&auml;tzlich einen oder mehrere
+        Anfangsbuchstaben eines Methodennamens) und dr&uuml;ckt dann [Ctrl-Leertaste], so erscheint ein Popup-Fenster mit den passenden <em>Runcontext</em>
+        Methoden und ihrer Beschreibung (vgl. <a href="tech_scripting.html#sec_scripting">Kapitel 46</a>). Nach Auswahl
+        einer Methode und anschlie&szlig;ender Best&auml;tigung mit [Eingabe] wird die
+        gew&auml;hlte Methode in den Skriptcode eingef&uuml;gt. Dr&uuml;ckt man [Ctrl-Leertaste] nach einem Leerzeichen, wird eine Liste aller Objekte angezeigt, f&uuml;r
+        die Hilfe zur Verf&uuml;gung steht.
+      </p>
+      
+<p>
+        'Server Skripte' sind f&uuml;r Dinge wie das Berechnen von
+        Variablenwerten oder das Einlesen und Parsen von Testdaten
+        n&uuml;tzlich. 'SUT Skripte' &ouml;ffnen dagegen den unbeschr&auml;nkten
+        Zugang zu den Komponenten des SUT und zu allen anderen Java
+        Schnittstellen, die das SUT bietet. Ein 'SUT Skript'
+        k&ouml;nnte z.B. zum Auslesen oder &Uuml;berpr&uuml;fen von Werten im SUT verwendet
+        werden, auf die QF-Test keinen Zugriff hat. Im 'SUT Skript' Knoten
+        muss das Attribut <a href="control.html#att_ClientScriptStep_client" shape="rect">'Client'</a> auf den
+        Namen des SUT Clients gesetzt sein, in dem es ausgef&uuml;hrt werden soll.
+      </p>
+      
+<p>
+        'Server Skripte' werden in jeder Skriptsprache jeweils in einem Interpreter
+        ausgef&uuml;hrt, der in QF-Test selbst integriert ist, w&auml;hrend
+        'SUT Skripte' in jeweils einem im SUT integrierten
+        Interpreter laufen. Diese Interpreter sind voneinander unabh&auml;ngig und
+        haben keine gemeinsamen Zust&auml;nde. QF-Test nutzt die RMI Verbindung zum
+        SUT f&uuml;r eine nahtlose Integration der 'SUT Skripte' in die
+        Testausf&uuml;hrung.
+      </p>
+      
+<p>
+         &Uuml;ber die Men&uuml;eintr&auml;ge &raquo;<em>Extras</em>&laquo;-&raquo;<em>Jython Terminal...</em>&laquo;, &raquo;<em>Extras</em>&laquo;-&raquo;<em>Groovy Terminal...</em>&laquo; etc.
+        k&ouml;nnen Sie ein Fenster mit einer interaktiven Kommandozeile f&uuml;r den in
+        QF-Test eingebetteten Interpreter &ouml;ffnen. Darin k&ouml;nnen Sie mit der jeweiligen Skriptsprache
+        experimentieren, um ein Gef&uuml;hl f&uuml;r die Sprache zu entwickeln, aber auch komplexe Dinge
+        ausprobieren wie z.B. das Herstellen der Verbindung zu einer Datenbank. Mittels
+        [Strg-Hoch] und [Strg-Runter] k&ouml;nnen Sie fr&uuml;here Eingaben wieder verwenden. Au&szlig;erdem k&ouml;nnen Sie
+        beliebige Zeilen im Terminal bearbeiten oder eine Region markieren und mittels
+        [Return] an den Interpreter schicken. Dabei filtert QF-Test die
+        vom Interpreter stammenden '&gt;&gt;&gt;' und '...' Markierungen heraus.
+      </p>
+      
+<p>
+        Entsprechende Terminals gibt es auch f&uuml;r SUT Clients. Diese Terminals sind &uuml;ber
+        das &raquo;<em>Clients</em>&laquo; Men&uuml; zug&auml;nglich.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Wenn Sie in einem SUT Skripting Terminal arbeiten, m&uuml;ssen Sie eines
+        beachten: Die Kommandos werden vom Interpreter nicht im Event Dispatch Thread
+        ausgef&uuml;hrt, im Gegensatz zu Kommandos, die in einem
+        'SUT Skripten' Knoten ausgef&uuml;hrt werden.
+        Das sagt Ihnen m&ouml;glicherweise nichts und meistens stellt es auch kein
+        Problem dar, aber wenn Sie auf Swing oder SWT Komponenten zugreifen oder deren Methoden
+        aufrufen, besteht die Gefahr, dass die gesamte Applikation einfriert. Um das zu
+        verhindern stellt QF-Test die globale Funktion <code>runAWT</code> (bzw.
+        <code>runSWT</code>) zur Verf&uuml;gung, mit deren Hilfe Sie beliebigen Code im Dispatch
+        Thread ausf&uuml;hren k&ouml;nnen. Um zum Beispiel die Anzahl der sichtbaren Knoten einer
+        <code>JTree</code> Komponente namens <code>tree</code> zu ermitteln, verwenden Sie
+        <code>runAWT("tree.getRowCount()")</code> (bzw. <code>runAWT { tree.getRowCount()
+        }</code> in Groovy) um ganz sicher zu gehen.
+      </p>
+    
+    
+
+      
+
+    
+<a name="sec_runcontext"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_runcontext">11.2</a></span>
+</div>
+<a href="contents.html#toc_sec_runcontext">Der Runcontext <code>rc</code></a>
+</h4>
+      
+<p>
+        Zur Ausf&uuml;hrung von 'Server Skripten' und 'SUT Skripten'
+        stellt QF-Test eine spezielle Umgebung zur Verf&uuml;gung, zu der u.a. das
+        <em>Runcontext</em> Objekt geh&ouml;rt, das den aktuellen
+        Zustand der Ausf&uuml;hrung eines Tests repr&auml;sentiert. Auf dieses Objekt kann
+        &uuml;ber die Variable "rc", welche in allen Sprachen verf&uuml;gbar ist, zugegriffen werden.
+        Es bietet Schnittstellen (vollst&auml;ndig dokumentiert in <a href="tech_scripting.html#sec_api_rc">Abschnitt 46.5</a>)
+        f&uuml;r den Zugriff auf QF-Test Variablen, zum Aufruf von QF-Test
+        'Prozeduren' und um Meldungen in das Protokoll zu schreiben. Ein
+        'SUT Skript' kann mit seiner Hilfe au&szlig;erdem auf die echten
+        Java Komponenten des GUI im SUT zugreifen.
+      </p>
+      
+<p>
+        F&uuml;r F&auml;lle, in denen kein Runcontext verf&uuml;gbar ist, z.B. Resolver, TestRunListener, Code
+        der in einem Hintergrund-Thread ausgef&uuml;hrt wird etc. bietet QF-Test ein Modul namens
+        <code>qf</code> mit hilfreichen generischen Methoden zum Logging und f&uuml;r andere Zwecke an.
+        Detaillierte Informationen hierzu finden Sie in <a href="tech_scripting.html#sec_api_qf">Abschnitt 46.6</a>.
+
+      </p>
+    
+
+      
+<a name="sec_N82392"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N82392">11.2.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N82392">Meldungen ausgeben</a>
+</h5>
+        
+<p>
+          Ein Einsatzgebiet des Runcontexts ist die Ausgabe beliebiger
+          Meldungen im Protokoll, das QF-Test f&uuml;r jeden Testlauf erstellt. Diese
+          Meldungen k&ouml;nnen auch als Warnungen oder Fehler markiert werden.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>rc.logMessage("This is a plain message")
+rc.logWarning("This is a warning")
+rc.logError("This is an error")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.1:&nbsp;&nbsp;Meldungen aus Skripten ausgeben</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Wird mit kompakten Protokollen gearbeitet (vgl. die Option <a href="opt_log.html#opt_compactlog">Kompakte Protokolle erstellen</a>), werden Knoten, die aller
+          Wahrscheinlichkeit nach nicht f&uuml;r eine Fehleranalyse ben&ouml;tigt werden, eventuell
+          aus dem Protokoll entfernt um Speicher zu sparen. Dies betrifft nicht die
+          Fehlermeldung (<code>rc.logError</code>). Hier wird immer die Meldung selbst und
+          etwa 100 vorhergehende Knoten im Protokoll aufgehoben. Bei einer Warnung
+          <code>rc.logWarning</code> wird auf jeden Fall die Warnung behalten, jedoch
+          keine vorhergehenden Knoten. Normale Meldungen (<code>rc.logMessage</code>) werden
+          gegebenenfalls entfernt. Wenn Sie eine normale Meldung zwingend im Protokoll
+          behalten wollen, k&ouml;nnen Sie dies &uuml;ber den optionalen zweiten Parameter
+          (<code>dontcompactify</code>) erreichen:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>rc.logMessage("This message will not be removed", dontcompactify=true)
+rc.logMessage("This message will not be removed", 1)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.2:&nbsp;&nbsp;Meldungen, die nicht aus kompakten Protokollen entfernt werden</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_N82442"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N82442">11.2.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N82442">Checks durchf&uuml;hren</a>
+</h5>
+        
+<p>
+          Die Ausgabe einer Meldung ist meist an eine Bedingung gekn&uuml;pft.
+          Au&szlig;erdem ist es oft w&uuml;nschenswert, im XML oder HTML Report ein
+          Ergebnis analog zu einem 'Check' Knoten zu erhalten.
+          Hierzu dienen die Methoden <code>rc.check</code> und <code>rc.checkEqual</code>:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>x = 0
+rc.check(x == 0, "Value of x is 0")
+userlang = rc.lookup("system", "user.language")
+rc.checkEqual(userlang, "en", "English locale required",
+              rc.EXCEPTION)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.3:&nbsp;&nbsp;Checks durchf&uuml;hren</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Das optionale letzte Argument legt die Fehlerstufe fest.
+          Hierbei k&ouml;nnen <code>rc.EXCEPTION</code>, <code>rc.ERROR</code>, <code>rc.OK</code> bzw. <code>rc.WARNING</code> verwendet werden.
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_scriptvars"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_scriptvars">11.2.3</a></span>
+</div>
+<a href="contents.html#toc_usec_scriptvars">Variablen</a>
+</h5>
+          
+<p>
+            In QF-Test gibt es verschiedene Arten von Variablen.
+            Es wird einerseits unterschieden zwischen QF-Test Variablen und Variablen der Skriptsprachen.
+            Die Variablen der Skriptsprachen wiederum werden unterteilt in
+            Server- und SUT-seitige Variablen des jeweiligen Interpreters.
+            Die folgende Grafik verdeutlicht die Sichtbarkeit der jeweiligen Variablen Arten:
+          </p>
+        
+<a name="figure_11.2"></a><a name="figure_11.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/qt_variablesoverview.png" target="_blank"><img src="images/qt_variablesoverview.png" alt="&Uuml;bersicht &uuml;ber die Variablen" texscale=".66" width="960" height="600"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;11.2</a>:&nbsp;&nbsp;&Uuml;bersicht &uuml;ber die verschiedenen Variablen in QF-Test</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Um in den Skripten mit diesen unterschiedlichen Variablen zu arbeiten und dieses auszutauschen,
+        stellt der Runcontext spezielle Methoden zur Verf&uuml;gung.
+        Diese Methoden werden in den nachfolgenden Abschnitten erl&auml;utert.
+      </p>
+
+        
+
+      
+<a name="sub_accessing_variables"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sub_accessing_variables">11.2.3.1</a></span>
+</div>
+<a href="contents.html#toc_sub_accessing_variables">Zugriff auf Variablen</a>
+</h5>
+        
+<p>
+          Auf Variablen von QF-Test in einem Skript zuzugreifen ist nicht weiter
+          schwierig. Auf Textvariablen k&ouml;nnen Sie mittels der Runcontext Methode <code>lookup</code> (siehe <a href="tech_scripting.html#sec_api_rc">Abschnitt 46.5</a> f&uuml;r API Beschreibung) zugreifen.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre># access a simple variable
+text = rc.lookup("someText")
+# access a property or resource
+version = rc.lookup("qftest", "version")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.4:&nbsp;&nbsp;Zugriff auf Textvariablen mittels <code>rc.lookup</code></td><td class="captionglue"></td>
+</tr>
+</table>
+
+
+      
+
+
+      
+      
+
+      
+<a name="sec_N82549"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N82549">11.2.3.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N82549">Variablen setzen</a>
+</h5>
+        
+<p>
+          Um die Ergebnisse eines Skripts f&uuml;r die weitere Ausf&uuml;hrung
+          eines Tests bekannt zu machen, k&ouml;nnen Werte in globalen oder lokalen
+          QF-Test Variablen abgelegt werden. Der Effekt entspricht der Ausf&uuml;hrung
+          eines <a href="miscnodes.html#step_SetGlobalStep" shape="rect">'Variable setzen'</a> Knotens. Die entsprechenden Methoden im
+          Runcontext sind <code>rc.setGlobal</code> und
+          <code>rc.setLocal</code>.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre># Test if the file /tmp/somefile exists
+from java.io import File
+rc.setGlobal("fileExists", File("/tmp/somefile").exists())</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.5:&nbsp;&nbsp;Verwendung von <code>rc.setGlobal</code></td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Nach Ausf&uuml;hrung des obigen Skripts wird
+          <code>$(fileExists)</code> in einem Knoten von QF-Test zu 'true' expandieren, wenn die Datei
+          <code>/tmp/somefile</code> existiert und zu 'false', wenn sie nicht existiert.
+        </p>
+        
+<p>
+          Um eine Variable zu l&ouml;schen, setzen Sie deren Wert auf <code>None</code> in Jython bzw. <code>null</code> in Groovy und JavaScript . Mittels
+          <code>rc.clearGlobals()</code> aus einem 'Server Skript' k&ouml;nnen alle globalen
+          Variablen gel&ouml;scht werden.
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_N82610"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N82610">11.2.3.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N82610">Globale Variablen</a>
+</h5>
+        
+<p>
+          Manchmal ist es hilfreich, eine Skript Variable in verschiedenen Skriptknoten der gleichen Sprache zur
+          Verf&uuml;gung zu haben. Falls der Wert der Variablen kein simpler String oder Integer ist,
+          gen&uuml;gt es nicht, diese mit <code>setGlobal(...)</code> als globale QF-Test Variable zu
+          definieren, da der Wert dadurch in einen String umgewandelt wird. Stattdessen sollten
+          Sie die Variable als <code>global</code> deklarieren, wie es das folgende Beispiel
+          zeigt.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>global globalVar
+globalVar = 10000</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.6:&nbsp;&nbsp;Globale Jython Variable</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          
+<code>globalVar</code> steht nun in allen folgenden Skriptknoten desselben Typs zur
+          Verf&uuml;gung ('Server Skripte' oder 'SUT Skripte' desselben Clients). Um
+          den Wert von <code>globalVar</code> in einem anderen Skriptknoten zu ver&auml;ndern, ist
+          erneut eine Deklaration mit dem Schl&uuml;sselwort <code>global</code> notwendig. Andernfalls
+          wird eine neue lokale Variable mit gleichem Namen erzeugt. Um eine globale Jython
+          Variable zu entfernen, kann die <code>del</code> Anweisung verwendet werden:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>global globalVar
+del globalVar</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.7:&nbsp;&nbsp;L&ouml;schen einer globalen Jython Variable</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          In Groovy und JavaScript werden globale Variablen noch einfacher erzeugt als in Jython.
+          Die Regel lautet, dass undeklarierte Variablen im Binding des Skripts erwartet werden. Sind sie dort nicht zu finden, werden sie automatisch hinzugef&uuml;gt.
+        </p>
+         
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>
+myGlobal = 'global'
+</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.8:&nbsp;&nbsp;Definieren von globalen Variablen in Groovy bzw. JavaScript</td><td class="captionglue"></td>
+</tr>
+</table>
+                
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>assert myGlobal == 'global'
+def globals = binding.variables
+assert globals['myGlobal'] == 'global'
+globals.remove('myGlobal')
+assert globals.find { it == 'myGlobal' } == null</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.9:&nbsp;&nbsp;Verwenden und entfernen einer globalen Groovy Variablen</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="usec_exchanging_vars"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_exchanging_vars">11.2.3.4</a></span>
+</div>
+<a href="contents.html#toc_usec_exchanging_vars">Austausch von Variablen zwischen verschiedenen
+          Interpretern</a>
+</h5>
+        
+<p>
+          Es kommt vor, dass Variablen, die in einem Interpreter definiert
+          wurden, sp&auml;ter in einem anderen Interpreter ben&ouml;tigt werden. So
+          k&ouml;nnte zum Beispiel eine Liste von Werten, die mit Hilfe eines
+          'SUT Skripts' aus einer Tabelle gelesen werden, in einem
+          'Server Skript' weiterverwendet werden, um dar&uuml;ber zu
+          iterieren.
+        </p>
+        
+<p>
+          Um derartige Aufgaben zu vereinfachen, stellt der Runcontext einen
+          symmetrischen Satz von Methoden zum Zugriff auf und zur Modifikation
+          von Variablen in einem anderen Skript Interpreter bereit. F&uuml;r
+          'SUT Skripte' sind dies die Methoden <code>toServer</code>
+          und <code>fromServer</code>. Die entsprechenden Methoden f&uuml;r
+          'Server Skripte' hei&szlig;en <code>toSUT</code> und
+          <code>fromSUT</code>.
+        </p>
+
+        
+<p>
+          Das folgende Jython Beispiel zeigt, wie ein 'SUT Skript' direkt
+          eine globale Variable im Jython Interpreter von QF-Test setzen kann:
+        </p>
+
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>cellValues = []
+table = rc.lookup("idOfTable")
+for i in range(table.getRowCount()):
+    cellValues.append(table.getValueAt(i, 0))
+rc.toServer(tableCells=cellValues)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.10:&nbsp;&nbsp;Setzen einer Server Variablen aus einem
+            'SUT Skript' heraus</td><td class="captionglue"></td>
+</tr>
+</table>
+
+        
+<p>
+          Nach Ausf&uuml;hrung des obigen Skripts enth&auml;lt die globale Variable
+          namens "tableCells" in QF-Test's Jython Interpreter das Array der Werte aus
+          der Tabelle.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span> Die Tabellenwerte im obigen Beispiel sind
+          nicht notwendigerweise Strings. Sie k&ouml;nnten Zahlen sein,
+          Datumswerte, was auch immer. Leider ist der <em>pickle</em>
+          Mechanismus von Jython nicht m&auml;chtig genug, um Instanzen von
+          Java Klassen zu transportieren (nicht einmal von
+          serialisierbaren), so dass der Austauschmechanismus auf primitive
+          Typen wie Strings und Zahlen sowie auf Jython Objekte und
+          Strukturen wie Arrays und Dictionaries beschr&auml;nkt ist.
+        </p>
+      
+
+     
+
+    
+       
+      
+
+      
+<a name="usec_accessing_components"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_accessing_components">11.2.4</a></span>
+</div>
+<a href="contents.html#toc_usec_accessing_components">Zugriff auf die GUI Komponenten des SUT</a>
+</h5>
+        
+<p>
+          F&uuml;r 'SUT Skripte' bietet der Runcontext eine &auml;u&szlig;erst
+          n&uuml;tzliche Methode. Durch den Aufruf von
+          <code>rc.getComponent("componentId")</code> werden die Informationen
+          aus dem <a href="components.html#step_ComponentStep" shape="rect">'Komponente'</a> Knoten mit der <a href="components.html#att_ComponentStep_id" shape="rect">'QF-Test ID'</a>
+          "componentId" aus der Testsuite geholt und an den Mechanismus zur
+          Wiedererkennung von Komponenten gereicht. Dieser arbeitet genau wie
+          bei der Simulation eines Events, das hei&szlig;t, er wirft auch die
+          entsprechenden Exceptions, falls die Komponente nicht gefunden
+          werden kann.
+        </p>
+        
+<p>
+          Im Erfolgsfall wird die Komponente an das Skript
+          zur&uuml;ckgegeben und zwar nicht in Form von abstrakten Daten, sondern
+          das konkrete Objekt. Alle Methoden, die die Java API der
+          Klasse dieser Komponente zur Verf&uuml;gung stellt, k&ouml;nnen ausgef&uuml;hrt
+          werden, um Informationen auszulesen oder um Effekte zu erzielen, die
+          durch das GUI nicht m&ouml;glich sind. Um eine Liste der Methoden einer
+          Komponente anzuzeigen, siehe <a href="user_componentinspection.html#usec_componentinspection">Abschnitt 5.12</a>.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre># get the custom password field
+field = rc.getComponent("tfPassword")
+# read its crypted value
+passwd = field.getCryptedText()
+rc.setGlobal("passwd", passwd)
+# get the table component
+table = rc.getComponent("tabAddresses")
+# get the number of rows
+rows = table.getRowCount()
+rc.setGlobal("tableRows", rows)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.11:&nbsp;&nbsp;Zugriff auf Komponenten mit <code>rc.getComponent</code></td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Sie k&ouml;nnen auf diesem Weg auch auf Unterelemente zugreifen. Wenn der
+          Parameter <code>componentId</code> ein Element referenziert, liefert
+          <code>getComponent</code> ein Paar zur&uuml;ck, bestehend aus der
+          Komponente und dem Index des Elements. Der Index kann dazu verwendet
+          werden, den eigentlichen Wert zu ermitteln. Das folgende Beispiel
+          zeigt, wie Sie den Wert einer Tabellenzelle auslesen. Beachten Sie
+          dabei auch die praktische Methode mit der Jython das Auspacken von
+          Sequenzen bei Zuweisungen unterst&uuml;tzt.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre># first get the table and index
+table, (row,column) = rc.getComponent("tableAddresses@Name@Greg")
+# then get the value of the table cell
+cell = table.getValueAt(row, column)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.12:&nbsp;&nbsp;Zugriff auf Unterelemente mit <code>rc.getComponent</code></td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_N82834"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N82834">11.2.5</a></span>
+</div>
+<a href="contents.html#toc_sec_N82834">Aufruf von 'Prozeduren'</a>
+</h5>
+        
+<p>
+          Der Runcontext kann auch dazu verwendet werden, <a href="procedures.html#step_Procedure" shape="rect">'Prozeduren'</a>
+          in QF-Test auszuf&uuml;hren.
+        <table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>rc.callProcedure("text.clearField",
+         {"component" : "nameField", "message" : "nameField cleared"})</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.13:&nbsp;&nbsp;Einfacher Prozeduraufruf in Jython</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+</p>
+        
+<p>
+          In obigem Beispiel wird die 'Prozedur' namens "clearField" im
+          <a href="procedures.html#step_Package" shape="rect">'Package'</a> namens "text" aufgerufen. Die Parameter
+          f&uuml;r den Aufruf sind "component" mit dem Wert "nameField" und "message" mit dem Wert "nameField cleared".
+        </p>
+        
+<p>
+            Dasselbe Beispiel mit der ver&auml;nderten Groovy Syntax:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>rc.callProcedure("text.clearField",
+         ["component" : "nameField", "message" : "nameField cleared"])</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.14:&nbsp;&nbsp;Einfacher Prozeduraufruf in Groovy</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+            Und in JavaScript:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>rc.callProcedure("text.clearField",
+         {"component" : "nameField", "message" : "nameField cleared"})</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.15:&nbsp;&nbsp;Einfacher Prozeduraufruf in JavaScript</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Der R&uuml;ckgabewert einer 'Prozedur', der mittels eines <a href="procedures.html#step_ReturnStep" shape="rect">'Return'</a> Knotens
+          festgelegt werden kann, ist gleichzeitig der R&uuml;ckgabewert des
+          <code>rc.callProcedure</code> Aufrufs.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span> In einem 'SUT Skript' Knoten sollte
+          <code>rc.callProcedure(...)</code> nur mit gro&szlig;er Vorsicht verwendet werden. Rufen Sie
+          nur 'Prozeduren' mit kurzer Laufzeit auf, die keine allzu komplexen Operationen im
+          SUT ausl&ouml;sen. Andernfalls k&ouml;nnte eine <a href="exceptions.html#ex_DeadlockTimeoutException" shape="rect"><code>DeadlockTimeoutException</code></a> verursacht
+          werden. Wenn Daten f&uuml;r datengetriebene Tests zwingend im SUT ermittelt werden m&uuml;ssen,
+          transferieren Sie diese mittels <code>rc.toServer(...)</code> zu QF-Test's Interpreter und
+          treiben Sie die Tests dann aus einem 'Server Skript' Knoten, f&uuml;r den es keine
+          derartigen Einschr&auml;nkungen gibt.
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_scripting_options"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N82947"></a><span class="note">3.1+</span></span><span class="numtitle"><a href="contents.html#toc_usec_scripting_options">11.2.6</a></span>
+</div>
+<a href="contents.html#toc_usec_scripting_options">Setzen von Optionen</a>
+</h5>
+        
+<p>
+          Viele der in <a href="options.html#sec_options">Kapitel 37</a> beschriebenen Optionen k&ouml;nnen auch zur
+          Laufzeit via <code>rc.setOption</code> gesetzt werden. Konstanten f&uuml;r die Namen dieser
+          Optionen sind in der Klasse <code>Options</code> definiert, welche in den Skriptsprachen automatisch verf&uuml;gbar ist.
+        </p>
+        
+<p>
+          Ein reelles Beispiel, bei dem es sinnvoll ist, eine Option tempor&auml;r zu setzen, ist die
+          Wiedergabe eines Events auf eine deaktivierte Komponente. F&uuml;r diesen Sonderfall muss die
+          &Uuml;berpr&uuml;fung durch QF-Test auf den enabled/disabled Zustand verhindert werden:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>rc.setOption(Options.OPT_PLAY_THROW_DISABLED_EXCEPTION, false)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.16:&nbsp;&nbsp;setOption</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Nach abspielen des speziellen Events sollte der urspr&uuml;ngliche Wert der Option, wie er
+          aus der Konfigurationsdatei gelesen oder im Optionen-Dialog gesetzt wurde, wieder
+          hergestellt werden, wie im folgendem Beispiel gezeigt:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>rc.unsetOption(Options.OPT_PLAY_THROW_DISABLED_EXCEPTION)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.17:&nbsp;&nbsp;unsetOption</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span>Stellen Sie sicher, dass Sie QF-Test Optionen immer in einem
+          'Server Skript' Knoten und SUT Optionen in einem 'SUT Skript' Knoten
+          setzen, andernfalls hat die Aktion keinen Effekt. Die Dokumentation der Optionen in
+          <a href="options.html#sec_options">Kapitel 37</a> f&uuml;hrt f&uuml;r jede Option den korrekten Knoten auf.
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_scripting_override"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_scripting_override">11.2.7</a></span>
+</div>
+<a href="contents.html#toc_usec_scripting_override">Komponenten bei Bedarf setzen</a>
+</h5>
+        
+<p>
+          Es k&ouml;nnten F&auml;lle auftreten in denen Sie eine bestimmte Komponente
+          suchen m&uuml;ssen, um mit dieser arbeiten zu k&ouml;nnen. Manchmal kann das
+          Aufzeichnen aller in Frage kommenden Komponenten sehr m&uuml;hsam oder
+          schlicht zu kompliziert sein. F&uuml;r solche F&auml;lle k&ouml;nnen Sie die
+          Methode <code>rc.overrideElement</code> verwenden, um die gefundene
+          Komponente (Suche mittels generischen Komponenten oder mittels
+          Skript) einer QF-Test Komponente zuzuordnen. Danach k&ouml;nnen Sie mit den
+          gewohnten QF-Test Knoten mit dieser Komponente arbeiten.
+        </p>
+        
+<p>
+          Stellen Sie sich vor, wir m&ouml;chten immer mit dem ersten Textfeld
+          eines Panels arbeiten. Jedoch k&ouml;nnte das einfache Aufzeichnen der
+          Textfelder nicht m&ouml;glich sein, da sich der Inhalt zu stark
+          &auml;ndert. Nun k&ouml;nnen wir ein Skript implementieren, welches das erste
+          Textfeld sucht. Dann k&ouml;nnen wir dieses gefundene Textfeld einer
+          Komponente <code>PriorityAwtSwingComponent</code> aus der
+          Standardbibliothek <code>qfs.qft</code> zuordnen.
+          Nachdem wir das Skript ausgef&uuml;hrt haben, k&ouml;nnen mit der Angabe der
+          QF-Test ID <code>PriorityAwtSwingComponent</code> alle gewohnten
+          QF-Test Knoten benutzen um mit dem gefundenen Textfeld zu arbeiten.
+        </p>
+        
+<a name="ex_overrideElement"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>panel = rc.getComponent("myPanel")
+for component in panel.getComponents():
+  if qf.isInstance(component, "javax.swing.JTextField"):
+     rc.overrideElement("PriorityAwtSwingComponent", component)
+     break
+          </pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.18:&nbsp;&nbsp;Jython rc.overrideElement</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Dieses Konzept ist sehr n&uuml;tzlich, wenn Sie einen Algorithmus kennen,
+          um ihre Zielkomponenten f&uuml;r bestimmte Testschritte zu suchen.
+        </p>
+        
+<p>
+          Sie k&ouml;nnen solche Priority-Komponenten f&uuml;r alle unterst&uuml;tzten
+          Engines in der Standardbibliothek <code>qfs.qft</code> finden.
+          Ein Beispiel finden Sie auch in Ihrer QF-Test Installation in der
+          mitgelieferten Testsuite <code>carconfig_de.qft</code> im Verzeichnis
+          <code>demo/carconfig</code>.
+        </p>
+      
+
+      
+    
+
+    
+    
+
+    
+<a name="usec_jythonbasics"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_jythonbasics">11.3</a></span>
+</div>
+<a href="contents.html#toc_usec_jythonbasics">Jython Skripting</a>
+</h4>
+      
+<p>
+	
+<span class="margin"><span class="note">Hinweis</span></span>Jython basiert auf Python 2 und nicht Python 3. Wenn also in diesem Handbuch nur von "Python" ohne
+	genauere Angabe die Rede ist, ist immer Python 2 gemeint.
+      </p>
+      
+<p>
+        Python ist eine vielseitige, objektorientierte Skriptsprache, die von Guido van Rossum
+        entworfen und in C implementiert wurde. Hilfreiche Informationen zu Python gibt es
+        unter <a href="http://www.python.org" shape="rect">http://www.python.org</a>. Python ist eine
+        standardisierte Sprache und seit vielen Jahren etabliert. Umfassende Dokumentation dazu
+        ist frei verf&uuml;gbar, daher beschr&auml;nkt sich dieses Handbuch darauf, die Integration von
+        Jython in QF-Test zu erkl&auml;ren. Die Sprache selbst ist sehr nat&uuml;rlich und intuitiv. Ihre
+        gr&ouml;&szlig;te St&auml;rke ist die Verst&auml;ndlichkeit und Lesbarkeit von Python Skripten. Daher
+        sollten Sie keine Probleme haben, die folgenden Beispiele zu verstehen.
+      </p>
+      
+<p>
+        Jython (fr&uuml;her JPython genannt) ist eine Implementierung von Version 2 der Programmiersprache
+        Python in Java. Jython hat dieselbe Syntax wie Python und verf&uuml;gt &uuml;ber beinahe
+        identische Features. Die Objektsysteme von Java und Jython haben vieles gemeinsam
+        und Jython kann nahtlos in Anwendungen wie QF-Test integriert werden. Das macht es zu
+        einem &auml;u&szlig;erst n&uuml;tzlichen Werkzeug f&uuml;r Java Skripting. Jython hat seine eigene
+        Homepage unter <a href="http://www.jython.org" shape="rect">http://www.jython.org</a>. Dort gibt es
+        unter anderem auch ein ausf&uuml;hrliches Tutorial zum Einstieg.
+      </p>
+      
+<p>
+        QF-Test verwendet die Jython Version 2.7, die einen Gro&szlig;teil der Standard Python 2 Bibliothek unterst&uuml;tzt.
+      </p>
+      
+<p>
+	Die Skriptsprache Jython wird in QF-Test nicht nur in <a href="control.html#step_ServerScriptStep" shape="rect">'Server Skript'</a> und <a href="control.html#step_ClientScriptStep" shape="rect">'SUT Skript'</a>
+	Knoten verwendet, sondern auch in <code>$[...]</code> Ausdr&uuml;cken und zur Auswertung von Bedingungen wie im
+	Attribut <a href="control.html#att_IfSequence_test" shape="rect">'Bedingung'</a> von <a href="control.html#step_IfSequence" shape="rect">'If'</a> Knoten.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span>In Jython Skripten werden QF-Test Variablen der Form $(var) oder ${Gruppe:Name} vor Ausf&uuml;hrung des
+        Skripts expandiert. Dies kann zu unerw&uuml;nschten Effekten f&uuml;hren, insbesondere wenn die Werte dieser Variablen
+        Zeilenumbr&uuml;che oder Backslash Zeichen ('\') enthalten. Es sollte stattdessen Methode <code>rc.lookup()</code>
+        (vgl. <a href="#sub_accessing_variables">Abschnitt 11.2.3.1</a>) verwendet werden, die erst w&auml;hrend der Ausf&uuml;hrung des Skripts
+        evaluiert wird.
+      </p>
+
+      
+
+      
+<a name="sec_N83138"></a>
+	
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N83138">11.3.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N83138">Module</a>
+</h5>
+	
+<p>
+          Module f&uuml;r Jython in QF-Test sind nichts anderes als gew&ouml;hnliche Python Module.
+          Sie k&ouml;nnen Module in QF-Test importieren und deren Methoden aufrufen, was
+          die Entwicklung komplexer Skripte stark vereinfacht und au&szlig;erdem die Wartbarkeit
+          Ihrer Tests erh&ouml;ht, da Module testsuite&uuml;bergreifend verf&uuml;gbar sind.
+	</p>
+	
+<p>
+          Module, die Sie f&uuml;r mehrere Testsuiten zur Verf&uuml;gung
+          stellen wollen, sollten Sie im <code>jython</code> Verzeichnis unter
+          QF-Tests Wurzelverzeichnis ablegen. Module, die speziell f&uuml;r eine
+          Testsuite geschrieben sind, k&ouml;nnen auch direkt im selben Verzeichnis
+          wie die Testsuite liegen. Das versionsspezifische Verzeichnis
+          <code>qftest-6.0.3/jython/Lib</code> ist f&uuml;r Module
+          von Quality First Software GmbH reserviert. Jython Module haben die Endung
+          <code>.py</code>.
+	</p>
+	
+<p>
+          Das folgende Beispiel zeigt ein Jython Modul, das eine Prozedur zur Verf&uuml;gung
+          stellt, die eine Liste von Zahlen sortiert:
+	</p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def insertionSort(alist):
+    for index in range(1,len(alist)):
+
+        currentvalue = alist[index]
+        position = index
+
+        while position&gt;0 and alist[position-1]&gt;currentvalue:
+            alist[position]=alist[position-1]
+            position = position-1
+
+        alist[position]=currentvalue</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.19:&nbsp;&nbsp;The Jython module <code>pysort.py</code></td><td class="captionglue"></td>
+</tr>
+</table>
+	
+<p>
+          Das folgende Jython Skript ruft die im Modul definierte Prozedur auf.
+	</p>
+	
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>import pysort
+
+alist = [54,26,93,17,77,31,44,55,20]
+pysort.insertionSort(alist)
+print(alist)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.20:&nbsp;&nbsp;Jython script using a module</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="usec_jythondebug"></a>
+	
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_jythondebug">11.3.2</a></span>
+</div>
+<a href="contents.html#toc_usec_jythondebug">Post-mortem Fehleranalyse von Jython Skripten</a>
+</h5>
+	
+<p>
+          In Python gibt es einen einfachen zeilenorientierten Debugger namens <code>pdb</code>. Zu
+          seinen n&uuml;tzlichen Features geh&ouml;rt die M&ouml;glichkeit zu analysieren, warum ein Skript mit
+          einer Exception fehlgeschlagen ist. In Python k&ouml;nnen Sie hierzu einfach nach einer
+          Exception das <code>pdb</code> Modul importieren und <code>pdb.pm()</code> ausf&uuml;hren.
+          Damit gelangen Sie in eine Debugger-Umgebung in der Sie die Werte der Variablen zum
+          Zeitpunkt des Fehlers betrachten und auch den Call-Stack hinauf navigieren k&ouml;nnen um dort
+          weitere Variablen zu analysieren. Das Ganze ist vergleichbar mit der Analyse eines
+          Core-Dump einer C Anwendung.
+	</p>
+	
+<p>
+          Obwohl Jython den <code>pdb</code> Debugger grunds&auml;tzlich unterst&uuml;tzt, funktioniert er aus
+          verschiedenen Gr&uuml;nden in QF-Test nicht besonders gut, aber immerhin ist die post-mortem
+          Analyse von Skripts &uuml;ber die Jython Terminals m&ouml;glich. Nach einem fehlgeschlagenen <a href="control.html#step_ServerScriptStep" shape="rect">'Server Skript'</a> Knoten
+          &ouml;ffnen Sie QF-Test's Jython Terminal, f&uuml;r ein gescheitertes <a href="control.html#step_ClientScriptStep" shape="rect">'SUT Skript'</a> das
+          Jython Terminal des entsprechenden SUT, und geben dort einfach <code>debug()</code> ein.
+          Dies sollte denselben Effekt wie das oben beschriebene <code>pdb.pm()</code> haben.
+          Weitere Informationen zum Python Debugger entnehmen Sie bitte der Dokumentation
+          unter <a href="https://docs.python.org/2/library/pdb.html" shape="rect">https://docs.python.org/2/library/pdb.html</a>.
+	</p>
+
+      
+
+      
+      
+
+      
+<a name="sec_N83245"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N83245">11.3.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N83245">Boolean Typ</a>
+</h5>
+        
+<p>
+          Jython hat einen echten Boolean Typ mit den Werten <code>True</code> und
+          <code>False</code>. In &auml;lteren Versionen dienten die Integer Werte 0 und 1 als Boolean
+          Werte. Dies kann zu Problemen f&uuml;hren, wenn das Ergebnis eines Aufrufs wie
+          <code>file.exists()</code> einer QF-Test Variable zugewiesen wird, z.B. "fileExists", und
+          sp&auml;ter in einem <a href="control.html#att_IfSequence_test" shape="rect">'Bedingung'</a> Attribut in der Form <code>$(fileExists) ==
+          1</code> ausgewertet wird. Derartige Bedingungen sollten grunds&auml;tzlich in der einfachen
+          Form <code>$(fileExists)</code> bzw. <code>rc.getBool("fileExists")</code> geschrieben werden,
+	  die mit allen Jython Versionen funktioniert.
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_jythonstrings"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_jythonstrings">11.3.4</a></span>
+</div>
+<a href="contents.html#toc_usec_jythonstrings">Jython Strings und Zeichenkodierung</a>
+</h5>
+
+	
+
+	
+<p>
+<b>Zusammenfassung und Hinweise</b>
+</p>
+	
+<p>
+	  
+<span class="margin"><a name="new_N83298"></a><span class="note">5.3+</span></span>
+	  Zeichen in Jython Literalen wie <code>"abc"</code> waren auf 8 Bit limitiert, was zu Problemen bei
+	  Verwendung von internationalen Zeichen f&uuml;hrte.
+	</p>
+	
+<p>
+	  QF-Test Version 5.3 erm&ouml;glicht die Verwendung von internationalen Zeichen in Jython Skripten und
+	  <a href="control.html#att_IfSequence_test" shape="rect">'Bedingung'</a> Attributen basierend auf der Option <a href="opt_general.html#opt_jythonunicodeliterals">Literale (w&ouml;rtliche Zeichenketten) in Jython sind Unicode (16-Bit wie in Java)</a>.
+	</p>
+	
+<p>
+	  Falls Sie QF-Test erst seit Version 5.3. oder h&ouml;her verwenden, ist diese Option standardm&auml;&szlig;ig aktiv.
+	</p>
+	
+<p>
+	  Ein kleiner Teil von bestehenden Skripten muss beim Umschalten auf Unicode Literale angepasst
+	  werden. Daher bleibt die Option zun&auml;chst deaktiviert, falls QF-Test eine bestehende &auml;ltere Systemkonfiguration
+	  antrifft. Es wird w&auml;rmstens empfohlen, diese Option zu aktivieren. Der Abschnitt "Problembehandlung" weiter
+	  unten erkl&auml;rt, was im Fall von dadurch auftretenden Problemen zu tun ist.
+	</p>
+	
+<p>
+	  Wenn Jython Unicode Literale aktiviert sind, sollte f&uuml;r maximale Flexibilit&auml;t die Option <a href="opt_general.html#opt_defaultjythonencoding">Standard-Zeichenkodierung f&uuml;r Jython</a> auf "utf-8" gesetzt werden.
+	</p>
+	
+<p>
+	  Unabh&auml;ngig von den eingestellten Option sollte vor allen Dingen die Expansion von QF-Test Variablen in
+	  Literalen verhindert werden. Ausdr&uuml;cke der Form <code>"$(somevar)"</code> k&ouml;nnen zu Syntaxfehlern oder
+	  unerwarteten Ergebnissen f&uuml;hren, wenn der Wert der Variable Zeilenumbr&uuml;che oder Backslash Zeichen ('\')
+	  enth&auml;lt. Verwenden Sie stattdessen <code>rc.lookup("somevar")</code>.
+	</p>
+
+	
+	
+
+	
+<p>
+<b>Hintergr&uuml;nde und Werdegang von Jython in QF-Test</b>
+</p>
+        
+<p>
+          Alle Java Strings sind Sequenzen von 16-Bit Zeichen. Jython kennt hingegen zwei Arten von Strings: 8-Bit
+	  Byte-Strings (type &lt;str&gt;) und 16-Bit Unicode-Strings (type &lt;unicode&gt;). Der &uuml;berwiegende Anteil
+	  von Strings in QF-Test Jython Skripten sind entweder Konstante Zeichenketten wie <code>"abc"</code>, genannt
+	  Literale, oder Java Strings, die nach Jython konvertiert werden, wie das Ergebnis von
+	  <code>rc.lookup("varname")</code>. Die Konvertierung aus Java f&uuml;hrt immer zu 16-Bit Unicode-Strings. F&uuml;r
+	  Literale h&auml;ngt das Ergebnis von der Option <a href="opt_general.html#opt_jythonunicodeliterals">Literale (w&ouml;rtliche Zeichenketten) in Jython sind Unicode (16-Bit wie in Java)</a> ab.
+        </p>
+	
+<p>
+	  Wenn Unicode und Byte-Strings verglichen oder zusammengef&uuml;gt werden, muss Jython eine Form in die andere
+	  konvertieren. Die Konvertierung von Unicode zu Byte-Strings hei&szlig;t Enkodierung, die umgekehrte Richtung
+	  Dekodierung. Es gibt viele verschiedene Wege, 16-Bit Strings in 8-Bit Sequenzen zu kodieren und die Regeln
+	  daf&uuml;r hei&szlig;en Zeichenkodierung. Typische Beispiele hief&uuml;r sind "utf-8" oder "latin-1". Die Option <a href="opt_general.html#opt_defaultjythonencoding">Standard-Zeichenkodierung f&uuml;r Jython</a> legt fest, welche Kodierung Jython verwenden soll, wenn keine explizite
+	  angegeben ist. Aus Kompatibilit&auml;tsgr&uuml;nden war vor QF-Test 5.3 der Standardwert "latin-1". Inzwischen ist er
+	  "utf-8", weil diese Kodierung flexibler ist und alle internationalen Zeichens&auml;tze unterst&uuml;tzt.
+	</p>
+        
+<p>
+	  Jython in QF-Test basiert auf Python Version 2. In fr&uuml;heren Python Versionen bestanden Strings stets aus 8-Bit
+	  Zeichen. Sp&auml;ter kamen Unicode-Strings mit 16-Bit Zeichen hinzu. In Python 2 sind Literale wie
+	  <code>"abc"</code> 8-Bit Byte-Strings, das Voransetzen von 'u', also <code>u"abc"</code> macht daraus
+	  Unicode-Strings. In Python 3 sind Literale bereits Unicode-Strings und k&ouml;nnen durch Voransetzen von 'b',
+	  also <code>b"abc"</code> zu Byte-Strings gemacht werden.
+        </p>
+        
+<p>
+          In Jython 2.2 wurden Java Strings in 8-Bit Python Strings konvertiert, basierend auf der
+          Standard-Zeichenkodierung der Java VM, in der westlichen Hemisph&auml;re &uuml;blicherweise ISO-8859-1 (auch als
+          latin-1 bekannt). Seit Jython 2.5 werden Java Strings grunds&auml;tzlich als Unicode Jython Strings
+          interpretiert. Zusammen mit 8-Bit String-Literalen f&uuml;hrt dies zu viel implizierter Konvertierung zwischen
+          Byte-Strings und Unicode-Strings, z.B. wenn ein - nun als Unicode interpretierter - Java String und ein
+          Literal verkn&uuml;pft werden, wie in <code>rc.lookup("path") + "/file"</code>.
+        </p>
+        
+<p>
+	  
+<span class="margin"><a name="new_N83384"></a><span class="note">5.3+</span></span>
+	  Vor QF-Test Version 5.3 hatten Jython Skripte durch die Art, wie der Code von QF-Test an den Jython Compiler
+	  &uuml;bergeben wurde, weitere Probleme mit Zeichen au&szlig;erhalb des 8-Bit Bereichs. Im Zuge der Behebung dieser
+	  Probleme stellte es sich heraus, dass der beste Weg zur Behebung der Problem mit Jython String-Literalen die
+	  Adaption eines bereits in Python 2 vorhanden Features ist, n&auml;mlich <code>from future import
+	  unicode_literals</code>, um Jython Literale in QF-Test generell als Unicode-Strings zu behandeln. Dadurch sind
+	  String-Literale nun in allen Skriptsprachen von QF-Test einheitlich und voll kompatibel mit Java Strings, so
+	  dass die Interaktion zwischen Jython und allem anderen in QF-Test viel nat&uuml;rlicher wird. Die neue Option
+	  <a href="opt_general.html#opt_jythonunicodeliterals">Literale (w&ouml;rtliche Zeichenketten) in Jython sind Unicode (16-Bit wie in Java)</a> bestimmt, ob String-Literale in Jython als Unicode-Strings
+	  behandelt werden. Aus Kompatibilit&auml;tsgr&uuml;nden bleibt es bei 8-Bit Byte-Strings, falls QF-Test beim Start auf
+	  eine &auml;ltere bestehende Systemkonfiguration trifft, andernfalls sind Unicode Literale nun der Standard.
+        </p>
+	
+<p>
+	  Die empfohlenen Einstellungen f&uuml;r die Jython Optionen sind aktiviert f&uuml;r <a href="opt_general.html#opt_jythonunicodeliterals">Literale (w&ouml;rtliche Zeichenketten) in Jython sind Unicode (16-Bit wie in Java)</a> und "utf-8" f&uuml;r <a href="opt_general.html#opt_defaultjythonencoding">Standard-Zeichenkodierung f&uuml;r Jython</a>.
+	</p>
+
+	
+	
+
+	
+<a name="usec_jythonstrings_troubleshooting"></a>
+<p id="usec_jythonstrings_troubleshooting">
+<b>Behandlung von Problemen mit Jython und Zeichenkodierungen</b>
+</p>
+	
+<p>
+	  Wie in den vorherigen Abschnitten beschrieben, verf&uuml;gt Jython &uuml;ber zwei Arten von Strings, <code>&lt;type
+	  'str'&gt;</code> f&uuml;r 8-Bit Byte-Strings und <code>&lt;type 'unicode'&gt;</code> f&uuml;r 16-Bit Unicode-Strings.
+	  Literale kann ein 'b' vorangestellt werden (<code>b"abc"</code>) um Byte-Strings zu erhalten und ein 'u'
+	  (<code>u"abc"</code>) f&uuml;r Unicode-Strings. Nicht n&auml;her gekennzeichnete Literale (<code>"abc"</code>) sind
+	  Unicode, falls die Option <a href="opt_general.html#opt_jythonunicodeliterals">Literale (w&ouml;rtliche Zeichenketten) in Jython sind Unicode (16-Bit wie in Java)</a> aktiviert ist, andernfalls
+	  Byte-Strings. Java Strings aus einem Java Funktionsaufruf wie <code>rc.lookup("somevar")</code>
+	  sind immer Unicode-Strings.
+	</p>
+	
+<p>
+	  Die folgenden Hinweise sollten Ihnen dabei helfen, Probleme mit Jython und Zeichenkodierungen zu minimieren:
+	</p>
+	
+<ul>
+	  
+<li>
+	    Schalten Sie die Option <a href="opt_general.html#opt_jythonunicodeliterals">Literale (w&ouml;rtliche Zeichenketten) in Jython sind Unicode (16-Bit wie in Java)</a> ein und setzen Sie die Option <a href="opt_general.html#opt_defaultjythonencoding">Standard-Zeichenkodierung f&uuml;r Jython</a> auf "utf-8".
+	  </li>
+	  
+<li>
+	    String-Literale mit $()-Expansion wie <code>"$(varname)"</code> waren immer schon problematisch und
+	    sollten durch <code>rc.lookup("varname")</code> ersetzt werden.
+	  </li>
+	  
+<li>
+	    Strings mit Windows Dateinamen brauchen wegen der enthaltenen Backslash '\' Zeichen spezielle Behandlung.
+	    In 8-Bit Strings werden Backslashes beibehalten, wenn sie keine Sonderfunktion wie '\t' f&uuml;r Tab oder '\n'
+	    f&uuml;r einen Zeilenumbruch haben. In 16-Bit Strings gibt es wesentlich mehr sogenannte Escape-Sequenzen mit
+	    besonderer Bedeutung, die zu Syntaxfehlern oder unerwarteten Ergebnissen f&uuml;hren k&ouml;nnen. Probleme k&ouml;nnen
+	    durch Verwendung von  <code>rc.lookup("filename")</code> (siehe oben) vermieden werden und Voranstellen
+	    von 'r' (f&uuml;r "raw string") bei Angabe von Literalen, z.B.
+	    <code>qftestDir = r"C:\Program Files\QFS\QF-Test"</code>.
+	  </li>
+	  
+<li>
+	    Verwenden Sie grunds&auml;tzlich <code>qf.println(...)</code> anstelle von <code>print ...</code>, da letzteres
+	    durch einen 8-Bit Stream mit der Standardkodierung von Java (und im Falle eines <a href="control.html#step_ClientScriptStep" shape="rect">'SUT Skript'</a>
+	    Knotens zus&auml;tzlich mit der des Betriebssystems) durchgeschleift wird und dadurch internationale Zeichen leicht
+	    verloren gehen.
+	  </li>
+	  
+<li>
+	    Die Konvertierung von Objekten in Strings wurde in Jython traditionell via <code>str(some_object)</code>
+	    vorgenommen. Da <code>str</code> der Typ von Byte-Strings ist, erzeugt dies immer einen Byte-String und
+	    erzwingt damit Enkodierung. Wenn Sie nicht ausdr&uuml;cklich einen Byte-String ben&ouml;tigen, sollten Sie
+	    stattdessen <code>unicode(some_object)</code> verwenden.
+	  </li>
+	  
+<li>
+	    Das Jython Modul <code>types</code> beinhaltet die Konstanten <code>types.StringType</code> und
+	    <code>types.UnicodeType</code> sowie die Liste <code>types.StringTypes</code> mit beiden Typen. Letztere
+	    ist sehr hilfreich, um zu pr&uuml;fen, ob ein Objekt von irgendeinem String-Typ ist egal ob 8-Bit oder 16-Bit.
+	    Statt<br>
+	    
+<code>if type(some_object) == types.StringType</code>
+<br>
+	    sollte lieber<br>
+	    
+<code>if type(some_object) in types.StringTypes</code>
+<br>
+	    verwendet werden.
+	  </li>
+	  
+<li>
+	    In den wenigen F&auml;llen, in denen Sie wirklich ein 8-Bit Byte-String Literal ben&ouml;tigen, setzen Sie ein 'b'
+	    voran, z.B.<br>
+	    
+<code>array.array(b'i', [1, 2, 3])</code>
+	  
+</li>
+	
+</ul>
+	
+<p>
+	  Und nat&uuml;rlich ist unser Support immer f&uuml;r Sie da.
+	</p>
+
+	
+
+      
+
+      
+      
+
+      
+<a name="sec_N83541"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N83541">11.3.5</a></span>
+</div>
+<a href="contents.html#toc_sec_N83541">Den Namen einer Java Klasse ermitteln</a>
+</h5>
+        
+<p>
+          Diese einfache Operation ist in Jython &uuml;berraschend schwierig. Bei einem gegebenen Java
+          Objekt w&uuml;rde man den Namen der Klasse einfach mittels
+          <code>obj.getClass().getName()</code> bestimmen. F&uuml;r manche Objekte funktioniert das
+          auch in Jython, f&uuml;r andere scheitert es mit einer kryptischen Fehlermeldung, was recht
+          frustrierend sein kann. Es geht immer dann schief, wenn die Klasse selbst auch eine
+          <code>getName</code> Methode implementiert. Dies ist f&uuml;r AWT <code>Component</code> der
+          Fall, so dass es f&uuml;r alle AWT/Swing Komponenten schwierig ist, den Namen ihrer Klasse zu
+          ermitteln.
+        </p>
+        
+<p>
+          Die einzige L&ouml;sung, die zuverl&auml;ssig funktioniert ist:<br>
+<br>
+          
+<code>from java.lang import Class</code>
+<br>
+          
+<code>Class.getName(obj.getClass())</code>
+        
+</p>
+        
+<p>
+          Da der Code nicht gerade intuitiv ist, haben wir ein neues Modul namens
+          <code>qf</code> mit praktischen Methoden initiiert.
+          Es ist automatisch verf&uuml;gbar, so dass Sie nun einfach folgendes schreiben k&ouml;nnen:<br>
+<br>
+          
+<code>qf.getClassName(obj)</code>.
+        </p>
+      
+
+    
+      
+
+      
+<a name="sec_N83589"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N83589">11.3.6</a></span>
+</div>
+<a href="contents.html#toc_sec_N83589">Ein komplexes Beispiel</a>
+</h5>
+        
+<p>
+          Wir schlie&szlig;en diesen Abschnitt mit einem komplexen Beispiel ab,
+          das Features von Jython und QF-Test kombiniert, um einen
+          datengetriebenen Test durchzuf&uuml;hren. Wir gehen f&uuml;r dieses Beispiel
+          von einer einfachen Tabelle mit den drei Spalten "Name", "Age" und
+          "Address" aus, die mit Werten gef&uuml;llt werden soll, die aus einer
+          Datei gelesen werden. Die Datei soll dabei im
+          "Comma-Separated-Values" Format vorliegen, mit '|' als Trennzeichen,
+          eine Zeile pro Tabellenzeile, z.B.:
+        </p>
+        
+<p>
+          
+<code>John Smith|45|Some street, some town</code>
+<br>
+          
+<code>Julia Black|35|Another street, same town</code>
+        
+</p>
+        
+<p>
+          Das Beispiel testet die Funktionalit&auml;t des SUT neue
+          Tabellenzeilen zu erstellen. Dabei kommt eine QF-Test Prozedur zum
+          Einsatz, die 3 Parameter erwartet - "name", "age" und "address" - und
+          mit diesen eine neue Tabellenzelle anlegt und f&uuml;llt. Im
+          Jython SUT Skript wird die Datei mit den Werten eingelesen und
+          geparst. In einer Schleife wird &uuml;ber die Datens&auml;tze iteriert und
+          f&uuml;r jede zu erstellende Tabellenzeile die Prozedur aufgerufen.
+          Der Name f&uuml;r die Datei wird in der QF-Test Variable namens
+          "filename" &uuml;bergeben. Wenn das F&uuml;llen der Tabelle abgeschlossen ist,
+          wird der Endzustand der Tabelle mit den eingelesenen
+          Werten verglichen, um sicher zu gehen, dass alles geklappt hat.
+        </p>
+        
+<a name="ex_data_driven"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>import string
+data = []
+# read the data from the file
+fd = open(rc.lookup("filename"), "r")
+line = fd.readline()
+while line:
+    # remove whitespace
+    line = string.strip(line)
+    # split the line into separate fields
+    # and add them to the data array
+    if len(line) &gt; 0:
+        data.append(string.split(line, "|"))
+    line = fd.readline()
+
+# now iterate over the rows
+for row in data:
+    # call a qftest procedure to create
+    # one new table row
+    rc.callProcedure("table.createRow",
+                     {"name": row[0], "age": row[1],
+                      "address": row[2]})
+
+# verify that the table-rows have been filled correctly
+table = rc.getComponent("tabAddresses")
+
+# check the number of rows
+if table.getRowCount() != len(data):
+    rc.logError("Row count mismatch")
+else:
+    # check each row
+    for i in range(len(data)):
+        if str(table.getValueAt(i, 0)) != data[i][0]:
+            rc.logError("Name mismatch in row " + str(i))
+        if str(table.getValueAt(i, 1)) != data[i][1]:
+            rc.logError("Age mismatch in row " + str(i))
+        if str(table.getValueAt(i, 2)) != data[i][2]:
+            rc.logError("Address mismatch in row " + str(i))</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.21:&nbsp;&nbsp;Ein datengetriebener Test</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Nat&uuml;rlich dient obiges Beispiel nur zur Anschauung. Es ist viel zu
+          komplex, um halbwegs komfortabel in QF-Test editiert werden zu
+          k&ouml;nnen. Au&szlig;erdem sind zu viele Dinge fest verdrahtet, so dass es
+          mit der Wiederverwendbarkeit nicht weit her ist. F&uuml;r eine echte
+          Anwendung w&uuml;rde man den Code zum Einlesen und Parsen der Datei
+          parametrisieren und in ein Modul auslagern, ebenso den Code zur
+          Verifikation der Tabelle.
+        </p>
+        
+<p>
+          Dies geschieht im folgenden Jython Skript mit den Methoden
+          <code>loadTable</code> zum Lesen der Daten aus der Datei und
+          <code>verifyTable</code> zum &Uuml;berpr&uuml;fen der Tabelle.
+          Es wird in einem Modul namens <code>csvtable.py</code> abgespeichert.
+          Ein Beispiel daf&uuml;r finden Sie in
+          <code>qftest-6.0.3/doc/tutorial/csvtable.py</code>.
+          Zur Erl&auml;uterung gen&uuml;gt folgende vereinfachte Version:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>import string
+
+def loadTable(file, separator="|"):
+    data = []
+    fd = open(file, "r")
+    line = fd.readline()
+    while line:
+        line = string.strip(line)
+        if len(line) &gt; 0:
+            data.append(string.split(line,separator))
+        line = fd.readline()
+    return data
+
+def verifyTable(rc, table, data):
+    ret = 1
+    # check the number of rows
+    if table.getRowCount() != len(data):
+        if rc:
+            rc.logError("Row count mismatch")
+        return 0
+    # check each row
+    for i in range(len(data)):
+        row = data[i]
+        # check the number of columns
+        if table.getModel().getColumnCount() != len(row):
+            if rc:
+                rc.logError("Column count mismatch " +
+                            "in row " + str(i))
+            ret = 0
+        else:
+            # check each cell
+            for j in range(len(row)):
+                val = table.getModel().getValueAt(i, j)
+                if str(val) != row[j]:
+                    if rc:
+                        rc.logError("Mismatch in row " +
+                                    str(i) + " column " +
+                                    str(j))
+                    ret = 0
+    return ret</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.22:&nbsp;&nbsp;Schreiben eines Moduls</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Der obige Code sollte Ihnen bekannt vorkommen. Er ist eine verbesserte
+          Version von Teilen von <a href="#ex_data_driven">Beispiel&nbsp;11.21</a>. Ist dieses
+          Modul installiert, vereinfacht sich der Code, der in QF-Test geschrieben
+          werden muss, wie folgt:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>import csvtable
+# load the data
+data = csvtable.loadTable(rc.lookup("filename"))
+# now iterate over the rows
+for row in data:
+    # call a qftest procedure to create
+    # one new table row
+    rc.callProcedure("table.createRow",
+                     {"name": row[0], "age": row[1],
+                      "address": row[2]})
+
+# verify that the table-rows have been filled correctly
+table = rc.getComponent("tabAddresses")
+csvtable.verifyTable(rc, table, data)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.23:&nbsp;&nbsp;Aufruf von Methoden in einem Modul</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+      
+    
+
+    
+    
+
+    
+<a name="usec_groovy"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_groovy">11.4</a></span>
+</div>
+<a href="contents.html#toc_usec_groovy">Groovy Skripting</a>
+</h4>
+      
+<p>
+        Groovy ist eine weitere etablierte Skriptsprache f&uuml;r die Java Platform. Sie wurde von
+        James Strachan and Bob McWhirter im Jahre 2003 entwickelt. Im Grunde ist alles was man f&uuml;r
+        Groovy braucht, eine Java Laufzeitumgebung (JRE) und die Datei
+        <code>groovy-all.jar</code>. Diese Bibliothek enth&auml;lt sowohl einen Compiler, um Java Class
+        Dateien zu erstellen, wie auch die entsprechende Laufzeitumgebung, um diese Klassen in der
+        Java Virtual Machine (JVM) auszuf&uuml;hren. Man kann sagen, Groovy ist Java mit einer
+        zus&auml;tzlichen <code>.jar</code> Datei. Im Gegensatz zu Java ist Groovy allerdings eine
+        dynamische Sprache, was bedeutet, dass das Verhalten von Objekten erst zur Laufzeit
+        ermittelt wird. Au&szlig;erdem k&ouml;nnen Klassen auch direkt aus dem Skriptcode geladen werden,
+        ohne erst Class-Dateien erzeugen zu m&uuml;ssen. Schlie&szlig;lich l&auml;sst sich Groovy auch leicht in
+        Java Anwendungen wie QF-Test einbetten.
+      </p>
+      
+<p>
+        Die Groovy Syntax ist &auml;hnlich der von Java, vielleicht ausdrucksst&auml;rker und leichter zu
+        lesen. Wenn man von Java kommt, kann man sich dem Groovy Stil nach und nach ann&auml;hern.
+        Wir k&ouml;nnen hier nat&uuml;rlich nicht die Sprache Groovy in allen Details besprechen, dazu sei
+        auf die Groovy Homepage <a href="http://groovy-lang.org/" shape="rect">http://groovy-lang.org/</a> oder das exzellente Buch
+        "Groovy in Aktion" von Dierk Koenig u.a. verwiesen. Vielleicht k&ouml;nnen aber die folgenden
+        Hinweise einem Java Programmierer beim Einstieg in Groovy helfen.
+      </p>
+      
+<ul>
+        
+<li>
+          Das Semikolon ist optional, solange eine Zeile nur ein Statement enth&auml;lt.
+        </li>
+        
+<li>
+          Klammern sind manchmal optional, zum Beispiel bedeutet <code>println 'hello qfs'</code>
+          dasselbe wie <code>println('hello qfs')</code>.
+        </li>
+        
+<li>
+          Anstelle von <code>for (int i = 0; i &lt; len; i++) { ... }</code> verwende man
+          <code>for (i in 0..&lt;len) { ... }</code>.
+        </li>
+        
+<li>
+          Die folgenden Importe werden bei Groovy standardm&auml;&szlig;ig vorgenommen: <code>java.lang.*,
+          java.util.*, java.io.*, java.net.*, groovy.lang.*, groovy.util.*,
+          java.math.BigInteger, java.math.BigDecimal</code>.
+        </li>
+        
+<li>
+          Alles ist ein Objekt, sogar Integer oder Boolean Werte wie '1' oder 'true'.
+        </li>
+        
+<li>
+          Anstelle von Getter- und Setter-Methoden wie <code>obj.getXxx()</code> kann man
+          einfach <code>obj.xxx</code> verwenden.
+        </li>
+        
+<li>
+          Der Operator <code>==</code> pr&uuml;ft auf Gleichheit statt auf Identit&auml;t, so dass Sie
+          <code>if (somevar == "somestring")</code> statt <code>if
+          (somevar.equals("somestring"))</code> verwenden k&ouml;nnen. Um auf Identit&auml;t zu pr&uuml;fen, gibt
+          es die Methode <code>is()</code>.
+        </li>
+        
+<li>
+          Variablen haben einen dynamischen Typ, wenn sie mit dem Schl&uuml;sselwort <code>def</code>
+          deklariert werden. <code>def x = 1</code> zum Beispiel erlaubt es, der Variablen
+          <code>x</code> sp&auml;ter auch einen <code>String</code> zuzuweisen.
+        </li>
+        
+<li>
+          Arrays werden etwas anders als in Java definiert, z. B. <code>int[] a = [1, 2,
+          3]</code> oder <code>def a = [1, 2, 3] as int[]</code>. Mit <code>def a = [1, 2,
+          3]</code> wird in Groovy eine Liste definiert.
+        </li>
+        
+<li>
+          Groovy erweitert die Java Bibliothek indem f&uuml;r viele Klassen zus&auml;tzliche Methoden
+          definiert werden. So kann in einem Groovy-Skript etwa die Methode
+          <code>isInteger()</code> auf ein <code>String</code> Objekt angewendet werden. Diese
+          Erweiterungen werden als <em>GDK</em> bezeichnet (analog zu <em>JDK</em> in Java).
+          Eine Liste der GDK-Methoden f&uuml;r ein Objekt <code>obj</code> liefert der Ausdruck
+          <code>obj.class.metaClass.metaMethods.name</code> oder - &uuml;bersichtlicher - das
+          folgende Beispiel:
+        </li>
+      
+</ul>
+      
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>import groovy.inspect.Inspector
+
+def s = 'abc'
+def inspector = new Inspector(s)
+def mm = inspector.getMetaMethods().toList().sort() {
+    it[Inspector.MEMBER_NAME_IDX] }
+for (m in mm) {
+    println(m[Inspector.MEMBER_TYPE_IDX] + ' ' +
+            m[Inspector.MEMBER_NAME_IDX] +
+            '(' + m[Inspector.MEMBER_PARAMS_IDX] + ')')
+}</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.24:&nbsp;&nbsp;GDK-Methoden f&uuml;r ein <code>String</code> Objekt</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<ul>
+        
+<li>
+          Innere Klassen werden nicht unterst&uuml;tzt. In den meisten F&auml;llen k&ouml;nnen stattdessen
+          <em>Closures</em> verwendet werden. Eine <code>Closure</code> ist ein Object, das
+          einen Code-Schnipsel repr&auml;sentiert. Sie kann Parameter haben und auch ein Wert
+          zur&uuml;ckliefern. Genau wie ein Block wird eine <code>Closure</code> in geschweiften
+          Klammern definiert. Bl&ouml;cke gibt es nur im Zusammenhang mit <code>class</code>,
+          <code>interface</code>, statischer oder Objekt-Initialisierung, Methodenr&uuml;mpfen,
+          <code>if</code>, <code>else</code>, <code>synchronized</code>, <code>for</code>,
+          <code>while</code>, <code>switch</code>, <code>try</code>, <code>catch</code> und
+          <code>finally</code>. Jedes andere Vorkommen von <code>{...}</code> ist eine
+          <code>Closure</code>. Als Beispiel schauen wir uns die GDK-Methode
+          <code>eachFileMatch</code> der Klasse <code>File</code> an. Sie hat zwei Parameter:
+          einen Filter (z. B. ein <code>Pattern</code> Objekt) und eine <code>Closure</code>.
+          Diese <code>Closure</code> hat selbst auch einen Parameter: ein <code>File</code>
+          Object, das die gerade gefundene Datei repr&auml;sentiert.
+        </li>
+      
+</ul>
+      
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def dir = rc.lookup('qftest', 'suite.dir')
+def pattern = ~/.*\.qft/
+def files = []
+new File(dir).eachFileMatch(pattern) { file -&gt;
+    files.add(file.name)
+}
+files.each {
+    // Auf ein einzelnes Closure-Argument kann mit "it" zugegriffen werden.
+    rc.logMessage(it)
+}</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.25:&nbsp;&nbsp;Closures</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<ul>
+        
+<li>
+          Mit Listen (<code>List</code>) und Dictionaries (<code>Map</code>) l&auml;sst es sich in
+          Groovy viel leichter arbeiten als in Java.
+        </li>
+      
+</ul>
+      
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def myList = [1, 2, 3]
+assert myList.size() == 3
+assert myList[0] == 1
+myList.add(4)
+
+def myMap = [a:1, b:2, c:3]
+assert myMap['a'] == 1
+myMap.each {
+    this.println it.value
+}</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.26:&nbsp;&nbsp;Listen und Dictionaries</td><td class="captionglue"></td>
+</tr>
+</table>
+
+      
+
+      
+<a name="sec_N83918"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N83918">11.4.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N83918">Groovy Packages</a>
+</h5>
+        
+<p>
+          Genau wie Java Klassen werden Groovy Skriptdateien (<code>.groovy</code>) in
+          Packages organisiert. Diejenigen, welche suite&uuml;bergreifend Anwendung finden, stellt
+          man am besten in den <code>groovy</code> Ordner unterhalb des QF-Test
+          Wurzelverzeichnisses. Dateien bzw. Packages, die speziell f&uuml;r eine Testsuite
+          entwickelt worden sind, k&ouml;nnen auch im Verzeichnis der Testsuite abgelegt werden. Das
+          versionsspezifische Verzeichnis <code>qftest-6.0.3/groovy</code> ist f&uuml;r
+          Groovy-Dateien reserviert, die von Quality First Software GmbH bereitgestellt werden.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>package my
+
+class MyModule
+{
+    public static int add(int a, int b)
+    {
+        return a + b
+    }
+}</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.27:&nbsp;&nbsp;<code>MyModule.groovy</code></td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Die Datei <code>MyModule.groovy</code> k&ouml;nnte etwa im Unterverzeichnis
+          <code>my</code> unterhalb des Testsuite-Verzeichnisses abgespeichert werden. Die
+          Methode <code>add</code> aus <code>MyModule</code> kann dann folgenderma&szlig;en aufgerufen
+          werden:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>import my.MyModule as MyLib
+
+assert MyLib.add(2, 3) == 5</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.28:&nbsp;&nbsp;Using MyModule</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Dieses Beispiel demonstriert gleichzeitig noch ein weiteres Groovy Feature: <em>Type
+          Aliasing</em>. Indem <code>import</code> und <code>as</code> zusammen verwendet
+          werden, kann man eine Klasse &uuml;ber einen Namen eigener Wahl referenzieren.
+        </p>
+      
+
+      
+
+    
+
+    
+    
+
+    
+<a name="usec_javascript"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_javascript">11.5</a></span>
+</div>
+<a href="contents.html#toc_usec_javascript">JavaScript Skripting</a>
+</h4>
+      
+<p>
+        JavaScript hat sich vor allem im Bereich der Webentwicklung durchgesetzt
+        und ist dort eine sehr beliebte Programmiersprache.
+        QF-Test unterst&uuml;tzt ECMAScript, das entwickelt wurde um einen Standard f&uuml;r JavaScript bereitzustellen..
+    </p>
+     
+<p>
+        Um JavaScript verwenden zu k&ouml;nnen muss QF-Test mindestens mit Java 8 ausgef&uuml;hrt werden.
+    </p>
+     
+<p>
+        Dabei muss der ECMAScript 6 Standard in den JavaScript-Skripten verwendet werden.
+        QF-Test f&uuml;hrt automatisch eine interne &Uuml;bersetzung auf den ECMAScript 5 Standard durch.
+        Im Fehlerfall wird der &uuml;bersetzte Code im Protokoll im Skript-Knoten aufgef&uuml;hrt, falls dieser vom Original-Code abweicht.
+     </p>
+     
+<p>
+        Einige Besonderheiten von JavaScript gegen&uuml;ber anderen Skriptsprachen.
+     </p>
+      
+<ul>
+        
+<li>
+          Es gibt zwei verschiedene null-Werte: <code>undefined</code> und <code>null</code>.
+          Eine Variable ist <code>undefined</code>, wenn sie keinen Wert besitzt.
+          <code>null</code> ist ein beabsichtigter Null-Wert der zugewiesen werden muss.
+        </li>
+        
+<li>
+          Der Operator <code>==</code> pr&uuml;ft auf Gleichheit statt auf Identit&auml;t, so dass
+          <code>if (3 == "3")</code> "true" ergibt. Um auf Identit&auml;t, dss hei&szlig;t Gleichheit von Typ und Wert beider Operanten, zu pr&uuml;fen, gibt
+          es den <code>===</code> Operator.
+        </li>
+        
+<li>
+          Variablen haben einen dynamischen Typ, wenn sie mit dem Schl&uuml;sselwort <code>let</code>
+          deklariert werden. <code>let x = 1</code> zum Beispiel erlaubt es, der Variablen
+          <code>x</code> sp&auml;ter auch einen <code>String</code> zuzuweisen. Konstanten werden mit <code>const</code> definiert.
+        </li>
+
+      
+</ul>
+
+      
+
+      
+<a name="sec_N84061"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N84061">11.5.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N84061">Module</a>
+</h5>
+        
+<p>
+          Auch in JavaScript k&ouml;nnen h&auml;ufig ben&ouml;tigte Funktionen in Module ausgelagert werden.
+          Diese m&uuml;ssen analog zu Jython bzw. Groovy in das <code>javascript</code>-Verzeichnis im QF-Test Wurzelverzeichnis gelegt werden.
+        </p>
+        
+<p>
+          Im folgenden Beispiel werden die Funktionen des Moduls <code>moremath.js</code>
+          ausgelagert. Zun&auml;chst der Aufbau des Moduls:
+        </p>
+        
+<p>
+          
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>var fibonacci = function(n) {
+   return n &lt; 1 ? 0
+        : n &lt;= 2 ? 1
+        : fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+function sumDigits(number) {
+  var str = number.toString();
+  var sum = 0;
+
+  for (var i = 0; i &lt; str.length; i++) {
+    sum += parseInt(str.charAt(i), 10);
+  }
+
+  return sum;
+}
+// Module exports (Node.js style)
+exports.fibonacci = fibonacci;
+exports.sumDigits = sumDigits;</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.29:&nbsp;&nbsp;Das Modul <code>moremath.js</code></td><td class="captionglue"></td>
+</tr>
+</table>
+        
+</p>
+        
+<p>
+          In dem Modul <code>moremath.js</code> sind zwei Funktionen definiert:
+          <code>fibonacci</code> und <code>sumDigits</code>. <code>fibonacci</code> berechnet den Wert der Fibonacci-Zahl an der Stelle n
+          und <code>sumDigits</code> bildet die Quersumme.
+          <p>
+            Jede Funktion muss exportiert werden, damit sie f&uuml;r den Import zur Verf&uuml;gung steht.
+            Dies geschieht mit der an Node.js angelehnten Funktion <code>exports</code>.
+          </p>
+          
+<p>
+            Im Skript-Knoten kann nun der folgende Code verwendet werden um auf die Funktionen des Moduls <code>moremath.js</code> zuzugreifen:
+          </p>
+          
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>moremath = require('moremath');
+
+console.log(moremath.fibonacci(13));
+console.log(moremath.sumDigits(123));</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.30:&nbsp;&nbsp;<code>Verwendung des <code>moremath.js</code>-Moduls</code></td><td class="captionglue"></td>
+</tr>
+</table>
+        
+</p>
+        
+<p>
+          Module die von QF-Test bereitgestellt werden, k&ouml;nnen &uuml;ber die
+          import-Funktion importiert werden.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>import {Autowin} from 'autowin';
+Autowin.doClickHard(10, 10, true);</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.31:&nbsp;&nbsp;<code>Verwendung des autowin-Moduls</code></td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Java-Klassen k&ouml;nnen ebenfalls &uuml;ber das import Statement importiert werden.
+        </p>
+                
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>import {File} from 'java.io';</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.32:&nbsp;&nbsp;<code>Import von Java-Klassen</code></td><td class="captionglue"></td>
+</tr>
+</table>
+
+        
+<p>
+        Es ist auch m&ouml;glich, mit der <code>require</code>-Funktion <code>npm</code>-Module zu importieren.
+        Diese werden im n&auml;chsten Abschnitt beschrieben.
+        </p>
+         
+
+      
+<a name="sec_N84173"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N84173">11.5.1.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N84173"><code>npm</code>-Module</a>
+</h5>
+        
+<p>
+          
+<code>npm</code> ist ein Paketmanager f&uuml;r JavaScript der &uuml;ber 350.000 Pakete zur Verf&uuml;gung stellt. Unter der Webseite <a href="https://www.npmjs.com/" shape="rect">https://www.npmjs.com/</a>  k&ouml;nnen die vorhandenen Pakete durchsucht werden.
+          Es ist m&ouml;glich, in einem QF-Test Skript, installierte <code>npm</code>-Module zu verwenden.
+          Diese m&uuml;ssen im javascript-Verzeichnis des QF-Test Wurzelverzeichnisses installiert werden.
+          Mit dem Kommando <code>npm install underscore</code> wird das <code>npm</code>-Modul <code>underscore</code>
+          &uuml;ber die Konsole des Betriebssystems installiert. Dieses kann nun in den Skript-Knoten verwendet werden.
+        </p>
+        
+<p>
+          Es gibt <code>npm</code>-Module, die nicht mit Nashorn kompatibel sind.
+          Da beispielsweise einige Funktionen verwendet werden, die nicht vom ECMAScript Standard spezifiziert werden
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>_ = require('underscore');
+func = function(num){ return num % 2 == 0; }
+let evens = _.filter([1, 2, 3, 4, 5, 6], func);
+console.log(evens);</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.33:&nbsp;&nbsp;<code>Verwendung des <code>underscore</code>-Moduls</code></td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+      
+
+      
+<a name="sec_N84231"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N84231">11.5.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N84231">Ausgaben</a>
+</h5>
+        
+<p>
+        Neben <code>console.log()</code> wurde f&uuml;r Ausgaben ins Terminal in QF-Test eine zus&auml;tzliche print-Methode definiert.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>print([1,2,3,4]);</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;11.34:&nbsp;&nbsp;<code>Ausgabe eines Arrays</code></td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="sec_N84258"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N84258">11.5.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N84258">Ausf&uuml;hrung</a>
+</h5>
+        
+<p>
+          Die JavaScript-Skripte werden auf Server bzw. SUT-Seite nicht im Browser ausgef&uuml;hrt, sondern in einer eigenen Engine.
+          Und zwar in der Oracle Nashorn Engine, welche ab Java 8 mitgeliefert wird und die Ausf&uuml;hrung von ECMAScript in der JVM erm&ouml;glicht.
+        </p>
+      
+
+      
+
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_stdlib.html#usec_stdlib"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 10&nbsp;Standardbibliothek" title="Vorheriges Kapitel: 10&nbsp;Standardbibliothek"></a></td><td class="navicon"><a href="user_unittests.html#usec_unittests"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 12&nbsp;Unit Tests" title="N&auml;chste Seite: 12&nbsp;Unit Tests"></a></td><td class="navicon"><a href="user_unittests.html#usec_unittests"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 12&nbsp;Unit Tests" title="N&auml;chstes Kapitel: 12&nbsp;Unit Tests"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch" title="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

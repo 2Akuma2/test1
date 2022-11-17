@@ -1,0 +1,421 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Quickstart your application</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_quickstart"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_gui.html#usec_gui"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 2&nbsp;The user interface" title="Previous Chapter: 2&nbsp;The user interface"></a></td><td class="navicon"><a href="user_capture.html#usec_capturereplay"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 4&nbsp;Capture and replay" title="Next Page: 4&nbsp;Capture and replay"></a></td><td class="navicon"><a href="user_capture.html#usec_capturereplay"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 4&nbsp;Capture and replay" title="Next Chapter: 4&nbsp;Capture and replay"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;User manual" title="Chapter Overview: I&nbsp;User manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="margin"><a name="new_N68557"></a><span class="note">2.0+</span></span><span class="numtitle"><a href="contents.html#toc_usec_quickstart">3</a></span>
+</div>
+<a href="contents.html#toc_usec_quickstart">Quickstart your application</a>
+</h3>
+    
+
+    
+<p>
+      This chapter provides instructions on how to quickly set up your application as the SUT
+      (System Under Test).
+    </p>
+    
+<p>
+      
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+      The video <a href="https://www.qfs.de/en/yt/quickstart-wizard-java-42.html" class="videolink" target="_blank">'The Quickstart Wizard
+      Java'</a> shows how to work with the Quickstart Wizard for Java applications.
+    </p>
+    
+<p>
+      The video <a href="https://www.qfs.de/en/yt/quickstart-wizard-web-42.html" class="videolink" target="_blank">'The Quickstart Wizard
+      Web'</a> shows the Quickstart Wizard for web applications.
+    </p>
+    
+<p>
+      In order to make you application recognized by QF-Test as SUT it basically needs to be started out of
+      QF-Test. There are a number of special process nodes available within the &raquo;<em>Insert</em>&laquo;-&raquo;<em>Process nodes</em>&laquo; to perform this task but the straight forward way is
+      to use the Quickstart Wizard as described below. For those with an aversion to wizard
+      dialogs, the manual way is explained at <a href="tech_startsut.html#sec_startsut">section 42.1</a>.
+    </p>
+    
+<p>
+      A precondition for testing Java based SUTs is that QF-Test can hook into the GUI toolkit:
+    </p>
+    
+<p>
+      
+<span class="margin"><a name="swing_N68602"></a><span class="note">Swing</span></span> For Swing/JavaFX or combined Swing/JavaFX and SWT applications QF-Test hooks into the Java's
+      JVM Tool Interface. Normally QF-Test can do this directly. Only for some non-standard
+      JDKs it may be necessary to instrument those first. See <a href="tech_jdk_instrumentation.html#sec_jdk_instrumentation">JRE deinstrumentation</a> for details if necessary.
+    </p>
+    
+<p>
+      
+<span class="margin"><a name="fx_N68610"></a><span class="note">JavaFX</span></span> For JavaFX applications and respective combinations the connection works exclusively via
+      the QF-Test agent. Please ensure the option <a href="opt_runtime.html#opt_connectviaagent">Connect via QF-Test agent</a> is activated.
+    </p>
+    
+<p>
+      
+<span class="margin"><a name="swt_N68618"></a><span class="note">SWT</span></span> For Eclipse/SWT based applications, an instrumentation of the SWT library may be
+      necessary. The Quickstart Wizard, which is described below, will automatically add the necessary step
+      to the setup sequence. For detailed technical information please see <a href="tech_swt_instrumentation.html#sec_swt_instrumentation">section 43.2</a>.
+    </p>
+    
+<p>
+      
+<span class="margin"><a name="web_N68626"></a><span class="note">Web</span></span> Web application testing does not require instrumentation but there are some
+      constraints to consider that are explained in <a href="user_webtesting.html#usec_webtesting">chapter 13</a>.
+    </p>
+
+    
+
+    
+<a name="usec_quickstart_wizard"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_quickstart_wizard">3.1</a></span>
+</div>
+<a href="contents.html#toc_usec_quickstart_wizard">Setup sequence creation</a>
+</h4>
+        
+<p>
+          With the Quickstart Wizard QF-Test offers a convenient utility for creating a startup
+          sequence for your application.
+        </p>
+        
+<p>
+          You can open the Quickstart Wizard via the &raquo;<em>Extras</em>&laquo;-&raquo;<em>Quickstart Wizard...</em>&laquo; menu item or the <img src="../icons/quickstart_tb.png" style="vertical-align: text-bottom" alt="Quickstart Wizard" title="Quickstart Wizard" width="26" height="26" texscale=".66"> toolbar button. Please follow the steps which
+          should be self explanatory.
+        </p>
+        
+<a name="figure_3.1"></a><a name="figure_3.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/quickstart_win.png" target="_blank"><img src="images/quickstart_win.png" alt="Quickstart Wizard" texscale=".66" width="746" height="623"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;3.1</a>:&nbsp;&nbsp;Quickstart Wizard</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          As result the Wizard delivers a startup sequence under the "Extras", as shown in the
+          following figure:
+        </p>
+        
+<a name="figure_3.2"></a><a name="figure_3.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/quickstart_tree.png" target="_blank"><img src="images/quickstart_tree.png" alt="Quickstart Wizard result" texscale=".66" width="323" height="114"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;3.2</a>:&nbsp;&nbsp;Startup sequence created by the Quickstart Wizard</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+        The created setup sequence varies depending on the specific type of the application. But all of them
+        follow the same standard. At the beginning you will find a 'Set variable' node which specifies the name of the SUT client for QF-Test. This node is followed by a 'Wait for client to connect' node that checks whether its necessary to start
+        the application. The subsequent 'If' evaluates the result of its predecessor and contains the start
+        steps for your application. The actual launch takes place in the start node which is specific to the type of application. That node is followed by an other 'Wait for client to connect' node which ensures that
+          QF-Test connects to your application during the startup procedure. (Details about the
+          different start node types and attributes can be found in <a href="tech_startsut.html#sec_startsut">section 42.1</a>.)
+        </p>
+        
+<p>
+<span class="margin"><a name="swing_N68709"></a><span class="note">Swing</span></span><span class="margin"><a name="fx_N68710"></a><span class="note">JavaFX</span></span>
+          For Swing or JavaFX based applications the setup sequence typically is straight
+          forward except for Applet testing in a browser or Java WebStart applications which uses some special procedures from the
+          <a href="user_stdlib.html#usec_stdlib">standard library</a>.
+        </p>
+        
+<p>
+<span class="margin"><a name="swt_N68718"></a><span class="note">SWT</span></span>
+          For SWT based applications an additional procedure call node for
+          <a href="tech_swt_instrumentation.html#sec_swt_instrumentation">SWT instrumentation</a> is added.
+        </p>
+        
+<p>
+<span class="margin"><a name="web_N68725"></a><span class="note">Web</span></span>
+          The standard startup sequence for web includes some additional nodes for setting
+          variables, initializing browser cache and cookie settings and possibly install an AJAX
+          toolkit resolver. See <a href="user_webtesting.html#usec_webtesting">chapter 13</a> for further information about starting a web based
+          SUT.
+        </p>
+      
+
+      
+<a name="sec_N68732"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N68732">3.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N68732">Executing the setup sequence</a>
+</h4>
+        
+<p>
+          The setup sequence can be executed directly after creation via selecting the green setup sequence node in the tree and pressing "Replay"
+          toolbar button <img src="../icons/play_tb.png" style="vertical-align: text-bottom" alt="Replay" title="Replay" width="26" height="26" texscale=".66">.
+        </p>
+        
+<p>
+          When executing the setup sequence your application should start up and the "Start
+          recording" button <img src="../icons/record_tb.png" style="vertical-align: text-bottom" alt="Record" title="Record" width="26" height="26" texscale=".66"> in the QF-Test toolbar should become
+          activated which indicates that QF-Test is properly connected to the SUT.
+        </p>
+        
+<p>
+          Now you are able to record and replay your first test sequences as described in
+          <a href="user_capture.html#usec_capturereplay">chapter 4</a>. There is also a learning by doing <a href="../../tutorial/en/tutorial.html" shape="rect">tutorial</a>
+          available from the QF-Test help menu which guides you through all features of QF-Test.
+        </p>
+        
+<p>
+          In case you are facing an error message or the red "Start recording" button stays
+          inactive, please proceed with the following paragraph.
+        </p>
+      
+
+      
+<a name="troubleshooting" shape="rect"></a>
+
+      <a name="sec_N68781"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N68781">3.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N68781">In case the client does not connect ...</a>
+</h4>
+        
+<p>
+          If your application (or the browser window in case of web testing) doesn't come up at all:
+        </p>
+        
+<ul>
+          
+<li>
+            The error dialog QF-Test typically displays should provide a first indication.
+          </li>
+          
+<li>
+            Please look for error messages in the terminal window. If there is no terminal window
+            visible in the bottom area of QF-Test, it can be activated through the menu item
+            &raquo;<em>View</em>&laquo;-&raquo;<em>Terminal</em>&laquo;-&raquo;<em>Show</em>&laquo;. Additional information about program
+            output can be found in <a href="#usec_clientterminal">section 3.4</a>.
+          </li>
+          
+<li>
+            Be sure to double-check the attribute values in the setup sequence nodes are correct. Possibly a
+            typo has crept in somewhere. Details about the different start node types and attributes can be found
+            in <a href="tech_startsut.html#sec_startsut">section 42.1</a>.
+          </li>
+          
+<li>
+            
+<span class="margin"><a name="swing_N68818"></a><span class="note">Swing</span></span>If you are testing an Applet (possibly on Windows 8) please see
+            <a href="tech_startsut.html#sec_startapplet">subsection 42.1.3</a> for additional information.
+          </li>
+          
+<li>
+            
+<span class="margin"><a name="web_N68826"></a><span class="note">Web</span></span>As browser development cycles i.e. those of Firefox tend to shorten, be
+            sure the installed browser is supported by the QF-Test version you are using. The
+            terminal output should show a respective error message. See <a href="user_installation.html#usec_techversions">subsection 1.1.2</a>
+            for the latest browser versions supported. Possibly you need to update QF-Test to a later version or
+            temporarily use another browser. See <a href="user_webtesting.html#usec_webtesting">chapter 13</a> for further information.
+          </li>
+        
+</ul>
+        
+<p>
+          If the SUT gets visible but QF-Test is not able to connect to the client
+          (<a href="exceptions.html#ex_ClientNotConnectedException" shape="rect"><code>ClientNotConnectedException</code></a>):
+        </p>
+        
+<ul>
+          
+<li>
+            Please double-check the terminal output content (see also above) for possible error
+            messages.
+          </li>
+          
+<li>
+            In case the case the red record button in the toolbar gets activated after the error
+            message occurred, the timeout value in the <a href="processes.html#step_ClientWaiter" shape="rect">'Wait for client to connect'</a> node needs to be
+            increased.
+          </li>
+          
+<li>
+            
+<span class="margin"><a name="swing_N68861"></a><span class="note">Swing</span></span>If you are testing an Applet, please see <a href="tech_startsut.html#sec_startapplet">subsection 42.1.3</a> for additional
+            information. There are a number of special cases to consider.
+          </li>
+          
+<li>
+            
+<span class="margin"><a name="swt_N68869"></a><span class="note">SWT</span></span> For an Eclipse/SWT application first make sure that you specified the
+            correct application directory. You may want to take a look at the run-log (see
+            <a href="user_debugging.html#usec_runlog">section 7.1</a>) to see if any warnings or errors were logged during
+            execution of the 'Procedure' <code>qfs.swt.instrument.setup</code>.
+            </li>
+          
+<li>
+            Check the run-log in general for possible additional error indications (see <a href="user_debugging.html#usec_runlog">section 7.1</a>).
+          </li>
+        
+</ul>
+        
+<p>
+          After possibly having adapted your test-suite or settings retry executing your setup
+          sequence. If you are not getting any further you might want to consider trying a sample
+          test-suite from the <a href="../../tutorial/en/tutorial.html" shape="rect">tutorial</a> or you contact
+          our <a href="http://www.qfs.de/en/qftest/support.html" shape="rect">support</a>.
+        </p>
+    
+
+    
+    
+
+    
+<a name="usec_clientterminal"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_clientterminal">3.4</a></span>
+</div>
+<a href="contents.html#toc_usec_clientterminal">Program output and the Clients menu</a>
+</h4>
+      
+<p>
+        The standard output and error streams of all processes started by
+        QF-Test are captured and stored in the run-log under the node that
+        represents the respective starter node. In this QF-Test does not
+        distinguish between SUT clients and arbitrary processes or shell
+        scripts started with a <a href="processes.html#step_ProcessClientStarter" shape="rect">'Start process'</a> or
+        <a href="processes.html#step_ShellClientStarter" shape="rect">'Execute shell command'</a> node.
+      </p>
+      
+<p>
+        The main window contains a shared terminal view that shows the output
+        of all processes started by a test that was run from this window. The
+        &raquo;<em>View</em>&laquo;-&raquo;<em>Terminal</em>&laquo; sub-menu holds items to configure whether this
+        terminal is visible, whether the tree or the terminal should use the are in the lower left corner,
+        whether long lines are wrapped and whether it is
+        automatically scrolled to the end when new output arrives. Other items
+        let you clear the terminal or save its contents to a file. The maximum
+        amount of text that the terminal holds is configurable in the option
+        <a href="opt_play.html#opt_terminalsize">Maximum size of shared terminal (kB)</a>.
+      </p>
+      
+<p>
+        In addition to the shared terminal, for each active or recently terminated process there
+        is an individual terminal window that shows its output. These individual terminal windows
+        can be opened from the &raquo;<em>Clients</em>&laquo; menu. The shared terminal's
+        intention is to provide visual feedback whenever new output arrives, while the individual
+        terminals are better suited for actually studying that output.
+      </p>
+      
+<p>
+        Active processes can also be stopped with the help of the
+        &raquo;<em>Clients</em>&laquo; menu, either individually in the
+        respective sub-menu or all at once with &raquo;<em>Clients</em>&laquo;-&raquo;<em>Stop&nbsp;all</em>&laquo;.
+      </p>
+      
+<p>
+        The number of terminated clients that are kept in the &raquo;<em>Clients</em>&laquo; menu is set with the option <a href="opt_play.html#opt_numclients">Number of terminated clients in menu</a>. If your processes generate lots of output and
+        you are low on memory you may want to reduce that number.
+      </p>
+      
+<p>
+<span class="margin"><span class="note">Note</span></span> The &raquo;<em>Clients</em>&laquo; menu also serves well in case you are not
+        sure which specific QF-Test product you need to purchase. The GUI technologies used by your
+        applications are shown in '[ ]' next to the active client name. The example below shows
+        two clients using Java swing and web which suggests to buy a QF-Test/swing+web license.
+      </p>
+      
+<a name="figure_3.3"></a><a name="figure_3.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/gui_technologies.png" target="_blank"><img src="images/gui_technologies.png" alt="GUI technology information" texscale=".66" width="299" height="115"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;3.3</a>:&nbsp;&nbsp;GUI technology information</td><td class="captionglue"></td>
+</tr>
+</table>
+
+
+    
+
+    
+    
+
+      
+<a name="usec_startindirect"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_startindirect">3.5</a></span>
+</div>
+<a href="contents.html#toc_usec_startindirect">An application started indirectly from an already connected SUT</a>
+</h4>
+        
+<p>
+          If a second Java
+          VM is started from an already connected SUT, QF-Test will recognize this as an
+          indirect connection attempt from a child process of the first SUT and
+          automatically assign an artificial client name to this new SUT. The name is
+          created by appending ':2' to the client name of the parent SUT, signifying that
+          this is the second process for this client. Yet another Java VM started by either
+          of these SUTs would get ':3' appended to the original client name unless the
+          second process was already terminated so the ':2' was again free for use.
+        </p>
+        
+<p>
+          To summarize, the sequence for connecting to an indirectly started SUT typically
+          consists of an event node that triggers something like a button click or menu
+          selection, causing the SUT to launch the second SUT, followed by a
+          <a href="processes.html#step_ClientWaiter" shape="rect">'Wait for client to connect'</a> node for the ':2' extended client name.
+        </p>
+      
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_gui.html#usec_gui"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 2&nbsp;The user interface" title="Previous Chapter: 2&nbsp;The user interface"></a></td><td class="navicon"><a href="user_capture.html#usec_capturereplay"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 4&nbsp;Capture and replay" title="Next Page: 4&nbsp;Capture and replay"></a></td><td class="navicon"><a href="user_capture.html#usec_capturereplay"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 4&nbsp;Capture and replay" title="Next Chapter: 4&nbsp;Capture and replay"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;User manual" title="Chapter Overview: I&nbsp;User manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

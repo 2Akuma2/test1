@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Daemon Konzepte</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_N185607"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_daemon_api.html#sec_daemon_api"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 51.2&nbsp;Daemon API" title="N&auml;chste Seite: 51.2&nbsp;Daemon API"></a></td><td class="navicon"><a href="tech_daemon_api.html#sec_daemon_api"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 51.2&nbsp;Daemon API" title="N&auml;chstes Kapitel: 51.2&nbsp;Daemon API"></a></td><td class="navicon"><a href="tech_daemon.html#sec_daemon"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 51&nbsp;Daemon Modus" title="Kapitel-&Uuml;bersicht: 51&nbsp;Daemon Modus"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N185607">51.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N185607">Daemon Konzepte</a>
+</h4>
+        
+<p>
+          Im Daemon Modus gestartet (vergleichbar aber nicht &auml;quivalent zu einem "Service" unter
+          Windows) lauscht QF-Test auf RMI Verbindungen und stellt dar&uuml;ber ein Interface f&uuml;r die
+          verteilte Ausf&uuml;hrung von Tests zur Verf&uuml;gung. Dies kann f&uuml;r die Testdurchf&uuml;hrung in
+          einem verteilten Lasttest Szenario ebenso hilfreich sein wie f&uuml;r die Integration mit
+          vorhandenen Test-Management oder Test-Durchf&uuml;hrungs Werkzeugen.
+        </p>
+        
+<p>
+          Um den Daemon Modus zu aktivieren gibt es zwei spezielle Kommandozeilenargumente:
+        </p>
+        
+<ul>
+          
+<li>
+<a href="tech_execution.html#arg_daemon" shape="rect"><code>-daemon</code></a> - Startet QF-Test im Daemon Modus</li>
+          
+<li>
+<a href="tech_execution.html#arg_daemonport" shape="rect"><code>-daemonport &lt;Port&gt;</code></a> - Legt den Netzwerk Port f&uuml;r den Daemon fest, Standard ist
+            3543.</li>
+          
+<li>
+<a href="tech_execution.html#arg_daemonrmiport" shape="rect"><code>-daemonrmiport &lt;Port&gt;</code></a> - Legt den Netzwerk Port f&uuml;r den RMI Port des Daemon's fest.
+            Die Angabe dieses Parameters macht nur Sinn sollte der Daemon hinter einer Firewall
+            betrieben werden. Standard ist ein beliebiger freier Port.</li>
+        
+</ul>
+        
+<p>
+          Im kombinierten Batch- und Daemon Modus belegt QF-Test zun&auml;chst keine Lizenz sondern erst,
+          wie unten beschrieben, dynamisch bei der Durchf&uuml;hrung von Tests. Im interaktiven Daemon
+          Modus ist QF-Test normal funktionsf&auml;hig und ben&ouml;tigt daher eine eigene Lizenz. Wie im
+          Batchmodus nimmt es dabei zus&auml;tzlich Verbindungen von au&szlig;en an und belegt dabei weitere
+          Lizenzen. Dieses Szenario ist insbesondere w&auml;hrend der Entwicklung von verteilten Tests
+          hilfreich.
+        </p>
+        
+<p>
+          In einem laufenden Daemon k&ouml;nnen Tests auf folgende zwei Arten gestartet werden:
+        </p>
+        
+<ul>
+          
+<li>
+            Durch Verwendung des Kommandozeilenarguments <a href="tech_execution.html#arg_calldaemon" shape="rect"><code>-calldaemon</code></a> von QF-Test.
+          </li>
+          
+<li>
+            Durch direkte Implementierung gegen die Daemon API, welche in <a href="tech_daemon_api.html#sec_daemon_api">Abschnitt 51.2</a> beschrieben ist.
+          </li>
+        
+</ul>
+        
+<p>
+          Beide Optionen werden - auch an Hand von Beispielen - in <a href="user_execdaemon.html#usec_execdaemon">Abschnitt 22.2</a> n&auml;her erl&auml;utert.
+        </p>
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_daemon_api.html#sec_daemon_api"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 51.2&nbsp;Daemon API" title="N&auml;chste Seite: 51.2&nbsp;Daemon API"></a></td><td class="navicon"><a href="tech_daemon_api.html#sec_daemon_api"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 51.2&nbsp;Daemon API" title="N&auml;chstes Kapitel: 51.2&nbsp;Daemon API"></a></td><td class="navicon"><a href="tech_daemon.html#sec_daemon"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 51&nbsp;Daemon Modus" title="Kapitel-&Uuml;bersicht: 51&nbsp;Daemon Modus"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Atomare Prozeduren</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_keywords_simple_atomic"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_keywords_simple_business.html#usec_keywords_simple_business"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 27.2.1&nbsp;Fachliche Prozeduren" title="Vorheriges Kapitel: 27.2.1&nbsp;Fachliche Prozeduren"></a></td><td class="navicon"><a href="user_keywords_components.html#usec_keywords_components"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 27.3&nbsp;Keyword-Driven Testing mit dynamischen/generischen Komponenten" title="N&auml;chste Seite: 27.3&nbsp;Keyword-Driven Testing mit dynamischen/generischen Komponenten"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="user_keywords_simple.html#usec_keywords_simple"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 27.2&nbsp;Einfaches Keyword-Driven Testing mit QF-Test" title="Kapitel-&Uuml;bersicht: 27.2&nbsp;Einfaches Keyword-Driven Testing mit QF-Test"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_keywords_simple_atomic">27.2.2</a></span>
+</div>
+<a href="contents.html#toc_usec_keywords_simple_atomic">Atomare Prozeduren</a>
+</h5>
+        
+<p>
+        Neben den vorher beschriebenen fachlichen Prozeduren, die kleinere Workflows darstellen, ist es auch m&ouml;glich, jede einzelne Aktion zu beschreiben.
+        Sie erhalten damit eine feingranularere Beschreibung der Testf&auml;lle.
+        Das dazugeh&ouml;rige Beispiel finden Sie unter <code>qftest-6.0.3/demo/keywords/simple_atomic/</code>
+        <code>SimpleAtomicKeywords.qft</code>. 
+        Der dazugeh&ouml;rige Testplan
+        liegt unter <code>qftest-6.0.3/demo/keywords/simple_atomic/</code>
+        <code>simple_atomic_keywords.xlsx</code>.
+    Bitte achten Sie darauf, dass Sie den Ordner in ein projektspezifisches Verzeichnis kopieren und diese dort modifizieren.
+        </p>
+        
+<p>
+        Als Beispiel schauen wir uns wieder den Testfall "Fahrzeug anlegen" f&uuml;r den CarConfigurator an.
+        Dieser Testfall besteht nun aus folgenden Schritten:
+        </p>
+        
+<ol>
+            
+<li>Anwendung starten, wenn notwendig</li>
+            
+<li>Men&uuml;punkt "Einstellungen" ausw&auml;hlen</li>
+            
+<li>Men&uuml;punkt "Fahrzeuge..." ausw&auml;hlen</li>
+            
+<li>Textfeld Name f&uuml;llen</li>
+            
+<li>Textfeld Preis f&uuml;llen</li>
+            
+<li>Button Neu klicken, um das Fahrzeug anzulegen</li>
+            
+<li>Button OK klicken, um den Dialog zu schlie&szlig;en</li>
+            
+<li>Tabelle der Fahrzeuge pr&uuml;fen, ob sich das neue Fahrzeug darin befindet</li>
+        
+</ol>
+        
+<p>
+           &Auml;hnlich wie bei den fachlichen Prozeduren wird eine entsprechende Exceldatei erstellt und es m&uuml;ssen die entsprechenden QF-Test-Prozeduren hinterlegt werden.
+           Die implementierten Prozeduren finden Sie im Package <code>atomic</code> in der Testsuite <code>qftest-6.0.3/demo/keywords/SimpleAtomicKeywords.qft</code>.
+           Falls Sie sich f&uuml;r diesen Ansatz entscheiden, k&ouml;nnen Sie diese atomaren Prozeduren auch automatisch generieren (siehe <a href="user_procbuilder.html#usec_procbuilder">Kapitel 24</a>).
+        </p>        
+        
+<p>        
+        Im n&auml;chsten Abschnitt werden wir sehen, wie wir diese Prozeduren dynamisch anwenden k&ouml;nnen, d.h. wir k&ouml;nnen danach Testf&auml;lle mit diesem atomaren Ansatz beschreiben, 
+        m&uuml;ssen allerdings nicht jede Aktion als Prozedur hinterlegen bzw. jede Komponente aufzeichnen, sondern nur einmal eine bestimmte Aktion, wie klickeButton oder setzeWert beschreiben.
+        Danach k&ouml;nnen wir diese Aktion mehrfach anwenden.
+        </p>
+        
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_keywords_simple_business.html#usec_keywords_simple_business"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 27.2.1&nbsp;Fachliche Prozeduren" title="Vorheriges Kapitel: 27.2.1&nbsp;Fachliche Prozeduren"></a></td><td class="navicon"><a href="user_keywords_components.html#usec_keywords_components"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 27.3&nbsp;Keyword-Driven Testing mit dynamischen/generischen Komponenten" title="N&auml;chste Seite: 27.3&nbsp;Keyword-Driven Testing mit dynamischen/generischen Komponenten"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="user_keywords_simple.html#usec_keywords_simple"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 27.2&nbsp;Einfaches Keyword-Driven Testing mit QF-Test" title="Kapitel-&Uuml;bersicht: 27.2&nbsp;Einfaches Keyword-Driven Testing mit QF-Test"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

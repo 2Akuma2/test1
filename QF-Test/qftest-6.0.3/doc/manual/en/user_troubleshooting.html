@@ -1,0 +1,295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Troubleshooting component recognition problems</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_troubleshooting"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_subitems.html#usec_subitems"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 5.9&nbsp;Sub-items: Addressing relative to a parent component" title="Previous Chapter: 5.9&nbsp;Sub-items: Addressing relative to a parent component"></a></td><td class="navicon"><a href="usec_component_maintenance.html#usec_component_maintenance"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 5.11&nbsp;Component tree maintenance" title="Next Page: 5.11&nbsp;Component tree maintenance"></a></td><td class="navicon"><a href="usec_component_maintenance.html#usec_component_maintenance"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 5.11&nbsp;Component tree maintenance" title="Next Chapter: 5.11&nbsp;Component tree maintenance"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 5&nbsp;Components" title="Chapter Overview: 5&nbsp;Components"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_troubleshooting">5.10</a></span>
+</div>
+<a href="contents.html#toc_usec_troubleshooting">Troubleshooting component recognition problems</a>
+</h4>
+      
+<a name="usec_components_sync"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_components_sync">5.10.1</a></span>
+</div>
+<a href="contents.html#toc_usec_components_sync">Timing synchronisation</a>
+</h5>
+        
+<p>
+          If you get exceptions because a component was not found,
+          one of the reasons may be that you did not wait for the component long enough.
+          A mouse click has a certain default waiting time,
+          but this is not always sufficient.
+          Therefore you should check if there are enough synchronization points,
+          like 'Wait for component to appear' or 'Check' nodes with waiting times
+          to only execute the test steps if the SUT is really ready for it.
+        </p>
+            
+<ul>
+              
+<li>
+                A 'Wait for component to appear' node can be used when a new component appears.
+                The maximum wait time (in milliseconds) is set in 'Timeout'.
+              </li>
+              
+<li>
+                A 'Check' node is used to wait for a state change of components.
+                The maximum wait time (in milliseconds) is set in 'Timeout' here as well.
+              </li>
+              
+<li>
+                Sometimes it is also necessary to loop,
+                waiting for the state change
+                and, if not already done, performing an action,
+                for example, clicking a "Refresh" button.
+              </li>
+              
+<li>
+                You can also wait for the number of rows in a table to change in a loop.
+              </li>
+              
+<li>
+                Many applications use indicators that symbolize waiting times,
+                for example progress bars or "egg timers".
+                Here you can wait first for the component to appear and then for it to disappear.
+              </li>
+            
+</ul>
+        
+<p>
+          The maximum wait time is set in the 'Timeout' attributes.
+          As soon as the desired application state is reached, QF-Test continues execution.
+          These waiting times can therefore be chosen generously.
+        </p>
+        
+<p>
+          You should only change the option for default waiting times (<a href="opt_play.html#sec_opt_autodelay">subsection 37.3.6</a>)
+          if generally longer waiting times make sense across your whole application.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Note</span></span>
+          As a last resort you can also use with a fixed delay.
+          When the attribute 'Delay before/after' is set, QF-Test will wait the entire given time.
+          'Delay before/after' should therefore only be used
+          if there is no state change detectable by QF-Test in the application
+          which QF-Test could wait for.
+        </p>
+      
+      
+<a name="sec_N74611"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N74611">5.10.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N74611">Recognition</a>
+</h5>
+        
+<p>
+          If your SUT changes in a way that makes it impossible for QF-Test to find a component again,
+          your test will fail with a <a href="exceptions.html#ex_ComponentNotFoundException" shape="rect"><code>ComponentNotFoundException</code></a>.
+          This should not be confused with an <a href="exceptions.html#ex_UnresolvedComponentIdException" shape="rect"><code>UnresolvedComponentIdException</code></a>,
+          which can be caused by removing a 'Component' node from the test suite
+          or by changing the attribute 'QF-Test component ID' of an 'Event' node to a non-existing 'QF-Test ID'.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+          There are two videos that comprehensively explain how to handle a <code>ComponentNotFoundException</code>:
+        </p>
+        
+<ul>
+          
+<li>
+            
+<a href="https://www.qfs.de/en/yt/componentnotfoundexception-simple-40.html" class="videolink" target="_blank">'ComponentNotFoundException - Simple case'</a>
+          
+</li>
+          
+<li>
+            
+<a href="https://www.qfs.de/en/yt/componentnotfoundexception-complex-40.html" class="videolink" target="_blank">'ComponentNotFoundException - Complex case'</a>
+          
+</li>
+        
+</ul>
+        
+<p>
+          When run into an <code>ComponentNotFoundException</code>,
+          run the test again with the test debugger enabled
+          so that the test stops and you can examine the node that caused the problem.
+          This is where it pays to have 'QF-Test ID' attributes that are meaningful,
+          because you need to understand which component the test was trying to address.
+          If you can't make any sense of what the node in question is supposed to be,
+          disable it and see if the test goes through without it.
+          It could be a spurious effect that was not filtered during the recording
+          and that does not contribute anything to the actual test.
+          Basically, your tests should always be reduced to the minimum number of nodes
+          that can be used to achieve the desired effect.
+        </p>
+        
+<p>
+          If the node must be preserved, next take a look at the SUT to see
+          if the target component is currently visible.
+          If not, you will need to adjust your test accordingly to handle this situation.
+          If the component is visible, use the screenshot in the log
+          to verify that this was the case at the time of the failure
+          and try executing the failed node again as a single step.
+          If execution now works you have a timing problem
+          which you can solve by including a <a href="miscnodes.html#step_ComponentWaiter" shape="rect">'Wait for component to appear'</a> node,
+          a 'Check' node with 'Timeout',
+          or another waiting action (see <a href="#usec_components_sync">Timing synchronisation</a>).
+        </p>
+        
+<p>
+          If the component is visible and the replay continuously fails,
+          the reason is a change in the component or one of its parents.
+          Now you must determine what changed and where.
+          For this, record a new click on the component
+          and compare the new and old 'Component' node
+          in the hierarchy below <a href="components.html#step_WindowList" shape="rect">'Windows and components'</a>.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Note</span></span>
+          You can jump directly from the 'Event' node to the associated 'Component'
+          by pressing [Ctrl-W]
+          or by selecting &raquo;<em>Find component</em>&laquo; from the context menu.
+          You can use [Ctrl-Backspace] or &raquo;<em>Edit</em>&laquo;-&raquo;<em>Select previous node</em>&laquo;
+          to jump back again.
+          A smart move is to denote the 'Components' to be compared
+          using markers with &raquo;<em>Edit</em>&laquo;-&raquo;<em>Mark</em>&laquo; to easily find them again.
+        </p>
+        
+<p>
+          The crux is where the hierarchy of the two nodes branches.
+          If they are located under different 'Window' nodes,
+          the difference is in the respective 'Windows' themselves.
+          Otherwise, there is a common predecessor just above the branch.
+          The crucial difference is then found in the respective nodes directly below this common predecessor.
+          When you have found the place of divergence,
+          compare the attributes of the respective nodes from top to bottom and look for differences.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Note</span></span>
+          You can use &raquo;<em>View</em>&laquo;-&raquo;<em>New window...</em>&laquo;
+          to open another QF-Test window and place the detail views of both nodes next to each other.
+        </p>
+        
+<p>
+          The only differences that will always lead to an error during recognition
+          are changes to the attributes 'Class name' or 'Name'.
+          Differences to 'Feature', structure or geomertry can usually be compensated for,
+          provided they do not accumulate.
+        </p>
+        
+<p>
+          A change to the 'Class name' should seldomly happen when using <a href="tech_genericclasses.html#sec_genericclasses">Generic classes</a>.
+          Using generic classes offers a range of advantages,
+          but in the case of web applications it is sometimes only introduced after creating first tests
+          (see <a href="tech_customajax.html#sec_customajax">Improving component recognition with a <code>CustomWebResolver</code></a>).
+          In this case you must adapt the 'Class name' attribute
+          of the already created 'Component' nodes to this change.
+        </p>
+        
+<p>
+          The <a href="usec_components_name.html#usec_components_identifier">Component identifiers</a> can change, too.
+          If the change seems to be on purpose, for example correcting a grammatical error,
+          you can adjust the 'Name' attribute accordingly.
+          More probably it is an automatically generated <a href="usec_components_name.html#usec_components_identifier">Component identifiers</a>
+          which could change again at any time.
+          Here it can make sense as well to discuss the issue with the developers
+          and find a solution on the development side.
+          Otherwise, for web applications the 'Name' can be influenced by
+          <a href="tech_custom_web_resolver.html#sec_custom_web_resolver_parameters"><code>installCustomWebResolver</code> - Parameters</a> via the
+          parameters <code>autoIdPatterns</code> and <code>customIdAttributes</code>.
+          In all technologies the 'Name' can be influenced using a
+          <code>NameResolver</code> as described in <a href="tech_resolversmodule.html#sec_nameresolver">subsection 50.1.6</a>.
+          It can be suppressed entirely or reduced to the relevant parts.
+        </p>
+        
+<p>
+          Changes to the attribute  'Feature' are not unusual, especially for 'Window' nodes.
+          There, the 'Feature' corresponds to the title of the window.
+          Combined with a significant change to geometry, this can cause the recognition to fail.
+          This can be fixed by adjusting the 'Feature' attribute to the new circumstances,
+          or - preferably - by using a regular expression (see <a href="tech_regexp.html#sec_regexp">section 45.3</a>)
+          which covers all variants.
+        </p>
+        
+<p>
+          Depending on the type and scope of the changes,
+          there are two basic options for correction:
+        </p>
+        
+<ul>
+          
+<li>
+            Adjust the attributes of the old node and remove the newly recorded nodes.
+            If the changes to the SUT were small enough and the component recognition still works,
+            changes can also be performed automatically via the QF-Test feature <a href="usec_component_maintenance.html#usec_update_components">Update 'Components'</a>.
+          </li>
+          
+<li>
+            
+<p>
+              Keep the new nodes and remove the old ones.
+              For this you first must make sure that all nodes that refer to the old components
+              are updated to the new 'QF-Test ID'.
+              This can be achieved with a little trick:
+              Change the 'QF-Test ID' of the old 'Component' node to the 'QF-Test ID' of the new one.
+              QF-Test will initially complain that the 'QF-Test ID' is not unique, which you can ignore,
+              and then will offer to update all references,
+              which you need to confirm with "Yes".
+              Then, you can remove the old node.
+            </p>
+            
+<p>
+              
+<span class="margin"><span class="note">Note</span></span>
+              The automatic adjustment of references in other test suite only works
+              if they belong to the same project
+              or if the attribute <a href="rootnode.html#att_RootStep_dependencies" shape="rect">'Dependencies (reverse includes)'</a> of the 'Test-suite' node is set correctly.
+            </p>
+          
+</li>
+        
+</ul>
+      
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_subitems.html#usec_subitems"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 5.9&nbsp;Sub-items: Addressing relative to a parent component" title="Previous Chapter: 5.9&nbsp;Sub-items: Addressing relative to a parent component"></a></td><td class="navicon"><a href="usec_component_maintenance.html#usec_component_maintenance"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 5.11&nbsp;Component tree maintenance" title="Next Page: 5.11&nbsp;Component tree maintenance"></a></td><td class="navicon"><a href="usec_component_maintenance.html#usec_component_maintenance"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 5.11&nbsp;Component tree maintenance" title="Next Chapter: 5.11&nbsp;Component tree maintenance"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 5&nbsp;Components" title="Chapter Overview: 5&nbsp;Components"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

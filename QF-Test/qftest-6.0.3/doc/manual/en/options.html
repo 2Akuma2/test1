@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Options</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_options"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="opt_general.html#sec_opt_general"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 37.1&nbsp;General options" title="Next Page: 37.1&nbsp;General options"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 38&nbsp;Elements of a test-suite" title="Next Chapter: 38&nbsp;Elements of a test-suite"></a></td><td class="navicon"><a href="reference.html#sec_reference"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: III&nbsp;Reference manual" title="Chapter Overview: III&nbsp;Reference manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_options">37</a></span>
+</div>
+<a href="contents.html#toc_sec_options">Options</a>
+</h3>
+    
+    
+<p>
+      Since QF-Test is a tool that is intended for a wide range of
+      applications, the "one size fits all" approach doesn't quite
+      work. That's why QF-Test has a great number of options that control its
+      functionality.
+    </p>
+    
+<p>
+      There are two kinds of options for QF-Test: <em>user</em> options and
+      <em>system</em> options. User options adjust the behavior of QF-Test's own
+      GUI while system options influence how tests are recorded and replayed.
+      Each user has its own set of user options whereas system options are
+      saved in a common system file. See <a href="user_installation.html#usec_configfile">section 1.6</a> for
+      details about configuration files.
+    </p>
+    
+<p>
+<span class="margin"><a name="new_N99049"></a><span class="note">3.1+</span></span>
+      Many options can have their value changed at run time from a script via
+      <code>rc.setOption</code> as described in <a href="tech_scripting.html#sec_api_rc">section 46.5</a>. Depending on whether
+      the option takes effect in QF-Test itself or in the SUT, the documentation for those options
+      shows a "Server script name" or "SUT script name" matching the constant from the
+      <code>Options</code> class. Obviously the option has to be set in a matching
+      <a href="control.html#step_ServerScriptStep" shape="rect">'Server script'</a> or <a href="control.html#step_ClientScriptStep" shape="rect">'SUT script'</a> node. Where the option's value can be
+      selected from a drop-down list, the documentation also lists the constants that can be
+      specified as the option's value.
+    </p>
+    
+<p>
+      Though the number of options may look daunting, don't let yourself be
+      deterred by it. All options have reasonable default values, so QF-Test
+      works well out of the box for most cases. However, if you find you need
+      to change something or simply want to explore the range of QF-Test's
+      abilities, this chapter is for you.
+    </p>
+    
+<p>
+      The options can be set in the dialog available through the menu item
+      &raquo;<em>Edit</em>&laquo;-&raquo;<em>Options...</em>&laquo;.  The settings are
+      saved in two configuration files, one for personal settings and one for
+      system-wide settings (see <a href="user_installation.html#usec_configfile">section 1.6</a>).
+    </p>
+    
+<a name="figure_37.1"></a><a name="figure_37.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_tree.png" target="_blank"><img src="images/opt_tree.png" alt="Options tree" width="193" height="798" texscale=".8"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.1</a>:&nbsp;&nbsp;Options tree</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+      To get at an option, first select the appropriate node of the tree. The
+      options for that topic are then displayed in the right part of the view.
+      When switching from one group to the other, the current values are
+      verified but not adopted yet. This happens only after confirmation with
+      the OK button.
+    </p>
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="opt_general.html#sec_opt_general"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="opt_general.html#sec_opt_general">37.1</a></span>
+</div>
+<a href="opt_general.html#sec_opt_general">General options</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="opt_record.html#sec_opt_record"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="opt_record.html#sec_opt_record">37.2</a></span>
+</div>
+<a href="opt_record.html#sec_opt_record">Recording options</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="opt_play.html#sec_opt_play"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="opt_play.html#sec_opt_play">37.3</a></span>
+</div>
+<a href="opt_play.html#sec_opt_play">Replay options</a>
+</h4>
+
+    
+    
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="opt_android.html#sec_opt_android"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="opt_android.html#sec_opt_android">37.4</a></span>
+</div>
+<a href="opt_android.html#sec_opt_android">Android</a>
+</h4>
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="opt_web.html#sec_opt_web"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="opt_web.html#sec_opt_web">37.5</a></span>
+</div>
+<a href="opt_web.html#sec_opt_web">Web options</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="opt_swt.html#sec_opt_swt"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="opt_swt.html#sec_opt_swt">37.6</a></span>
+</div>
+<a href="opt_swt.html#sec_opt_swt">SWT options</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="opt_debugger.html#sec_opt_debugger"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="opt_debugger.html#sec_opt_debugger">37.7</a></span>
+</div>
+<a href="opt_debugger.html#sec_opt_debugger">Debugger options</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="opt_log.html#sec_opt_log"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="opt_log.html#sec_opt_log">37.8</a></span>
+</div>
+<a href="opt_log.html#sec_opt_log">Run-log options</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="opt_vars.html#sec_opt_vars"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="opt_vars.html#sec_opt_vars">37.9</a></span>
+</div>
+<a href="opt_vars.html#sec_opt_vars">Variables</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="opt_runtime.html#sec_opt_runtime"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="opt_runtime.html#sec_opt_runtime">37.10</a></span>
+</div>
+<a href="opt_runtime.html#sec_opt_runtime">Runtime only</a>
+</h4>
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="opt_general.html#sec_opt_general"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 37.1&nbsp;General options" title="Next Page: 37.1&nbsp;General options"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 38&nbsp;Elements of a test-suite" title="Next Chapter: 38&nbsp;Elements of a test-suite"></a></td><td class="navicon"><a href="reference.html#sec_reference"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: III&nbsp;Reference manual" title="Chapter Overview: III&nbsp;Reference manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,2533 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Test und Sequenz Knoten</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_sequences"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="rootnode.html#sec_rootnode"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 38.1&nbsp;Die Testsuite und ihre Struktur" title="Vorheriges Kapitel: 38.1&nbsp;Die Testsuite und ihre Struktur"></a></td><td class="navicon"><a href="dependencies.html#sec_dependencies"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 38.3&nbsp;Abh&auml;ngigkeiten" title="N&auml;chste Seite: 38.3&nbsp;Abh&auml;ngigkeiten"></a></td><td class="navicon"><a href="dependencies.html#sec_dependencies"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 38.3&nbsp;Abh&auml;ngigkeiten" title="N&auml;chstes Kapitel: 38.3&nbsp;Abh&auml;ngigkeiten"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite" title="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_sequences">38.2</a></span>
+</div>
+<a href="contents.html#toc_sec_sequences">Test und Sequenz Knoten</a>
+</h4>
+    
+<p>
+      Tests und Sequenzen sind die wichtigsten Strukturelemente einer Testsuite. 'Testfall'
+      Knoten repr&auml;sentieren logische Testf&auml;lle und sind als
+      spezialisierte Sequenzen implementiert. Eine Sequenz im Allgemeinen ist ein Container,
+      dessen Childknoten einer nach dem anderen ausf&uuml;hrt werden. Es k&ouml;nnen dabei Werte f&uuml;r
+      Variablen (vgl. <a href="user_variables.html#usec_variables">Kapitel 6</a>) definiert werden, die w&auml;hrend der
+      Ausf&uuml;hrung der Childknoten G&uuml;ltigkeit besitzen.
+    </p>
+    
+<p>
+      Dar&uuml;ber hinaus gibt es noch andere Arten von Sequenzen, die entweder besondere
+      Einschr&auml;nkungen bzgl. ihrer Parentknoten oder Childknoten haben, oder spezielle
+      Eigenschaften bei der Ausf&uuml;hrung aufweisen.
+    </p>
+    
+
+    
+<a name="step_TestCase"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_TestCase">38.2.1</a></span>
+</div>
+<a href="contents.html#toc_step_TestCase">'Testfall'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/testcase.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Ein 'Testfall' repr&auml;sentiert einen oder mehrere logische Testf&auml;lle. In
+            gewissem Sinne ist er der wichtigste Knotentyp in QF-Test und alles andere dient nur dazu
+            den 'Testf&auml;llen' Struktur zu verleihen oder ihre Logik zu
+            implementieren. Funktionell ist er eine besondere <a href="#step_BasicSequence" shape="rect">'Sequenz'</a> mit einer
+            Reihe von wichtigen Erweiterungen und speziellen Attributen.
+          </p>
+          
+<p>
+            Ein 'Testfall' sollte seinen Fokus auf den eigentlichen Test legen, der damit
+            umgesetzt werden soll. Vorbereitungs- und Aufr&auml;umt&auml;tigkeiten, die notwendige
+            Rahmenbedingungen f&uuml;r den Testlauf schaffen und Kollisionen mit nachfolgenden Tests
+            vermeiden, sollten in Form von <a href="dependencies.html#step_Dependency" shape="rect">'Abh&auml;ngigkeiten'</a>, wie in <a href="user_organization.html#usec_dependencies">Abschnitt 8.6</a> beschrieben, implementiert werden. Alternativ - oder auch
+            zus&auml;tzlich zu 'Abh&auml;ngigkeiten' - kann ein 'Testfall' <a href="dependencies.html#step_SetupSequence" shape="rect">'Vorbereitung'</a> und
+            <a href="dependencies.html#step_CleanupSequence" shape="rect">'Aufr&auml;umen'</a> Knoten besitzen, welche vor bzw. nach dem 'Testfall'
+            ausgef&uuml;hrt werden.
+          </p>
+          
+<p>
+            Ein 'Testfall' kann &uuml;ber einen <a href="#step_TestCall" shape="rect">'Testaufruf'</a> aufgerufen werden und ist damit
+            &auml;hnlich einer <a href="procedures.html#step_Procedure" shape="rect">'Prozedur'</a>. Sein <a href="#att_TestCase_name" shape="rect">'Name'</a> ist ein Pflichtattribut und
+            er hat ein Liste von <a href="#att_TestCase_fallback" shape="rect">'Standardwerten f&uuml;r Parameter'</a>, die im aufrufenden Knoten
+            &uuml;berschrieben werden k&ouml;nnen.
+          </p>
+          
+<p>
+            'Testf&auml;lle' spielen auch eine zentrale Rolle f&uuml;r Protokolle und
+            Testreports. W&auml;hrend eines Testlaufs kann ein 'Testfall' mehrmals in
+            unterschiedlichen Kontexten und mit verschieden Parametern ausgef&uuml;hrt werden. Logisch
+            k&ouml;nnen die Ausf&uuml;hrungen dem gleichen oder unterschiedlichen Testf&auml;llen
+            entsprechen. Durch die Definition eines Satzes von <a href="#att_TestCase_discriminator" shape="rect">'Charakteristische Variablen'</a> l&auml;sst
+            sich festlegen, welche Variablen verwendet werden sollen, um einzelne Testl&auml;ufe zu
+            unterscheiden - die also f&uuml;r die Laufzeitumgebung des Tests charakteristisch sind. Die
+            Werte dieser Variablen zum Zeitpunkt des Eintretens in den 'Testfall' werden im
+            Protokoll gespeichert. Um hervorzuheben, dass jede Ausf&uuml;hrung eines 'Testfall'
+            Knotens einem eigenen logischen Testfall entspricht, gibt es zus&auml;tzliche das Attribut
+            <a href="#att_TestCase_reportname" shape="rect">'Name f&uuml;r Protokoll und Report'</a>. Dessen Wert kann Referenzen auf die 'Charakteristischen Variablen' des
+            Tests enthalten. Im Protokoll oder Report wird der Test dann mit diesem Namen
+            aufgef&uuml;hrt, inklusive eventueller Werte der Variablen zur Laufzeit.
+          </p>
+          
+<p>
+            Zu guter Letzt gibt es auch Situationen, in denen ein Test f&uuml;r spezifische
+            Variablenwerte nicht ausgef&uuml;hrt werden kann oder soll. Falls eine
+            <a href="#att_TestCase_condition" shape="rect">'Bedingung'</a> f&uuml;r einen 'Testfall' Knoten definiert ist, wird dieser
+            'Testfall' nur ausgef&uuml;hrt, wenn die Auswertung der 'Bedingung' einen wahren Wert
+            ergibt. Wenn der 'Testfall' wegen der 'Bedingung' nicht zur Ausf&uuml;hrung kommt,
+            wird er im Report als <em>&uuml;bersprungen</em> gelistet.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> <a href="rootnode.html#step_RootStep" shape="rect">'Testsuite'</a>, <a href="#step_TestSet" shape="rect">'Testfallsatz'</a>.</p>
+<p>
+<strong>Kinder:</strong> 
+          Optional ein <a href="dependencies.html#step_Dependency" shape="rect">'Abh&auml;ngigkeit'</a> oder <a href="dependencies.html#step_DependencyReference" shape="rect">'Bezug auf Abh&auml;ngigkeit'</a> Knoten als erstes
+          Element. Als n&auml;chstes kann eine <a href="dependencies.html#step_SetupSequence" shape="rect">'Vorbereitung'</a> folgen und ein
+          <a href="dependencies.html#step_CleanupSequence" shape="rect">'Aufr&auml;umen'</a> Knoten kann den Abschluss bilden, mit einer  beliebigen Anzahl
+          von normalen Childknoten dazwischen. Ein 'Testfall' Knoten, der keine normalen
+          Childknoten enth&auml;lt, wird im Report als <em>nicht implementiert</em> aufgef&uuml;hrt.
+        </p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Zun&auml;chst werden die <a href="#att_TestCase_variable" shape="rect">'Variablen Definitionen'</a> des 'Testfall' Knotens auf dem prim&auml;ren
+          und die <a href="#att_TestCase_fallback" shape="rect">'Standardwerte f&uuml;r Parameter'</a> auf dem sekund&auml;ren Variablenstapel (vgl. <a href="user_variables.html#usec_variables">Kapitel 6</a>) gebunden. Anschlie&szlig;end wird die <a href="#att_TestCase_condition" shape="rect">'Bedingung'</a> gepr&uuml;ft
+          und der Knoten in dem Fall &uuml;bersprungen, dass der Inhalt der (nicht leeren)
+          'Bedingung' als <em>falsch</em> ausgewertet wird. Als n&auml;chstes folgt die Bestimmung
+          und Durchf&uuml;hrung der (m&ouml;glicherweise auch vom Parentknoten geerbten) 'Abh&auml;ngigkeit',
+          wie in <a href="user_organization.html#usec_dependencies">Abschnitt 8.6</a> beschrieben. Dann wird die optionale
+          'Vorbereitung' einmalig ausgef&uuml;hrt, gefolgt von den normalen Childknoten und dem
+          'Aufr&auml;umen' Knoten. Tritt w&auml;hrend des Ablaufs des 'Testfall' Knotens eine
+          Exception auf, wird diese gefangen und an seine 'Abh&auml;ngigkeit' f&uuml;r die Behandlung in
+          deren optionalen <a href="control.html#step_CatchSequence" shape="rect">'Catch'</a> Knoten weitergereicht. Auch wenn keine
+          Behandlung der Exception in der 'Abh&auml;ngigkeit' statt findet, wird sie nicht &uuml;ber den
+          'Testfall' hinaus propagiert, um den Abbruch des gesamten Testlaufs zu vermeiden. Der
+          Fehlerstatus wird jedoch stets korrekt im Protokoll und Report festgehalten.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.2"></a><a name="figure_38.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_TestCase.png" target="_blank"><img src="images/att_TestCase.png" alt="Test-case attributes" texscale=".66" width="393" height="821"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.2</a>:&nbsp;&nbsp;'Testfall' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_TestCase_name"></a>
+<dt>'Name'</dt>
+<dd>
+            
+            
+<p>
+              Ein 'Testfall' wird durch seinen Namen und die Namen seiner
+              <a href="#step_TestSet" shape="rect">'Testfallsatz'</a> Parentknoten identifiziert. Daher sollten Sie "sprechende"
+              Namen verwenden, die etwas &uuml;ber den jeweiligen Testfall aussagen und
+              die Sie sich gut merken k&ouml;nnen.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein und keines der Zeichen
+          '.' oder '#' enthalten.</p>
+</dd>
+<a name="att_TestCase_reportname"></a>
+<dt>'Name f&uuml;r Protokoll und Report'</dt>
+<dd>
+      
+<p>
+        Ein alternativer Name f&uuml;r Protokoll und Report. Dieser ist hilfreich, um zwischen
+        Mehrfachausf&uuml;hrungen mit potenziell unterschiedlichen Werten f&uuml;r die 'Charakteristischen Variablen'
+        zu unterscheiden.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TestCase_discriminator"></a>
+<dt>'Charakteristische Variablen'</dt>
+<dd>
+      
+<p>
+        Diese Variablen sind Teil der Charakteristik des 'Testfallsatzes' oder 'Testfalls'. Dass
+        zwei Ausf&uuml;hrungen eines 'Testfall' Knotens den selben logischen Testfall
+        repr&auml;sentieren, wird genau dann angenommen, wenn die Werte aller 'Charakteristische Variablen' zur
+        Laufzeit identisch sind. Die Werte der Variablen zur Laufzeit werden zudem im Protokoll
+        gespeichert. N&auml;heres zur Arbeit mit der Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TestCase_externalizename"></a>
+<dt>'Name f&uuml;r separates Protokoll'</dt>
+<dd>
+      
+<p>
+        Mit diesem Attribut kann ein Knoten als Bruchstelle zum Abteilen eines Protokolls
+        markiert werden. Es legt den Dateinamen f&uuml;r das abgeteilte Protokoll fest. Nach
+        Durchlaufen des Knotens wird das zugeh&ouml;rige Protokoll aus dem Hauptprotokoll
+        entfernt und als eigenst&auml;ndiges Protokoll gespeichert. Diese Operation ist vollst&auml;ndig
+        transparent, da das Hauptprotokoll eine Referenz auf das abgeteilte Protokoll erh&auml;lt und
+        somit vollst&auml;ndig navigierbar bleibt. N&auml;heres zu geteilten Protokollen finden Sie in
+        <a href="user_debugging.html#usec_splitlogs">Abschnitt 7.1.5</a>.
+      </p>
+      
+<p>
+        Dieses Attribut hat keinen Effekt, wenn die Option <a href="opt_log.html#opt_supportsplitlog">Geteilte Protokolle erzeugen</a>
+        deaktiviert ist oder geteilte Protokolle durch explizite Angabe von <a href="tech_execution.html#arg_splitlog" shape="rect"><code>-splitlog</code></a> im
+        Batchmodus ausgeschaltet werden.
+      </p>
+      
+<p>
+        Es ist nicht n&ouml;tig f&uuml;r Eindeutigkeit der Dateinamen f&uuml;r abgeteilte Protokolle zu sorgen. Wo
+        n&ouml;tig h&auml;ngt QF-Test eine Zahl an den Dateinamen an, um Konflikte zu vermeiden. Der Dateiname
+        darf Verzeichnisse enthalten und es k&ouml;nnen - analog zur Angabe des Dateinamens f&uuml;r das
+        Protokoll im Batchmodus - folgende Platzhalter in Kombination mit einem '%' oder  '+'
+        Zeichen verwendet werden:
+      </p>
+      
+<a name="table_38.1"></a><a name="table_38.1"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdcenterleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Zeichen</th>
+            <th rowspan="1" colspan="1">Bedeutung</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">%</td>
+            <td rowspan="1" colspan="1">'%'-Zeichen.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">+</td>
+            <td rowspan="1" colspan="1">'+'-Zeichen.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">i</td>
+            <td rowspan="1" colspan="1">Die aktuelle Runid wie mit <a href="tech_execution.html#arg_runid" shape="rect"><code>-runid [&lt;ID&gt;]</code></a> angegeben.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">r</td>
+            <td rowspan="1" colspan="1">Die Fehlerstufe des abgeteilten Protokolls.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">w</td>
+            <td rowspan="1" colspan="1">Die Anzahl der Warnungen im abgeteilten Protokoll.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">e</td>
+            <td rowspan="1" colspan="1">Die Anzahl der Fehler im abgeteilten Protokoll.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">x</td>
+            <td rowspan="1" colspan="1">Die Anzahl der Exceptions im abgeteilten Protokoll.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">t</td>
+            <td rowspan="1" colspan="1">Der Threadindex zu dem das abgeteilte Protokoll geh&ouml;rt
+              (f&uuml;r Tests mit parallelen Threads).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">y</td>
+            <td rowspan="1" colspan="1">Das aktuelle Jahr (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">Y</td>
+            <td rowspan="1" colspan="1">Das aktuelle Jahr (4 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">M</td>
+            <td rowspan="1" colspan="1">Der aktuelle Monat (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">d</td>
+            <td rowspan="1" colspan="1">Der aktuelle Tag (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">h</td>
+            <td rowspan="1" colspan="1">Die aktuelle Stunde (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">m</td>
+            <td rowspan="1" colspan="1">Die aktuelle Minute (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">s</td>
+            <td rowspan="1" colspan="1">Die aktuelle Sekunde (2 Ziffern).</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.1</a>:&nbsp;&nbsp;Platzhalter f&uuml;r das Attribut 'Name f&uuml;r separates Protokoll'</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Keine, Zeichen die f&uuml;r Dateinamen nicht zul&auml;ssig sind werden durch '_' ersetzt.
+    </p>
+</dd>
+<a name="att_TestCase_inherit"></a>
+<dt>'Abh&auml;ngigkeit von Parentknoten erben'</dt>
+<dd>
+      
+<p>
+        Diese Option erlaubt das Erben einer <a href="dependencies.html#step_Dependency" shape="rect">'Abh&auml;ngigkeit'</a> vom Parentknoten als Ersatz oder
+        zus&auml;tzlich zu einer f&uuml;r den Knoten selbst spezifizierten 'Abh&auml;ngigkeit'.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TestCase_condition"></a>
+<dt>'Bedingung'</dt>
+<dd>
+      
+<p>
+        Sofern die Bedingung nicht leer ist wird sie ausgewertet und, wenn das Resultat
+        <em>falsch</em> ist, die Ausf&uuml;hrung des aktuellen Knotens abgebrochen. In diesem
+        Fall wird der Knoten als <em>&uuml;bersprungen</em> gewertet.
+      </p>
+      
+<p>
+        Wie die <a href="control.html#att_IfSequence_test" shape="rect">'Bedingung'</a> eines <a href="control.html#step_IfSequence" shape="rect">'If'</a> Knotens wird auch diese
+        'Bedingung' vom Jython Interpreter ausgewertet, so dass die selben Bemerkungen
+        zutreffen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Syntax</p>
+</dd>
+<a name="att_TestCase_expectedfail"></a>
+<dt>'Fehlschlagen erwartet wenn...'</dt>
+<dd>
+            
+            
+<p>
+              Mit dieser Option kann eine Bedingung festgelegt werden, unter welcher ein
+              Fehlschlagen des 'Testfalls' erwartet wird. Dadurch k&ouml;nnen neue Fehler besser
+              von bereits bekannten unterschieden werden. Nat&uuml;rlich sollten letztere ebenfalls
+              beseitigt werden, aber ob und wann das geschieht entzieht sich eventuell dem
+              Einfluss des Testers.
+            </p>
+            
+<p>
+              Meist ist es ausreichend, dieses Attribut auf 'true' zu setzen, wenn ein Fehler f&uuml;r
+              diesen 'Testfall' erwartet wird. Falls der 'Testfall' mehrfach ausgef&uuml;hrt
+              wird, z.B. in einem <a href="datadriver.html#step_DataDriver" shape="rect">'Datentreiber'</a> oder auf verschiedenen Systemen und nur in
+              speziellen F&auml;llen fehlschl&auml;gt, sollte die Bedingung so formuliert sein, dass sie f&uuml;r
+              genau diese F&auml;lle wahr ist, z.B. ${qftest:windows} f&uuml;r einen 'Testfall', der
+              unter Windows fehlschl&auml;gt, auf anderen Systemen aber nicht.
+            </p>
+            
+<p>
+              Falls dieses Attribut ein wahres Ergebnis liefert und der 'Testfall' mit einem
+              Fehler scheitert, wird dieser in Protokoll, Report und Statuszeile gesondert
+              aufgef&uuml;hrt. Trotzdem bedeutet dies einen Fehler in der Anwendung, so dass die
+              Prozentangaben f&uuml;r erfolgreiche Tests davon unber&uuml;hrt bleiben.
+            </p>
+            
+<p>
+              Wird ein Scheitern erwartet und der 'Testfall' ist dennoch erfolgreich, gilt dies
+              als Fehler, da dies entweder bedeutet, dass der Test den Fehler nicht zuverl&auml;ssig
+              nachweist, oder der Fehler inzwischen beseitigt wurde und der 'Testfall'
+              entsprechend angepasst werden muss.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Syntax</p>
+</dd>
+<a name="att_TestCase_variable"></a>
+<dt>'Variablen Definitionen'</dt>
+<dd>
+            
+            
+<p>
+              Diese Variablen werden auf dem Prim&auml;rstapel f&uuml;r direkte Bindungen abgelegt (vgl.
+              <a href="user_variables.html#usec_variables">Kapitel 6</a>). Sie behalten w&auml;hrend der Ausf&uuml;hrung des
+              'Testfalls' ihre G&uuml;ltigkeit und k&ouml;nnen nicht durch einen <a href="#step_TestCall" shape="rect">'Testaufruf'</a>
+              &uuml;berschrieben werden. N&auml;heres zur Arbeit mit der Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Variable Namen nein, Werte ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TestCase_fallback"></a>
+<dt>'Standardwerte f&uuml;r Parameter'</dt>
+<dd>
+            
+            
+<p>
+              Hier k&ouml;nnen Sie Defaultwerte oder "Fallback" Werte f&uuml;r die Parameter des
+              'Testfalls' definieren. Diese werden herangezogen, wenn eine Variable an keiner
+              anderen Stelle definiert wurde (vgl. <a href="user_variables.html#usec_variables">Kapitel 6</a>). Au&szlig;erdem
+              dienen Sie als Dokumentation und bringen Zeitersparnis bei den
+              <a href="#att_TestCall_variable" shape="rect">'Variablen Definitionen'</a> Attributen, wenn der Dialog f&uuml;r die Auswahl des
+              'Testfalls' im Attribut <a href="#att_TestCall_calledtest" shape="rect">'Name des Tests'</a> des <a href="#step_TestCall" shape="rect">'Testaufruf'</a> Knotens verwendet
+              wird. N&auml;heres zur Arbeit mit der Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Namen der Variablen nein, Werte ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TestCase_maxerror"></a>
+<dt>'Maximaler Fehler'</dt>
+<dd>
+      
+<p>
+        Wenn beim Ablauf des Tests innerhalb der Sequenz eine Warnung, ein
+        Fehler oder eine Exception auftritt, wird dieser Status im Protokoll
+        normalerweise an die &uuml;bergeordneten Knoten weitergeleitet.  Mit diesem
+        Attribut k&ouml;nnen Sie den Fehlerstatus, den das Protokoll f&uuml;r diese
+        Sequenz erh&auml;lt, beschr&auml;nken.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Dieser Wert beeinflusst ausschlie&szlig;lich den
+        Status des Protokolls und damit den R&uuml;ckgabewert von QF-Test falls es
+        im Batchmodus l&auml;uft (vgl. <a href="user_installation.html#usec_execution">Abschnitt 1.7</a>). Auf die
+        Behandlung von Exceptions hat er keinen Einfluss.
+      </p>
+      
+<p>
+        Auch f&uuml;r die Erstellung kompakter Protokolle (vgl. <a href="opt_log.html#opt_compactlog" shape="rect">Kompakte Protokolle erstellen</a>), hat dieser
+        Wert keinen Einfluss. Eine Sequenz, in der eine Warnung oder ein
+        Fehler auftritt, wird nicht aus einem kompakten Protokoll entfernt,
+        selbst wenn &uuml;ber dieses Attribut der Fehlerstatus auf "Keinen Fehler"
+        zur&uuml;ckgesetzt wird.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TestCase_exectimeout"></a>
+<dt>'Maximale Ausf&uuml;hrungszeit'</dt>
+<dd>
+      
+<p>
+        Zeit in Millisekunden, die der Knoten maximal ausgef&uuml;hrt werden soll.
+        Nach Ablauf dieser Zeit wird der Knoten abgebrochen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> &gt;= 0</p>
+</dd>
+<a name="att_TestCase_border"></a>
+<dt>'Grenze f&uuml;r relative Aufrufe'</dt>
+<dd>
+      
+<p>
+        Ist dieses Attribut gesetzt, ist ein relativer Prozeduraufruf,
+        ein relativer Testaufruf oder eine relative Referenz auf eine Abh&auml;ngigkeit
+        innerhalb dieses Knotens gestattet. Relative Aufrufe bzw. Referenzen,
+	die diese Grenze
+        &uuml;berschreiten sind nicht erlaubt. Wenn dieses Attribut in der gesamten
+        Hierarchie nicht gesetzt ist, so k&ouml;nnen keine relativen Prozeduraufrufe 
+        einf&uuml;gt werden. Relative Testaufrufe sind unterhalb des Testsuite
+        Knotens immer m&ouml;glich.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TestCase_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Bei der Ausf&uuml;hrung von Tests im Batchmodus kann beim Kommandozeilenargument
+        <a href="tech_execution.html#arg_test" shape="rect"><code>-test &lt;Index&gt;|&lt;ID&gt;</code></a> alternativ zum qualifizierten Namen die 'QF-Test ID' des Knotens angegeben
+        werden.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_TestCase_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_TestCase_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_TestSet"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_TestSet">38.2.2</a></span>
+</div>
+<a href="contents.html#toc_step_TestSet">'Testfallsatz'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/testset.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Im Wesentlichen dienen 'Testfalls&auml;tze' dazu, <a href="#step_TestCase" shape="rect">'Testf&auml;lle'</a> einer Testsuite zu
+            strukturieren. 'Testfalls&auml;tze' k&ouml;nnen verschachtelt werden. Der <a href="#att_TestSet_name" shape="rect">'Name'</a> eines
+            'Testfallsatz' Knotens ist Bestandteil des vollst&auml;ndigen Namens eines 'Testfalls',
+            auf den sich ein <a href="#step_TestCall" shape="rect">'Testaufruf'</a> bezieht. 'Testfalls&auml;tze' sind selbst ebenfalls
+            aufrufbar und haben deshalb einen Satz von <a href="#att_TestSet_fallback" shape="rect">'Standardwerten f&uuml;r Parameter'</a>, die im
+            'Testaufruf' &uuml;berschrieben werden k&ouml;nnen.
+          </p>
+          
+<p>
+            Eine M&ouml;glichkeit, 'Testf&auml;lle' zu strukturieren, ist es, solche mit &auml;hnlichen
+            Vorbereitungs- und Aufr&auml;umanforderungen in einem 'Testfallsatz' zu sammeln. Dieser kann
+            einen <a href="dependencies.html#step_Dependency" shape="rect">'Abh&auml;ngigkeit'</a> oder <a href="dependencies.html#step_DependencyReference" shape="rect">'Bezug auf Abh&auml;ngigkeit'</a> Knoten zur Verf&uuml;gung
+            stellen, der von den 'Testf&auml;llen' oder verschachtelten 'Testfalls&auml;tzen' geerbt
+            werden kann. Wenn das Attribut <a href="#att_TestSet_inherit" shape="rect">'Abh&auml;ngigkeit von Parentknoten erben'</a> im 'Testfallsatz' aktiviert ist,
+            werden die 'Abh&auml;ngigkeit' Knoten des oder der Parents ebenfalls vererbt. Im <a href="user_organization.html#usec_dependencies">Abschnitt 8.6</a> finden Sie Detailinformationen zum Abh&auml;ngigkeitsmechanismus
+            in QF-Test. Alternatives oder zus&auml;tzliches Vorbereiten und Aufr&auml;umen ist in Form von
+            <a href="dependencies.html#step_SetupSequence" shape="rect">'Vorbereitung'</a> und <a href="dependencies.html#step_CleanupSequence" shape="rect">'Aufr&auml;umen'</a> Knoten m&ouml;glich. Diese werden vor
+            und nach jedem der 'Testfallsatz' und 'Testfall' Childknoten ausgef&uuml;hrt.
+          </p>
+          
+<p>
+            Ein weiteres wichtiges Feature im 'Testfallsatz' ist datengetriebenens Testen. Dieses
+            l&auml;sst sich durch das Hinzuf&uuml;gen eines <a href="datadriver.html#step_DataDriver" shape="rect">'Datentreiber'</a> Knotens mit einem oder
+            mehreren 'Daten' Knoten erreichen, wie es in <a href="user_datadriver.html#usec_datadriver">Kapitel 20</a>
+            beschrieben wird.
+          </p>
+          
+<p>
+            Wie der 'Testfall', so spielt auch der 'Testfallsatz' eine wichtige Rolle f&uuml;r den
+            Report. Da er mehrfach mit unterschiedlichen Parameters&auml;tzen aufgerufen werden kann,
+            verf&uuml;gt er &uuml;ber <a href="#att_TestSet_discriminator" shape="rect">'Charakteristische Variablen'</a> und einen alternativen
+            <a href="#att_TestSet_reportname" shape="rect">'Namen f&uuml;r Protokoll und Report'</a>, die &auml;quivalent funktionieren wie f&uuml;r den 'Testfall'. Das
+            gleiche gilt f&uuml;r die <a href="#att_TestSet_condition" shape="rect">'Bedingung'</a>, die benutzt werden kann, um einen ganzen
+            'Testfallsatz', abh&auml;ngig von aktuellen Variablenwerten, zu &uuml;berspringen.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> <a href="rootnode.html#step_RootStep" shape="rect">'Testsuite'</a>, <a href="#step_TestSet" shape="rect">'Testfallsatz'</a>.</p>
+<p>
+<strong>Kinder:</strong> 
+          Optional ein <a href="dependencies.html#step_Dependency" shape="rect">'Abh&auml;ngigkeit'</a> oder <a href="dependencies.html#step_DependencyReference" shape="rect">'Bezug auf Abh&auml;ngigkeit'</a> Knoten als erstes
+          Element gefolgt von einem optionalen <a href="datadriver.html#step_DataDriver" shape="rect">'Datentreiber'</a>. Als n&auml;chstes kann eine
+          <a href="dependencies.html#step_SetupSequence" shape="rect">'Vorbereitung'</a> folgen und ein <a href="dependencies.html#step_CleanupSequence" shape="rect">'Aufr&auml;umen'</a> Knoten kann den Abschluss
+          bilden, mit einer beliebigen Anzahl von <a href="#step_TestSet" shape="rect">'Testfallsatz'</a>, <a href="#step_TestCase" shape="rect">'Testfall'</a> und
+          <a href="#step_TestCall" shape="rect">'Testaufruf'</a> Knoten dazwischen.
+        </p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Zun&auml;chst werden die <a href="#att_TestSet_fallback" shape="rect">'Standardwerte f&uuml;r Parameter'</a> des 'Testfallsatz' Knotens auf dem sekund&auml;ren
+          Variablenstapel (vgl. <a href="user_variables.html#usec_variables">Kapitel 6</a>) gebunden. Anschlie&szlig;end wird die
+          <a href="#att_TestCase_condition" shape="rect">'Bedingung'</a> gepr&uuml;ft und der Knoten in dem Fall &uuml;bersprungen, dass der
+          Inhalt der (nicht leeren) 'Bedingung' als <em>falsch</em> ausgewertet wird. Eine
+          m&ouml;gliche 'Abh&auml;ngigkeit' oder 'Bezug auf Abh&auml;ngigkeit' wird zu diesem Zeitpunkt nicht
+          aufgel&ouml;st, es sei denn das Attribut <a href="dependencies.html#att_Dependency_forcedexec" shape="rect">'Immer ausf&uuml;hren, auch in Testsuite und Testfallsatz Knoten'</a> ist gesetzt. Ist ein
+          <a href="datadriver.html#step_DataDriver" shape="rect">'Datentreiber'</a> Knoten vorhanden, wird dieser ausgef&uuml;hrt, um einen entsprechenden
+          Datenkontext zu erzeugen und einen oder mehrere 'Daten' Knoten zu binden. Damit
+          werden dann die anderen Childknoten in wiederholter Abfolge ausgef&uuml;hrt (vgl. <a href="user_datadriver.html#usec_datadriver">Kapitel 20</a>). F&uuml;r jeden Schleifendurchlauf - oder einmal im dem Fall dass
+          kein 'Datentreiber' vorhanden ist - bringt der 'Testfallsatz' seine 'Testfallsatz' oder
+          'Testfall' Kindknoten zur Ausf&uuml;hrung. Wenn optionale <a href="dependencies.html#step_SetupSequence" shape="rect">'Vorbereitung'</a> oder
+          <a href="dependencies.html#step_CleanupSequence" shape="rect">'Aufr&auml;umen'</a> Knoten vorhanden sind, werden diese vor bzw. nach jedem der
+          Childknoten ausgef&uuml;hrt.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.3"></a><a name="figure_38.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_TestSet.png" target="_blank"><img src="images/att_TestSet.png" alt="Test-set attributes" texscale=".66" width="393" height="690"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.3</a>:&nbsp;&nbsp;'Testfallsatz' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_TestSet_name"></a>
+<dt>'Name'</dt>
+<dd>
+            
+            
+<p>
+              Der Name eines 'Testfallsatzes' ist ein Teil seiner eigenen Identifikation und der in
+              ihm enthaltenen <a href="#step_TestCase" shape="rect">'Testfall'</a> und 'Testfallsatz' Knoten. Verwenden Sie
+              "sprechende" Namen, die etwas &uuml;ber die darin enthaltenen Tests aussagen und die Sie
+              sich gut merken k&ouml;nnen.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein und keines der Zeichen
+          '.' oder '#' enthalten.</p>
+</dd>
+<a name="att_TestSet_reportname"></a>
+<dt>'Name f&uuml;r Protokoll und Report'</dt>
+<dd>
+      
+<p>
+        Ein alternativer Name f&uuml;r Protokoll und Report. Dieser ist hilfreich, um zwischen
+        Mehrfachausf&uuml;hrungen mit potenziell unterschiedlichen Werten f&uuml;r die 'Charakteristischen Variablen'
+        zu unterscheiden.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TestSet_discriminator"></a>
+<dt>'Charakteristische Variablen'</dt>
+<dd>
+      
+<p>
+        Diese Variablen sind Teil der Charakteristik des 'Testfallsatzes' oder 'Testfalls'. Dass
+        zwei Ausf&uuml;hrungen eines 'Testfall' Knotens den selben logischen Testfall
+        repr&auml;sentieren, wird genau dann angenommen, wenn die Werte aller 'Charakteristische Variablen' zur
+        Laufzeit identisch sind. Die Werte der Variablen zur Laufzeit werden zudem im Protokoll
+        gespeichert. N&auml;heres zur Arbeit mit der Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TestSet_externalizename"></a>
+<dt>'Name f&uuml;r separates Protokoll'</dt>
+<dd>
+      
+<p>
+        Mit diesem Attribut kann ein Knoten als Bruchstelle zum Abteilen eines Protokolls
+        markiert werden. Es legt den Dateinamen f&uuml;r das abgeteilte Protokoll fest. Nach
+        Durchlaufen des Knotens wird das zugeh&ouml;rige Protokoll aus dem Hauptprotokoll
+        entfernt und als eigenst&auml;ndiges Protokoll gespeichert. Diese Operation ist vollst&auml;ndig
+        transparent, da das Hauptprotokoll eine Referenz auf das abgeteilte Protokoll erh&auml;lt und
+        somit vollst&auml;ndig navigierbar bleibt. N&auml;heres zu geteilten Protokollen finden Sie in
+        <a href="user_debugging.html#usec_splitlogs">Abschnitt 7.1.5</a>.
+      </p>
+      
+<p>
+        Dieses Attribut hat keinen Effekt, wenn die Option <a href="opt_log.html#opt_supportsplitlog">Geteilte Protokolle erzeugen</a>
+        deaktiviert ist oder geteilte Protokolle durch explizite Angabe von <a href="tech_execution.html#arg_splitlog" shape="rect"><code>-splitlog</code></a> im
+        Batchmodus ausgeschaltet werden.
+      </p>
+      
+<p>
+        Es ist nicht n&ouml;tig f&uuml;r Eindeutigkeit der Dateinamen f&uuml;r abgeteilte Protokolle zu sorgen. Wo
+        n&ouml;tig h&auml;ngt QF-Test eine Zahl an den Dateinamen an, um Konflikte zu vermeiden. Der Dateiname
+        darf Verzeichnisse enthalten und es k&ouml;nnen - analog zur Angabe des Dateinamens f&uuml;r das
+        Protokoll im Batchmodus - folgende Platzhalter in Kombination mit einem '%' oder  '+'
+        Zeichen verwendet werden:
+      </p>
+      
+<a name="table_38.2"></a><a name="table_38.2"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdcenterleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Zeichen</th>
+            <th rowspan="1" colspan="1">Bedeutung</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">%</td>
+            <td rowspan="1" colspan="1">'%'-Zeichen.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">+</td>
+            <td rowspan="1" colspan="1">'+'-Zeichen.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">i</td>
+            <td rowspan="1" colspan="1">Die aktuelle Runid wie mit <a href="tech_execution.html#arg_runid" shape="rect"><code>-runid [&lt;ID&gt;]</code></a> angegeben.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">r</td>
+            <td rowspan="1" colspan="1">Die Fehlerstufe des abgeteilten Protokolls.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">w</td>
+            <td rowspan="1" colspan="1">Die Anzahl der Warnungen im abgeteilten Protokoll.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">e</td>
+            <td rowspan="1" colspan="1">Die Anzahl der Fehler im abgeteilten Protokoll.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">x</td>
+            <td rowspan="1" colspan="1">Die Anzahl der Exceptions im abgeteilten Protokoll.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">t</td>
+            <td rowspan="1" colspan="1">Der Threadindex zu dem das abgeteilte Protokoll geh&ouml;rt
+              (f&uuml;r Tests mit parallelen Threads).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">y</td>
+            <td rowspan="1" colspan="1">Das aktuelle Jahr (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">Y</td>
+            <td rowspan="1" colspan="1">Das aktuelle Jahr (4 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">M</td>
+            <td rowspan="1" colspan="1">Der aktuelle Monat (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">d</td>
+            <td rowspan="1" colspan="1">Der aktuelle Tag (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">h</td>
+            <td rowspan="1" colspan="1">Die aktuelle Stunde (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">m</td>
+            <td rowspan="1" colspan="1">Die aktuelle Minute (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">s</td>
+            <td rowspan="1" colspan="1">Die aktuelle Sekunde (2 Ziffern).</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.2</a>:&nbsp;&nbsp;Platzhalter f&uuml;r das Attribut 'Name f&uuml;r separates Protokoll'</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Keine, Zeichen die f&uuml;r Dateinamen nicht zul&auml;ssig sind werden durch '_' ersetzt.
+    </p>
+</dd>
+<a name="att_TestSet_inherit"></a>
+<dt>'Abh&auml;ngigkeit von Parentknoten erben'</dt>
+<dd>
+      
+<p>
+        Diese Option erlaubt das Erben einer <a href="dependencies.html#step_Dependency" shape="rect">'Abh&auml;ngigkeit'</a> vom Parentknoten als Ersatz oder
+        zus&auml;tzlich zu einer f&uuml;r den Knoten selbst spezifizierten 'Abh&auml;ngigkeit'.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TestSet_condition"></a>
+<dt>'Bedingung'</dt>
+<dd>
+      
+<p>
+        Sofern die Bedingung nicht leer ist wird sie ausgewertet und, wenn das Resultat
+        <em>falsch</em> ist, die Ausf&uuml;hrung des aktuellen Knotens abgebrochen. In diesem
+        Fall wird der Knoten als <em>&uuml;bersprungen</em> gewertet.
+      </p>
+      
+<p>
+        Wie die <a href="control.html#att_IfSequence_test" shape="rect">'Bedingung'</a> eines <a href="control.html#step_IfSequence" shape="rect">'If'</a> Knotens wird auch diese
+        'Bedingung' vom Jython Interpreter ausgewertet, so dass die selben Bemerkungen
+        zutreffen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Syntax</p>
+</dd>
+<a name="att_TestSet_fallback"></a>
+<dt>'Standardwerte f&uuml;r Parameter'</dt>
+<dd>
+            
+            
+<p>
+              Hier k&ouml;nnen Sie Defaultwerte oder "Fallback" Werte f&uuml;r die Parameter des
+              'Testfallsatzes' definieren. Diese werden herangezogen, wenn eine Variable an keiner
+              anderen Stelle definiert wurde (vgl. <a href="user_variables.html#usec_variables">Kapitel 6</a>). Au&szlig;erdem
+              dienen Sie als Dokumentation und bringen Zeitersparnis f&uuml;r die
+              <a href="#att_TestCall_variable" shape="rect">'Variablen Definitionen'</a> Attribute wenn der Dialog f&uuml;r die Auswahl des
+              'Testfalls' im Attribut <a href="#att_TestCall_calledtest" shape="rect">'Name des Tests'</a> des <a href="#step_TestCall" shape="rect">'Testaufruf'</a> Knotens
+              verwendet wird. N&auml;heres zur
+              Arbeit mit der Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Namen der Variablen nein, Werte ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TestSet_maxerror"></a>
+<dt>'Maximaler Fehler'</dt>
+<dd>
+      
+<p>
+        Wenn beim Ablauf des Tests innerhalb der Sequenz eine Warnung, ein
+        Fehler oder eine Exception auftritt, wird dieser Status im Protokoll
+        normalerweise an die &uuml;bergeordneten Knoten weitergeleitet.  Mit diesem
+        Attribut k&ouml;nnen Sie den Fehlerstatus, den das Protokoll f&uuml;r diese
+        Sequenz erh&auml;lt, beschr&auml;nken.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Dieser Wert beeinflusst ausschlie&szlig;lich den
+        Status des Protokolls und damit den R&uuml;ckgabewert von QF-Test falls es
+        im Batchmodus l&auml;uft (vgl. <a href="user_installation.html#usec_execution">Abschnitt 1.7</a>). Auf die
+        Behandlung von Exceptions hat er keinen Einfluss.
+      </p>
+      
+<p>
+        Auch f&uuml;r die Erstellung kompakter Protokolle (vgl. <a href="opt_log.html#opt_compactlog" shape="rect">Kompakte Protokolle erstellen</a>), hat dieser
+        Wert keinen Einfluss. Eine Sequenz, in der eine Warnung oder ein
+        Fehler auftritt, wird nicht aus einem kompakten Protokoll entfernt,
+        selbst wenn &uuml;ber dieses Attribut der Fehlerstatus auf "Keinen Fehler"
+        zur&uuml;ckgesetzt wird.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TestSet_exectimeout"></a>
+<dt>'Maximale Ausf&uuml;hrungszeit'</dt>
+<dd>
+      
+<p>
+        Zeit in Millisekunden, die der Knoten maximal ausgef&uuml;hrt werden soll.
+        Nach Ablauf dieser Zeit wird der Knoten abgebrochen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> &gt;= 0</p>
+</dd>
+<a name="att_TestSet_border"></a>
+<dt>'Grenze f&uuml;r relative Aufrufe'</dt>
+<dd>
+      
+<p>
+        Ist dieses Attribut gesetzt, ist ein relativer Prozeduraufruf,
+        ein relativer Testaufruf oder eine relative Referenz auf eine Abh&auml;ngigkeit
+        innerhalb dieses Knotens gestattet. Relative Aufrufe bzw. Referenzen,
+	die diese Grenze
+        &uuml;berschreiten sind nicht erlaubt. Wenn dieses Attribut in der gesamten
+        Hierarchie nicht gesetzt ist, so k&ouml;nnen keine relativen Prozeduraufrufe 
+        einf&uuml;gt werden. Relative Testaufrufe sind unterhalb des Testsuite
+        Knotens immer m&ouml;glich.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TestSet_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Bei der Ausf&uuml;hrung von Tests im Batchmodus kann beim Kommandozeilenargument
+        <a href="tech_execution.html#arg_test" shape="rect"><code>-test &lt;Index&gt;|&lt;ID&gt;</code></a> alternativ zum qualifizierten Namen die 'QF-Test ID' des Knotens angegeben
+        werden.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_TestSet_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_TestSet_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_TestCall"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_TestCall">38.2.3</a></span>
+</div>
+<a href="contents.html#toc_step_TestCall">'Testaufruf'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/testcall.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Mit diesem Knoten kann der Aufruf eines anderen ausf&uuml;hrbaren Testknotens realisiert
+            werden. M&ouml;gliche Zielknoten sind <a href="rootnode.html#step_RootStep" shape="rect">'Testsuite'</a>, <a href="#step_TestSet" shape="rect">'Testfallsatz'</a> und
+            <a href="#step_TestCase" shape="rect">'Testfall'</a> in der gleichen oder einer anderen Testsuite. Die Ausf&uuml;hrung wird im
+            aufgerufenen Knoten fortgesetzt und kehrt nach Beendigung zum 'Testaufruf' zur&uuml;ck (und
+            damit zu seinem Parentknoten).
+          </p>
+          
+<p>
+            Der Name des aufzurufenden 'Testfall' oder 'Testfallsatz' Knotens wird durch dessen
+            <a href="#att_TestCase_name" shape="rect">'Namen'</a> und die <a href="#att_TestSet_name" shape="rect">'Namen'</a> seiner 'Testfallsatz' Parents
+            bestimmt. Diese werden verkn&uuml;pft, mit einem Punkt ('.') als Trennzeichen, beginnend mit
+            &auml;u&szlig;ersten 'Testfallsatz' und endend mit dem Namen des 'Testfalls'.  Wollen Sie
+            z.B. einen 'Testfall' <code>nodeTest</code> im 'Testfallsatz' <code>Tree</code>, der
+            seinerseits im 'Testfallsatz' <code>Main</code> enthalten ist, aufrufen, so m&uuml;ssen Sie
+            als Name '<code>Main.Tree.nodeTest</code>' angeben.
+            Knoten in anderen Testsuiten k&ouml;nnen durch das Voranstellen des Dateinamens der
+            Testsuite, gefolgt von einem '#', aufgerufen werden. Ein
+            'Testsuite' Knoten kann &uuml;ber einen einzelnen '.' adressiert werden, so dass eine
+            gesamte Testsuite also mit einem 'Name des Tests' Attribut der Form
+            '<code>suitename.qft#.</code>' aufgerufen werden kann. Generell ist es am einfachsten,
+            das Ziel interaktiv &uuml;ber den Knopf oberhalb des 'Name des Tests' Attributs auszuw&auml;hlen.
+          </p>
+          
+<p>
+            Weitere Informationen zu Aufrufen in anderen Testsuiten finden Sie auch in <a href="user_distributed.html#usec_suitereference">Abschnitt 23.1</a>.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die <a href="#att_TestCall_variable" shape="rect">'Variablen Definitionen'</a> des 'Testaufrufs' werden gebunden, der Zielknoten
+          bestimmt und die Ausf&uuml;hrung an diesen &uuml;bergeben. Wenn der 'Testaufruf' beendet
+          ist, werden die Variablen des 'Testaufrufs' gel&ouml;scht.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.4"></a><a name="figure_38.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_TestCall.png" target="_blank"><img src="images/att_TestCall.png" alt="Test call Attributes" texscale=".66" width="393" height="442"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.4</a>:&nbsp;&nbsp;'Testaufruf' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_TestCall_calledtest"></a>
+<dt>'Name'</dt>
+<dd>
+            
+            
+<p>
+              Im Falles eines 'Testfall' oder 'Testfallsatz' Knotens ist es der vollst&auml;ndige
+              Name, welcher sich aus dem <a href="#att_TestSet_name" shape="rect">'Namen'</a> seiner 'Testfallsatz' Parentknoten,
+              gefolgt von seinem eigenen <a href="#att_TestCase_name" shape="rect">'Namen'</a> zusammensetzt, wobei die Einzelnamen
+              durch einen '.' verkn&uuml;pft werden. Eine 'Testsuite' wird als einzelner '.'
+              repr&auml;sentiert.
+	      The "Test ausw&auml;hlen" Button
+              <img src="../icons/select_test.png" style="vertical-align: text-bottom" alt="[Test ausw&auml;hlen]" title="Test ausw&auml;hlen" width="20" height="20" texscale=".66">
+	      oberhalb des Attributs &ouml;ffnet einen Dialog, in dem der
+              Zielknoten interaktiv ausgew&auml;hlt werden kann.
+              Den Dialog erreichen Sie auch mittels [Shift-Return] oder [Alt-Return], sofern sich
+              der Fokus im Textfeld befindet.
+              Durch Setzen des "Parameter kopieren"
+              Ausw&auml;hlk&auml;stchens, k&ouml;nnen die 'Standardwerte f&uuml;r Parameter' des 'Testfall' oder 'Testfallsatz'
+              Knotens f&uuml;r den 'Testaufruf' &uuml;bernommen werden, was erneutes Eintippen erspart.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_TestCall_externalizename"></a>
+<dt>'Name f&uuml;r separates Protokoll'</dt>
+<dd>
+      
+<p>
+        Mit diesem Attribut kann ein Knoten als Bruchstelle zum Abteilen eines Protokolls
+        markiert werden. Es legt den Dateinamen f&uuml;r das abgeteilte Protokoll fest. Nach
+        Durchlaufen des Knotens wird das zugeh&ouml;rige Protokoll aus dem Hauptprotokoll
+        entfernt und als eigenst&auml;ndiges Protokoll gespeichert. Diese Operation ist vollst&auml;ndig
+        transparent, da das Hauptprotokoll eine Referenz auf das abgeteilte Protokoll erh&auml;lt und
+        somit vollst&auml;ndig navigierbar bleibt. N&auml;heres zu geteilten Protokollen finden Sie in
+        <a href="user_debugging.html#usec_splitlogs">Abschnitt 7.1.5</a>.
+      </p>
+      
+<p>
+        Dieses Attribut hat keinen Effekt, wenn die Option <a href="opt_log.html#opt_supportsplitlog">Geteilte Protokolle erzeugen</a>
+        deaktiviert ist oder geteilte Protokolle durch explizite Angabe von <a href="tech_execution.html#arg_splitlog" shape="rect"><code>-splitlog</code></a> im
+        Batchmodus ausgeschaltet werden.
+      </p>
+      
+<p>
+        Es ist nicht n&ouml;tig f&uuml;r Eindeutigkeit der Dateinamen f&uuml;r abgeteilte Protokolle zu sorgen. Wo
+        n&ouml;tig h&auml;ngt QF-Test eine Zahl an den Dateinamen an, um Konflikte zu vermeiden. Der Dateiname
+        darf Verzeichnisse enthalten und es k&ouml;nnen - analog zur Angabe des Dateinamens f&uuml;r das
+        Protokoll im Batchmodus - folgende Platzhalter in Kombination mit einem '%' oder  '+'
+        Zeichen verwendet werden:
+      </p>
+      
+<a name="table_38.3"></a><a name="table_38.3"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdcenterleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Zeichen</th>
+            <th rowspan="1" colspan="1">Bedeutung</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">%</td>
+            <td rowspan="1" colspan="1">'%'-Zeichen.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">+</td>
+            <td rowspan="1" colspan="1">'+'-Zeichen.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">i</td>
+            <td rowspan="1" colspan="1">Die aktuelle Runid wie mit <a href="tech_execution.html#arg_runid" shape="rect"><code>-runid [&lt;ID&gt;]</code></a> angegeben.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">r</td>
+            <td rowspan="1" colspan="1">Die Fehlerstufe des abgeteilten Protokolls.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">w</td>
+            <td rowspan="1" colspan="1">Die Anzahl der Warnungen im abgeteilten Protokoll.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">e</td>
+            <td rowspan="1" colspan="1">Die Anzahl der Fehler im abgeteilten Protokoll.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">x</td>
+            <td rowspan="1" colspan="1">Die Anzahl der Exceptions im abgeteilten Protokoll.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">t</td>
+            <td rowspan="1" colspan="1">Der Threadindex zu dem das abgeteilte Protokoll geh&ouml;rt
+              (f&uuml;r Tests mit parallelen Threads).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">y</td>
+            <td rowspan="1" colspan="1">Das aktuelle Jahr (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">Y</td>
+            <td rowspan="1" colspan="1">Das aktuelle Jahr (4 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">M</td>
+            <td rowspan="1" colspan="1">Der aktuelle Monat (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">d</td>
+            <td rowspan="1" colspan="1">Der aktuelle Tag (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">h</td>
+            <td rowspan="1" colspan="1">Die aktuelle Stunde (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">m</td>
+            <td rowspan="1" colspan="1">Die aktuelle Minute (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">s</td>
+            <td rowspan="1" colspan="1">Die aktuelle Sekunde (2 Ziffern).</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.3</a>:&nbsp;&nbsp;Platzhalter f&uuml;r das Attribut 'Name f&uuml;r separates Protokoll'</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Keine, Zeichen die f&uuml;r Dateinamen nicht zul&auml;ssig sind werden durch '_' ersetzt.
+    </p>
+</dd>
+<a name="att_TestCall_variable"></a>
+<dt>'Variablen Definitionen'</dt>
+<dd>
+            
+            
+<p>
+              Hier k&ouml;nnen Sie Parameterwerte f&uuml;r den Zielknoten definieren. Diese werden auf dem
+              prim&auml;ren Variablenstapel gebunden (vgl. <a href="user_variables.html#usec_variables">Kapitel 6</a>), so dass
+              sie 'Standardwerte f&uuml;r Parameter' &uuml;berschreiben. N&auml;heres zur Arbeit mit der Tabelle finden
+              Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+            </p>
+            
+<p>
+<span class="margin"><a name="new_N112312"></a><span class="note">4.2+</span></span>
+	      Mittels Rechtsklick und Auswahl von &raquo;<em>Parameterordnung zur&uuml;cksetzen</em>&laquo;,
+	      k&ouml;nnen Sie die Sortierung der Parameter, wie diese im aufgerufenen Testfall bzw. Testfallsatz
+          sortiert sind, wieder herstellen.
+          </p>
+          
+<p>
+<strong>Variabel:</strong> Namen der Variablen nein, Werte ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TestCall_actasproccall"></a>
+<dt>'Verhalten wie Prozeduraufruf'</dt>
+<dd>
+            
+            
+<p>
+              Falls der 'Testaufruf' Knoten innerhalb eines 'Testfalls' ausgef&uuml;hrt wird, steuert dieses Attribut,
+              wie Exceptions in den aufgerufenen Knoten behandelt werden. Ist es gesetzt, beendet eine Exception den
+              gesamten Aufruf unabh&auml;ngig von der Verschachtelung von 'Testfallsatz' und 'Testfall' Knoten, analog zu
+              einem 'Prozeduraufruf'. Ist dieses Attribut nicht gesetzt, bleibt die besondere Rolle 'Testfallsatz' und
+              'Testfall' Knoten mit ihrer lokalen Behandlung von Exceptions erhalten.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TestCall_exectimeout"></a>
+<dt>'Maximale Ausf&uuml;hrungszeit'</dt>
+<dd>
+      
+<p>
+        Zeit in Millisekunden, die der Knoten maximal ausgef&uuml;hrt werden soll.
+        Nach Ablauf dieser Zeit wird der Knoten abgebrochen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> &gt;= 0</p>
+</dd>
+<a name="att_TestCall_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_TestCall_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_TestCall_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_BasicSequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_BasicSequence">38.2.4</a></span>
+</div>
+<a href="contents.html#toc_step_BasicSequence">'Sequenz'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/basic.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Diese einfachste Form aller Sequenzen hat beliebig
+            viele Childknoten, die sie der Reihe nach abarbeitet.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Beliebig</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die Variablen der Sequenz werden gebunden und die Childknoten
+          einer nach dem anderen ausgef&uuml;hrt. Anschlie&szlig;end werden die
+          Variablen der Sequenz wieder gel&ouml;scht.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.5"></a><a name="figure_38.5"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_BasicSequence.png" target="_blank"><img src="images/att_BasicSequence.png" alt="Sequenz Attribute" texscale=".66" width="393" height="367"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.5</a>:&nbsp;&nbsp;'Sequenz' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_BasicSequence_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        Der Name einer Sequenz ist eine Art Kurzkommentar. Er wird in der
+        Baumdarstellung der Testsuite angegeben und sollte etwas &uuml;ber die
+        Funktion der Sequenz aussagen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_BasicSequence_variable"></a>
+<dt>'Variablen Definitionen'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie Werte f&uuml;r Variablen definieren, die w&auml;hrend der
+        Ausf&uuml;hrung der Children der Sequenz G&uuml;ltigkeit besitzen. N&auml;heres zur
+        Arbeit mit der Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+        Eine detaillierte Erkl&auml;rung zur Definition und Verwendung
+        von Variablen finden Sie in <a href="user_variables.html#usec_variables">Kapitel 6</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Namen der Variablen nein, Werte ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_BasicSequence_maxerror"></a>
+<dt>'Maximaler Fehler'</dt>
+<dd>
+      
+<p>
+        Wenn beim Ablauf des Tests innerhalb der Sequenz eine Warnung, ein
+        Fehler oder eine Exception auftritt, wird dieser Status im Protokoll
+        normalerweise an die &uuml;bergeordneten Knoten weitergeleitet.  Mit diesem
+        Attribut k&ouml;nnen Sie den Fehlerstatus, den das Protokoll f&uuml;r diese
+        Sequenz erh&auml;lt, beschr&auml;nken.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Dieser Wert beeinflusst ausschlie&szlig;lich den
+        Status des Protokolls und damit den R&uuml;ckgabewert von QF-Test falls es
+        im Batchmodus l&auml;uft (vgl. <a href="user_installation.html#usec_execution">Abschnitt 1.7</a>). Auf die
+        Behandlung von Exceptions hat er keinen Einfluss.
+      </p>
+      
+<p>
+        Auch f&uuml;r die Erstellung kompakter Protokolle (vgl. <a href="opt_log.html#opt_compactlog" shape="rect">Kompakte Protokolle erstellen</a>), hat dieser
+        Wert keinen Einfluss. Eine Sequenz, in der eine Warnung oder ein
+        Fehler auftritt, wird nicht aus einem kompakten Protokoll entfernt,
+        selbst wenn &uuml;ber dieses Attribut der Fehlerstatus auf "Keinen Fehler"
+        zur&uuml;ckgesetzt wird.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_BasicSequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_BasicSequence_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_BasicSequence_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_TestStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_TestStep">38.2.5</a></span>
+</div>
+<a href="contents.html#toc_step_TestStep">'Testschritt'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/teststep.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Ein 'Testschritt' ist eine spezielle 'Sequenz' zur Unterteilung eines
+            'Testfalls' in mehrere Schritte, welche individuell dokumentiert werden k&ouml;nnen und
+            im Report und der testdoc Dokumentation wiedergegeben werden. Im Gegensatz zu
+            'Testf&auml;llen', die nicht verschachtelt werden d&uuml;rfen, k&ouml;nnen 'Testschritte' beliebig
+            tief verschachtelt werden.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Beliebig</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die Variablen des 'Testschritts' werden gebunden und die Childknoten
+          einer nach dem anderen ausgef&uuml;hrt. Anschlie&szlig;end werden die
+          Variablen des 'Testschritts' wieder gel&ouml;scht.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.6"></a><a name="figure_38.6"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_TestStep.png" target="_blank"><img src="images/att_TestStep.png" alt="Testschritt Attribute" texscale=".66" width="393" height="505"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.6</a>:&nbsp;&nbsp;'Testschritt' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_TestStep_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        Der Name einer Sequenz ist eine Art Kurzkommentar. Er wird in der
+        Baumdarstellung der Testsuite angegeben und sollte etwas &uuml;ber die
+        Funktion der Sequenz aussagen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TestStep_reportname"></a>
+<dt>'Name f&uuml;r Protokoll und Report'</dt>
+<dd>
+      
+<p>
+        Ein alternativer Name f&uuml;r Protokoll und Report. Dieser ist hilfreich, um zwischen
+        Mehrfachausf&uuml;hrungen des umgebenden 'Testfalls' mit potenziell unterschiedlichen
+        Werten f&uuml;r dessen 'Charakteristischen Variablen' zu unterscheiden.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TestStep_externalizename"></a>
+<dt>'Name f&uuml;r separates Protokoll'</dt>
+<dd>
+      
+<p>
+        Mit diesem Attribut kann ein Knoten als Bruchstelle zum Abteilen eines Protokolls
+        markiert werden. Es legt den Dateinamen f&uuml;r das abgeteilte Protokoll fest. Nach
+        Durchlaufen des Knotens wird das zugeh&ouml;rige Protokoll aus dem Hauptprotokoll
+        entfernt und als eigenst&auml;ndiges Protokoll gespeichert. Diese Operation ist vollst&auml;ndig
+        transparent, da das Hauptprotokoll eine Referenz auf das abgeteilte Protokoll erh&auml;lt und
+        somit vollst&auml;ndig navigierbar bleibt. N&auml;heres zu geteilten Protokollen finden Sie in
+        <a href="user_debugging.html#usec_splitlogs">Abschnitt 7.1.5</a>.
+      </p>
+      
+<p>
+        Dieses Attribut hat keinen Effekt, wenn die Option <a href="opt_log.html#opt_supportsplitlog">Geteilte Protokolle erzeugen</a>
+        deaktiviert ist oder geteilte Protokolle durch explizite Angabe von <a href="tech_execution.html#arg_splitlog" shape="rect"><code>-splitlog</code></a> im
+        Batchmodus ausgeschaltet werden.
+      </p>
+      
+<p>
+        Es ist nicht n&ouml;tig f&uuml;r Eindeutigkeit der Dateinamen f&uuml;r abgeteilte Protokolle zu sorgen. Wo
+        n&ouml;tig h&auml;ngt QF-Test eine Zahl an den Dateinamen an, um Konflikte zu vermeiden. Der Dateiname
+        darf Verzeichnisse enthalten und es k&ouml;nnen - analog zur Angabe des Dateinamens f&uuml;r das
+        Protokoll im Batchmodus - folgende Platzhalter in Kombination mit einem '%' oder  '+'
+        Zeichen verwendet werden:
+      </p>
+      
+<a name="table_38.4"></a><a name="table_38.4"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdcenterleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Zeichen</th>
+            <th rowspan="1" colspan="1">Bedeutung</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">%</td>
+            <td rowspan="1" colspan="1">'%'-Zeichen.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">+</td>
+            <td rowspan="1" colspan="1">'+'-Zeichen.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">i</td>
+            <td rowspan="1" colspan="1">Die aktuelle Runid wie mit <a href="tech_execution.html#arg_runid" shape="rect"><code>-runid [&lt;ID&gt;]</code></a> angegeben.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">r</td>
+            <td rowspan="1" colspan="1">Die Fehlerstufe des abgeteilten Protokolls.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">w</td>
+            <td rowspan="1" colspan="1">Die Anzahl der Warnungen im abgeteilten Protokoll.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">e</td>
+            <td rowspan="1" colspan="1">Die Anzahl der Fehler im abgeteilten Protokoll.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">x</td>
+            <td rowspan="1" colspan="1">Die Anzahl der Exceptions im abgeteilten Protokoll.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">t</td>
+            <td rowspan="1" colspan="1">Der Threadindex zu dem das abgeteilte Protokoll geh&ouml;rt
+              (f&uuml;r Tests mit parallelen Threads).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">y</td>
+            <td rowspan="1" colspan="1">Das aktuelle Jahr (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">Y</td>
+            <td rowspan="1" colspan="1">Das aktuelle Jahr (4 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">M</td>
+            <td rowspan="1" colspan="1">Der aktuelle Monat (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">d</td>
+            <td rowspan="1" colspan="1">Der aktuelle Tag (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">h</td>
+            <td rowspan="1" colspan="1">Die aktuelle Stunde (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">m</td>
+            <td rowspan="1" colspan="1">Die aktuelle Minute (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">s</td>
+            <td rowspan="1" colspan="1">Die aktuelle Sekunde (2 Ziffern).</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.4</a>:&nbsp;&nbsp;Platzhalter f&uuml;r das Attribut 'Name f&uuml;r separates Protokoll'</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Keine, Zeichen die f&uuml;r Dateinamen nicht zul&auml;ssig sind werden durch '_' ersetzt.
+    </p>
+</dd>
+<a name="att_TestStep_variable"></a>
+<dt>'Variablen Definitionen'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie Werte f&uuml;r Variablen definieren, die w&auml;hrend der
+        Ausf&uuml;hrung der Children der Sequenz G&uuml;ltigkeit besitzen. N&auml;heres zur
+        Arbeit mit der Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+        Eine detaillierte Erkl&auml;rung zur Definition und Verwendung
+        von Variablen finden Sie in <a href="user_variables.html#usec_variables">Kapitel 6</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Namen der Variablen nein, Werte ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TestStep_maxerror"></a>
+<dt>'Maximaler Fehler'</dt>
+<dd>
+      
+<p>
+        Wenn beim Ablauf des Tests innerhalb der Sequenz eine Warnung, ein
+        Fehler oder eine Exception auftritt, wird dieser Status im Protokoll
+        normalerweise an die &uuml;bergeordneten Knoten weitergeleitet.  Mit diesem
+        Attribut k&ouml;nnen Sie den Fehlerstatus, den das Protokoll f&uuml;r diese
+        Sequenz erh&auml;lt, beschr&auml;nken.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Dieser Wert beeinflusst ausschlie&szlig;lich den
+        Status des Protokolls und damit den R&uuml;ckgabewert von QF-Test falls es
+        im Batchmodus l&auml;uft (vgl. <a href="user_installation.html#usec_execution">Abschnitt 1.7</a>). Auf die
+        Behandlung von Exceptions hat er keinen Einfluss.
+      </p>
+      
+<p>
+        Auch f&uuml;r die Erstellung kompakter Protokolle (vgl. <a href="opt_log.html#opt_compactlog" shape="rect">Kompakte Protokolle erstellen</a>), hat dieser
+        Wert keinen Einfluss. Eine Sequenz, in der eine Warnung oder ein
+        Fehler auftritt, wird nicht aus einem kompakten Protokoll entfernt,
+        selbst wenn &uuml;ber dieses Attribut der Fehlerstatus auf "Keinen Fehler"
+        zur&uuml;ckgesetzt wird.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TestStep_exectimeout"></a>
+<dt>'Maximale Ausf&uuml;hrungszeit'</dt>
+<dd>
+      
+<p>
+        Zeit in Millisekunden, die der Knoten maximal ausgef&uuml;hrt werden soll.
+        Nach Ablauf dieser Zeit wird der Knoten abgebrochen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> &gt;= 0</p>
+</dd>
+<a name="att_TestStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_TestStep_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_TestStep_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_TimeConstrainedSequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_TimeConstrainedSequence">38.2.6</a></span>
+</div>
+<a href="contents.html#toc_step_TimeConstrainedSequence">'Sequenz mit Zeitlimit'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/timeseq.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Dieser Knoten erweitert den gew&ouml;hnlichen <a href="#step_BasicSequence" shape="rect">'Sequenz'</a> Knoten, um die
+            &Uuml;berpr&uuml;fung der Laufzeit. Seine Childknoten werden ganz normal ausgef&uuml;hrt, aber nach
+            Beendigung der Sequenz wird die verstrichene Zeit mit dem vorgegebenen Zeitlimit
+            verglichen. Wird das Zeitlimit &uuml;berschritten, f&uuml;hrt das zu einer Warnung, einem Fehler
+            oder einer Exception, je nach Einstellung des Attributs
+            <a href="#att_TimeConstrainedSequence_timeerror" shape="rect">'Fehlerstufe bei Zeit&uuml;berschreitung'</a>. Explizite Verz&ouml;gerungen wie
+            <a href="#att_TimeConstrainedSequence_delay" shape="rect">'Verz&ouml;gerung vorher/nachher'</a> oder Unterbrechungen durch den Anwender werden
+            vor der Pr&uuml;fung von der Laufzeit abgezogen.
+          </p>
+          
+<p>
+            F&uuml;r die Reportgenerierung werden Zeitlimits wie Checks behandelt. Beginnt die
+            <a href="#att_TimeConstrainedSequence_comment" shape="rect">'Bemerkung'</a> mit einem '!', wird das Ergebnis im Report als
+            Check dargestellt.
+          </p>
+          
+<p>
+            
+<span class="margin"><span class="note">Hinweis</span></span> Dieser Knoten dient zur &Uuml;berpr&uuml;fung von Zeitlimits im
+            Bereich der Anwenderakzeptanz, d.h. zwischen ein paar hundert Millisekunden und einigen
+            Sekunden. Checks im Echtzeitbereich von einigen Millisekunden und weniger sind damit
+            nicht m&ouml;glich.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Beliebig</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die Variablen der Sequenz werden gebunden und die Childknoten
+          einer nach dem anderen ausgef&uuml;hrt. Anschlie&szlig;end werden die
+          Variablen der Sequenz wieder gel&ouml;scht. Die bei der Ausf&uuml;hrung verstrichene Zeit wird auf
+          Einhaltung des Zeitlimits &uuml;berpr&uuml;ft.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.7"></a><a name="figure_38.7"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_TimeConstrainedSequence.png" target="_blank"><img src="images/att_TimeConstrainedSequence.png" alt="Sequenz mit Zeitlimit Attribute" texscale=".66" width="393" height="532"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.7</a>:&nbsp;&nbsp;'Sequenz mit Zeitlimit' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_TimeConstrainedSequence_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        Der Name einer Sequenz ist eine Art Kurzkommentar. Er wird in der
+        Baumdarstellung der Testsuite angegeben und sollte etwas &uuml;ber die
+        Funktion der Sequenz aussagen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TimeConstrainedSequence_timelimit"></a>
+<dt>'Zeitlimit f&uuml;r die Ausf&uuml;hrung'</dt>
+<dd>
+            
+<p>
+              Die erlaubte Zeit (in Millisekunden) f&uuml;r die Ausf&uuml;hrung der Sequenz.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht negativ sein.</p>
+</dd>
+<a name="att_TimeConstrainedSequence_checkrealtime"></a>
+<dt>'Echtzeit pr&uuml;fen'</dt>
+<dd>
+            
+<p>
+              Normalerweise werden explizite Verz&ouml;gerungen wie <a href="#att_TimeConstrainedSequence_delay" shape="rect">'Verz&ouml;gerung vorher/nachher'</a>
+              oder Unterbrechungen durch den Anwender vor der Pr&uuml;fung von der Laufzeit
+              abgezogen. Soll dies umgangen und somit die Echtzeit gepr&uuml;ft werden, ist dieses
+              Attribut zu aktivieren.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TimeConstrainedSequence_timeerror"></a>
+<dt>'Fehlerstufe bei Zeit&uuml;berschreitung'</dt>
+<dd>
+      
+<p>
+        Dieses Attribut legt fest, was bei &Uuml;berschreitung des Zeitlimits passiert. Ist der
+        Wert "Exception", wird eine <a href="exceptions.html#ex_CheckFailedException" shape="rect"><code>CheckFailedException</code></a> geworfen. Andernfalls wird
+        eine Meldung mit der entsprechenden Fehlerstufe in das Protokoll geschrieben.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TimeConstrainedSequence_variable"></a>
+<dt>'Variablen Definitionen'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie Werte f&uuml;r Variablen definieren, die w&auml;hrend der
+        Ausf&uuml;hrung der Children der Sequenz G&uuml;ltigkeit besitzen. N&auml;heres zur
+        Arbeit mit der Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+        Eine detaillierte Erkl&auml;rung zur Definition und Verwendung
+        von Variablen finden Sie in <a href="user_variables.html#usec_variables">Kapitel 6</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Namen der Variablen nein, Werte ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TimeConstrainedSequence_maxerror"></a>
+<dt>'Maximaler Fehler'</dt>
+<dd>
+      
+<p>
+        Wenn beim Ablauf des Tests innerhalb der Sequenz eine Warnung, ein
+        Fehler oder eine Exception auftritt, wird dieser Status im Protokoll
+        normalerweise an die &uuml;bergeordneten Knoten weitergeleitet.  Mit diesem
+        Attribut k&ouml;nnen Sie den Fehlerstatus, den das Protokoll f&uuml;r diese
+        Sequenz erh&auml;lt, beschr&auml;nken.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Dieser Wert beeinflusst ausschlie&szlig;lich den
+        Status des Protokolls und damit den R&uuml;ckgabewert von QF-Test falls es
+        im Batchmodus l&auml;uft (vgl. <a href="user_installation.html#usec_execution">Abschnitt 1.7</a>). Auf die
+        Behandlung von Exceptions hat er keinen Einfluss.
+      </p>
+      
+<p>
+        Auch f&uuml;r die Erstellung kompakter Protokolle (vgl. <a href="opt_log.html#opt_compactlog" shape="rect">Kompakte Protokolle erstellen</a>), hat dieser
+        Wert keinen Einfluss. Eine Sequenz, in der eine Warnung oder ein
+        Fehler auftritt, wird nicht aus einem kompakten Protokoll entfernt,
+        selbst wenn &uuml;ber dieses Attribut der Fehlerstatus auf "Keinen Fehler"
+        zur&uuml;ckgesetzt wird.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TimeConstrainedSequence_exectimeout"></a>
+<dt>'Maximale Ausf&uuml;hrungszeit'</dt>
+<dd>
+      
+<p>
+        Zeit in Millisekunden, die der Knoten maximal ausgef&uuml;hrt werden soll.
+        Nach Ablauf dieser Zeit wird der Knoten abgebrochen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> &gt;= 0</p>
+</dd>
+<a name="att_TimeConstrainedSequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_TimeConstrainedSequence_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_TimeConstrainedSequence_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ExtraSequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ExtraSequence">38.2.7</a></span>
+</div>
+<a href="contents.html#toc_step_ExtraSequence">'Extrasequenzen'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/extras.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Dieser Knoten ist eine Art Spielwiese zum Ausprobieren und
+            Zusammenstellen von Tests. Hier k&ouml;nnen Sie beliebige Knoten
+            ablegen, unbehindert von den normalen Einschr&auml;nkungen. Auch
+            als Zwischenablage sind die Extrasequenzen n&uuml;tzlich.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Wurzelknoten</p>
+<p>
+<strong>Kinder:</strong> Beliebig</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Kann nicht ausgef&uuml;hrt werden
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.8"></a><a name="figure_38.8"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ExtraSequence.png" target="_blank"><img src="images/att_ExtraSequence.png" alt="Extras Attribute" texscale=".66" width="393" height="144"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.8</a>:&nbsp;&nbsp;'Extrasequenzen' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ExtraSequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_ExtraSequence_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="rootnode.html#sec_rootnode"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 38.1&nbsp;Die Testsuite und ihre Struktur" title="Vorheriges Kapitel: 38.1&nbsp;Die Testsuite und ihre Struktur"></a></td><td class="navicon"><a href="dependencies.html#sec_dependencies"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 38.3&nbsp;Abh&auml;ngigkeiten" title="N&auml;chste Seite: 38.3&nbsp;Abh&auml;ngigkeiten"></a></td><td class="navicon"><a href="dependencies.html#sec_dependencies"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 38.3&nbsp;Abh&auml;ngigkeiten" title="N&auml;chstes Kapitel: 38.3&nbsp;Abh&auml;ngigkeiten"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite" title="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,2419 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Datentreiber</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_datadriver"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="dependencies.html#sec_dependencies"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 38.3&nbsp;Abh&auml;ngigkeiten" title="Vorheriges Kapitel: 38.3&nbsp;Abh&auml;ngigkeiten"></a></td><td class="navicon"><a href="procedures.html#sec_procedures"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 38.5&nbsp;Prozeduren" title="N&auml;chste Seite: 38.5&nbsp;Prozeduren"></a></td><td class="navicon"><a href="procedures.html#sec_procedures"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 38.5&nbsp;Prozeduren" title="N&auml;chstes Kapitel: 38.5&nbsp;Prozeduren"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite" title="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_datadriver">38.4</a></span>
+</div>
+<a href="contents.html#toc_sec_datadriver">Datentreiber</a>
+</h4>
+    
+<p>
+      Der Ausdruck <em>datengetriebenes Testen</em> bezieht sich auf eine verbreitete Methode bei
+      automatisierten Tests, bei der Testf&auml;lle mehrfach mit unterschiedlichen Datens&auml;tzen
+      ausgef&uuml;hrt werden. Dank des flexiblen Variablenkonzepts in QF-Test gibt es keine
+      Einschr&auml;nkungen, wie diese Daten genutzt werden k&ouml;nnen. Die h&auml;ufigste Verwendung ist
+      sicherlich f&uuml;r Eingabewerte in 'Event' und erwartete Ergebnisse in 'Check'
+      Knoten.
+    </p>
+    
+<p>
+      QF-Test's Mechanismus f&uuml;r datengetriebenes Testen besteht aus dem <a href="#step_DataDriver" shape="rect">'Datentreiber'</a> Knoten,
+      der benutzt wird um einen Datenkontext zur Verf&uuml;gung zu stellen, und verschiedenen Arten von
+      'Daten' Knoten. Aktuell gibt es den <a href="#step_TableDataBinder" shape="rect">'Datentabelle'</a> Knoten, der Daten in
+      Form einer Tabelle in QF-Test selbst speichert, den <a href="#step_CSVDataBinder" shape="rect">'CSV Datei'</a> Knoten, der
+      Daten aus einer CSV Datei, sowie den <a href="#step_DatabaseDataBinder" shape="rect">'Datenbank'</a> Knoten, der
+      Daten aus einer Datenbank und den <a href="#step_ExcelDataBinder" shape="rect">'Excel Datei'</a> Knoten, der Daten
+      aus einer Excel Datei liest.
+      Es wird auch ein Erweiterungs-API f&uuml;r den Zugriff auf beliebige externe
+      Daten zur Verf&uuml;gung gestellt.
+    </p>
+    
+<p>
+      Weitere Informationen &uuml;ber die Zusammenarbeit der verschiedenen Teile des
+      Datentreiber-Mechanismus finden Sie in <a href="user_datadriver.html#usec_datadriver">Kapitel 20</a>.
+    </p>
+    
+
+    
+<a name="step_DataDriver"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_DataDriver">38.4.1</a></span>
+</div>
+<a href="contents.html#toc_step_DataDriver">'Datentreiber'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/datadriver.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Au&szlig;er seiner besonderen Position im <a href="sequences.html#step_TestSet" shape="rect">'Testfallsatz'</a> oder <a href="sequences.html#step_TestStep" shape="rect">'Testschritt'</a> verh&auml;lt sich ein 'Datentreiber'
+            wie eine normale <a href="sequences.html#step_BasicSequence" shape="rect">'Sequenz'</a>. Er stellt den Kontext f&uuml;r einen oder mehrere
+            'Daten' Knoten bereit, f&uuml;r den sich diese w&auml;hrend der Ausf&uuml;hrung des
+            'Datentreibers' registrieren k&ouml;nnen. Der 'Testfallsatz' iteriert dann &uuml;ber die
+            Datens&auml;tze, die von den registrierten 'Daten' Knoten zur Verf&uuml;gung gestellt
+            werden und f&uuml;hrt seine Childknoten aus, wie in <a href="user_datadriver.html#usec_datadriver">Kapitel 20</a>
+            beschrieben. F&uuml;r diesen Zweck muss ein 'Datentreiber' innerhalb eines
+            <a href="sequences.html#step_TestSet" shape="rect">'Testfallsatz'</a> Knotens platziert werden, zwischen die optionalen <a href="dependencies.html#step_Dependency" shape="rect">'Abh&auml;ngigkeit'</a>
+            und <a href="dependencies.html#step_SetupSequence" shape="rect">'Vorbereitung'</a> Knoten. 'Datentreiber' Knoten k&ouml;nnen auch innerhalb von
+            <a href="sequences.html#step_TestStep" shape="rect">'Testschritt'</a> Knoten an erster Stelle platziert werden.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> 
+          <a href="sequences.html#step_TestSet" shape="rect">'Testfallsatz'</a>, <a href="sequences.html#step_TestStep" shape="rect">'Testschritt'</a>.
+        </p>
+<p>
+<strong>Kinder:</strong> Beliebig</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Wenn ein 'Testfallsatz' oder 'Testschritt' ausgef&uuml;hrt wird, &uuml;berpr&uuml;ft dieser, ob
+          ein 'Datentreiber' vorhanden
+          ist und f&uuml;hrt ihn aus. Der Inhalt des 'Datentreiber' Knotens ist nicht auf
+          'Daten' Knoten beschr&auml;nkt, sondern kann beliebige ausf&uuml;hrbare Knoten enthalten,
+          so dass jede Form von Vorbereitung realisiert werden kann, die f&uuml;r das Bereitstellen der
+          Daten notwendig ist. Damit ist es auch m&ouml;glich, 'Daten' Knoten wieder zu
+          verwenden, indem man sie in einer <a href="procedures.html#step_Procedure" shape="rect">'Prozedur'</a> platziert und diese aus dem
+          'Datentreiber' heraus aufruft. Jeder 'Daten' Knoten, der in einem
+          'Datentreiber' Kontext registriert ist, wird vom 'Testfallsatz' oder 'Testschritt' auf seine Daten hin
+          abgefragt.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.14"></a><a name="figure_38.14"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_DataDriver.png" target="_blank"><img src="images/att_DataDriver.png" alt="'Datentreiber' Attribute" texscale=".66" width="393" height="413"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.14</a>:&nbsp;&nbsp;'Datentreiber' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_DataDriver_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        Der Name eines 'Datentreibers' ist eine Art Kurzkommentar. Er wird in der
+        Baumdarstellung der Testsuite angegeben und sollte etwas &uuml;ber die Art der
+        bereitgestellten Daten aussagen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_DataDriver_loopreportname"></a>
+<dt>'Name f&uuml;r Schleifendurchgang im Protokoll'</dt>
+<dd>
+            
+            
+<p>
+              Hier kann ein eigener Name f&uuml;r die Iterationsschritte definiert werden, der dann im
+              Protokoll verwendet wird. Dieser kann Variablen der gebundenen Daten enthalten um
+              damit das Auffinden eines spezifischen Iterationsschrittes zu erleichtern.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Nein</p>
+</dd>
+<a name="att_DataDriver_externalizename"></a>
+<dt>'Name f&uuml;r separates Protokoll'</dt>
+<dd>
+      
+<p>
+        Mit diesem Attribut kann ein Knoten als Bruchstelle zum Abteilen eines Protokolls
+        markiert werden. Es legt den Dateinamen f&uuml;r das abgeteilte Protokoll fest. Nach jeder
+        Iteration des 'Datentreibers' wird das zugeh&ouml;rige Protokoll aus dem Hauptprotokoll
+        entfernt und als eigenst&auml;ndiges Protokoll gespeichert. Diese Operation ist vollst&auml;ndig
+        transparent, da das Hauptprotokoll eine Referenz auf das abgeteilte Protokoll erh&auml;lt und
+        somit vollst&auml;ndig navigierbar bleibt. N&auml;heres zu geteilten Protokollen finden Sie in
+        <a href="user_debugging.html#usec_splitlogs">Abschnitt 7.1.5</a>.
+      </p>
+      
+<p>
+        Dieses Attribut hat keinen Effekt, wenn die Option <a href="opt_log.html#opt_supportsplitlog">Geteilte Protokolle erzeugen</a>
+        deaktiviert ist oder geteilte Protokolle durch explizite Angabe von <a href="tech_execution.html#arg_splitlog" shape="rect"><code>-splitlog</code></a> im
+        Batchmodus ausgeschaltet werden.
+      </p>
+      
+<p>
+        Es ist nicht n&ouml;tig f&uuml;r Eindeutigkeit der Dateinamen f&uuml;r abgeteilte Protokolle zu sorgen. Wo
+        n&ouml;tig h&auml;ngt QF-Test eine Zahl an den Dateinamen an, um Konflikte zu vermeiden. Der Dateiname
+        darf Verzeichnisse enthalten und es k&ouml;nnen - analog zur Angabe des Dateinamens f&uuml;r das
+        Protokoll im Batchmodus - folgende Platzhalter in Kombination mit einem '%' oder  '+'
+        Zeichen verwendet werden:
+      </p>
+      
+<a name="table_38.5"></a><a name="table_38.5"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdcenterleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Zeichen</th>
+            <th rowspan="1" colspan="1">Bedeutung</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">%</td>
+            <td rowspan="1" colspan="1">'%'-Zeichen.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">+</td>
+            <td rowspan="1" colspan="1">'+'-Zeichen.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">i</td>
+            <td rowspan="1" colspan="1">Die aktuelle Runid wie mit <a href="tech_execution.html#arg_runid" shape="rect"><code>-runid [&lt;ID&gt;]</code></a> angegeben.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">r</td>
+            <td rowspan="1" colspan="1">Die Fehlerstufe des abgeteilten Protokolls.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">w</td>
+            <td rowspan="1" colspan="1">Die Anzahl der Warnungen im abgeteilten Protokoll.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">e</td>
+            <td rowspan="1" colspan="1">Die Anzahl der Fehler im abgeteilten Protokoll.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">x</td>
+            <td rowspan="1" colspan="1">Die Anzahl der Exceptions im abgeteilten Protokoll.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">t</td>
+            <td rowspan="1" colspan="1">Der Threadindex zu dem das abgeteilte Protokoll geh&ouml;rt
+              (f&uuml;r Tests mit parallelen Threads).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">y</td>
+            <td rowspan="1" colspan="1">Das aktuelle Jahr (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">Y</td>
+            <td rowspan="1" colspan="1">Das aktuelle Jahr (4 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">M</td>
+            <td rowspan="1" colspan="1">Der aktuelle Monat (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">d</td>
+            <td rowspan="1" colspan="1">Der aktuelle Tag (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">h</td>
+            <td rowspan="1" colspan="1">Die aktuelle Stunde (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">m</td>
+            <td rowspan="1" colspan="1">Die aktuelle Minute (2 Ziffern).</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">s</td>
+            <td rowspan="1" colspan="1">Die aktuelle Sekunde (2 Ziffern).</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.5</a>:&nbsp;&nbsp;Platzhalter f&uuml;r das Attribut 'Name f&uuml;r separates Protokoll'</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Keine, Zeichen die f&uuml;r Dateinamen nicht zul&auml;ssig sind werden durch '_' ersetzt.
+    </p>
+</dd>
+<a name="att_DataDriver_variable"></a>
+<dt>'Variablen Definitionen'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie Werte f&uuml;r Variablen definieren, die w&auml;hrend der
+        Ausf&uuml;hrung der Children der Sequenz G&uuml;ltigkeit besitzen. N&auml;heres zur
+        Arbeit mit der Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+        Eine detaillierte Erkl&auml;rung zur Definition und Verwendung
+        von Variablen finden Sie in <a href="user_variables.html#usec_variables">Kapitel 6</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Namen der Variablen nein, Werte ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_DataDriver_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_DataDriver_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_DataDriver_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_TableDataBinder"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_TableDataBinder">38.4.2</a></span>
+</div>
+<a href="contents.html#toc_step_TableDataBinder">'Datentabelle'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/table.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Eine 'Datentabelle' bietet eine komfortable Schnittstelle um Testdaten in
+            Tabellen direkt in QF-Test zu speichern. Details zum Mechanismus des datengetriebenen
+            Testens in QF-Test finden Sie in <a href="user_datadriver.html#usec_datadriver">Kapitel 20</a>.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Beliebig</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die 'Datentabelle' expandiert Variablen in der Tabelle entsprechend der Option
+          <a href="opt_vars.html#opt_immediatebinding">Werte von Variablen beim Binden sofort expandieren</a>. Jede Zeile wird individuell von links nach
+          rechts expandiert, so dass eine Zelle - innerhalb derselben Zeile - auf Variablen
+          verweisen kann, die in einer Spalte weiter links gebunden wurden.
+          Dann registriert sich die 'Datentabelle' im Kontext
+          eines 'Datentreibers'. Zus&auml;tzlich wird eine Propertygruppe mit dem Namen des Knotens und den
+          Variablen <code>size</code> und <code>totalsize</code> angelegt. <code>size</code>
+          beinhaltet die Anzahl der Datens&auml;tze mit R&uuml;cksicht auf Iterationsintervalle.
+          <code>totalsize</code> beinhaltet die gesamte Anzahl an Datens&auml;tzen der Datenquelle
+          ohne R&uuml;cksicht auf Iterationsintervalle. Nachdem alle 'Daten' Knoten angemeldet wurden, fragt der
+          zugeh&ouml;rige <a href="sequences.html#step_TestSet" shape="rect">'Testfallsatz'</a> die Datens&auml;tze der 'Datentabelle' ab, um dar&uuml;ber zu
+          iterieren.
+          Wenn kein 'Datentreiber' Kontext verf&uuml;gbar ist, wird die Propertygruppe um alle Variablen
+          des Knotens erweitert.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.15"></a><a name="figure_38.15"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_TableDataBinder.png" target="_blank"><img src="images/att_TableDataBinder.png" alt="'Datentabelle' Attribute" texscale=".66" width="393" height="367"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.15</a>:&nbsp;&nbsp;'Datentabelle' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_TableDataBinder_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        Der 'Name' eines 'Daten' Knotens ist ein Pflichtattribut. Er wird benutzt, um
+        'Daten' Knoten im selben 'Datentreiber' Kontext zu unterscheiden. Ein
+        <a href="control.html#step_BreakStep" shape="rect">'Break'</a> Knoten, der w&auml;hrend des datengetriebenen Tests ausgef&uuml;hrt wird, kann
+        durch Angabe dieses 'Namens' in seinem Attribut <a href="control.html#att_BreakStep_loopid" shape="rect">'QF-Test ID der Schleife'</a> gezielt die
+        Schleife dieser 'Datentabelle' abbrechen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TableDataBinder_var"></a>
+<dt>'Z&auml;hlervariable'</dt>
+<dd>
+      
+<p>
+        Der Name der Variablen, an die der Index des Schleifendurchgangs gebunden wird.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TableDataBinder_intervals"></a>
+<dt>'Iterationsbereiche'</dt>
+<dd>
+      
+<p>
+        Ein Optionaler Satz von zu nutzenden Indizes oder Bereichen f&uuml;r die Daten. Dies ist
+        besonders w&auml;hrend der Testentwicklung hilfreich, um nur &uuml;ber einen einzelnen Index oder
+        einen Teil der Daten zu iterieren.
+      </p>
+      
+<p>
+        Bereiche werden durch ',' getrennt. Jeder Bereich ist entweder in einzelner Index, oder
+        ein geschlossenes Intervall der Form 'von-bis' oder 'von:bis' wobei die Angabe von 'bis'
+        optional ist. Indizes oder Bereiche k&ouml;nnen mehrfach, &uuml;berlappend oder in absteigender
+        Richtung angegeben werden. Indizes sind 0-basiert, ein negativer Index wird vom Ende her
+        gez&auml;hlt, wobei -1 dem letzten Eintrag entspricht. Eine ung&uuml;ltige Syntax oder ein Index
+        au&szlig;erhalb des vorhandenen Datenbereichs f&uuml;hren zu einer <a href="exceptions.html#ex_BadRangeException" shape="rect"><code>BadRangeException</code></a>.
+      </p>
+      
+<p>
+        Die folgende Tabelle zeigt einige Beispiele f&uuml;r Iterationsbereiche und die daraus
+        resultierenden Indizes.
+      </p>
+      
+<a name="table_38.6"></a><a name="table_38.6"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="2">
+          
+<tr>
+            
+<th align="left" rowspan="1" colspan="1">Iterationsbereiche</th>
+            <th align="left" rowspan="1" colspan="1">Daraus resultierende Indizes</th>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">0</td>
+            <td rowspan="1" colspan="1">[0]</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">-2, -1</td>
+            <td rowspan="1" colspan="1">[18, 19]</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">1-2,4:5</td>
+            <td rowspan="1" colspan="1">[1, 2, 4, 5]</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">18:,-3-</td>
+            <td rowspan="1" colspan="1">[18, 19, 17, 18, 19]</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">3-2,16:15</td>
+            <td rowspan="1" colspan="1">[3, 2, 16, 15]</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.6</a>:&nbsp;&nbsp;Beispiele f&uuml;r Iterationsbereiche</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span>
+        Der f&uuml;r die 'Z&auml;hlervariable' gebunde Wert entspricht dem angegebenen Index im Iterationsbereich,
+        nicht der Zahl der tats&auml;chlich durchgef&uuml;hrten Iterationen. Wenn Sie z.B. '2' angeben,
+        f&uuml;hrt dies zu einer einzigen Iteration mit der 'Z&auml;hlervariable' '2', nicht '0'.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Syntax und Indexwerte</p>
+</dd>
+<a name="att_TableDataBinder_bindings"></a>
+<dt>'Daten'</dt>
+<dd>
+            
+            
+<p>
+              Hier werden die aktuellen Testdaten definiert. Jede Tabellenspalte steht hierbei f&uuml;r
+              eine Variable, deren Name im Spaltenkopf spezifiziert wird. Jede Zeile ist ein
+              Datensatz, ein Wert je Variable. So bestimmt die Zeilenzahl die Anzahl der
+              Durchl&auml;ufe in der datengetriebenen Schleife. Um Ihre Daten eingeben zu k&ouml;nnen,
+              m&uuml;ssen Sie als erstes Spalten zur Tabelle hinzuf&uuml;gen und somit die Variablen
+              definieren. Dann k&ouml;nnen mittels neuer Zeilen die Werte festgelegt werden.
+              N&auml;heres zur Arbeit mit der Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja, sogar die Spaltentitel</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TableDataBinder_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_TableDataBinder_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_TableDataBinder_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_DatabaseDataBinder"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_DatabaseDataBinder">38.4.3</a></span>
+</div>
+<a href="contents.html#toc_step_DatabaseDataBinder">'Datenbank'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/db.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Ein 'Datenbank' Knoten wird benutzt, um externe Daten aus einer Datenbank
+            zu laden. Damit QF-Test auf die Datenbank zugreifen kann, muss vor dessen Start die
+            jar Datei mit den Klassen des Datenbanktreibers entweder in der Umgebungsvariable
+            CLASSPATH enthalten sein, oder in das QF-Test Pluginverzeichnis (<a href="tech_scripting.html#sec_plugindir">Abschnitt 46.2</a>) kopiert werden. Um mehr
+            Informationen &uuml;ber den Aufbau einer Datenbankverbindung zu erlangen, fragen Sie einen
+            Entwickler oder besuchen Sie <a href="http://www.connectionstrings.com" shape="rect">www.connectionstrings.com</a>.
+          </p>
+          
+<p>
+            Weitere Details zum Datentreiber-Mechanismus finden Sie in <a href="user_datadriver.html#usec_datadriver">Kapitel 20</a>.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Beliebig</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Der 'Datenbank' Knoten l&auml;dt die Daten aus der Datenbank und expandiert
+          Variablen entsprechend der Option <a href="opt_vars.html#opt_immediatebinding">Werte von Variablen beim Binden sofort expandieren</a>. Jede Zeile
+          wird individuell von links nach rechts expandiert, so dass eine Zelle - innerhalb
+          derselben Zeile - auf Variablen verweisen kann, die in einer Spalte weiter links
+          gebunden wurden. Dann registriert sich der 'Datenbank' im Kontext eines
+          'Datentreibers'. F&uuml;r jedes Feld im select-Ausdruck wird eine Variable gleichen Namens
+          definiert. Die Schreibweise (Gro&szlig;/Klein) kann jedoch vom Datenbanktreiber abh&auml;ngen, z.B.
+          nur Gro&szlig;buchstaben bei Oracle.
+          Zus&auml;tzlich wird eine Propertygruppe mit dem Namen des Knotens und den
+          Variablen <code>size</code> und <code>totalsize</code> angelegt. <code>size</code>
+          beinhaltet die Anzahl der Datens&auml;tze mit R&uuml;cksicht auf Iterationsintervalle.
+          <code>totalsize</code> beinhaltet die gesamte Anzahl an Datens&auml;tzen der Datenquelle
+          ohne R&uuml;cksicht auf Iterationsintervalle. Nachdem alle 'Daten' Knoten angemeldet wurden, fragt der
+          zugeh&ouml;rige <a href="sequences.html#step_TestSet" shape="rect">'Testfallsatz'</a> die Datens&auml;tze der 'Datenbank' ab, um dar&uuml;ber zu
+          iterieren.
+          Wenn kein 'Datentreiber' Kontext verf&uuml;gbar ist, wird die Propertygruppe um alle Variablen
+          des Knotens erweitert.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.16"></a><a name="figure_38.16"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_DatabaseDataBinder.png" target="_blank"><img src="images/att_DatabaseDataBinder.png" alt="'Datenbank' Attribute" texscale=".66" width="393" height="481"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.16</a>:&nbsp;&nbsp;'Datenbank' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_DatabaseDataBinder_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        Der 'Name' eines 'Daten' Knotens ist ein Pflichtattribut. Er wird benutzt, um
+        'Daten' Knoten im selben 'Datentreiber' Kontext zu unterscheiden. Ein
+        <a href="control.html#step_BreakStep" shape="rect">'Break'</a> Knoten, der w&auml;hrend des datengetriebenen Tests ausgef&uuml;hrt wird, kann
+        durch Angabe dieses 'Namens' in seinem Attribut <a href="control.html#att_BreakStep_loopid" shape="rect">'QF-Test ID der Schleife'</a> gezielt die
+        Schleife dieser 'Datentabelle' abbrechen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_DatabaseDataBinder_var"></a>
+<dt>'Z&auml;hlervariable'</dt>
+<dd>
+      
+<p>
+        Der Name der Variablen, an die der Index des Schleifendurchgangs gebunden wird.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_DatabaseDataBinder_intervals"></a>
+<dt>'Iterationsbereiche'</dt>
+<dd>
+      
+<p>
+        Ein Optionaler Satz von zu nutzenden Indizes oder Bereichen f&uuml;r die Daten. Dies ist
+        besonders w&auml;hrend der Testentwicklung hilfreich, um nur &uuml;ber einen einzelnen Index oder
+        einen Teil der Daten zu iterieren.
+      </p>
+      
+<p>
+        Bereiche werden durch ',' getrennt. Jeder Bereich ist entweder in einzelner Index, oder
+        ein geschlossenes Intervall der Form 'von-bis' oder 'von:bis' wobei die Angabe von 'bis'
+        optional ist. Indizes oder Bereiche k&ouml;nnen mehrfach, &uuml;berlappend oder in absteigender
+        Richtung angegeben werden. Indizes sind 0-basiert, ein negativer Index wird vom Ende her
+        gez&auml;hlt, wobei -1 dem letzten Eintrag entspricht. Eine ung&uuml;ltige Syntax oder ein Index
+        au&szlig;erhalb des vorhandenen Datenbereichs f&uuml;hren zu einer <a href="exceptions.html#ex_BadRangeException" shape="rect"><code>BadRangeException</code></a>.
+      </p>
+      
+<p>
+        Die folgende Tabelle zeigt einige Beispiele f&uuml;r Iterationsbereiche und die daraus
+        resultierenden Indizes.
+      </p>
+      
+<a name="table_38.7"></a><a name="table_38.7"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="2">
+          
+<tr>
+            
+<th align="left" rowspan="1" colspan="1">Iterationsbereiche</th>
+            <th align="left" rowspan="1" colspan="1">Daraus resultierende Indizes</th>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">0</td>
+            <td rowspan="1" colspan="1">[0]</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">-2, -1</td>
+            <td rowspan="1" colspan="1">[18, 19]</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">1-2,4:5</td>
+            <td rowspan="1" colspan="1">[1, 2, 4, 5]</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">18:,-3-</td>
+            <td rowspan="1" colspan="1">[18, 19, 17, 18, 19]</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">3-2,16:15</td>
+            <td rowspan="1" colspan="1">[3, 2, 16, 15]</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.7</a>:&nbsp;&nbsp;Beispiele f&uuml;r Iterationsbereiche</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span>
+        Der f&uuml;r die 'Z&auml;hlervariable' gebunde Wert entspricht dem angegebenen Index im Iterationsbereich,
+        nicht der Zahl der tats&auml;chlich durchgef&uuml;hrten Iterationen. Wenn Sie z.B. '2' angeben,
+        f&uuml;hrt dies zu einer einzigen Iteration mit der 'Z&auml;hlervariable' '2', nicht '0'.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Syntax und Indexwerte</p>
+</dd>
+<a name="att_DatabaseDataBinder_stmt"></a>
+<dt>'SQL Abfrage'</dt>
+<dd>
+            
+            
+<p>
+              Die SQL Abfrage, die ausgef&uuml;hrt wird, um die gew&uuml;nschten Testdaten zu erhalten. Dies
+              sollte ein <em>select</em> Ausdruck sein. F&uuml;r jedes Feld
+im select-Ausdruck wird eine Variable gleichen Namens definiert. Die
+Schreibweise (Gro&szlig;/Klein) kann jedoch vom Datenbanktreiber abh&auml;ngen, z.B. nur
+Gro&szlig;buchstaben bei Oracle.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_DatabaseDataBinder_driver"></a>
+<dt>'Treiberklasse'</dt>
+<dd>
+            
+            
+<p>
+              Die Klasse des Datenbanktreibers.
+            </p>
+            
+<p>
+              
+<span class="margin"><span class="note">Hinweis</span></span> Die jar Datei mit den Klassen des Datenbanktreibers muss
+              vor dem Start von QF-Test entweder in der Umgebungsvariable CLASSPATH oder im
+              Pluginverzeichnis von QF-Test enthalten sein.
+            </p>
+            
+<p>
+              Hier eine Liste der gebr&auml;uchlichsten Datenbanktreiber:
+            </p>
+            
+<a name="table_38.8"></a><a name="table_38.8"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table border="1" cellspacing="0" cellpadding="0" texwidth="\linewidth">
+                
+<tr>
+                  
+<th rowspan="1" colspan="1">Datenbank
+                  </th>
+                  <th rowspan="1" colspan="1">Klassenname f&uuml;r den JDBC-Treiber
+                  </th>
+                
+</tr>
+                
+<tr>
+                  
+<td align="left" rowspan="1" colspan="1">Borland Interbase
+                  </td>
+                  <td rowspan="1" colspan="1"><code>interbase.interclient.Driver</code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">DB2
+                  </td>
+                  <td rowspan="1" colspan="1"><code>com.ibm.db2.jcc.DB2Driver</code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">Informix
+                  </td>
+                  <td rowspan="1" colspan="1"><code>com.informix.jdbc.IfxDriver</code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">IDS Server
+                  </td>
+                  <td rowspan="1" colspan="1"><code>ids.sql.IDSDriver</code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">MS SQL Server 2000
+                  </td>
+                  <td rowspan="1" colspan="1"><code>com.microsoft.jdbc.sqlserver.SQLServerDriver</code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">MS SQL Server 2005
+                  </td>
+                  <td rowspan="1" colspan="1"><code>com.microsoft.sqlserver.jdbc.SQLServerDriver</code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">mSQL
+                  </td>
+                  <td rowspan="1" colspan="1"><code>COM.imaginary.sql.msql.MsqlDriver</code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">MySQL
+                  </td>
+                  <td rowspan="1" colspan="1"><code>com.mysql.jdbc.Driver</code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">Oracle
+                  </td>
+                  <td rowspan="1" colspan="1"><code>oracle.jdbc.driver.OracleDriver</code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">Pointbase
+                  </td>
+                  <td rowspan="1" colspan="1"><code>com.pointbase.jdbc.jdbcUniversalDriver</code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">PostgreSQL
+                  </td>
+                  <td rowspan="1" colspan="1"><code>org.postgresql.Driver</code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">Standard Treiber
+                  </td>
+                  <td rowspan="1" colspan="1"><code>sun.jdbc.odbc.JdbcOdbcDriver</code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">Sybase
+                  </td>
+                  <td rowspan="1" colspan="1"><code>com.sybase.jdbc2.jdbc.SybDriver</code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">SQLite
+                  </td>
+                  <td rowspan="1" colspan="1"><code>org.sqlite.JDBC</code>
+                  </td>
+                
+</tr>
+              
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.8</a>:&nbsp;&nbsp;JDBC Treiberklassen</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_DatabaseDataBinder_constr"></a>
+<dt>'Verbindung'</dt>
+<dd>
+            
+            
+<p>
+              Der <em>Connection String</em> f&uuml;r die Datenbank. Dieser ist meist von der Form
+              <code>jdbc:<em>datenbankname</em>://<em>datenbankserver</em>/<em>datenbankname</em></code>.
+            </p>
+            
+<p>
+              Hier eine Liste der gebr&auml;uchlichsten Connection Strings:
+            </p>
+            
+<a name="table_38.9"></a><a name="table_38.9"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table border="1" cellspacing="0" cellpadding="0" texwidth="\linewidth">
+                
+<tr>
+                  
+<th rowspan="1" colspan="1">Datenbank
+                  </th>
+                  <th rowspan="1" colspan="1">Beispiel
+                  </th>
+                
+</tr>
+                
+<tr>
+                  
+<td align="left" rowspan="1" colspan="1">
+                    Derby
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    <code>jdbc:derby:net://<em>datenbankserver</em>:<em>port</em>/</code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">
+                    IBM DB2
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    <code>jdbc:db2://<em>datenbank</em></code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">
+                    HSQLB
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    <code>jdbc:hsqldb:file:<em>datenbank</em></code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">
+                    Interbase
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    <code>jdbc:interbase://<em>datenbankserver</em>/<em>datenbank</em>.gdb</code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">
+                    MS SQL Server 2000
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    <code>jdbc:microsoft:sqlserver://<em>databaseserver</em>:</code>
+<br>
+                    
+<code><em>port</em>;DatabaseName=<em>database</em>;</code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">
+                    MS SQL Server 2005
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    <code>jdbc:sqlserver://<em>databaseserver</em>:</code>
+<br>
+                    
+<code><em>port</em>;DatabaseName=<em>database</em>;</code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">
+                    MySQL
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    <code>jdbc:mysql://<em>datenbankserver</em>/<em>datenbank</em></code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">
+                    PostgreSQL
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    <code>jdbc:postgresql://<em>datenbankserver</em>/<em>datenbank</em></code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">
+                    ODBC-Datenquellen
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    <code>jdbc:odbc:<em>datenbank</em></code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">
+                    Oracle Thin
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    <code>jdbc:oracle:thin:@<em>datenbankserver</em>:<em>port</em>:</code>
+                    
+<br>
+                    
+<code><em>datenbank</em></code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">
+                    Sybase
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    <code>jdbc:sybase:tds:<em>datenbankserver</em>:<em>port</em>/<em>datenbank</em></code>
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">
+                    SQLite
+                  </td>
+                  <td rowspan="1" colspan="1">
+                    <code>jdbc:sqlite:<em>sqlite_database_file_path</em></code>
+                  </td>
+                
+</tr>
+              
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.9</a>:&nbsp;&nbsp;'Datenbank' Verbindungen</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_DatabaseDataBinder_dbuser"></a>
+<dt>'Datenbankbenutzer'</dt>
+<dd>
+            
+            
+<p>
+              Der Benutzer f&uuml;r die Datenbank. Sollte Ihre Datenbank keinen Benutzer ben&ouml;tigen,
+              lassen Sie dieses Feld einfach leer.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_DatabaseDataBinder_dbpasswd"></a>
+<dt>'Datenbankpasswort'</dt>
+<dd>
+            
+            
+<p>
+              Das Passwort f&uuml;r den Benutzer der Datenbank. Sollte Ihre Datenbank keinen Benutzer
+              oder kein Passwort ben&ouml;tigen, lassen Sie dieses Feld einfach leer. 
+              Um das Passwort nach Eingabe in dieses Feld zu verschl&uuml;sseln, w&auml;hlen Sie nach einem
+              Rechts-Klick &raquo;<em>Kennwort verschl&uuml;sseln</em>&laquo; aus dem resultierenden
+              Popupmen&uuml;. Geben Sie auf jeden Fall vor der Verschl&uuml;sselung einen Salt in der Option
+              <a href="opt_play.html#opt_passwordsalt">Salt f&uuml;r Verschl&uuml;sselung von Kennw&ouml;rtern</a> an.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_DatabaseDataBinder_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_DatabaseDataBinder_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_DatabaseDataBinder_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ExcelDataBinder"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ExcelDataBinder">38.4.4</a></span>
+</div>
+<a href="contents.html#toc_step_ExcelDataBinder">'Excel Datei'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/excel.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Ein 'Excel Datei' Knoten wird benutzt, um externe Daten aus einer Excel Datei
+            zu laden. In der ersten Zeile m&uuml;ssen die Namen der Variablen definiert werden und in
+            den weiteren Zeilen die zu bindenden Werte, wobei jede Zeile einem Testdatensatz
+            entspricht.
+          </p>
+          
+<p>
+            
+<span class="margin"><span class="note">Hinweis</span></span> Die korrekte Darstellung der Zelleninhalte vom Typ "Datum",
+            "Zeit" oder "W&auml;hrung" kann nicht immer sicher gestellt werden, da Excel den Wert und das
+            Format der Zelle getrennt voneinander speichert und die verwendete Java Bibliothek
+            nicht alle M&ouml;glichkeiten unterst&uuml;tzt. Dennoch sollte der 'Excel Datei' Knoten
+            weitestgehend korrekt arbeiten. Sollte es zu Problemen mit diesen Formaten kommen,
+            &auml;ndern Sie bitte in der Excel Datei den Typ der betroffenen Zellen auf "Text". In QF-Test
+            werden nach dem Einlesen sowieso alle Werte als Strings behandelt.
+          </p>
+          
+<p>
+            Weitere Details zum Datentreiber-Mechanismus finden Sie in
+            <a href="user_datadriver.html#usec_datadriver">Kapitel 20</a>.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Beliebig</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Der 'Excel Datei' Knoten liest die Daten aus der Excel Datei und expandiert
+          Variablen entsprechend der Option <a href="opt_vars.html#opt_immediatebinding">Werte von Variablen beim Binden sofort expandieren</a>. Jede Zeile
+          wird individuell von links nach rechts expandiert, so dass eine Zelle - innerhalb
+          derselben Zeile - auf Variablen verweisen kann, die in einer Spalte weiter links
+          gebunden wurden. Dann registriert sich der 'Excel Datei' im Kontext eines
+          'Datentreibers'.
+          Zus&auml;tzlich wird eine Propertygruppe mit dem Namen des Knotens und den
+          Variablen <code>size</code> und <code>totalsize</code> angelegt. <code>size</code>
+          beinhaltet die Anzahl der Datens&auml;tze mit R&uuml;cksicht auf Iterationsintervalle.
+          <code>totalsize</code> beinhaltet die gesamte Anzahl an Datens&auml;tzen der Datenquelle
+          ohne R&uuml;cksicht auf Iterationsintervalle. Nachdem alle 'Daten' Knoten angemeldet wurden, fragt der
+          zugeh&ouml;rige <a href="sequences.html#step_TestSet" shape="rect">'Testfallsatz'</a> die Datens&auml;tze der 'Excel Datei' ab, um dar&uuml;ber zu
+          iterieren.
+          Wenn kein 'Datentreiber' Kontext verf&uuml;gbar ist, wird die Propertygruppe um alle Variablen
+          des Knotens erweitert.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.17"></a><a name="figure_38.17"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ExcelDataBinder.png" target="_blank"><img src="images/att_ExcelDataBinder.png" alt="'Excel Datei' Attribute" texscale=".66" width="393" height="449"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.17</a>:&nbsp;&nbsp;'Excel Datei' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ExcelDataBinder_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        Der 'Name' eines 'Daten' Knotens ist ein Pflichtattribut. Er wird benutzt, um
+        'Daten' Knoten im selben 'Datentreiber' Kontext zu unterscheiden. Ein
+        <a href="control.html#step_BreakStep" shape="rect">'Break'</a> Knoten, der w&auml;hrend des datengetriebenen Tests ausgef&uuml;hrt wird, kann
+        durch Angabe dieses 'Namens' in seinem Attribut <a href="control.html#att_BreakStep_loopid" shape="rect">'QF-Test ID der Schleife'</a> gezielt die
+        Schleife dieser 'Datentabelle' abbrechen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ExcelDataBinder_var"></a>
+<dt>'Z&auml;hlervariable'</dt>
+<dd>
+      
+<p>
+        Der Name der Variablen, an die der Index des Schleifendurchgangs gebunden wird.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ExcelDataBinder_intervals"></a>
+<dt>'Iterationsbereiche'</dt>
+<dd>
+      
+<p>
+        Ein Optionaler Satz von zu nutzenden Indizes oder Bereichen f&uuml;r die Daten. Dies ist
+        besonders w&auml;hrend der Testentwicklung hilfreich, um nur &uuml;ber einen einzelnen Index oder
+        einen Teil der Daten zu iterieren.
+      </p>
+      
+<p>
+        Bereiche werden durch ',' getrennt. Jeder Bereich ist entweder in einzelner Index, oder
+        ein geschlossenes Intervall der Form 'von-bis' oder 'von:bis' wobei die Angabe von 'bis'
+        optional ist. Indizes oder Bereiche k&ouml;nnen mehrfach, &uuml;berlappend oder in absteigender
+        Richtung angegeben werden. Indizes sind 0-basiert, ein negativer Index wird vom Ende her
+        gez&auml;hlt, wobei -1 dem letzten Eintrag entspricht. Eine ung&uuml;ltige Syntax oder ein Index
+        au&szlig;erhalb des vorhandenen Datenbereichs f&uuml;hren zu einer <a href="exceptions.html#ex_BadRangeException" shape="rect"><code>BadRangeException</code></a>.
+      </p>
+      
+<p>
+        Die folgende Tabelle zeigt einige Beispiele f&uuml;r Iterationsbereiche und die daraus
+        resultierenden Indizes.
+      </p>
+      
+<a name="table_38.10"></a><a name="table_38.10"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="2">
+          
+<tr>
+            
+<th align="left" rowspan="1" colspan="1">Iterationsbereiche</th>
+            <th align="left" rowspan="1" colspan="1">Daraus resultierende Indizes</th>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">0</td>
+            <td rowspan="1" colspan="1">[0]</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">-2, -1</td>
+            <td rowspan="1" colspan="1">[18, 19]</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">1-2,4:5</td>
+            <td rowspan="1" colspan="1">[1, 2, 4, 5]</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">18:,-3-</td>
+            <td rowspan="1" colspan="1">[18, 19, 17, 18, 19]</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">3-2,16:15</td>
+            <td rowspan="1" colspan="1">[3, 2, 16, 15]</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.10</a>:&nbsp;&nbsp;Beispiele f&uuml;r Iterationsbereiche</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span>
+        Der f&uuml;r die 'Z&auml;hlervariable' gebunde Wert entspricht dem angegebenen Index im Iterationsbereich,
+        nicht der Zahl der tats&auml;chlich durchgef&uuml;hrten Iterationen. Wenn Sie z.B. '2' angeben,
+        f&uuml;hrt dies zu einer einzigen Iteration mit der 'Z&auml;hlervariable' '2', nicht '0'.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Syntax und Indexwerte</p>
+</dd>
+<a name="att_ExcelDataBinder_excelfile"></a>
+<dt>'Name der Excel Datei'</dt>
+<dd>
+            
+            
+<p>
+              Der Name der Excel Datei aus der die Testdaten gelesen werden sollen. Relative
+              Pfadangaben werden relativ zum Verzeichnis der Testsuite aufgel&ouml;st.
+            </p>
+            
+<p>
+              Der Knopf &uuml;ber dem Attribut &ouml;ffnet einen Dialog in dem die Excel Datei interaktiv
+              ausgew&auml;hlt werden kann.
+              Den Dialog
+              erreichen Sie auch mittels [Shift-Return] oder
+              [Alt-Return], sofern sich der Fokus im Textfeld
+              befindet.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_ExcelDataBinder_sheetname"></a>
+<dt>'Name des Tabellenblatts'</dt>
+<dd>
+            
+            
+<p>
+             Der Name des Tabellenblatts aus dem die Testdaten gelesen werden sollen.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ExcelDataBinder_dateformat"></a>
+<dt>'Datumsformat vorgeben'</dt>
+<dd>
+            
+            
+<p>
+              In diesem Textfeld k&ouml;nnen Sie ein Datumsformat vorgeben, welches f&uuml;r alle aus der
+              Excel Datei geladenen Zellen vom Typ "Datum" verwendet werden soll. Dieses Format
+              muss wie f&uuml;r die Java Klasse <code>SimpleDateFormat</code> spezifiziert sein, d.h.
+              'd' f&uuml;r Tag, 'M' f&uuml;r Monat und 'y' f&uuml;r Jahr. Mit 'dd' werden zwei Stellen f&uuml;r den
+              Tag reserviert, analog dazu gibt es 'MM', 'yy' oder 'yyyy'.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ExcelDataBinder_rowbased"></a>
+<dt>'Variablen in Zeilen'</dt>
+<dd>
+            
+            
+<p>
+              Wenn dieses Attribute angehakt ist, werden die Namen der
+              Variablen aus der ersten Zeile der Excel Datei ausgelesen,
+              sonst aus der ersten Spalte.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ExcelDataBinder_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_ExcelDataBinder_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_ExcelDataBinder_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_CSVDataBinder"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_CSVDataBinder">38.4.5</a></span>
+</div>
+<a href="contents.html#toc_step_CSVDataBinder">'CSV Datei'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/csv.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Eine 'CSV Datei' wird benutzt, um externe Daten aus einer Datei zu laden und
+            f&uuml;r datengetriebene Tests bereit zu stellen. <em>CSV</em> steht f&uuml;r
+            <em>Comma-separated Values</em> - also f&uuml;r <em>durch Komma getrennte Werte</em>,
+            welches ein Standardformat f&uuml;r Textdateien darstellt. Hierbei steht jede Zeile in der
+            Datei f&uuml;r einen Datensatz, dessen Werte durch ein Trennzeichen separiert werden. Als
+            Trennzeichen wird oft, aber nicht ausschlie&szlig;lich, ein Komma (',') verwendet. Bei der
+            Benutzung in einem 'CSV Datei' Knoten muss die erste Zeile der CSV Datei die
+            Namen der Variablen enthalten, die gebunden werden sollen. In den weiteren Zeilen
+            folgen dann die Werte f&uuml;r die einzelnen Iterationsschritte.
+          </p>
+          
+<p>
+            Leider gibt es bei CSV Dateien uneinheitliche Definitionen f&uuml;r Spezialf&auml;lle wie
+            das Sch&uuml;tzen von Sonderzeichen (quoting), die Behandlung von Leerzeichen
+            oder Trennzeichen in Werten oder mehrzeilige Werte. Aktuell existieren zwei de-facto
+            Standards. Einen benutzt Microsoft Excel und einen der Rest der Welt. QF-Test unterst&uuml;tzt
+            beide. Weitere Details zum Datentreiber-Mechanismus finden Sie in <a href="user_datadriver.html#usec_datadriver">Kapitel 20</a>.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Beliebig</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Der 'CSV Datei' Knoten liest die Daten aus der CSV Datei und expandiert
+          Variablen entsprechend der Option <a href="opt_vars.html#opt_immediatebinding">Werte von Variablen beim Binden sofort expandieren</a>. Jede Zeile
+          wird individuell von links nach rechts expandiert, so dass eine Zelle - innerhalb
+          derselben Zeile - auf Variablen verweisen kann, die in einer Spalte weiter links
+          gebunden wurden. Dann registriert sich der 'CSV Datei' im Kontext
+          eines 'Datentreibers'.
+          Zus&auml;tzlich wird eine Propertygruppe  mit dem Namen des Knotens und den
+          Variablen <code>size</code> und <code>totalsize</code> angelegt. <code>size</code>
+          beinhaltet die Anzahl der Datens&auml;tze mit R&uuml;cksicht auf Iterationsintervalle.
+          <code>totalsize</code> beinhaltet die gesamte Anzahl an Datens&auml;tzen der Datenquelle
+          ohne R&uuml;cksicht auf Iterationsintervalle. Nachdem alle 'Daten' Knoten angemeldet wurden, fragt der
+          zugeh&ouml;rige <a href="sequences.html#step_TestSet" shape="rect">'Testfallsatz'</a> die Datens&auml;tze der 'CSV Datei' ab, um dar&uuml;ber zu
+          iterieren.
+          Wenn kein 'Datentreiber' Kontext verf&uuml;gbar ist, wird die Propertygruppe um alle Variablen
+          des Knotens erweitert.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.18"></a><a name="figure_38.18"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_CSVDataBinder.png" target="_blank"><img src="images/att_CSVDataBinder.png" alt="'CSV Datei' Attribute" texscale=".66" width="393" height="449"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.18</a>:&nbsp;&nbsp;'CSV Datei' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_CSVDataBinder_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        Der 'Name' eines 'Daten' Knotens ist ein Pflichtattribut. Er wird benutzt, um
+        'Daten' Knoten im selben 'Datentreiber' Kontext zu unterscheiden. Ein
+        <a href="control.html#step_BreakStep" shape="rect">'Break'</a> Knoten, der w&auml;hrend des datengetriebenen Tests ausgef&uuml;hrt wird, kann
+        durch Angabe dieses 'Namens' in seinem Attribut <a href="control.html#att_BreakStep_loopid" shape="rect">'QF-Test ID der Schleife'</a> gezielt die
+        Schleife dieser 'Datentabelle' abbrechen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_CSVDataBinder_var"></a>
+<dt>'Z&auml;hlervariable'</dt>
+<dd>
+      
+<p>
+        Der Name der Variablen, an die der Index des Schleifendurchgangs gebunden wird.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_CSVDataBinder_intervals"></a>
+<dt>'Iterationsbereiche'</dt>
+<dd>
+      
+<p>
+        Ein Optionaler Satz von zu nutzenden Indizes oder Bereichen f&uuml;r die Daten. Dies ist
+        besonders w&auml;hrend der Testentwicklung hilfreich, um nur &uuml;ber einen einzelnen Index oder
+        einen Teil der Daten zu iterieren.
+      </p>
+      
+<p>
+        Bereiche werden durch ',' getrennt. Jeder Bereich ist entweder in einzelner Index, oder
+        ein geschlossenes Intervall der Form 'von-bis' oder 'von:bis' wobei die Angabe von 'bis'
+        optional ist. Indizes oder Bereiche k&ouml;nnen mehrfach, &uuml;berlappend oder in absteigender
+        Richtung angegeben werden. Indizes sind 0-basiert, ein negativer Index wird vom Ende her
+        gez&auml;hlt, wobei -1 dem letzten Eintrag entspricht. Eine ung&uuml;ltige Syntax oder ein Index
+        au&szlig;erhalb des vorhandenen Datenbereichs f&uuml;hren zu einer <a href="exceptions.html#ex_BadRangeException" shape="rect"><code>BadRangeException</code></a>.
+      </p>
+      
+<p>
+        Die folgende Tabelle zeigt einige Beispiele f&uuml;r Iterationsbereiche und die daraus
+        resultierenden Indizes.
+      </p>
+      
+<a name="table_38.11"></a><a name="table_38.11"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="2">
+          
+<tr>
+            
+<th align="left" rowspan="1" colspan="1">Iterationsbereiche</th>
+            <th align="left" rowspan="1" colspan="1">Daraus resultierende Indizes</th>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">0</td>
+            <td rowspan="1" colspan="1">[0]</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">-2, -1</td>
+            <td rowspan="1" colspan="1">[18, 19]</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">1-2,4:5</td>
+            <td rowspan="1" colspan="1">[1, 2, 4, 5]</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">18:,-3-</td>
+            <td rowspan="1" colspan="1">[18, 19, 17, 18, 19]</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">3-2,16:15</td>
+            <td rowspan="1" colspan="1">[3, 2, 16, 15]</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.11</a>:&nbsp;&nbsp;Beispiele f&uuml;r Iterationsbereiche</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span>
+        Der f&uuml;r die 'Z&auml;hlervariable' gebunde Wert entspricht dem angegebenen Index im Iterationsbereich,
+        nicht der Zahl der tats&auml;chlich durchgef&uuml;hrten Iterationen. Wenn Sie z.B. '2' angeben,
+        f&uuml;hrt dies zu einer einzigen Iteration mit der 'Z&auml;hlervariable' '2', nicht '0'.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Syntax und Indexwerte</p>
+</dd>
+<a name="att_CSVDataBinder_csvfile"></a>
+<dt>'Name der CSV Datei'</dt>
+<dd>
+            
+            
+<p>
+              Der Name der CSV Datei aus der die Testdaten gelesen werden sollen. Relative
+              Pfadangaben werden relativ zum Verzeichnis der Testsuite aufgel&ouml;st.
+            </p>
+            
+<p>
+              Der Knopf &uuml;ber dem Attribut &ouml;ffnet einen Dialog in dem die CSV Datei interaktiv
+              ausgew&auml;hlt werden kann.
+              Den Dialog
+              erreichen Sie auch mittels [Shift-Return] oder
+              [Alt-Return], sofern sich der Fokus im Textfeld
+              befindet.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_CSVDataBinder_encoding"></a>
+<dt>'Kodierung der Datei'</dt>
+<dd>
+            
+            
+<p>
+              Eine optionale Kodierung f&uuml;r die CSV Datei, z.B "UTF-8". Ist keine Kodierung
+              angeben, wird die Datei mit der Standard-Kodierung der Java VM gelesen.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+            Die Kodierung muss von der Java VM unterst&uuml;tzt werden.
+          </p>
+</dd>
+<a name="att_CSVDataBinder_excelformat"></a>
+<dt>'Microsoft Excel CSV Format lesen'</dt>
+<dd>
+            
+            
+<p>
+              Wenn diese Option gesetzt ist, versucht QF-Test die CSV Datei gem&auml;&szlig; dem
+              von Microsoft Excel verwendeten Format einzulesen.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_CSVDataBinder_separator"></a>
+<dt>'Trennzeichen'</dt>
+<dd>
+            
+            
+<p>
+              Mit diesem Attribut k&ouml;nnen sie das Zeichen festlegen, welches zur Trennung der
+              Datenwerte in der CSV Datei verwendet wird. Wenn kein Trennzeichen
+              definiert ist, wird das Komma (',') als Standardwert genutzt. Wenn
+              <a href="#att_CSVDataBinder_excelformat" shape="rect">'Microsoft Excel CSV Format lesen'</a> gesetzt ist, wird dieses Attribut ignoriert.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_CSVDataBinder_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_CSVDataBinder_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_CSVDataBinder_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_LoopDataBinder"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_LoopDataBinder">38.4.6</a></span>
+</div>
+<a href="contents.html#toc_step_LoopDataBinder">'Datenschleife'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/dataloop.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Bei einem 'Datenschleife' Knoten handelt es sich um eine einfache Schleife, bei
+            der eine einzelne Variable als Schleifenz&auml;hler gebunden wird. So k&ouml;nnen
+            <a href="sequences.html#step_TestCase" shape="rect">'Testf&auml;lle'</a> mehrfach ausgef&uuml;hrt werden, indem sie in einen <a href="sequences.html#step_TestSet" shape="rect">'Testfallsatz'</a>
+            mit einem <a href="#step_DataDriver" shape="rect">'Datentreiber'</a> und einer 'Datenschleife' gelegt werden.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Beliebig</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Bei ihrer Ausf&uuml;hrung registriert sich die 'Datenschleife' lediglich im Kontext
+          eines 'Datentreibers'. Die Z&auml;hlvariable wird als Variable gesetzt.
+          Zus&auml;tzlich wird eine Propertygruppe  mit dem Namen des Knotens und den
+          Variablen <code>size</code> und <code>totalsize</code> angelegt. <code>size</code>
+          beinhaltet die Anzahl der Datens&auml;tze mit R&uuml;cksicht auf Iterationsintervalle.
+          <code>totalsize</code> beinhaltet die gesamte Anzahl an Datens&auml;tzen der Datenquelle
+          ohne R&uuml;cksicht auf Iterationsintervalle. Nachdem alle 'Daten' Knoten angemeldet wurden, fragt der
+          zugeh&ouml;rige <a href="sequences.html#step_TestSet" shape="rect">'Testfallsatz'</a> die Datens&auml;tze der 'Datenschleife' ab, um dar&uuml;ber zu
+          iterieren.
+          Wenn kein 'Datentreiber' Kontext verf&uuml;gbar ist, wird die Propertygruppe um alle Variablen
+          des Knotens erweitert.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.19"></a><a name="figure_38.19"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_LoopDataBinder.png" target="_blank"><img src="images/att_LoopDataBinder.png" alt="'Datenschleife' Attribute" texscale=".66" width="393" height="328"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.19</a>:&nbsp;&nbsp;'Datenschleife' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_LoopDataBinder_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        Der 'Name' eines 'Daten' Knotens ist ein Pflichtattribut. Er wird benutzt, um
+        'Daten' Knoten im selben 'Datentreiber' Kontext zu unterscheiden. Ein
+        <a href="control.html#step_BreakStep" shape="rect">'Break'</a> Knoten, der w&auml;hrend des datengetriebenen Tests ausgef&uuml;hrt wird, kann
+        durch Angabe dieses 'Namens' in seinem Attribut <a href="control.html#att_BreakStep_loopid" shape="rect">'QF-Test ID der Schleife'</a> gezielt die
+        Schleife dieser 'Datentabelle' abbrechen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_LoopDataBinder_var"></a>
+<dt>'Z&auml;hlervariable'</dt>
+<dd>
+      
+<p>
+        Der Name der Variablen, an die der Index des Schleifendurchgangs gebunden wird.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_LoopDataBinder_intervals"></a>
+<dt>'Iterationsbereiche'</dt>
+<dd>
+      
+<p>
+        Ein Optionaler Satz von zu nutzenden Indizes oder Bereichen f&uuml;r die Daten. Dies ist
+        besonders w&auml;hrend der Testentwicklung hilfreich, um nur &uuml;ber einen einzelnen Index oder
+        einen Teil der Daten zu iterieren.
+      </p>
+      
+<p>
+        Bereiche werden durch ',' getrennt. Jeder Bereich ist entweder in einzelner Index, oder
+        ein geschlossenes Intervall der Form 'von-bis' oder 'von:bis' wobei die Angabe von 'bis'
+        optional ist. Indizes oder Bereiche k&ouml;nnen mehrfach, &uuml;berlappend oder in absteigender
+        Richtung angegeben werden. Indizes sind 0-basiert, ein negativer Index wird vom Ende her
+        gez&auml;hlt, wobei -1 dem letzten Eintrag entspricht. Eine ung&uuml;ltige Syntax oder ein Index
+        au&szlig;erhalb des vorhandenen Datenbereichs f&uuml;hren zu einer <a href="exceptions.html#ex_BadRangeException" shape="rect"><code>BadRangeException</code></a>.
+      </p>
+      
+<p>
+        Die folgende Tabelle zeigt einige Beispiele f&uuml;r Iterationsbereiche und die daraus
+        resultierenden Indizes.
+      </p>
+      
+<a name="table_38.12"></a><a name="table_38.12"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="2">
+          
+<tr>
+            
+<th align="left" rowspan="1" colspan="1">Iterationsbereiche</th>
+            <th align="left" rowspan="1" colspan="1">Daraus resultierende Indizes</th>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">0</td>
+            <td rowspan="1" colspan="1">[0]</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">-2, -1</td>
+            <td rowspan="1" colspan="1">[18, 19]</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">1-2,4:5</td>
+            <td rowspan="1" colspan="1">[1, 2, 4, 5]</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">18:,-3-</td>
+            <td rowspan="1" colspan="1">[18, 19, 17, 18, 19]</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">3-2,16:15</td>
+            <td rowspan="1" colspan="1">[3, 2, 16, 15]</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.12</a>:&nbsp;&nbsp;Beispiele f&uuml;r Iterationsbereiche</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span>
+        Der f&uuml;r die 'Z&auml;hlervariable' gebunde Wert entspricht dem angegebenen Index im Iterationsbereich,
+        nicht der Zahl der tats&auml;chlich durchgef&uuml;hrten Iterationen. Wenn Sie z.B. '2' angeben,
+        f&uuml;hrt dies zu einer einzigen Iteration mit der 'Z&auml;hlervariable' '2', nicht '0'.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Syntax und Indexwerte</p>
+</dd>
+<a name="att_LoopDataBinder_count"></a>
+<dt>'Anzahl Wiederholungen'</dt>
+<dd>
+            
+            
+<p>
+              Dieser Wert legt die Anzahl der Durchg&auml;nge f&uuml;r die
+              Ausf&uuml;hrung fest.
+            </p>
+            
+<p>
+              Dieses Attribut ist pr&auml;destiniert f&uuml;r den Einsatz von
+              Variablen. Wenn Sie die Anzahl Wiederholungen z.B. auf
+              <code>$(count)</code> setzen, k&ouml;nnen Sie den Wert f&uuml;r die
+              Variable <code>count</code> in den Variablen der Suite
+              (vgl. <a href="user_variables.html#usec_variables">Kapitel 6</a>) auf 1 oder 2 setzen.
+              Das vereinfacht das Erstellen und Ausprobieren der Testsuite.
+            </p>
+            
+<p>
+              Wenn Sie den Test dann ernsthaft ausf&uuml;hren, z.B. automatisch
+              mittels <code>qftest -batch</code>, k&ouml;nnen Sie durch Angabe
+              von <code>-variable count=100</code> auf der Kommandozeile den
+              Wert f&uuml;r <code>count</code> nach Belieben variieren.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> &gt;0</p>
+</dd>
+<a name="att_LoopDataBinder_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_LoopDataBinder_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_LoopDataBinder_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="dependencies.html#sec_dependencies"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 38.3&nbsp;Abh&auml;ngigkeiten" title="Vorheriges Kapitel: 38.3&nbsp;Abh&auml;ngigkeiten"></a></td><td class="navicon"><a href="procedures.html#sec_procedures"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 38.5&nbsp;Prozeduren" title="N&auml;chste Seite: 38.5&nbsp;Prozeduren"></a></td><td class="navicon"><a href="procedures.html#sec_procedures"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 38.5&nbsp;Prozeduren" title="N&auml;chstes Kapitel: 38.5&nbsp;Prozeduren"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite" title="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

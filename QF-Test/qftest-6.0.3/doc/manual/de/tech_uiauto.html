@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Steuern und Testen von nativen Windows Anwendungen -
+               ohne Verwendung der QF-Test win Engine</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_uiauto"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_web.html#sec_web"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 47&nbsp;Web" title="Vorheriges Kapitel: 47&nbsp;Web"></a></td><td class="navicon"><a href="tech_uiauto_general.html#usec_uiauto_general"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 48.1&nbsp;Vorgehensweise" title="N&auml;chste Seite: 48.1&nbsp;Vorgehensweise"></a></td><td class="navicon"><a href="tech_automac.html#usec_automac"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 49&nbsp;Steuern und Testen von nativen MacOS-Anwendungen" title="N&auml;chstes Kapitel: 49&nbsp;Steuern und Testen von nativen MacOS-Anwendungen"></a></td><td class="navicon"><a href="technical.html#sec_technical"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: IV&nbsp;Technische Referenz" title="Kapitel-&Uuml;bersicht: IV&nbsp;Technische Referenz"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_uiauto">48</a></span>
+</div>
+<a href="contents.html#toc_usec_uiauto">Steuern und Testen von nativen Windows Anwendungen -
+               ohne Verwendung der QF-Test <code>win</code> Engine</a>
+</h3>
+    
+<p>
+<span class="margin"><span class="note">Hinweis</span></span>
+      Die <code>win</code> Engine von QF-Test ist im Kapitel <a href="user_wintesting.html#usec_wintesting">Testen nativer Windows Anwendungen</a>
+      beschrieben.
+    </p>
+    
+<p>
+      Grunds&auml;tzlich sollte f&uuml;r Tests und die Steuerung von nativen Windows Anwendungen
+      die <code>win</code> Engine von QF-Test verwendet werden. Hierf&uuml;r ist eine
+      passende Lizenz notwendig. Falls diese nicht vorhanden ist und native Windows
+      Anwendungen nur in sehr geringem Umfang testet oder gesteuert werden m&uuml;ssen,
+      kann auf die im Folgenden beschriebene Bibliothek zur&uuml;ckgegriffen werden.
+    </p>
+    
+<p>
+      Sie erlaubt &uuml;ber die Microsoft UI Automation Schnittstelle
+      den Zugriff auf Elemente.
+      Aktionen k&ouml;nnen angesto&szlig;en und ausgew&auml;hlte Werte &uuml;berpr&uuml;ft werden. Informationen
+      zu der Microsoft Schnittstelle finden Sie auf
+      <a href="https://en.wikipedia.org/wiki/Microsoft_UI_Automation" shape="rect">
+      https://en.wikipedia.org/wiki/Microsoft_UI_Automation</a>
+    
+</p>
+    
+<p>
+      Das Ansprechen der Bibliothek erfolgt &uuml;ber Prozeduren, die Teil der
+      <a href="user_stdlib.html#usec_stdlib">Standardbibliothek</a> qfs.qft sind.
+    </p>
+    
+<p>
+      Die direkte Aufnahme von Aktionen oder Checks (Capturing) ist nicht m&ouml;glich.
+      Der bzw. die Parameter zur Identifikation des GUI Objekts m&uuml;ssen bestimmt
+      und passend an die entsprechende Prozedur &uuml;bergeben werden.
+    </p>
+    
+<p>
+      Das Abspielen der Aktionen passiert prim&auml;r &uuml;ber "harte" Systemevents.
+      Dies f&uuml;hrt zu einem anderen Wiedergabeverhalten als man es bei Java oder
+      Web-Anwendungen mit QF-Test sonst gewohnt ist.
+    </p>
+    
+<p>
+      Trotz dieser Einschr&auml;nkungen kann die Bibliothek ein hilfreiches Werkzeug f&uuml;r
+      einfache Test- oder Steuerungsaufgaben von nativen Windows Anwendungen sein.
+    </p>
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="tech_uiauto_general.html#usec_uiauto_general"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="tech_uiauto_general.html#usec_uiauto_general">48.1</a></span>
+</div>
+<a href="tech_uiauto_general.html#usec_uiauto_general">Vorgehensweise</a>
+</h4>
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="tech_uiauto_example.html#usec_uiauto_example"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="tech_uiauto_example.html#usec_uiauto_example">48.2</a></span>
+</div>
+<a href="tech_uiauto_example.html#usec_uiauto_example">Beispiel</a>
+</h4>
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_web.html#sec_web"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 47&nbsp;Web" title="Vorheriges Kapitel: 47&nbsp;Web"></a></td><td class="navicon"><a href="tech_uiauto_general.html#usec_uiauto_general"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 48.1&nbsp;Vorgehensweise" title="N&auml;chste Seite: 48.1&nbsp;Vorgehensweise"></a></td><td class="navicon"><a href="tech_automac.html#usec_automac"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 49&nbsp;Steuern und Testen von nativen MacOS-Anwendungen" title="N&auml;chstes Kapitel: 49&nbsp;Steuern und Testen von nativen MacOS-Anwendungen"></a></td><td class="navicon"><a href="technical.html#sec_technical"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: IV&nbsp;Technische Referenz" title="Kapitel-&Uuml;bersicht: IV&nbsp;Technische Referenz"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Generische Komponenten</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_bpCRGeneric"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="usec_scope.html#usec_scope"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 5.7&nbsp;Geltungsbereich(Scope) (Preview)" title="Vorheriges Kapitel: 5.7&nbsp;Geltungsbereich(Scope) (Preview)"></a></td><td class="navicon"><a href="user_subitems.html#usec_subitems"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 5.9&nbsp;Unterelemente: Adressierung relativ zur &uuml;bergeordneten Komponente" title="N&auml;chste Seite: 5.9&nbsp;Unterelemente: Adressierung relativ zur &uuml;bergeordneten Komponente"></a></td><td class="navicon"><a href="user_subitems.html#usec_subitems"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 5.9&nbsp;Unterelemente: Adressierung relativ zur &uuml;bergeordneten Komponente" title="N&auml;chstes Kapitel: 5.9&nbsp;Unterelemente: Adressierung relativ zur &uuml;bergeordneten Komponente"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 5&nbsp;Komponenten" title="Kapitel-&Uuml;bersicht: 5&nbsp;Komponenten"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpCRGeneric">5.8</a></span>
+</div>
+<a href="contents.html#toc_sec_bpCRGeneric">Generische Komponenten</a>
+</h4>
+      
+<p>
+        Bevor mit QF-Test Version 6.0 <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a>s zur
+        Verf&uuml;gung standen, waren generische Komponenten das Mittel
+        der Wahl, um Komponentenaufnahmen zu vermeiden.
+        Mit SmartIDs kann dieses Ziel einfacher und flexibler erreicht
+        werden. Die bisherige Beschreibung der generischen Komponenten bleibt
+        aber aus Gr&uuml;nden der R&uuml;ckw&auml;rtskompatibilit&auml;t hier erhalten.
+      </p>
+      
+<p>
+        Ein typischer Anwendungsfall hierf&uuml;r ist das Testen von lokalisierten Anwendungen.
+      </p>
+      
+<p>
+        Eine andere Situation k&ouml;nnte der Einsatz eines GUI Frameworks bei
+        der Entwicklung sein. Dieser Einsatz generiert jede Menge &auml;hnlicher
+        Dialoge, wo sich nur ein paar Komponenten unterscheiden. Aber Sie
+        m&uuml;ssen jedes Mal jeden Bereich neu aufzeichnen, auch wenn Sie dies
+        schon einmal gemacht haben, z.B. globale Navigationsbuttons,
+        weil es sich immer um ein neues Fenster handelt.
+      </p>
+      
+<p>
+        F&uuml;r generische Komponenten benutzen Sie Variablen in den
+        Komponenteneigenschaften oder l&ouml;schen einfach nicht-dynamische Teile daraus.
+      </p>
+      
+<p>
+        Ein allgemeiner Ansatz f&uuml;r das Generalisieren von Komponenten ist folgender:
+      </p>
+      
+<ol>
+        
+<li>Zeichnen Sie einige Komponenten, die Sie generalisieren wollen,
+        auf und vergleichen Sie diese.</li>
+        
+<li>
+          Erstellen Sie eine generische Komponente, die in der 'QF-Test ID'
+          'generisch' enth&auml;lt, damit Sie diese wiederfinden.
+        </li>
+        
+<li>
+          Entfernen Sie alle Attribute, die Sie nicht f&uuml;r die
+          Wiedererkennung verwenden wollen, aus dieser generischen Komponente.
+        </li>
+        
+<li>
+          Legen Sie die Wiedererkennungseigenschaft fest, z.B: 'Name',
+          'Merkmal' oder 'Index'.
+        </li>
+        
+<li>Setzen Sie in diesem Attribut eine Variable, z.B. <code>$(name)</code>.</li>
+        
+<li>
+          Um falsche Treffer zu vermeiden, deaktivieren Sie die
+          Geometrieerkennung, indem Sie in den 'X' und 'Y' Attributen ein '-' setzen.
+        </li>
+        
+<li>
+          Spezifizieren Sie '@generic' im Attribut 'Bemerkung', damit diese
+          Komponenten nicht unbeabsichtigt von der 'Ungenutzte Komponenten
+          entfernen' Aktion gel&ouml;scht wird.
+        </li>
+        
+<li>
+          Erstellen Sie eine Prozedur, um auf diese generische Komponente
+          zuzugreifen und verwenden Sie die Variable von
+          vorhin als Parameter der Prozedur.
+        </li>
+      
+</ol>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span>
+        Generische Komponenten sind sehr n&uuml;tzlich f&uuml;r das Abspielen von
+        Tests, aber QF-Test verwendet diese nicht f&uuml;r die Aufzeichnung. Sie
+        werden immer die konkreten Komponenten aufgezeichnet bekommen. Sie
+        m&uuml;ssen daher nachtr&auml;glich die konkreten Komponenten durch die
+        generische ersetzen.
+      </p>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="usec_scope.html#usec_scope"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 5.7&nbsp;Geltungsbereich(Scope) (Preview)" title="Vorheriges Kapitel: 5.7&nbsp;Geltungsbereich(Scope) (Preview)"></a></td><td class="navicon"><a href="user_subitems.html#usec_subitems"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 5.9&nbsp;Unterelemente: Adressierung relativ zur &uuml;bergeordneten Komponente" title="N&auml;chste Seite: 5.9&nbsp;Unterelemente: Adressierung relativ zur &uuml;bergeordneten Komponente"></a></td><td class="navicon"><a href="user_subitems.html#usec_subitems"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 5.9&nbsp;Unterelemente: Adressierung relativ zur &uuml;bergeordneten Komponente" title="N&auml;chstes Kapitel: 5.9&nbsp;Unterelemente: Adressierung relativ zur &uuml;bergeordneten Komponente"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 5&nbsp;Komponenten" title="Kapitel-&Uuml;bersicht: 5&nbsp;Komponenten"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

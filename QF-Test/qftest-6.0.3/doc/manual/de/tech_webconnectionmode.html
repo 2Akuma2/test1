@@ -1,0 +1,339 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Browser Verbindungsmodus</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_webconnectionmodes"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_ajax.html#sec_ajax"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 47.2&nbsp;Besondere Unterst&uuml;tzung f&uuml;r verschiedene Webframeworks" title="Vorheriges Kapitel: 47.2&nbsp;Besondere Unterst&uuml;tzung f&uuml;r verschiedene Webframeworks"></a></td><td class="navicon"><a href="tech_web.html#usec_hiddencomps"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 47.4&nbsp;Zugriff auf unsichtbare Felder einer Webseite" title="N&auml;chste Seite: 47.4&nbsp;Zugriff auf unsichtbare Felder einer Webseite"></a></td><td class="navicon"><a href="tech_webtesting_safari.html#sec_web_safari"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 47.5&nbsp;Safari - Besonderheiten" title="N&auml;chstes Kapitel: 47.5&nbsp;Safari - Besonderheiten"></a></td><td class="navicon"><a href="tech_web.html#sec_web"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 47&nbsp;Web" title="Kapitel-&Uuml;bersicht: 47&nbsp;Web"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_webconnectionmodes">47.3</a></span>
+</div>
+<a href="contents.html#toc_sec_webconnectionmodes">Browser Verbindungsmodus</a>
+</h4>
+        
+        
+<p>
+          Um Zugriff auf den Browser zu erlangen, verfolgt QF-Test verschiedene Ans&auml;tze, die im Folgenden erl&auml;utert werden.
+        </p>
+        
+<p>
+          
+<span class="margin"><a name="new_N171411"></a><span class="note">4.1+</span></span>
+          Da der QF-Driver Ansatz zur Browser-Anbindung mit Hilfe von Embedding leider nicht von allen
+          Browserherstellern weiter gepflegt bzw. &uuml;berhaupt unterst&uuml;tzt wird, wurde f&uuml;r QF-Test 4.1 ein neuer
+          Mechanismus implementiert, um auch zuk&uuml;nftige Browser und Browser-Versionen f&uuml;r die Tests
+          verwenden zu k&ouml;nnen.
+          Dieser Mechanismus verwendet als Bindeglied zwischen dem Browser und QF-Test den Selenium WebDriver.
+        </p>
+        
+<p>
+          
+<span class="margin"><a name="new_N171417"></a><span class="note">5.3+</span></span>
+          Dar&uuml;ber hinaus existiert mit dem CDP-Driver f&uuml;r Chromium-basierte Browser
+          eine effiziente Alternative zum WebDriver-Ansatz.
+        </p>
+        
+<p>
+          Nachfolgende Tabelle listet die Browser mit dem jeweils m&ouml;glichen Verbindungsmodus auf.
+          QF-Test versucht automatisch den richtigen Modus zu w&auml;hlen. Sie k&ouml;nnen die Kontrolle dar&uuml;ber mit
+          Hilfe des Attributs <a href="processes.html#att_WebEngineClientStarter_connectionmode" shape="rect">'Verbindungsmodus f&uuml;r den Browser'</a>
+          im <a href="processes.html#step_WebEngineClientStarter" shape="rect">'Web-Engine starten'</a> Knoten &uuml;bernehmen.
+        </p>
+        
+<a name="table_47.7"></a><a name="table_47.7"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth">
+            
+<tr>
+              
+<th width="25%" rowspan="1" colspan="1">Browser</th>
+              <th width="25%" rowspan="1" colspan="1">Verbindungsmodus</th>
+              <th rowspan="1" colspan="1">Bemerkung</th>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Chrome</td>
+              <td rowspan="1" colspan="1">QF-Driver</td>
+              <td rowspan="1" colspan="1">Eine aktuelle stabile Chromium Version, ist Teil der QF-Test
+              Installation (nur Windows)</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Chrome</td>
+              <td rowspan="1" colspan="1">CDP-Driver</td>
+              <td rowspan="1" colspan="1">Experimentelle Unterst&uuml;zung auch f&uuml;r neuere Versionen (siehe <a href="user_installation.html#usec_techversions">Unterst&uuml;tzte Technologien</a>)</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Chrome</td>
+              <td rowspan="1" colspan="1">WebDriver</td>
+              <td rowspan="1" colspan="1">Unterst&uuml;tzung &uuml;ber automatischen ChromeDriver Download. Konkrete Versionen siehe <a href="user_installation.html#usec_techversions">Unterst&uuml;tzte Technologien</a></td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Chrome (headless)</td>
+              <td rowspan="1" colspan="1">CDP-Driver</td>
+              <td rowspan="1" colspan="1">&nbsp;</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Chrome (headless)</td>
+              <td rowspan="1" colspan="1">WebDriver</td>
+              <td rowspan="1" colspan="1">&nbsp;</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Firefox</td>
+              <td rowspan="1" colspan="1">QF-Driver</td>
+              <td rowspan="1" colspan="1">Versionen 38ESR und 43 <code>abgek&uuml;ndigt</code></td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Firefox</td>
+              <td rowspan="1" colspan="1">WebDriver</td>
+              <td rowspan="1" colspan="1">Wird vom mitgelieferten GeckoDriver unterst&uuml;tzt, aktuell 68esr und h&ouml;her</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Firefox (headless)</td>
+              <td rowspan="1" colspan="1">WebDriver</td>
+              <td rowspan="1" colspan="1">&nbsp;</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Internet Explorer</td>
+              <td rowspan="1" colspan="1">QF-Driver</td>
+              <td rowspan="1" colspan="1"><code>abgek&uuml;ndigt</code></td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Microsoft Edge</td>
+              <td rowspan="1" colspan="1">CDP-Driver</td>
+              <td rowspan="1" colspan="1">siehe Chrome (CDP-Driver)</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Microsoft Edge</td>
+              <td rowspan="1" colspan="1">WebDriver</td>
+              <td rowspan="1" colspan="1">&nbsp;</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Microsoft Edge (headless)</td>
+              <td rowspan="1" colspan="1">CDP-Driver</td>
+              <td rowspan="1" colspan="1">&nbsp;</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Microsoft Edge (headless)</td>
+              <td rowspan="1" colspan="1">WebDriver</td>
+              <td rowspan="1" colspan="1">&nbsp;</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Opera</td>
+              <td rowspan="1" colspan="1">CDP-Driver</td>
+              <td rowspan="1" colspan="1">siehe Chrome (CDP-Driver)</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Opera</td>
+              <td rowspan="1" colspan="1">WebDriver</td>
+              <td rowspan="1" colspan="1"><code>abgek&uuml;ndigt</code></td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Safari</td><td rowspan="1" colspan="1">WebDriver</td><td rowspan="1" colspan="1">&nbsp;</td>
+            
+</tr>
+          
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;47.7</a>:&nbsp;&nbsp;Verbindungsmodus f&uuml;r Browser</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+    
+
+    
+<a name="sec_webconnectionmode_native"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_webconnectionmode_native">47.3.1</a></span>
+</div>
+<a href="contents.html#toc_sec_webconnectionmode_native">QF-Driver Verbindungsmodus</a>
+</h5>
+      
+<p>
+        Bei diesem Ansatz wird der auf dem Rechner des Anwenders installierte Browser in ein
+        sogenanntes Wrapper-Fenster eingebunden. Man spricht bei diesem Ansatz auch von Embedding.
+        QF-Test bindet in dieses Fenster den lokal installierten Web-Browser nativ ein und erlangt somit Zugriff
+        auf die Automatisierungs-Interfaces des jeweiligen Browsers. &Uuml;ber diese kann QF-Test dann die
+        ben&ouml;tigten Events vom Browser abgreifen aber auch umgekehrt Events in den Browser einspeisen.
+      </p>
+    
+
+    
+    
+
+    
+<a name="sec_webconnectionmode_cdp"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N171790"></a><span class="note">5.3+</span></span><span class="numtitle"><a href="contents.html#toc_sec_webconnectionmode_cdp">47.3.2</a></span>
+</div>
+<a href="contents.html#toc_sec_webconnectionmode_cdp">CDP-Driver Verbindungsmodus</a>
+</h5>
+      
+<p>
+        In Browsern, die auf <em>Chromium</em> basieren (Google Chrome, Microsoft Edge und Opera), steht
+        f&uuml;r Test- und Debuggingzwecke eine spezielle Schnittstelle zur Verf&uuml;gung, welche zum Beispiel auch durch
+        die im Browser eingebetteten Entwicklungswerkzeuge verwendet wird. QF-Test kann ab Version 5.3 diese Schnittstelle
+        und das Chrome DevTools Protokoll nutzen, um mit dem Browser zu kommunizieren und zu interagieren.
+        F&uuml;r Firefox steht aktuell leider noch keine vollwertige Implementierung der Schnittstelle
+        durch Mozilla zur Verf&uuml;gung, gleiches gilt f&uuml;r Safari.
+      </p>
+    
+
+    
+    
+
+    
+<a name="sec_webconnectionmode_webdriver"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_webconnectionmode_webdriver">47.3.3</a></span>
+</div>
+<a href="contents.html#toc_sec_webconnectionmode_webdriver">WebDriver Verbindungsmodus</a>
+</h5>
+      
+<p>
+        WebDriver entwickelt sich zu einem W3C-Standard f&uuml;r die Steuerung von Web-Browsern.
+        (<a href="http://www.w3.org/TR/webdriver/" shape="rect">http://www.w3.org/TR/webdriver</a>).
+        Er ist definiert als sogenanntes Remote-Control-Interface, das es erlaubt, die im Browser anzeigten Inhalte
+        zu analysieren und den Browser zu steuern. WebDriver stellt hierf&uuml;r ein plattform- und sprachunabh&auml;ngiges Netzprotokoll
+        zur Verf&uuml;gung.
+        </p>
+        
+<p>Die verschiedenen Browser-Hersteller haben sich auf diesen Quasi-Standard geeinigt, was dazu f&uuml;hrt, dass
+        die  WebDriver Integration direkt von den Browser-Herstellern mitentwickelt wird. Die Integration erfolgt
+        teilweise &uuml;ber Plugins, bei manchen Herstellern ist die Integration bereits direkt mit in der Standard-Installation
+        des Browsers enthalten.
+        </p>
+        
+<p>QF-Test nutzt die  WebDriver Interfaces um mit dem Browser zu interagieren. Da der  WebDriver Ansatz nur teilweise zu den
+          Konzepten von QF-Test passt, wurde die Web-Engine von QF-Test so erweitert, dass
+          auch bei der Anbindung per WebDriver ein m&ouml;glichst gro&szlig;er Funktionsumfang von QF-Test genutzt werden kann und dem Anwender die
+          Mehrwert-Features von QF-Test wie z.B. Synchronisation, Abstraktion von Komponenten usw. wie gewohnt zur
+          Verf&uuml;gung stehen.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span>
+          Der Selenium WebDriver setzt ein Java ab Version 8 und h&ouml;her voraus.
+        </p>
+      
+
+      
+      
+      
+<a name="sec_webdriver_limitations"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_webdriver_limitations">47.3.4</a></span>
+</div>
+<a href="contents.html#toc_sec_webdriver_limitations">Bekannte Einschr&auml;nkungen des WebDriver Modus</a>
+</h5>
+        
+<p>Die  WebDriver Anbindung an QF-Test befindet sich aktuell noch in der aktiven Entwicklung.
+        Daher stehen leider einige Funktionen, die von der QF-Driver Anbindung bekannt sind, noch nicht
+        zur Verf&uuml;gung. In den meisten F&auml;llen sind diese Einschr&auml;nkungen dem Umfang der  WebDriver Spezifikation
+        zuzuschreiben.</p>
+        
+<ul>
+          
+<li>Keine Unterst&uuml;tzung von Datei-Downloads und HTTP-Authentifizierungs-Dialogen.</li>
+          
+<li>Keine M&ouml;glichkeit, HTTP-Requests direkt aufzuzeichnen bzw. abzuspielen.</li>
+          
+<li>wd.getComponent(WebElement) funktioniert bisher noch nicht bei Elementen in verschachtelten Frames.</li>
+          
+<li>Events, die zum Laden einer neuen Webseite f&uuml;hren, werden teilweise nicht richtig aufgezeichnet.</li>
+          
+<li>Event-Synchronisierung ist teilweise verz&ouml;gert.</li>
+        
+</ul>
+        
+
+        
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_ajax.html#sec_ajax"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 47.2&nbsp;Besondere Unterst&uuml;tzung f&uuml;r verschiedene Webframeworks" title="Vorheriges Kapitel: 47.2&nbsp;Besondere Unterst&uuml;tzung f&uuml;r verschiedene Webframeworks"></a></td><td class="navicon"><a href="tech_web.html#usec_hiddencomps"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 47.4&nbsp;Zugriff auf unsichtbare Felder einer Webseite" title="N&auml;chste Seite: 47.4&nbsp;Zugriff auf unsichtbare Felder einer Webseite"></a></td><td class="navicon"><a href="tech_webtesting_safari.html#sec_web_safari"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 47.5&nbsp;Safari - Besonderheiten" title="N&auml;chstes Kapitel: 47.5&nbsp;Safari - Besonderheiten"></a></td><td class="navicon"><a href="tech_web.html#sec_web"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 47&nbsp;Web" title="Kapitel-&Uuml;bersicht: 47&nbsp;Web"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

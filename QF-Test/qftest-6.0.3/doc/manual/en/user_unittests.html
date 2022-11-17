@@ -1,0 +1,547 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Unit Tests</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_unittests"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_scripting.html#usec_scripting"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 11&nbsp;Scripting" title="Previous Chapter: 11&nbsp;Scripting"></a></td><td class="navicon"><a href="user_webtesting.html#usec_webtesting"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 13&nbsp;Web testing" title="Next Page: 13&nbsp;Web testing"></a></td><td class="navicon"><a href="user_webtesting.html#usec_webtesting"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 13&nbsp;Web testing" title="Next Chapter: 13&nbsp;Web testing"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;User manual" title="Chapter Overview: I&nbsp;User manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_unittests">12</a></span>
+</div>
+<a href="contents.html#toc_usec_unittests">Unit Tests</a>
+</h3>
+    
+    
+<p>
+      With Unit Tests, i.e. component tests, you can check the functional units.
+      They explicitly test the functionality of single components. For this reason
+      they are much less complex compared to integration and system tests.
+    </p>
+    
+<p>
+      The <a href="miscnodes.html#step_UnitStep" shape="rect">'Unit test'</a> node executes Unit Tests via the JUnit framework. The
+      results are available in the run-log as well as in the report.
+    </p>
+    
+<p>
+      The tests can be started from two possible sources: Java classes containing
+      the JUnit test-cases or Unit Tests scripted directly in QF-Test.
+      The parameters of the node vary with the use case.
+    </p>
+    
+<p>
+      The JUnit 5 framework is used to execute the tests.
+      This enables executing JUnit 5 Tests using the JUnit Jupiter engine as well as
+      executing JUnit 4 and JUnit 3 tests using the JUnit Vintage engine.
+      With JUnit 5 you can use features like parameterized tests, nested tests
+      and test with a different display name.
+    </p>
+    
+    
+
+    
+<a name="sec_N84003"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N84003">12.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N84003">Java Classes as the Source for the Unit Test</a>
+</h4>
+        
+<p>
+        It is possible to execute Unit Tests from Jar or Class files. It is also possible
+        to execute Unit Tests that are available from the SUT's runtime.
+        QF-Test executes the tests of the test classes specified in the respective attribute
+        of the  <a href="miscnodes.html#step_UnitStep" shape="rect">'Unit test'</a> node. In the report they will be displayed as test-steps
+        within a test-case.
+        The following example demonstrates the usage of a <a href="miscnodes.html#step_UnitStep" shape="rect">'Unit test'</a> node with
+        Java test classes.
+        </p>
+        
+<a name="figure_12.1"></a><a name="figure_12.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/UnitStepJavaClassesExample.png" target="_blank"><img src="images/UnitStepJavaClassesExample.png" alt="Example for a Unit Test node with Java classes" texscale=".66" width="393" height="564"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;12.1</a>:&nbsp;&nbsp;Unit Test node with Java classes</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>package de.qfs.test;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+public class StringTest {
+
+    @Test
+    public void testubstring() {
+        String s = new String("Long text");
+        s = s.substring(5, 9;
+        assert("text".equals(s));
+    }
+
+    @Test
+    public void testReplace() {
+        String s = new String("example");
+        s = s.replace('e', 'i');
+        Assert.assertEquals("ixampli", s);
+    }
+}</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;12.1:&nbsp;&nbsp;Java Unit test</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+        The class de.qfs.test.StringTest must exist in the unittests.jar
+        specified in the <a href="miscnodes.html#att_UnitStep_includefiles" shape="rect">'Classpath'</a> attribute.
+        The path is determined relative to the path of the directory of the current suite.
+        In this example the jar file is in the same directory as the suite.
+        </p>
+      
+<p>
+        JUnit test classes are Java classes where the methods have the <code>@Test</code> annotation.
+        The 'Unit test' node executes all classes specified in the <a href="miscnodes.html#att_UnitStep_classes" shape="rect">'Test classes'</a> table.
+        Thus a 'Unit test' node can execute several test classes.
+      </p>
+
+
+    
+    
+
+    
+<a name="usec_unittestscriptbasics"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_unittestscriptbasics">12.2</a></span>
+</div>
+<a href="contents.html#toc_usec_unittestscriptbasics">Basics of the Test Scripts</a>
+</h4>
+        
+<p>
+          The second option to execute Unit Tests is to script the Unit Test directly
+          in the 'Unit test' node. You can use any of the Script languages QF-Test offers.
+          The most appropriate one is Groovy because it supports the Java annotations.
+          The JUnit framework is used to execute the scripts.
+        </p>
+         
+<a name="sec_N84091"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N84091">12.2.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N84091">Groovy Unit Tests</a>
+</h5>
+            
+<p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>
+@BeforeClass
+static void onbefore(){
+    println("Set Up")
+}
+
+@Test(expected=IndexOutOfBoundsException.class)
+void indexOutOfBoundsAccess() {
+    def numbers = [1,2,3,4]
+    numbers.get(4)
+}
+
+@Test
+void noFailure() {
+    assert true
+}</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;12.2:&nbsp;&nbsp;Unit Test Script with Groovy</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+</p>
+        
+<p>
+        In Groovy the required JUnit 4 classes are automatically imported at run-time.
+        Just like in Java all tests with the <code>@Test</code> annotation will be executed.
+        You can ignore expected exceptions using the <code>expected</code> parameter of the
+        <code>@Test</code> annotation.
+        The methods with the <code>@BeforeClass</code> annotation will be executed before
+        the test methods will be run.
+        </p>
+         
+          
+<a name="usec_unittestscriptjython"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_unittestscriptjython">12.2.2</a></span>
+</div>
+<a href="contents.html#toc_usec_unittestscriptjython">Jython Unit Tests</a>
+</h5>
+        
+<p>
+          
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def setUp(self):
+    print "Set Up"
+
+def testMathCeil(self):
+    import math
+    self.assertEqual(2, math.ceil(1.01))
+    self.assertEqual(1, math.ceil(0.5))
+    self.assertEqual(0, math.ceil(-0.5))
+    self.assertEqual(-1, math.ceil(-1.1))
+
+def testMultiplication(self):
+    self.assertAlmostEqual(0.3, 0.1 * 3)
+    </pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;12.3:&nbsp;&nbsp;Unit Test script with Jython</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+</p>
+        
+<p>
+        Because Jython does not support Java annotations, the tests run as JUnit 3 tests.
+        All methods beginning with the keyword <code>test</code> are considered to be a test and executed as QF-Test checks.
+        The methods must have the <code>self</code> parameter because they are automatically enclosed in a class.
+        The <code>setUp</code> method is executed at the beginning of each test.
+        </p>
+
+         
+          
+<a name="sec_N84157"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N84157">12.2.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N84157">JavaScript Unit-Test</a>
+</h5>
+        
+<p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>setUp(){
+    print("Set up");
+}
+tearDown() {
+    print("Tear Down");
+}
+testUpperCase(){
+    let s = "text";
+    assertEquals("TEXT", s.toUpperCase());
+}
+testOk() {
+    assertTrue(true);
+}</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;12.4:&nbsp;&nbsp;Unit Test Script with JavaScript</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+</p>
+        
+<p>
+        Also JavaScript does not support Java annotations, the tests are executed as JUnit-3 Tests
+        (cf. <a href="#usec_unittestscriptjython">subsection 12.2.2</a>).
+        Just like in Jython all functions beginning with the keyword <code>tests</code> are executed as QF-Test checks.
+        </p>
+      
+    
+
+    
+    
+
+    
+<a name="sec_N84190"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N84190">12.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N84190">Injections</a>
+</h4>
+        
+<p>
+        It is possible to use the Unit Test node for the so called Live Tests.
+        In this case the Unit Tests are executed in the running SUT. Using 'Injections' the Unit Tests inject
+        QF-Test objects like WebDriver, components and variables into the Unit Tests or scripts directly.
+        </p>
+         
+<a name="sec_N84199"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N84199">12.3.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N84199">Component-Injections</a>
+</h5>
+        
+<p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>import static org.junit.Assert.*;
+import javax.swing.JComponent;
+import org.junit.Test;
+
+public class ComponentTest
+{
+    /** The component to test in this unit test */
+    static JComponent component;
+
+    /** Expected value */
+    static String accessibleName;
+
+    @Test
+    public void accessibleNameIsCorrect()
+    {
+        /** component and accessible name are injected at run-time */
+        final String currentName =
+            component.getAccessibleContext().getAccessibleName();
+        assertEquals(accessibleName,currentName);
+    }
+}</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;12.5:&nbsp;&nbsp;Java Unit-Test</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+</p>
+        
+<p>
+
+        
+</p>
+        
+<a name="figure_12.2"></a><a name="figure_12.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/UnitStepInjectComponentExample.png" target="_blank"><img src="images/UnitStepInjectComponentExample.png" alt="Example Unit Test node with Injections" texscale=".66" width="393" height="656"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;12.2</a>:&nbsp;&nbsp;Example Unit Test node with Injections</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+      The example shows the injection of two QF-Test objects: component and variable. The parameter "Field" corresponds
+      to the name of the field <code>static JComponent component;</code> in the Java class.
+      The java field must be <code>static</code>.
+      </p>
+      
+      
+<a name="usec_unitinjecttcomponents"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_unitinjecttcomponents">12.3.2</a></span>
+</div>
+<a href="contents.html#toc_usec_unitinjecttcomponents">WebDriver-Injections</a>
+</h5>
+              
+<p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>import static org.junit.Assert.*;
+import org.junit.Test;
+import org.openqa.selenium.WebDriver;
+
+public class WebdriverTest
+{
+
+    /** The driver of the window currently opened by QF-Test. */
+    static WebDriver driver;
+
+    @Test
+    public void urlIsCorrectedLoaded()
+    {
+        // driver is injected at run-time
+        final String currentUrl = driver.getCurrentUrl();
+        assertEquals("http://www.example.com", currentUrl);
+    }
+
+}</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;12.6:&nbsp;&nbsp;Java Unit Test with WebDriver Injections</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+</p>
+        
+<a name="figure_12.3"></a><a name="figure_12.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/UnitStepInjectWebDriverExample.png" target="_blank"><img src="images/UnitStepInjectWebDriverExample.png" alt="Example Unit Test node with Injections" texscale=".66" width="393" height="656"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;12.3</a>:&nbsp;&nbsp;Example Unit Test node with Injections</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        This example shows how to inject a WebDriver object into a Java class.
+        When no value for the <code>WebDriver driver</code> is specified QF-Test
+        determines the value via the given client.
+      </p>
+       
+
+
+    
+    
+
+    
+<a name="usec_unitreport"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_unitreport">12.4</a></span>
+</div>
+<a href="contents.html#toc_usec_unitreport">Unit Tests in Report</a>
+</h4>
+           
+<p>
+           The greatest benefit from using the 'Unit test' node is that the results are displayed nicely formatted
+           in the HTML report. All Unit Test classes executed via this node are considered QF-Test test-cases.
+
+           'Unit test' nodes should not be run separately. In order to see them correctly displayed in the HTML report,
+           run them as part of a Test-case.
+           Each test method is handled like a QF-Test check, e.g. a failed check does not abort the tests execution.
+           </p>
+        
+<p>
+        
+<a name="figure_12.4"></a><a name="figure_12.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/unittest_report_en.png" target="_blank"><img src="images/unittest_report_en.png" alt="Example Unit Test Report" texscale=".66" width="1036" height="793"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;12.4</a>:&nbsp;&nbsp;Unit Test Report</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+</p>
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_scripting.html#usec_scripting"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 11&nbsp;Scripting" title="Previous Chapter: 11&nbsp;Scripting"></a></td><td class="navicon"><a href="user_webtesting.html#usec_webtesting"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 13&nbsp;Web testing" title="Next Page: 13&nbsp;Web testing"></a></td><td class="navicon"><a href="user_webtesting.html#usec_webtesting"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 13&nbsp;Web testing" title="Next Chapter: 13&nbsp;Web testing"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;User manual" title="Chapter Overview: I&nbsp;User manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

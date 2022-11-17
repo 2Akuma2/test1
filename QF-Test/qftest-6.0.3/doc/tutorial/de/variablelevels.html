@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Ebenen f&uuml;r Variablendefinitionen</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2002-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="tut_variable_levels"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="settingvariables.html#tut_setting_variables"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 6.4&nbsp;Variablen setzen" title="Vorheriges Kapitel: 6.4&nbsp;Variablen setzen"></a></td><td class="navicon"><a href="stdlib.html#sec_StandardLibrary"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 7&nbsp;Die Standardbibliothek (Java)" title="N&auml;chste Seite: 7&nbsp;Die Standardbibliothek (Java)"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="variablestack.html#sec_variablestack"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 6&nbsp;Variablen und Prozedurparameter (Java)" title="Kapitel-&Uuml;bersicht: 6&nbsp;Variablen und Prozedurparameter (Java)"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_tut_variable_levels">6.5</a></span>
+</div>
+<a href="contents.html#toc_tut_variable_levels">Ebenen f&uuml;r Variablendefinitionen</a>
+</h4>
+      
+<p>
+<span class="margin"><span class="note">Hinweis</span></span>
+        Dieser Abschnitt gibt Antworten auf die Frage, auf welcher Ebene eine
+        Variable definiert werden sollte. Wenn Sie diese Frage momentan nicht
+        interessiert, k&ouml;nnen Sie direkt zum n&auml;chsten Kapitel springen.
+      </p>
+      
+<p>
+        Variablen k&ouml;nnen auf unterschiedlichen Ebenen gebunden werden:
+      </p>
+      
+<ul>
+        
+<li>
+          Im Testsuite Knoten,
+        </li>
+        
+<li>
+          in Testf&auml;llen und Prozeduren als Standard- oder als lokale Variablen,
+        </li>
+        
+<li>
+          als Parameter in einem Prozeduraufruf,
+        </li>
+        
+<li>
+          als globale Variable und
+        </li>
+        
+<li>
+          als Kommandozeilenparameter.
+        </li>
+      
+</ul>
+      
+<p>
+        Die Ebene, auf welcher eine Variable am sinnvollsten definiert wird, h&auml;ngt
+        vom Verwendungszweck der Variablen ab:
+      </p>
+      
+<dl>
+        
+<dt>Prozedurparameter</dt>
+        
+<dd>
+          &Uuml;bergeben Sie einen Wert als Parameter an eine Prozedur, wenn die gleiche
+          Prozedur mehr als einmal und mit unterschiedlichen Werten ausgef&uuml;hrt werden soll.
+          Prozedurparameter werden in der Variable Definitionen Tabelle eines 'Prozeduraufruf'
+          Knoten angegeben.
+        </dd>
+        
+<dt>Lokale Variablen in einer Prozedur</dt>
+        
+<dd>
+          Lokale Variablen werden innerhalb der Prozedur definiert und sind nur
+          dort g&uuml;ltig. Wenn die Prozedur beendet wird, werden sie gel&ouml;scht.
+          Verwenden Sie eine lokale Variable, wenn diese nicht au&szlig;erhalb der Prozedur
+          ben&ouml;tigt wird. Sie sind das Mittel der Wahl f&uuml;r Zwischenergebnisse.
+        </dd>
+        
+<dt>Lokale Variablen in einem Testfall</dt>
+        
+<dd>
+          In einem Testfall k&ouml;nnen lokale Variable entweder w&auml;hrend der Durchf&uuml;hrung
+          des Testfall angelegt werden oder &uuml;ber die entsprechende Tabelle in den
+          Details des 'Testfall' Knotens.
+          Wenn Sie in einem Testfall mehrfach den gleichen Wert verwenden, ist es sinnvoll,
+          diesen einmalig einer Variablen zuzuweisen und dann die Variable zu verwenden.
+          Dies erh&ouml;ht die Wartbarkeit. Auch f&uuml;r Zwischenergebnisse sollte man lokale Variablen
+          verwenden.
+        </dd>
+        
+<dt>Globale Variablen</dt>
+        
+<dd>
+          Wenn globale Variablen einmal erstellt wurden, existieren sie, bis sie entweder
+          explizit gel&ouml;scht werden oder bis QF-Test beendet wird. Auch Stopps und
+          die erneute Ausf&uuml;hrung von Tests "&uuml;berleben" sie.
+          Verwenden Sie sie f&uuml;r Werte, die in mehreren Testf&auml;llen genutzt werden. Ein
+          Beispiel ist die Variable <code>client</code>, die im 'Vorbereitung' Knoten beim Start
+          der Applikation angelegt wird.
+          Um sie wieder loszuwerden, w&auml;hlen Sie den Men&uuml;punkt
+          &raquo;<em>Wiedergabe</em>&laquo;-&raquo;<em>Globale Variablen l&ouml;schen</em>&laquo;.
+          Auch beim Beenden von QF-Test werden sie gel&ouml;scht.
+        </dd>
+        
+<dt>Kommandozeilenparameter</dt>
+        
+<dd>
+          Variablen, die &uuml;ber Kommandozeile gesetzt werden, sind im Batch-Modus sinnvoll,
+          wenn Sie mehrere Batch-L&auml;ufe mit unterschiedlichen Werten durchf&uuml;hren wollen.
+          Kommandozeilenparameter gelten w&auml;hrend der gesamten Laufzeit des Batch-Laufs.
+          Ein typisches Beispiel ist die variablengesteuerte Ausf&uuml;hrung auf verschiedenen Browsern.
+          Variablen k&ouml;nnen &uuml;ber den Kommandozeilen-Parameter <code>-variable</code> spezifiziert
+          (vgl. Kapitel 'Kommandozeilenargumente' im Handbuch).
+        </dd>
+        
+<dt>Testsuite-Variablen</dt>
+        
+<dd>
+          Testsuite-Variablen k&ouml;nnen von allen Testf&auml;llen verwendet werden. Ihr
+          Verwendungszweck entspricht dem von globalen Variablen, nur dass sie im
+          Batch-Modus durch Variablen in der Kommandozeile &uuml;berschrieben werden k&ouml;nnen.
+        </dd>
+        
+<dt>Standardwerte (Sekund&auml;rstapel)</dt>
+        
+<dd>
+          Sie k&ouml;nnen Standardwerte f&uuml;r die Variablen von Prozeduren, Testf&auml;llen und
+          Testfalls&auml;tzen definieren. Diese kommen zum Zug, wenn keine Variable mit dem
+          gleichen Namen auf einer h&ouml;heren Ebene definiert wurde.
+        </dd>
+      
+</dl>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="settingvariables.html#tut_setting_variables"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 6.4&nbsp;Variablen setzen" title="Vorheriges Kapitel: 6.4&nbsp;Variablen setzen"></a></td><td class="navicon"><a href="stdlib.html#sec_StandardLibrary"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 7&nbsp;Die Standardbibliothek (Java)" title="N&auml;chste Seite: 7&nbsp;Die Standardbibliothek (Java)"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="variablestack.html#sec_variablestack"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 6&nbsp;Variablen und Prozedurparameter (Java)" title="Kapitel-&Uuml;bersicht: 6&nbsp;Variablen und Prozedurparameter (Java)"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 2002-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,3149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Control structures</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_control"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="procedures.html#sec_procedures"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 38.5&nbsp;Procedures" title="Previous Chapter: 38.5&nbsp;Procedures"></a></td><td class="navicon"><a href="processes.html#sec_processes"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 38.7&nbsp;Processes" title="Next Page: 38.7&nbsp;Processes"></a></td><td class="navicon"><a href="processes.html#sec_processes"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 38.7&nbsp;Processes" title="Next Chapter: 38.7&nbsp;Processes"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 38&nbsp;Elements of a test-suite" title="Chapter Overview: 38&nbsp;Elements of a test-suite"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_control">38.6</a></span>
+</div>
+<a href="contents.html#toc_sec_control">Control structures</a>
+</h4>
+    
+<p>
+      Besides the standard <a href="sequences.html#sec_sequences" shape="rect">sequence</a> types
+      QF-Test has a set of special control structures. Conditional
+      processing is handled via <a href="#step_IfSequence" shape="rect">'If'</a>, <a href="#step_ElseifSequence" shape="rect">'Elseif'</a> and
+      <a href="#step_ElseSequence" shape="rect">'Else'</a> nodes.  <a href="#step_RepeatSequence" shape="rect">'Loops'</a> and <a href="#step_WhileSequence" shape="rect">'While'</a>
+      nodes can be aborted with a <a href="#step_BreakStep" shape="rect">'Break'</a> node. Exceptions are handled
+      by <a href="#step_TryStep" shape="rect">'Try'</a>, <a href="#step_CatchSequence" shape="rect">'Catch'</a> and <a href="#step_FinallySequence" shape="rect">'Finally'</a> nodes.
+    </p>
+    
+<p>
+      Beyond that, full scripting is available for the Jython language
+      (formerly called <em>JPython</em>), Groovy and JavaScript as documented in <a href="user_scripting.html#usec_scripting">chapter 11</a>.
+    </p>
+    
+
+    
+<a name="step_RepeatSequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_RepeatSequence">38.6.1</a></span>
+</div>
+<a href="contents.html#toc_step_RepeatSequence">'Loop'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/repeat.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            This node is basically the same as a <a href="sequences.html#step_BasicSequence" shape="rect">'Sequence'</a> except
+            that its children can be executed more than once. This is useful
+            in two ways. For one thing, a test sequence that executes OK a
+            hundred times is more trustworthy than a sequence that only runs
+            once. The other use is to run a number of similar jobs with slight
+            variations. To that end, the count of the current iteration is
+            bound as a variable during execution.
+          </p>
+          
+<p>
+            Special 'Loops' with varying increments can be achieved
+            by changing the value of the <a href="#att_RepeatSequence_var" shape="rect">'Iteration counter'</a> during
+            execution.
+          </p>
+          
+<p>
+            Execution of a 'Loop' can be terminated prematurely with the help of a
+            <a href="#step_BreakStep" shape="rect">'Break'</a> node. An optional <a href="#step_ElseSequence" shape="rect">'Else'</a> node may be placed at the end of
+            the 'Loop'. It is executed if all iterations of the 'Loop' are run
+            through completely without hitting a 'Break'.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> All kinds of <a href="sequences.html#sec_sequences" shape="rect">sequences</a>.</p>
+<p>
+<strong>Children:</strong> Any</p>
+<p>
+<strong>Execution:</strong> 
+          The <a href="#att_RepeatSequence_variable" shape="rect">'Variable definitions'</a> of the 'Loop' are bound.
+          The <a href="#att_RepeatSequence_var" shape="rect">'Iteration counter'</a> is initialized to 0 and the child nodes
+          are executed one by one. For each iteration the 'Iteration counter' is
+          increased by one and the children are executed again.  After the
+          final execution of the last child is complete, the 'Iteration counter' and
+          the 'Variable definitions' are unbound again.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.25"></a><a name="figure_38.25"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_RepeatSequence.png" target="_blank"><img src="images/att_RepeatSequence.png" alt="Loop attributes" texscale=".66" width="393" height="413"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.25</a>:&nbsp;&nbsp;'Loop' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_RepeatSequence_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        The name of a sequence is a kind of short description. It is displayed
+        in the tree view, so it should be concise and tell something about the
+        function of the sequence.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_RepeatSequence_count"></a>
+<dt>'Number of iterations'</dt>
+<dd>
+            
+            
+<p>
+              The number of iterations of the loop.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> &gt; 0</p>
+</dd>
+<a name="att_RepeatSequence_var"></a>
+<dt>'Iteration counter'</dt>
+<dd>
+            
+            
+<p>
+              The name of the variable that will hold the iteration count
+              during the execution. Make sure to use different 'Iteration counter' names
+              for nested loops.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_RepeatSequence_variable"></a>
+<dt>'Variable definitions'</dt>
+<dd>
+      
+<p>
+        This is where you define the values of the variables that remain bound
+        during the execution of the sequence's child nodes (see <a href="user_variables.html#usec_variables">chapter 6</a>).  See <a href="user_gui.html#usec_tables">subsection 2.2.5</a> about how to
+        work with the table.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Variable names no, values yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_RepeatSequence_maxerror"></a>
+<dt>'Maximum error level'</dt>
+<dd>
+      
+<p>
+        When a warning, error or exception occurs during a test run, the state
+        of the corresponding node of the run-log is set accordingly. This
+        state is normally propagated to the parent node in a way that ensures
+        that the error state of a run-log node represents the worst of its
+        child nodes' states. Using this attribute, the maximum error state
+        that the run-log node for a sequence will propagate, can be limited.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> This value has no effect on the way exceptions
+        are handled. It only affects the error states of the run-log nodes and
+        by that the exit code of QF-Test when run in batch mode
+        (see. <a href="user_installation.html#usec_execution">section 1.7</a>). It also has no effect on the
+        creation of compact run-logs (see command line argument
+        <a href="tech_execution.html#arg_compact" shape="rect"><code>-compact</code></a>).  The node for a sequence in which a warning, error
+        or exception occurs is never removed from a compact log, even if the
+        error is not propagated due to the setting of this attribute.
+      </p>
+      
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_RepeatSequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+            
+            
+<p>
+              The 'QF-Test ID' of the 'Loop' node can be used in a
+              <a href="#step_BreakStep" shape="rect">'Break'</a> node to terminate an outer loop explicitly when
+              loops are nested.
+            </p>
+          
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+            Must not contain any of the characters '\', '#', '$',
+            '@', '&amp;', or '%' or start with an underscore ('_').
+          </p>
+</dd>
+<a name="att_RepeatSequence_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_RepeatSequence_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_WhileSequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_WhileSequence">38.6.2</a></span>
+</div>
+<a href="contents.html#toc_step_WhileSequence">'While'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/while.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            This is a sequence that is executed repeatedly as long as a
+            condition is fulfilled.
+          </p>
+          
+<p>
+            The loop can be terminated prematurely with the help of a
+            <a href="#step_BreakStep" shape="rect">'Break'</a> node.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> All kinds of <a href="sequences.html#sec_sequences" shape="rect">sequences</a>.</p>
+<p>
+<strong>Children:</strong> Any</p>
+<p>
+<strong>Execution:</strong> 
+          The <a href="#att_WhileSequence_variable" shape="rect">'Variable definitions'</a> of the 'While' node are
+          bound. If the condition evaluates to true, the child nodes are
+          executed one by one. This is repeated until the condition evaluates
+          to false or the loop is terminated through a <a href="#step_BreakStep" shape="rect">'Break'</a> node or
+          an Exception. Finally the 'Variable definitions' are unbound again.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.26"></a><a name="figure_38.26"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_WhileSequence.png" target="_blank"><img src="images/att_WhileSequence.png" alt="While attributes" texscale=".66" width="393" height="413"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.26</a>:&nbsp;&nbsp;'While' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_WhileSequence_test"></a>
+<dt>'Condition'</dt>
+<dd>
+      
+<p>
+        A condition is an expression that evaluates to either true or false.
+        QF-Test discriminates between simple expression that it evaluates
+        itself and complex expressions that are passed to the Jython script
+        language to evaluate.
+      </p>
+      
+<p>
+        An empty string or the string <code>false</code> (regardless of case)
+        is interpreted as false, the string <code>true</code> as true. Whole
+        numbers are true if and only if they are non-zero.
+      </p>
+      
+<p>
+        Evaluating expressions in Jython opens the way for powerful
+        expression handling. Jython supports the standard operators
+        <code>==</code>, <code>!=</code>, <code>&gt;</code>,
+        <code>&gt;=</code>, <code>&lt;</code> and <code>&lt;=</code>. You can
+        combine expressions with <code>and</code> and <code>or</code> and
+        define their priority with braces.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> Accessing QF-Test variables in a condition follows
+        the same rules as in Jython scripts (see <a href="user_scripting.html#usec_scriptvars">subsection 11.2.3</a>). You can use the standard QF-Test syntax
+        <code>$(...)</code> and <code>${...:...}</code> for numeric or boolean
+        values. String values should be accessed with
+        <code>rc.lookup(...)</code>.
+      </p>
+      
+<p>
+        
+<strong>Important:</strong> Im you want to compare strings 
+        (as opposed to numbers) you need to excape them by single or double
+        inverted commas for Jython. Else Jython would interpret the string
+        as a Jython variable, which, of course would not be defined, and
+        thus lead to a syntax error.
+      </p>
+      
+<p>
+        Some examples:
+      </p>
+      
+<a name="table_38.13"></a><a name="table_38.13"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="2">
+          
+<tr>
+            
+<th align="left" rowspan="1" colspan="1">Expression</th>
+            <th align="left" rowspan="1" colspan="1">Value</th>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">Empty String</td>
+            <td rowspan="1" colspan="1">False</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">0</td>
+            <td rowspan="1" colspan="1">False</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">21</td>
+            <td rowspan="1" colspan="1">True</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">False</td>
+            <td rowspan="1" colspan="1">False</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">True</td>
+            <td rowspan="1" colspan="1">True</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">abc abc</td>
+            <td rowspan="1" colspan="1">Syntax error</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">25 &gt; 0</td>
+            <td rowspan="1" colspan="1">True</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">${qftest:batch}</td>
+            <td rowspan="1" colspan="1">True if QF-Test is run in batch mode</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">not ${qftest:batch}</td>
+            <td rowspan="1" colspan="1">True if QF-Test is run in interactive mode</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">rc.lookup("system", "java.version") == "1.3.1"</td>
+            <td rowspan="1" colspan="1">True if JDK Version is 1.3.1</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">rc.lookup("system", "java.version")[0] == "1"</td>
+            <td rowspan="1" colspan="1">True is JDK Version starts with 1</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">(1 &gt; 0 and 0 == 0) or 2 &lt; 1</td>
+            <td rowspan="1" colspan="1">True</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;38.13</a>:&nbsp;&nbsp;Condition examples</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid syntax</p>
+</dd>
+<a name="att_WhileSequence_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        The name of a sequence is a kind of short description. It is displayed
+        in the tree view, so it should be concise and tell something about the
+        function of the sequence.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_WhileSequence_variable"></a>
+<dt>'Variable definitions'</dt>
+<dd>
+      
+<p>
+        This is where you define the values of the variables that remain bound
+        during the execution of the sequence's child nodes (see <a href="user_variables.html#usec_variables">chapter 6</a>).  See <a href="user_gui.html#usec_tables">subsection 2.2.5</a> about how to
+        work with the table.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Variable names no, values yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_WhileSequence_maxerror"></a>
+<dt>'Maximum error level'</dt>
+<dd>
+      
+<p>
+        When a warning, error or exception occurs during a test run, the state
+        of the corresponding node of the run-log is set accordingly. This
+        state is normally propagated to the parent node in a way that ensures
+        that the error state of a run-log node represents the worst of its
+        child nodes' states. Using this attribute, the maximum error state
+        that the run-log node for a sequence will propagate, can be limited.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> This value has no effect on the way exceptions
+        are handled. It only affects the error states of the run-log nodes and
+        by that the exit code of QF-Test when run in batch mode
+        (see. <a href="user_installation.html#usec_execution">section 1.7</a>). It also has no effect on the
+        creation of compact run-logs (see command line argument
+        <a href="tech_execution.html#arg_compact" shape="rect"><code>-compact</code></a>).  The node for a sequence in which a warning, error
+        or exception occurs is never removed from a compact log, even if the
+        error is not propagated due to the setting of this attribute.
+      </p>
+      
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_WhileSequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+            
+            
+<p>
+              The 'QF-Test ID' of the 'While' node can be used in a
+              <a href="#step_BreakStep" shape="rect">'Break'</a> node to terminate an outer loop explicitly when
+              loops are nested.
+            </p>
+          
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+            Must not be empty, contain any of the characters '#', '$',
+            '@', '&amp;', or '%' or start with an underscore ('_').
+          </p>
+</dd>
+<a name="att_WhileSequence_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_WhileSequence_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_BreakStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_BreakStep">38.6.3</a></span>
+</div>
+<a href="contents.html#toc_step_BreakStep">'Break'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/break.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            This node is used to terminate a <a href="#step_RepeatSequence" shape="rect">'Loops'</a> or a
+            <a href="#step_WhileSequence" shape="rect">'While'</a> node prematurely.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> All kinds of <a href="sequences.html#sec_sequences" shape="rect">sequences</a>.</p>
+<p>
+<strong>Children:</strong> None</p>
+<p>
+<strong>Execution:</strong> 
+          A <code>BreakException</code> is thrown. If it is caught by a
+          matching loop, the loop is terminated, otherwise it will lead to an
+          error.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.27"></a><a name="figure_38.27"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_BreakStep.png" target="_blank"><img src="images/att_BreakStep.png" alt="Break attributes" texscale=".66" width="393" height="236"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.27</a>:&nbsp;&nbsp;'Break' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_BreakStep_loopid"></a>
+<dt>'QF-Test loop ID'</dt>
+<dd>
+            
+            
+<p>
+              For nested loops you can specify the loop to terminate by specifying the
+              <a href="#att_RepeatSequence_id" shape="rect">'QF-Test ID'</a> of a <a href="#step_RepeatSequence" shape="rect">'Loop'</a> node and refer to it here. It works with
+              <a href="#att_WhileSequence_id" shape="rect">'QF-Test ID'</a> for a <a href="#step_WhileSequence" shape="rect">'While'</a> node respectively. In case this field is
+              empty the innermost loop is terminated.
+              In case you want to break an iteration raised by a <a href="datadriver.html#step_DataDriver" shape="rect">'Data driver'</a> node, you should specify the value of the 'Name' attribute of the respective <a href="datadriver.html#step_DataDriver" shape="rect">'Data driver'</a> node.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_BreakStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_BreakStep_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_BreakStep_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_IfSequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_IfSequence">38.6.4</a></span>
+</div>
+<a href="contents.html#toc_step_IfSequence">'If'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/if.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Like in Java the child nodes of this node are executed only if a
+            condition evaluates to true. However QF-Test differs from common
+            programming languages in the way alternative branches are
+            arranged.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> All kinds of <a href="sequences.html#sec_sequences" shape="rect">sequences</a>.</p>
+<p>
+<strong>Children:</strong> 
+          Any executable node, followed by an arbitrary number of
+          <a href="#step_ElseifSequence" shape="rect">'Elseif'</a> nodes with an optional
+          <a href="#step_ElseSequence" shape="rect">'Else'</a> at the end.
+        </p>
+<p>
+<strong>Execution:</strong> 
+          The <a href="#att_IfSequence_variable" shape="rect">'Variable definitions'</a> of the 'If' node are
+          bound. If the condition evaluates to true, the normal child nodes are
+          executed one by one. Otherwise the conditions of the
+          <a href="#step_ElseifSequence" shape="rect">'Elseif'</a> nodes are evaluated and the first
+          'Elseif' node whose condition evaluates to true is
+          executed. If none of the conditions are true of no 'Elseif'
+          nodes exist, the <a href="#step_ElseSequence" shape="rect">'Else'</a> node is executed, if one exists.
+          Finally the 'Variable definitions' are unbound again.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.28"></a><a name="figure_38.28"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_IfSequence.png" target="_blank"><img src="images/att_IfSequence.png" alt="If attributes" texscale=".66" width="393" height="413"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.28</a>:&nbsp;&nbsp;'If' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_IfSequence_test"></a>
+<dt>'Condition'</dt>
+<dd>
+      
+<p>
+        A condition is an expression that evaluates to either true or false.
+        QF-Test discriminates between simple expression that it evaluates
+        itself and complex expressions that are passed to the Jython script
+        language to evaluate.
+      </p>
+      
+<p>
+        An empty string or the string <code>false</code> (regardless of case)
+        is interpreted as false, the string <code>true</code> as true. Whole
+        numbers are true if and only if they are non-zero.
+      </p>
+      
+<p>
+        Evaluating expressions in Jython opens the way for powerful
+        expression handling. Jython supports the standard operators
+        <code>==</code>, <code>!=</code>, <code>&gt;</code>,
+        <code>&gt;=</code>, <code>&lt;</code> and <code>&lt;=</code>. You can
+        combine expressions with <code>and</code> and <code>or</code> and
+        define their priority with braces.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> Accessing QF-Test variables in a condition follows
+        the same rules as in Jython scripts (see <a href="user_scripting.html#usec_scriptvars">subsection 11.2.3</a>). You can use the standard QF-Test syntax
+        <code>$(...)</code> and <code>${...:...}</code> for numeric or boolean
+        values. String values should be accessed with
+        <code>rc.lookup(...)</code>.
+      </p>
+      
+<p>
+        
+<strong>Important:</strong> Im you want to compare strings 
+        (as opposed to numbers) you need to excape them by single or double
+        inverted commas for Jython. Else Jython would interpret the string
+        as a Jython variable, which, of course would not be defined, and
+        thus lead to a syntax error.
+      </p>
+      
+<p>
+        Some examples:
+      </p>
+      
+<a name="table_38.14"></a><a name="table_38.14"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="2">
+          
+<tr>
+            
+<th align="left" rowspan="1" colspan="1">Expression</th>
+            <th align="left" rowspan="1" colspan="1">Value</th>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">Empty String</td>
+            <td rowspan="1" colspan="1">False</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">0</td>
+            <td rowspan="1" colspan="1">False</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">21</td>
+            <td rowspan="1" colspan="1">True</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">False</td>
+            <td rowspan="1" colspan="1">False</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">True</td>
+            <td rowspan="1" colspan="1">True</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">abc abc</td>
+            <td rowspan="1" colspan="1">Syntax error</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">25 &gt; 0</td>
+            <td rowspan="1" colspan="1">True</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">${qftest:batch}</td>
+            <td rowspan="1" colspan="1">True if QF-Test is run in batch mode</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">not ${qftest:batch}</td>
+            <td rowspan="1" colspan="1">True if QF-Test is run in interactive mode</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">rc.lookup("system", "java.version") == "1.3.1"</td>
+            <td rowspan="1" colspan="1">True if JDK Version is 1.3.1</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">rc.lookup("system", "java.version")[0] == "1"</td>
+            <td rowspan="1" colspan="1">True is JDK Version starts with 1</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">(1 &gt; 0 and 0 == 0) or 2 &lt; 1</td>
+            <td rowspan="1" colspan="1">True</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;38.14</a>:&nbsp;&nbsp;Condition examples</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid syntax</p>
+</dd>
+<a name="att_IfSequence_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        The name of a sequence is a kind of short description. It is displayed
+        in the tree view, so it should be concise and tell something about the
+        function of the sequence.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_IfSequence_variable"></a>
+<dt>'Variable definitions'</dt>
+<dd>
+      
+<p>
+        This is where you define the values of the variables that remain bound
+        during the execution of the sequence's child nodes (see <a href="user_variables.html#usec_variables">chapter 6</a>).  See <a href="user_gui.html#usec_tables">subsection 2.2.5</a> about how to
+        work with the table.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Variable names no, values yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_IfSequence_maxerror"></a>
+<dt>'Maximum error level'</dt>
+<dd>
+      
+<p>
+        When a warning, error or exception occurs during a test run, the state
+        of the corresponding node of the run-log is set accordingly. This
+        state is normally propagated to the parent node in a way that ensures
+        that the error state of a run-log node represents the worst of its
+        child nodes' states. Using this attribute, the maximum error state
+        that the run-log node for a sequence will propagate, can be limited.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> This value has no effect on the way exceptions
+        are handled. It only affects the error states of the run-log nodes and
+        by that the exit code of QF-Test when run in batch mode
+        (see. <a href="user_installation.html#usec_execution">section 1.7</a>). It also has no effect on the
+        creation of compact run-logs (see command line argument
+        <a href="tech_execution.html#arg_compact" shape="rect"><code>-compact</code></a>).  The node for a sequence in which a warning, error
+        or exception occurs is never removed from a compact log, even if the
+        error is not propagated due to the setting of this attribute.
+      </p>
+      
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_IfSequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_IfSequence_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_IfSequence_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ElseifSequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ElseifSequence">38.6.5</a></span>
+</div>
+<a href="contents.html#toc_step_ElseifSequence">'Elseif'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/elseif.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            This node is an alternative branch in an <a href="#step_IfSequence" shape="rect">'If'</a> node. If
+            the condition of the 'If' node evaluates to false, the
+            first 'Elseif' node whose condition is true is executed.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> <a href="#step_IfSequence" shape="rect">'If'</a>
+</p>
+<p>
+<strong>Children:</strong> Any</p>
+<p>
+<strong>Execution:</strong> 
+          The <a href="#att_ElseifSequence_variable" shape="rect">'Variable definitions'</a> of the 'Elseif' are bound
+          and its child nodes executed one by one. After the execution of the
+          last child is complete, the variables are unbound again.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.29"></a><a name="figure_38.29"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ElseifSequence.png" target="_blank"><img src="images/att_ElseifSequence.png" alt="Elseif attributes" texscale=".66" width="393" height="413"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.29</a>:&nbsp;&nbsp;'Elseif' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ElseifSequence_test"></a>
+<dt>'Condition'</dt>
+<dd>
+      
+<p>
+        A condition is an expression that evaluates to either true or false.
+        QF-Test discriminates between simple expression that it evaluates
+        itself and complex expressions that are passed to the Jython script
+        language to evaluate.
+      </p>
+      
+<p>
+        An empty string or the string <code>false</code> (regardless of case)
+        is interpreted as false, the string <code>true</code> as true. Whole
+        numbers are true if and only if they are non-zero.
+      </p>
+      
+<p>
+        Evaluating expressions in Jython opens the way for powerful
+        expression handling. Jython supports the standard operators
+        <code>==</code>, <code>!=</code>, <code>&gt;</code>,
+        <code>&gt;=</code>, <code>&lt;</code> and <code>&lt;=</code>. You can
+        combine expressions with <code>and</code> and <code>or</code> and
+        define their priority with braces.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> Accessing QF-Test variables in a condition follows
+        the same rules as in Jython scripts (see <a href="user_scripting.html#usec_scriptvars">subsection 11.2.3</a>). You can use the standard QF-Test syntax
+        <code>$(...)</code> and <code>${...:...}</code> for numeric or boolean
+        values. String values should be accessed with
+        <code>rc.lookup(...)</code>.
+      </p>
+      
+<p>
+        
+<strong>Important:</strong> Im you want to compare strings 
+        (as opposed to numbers) you need to excape them by single or double
+        inverted commas for Jython. Else Jython would interpret the string
+        as a Jython variable, which, of course would not be defined, and
+        thus lead to a syntax error.
+      </p>
+      
+<p>
+        Some examples:
+      </p>
+      
+<a name="table_38.15"></a><a name="table_38.15"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="2">
+          
+<tr>
+            
+<th align="left" rowspan="1" colspan="1">Expression</th>
+            <th align="left" rowspan="1" colspan="1">Value</th>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">Empty String</td>
+            <td rowspan="1" colspan="1">False</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">0</td>
+            <td rowspan="1" colspan="1">False</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">21</td>
+            <td rowspan="1" colspan="1">True</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">False</td>
+            <td rowspan="1" colspan="1">False</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">True</td>
+            <td rowspan="1" colspan="1">True</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">abc abc</td>
+            <td rowspan="1" colspan="1">Syntax error</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">25 &gt; 0</td>
+            <td rowspan="1" colspan="1">True</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">${qftest:batch}</td>
+            <td rowspan="1" colspan="1">True if QF-Test is run in batch mode</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">not ${qftest:batch}</td>
+            <td rowspan="1" colspan="1">True if QF-Test is run in interactive mode</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">rc.lookup("system", "java.version") == "1.3.1"</td>
+            <td rowspan="1" colspan="1">True if JDK Version is 1.3.1</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">rc.lookup("system", "java.version")[0] == "1"</td>
+            <td rowspan="1" colspan="1">True is JDK Version starts with 1</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">(1 &gt; 0 and 0 == 0) or 2 &lt; 1</td>
+            <td rowspan="1" colspan="1">True</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;38.15</a>:&nbsp;&nbsp;Condition examples</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid syntax</p>
+</dd>
+<a name="att_ElseifSequence_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        The name of a sequence is a kind of short description. It is displayed
+        in the tree view, so it should be concise and tell something about the
+        function of the sequence.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_ElseifSequence_variable"></a>
+<dt>'Variable definitions'</dt>
+<dd>
+      
+<p>
+        This is where you define the values of the variables that remain bound
+        during the execution of the sequence's child nodes (see <a href="user_variables.html#usec_variables">chapter 6</a>).  See <a href="user_gui.html#usec_tables">subsection 2.2.5</a> about how to
+        work with the table.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Variable names no, values yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_ElseifSequence_maxerror"></a>
+<dt>'Maximum error level'</dt>
+<dd>
+      
+<p>
+        When a warning, error or exception occurs during a test run, the state
+        of the corresponding node of the run-log is set accordingly. This
+        state is normally propagated to the parent node in a way that ensures
+        that the error state of a run-log node represents the worst of its
+        child nodes' states. Using this attribute, the maximum error state
+        that the run-log node for a sequence will propagate, can be limited.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> This value has no effect on the way exceptions
+        are handled. It only affects the error states of the run-log nodes and
+        by that the exit code of QF-Test when run in batch mode
+        (see. <a href="user_installation.html#usec_execution">section 1.7</a>). It also has no effect on the
+        creation of compact run-logs (see command line argument
+        <a href="tech_execution.html#arg_compact" shape="rect"><code>-compact</code></a>).  The node for a sequence in which a warning, error
+        or exception occurs is never removed from a compact log, even if the
+        error is not propagated due to the setting of this attribute.
+      </p>
+      
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_ElseifSequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_ElseifSequence_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_ElseifSequence_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ElseSequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ElseSequence">38.6.6</a></span>
+</div>
+<a href="contents.html#toc_step_ElseSequence">'Else'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/else.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            An 'Else' node is executed if neither the condition of its
+            <a href="#step_IfSequence" shape="rect">'If'</a> parent, nor the condition of its
+            <a href="#step_ElseifSequence" shape="rect">'Elseif'</a> siblings evaluate to true.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> <a href="#step_IfSequence" shape="rect">'If'</a>, <a href="#step_RepeatSequence" shape="rect">'Loop'</a>, <a href="#step_TryStep" shape="rect">'Try'</a>
+</p>
+<p>
+<strong>Children:</strong> Any</p>
+<p>
+<strong>Execution:</strong> 
+          The <a href="#att_ElseSequence_variable" shape="rect">'Variable definitions'</a> of the 'Else' are bound
+          and its child nodes executed one by one. After the execution of the
+          last child is complete, the variables are unbound again.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.30"></a><a name="figure_38.30"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ElseSequence.png" target="_blank"><img src="images/att_ElseSequence.png" alt="Else attributes" texscale=".66" width="393" height="367"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.30</a>:&nbsp;&nbsp;'Else' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ElseSequence_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        The name of a sequence is a kind of short description. It is displayed
+        in the tree view, so it should be concise and tell something about the
+        function of the sequence.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_ElseSequence_variable"></a>
+<dt>'Variable definitions'</dt>
+<dd>
+      
+<p>
+        This is where you define the values of the variables that remain bound
+        during the execution of the sequence's child nodes (see <a href="user_variables.html#usec_variables">chapter 6</a>).  See <a href="user_gui.html#usec_tables">subsection 2.2.5</a> about how to
+        work with the table.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Variable names no, values yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_ElseSequence_maxerror"></a>
+<dt>'Maximum error level'</dt>
+<dd>
+      
+<p>
+        When a warning, error or exception occurs during a test run, the state
+        of the corresponding node of the run-log is set accordingly. This
+        state is normally propagated to the parent node in a way that ensures
+        that the error state of a run-log node represents the worst of its
+        child nodes' states. Using this attribute, the maximum error state
+        that the run-log node for a sequence will propagate, can be limited.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> This value has no effect on the way exceptions
+        are handled. It only affects the error states of the run-log nodes and
+        by that the exit code of QF-Test when run in batch mode
+        (see. <a href="user_installation.html#usec_execution">section 1.7</a>). It also has no effect on the
+        creation of compact run-logs (see command line argument
+        <a href="tech_execution.html#arg_compact" shape="rect"><code>-compact</code></a>).  The node for a sequence in which a warning, error
+        or exception occurs is never removed from a compact log, even if the
+        error is not propagated due to the setting of this attribute.
+      </p>
+      
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_ElseSequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_ElseSequence_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_ElseSequence_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_TryStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_TryStep">38.6.7</a></span>
+</div>
+<a href="contents.html#toc_step_TryStep">'Try'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/try.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            A 'Try' is a special sequence whose semantic equates the
+            Java <code>try-catch-finally</code> composition. As in Python,
+            this composition was extended to support optional
+            <code>else</code> blocks. A 'Try' behaves the same way as a
+            special <a href="sequences.html#step_BasicSequence" shape="rect">'Sequence'</a> with the extension, that exception
+            handling is possible. Like a 'Sequence' it has a set of
+            normal child nodes that it executes one by one. After these may
+            come an arbitrary number of <a href="#step_CatchSequence" shape="rect">'Catch'</a> nodes with an
+            optional <a href="#step_ElseSequence" shape="rect">'Else'</a> node followed by an optional
+            <a href="#step_FinallySequence" shape="rect">'Finally'</a> node at the end.
+          </p>
+          
+<p>
+            If an exception is thrown during the execution of one of the
+            normal child nodes, the 'Catch' nodes are tested for
+            whether they are able to catch that exception. The first one found
+            is executed and the 'Try' will be exited normally afterwards
+            without continuing with the execution of the normal child nodes
+            and without passing the exception on. If no matching
+            'Catch' is found, the exception will terminate the
+            'Try' immediately (almost, see below) and be passed onto the
+            'Try's' parent.
+          </p>
+          
+<p>
+            A possible <a href="#step_ElseSequence" shape="rect">'Else'</a> child node at the end of a try node
+            will be executed, if and only if no <a href="#step_CatchSequence" shape="rect">'Catch'</a> nodes had
+            been executed. This means, it is executed, when no exception in
+            the try block was thrown.
+          </p>
+          
+<p>
+            If the 'Try' has a <a href="#step_FinallySequence" shape="rect">'Finally'</a> child node, this node
+            will be executed just before the 'Try' finishes, no matter
+            whether an exception is thrown and whether it is handled or not.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> All kinds of <a href="sequences.html#sec_sequences" shape="rect">sequences</a>.</p>
+<p>
+<strong>Children:</strong> 
+          Any executable node, followed by an arbitrary number of
+          <a href="#step_CatchSequence" shape="rect">'Catch'</a> nodes with an optional
+          <a href="#step_ElseSequence" shape="rect">'Else'</a> node and/or an optional
+          <a href="#step_FinallySequence" shape="rect">'Finally'</a> node at the end.
+        </p>
+<p>
+<strong>Execution:</strong> 
+          The <a href="#att_TryStep_variable" shape="rect">'Variable definitions'</a> of the 'Try' are bound and its normal
+          child nodes executed one by one. If an exception is thrown,
+          execution of the normal children is terminated. If a 'Catch'
+          node with a matching <a href="#att_CatchSequence_exception" shape="rect">'Exception class'</a> is found it is
+          executed. Before exiting the 'Try' its 'Finally' node is
+          executed unconditionally. After unbinding the 'Variable definitions', the
+          'Try' is either exited cleanly if no exception was thrown or the
+          exception was caught, or it passes on the uncaught exception.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.31"></a><a name="figure_38.31"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_TryStep.png" target="_blank"><img src="images/att_TryStep.png" alt="Try attributes" texscale=".66" width="393" height="367"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.31</a>:&nbsp;&nbsp;'Try' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_TryStep_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        The name of a sequence is a kind of short description. It is displayed
+        in the tree view, so it should be concise and tell something about the
+        function of the sequence.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TryStep_variable"></a>
+<dt>'Variable definitions'</dt>
+<dd>
+      
+<p>
+        This is where you define the values of the variables that remain bound
+        during the execution of the sequence's child nodes (see <a href="user_variables.html#usec_variables">chapter 6</a>).  See <a href="user_gui.html#usec_tables">subsection 2.2.5</a> about how to
+        work with the table.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Variable names no, values yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TryStep_maxerror"></a>
+<dt>'Maximum error level'</dt>
+<dd>
+      
+<p>
+        When a warning, error or exception occurs during a test run, the state
+        of the corresponding node of the run-log is set accordingly. This
+        state is normally propagated to the parent node in a way that ensures
+        that the error state of a run-log node represents the worst of its
+        child nodes' states. Using this attribute, the maximum error state
+        that the run-log node for a sequence will propagate, can be limited.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> This value has no effect on the way exceptions
+        are handled. It only affects the error states of the run-log nodes and
+        by that the exit code of QF-Test when run in batch mode
+        (see. <a href="user_installation.html#usec_execution">section 1.7</a>). It also has no effect on the
+        creation of compact run-logs (see command line argument
+        <a href="tech_execution.html#arg_compact" shape="rect"><code>-compact</code></a>).  The node for a sequence in which a warning, error
+        or exception occurs is never removed from a compact log, even if the
+        error is not propagated due to the setting of this attribute.
+      </p>
+      
+      
+<p>
+        For a 'Try' node, the error state of the run-log is
+        additionally affected by the <a href="#att_CatchSequence_maxerror" shape="rect">'Maximum error level'</a> of the
+        <a href="#step_CatchSequence" shape="rect">'Catch'</a> node that handles an exception.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_TryStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_TryStep_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_TryStep_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_CatchSequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_CatchSequence">38.6.8</a></span>
+</div>
+<a href="contents.html#toc_step_CatchSequence">'Catch'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/catch.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+        
+<p>
+          A 'Catch' is a special <a href="sequences.html#step_BasicSequence" shape="rect">'Sequence'</a> that can only be placed inside a
+          <a href="#step_TryStep" shape="rect">'Try'</a> node or a <a href="dependencies.html#step_Dependency" shape="rect">'Dependency'</a>. Its job is to catch exceptions that may arise
+          during the execution of a 'Try's' or a <a href="sequences.html#step_TestCase" shape="rect">'Test-case'</a> with a 'Dependency'.
+        </p>
+        
+<p>
+          A 'Catch' can handle an exception if the class of the
+          exception is the same as the 'Catch' node's
+          <a href="#att_CatchSequence_exception" shape="rect">'Exception class'</a> attribute or a derived class
+          thereof, just as in Java.
+        </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> <a href="#step_TryStep" shape="rect">'Try'</a>, <a href="dependencies.html#step_Dependency" shape="rect">'Dependency'</a>
+</p>
+<p>
+<strong>Children:</strong> Any</p>
+<p>
+<strong>Execution:</strong> 
+          The <a href="#att_CatchSequence_variable" shape="rect">'Variable definitions'</a> of the 'Catch' are bound
+          and its child nodes executed one by one. After the execution of the
+          last child is complete, the variables are unbound again.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.32"></a><a name="figure_38.32"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_CatchSequence.png" target="_blank"><img src="images/att_CatchSequence.png" alt="Catch attributes" texscale=".66" width="393" height="528"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.32</a>:&nbsp;&nbsp;'Catch' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_CatchSequence_exception"></a>
+<dt>'Exception class'</dt>
+<dd>
+            
+            
+<p>
+              This <em>ComboBox</em> lets you select the class of the exception
+              that is to be caught. All QF-Test exceptions are derived from
+              the class <a href="exceptions.html#ex_TestException" shape="rect"><code>TestException</code></a>. For details about the possible
+              exceptions see <a href="exceptions.html#sec_exceptions">chapter 39</a>.
+            </p>
+          
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_CatchSequence_catchmessage"></a>
+<dt>'Expected message'</dt>
+<dd>
+            
+            
+<p>
+              You can further qualify the exception to catch by specifying a message to look for.
+              If this attribute is empty, all exceptions of the specified class are caught.
+              Otherwise it is compared to <code>exception.getMessage()</code> and the exception is
+              caught only in case of a match.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid regexp if required.</p>
+</dd>
+<a name="att_CatchSequence_regexp"></a>
+<dt>'As regexp'</dt>
+<dd>
+            
+            
+<p>
+              If this attribute is set, the exception message is matched against a regexp (see
+              <a href="tech_regexp.html#sec_regexp">section 45.3</a>) instead of comparing plain strings.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_CatchSequence_matchlocalized"></a>
+<dt>'Match against localized message'</dt>
+<dd>
+            
+            
+<p>
+              Most exceptions have two kinds of error message: The raw message is typically some
+              short English text whereas the localized message contains more details and is either
+              English or German, depending on the current language settings of QF-Test. Both are
+              shown in the run-log. If this attribute is set, the localized exception message is
+              used for comparison, otherwise the raw message. The latter is usually preferable as
+              it doesn't depend on language settings so no regexp is needed in order to ensure the
+              correct handling of the different languages.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_CatchSequence_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        The name of a sequence is a kind of short description. It is displayed
+        in the tree view, so it should be concise and tell something about the
+        function of the sequence.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_CatchSequence_variable"></a>
+<dt>'Variable definitions'</dt>
+<dd>
+      
+<p>
+        This is where you define the values of the variables that remain bound
+        during the execution of the sequence's child nodes (see <a href="user_variables.html#usec_variables">chapter 6</a>).  See <a href="user_gui.html#usec_tables">subsection 2.2.5</a> about how to
+        work with the table.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Variable names no, values yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_CatchSequence_maxerror"></a>
+<dt>'Maximum error level'</dt>
+<dd>
+      
+<p>
+        In contrast to the <a href="sequences.html#att_BasicSequence_maxerror" shape="rect">'Maximum error level'</a> of other <a href="sequences.html#sec_sequences" shape="rect">sequences</a>, this attribute does not determine
+        the error state propagated by the run-log node for the
+        'Catch' node itself, but for the log of its parent
+        <a href="#step_TryStep" shape="rect">'Try'</a> node, provided that the 'Catch' is executed
+        in order to handle an exception.
+      </p>
+      
+<p>
+        The error state for any warnings, errors or exceptions that happen
+        during the execution of the 'Catch' node are
+        <strong>not</strong> limited by the setting of this
+        attribute. Otherwise problems occurring during exception handling might
+        accidentally go unnoticed.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_CatchSequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_CatchSequence_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_CatchSequence_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_FinallySequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_FinallySequence">38.6.9</a></span>
+</div>
+<a href="contents.html#toc_step_FinallySequence">'Finally'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/finally.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            A 'Finally' node, which can only be placed at the end of a
+            'Try' node, will always be executed as the last thing just
+            before exiting the 'Try', no matter what happened there. This
+            is used primarily to ensure that cleanup code like removing a
+            temporary file or terminating a process is executed under any
+            conditions.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> <a href="#step_TryStep" shape="rect">'Try'</a>
+</p>
+<p>
+<strong>Children:</strong> Any</p>
+<p>
+<strong>Execution:</strong> 
+          The <a href="#att_FinallySequence_variable" shape="rect">'Variable definitions'</a> of the 'Finally' are bound
+          and its child nodes executed one by one. After the execution of the
+          last child is complete, the variables are unbound again.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.33"></a><a name="figure_38.33"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_FinallySequence.png" target="_blank"><img src="images/att_FinallySequence.png" alt="Finally attributes" texscale=".66" width="393" height="367"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.33</a>:&nbsp;&nbsp;'Finally' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_FinallySequence_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        The name of a sequence is a kind of short description. It is displayed
+        in the tree view, so it should be concise and tell something about the
+        function of the sequence.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_FinallySequence_variable"></a>
+<dt>'Variable definitions'</dt>
+<dd>
+      
+<p>
+        This is where you define the values of the variables that remain bound
+        during the execution of the sequence's child nodes (see <a href="user_variables.html#usec_variables">chapter 6</a>).  See <a href="user_gui.html#usec_tables">subsection 2.2.5</a> about how to
+        work with the table.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Variable names no, values yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_FinallySequence_maxerror"></a>
+<dt>'Maximum error level'</dt>
+<dd>
+      
+<p>
+        When a warning, error or exception occurs during a test run, the state
+        of the corresponding node of the run-log is set accordingly. This
+        state is normally propagated to the parent node in a way that ensures
+        that the error state of a run-log node represents the worst of its
+        child nodes' states. Using this attribute, the maximum error state
+        that the run-log node for a sequence will propagate, can be limited.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> This value has no effect on the way exceptions
+        are handled. It only affects the error states of the run-log nodes and
+        by that the exit code of QF-Test when run in batch mode
+        (see. <a href="user_installation.html#usec_execution">section 1.7</a>). It also has no effect on the
+        creation of compact run-logs (see command line argument
+        <a href="tech_execution.html#arg_compact" shape="rect"><code>-compact</code></a>).  The node for a sequence in which a warning, error
+        or exception occurs is never removed from a compact log, even if the
+        error is not propagated due to the setting of this attribute.
+      </p>
+      
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_FinallySequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_FinallySequence_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_FinallySequence_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ThrowStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ThrowStep">38.6.10</a></span>
+</div>
+<a href="contents.html#toc_step_ThrowStep">'Throw'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/throw.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            If you need to handle an exceptional situation, you can use this
+            node to throw an explicit Exception.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> All kinds of <a href="sequences.html#sec_sequences" shape="rect">sequences</a>.</p>
+<p>
+<strong>Children:</strong> None</p>
+<p>
+<strong>Execution:</strong> 
+          A <a href="exceptions.html#ex_UserException" shape="rect"><code>UserException</code></a> is thrown, its message taken from the
+          <a href="#att_ThrowStep_throwmessage" shape="rect">'Exception message'</a> attribute.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.34"></a><a name="figure_38.34"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ThrowStep.png" target="_blank"><img src="images/att_ThrowStep.png" alt="Throw attributes" texscale=".66" width="393" height="236"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.34</a>:&nbsp;&nbsp;'Throw' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ThrowStep_throwmessage"></a>
+<dt>'Exception message'</dt>
+<dd>
+            
+            
+<p>
+              An arbitrary message for the <a href="exceptions.html#ex_UserException" shape="rect"><code>UserException</code></a> to throw.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_ThrowStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_ThrowStep_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_ThrowStep_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_RethrowStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_RethrowStep">38.6.11</a></span>
+</div>
+<a href="contents.html#toc_step_RethrowStep">'Rethrow'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/throw.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            An exception that was caught by a <a href="#step_CatchSequence" shape="rect">'Catch'</a> node can be
+            thrown again with the help of a 'Rethrow' node.  This is
+            especially useful if you need to catch all kinds of exceptions
+            except one. To handle that case, create a <a href="#step_TryStep" shape="rect">'Try'</a> node with
+            a 'Catch' for the special exception followed by a
+            'Catch' for a <a href="exceptions.html#ex_TestException" shape="rect"><code>TestException</code></a>. Then place a
+            'Rethrow' in the first 'Catch' node.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> 
+          All kinds of <a href="sequences.html#sec_sequences" shape="rect">sequences</a>. The
+          'Rethrow' node doesn't have to be placed directly below a
+          'Catch' node.
+        </p>
+<p>
+<strong>Children:</strong> None</p>
+<p>
+<strong>Execution:</strong> 
+          The last exception caught by a <a href="#step_CatchSequence" shape="rect">'Catch'</a> node is thrown
+          again. If no such exception exists, a <a href="exceptions.html#ex_CannotRethrowException" shape="rect"><code>CannotRethrowException</code></a>
+          is thrown.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.35"></a><a name="figure_38.35"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_RethrowStep.png" target="_blank"><img src="images/att_RethrowStep.png" alt="Rethrow attributes" texscale=".66" width="393" height="190"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.35</a>:&nbsp;&nbsp;'Rethrow' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_RethrowStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_RethrowStep_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_RethrowStep_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ServerScriptStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ServerScriptStep">38.6.12</a></span>
+</div>
+<a href="contents.html#toc_step_ServerScriptStep">'Server script'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/script.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Server side scripts are executed by an interpreter (Jython, Groovy or JavaScript)
+        embedded into QF-Test. Scripting is explained in <a href="user_scripting.html#usec_scripting">chapter 11</a> and <a href="tech_scripting.html#sec_scripting">chapter 46</a>.
+            As server side scripts run embedded to QF-Test those scripts cannot interact with the SUT.
+        It is recommended that Server side scripts be used for cases that work without the SUT or time consuming 
+        operations like accessing databases or files.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> 
+          All kinds of <a href="sequences.html#sec_sequences" shape="rect">sequences</a>.
+        </p>
+<p>
+<strong>Children:</strong> None</p>
+<p>
+<strong>Execution:</strong> 
+          The script is executed by an embedded interpreter.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.36"></a><a name="figure_38.36"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ServerScriptStep.png" target="_blank"><img src="images/att_ServerScriptStep.png" alt="Server script attributes" texscale=".66" width="400" height="430"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.36</a>:&nbsp;&nbsp;'Server script' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ServerScriptStep_code"></a>
+<dt>'Script'</dt>
+<dd>
+      
+<p>
+        The script to execute.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> You may use QF-Test variables of the syntax $(var) or ${group:name} 
+        in Jython scripts. They will be expanded before the script is passed 
+        to the Jython interpreter. This can lead to unexpected behavior.
+        <code>rc.lookup(...)</code> is the
+        preferred method in this case (see <a href="user_scripting.html#sub_accessing_variables">subsection 11.2.3.1</a> for
+        details).
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> In spite of syntax highlighting and automatical
+    indentation this attribute might not be the right place to write complex
+    scripts. There are many excellent editors that are much better suited to
+    this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you define
+        an external editor in which scripts can be edited conveniently by
+        pressing [Alt-Return] or by clicking
+        the <img src="../icons/row_edit.png" alt="Edit row" width="20" height="20" align="middle" texscale="1"> button. Complex scripts can
+        also be written as separate modules which can then be imported for use
+        in this attribute. See <a href="tech_scripting.html#sec_scripting">chapter 46</a> for details.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid syntax</p>
+</dd>
+<a name="att_ServerScriptStep_interpreter"></a>
+<dt>'Script language'</dt>
+<dd>
+      
+<p>
+        This attribute determines the interpreter in which to run the script, or in other words,
+        the scripting language to use. Possible values are "Jython", "Groovy" and "JavaScript".
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_ServerScriptStep_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        The name of a script is a kind of short description. It is displayed
+        in the tree view, so it should be concise and tell something about the
+        function of the script.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_ServerScriptStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_ServerScriptStep_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_ServerScriptStep_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ClientScriptStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ClientScriptStep">38.6.13</a></span>
+</div>
+<a href="contents.html#toc_step_ClientScriptStep">'SUT script'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/script.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Client side scripts are executed by an interpreter (Jython, Groovy or JavaScript) that
+            QF-Test embeds into the SUT. Scripting is explained in
+            <a href="user_scripting.html#usec_scripting">chapter 11</a> and <a href="tech_scripting.html#sec_scripting">chapter 46</a>. As client side scripts
+            run in the SUT you should use them to access the components and properties of the SUT.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Contained in:</strong> 
+          All kinds of <a href="sequences.html#sec_sequences" shape="rect">sequences</a>.
+        </p>
+<p>
+<strong>Children:</strong> None</p>
+<p>
+<strong>Execution:</strong> 
+          The script is executed inside the SUT by an embedded interpreter.
+        </p>
+      
+
+      
+<p>
+<strong>Attributes:</strong>
+</p>
+<a name="figure_38.37"></a><a name="figure_38.37"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ClientScriptStep.png" target="_blank"><img src="images/att_ClientScriptStep.png" alt="SUT script attributes" texscale=".66" width="393" height="504"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;38.37</a>:&nbsp;&nbsp;'SUT script' attributes</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ClientScriptStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        The name of the SUT client process in which to execute the script.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Must not be empty.</p>
+</dd>
+<a name="att_ClientScriptStep_code"></a>
+<dt>'Script'</dt>
+<dd>
+      
+<p>
+        The script to execute.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> You may use QF-Test variables of the syntax $(var) or ${group:name} 
+        in Jython scripts. They will be expanded before the script is passed 
+        to the Jython interpreter. This can lead to unexpected behavior.
+        <code>rc.lookup(...)</code> is the
+        preferred method in this case (see <a href="user_scripting.html#sub_accessing_variables">subsection 11.2.3.1</a> for
+        details).
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> In spite of syntax highlighting and automatical
+    indentation this attribute might not be the right place to write complex
+    scripts. There are many excellent editors that are much better suited to
+    this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you define
+        an external editor in which scripts can be edited conveniently by
+        pressing [Alt-Return] or by clicking
+        the <img src="../icons/row_edit.png" alt="Edit row" width="20" height="20" align="middle" texscale="1"> button. Complex scripts can
+        also be written as separate modules which can then be imported for use
+        in this attribute. See <a href="tech_scripting.html#sec_scripting">chapter 46</a> for details.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid syntax</p>
+</dd>
+<a name="att_ClientScriptStep_interpreter"></a>
+<dt>'Script language'</dt>
+<dd>
+      
+<p>
+        This attribute determines the interpreter in which to run the script, or in other words,
+        the scripting language to use. Possible values are "Jython", "Groovy" and "JavaScript".
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_ClientScriptStep_engine"></a>
+<dt>'GUI engine'</dt>
+<dd>
+            
+            
+<p>
+              The GUI engine in which to execute the script. Only relevant for SUTs with more than
+              one GUI engine as described in <a href="tech_engines.html#sec_engines">chapter 41</a>.
+            </p>
+          
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> See <a href="tech_engines.html#sec_engines">chapter 41</a>
+</p>
+</dd>
+<a name="att_ClientScriptStep_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        The name of a script is a kind of short description. It is displayed
+        in the tree view, so it should be concise and tell something about the
+        function of the script.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+<a name="att_ClientScriptStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        At the moment the 'QF-Test ID' attribute has no meaning for this type of
+        node.
+      </p>
+    
+<p>
+<strong>Variable:</strong> No</p>
+<p>
+<strong>Restrictions:</strong> 
+      Must not contain any of the characters '\', '#', '$',
+      '@', '&amp;', or '%' or start with an underscore ('_').
+    </p>
+</dd>
+<a name="att_ClientScriptStep_delay"></a>
+<dt>'Delay before/after'</dt>
+<dd>
+      
+<p>
+        These attributes cause a delay before or after the execution of the
+        node. If a value is empty, the <a href="opt_play.html#opt_defaultdelay" shape="rect">Default
+        delay</a> from the global options is used.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> Valid number &gt;= 0</p>
+</dd>
+<a name="att_ClientScriptStep_comment"></a>
+<dt>'Comment'</dt>
+<dd>
+      
+<p>
+        Here you can enter a comment that explains the purpose of this
+        node. This is the preferred way of documenting the test-suite.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        For detailed documentation, especially for 'Test-set', 'Test-case' or 'Procedure' nodes,
+        this text area might not be the right place. There are many excellent editors that are
+        much better suited to this task. The option <a href="opt_general.html#opt_externaleditor">External editor command</a> lets you
+        define an external editor in which comments can be edited conveniently by pressing
+        [Alt-Return] or by clicking the <img src="../icons/script_edit.png" alt="External editor" width="20" height="20" align="middle" texscale="1"> button.
+      </p>
+      
+<p>
+      You can trigger a special behavior of some nodes using doctags, please see <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        If you enter text in the comment field of a 'Component' node, the node will
+        be considered as 'used' when you want to mark or delete unused components.
+      </p>
+    
+<p>
+<strong>Variable:</strong> Yes</p>
+<p>
+<strong>Restrictions:</strong> None</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="procedures.html#sec_procedures"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 38.5&nbsp;Procedures" title="Previous Chapter: 38.5&nbsp;Procedures"></a></td><td class="navicon"><a href="processes.html#sec_processes"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 38.7&nbsp;Processes" title="Next Page: 38.7&nbsp;Processes"></a></td><td class="navicon"><a href="processes.html#sec_processes"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 38.7&nbsp;Processes" title="Next Chapter: 38.7&nbsp;Processes"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 38&nbsp;Elements of a test-suite" title="Chapter Overview: 38&nbsp;Elements of a test-suite"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

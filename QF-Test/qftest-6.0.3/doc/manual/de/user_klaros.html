@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Klaros</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_klaros"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_qmetry.html#usec_qmetry"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 25.3&nbsp;QMetry" title="Vorheriges Kapitel: 25.3&nbsp;QMetry"></a></td><td class="navicon"><a href="user_testlink.html#usec_testlink"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 25.5&nbsp;TestLink" title="N&auml;chste Seite: 25.5&nbsp;TestLink"></a></td><td class="navicon"><a href="user_testlink.html#usec_testlink"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 25.5&nbsp;TestLink" title="N&auml;chstes Kapitel: 25.5&nbsp;TestLink"></a></td><td class="navicon"><a href="user_testmanagement.html#usec_testmanagement"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 25&nbsp;Anbindung an Testmanagementtools" title="Kapitel-&Uuml;bersicht: 25&nbsp;Anbindung an Testmanagementtools"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_klaros">25.4</a></span>
+</div>
+<a href="contents.html#toc_usec_klaros">Klaros</a>
+</h4>
+
+      
+
+      
+<a name="usec_klarosIntro"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_klarosIntro">25.4.1</a></span>
+</div>
+<a href="contents.html#toc_usec_klarosIntro">Einf&uuml;hrung</a>
+</h5>
+
+        
+<p>
+          
+<a href="http://www.klaros-testmanagement.com/" shape="rect">Klaros</a> ist ein Testmanagementtool,
+          das von der Firma verit Informationssysteme GmbH, Kaiserslautern, Deutschland entwickelt
+          und vertrieben wird.
+        </p>
+        
+<p>
+          Klaros ist in zwei Editionen erh&auml;ltlich, einer freien Community-Edition und einer
+          Enterprise-Edition mit einen erweiterten Funktionsumfang, individuellen
+          Konfigurationsm&ouml;glichkeiten und umfassenden Support.
+        </p>
+        
+<p>
+          Die aktuelle Integration von QF-Test mit Klaros umfasst:
+        </p>
+        
+<ul>
+          
+<li>Import von QF-Test Ergebnissen in Klaros.
+          </li>
+        
+</ul>
+      
+
+      
+      
+
+      
+<a name="usec_klarosImport"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_klarosImport">25.4.2</a></span>
+</div>
+<a href="contents.html#toc_usec_klarosImport">Importieren von QF-Test Ergebnissen in Klaros</a>
+</h5>
+        
+<p>
+          Nach dem Erzeugen eines XML Reports, wie in <a href="user_report.html#usec_report">Kapitel 21</a> beschrieben,
+          kann dieser in Klaros importiert werden.  Ein Beispiel f&uuml;r eine QF-Test Import-URL k&ouml;nnte
+          wie folgt aussehen, wobei die Ergebnisdatei im HTTP Request Body enthalten ist.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>http://localhost:18080/klaros-web/seam/resource/rest/importer?config=P00001&amp;env=ENV00001&amp;sut=SUT00001&amp;type=qftest&amp;time=01.03.2011_12:00&amp;username=me&amp;password=secret</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;25.1:&nbsp;&nbsp;Importieren von Testergebnissen in Klaros</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Das <code>curl</code> Kommandozeilenprogramm kann auf Linux und Windows/Cygwin den
+          Import direkt ansto&szlig;en.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>curl -v -H "Content-Type: text/xml" -T "my_qftest_report.xml" \
+           "http://localhost:18080/klaros-web/seam/resource/rest/importer?config=P00001&amp;env=ENV00001&amp;sut=SUT00001&amp;type=qftest&amp;time=05.02.2013_12:00&amp;user=me&amp;password=secret"</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;25.2:&nbsp;&nbsp;Importieren von Testergebnissen in Klaros mit Hilfe des <code>curl</code> Kommandos</td><td class="captionglue"></td>
+</tr>
+</table>
+
+        
+<p>
+          Weitere Informationen finden Sie im Klaros Online-Handbuch unter <a href="https://www.klaros-testmanagement.com/files/doc/html/User-Manual.Import-Export.html" shape="rect">https://www.klaros-testmanagement.com/files/doc/html/User-Manual.Import-Export.html</a>.
+        </p>
+      
+
+      
+
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_qmetry.html#usec_qmetry"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 25.3&nbsp;QMetry" title="Vorheriges Kapitel: 25.3&nbsp;QMetry"></a></td><td class="navicon"><a href="user_testlink.html#usec_testlink"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 25.5&nbsp;TestLink" title="N&auml;chste Seite: 25.5&nbsp;TestLink"></a></td><td class="navicon"><a href="user_testlink.html#usec_testlink"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 25.5&nbsp;TestLink" title="N&auml;chstes Kapitel: 25.5&nbsp;TestLink"></a></td><td class="navicon"><a href="user_testmanagement.html#usec_testmanagement"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 25&nbsp;Anbindung an Testmanagementtools" title="Kapitel-&Uuml;bersicht: 25&nbsp;Anbindung an Testmanagementtools"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

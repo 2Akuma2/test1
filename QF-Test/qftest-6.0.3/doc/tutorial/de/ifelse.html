@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>If - else</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2002-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_if"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="loops.html#sec_loops"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 8.2&nbsp;Schleifen" title="N&auml;chste Seite: 8.2&nbsp;Schleifen"></a></td><td class="navicon"><a href="loops.html#sec_loops"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 8.2&nbsp;Schleifen" title="N&auml;chstes Kapitel: 8.2&nbsp;Schleifen"></a></td><td class="navicon"><a href="controls.html#sec_controlstructures"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 8&nbsp;Ablaufsteuerung (Java)" title="Kapitel-&Uuml;bersicht: 8&nbsp;Ablaufsteuerung (Java)"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_if">8.1</a></span>
+</div>
+<a href="contents.html#toc_sec_if">If - else</a>
+</h4>
+      
+<p>
+        'If' und 'Else' Knoten kennen Sie bereits aus der
+        'Vorbereitung' Sequenz im Kapitel <a href="startsutjava.html#tut_startsutjava">Starten der Anwendung</a>.
+        Sehen wir uns diese nun etwas genauer an.
+      </p>
+      
+<a name="fig_ControlsSetupSequence"></a><a name="figure_8.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/ControlsSetupSequence.png" target="_blank"><img texscale=".66" src="images/ControlsSetupSequence.png" width="581" height="162"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;8.1</a>:&nbsp;&nbsp;Setup Sequenz mit 'If'/'Elseif' Knoten</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        &Uuml;ber einen 'If' Knoten k&ouml;nnen Sie steuern, ob bestimmte Knoten ausgef&uuml;hrt
+        werden oder nicht. In unserem Fall geht es um den Start des SUT. Zun&auml;chst
+        m&uuml;ssen wir herausfinden, ob die Applikation bereits l&auml;uft. Dies geschieht &uuml;ber
+        den 'Warten auf Client' Knoten, der als Ergebnis entweder <code>true</code> (wahr) oder <code>false</code>
+        (falsch) in die Variable <code>isSUTRunning</code> schreibt.
+      </p>
+      
+<a name="fig_ControlsWaitForClient"></a><a name="figure_8.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/ControlsWaitForClient.png" target="_blank"><img texscale=".66" src="images/ControlsWaitForClient.png" width="393" height="538"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;8.2</a>:&nbsp;&nbsp;'Warten auf Client' setzt die Variable "isSUTRunning" mit dem Ergebnis</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Der 'If' Knoten wertet  die Ergebnisvariable <code>isSUTRunning</code> im 'Bedingung'
+        Attribut aus. Da  auf den Wert der Variablen zugegriffen werden soll,
+        wird die Syntax <code>$()</code> verwendet (vgl. <a href="secondproc.html#tut_VariableSyntax" shape="rect">Variablensyntax</a>
+        in Kapitel <a href="secondproc.html#sec_ProcedureWithVariable">Abschnitt 6.1</a>).
+      </p>
+      
+<a name="fig_ControlsIf"></a><a name="figure_8.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/ControlsIf.png" target="_blank"><img texscale=".66" src="images/ControlsIf.png" width="393" height="413"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;8.3</a>:&nbsp;&nbsp;Der 'If' Knoten wertet die Variable aus</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Je nachdem, ob die Applikation bereits l&auml;uft, f&uuml;hrt QF-Test die im
+        'If' Knoten enthaltenen Knoten aus oder nicht.
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Aktion</span></span>
+          <strong>Beenden Sie das CarConfig Demo</strong>, falls es l&auml;uft.
+        </li>
+        
+<li>
+          
+<strong>F&uuml;hren Sie den 'Vorbereitung' Knoten mit Einzelschritten aus.</strong>
+        
+</li>
+        
+<li>
+          
+<strong>F&uuml;hren Sie den 'Vorbereitung'
+          Knoten nochmals mit Einzelschritten aus</strong> w&auml;hrend das CarConfig Demo l&auml;uft.
+        </li>
+      
+</ul>
+      
+<p>
+        In der Variablendefinition-Tabelle k&ouml;nnen Sie den Wert der Variablen
+        <code>isSUTRunning</code> pr&uuml;fen.
+        Beim ersten Mal ist der Wert <code>false</code> und damit die Bedingung
+        <code>not $(isSUTRunning)</code> wahr, d.h. die Knoten f&uuml;r den SUT-Start werden ausgef&uuml;hrt.
+        Beim zweiten Mal ist der Wert <code>true</code> und damit die Bedingung <code>false</code>.
+        Die Knoten im 'If' Knoten werden &uuml;bersprungen.
+      </p>
+      
+<p>
+        Im ersten 'If' Knoten befindet sich ein weiterer, der pr&uuml;ft, um
+        welches Betriebssystem es sich handelt. Bei Windows werden die Knoten, die
+        direkt unter dem 'If' Knoten liegen, ausgef&uuml;hrt. Alternativ, d.h.
+        wenn das Betriebssystem nicht Windows ist, werden die Kindknoten im
+        'Else' Knoten ausgef&uuml;hrt.
+      </p>
+      
+<p>
+        Bei der Pr&uuml;fung des Betriebssystems wird direkt auf eine QF-Test Variable
+        zugegriffen. QF-Test speichert die Betriebssysteminformation in einer Gruppenvariable
+        ab, wobei die Gruppe <code>qftest</code> und die Variablen <code>linux</code>,
+        <code>macos</code> oder <code>windows</code>
+        hei&szlig;en. Die Syntax f&uuml;r den Zugriff auf Gruppenvariablen ist <code>${group:varname}</code>,
+        z.B. <code>${qftest:windows}</code>.
+      </p>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="loops.html#sec_loops"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 8.2&nbsp;Schleifen" title="N&auml;chste Seite: 8.2&nbsp;Schleifen"></a></td><td class="navicon"><a href="loops.html#sec_loops"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 8.2&nbsp;Schleifen" title="N&auml;chstes Kapitel: 8.2&nbsp;Schleifen"></a></td><td class="navicon"><a href="controls.html#sec_controlstructures"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 8&nbsp;Ablaufsteuerung (Java)" title="Kapitel-&Uuml;bersicht: 8&nbsp;Ablaufsteuerung (Java)"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 2002-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Variablen</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_opt_vars"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="opt_log.html#sec_opt_log"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 37.8&nbsp;Protokoll" title="Vorheriges Kapitel: 37.8&nbsp;Protokoll"></a></td><td class="navicon"><a href="opt_runtime.html#sec_opt_runtime"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 37.10&nbsp;Nur zur Laufzeit" title="N&auml;chste Seite: 37.10&nbsp;Nur zur Laufzeit"></a></td><td class="navicon"><a href="opt_runtime.html#sec_opt_runtime"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 37.10&nbsp;Nur zur Laufzeit" title="N&auml;chstes Kapitel: 37.10&nbsp;Nur zur Laufzeit"></a></td><td class="navicon"><a href="options.html#sec_options"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 37&nbsp;Einstellungen" title="Kapitel-&Uuml;bersicht: 37&nbsp;Einstellungen"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_opt_vars">37.9</a></span>
+</div>
+<a href="contents.html#toc_sec_opt_vars">Variablen</a>
+</h4>
+      
+<p>
+        Die folgenden Optionen beziehen sich auf das Binden von Variablen:
+      </p>
+      
+<a name="figure_37.38"></a><a name="figure_37.38"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_Variablen.png" target="_blank"><img src="images/opt_Variablen.png" alt="Variable Optionen" texscale=".66" width="393" height="126"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;37.38</a>:&nbsp;&nbsp;Variablen Optionen</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<dl class="option">
+        
+
+        
+        
+<a name="opt_immediatebinding"></a>
+<dt>
+<span class="margin"><a name="new_N108791"></a><span class="note">3.0+</span></span>Werte von Variablen beim Binden sofort expandieren (System)</dt>
+<dd>Server Skript Name: OPT_VARIABLE_IMMEDIATE_BINDING<br>
+            
+<p>
+              Wird ein Satz von Variablen auf einen Stapel gelegt, k&ouml;nnen weitere Variablen-Bez&uuml;ge
+              in deren Werten entweder sofort expandiert werden ("Immediate Binding"), oder
+              unver&auml;ndert abgelegt und erst bei Bedarf aufgel&ouml;st werden ("Lazy Binding"). Dies ist
+              im Detail in <a href="user_variables.html#usec_immediatebindings">Abschnitt 6.7</a> beschrieben.
+            </p>
+            
+<p>
+              F&uuml;r Immediate Binding schalten Sie diese Option ein, f&uuml;r Lazy Binding aus.
+            </p>
+          
+</dd>
+
+        
+        
+
+    
+        
+<a name="opt_immediatebindingfallback"></a>
+<dt>
+<span class="margin"><a name="new_N108824"></a><span class="note">3.0+</span></span>Lazy Binding verwenden falls sofortiges Expandieren scheitert (System)</dt>
+<dd>Server Skript Name: OPT_VARIABLE_LAZY_FALLBACK<br>
+            
+<p>
+              Alte Tests, die auf der Grundlage von Lazy Binding entwickelt wurden, k&ouml;nnen
+              gegebenenfalls mit dem neuen Standard von Immediate Binding fehlschlagen. Ist diese
+              Option aktiviert, werden Variablen, die auf Grund von Referenzen zu noch
+              undefinierten Variablen nicht sofort gebunden werden k&ouml;nnen, als Lazy Binding
+              behandelt. Die Warnung, die in diesem Zusammenhang protokolliert wird, k&ouml;nnen Sie
+              loswerden indem Sie einfach in der Definition der betreffenden Variablen explizit
+              Lazy Binding mittels '$_' verwenden. N&auml;here Informationen hierzu finden Sie in
+              <a href="user_variables.html#usec_immediatebindings">Abschnitt 6.7</a>.
+            </p>
+          
+</dd>
+
+        
+        
+
+        
+        
+<a name="opt_preferlocalvariables"></a>
+<dt>
+<span class="margin"><a name="new_N108853"></a><span class="note">5.1+</span></span>Attribut 'Lokale Variable' standardm&auml;&szlig;ig aktivieren (System)</dt>
+<dd>
+            
+<p>
+              Viele Knoten haben ein Attribut 'Lokale Variable', welches bestimmt, ob eine Ergebnisvariable
+	      lokal erstellt, oder bei den globalen Variablen abgelegt wird. Ist diese Option aktiviert, wird f&uuml;r
+	      neu erstellte Knoten das Attribut 'Lokale Variable' gesetzt.
+            </p>
+          
+</dd>
+
+        
+      
+</dl>
+      
+      
+<p>
+        Des weiteren k&ouml;nnen hier verschiedene Arten von Variablen definiert werden. Diese werden
+        im Detail in <a href="user_variables.html#usec_variables">Kapitel 6</a> beschrieben.
+      </p>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="opt_log.html#sec_opt_log"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 37.8&nbsp;Protokoll" title="Vorheriges Kapitel: 37.8&nbsp;Protokoll"></a></td><td class="navicon"><a href="opt_runtime.html#sec_opt_runtime"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 37.10&nbsp;Nur zur Laufzeit" title="N&auml;chste Seite: 37.10&nbsp;Nur zur Laufzeit"></a></td><td class="navicon"><a href="opt_runtime.html#sec_opt_runtime"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 37.10&nbsp;Nur zur Laufzeit" title="N&auml;chstes Kapitel: 37.10&nbsp;Nur zur Laufzeit"></a></td><td class="navicon"><a href="options.html#sec_options"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 37&nbsp;Einstellungen" title="Kapitel-&Uuml;bersicht: 37&nbsp;Einstellungen"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Adressierung von Unterelementen von Tabellen, B&auml;umen und Listen</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2002-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_addressing_complex_components"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="components_section.html#sec_componentsteps"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 4.2&nbsp;Der Bereich 'Fenster und Komponenten'" title="N&auml;chste Seite: 4.2&nbsp;Der Bereich 'Fenster und Komponenten'"></a></td><td class="navicon"><a href="components_section.html#sec_componentsteps"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 4.2&nbsp;Der Bereich 'Fenster und Komponenten'" title="N&auml;chstes Kapitel: 4.2&nbsp;Der Bereich 'Fenster und Komponenten'"></a></td><td class="navicon"><a href="components.html#sec_ComplexComponents"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 4&nbsp;Komponenten (Java)" title="Kapitel-&Uuml;bersicht: 4&nbsp;Komponenten (Java)"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_addressing_complex_components">4.1</a></span>
+</div>
+<a href="contents.html#toc_sec_addressing_complex_components">Adressierung von Unterelementen von Tabellen, B&auml;umen und Listen</a>
+</h4>
+      
+<p>
+        Unterelemente von Tabellen, B&auml;umen und Listen werden &uuml;ber Indizes angesprochen.
+        Die wichtigsten beiden Indextypen sind der numerische und der Textindex.
+        Zur Demonstration nehmen wir als n&auml;chstes einen Mausklick auf eine Tabellenzelle auf und
+        sehen uns die aufgenommene QF-Test ID der Komponente n&auml;her an.
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Aktion</span></span>
+          <strong>Starten Sie das CarConfig Demo</strong>, falls dieses nicht bereits
+          l&auml;uft. F&uuml;hren Sie dazu den 'Vorbereitung' Knoten in der Testsuite aus.
+        </li>
+        
+<li>
+          
+<strong>Aktivieren Sie den Aufnahmemodus</strong> &uuml;ber "Aufnahme starten"
+          <img src="images/record.png" style="vertical-align: text-bottom" alt="Record" title="Record" width="26" height="26" texscale=".5">.
+        </li>
+        
+<li>
+          
+<strong>Klicken Sie auf eine Tabellenzelle</strong>, z.B. das erste Modell.
+        </li>
+        
+<li>
+          
+<strong>Beenden Sie die Aufnahme </strong> &uuml;ber "Aufnahme beenden"
+          <img src="images/stop.png" style="vertical-align: text-bottom" alt="Stop" title="Stop" width="26" height="26" texscale=".5">.
+        </li>
+      
+</ul>
+      
+<p>
+        Den aufgenommenen Mausklick finden Sie im Bereich 'Extrasequenzen'.
+      </p>
+      
+<a name="fig_components_tableindex"></a><a name="figure_4.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/Components_tableindex.png" target="_blank"><img src="images/Components_tableindex.png" alt="Recorded mouseclick" texscale=".5" width="319" height="34"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;4.1</a>:&nbsp;&nbsp;Adressierung einer Tabellenzelle</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Die aufgenommene QF-Test ID der Komponente ist <code>VehicleTable@Modell&amp;0</code>.
+        Sie setzt sich aus den folgenden Teilen zusammen:
+      </p>
+      
+<ul>
+        
+<li>
+          
+<code>VehicleTable</code> ist die QF-Test ID der Komponente der Tabelle selbst.
+        </li>
+        
+<li>
+          
+<code>@</code> und <code>&amp;</code> trennen die einzelnen Teile voneinander. Gleichzeitig
+          definieren sie den Typ des darauf folgenden Index: auf <code><strong>@</strong></code>
+          folgt ein Textindex, auf <code><strong>&amp;</strong></code> ein numerischer Index.
+        </li>
+        
+<li>
+          
+<code>Modell</code> ist der Textindex f&uuml;r die Spalte mit der &Uuml;berschrift 'Modell'.
+        </li>
+        
+<li>
+          
+<code>0</code> ist der numerische Index f&uuml;r die erste Tabellenzeile.
+        </li>
+      
+</ul>
+      
+<p>
+<span class="margin"><span class="note">Hinweis</span></span>
+        Numerische Indizes beginnen immer mit 0.
+      </p>
+      
+<p>
+        Sie k&ouml;nnen beide Indextypen f&uuml;r Zeilen und Spalten verwenden. Dabei ist nur
+        wichtig, dass das Trennzeichen und der Typ des folgenden Index zusammenpassen.
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Aktion</span></span> <strong>&Auml;ndern Sie die QF-Test ID der Komponente</strong> so, dass das
+          dritte Preisfeld adressiert wird. Verwenden Sie daf&uuml;r numerische Indizes.
+        </li>
+      
+</ul>
+      
+<p>
+        Die L&ouml;sung hierf&uuml;r lautet <code>VehicleTable&amp;1&amp;2</code>.
+      </p>
+      
+<p>
+        Um das Modell 'I5' &uuml;ber Textindizes anzusprechen, tragen Sie
+        <code>VehicleTable@Modell@I5</code> ein. Das gleiche Feld kann man numerisch
+        mittels <code>VehicleTable&amp;0&amp;4</code> ansprechen oder mit gemischten Indizes
+        mittels <code>VehicleTable&amp;0@I5</code> oder <code>VehicleTable@Modell&amp;4</code>.
+      </p>
+      
+<p>
+        Der dritte Indextyp von QF-Test ist ein Index mit regul&auml;rem Ausdruck.
+        Regul&auml;re Ausdr&uuml;cke werden verwendet, um Zeichenketten durch einen Ausdruck
+        zu ersetzen, der verschiedene Zeichenketten adressieren kann. Sozusagen
+        eine "Sternchensuche", wobei regul&auml;re Ausdr&uuml;cke wesentlich m&auml;chtiger sind
+        und eine eigene Syntax besitzen. Eine genauere Beschreibung regul&auml;rer Ausdr&uuml;cke
+        finden Sie im <a href="../../manual/de/tech_regexp.html#sec_regexp" shape="rect">Handbuch</a>.
+        Beispiel: Das Modell 'I5' k&ouml;nnte man also auch &uuml;ber <code>VehicleTable@Modell%I.*</code>
+        ansprechen.
+      </p>
+      
+<p>
+        Listen werden analog zu Tabellen adressiert, nur dass sie nur einen einzigen Index
+        ben&ouml;tigen.
+      </p>
+      
+<p>
+        B&auml;ume haben ebenfalls nur einen einzigen Index. Dieser ist der Pfad durch den
+        Baum zu dem adressierten Baumknoten. Der Pfad setzt sich aus den einzelnen
+        Knoten zusammen, die durch Schr&auml;gstriche ("/") voneinander getrennt werden.
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Aktion</span></span>
+          <strong>Starten Sie das CarConfig Demo</strong>, falls dieses nicht bereits
+          l&auml;uft. F&uuml;hren Sie dazu den 'Vorbereitung' Knoten in der Testsuite aus.
+        </li>
+        
+<li>
+          
+<strong>&Ouml;ffnen Sie das Baum-Beispiel:</strong> W&auml;hlen Sie im CarConfig Demo
+          den Men&uuml;punkt &raquo;<em>Einstellungen</em>&laquo;-&raquo;<em>Sondermodelle...</em>&laquo;,
+          selektieren Sie ein Modell und dr&uuml;cken die Schaltfl&auml;che "Details".
+        </li>
+        
+<li>
+          
+<strong>Aktivieren Sie den Aufnahmemodus</strong> &uuml;ber "Aufnahme starten"
+          <img src="images/record.png" style="vertical-align: text-bottom" alt="Record" title="Record" width="26" height="26" texscale=".5">.
+        </li>
+        
+<li>
+          
+<strong>Klicken Sie auf einen Baumknoten</strong>, z.B. "Beschreibung".
+        </li>
+        
+<li>
+          
+<strong>Beenden Sie die Aufnahme</strong> &uuml;ber "Aufnahme beenden"
+          <img src="images/stop.png" style="vertical-align: text-bottom" alt="Stop" title="Stop" width="26" height="26" texscale=".5">.
+        </li>
+      
+</ul>
+      
+<p>
+        F&uuml;r den Baumknoten "Beschreibung" wird die folgende QF-Test ID der Komponente aufgenommen:
+        <code>DetailsTree@/Information/Beschreibung</code>. Die einzelnen Bestandteile davon sind:
+      </p>
+      
+<ul>
+        
+<li>
+          
+<code>DetailsTree</code> ist die QF-Test ID der Komponente des Baums selbst.
+        </li>
+        
+<li>
+          
+<code>@</code> trennt die QF-Test ID der Komponente des Baums vom Index. Die Syntax ist hierbei analog
+          zu der der Tabellenindizes, d.h. <code><strong>@</strong></code> steht f&uuml;r einen Textindex, <code><strong>&amp;</strong></code>
+          f&uuml;r einen numerischen Index und <code><strong>%</strong></code> f&uuml;r einen Index mit regul&auml;rem Ausdruck.
+        </li>
+        
+<li>
+          
+<code>/Information/Beschreibung</code> ist der Textindex f&uuml;r den Baumpfad zum Knoten
+          "Beschreibung".
+        </li>
+      
+</ul>
+      
+<p>
+        Wenn Sie den Knoten &uuml;ber einen numerischen Index adressieren wollen,
+        verwenden Sie <code>DetailsTree&amp;/0/1</code>.
+      </p>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="components_section.html#sec_componentsteps"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 4.2&nbsp;Der Bereich 'Fenster und Komponenten'" title="N&auml;chste Seite: 4.2&nbsp;Der Bereich 'Fenster und Komponenten'"></a></td><td class="navicon"><a href="components_section.html#sec_componentsteps"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 4.2&nbsp;Der Bereich 'Fenster und Komponenten'" title="N&auml;chstes Kapitel: 4.2&nbsp;Der Bereich 'Fenster und Komponenten'"></a></td><td class="navicon"><a href="components.html#sec_ComplexComponents"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 4&nbsp;Komponenten (Java)" title="Kapitel-&Uuml;bersicht: 4&nbsp;Komponenten (Java)"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 2002-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

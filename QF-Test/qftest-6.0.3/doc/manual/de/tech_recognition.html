@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Gewichtung der Wiedererkennungsmerkmale bei aufgenommenen Komponenten</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_recognition"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_qftestid.html#sec_qftestid_creation"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 44.2&nbsp;Generierung der 'QF-Test ID' der Komponente" title="N&auml;chste Seite: 44.2&nbsp;Generierung der 'QF-Test ID' der Komponente"></a></td><td class="navicon"><a href="tech_qftestid.html#sec_qftestid_creation"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 44.2&nbsp;Generierung der 'QF-Test ID' der Komponente" title="N&auml;chstes Kapitel: 44.2&nbsp;Generierung der 'QF-Test ID' der Komponente"></a></td><td class="navicon"><a href="tsec_components.html#tsec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 44&nbsp;Technisches zu Komponenten" title="Kapitel-&Uuml;bersicht: 44&nbsp;Technisches zu Komponenten"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_recognition">44.1</a></span>
+</div>
+<a href="contents.html#toc_sec_recognition">Gewichtung der Wiedererkennungsmerkmale bei aufgenommenen Komponenten</a>
+</h4>
+        
+<p>
+          Um die gesuchte Komponente zu finden, ermittelt QF-Test f&uuml;r jede
+          Komponente im SUT die Wahrscheinlichkeit, mit der sie der gesuchten
+          Komponente entspricht. Die Komponente mit der h&ouml;chsten
+          Wahrscheinlichkeit wird dann verwendet, sofern diese
+          Wahrscheinlichkeit &uuml;ber einer frei w&auml;hlbaren Schwelle liegt. Zun&auml;chst
+          werden die Wahrscheinlichkeiten der Fenster im SUT
+          untersucht. Anschlie&szlig;end wird die Suche in dem Fenster mit
+          ausreichend hoher Wahrscheinlichkeit fortgesetzt.
+        </p>
+        
+<p>
+          Analog wird auf jeder weiteren Ebene verfahren, d.h. f&uuml;r jede direkten
+          und indirekten Parentknoten des gesuchten <a href="components.html#step_ComponentStep" shape="rect">'Komponente'</a>
+          Knotens, allerdings von oben nach unten. Auf jeder Ebene werden die
+          zum Attribut <a href="components.html#att_ComponentStep_class" shape="rect">'Klasse'</a> passenden Komponenten
+          ermittelt und ihre Wahrscheinlichkeit bestimmt. Unsichtbare
+          Komponenten kommen nicht in Betracht.
+        </p>
+        
+<p>
+          Auf jeder Ebene wird die Wahrscheinlichkeit einer Komponente in
+          mehreren Stufen ermittelt:
+        </p>
+        
+<ul>
+          
+<li>
+            Ausgegangen wird von einer Wahrscheinlichkeit von 99 Prozent, welche
+            durch Abweichungen von den Geometrievorgaben reduziert
+            wird. Daraus wird die Basiswahrscheinlichkeit f&uuml;r das weitere
+            Vorgehen ermittelt.
+          </li>
+          
+<li>
+            Die folgenden drei Stufen k&ouml;nnen entweder einen
+            "Treffer" oder keinen "Treffer" liefern oder &uuml;bersprungen werden.
+            Ist f&uuml;r eine Stufe kein Wert
+            angegeben, wird sie &uuml;bersprungen. Die Wahrscheinlichkeit bleibt unver&auml;ndert.
+            F&uuml;r jeden dieser drei Schritte gibt es einen frei w&auml;hlbaren Bonus
+            f&uuml;r den Fall eines Treffers oder eine Herabsetzung f&uuml;r den Fall einer
+            Abweichung. Der Bonus bewirkt, dass die Wahrscheinlichkeit auf
+            mehr als diesen Wert angehoben, die Herabsetzung, dass sie auf unter
+            diesen Wert reduziert wird.
+          </li>
+          
+<li>
+            Als erstes wird die Struktur von <a href="components.html#step_ComponentStep" shape="rect">'Komponenten'</a>&uuml;berpr&uuml;ft,
+            (nicht von <a href="components.html#step_WindowStep" shape="rect">'Fenstern'</a>, f&uuml;r
+            die diese Information nicht existiert). Alle Komponenten
+            der aktuell betrachteten Container-Komponente, deren Klasse dem
+            gegebenen <a href="components.html#att_ComponentStep_class" shape="rect">'Klasse'</a> oder einer abgeleiteten Klasse
+            entsprechen, werden in einer Liste gesammelt (einschlie&szlig;lich unsichtbarer
+            Komponenten). F&uuml;r einen Treffer muss
+            sowohl die Zahl der zuvor ermittelten Komponenten mit der
+            passenden Klasse, als auch der Index der Komponente in dieser
+            Liste mit den Vorgaben &uuml;bereinstimmen.
+          </li>
+          
+<li>
+            Im zweiten Schritt wird das <a href="components.html#att_ComponentStep_feature" shape="rect">'Merkmal'</a> und eventuelle
+            <a href="components.html#att_ComponentStep_extrafeatures" shape="rect">'Weitere Merkmale'</a> &uuml;berpr&uuml;ft. Wenn der Test eines 'Weiteren Merkmals'
+            mit dem Status 'Muss &uuml;bereinstimmen' fehlschl&auml;gt, wird die Komponente verworfen.
+          </li>
+          
+<li>
+            Im dritten und letzten Schritt wird der <a href="components.html#att_ComponentStep_name" shape="rect">'Name'</a> der Komponente
+            getestet. Falls ein <a href="components.html#att_ComponentStep_name" shape="rect">'Name'</a> vorhanden ist, ist dies der
+            entscheidende Test, da der Bonus und der Malus hier die h&ouml;chsten Werte haben.
+          </li>
+        
+</ul>
+        
+<p>
+          F&uuml;r Dialoge gibt es noch einen weiteren Schritt, der die Modalit&auml;t
+          des Dialogs &uuml;berpr&uuml;ft. Normalerweise ist ein Dialog entweder modal
+          oder nicht modal, so dass eine Abweichung standardm&auml;&szlig;ig die
+          Erkennung verhindert. Es kann allerdings vorkommen, dass der selbe
+          Dialog je nach Kontext modal oder nicht modal ist. Wenn Ihr SUT
+          einen solchen Dialog enth&auml;lt, m&uuml;ssen Sie die "Herabsetzung f&uuml;r Modal" auf
+          einen Wert oberhalb der Mindestwahrscheinlichkeit setzen.
+        </p>
+        
+<p>
+          Wenn die errechnete Wahrscheinlichkeit einen Mindestwert nicht erreicht,
+          wird die Komponente verworfen. Die Komponente mit der h&ouml;chsten Wahrscheinlichkeit
+          wird verwendet. Wenn in der Komponente eine Abweichung bei der Struktur,
+          dem Merkmal oder dem Namen besteht, wird eine Meldung in das Protokoll
+          geschrieben, da dies darauf hinweisen k&ouml;nnte, dass es sich doch nicht um
+          die richtige Komponente handelt. Meistens deutet dies jedoch nur darauf
+          hin, dass sich das SUT leicht ver&auml;ndert hat. Die Komponente sollte dann
+          aktualisiert werden bevor die &Auml;nderungen kumulieren und die Komponente
+          nicht mehr erkannt wird.
+        </p>
+        
+<p>
+          Obwohl in diesem Prozess bereits die Suche nach dem Namen dominiert, k&ouml;nnen Sie dessen
+          Bedeutung noch vergr&ouml;&szlig;ern, indem Sie die Optionen <a href="opt_play.html#opt_nameoverride">Gewichtung von Namen (Wiedergabe)</a> und
+          <a href="opt_record.html#opt_nameoverriderec">Gewichtung von Namen (Aufnahme)</a> auf "Name &uuml;bertrifft alles" setzen. In diesem Fall
+          vereinfacht QF-Test die Suche nach einer Komponente, sofern sie einen Namen besitzt. Statt,
+          wie oben erkl&auml;rt, alle Parentcontainer von au&szlig;en nach innen abzuarbeiten, werden diese
+          &uuml;bersprungen und im Fenster direkt nach einer Komponente mit passenden Namen und Klasse
+          gesucht. Dadurch erh&ouml;ht sich die Unabh&auml;ngigkeit von der Struktur des GUI, die Komponente
+          wird auch dann noch erkannt, wenn Sie eine neue Ebene zwischen Fenster und Komponente
+          einf&uuml;hren oder eine solche entfernen. Als Voraussetzung f&uuml;r diese Methode m&uuml;ssen Sie
+          sicherstellen, dass wenn ein Name vergeben wird, dieser zumindest f&uuml;r die gleichzeitig
+          sichtbaren Komponenten der selben Klasse innerhalb eines Fensters eindeutig ist.
+        </p>
+        
+<p>
+          Ist eine derartige Eindeutigkeit nicht gegeben, ist "Hierarchie von Namen" die
+          n&auml;chstbeste Einstellung f&uuml;r die beiden Optionen. Sie erfordert, dass zwei gleichnamige
+          Komponenten zumindest unterschiedlich benannte Parentcontainer haben. Diese Einstellung
+          bewahrt den Gro&szlig;teil der Vorteile und der Flexibilit&auml;t von Namen. Die Wiedererkennung
+          wird damit allerdings scheitern, wenn eine benannte Komponente aus ihrem Parentcontainer
+          verschoben wird.
+        </p>
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_qftestid.html#sec_qftestid_creation"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 44.2&nbsp;Generierung der 'QF-Test ID' der Komponente" title="N&auml;chste Seite: 44.2&nbsp;Generierung der 'QF-Test ID' der Komponente"></a></td><td class="navicon"><a href="tech_qftestid.html#sec_qftestid_creation"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 44.2&nbsp;Generierung der 'QF-Test ID' der Komponente" title="N&auml;chstes Kapitel: 44.2&nbsp;Generierung der 'QF-Test ID' der Komponente"></a></td><td class="navicon"><a href="tsec_components.html#tsec_components"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 44&nbsp;Technisches zu Komponenten" title="Kapitel-&Uuml;bersicht: 44&nbsp;Technisches zu Komponenten"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

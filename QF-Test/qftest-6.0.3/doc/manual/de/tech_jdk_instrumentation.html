@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Deinstrumentieren eines JRE</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_jdk_instrumentation"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_swt_instrumentation.html#sec_swt_instrumentation"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 43.2&nbsp;SWT Instrumentierung" title="N&auml;chste Seite: 43.2&nbsp;SWT Instrumentierung"></a></td><td class="navicon"><a href="tech_swt_instrumentation.html#sec_swt_instrumentation"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 43.2&nbsp;SWT Instrumentierung" title="N&auml;chstes Kapitel: 43.2&nbsp;SWT Instrumentierung"></a></td><td class="navicon"><a href="tech_instrumentation.html#sec_instrumentation"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 43&nbsp;JRE und SWT Instrumentierung" title="Kapitel-&Uuml;bersicht: 43&nbsp;JRE und SWT Instrumentierung"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="margin"><a name="swing_N162073"></a><span class="note">Swing</span></span><span class="numtitle"><a href="contents.html#toc_sec_jdk_instrumentation">43.1</a></span>
+</div>
+<a href="contents.html#toc_sec_jdk_instrumentation">Deinstrumentieren eines JRE</a>
+</h4>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span>
+        Das Instrumentieren von JREs durch QF-Test ist schon seit langer Zeit nicht mehr notwendig, in den
+        meisten F&auml;llen sogar st&ouml;rend. Der folgende Abschnitt dient nur noch zur Erkl&auml;rung der Hintergr&uuml;nde und wie
+        ggf. eine bestehende Instrumentierung eines JRE ohne neuinstallation entfernt werden kann.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span>
+        Um die Instrumentierung eines JRE entfernen zu k&ouml;nnen ben&ouml;tigen Sie Schreibrechte auf einige
+        seiner Unterverzeichnisse, so dass Sie gegebenenfalls mit Administratorrechten arbeiten m&uuml;ssen.
+      </p>
+      
+<p>
+        Zur Instrumentierung des JRE nutzte QF-Test das offizielle <em>accessibility</em>
+        Interface, das von Java zu eben diesem Zweck zur Verf&uuml;gung gestellt wird. Mit seiner
+        Hilfe k&ouml;nnen accessibility und capture/replay Werkzeuge mit Java Anwendungen
+        interagieren, ohne dass diese Anwendungen davon wissen oder gar modifiziert werden
+        m&uuml;ssen.
+      </p>
+      
+<p>
+        Um dieses Interface zu aktivieren erstellte oder modifizierte QF-Test die Datei
+        <code>.../lib/accessibility.properties</code> im JRE und f&uuml;gte die Klasse
+        <code>de.qfs.apps.qftest.start.Connector</code> zur Property "assistive_technologies" hinzu. Dies hat den
+        Effekt, dass diese Klasse immer instantiiert wird, wenn das AWT Toolkit in einer Java Anwendung mit
+        diesem JRE initialisiert wird.
+      </p>
+      
+<p>
+        Um sicherzustellen dass diese Klasse immer gefunden werden kann ohne den
+        <code>CLASSPATH</code> zu modifizieren, wurde die Datei <code>qfconnect.jar</code>,
+        welche die Connector Klasse enth&auml;lt, in das Verzeichnis <code>.../lib/ext</code> f&uuml;r
+        Java Erweiterungen kopiert.
+      </p>
+      
+<p>
+        Zum Deinstumentieren des JRE entfernen Sie zun&auml;chst den Eintrag f&uuml;r
+        <code>de.qfs.apps.qftest.start.Connector</code> aus der
+        "assistive_technologies" Property in <code>.../lib/accessibility.properties</code>, so dass
+        die Connector Klasse nicht mehr verwendet wird. Anschlie&szlig;end l&ouml;schen Sie die Datei
+        <code>qfconnect.jar</code> im <code>.../lib/ext</code> Verzeichnis. Dies ist nur m&ouml;glich,
+        wenn gerade kein Java Programm mit diesem JRE ausgef&uuml;hrt wird.
+      </p>
+	  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_swt_instrumentation.html#sec_swt_instrumentation"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 43.2&nbsp;SWT Instrumentierung" title="N&auml;chste Seite: 43.2&nbsp;SWT Instrumentierung"></a></td><td class="navicon"><a href="tech_swt_instrumentation.html#sec_swt_instrumentation"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 43.2&nbsp;SWT Instrumentierung" title="N&auml;chstes Kapitel: 43.2&nbsp;SWT Instrumentierung"></a></td><td class="navicon"><a href="tech_instrumentation.html#sec_instrumentation"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 43&nbsp;JRE und SWT Instrumentierung" title="Kapitel-&Uuml;bersicht: 43&nbsp;JRE und SWT Instrumentierung"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

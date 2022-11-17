@@ -1,0 +1,3186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>QF-Test Version 4.0</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="features_4_0"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="history41.html#features_4_1"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: B.7.7&nbsp;QF-Test Version 4.1" title="Vorheriges Kapitel: B.7.7&nbsp;QF-Test Version 4.1"></a></td><td class="navicon"><a href="history3.html#features_3"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: B.8&nbsp;QF-Test Version 3" title="N&auml;chste Seite: B.8&nbsp;QF-Test Version 3"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="history4.html#features_4"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: B.7&nbsp;QF-Test Version 4" title="Kapitel-&Uuml;bersicht: B.7&nbsp;QF-Test Version 4"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_features_4_0">B.7.8</a></span>
+</div>
+<a href="contents.html#toc_features_4_0">QF-Test Version 4.0</a>
+</h5>
+    
+
+    
+<a name="relnotes_4.0.11"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_relnotes_4.0.11">B.7.8.1</a></span>
+</div>
+<a href="contents.html#toc_relnotes_4.0.11">Version 4.0.11 - 5. April 2016</a>
+</h5>
+
+      
+<p>
+        
+<b>Neue Features:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          
+<p> 
+<span class="margin"><a name="swt_N208492"></a><span class="note">SWT</span></span>
+
+            Es wird nun Eclipse/SWT 4.6 "Neon" unterst&uuml;tzt, basierend auf Eclipse Version 4.6M6.
+          </p>
+          
+<p>
+<span class="margin"><span class="note">Hinweis</span></span>
+
+            Der bei SWT neu eingef&uuml;hrte Mechanismus zur automatischen Skalierung bei Monitoren mit hohen DPI-Werten
+            wird von QF-Test noch nicht unterst&uuml;tzt und per Default deaktiviert, wenn das SWT Plugin durch QF-Test
+            instrumentiert wird. Er kann durch explizites Setzen der System Property
+            <code>swt.enable.autoScale=true</code> erzwungen werden, Tests laufen dann allerdings nur sehr
+            eingeschr&auml;nkt.
+          </p>
+        
+</li>
+        
+<li>
+          Nach einem Fehler oder einer Exception unter Windows enth&auml;lt der anschlie&szlig;ende Log-Eintrag mit
+          Diagnoseinformationen nun auch Daten zur aktuellen Windows Session. Dies sollte dabei helfen, Fehler zu
+          finden, die auf eine gesperrte Session zur&uuml;ckgehen wie im FAQ "<a href="faq.html#faq_blackscreenshot">
+      Harte Mausevents und Drag'n'Drop scheitern bei der Wiedergabe, Komponenten werden nicht gefunden,
+      Bildschirmabbilder sind schwarz oder entstellt.
+      Was muss ich bei der Testausf&uuml;hrung beachten?
+    </a>"
+          beschrieben.
+        </li>
+      
+</ul>
+
+      
+<p>
+        
+<b>Beseitigte Bugs:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          QF-Test startet nun auch wieder korrekt mit early access Versionen von Java 9. Dies war nach &Auml;nderung der
+          Namenskonventionen bei der Versionierung von Java zun&auml;chst nicht mehr m&ouml;glich, da der Wert "9-ea" f&uuml;r die
+          System Property <code>java.version</code> nicht den von QF-Test erwarteten '.' nach der major Version enth&auml;lt.
+        </li>
+        
+<li>
+          In einzelnen F&auml;llen konnte der Aufnahmebutton auch nach Beenden des letzten SUT Clients aktiv bleiben.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N208529"></a><span class="note">Web</span></span>
+
+          Tastendr&uuml;cke f&uuml;r einige spezielle Zeichen, z.B. '.', wurden in QF-Test's Chrome Browser als Einzelevent nicht
+          korrekt wiedergegeben.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N208534"></a><span class="note">Web</span></span>
+
+          Beim Versuch, eine WebStart Anwendung aus QF-Test's Chrome Browser heraus zu starten, wurde stattdessen der
+          Download-Dialog f&uuml;r die JNLP Datei angezeigt.
+        </li>
+        
+<li>
+          Das automatische Wiederherstellen eines minimierten SWT oder Browser-Fensters vor der Wiedergabe
+          konnte unter Linux einen Gtk Fehler ausl&ouml;sen, der zum Absturz des SUT f&uuml;hrte.
+        </li>
+      
+</ul>
+    
+
+    
+    
+
+    
+<a name="relnotes_4.0.10"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_relnotes_4.0.10">B.7.8.2</a></span>
+</div>
+<a href="contents.html#toc_relnotes_4.0.10">Version 4.0.10 - 28. Januar 2016</a>
+</h5>
+
+      
+<p>
+        
+<b>Neue Features:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><a name="web_N208563"></a><span class="note">Web</span></span>
+
+          Die Unterst&uuml;tzung f&uuml;r die AJAX Toolkits ICEfaces und PrimeFaces wurde f&uuml;r ICEfaces
+          Version 4.1 und PrimeFaces Version 5.3 aktualisiert.
+        </li>
+        
+<li>
+          Die automatische Behandlung von Sicherheitsdialogen f&uuml;r Java WebStart und Applets wurde
+          um einen neuen Dialog in Java 8 Update 72 erg&auml;nzt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N208571"></a><span class="note">JavaFX</span></span>
+
+          Das neue Package <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autoscreen.fx"><code>qfs.autoscreen.fx</code></a> in der Standardbibliothek
+          <code>qfs.qft</code> enth&auml;lt Prozeduren zur Abbild-basierten Erkennung von Komponenten
+          in JavaFX Anwendungen.
+        </li>
+      
+</ul>
+
+      
+<p>
+        
+<b>Beseitigte Bugs:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          Exceptions in der <code>toString</code> Methode einer Komponente im SUT konnten die
+          Wiedererkennung blockieren und zu einer <code>ComponentNotFoundException</code> f&uuml;hren.
+        </li>
+        
+<li>
+          Beim Start von QF-Test sowie beim Laden oder Speichern einer Datei wird die Liste der
+          zuletzt ge&ouml;ffneten Dateien aktualisiert. Falls diese Liste Dateien von einem sehr
+          langsamen oder nicht mehr existierenden Netzlaufwerk enthielt, konnte dies QF-Test f&uuml;r
+          einen unverh&auml;ltnism&auml;&szlig;ig langen Zeitraum blockieren.
+        </li>
+        
+<li>
+          Die Prozeduren im Package <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autoscreen"><code>qfs.autoscreen</code></a> werfen nun eine
+          <code>TestException</code> mit detaillierten Informationen, falls beim Aufruf eine
+          ung&uuml;ltige Syntax f&uuml;r den Algorithmus angegeben wurde.
+        </li>
+        
+<li>
+          QF-Test behandelt nun auch Bilder korrekt, die breiter oder h&ouml;her als 8192 Pixel sind.
+          Nebenbei wurde die Behandlung von gro&szlig;en PNG Bildern beschleunigt.
+        </li>
+        
+<li>
+          Gelegentliche Exceptions beim Sortieren einer Spalte in einer Ergebnisliste wurden
+          beseitigt.
+        </li>
+        
+<li>
+          Eine Suche im - selten genutzten - separaten Debugger-Fenster konnte zu einer Exception
+          f&uuml;hren.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N208621"></a><span class="note">Web</span></span>
+
+          Die Verwendung von <code>rc.overrideElement</code> in einem Web SUT konnte in speziellen
+          F&auml;llen eine <code>NullPointerException</code> ausl&ouml;sen.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N208632"></a><span class="note">Web</span></span>
+
+          Dank verschiedener Verbesserungen der Performance sollten Tests f&uuml;r gro&szlig;e Webseiten
+          etwas schneller laufen, speziell mit Firefox.
+        </li>
+      
+</ul>
+    
+
+    
+    
+
+    
+<a name="relnotes_4.0.9"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_relnotes_4.0.9">B.7.8.3</a></span>
+</div>
+<a href="contents.html#toc_relnotes_4.0.9">Version 4.0.9 - 17. Dezember 2015</a>
+</h5>
+
+      
+<p>
+        
+<b>Neue Features:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><a name="web_N208658"></a><span class="note">Web</span></span>
+
+          Es wird nun Firefox Version 43 unterst&uuml;tzt.
+        </li>
+      
+</ul>
+
+      
+<p>
+        
+<b>Beseitigte Bugs:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          QF-Test f&auml;ngt nun Exceptions sauber ab, die durch Excel Dateien ausgel&ouml;st werden, wenn
+          deren Zellen Funktionen verwenden, die von Apache POI nicht unterst&uuml;tzt werden.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N208675"></a><span class="note">JavaFX</span></span>
+
+          Beim Abbild-Check einer JavaFX Komponente stellt QF-Test nun sicher, dass diese zun&auml;chst
+          sichtbar gescrollt wird und dass durch Fokusrahmen verursachte Abweichungen bei der
+          Geometrie kompensiert werden.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N208680"></a><span class="note">JavaFX</span></span>
+
+          Die Synchronisation mit JavaFX Events bei der Wiedergabe wurde weiter verbessert.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N208685"></a><span class="note">Web</span></span>
+
+          Texteingaben im Browser konnten als Mischung von Texteingabe und Tastaturevent Knoten
+          aufgenommen werden.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N208690"></a><span class="note">Web</span></span>
+
+          F&uuml;r das AJAX Framework ZK kann nun der enabled/disabled Status von TabFolder
+          Unterelementen gepr&uuml;ft werden.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N208695"></a><span class="note">Web</span></span>
+
+          Die Erkennung von Komponenten auf Webseiten funktionierte im Fall von FRAME Knoten mit
+          vorangestellten oder angeh&auml;ngten Leerzeichen im Namen nicht.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N208700"></a><span class="note">Web</span></span>
+
+          Das Setzen des User Agent beim Start des Browsers klappt nun auch f&uuml;r Chrome.
+        </li>
+      
+</ul>
+    
+
+    
+    
+
+    
+<a name="relnotes_4.0.8"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_relnotes_4.0.8">B.7.8.4</a></span>
+</div>
+<a href="contents.html#toc_relnotes_4.0.8">Version 4.0.8 - 4. November 2015</a>
+</h5>
+
+      
+<p>
+        
+<b>Neue Features:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><a name="web_N208726"></a><span class="note">Web</span></span>
+
+          Es wird nun Firefox Version 42 unterst&uuml;tzt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N208731"></a><span class="note">Web</span></span>
+
+          Manche Web Komponenten mit JavaScript Code, der Events speziell abarbeitet,
+          reagieren nicht auf "weiche" Mausevents. Neben den "harten" Events, welche den
+          Mauszeiger tats&auml;chlich bewegen, implementiert QF-Test auch "semiharte" Events, die auf Ebene
+          des Betriebssystems an das Browserfenster geschickt werden. Die neue Prozedur
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.general.clickIncreasinglyHard"><code>qfs.web.general.clickIncreasinglyHard</code></a> in der Standardbibliothek
+          <code>qfs.qft</code> vereinfacht die Wahl der besten Methode und hilft, Tests robuster
+          zu machen.
+        </li>
+      
+</ul>
+
+      
+<p>
+        
+<b>Beseitigte Bugs:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          Das Auslesen der Ausgaben eines Client-Prozesses mittels
+          <code>${qftest:client.output.&lt;name&gt;}</code> konnte vereinzelt innerhalb eines sehr
+          kleinen Zeitfensters direkt nach dem Beenden des Prozesses einen leeren Wert liefern.
+        </li>
+        
+<li>
+          Die Einstellungen zur Aufnahme von generischen oder System-Klassen sollten keinen
+          Einfluss auf die Wiedergabe von Tests haben. Bei Swing und SWT gab es allerdings einen
+          Sonderfall: Wenn das Merkmal des Popups bzw. der Liste einer ComboBox von der Form
+          "Invoker class: ..." war, wurde dieses nur mit der aktuell aufgenommenen Klasse
+          verglichen und damit abh&auml;ngig von obigen Einstellungen. Nun wird der Vergleich korrekt
+          mit allen Klassen der zugeh&ouml;rigen Komponente gemacht.
+        </li>
+        
+<li>
+          Das weitere Merkmal 'qfs:class', welches die spezifischste Klasse einer Komponente
+          angibt, wird nun immer aufgenommen und nicht nur, falls die Aufnahme generischer Klassen
+          aktiviert ist.
+        </li>
+        
+<li>
+          Wurde eine erfolgreiche Suche durchgef&uuml;hrt, das hervorgehobene Attribut editiert und
+          dann die Suche fortgesetzt, ohne die &Auml;nderungen zu best&auml;tigen, gingen diese verloren.
+        </li>
+        
+<li>
+          Beim Auslesen einer Excel Datei mit einer Zelle mit benutzerdefiniertem Format, die ein
+          nicht existierendes Ziel referenziert, wurde das Format nicht richtig angewandt.
+          Au&szlig;erdem wurde die Behandlung von Zellen mit Fehlern verbessert.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N208769"></a><span class="note">JavaFX</span></span>
+
+          JavaFX Table und TreeTable Komponenten mit verschachtelten Spalten&uuml;berschriften werden
+          nun korrekt unterst&uuml;tzt. Au&szlig;erdem war das automatische horizontale Scrolling f&uuml;r harte
+          Events und Abbilder in diesen Komponenten nicht ganz korrekt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N208774"></a><span class="note">JavaFX</span></span>
+
+          QF-Test umgeht nun ein Java Problem, durch das beim Aufnehmen des Abbilds einer JavaFX
+          Komponente die interne Geometrie des JavaFX Clients durcheinander kommen konnte.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N208779"></a><span class="note">JavaFX</span></span>
+
+          Die Aufnahme von Events in einem eingebetteten WebView Browser wurde verbessert.
+          Insbesondere wurden der erste Event nach einer Navigation sowie generell Navigation in
+          Frames nicht korrekt behandelt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N208784"></a><span class="note">Web</span></span>
+
+          Selbst wenn im <a href="processes.html#att_WebEngineClientStarter_executable" shape="rect">'Ausf&uuml;hrbares Programm'</a> Attribut des
+          'Browser starten' Knotens ein dediziertes Java Programm angegeben war, nahm
+          QF-Test einzelne Werte aus seiner eigenen Java Version, was zu Problemen mit Applets im
+          eingebetteten Browser f&uuml;hren konnte.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N208795"></a><span class="note">Web</span></span>
+
+          In speziellen F&auml;llen konnte die Registrierung des Ext JS Resolvers die Initialisierung
+          einer Webanwendung um bis zu 20 Sekunden verz&ouml;gern.
+        </li>
+      
+</ul>
+    
+
+    
+    
+
+    
+<a name="relnotes_4.0.7"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_relnotes_4.0.7">B.7.8.5</a></span>
+</div>
+<a href="contents.html#toc_relnotes_4.0.7">Version 4.0.7 - 27. August 2015</a>
+</h5>
+
+      
+<p>
+        
+<b>Neue Features:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><a name="web_N208821"></a><span class="note">Web</span></span>
+
+          Es wird nun Firefox Version 41 unterst&uuml;tzt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N208826"></a><span class="note">Web</span></span>
+
+          Die Unterst&uuml;tzung f&uuml;r das AJAX Toolkit Ext JS wurde f&uuml;r Ext JS Version 6 aktualisiert.
+        </li>
+      
+</ul>
+
+      
+<p>
+        
+<b>Beseitigte Bugs:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          Der Speicherverbrauch bei der Generierung von XML und HTML Reports aus geteilten
+          Protokollen wurde weiter reduziert.
+        </li>
+        
+<li>
+          Beim schrittweisen Ersetzen von Parametern oder Variablen wurden eventuell alle passenden
+          Werte eines Knotens ersetzt und nicht nur die ausgew&auml;hlten.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N208846"></a><span class="note">JavaFX</span></span>
+
+          F&uuml;r manche JavaFX Komponenten waren ItemName- und ItemValueResolver nicht sauber
+          getrennt oder hatten keinen Effekt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swing_N208851"></a><span class="note">Swing</span></span>
+
+          &Auml;nderungen an der internen API in Java 9 f&uuml;hrten zu Problemen bei der forcierten
+          Aktivierung von Fenstern des SUT und bei der Wiedergabe einer Dateiauswahl im AWT
+          FileDialog.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swt_N208856"></a><span class="note">SWT</span></span>
+
+          Die Wiedergabe eines Auswahl-Events f&uuml;r eine CCombo Komponente innerhalb einer Tree oder
+          Table Zelle konnte aufgrund von Fokus-Problemen fehlschlagen.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N208861"></a><span class="note">Web</span></span>
+
+          Internet Explorer 10 und &auml;lter konnten im Quirksmode abst&uuml;rzen, h&auml;ngen oder sich
+          generell komisch verhalten, wenn eine Seite viele verschachtelte IFRAMEs enthielt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N208866"></a><span class="note">Web</span></span>
+
+          QF-Test's eingebetteter Internet Explorer behandelt JavaScript Code in href Attributen nun
+          genauso wie der normale Internet Explorer.
+        </li>
+      
+</ul>
+    
+
+    
+    
+
+    
+<a name="relnotes_4.0.6"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_relnotes_4.0.6">B.7.8.6</a></span>
+</div>
+<a href="contents.html#toc_relnotes_4.0.6">Version 4.0.6 - 16. Juli 2015</a>
+</h5>
+
+      
+<p>
+        
+<b>Neue Features:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          Windows 10 wird nun offiziell unterst&uuml;tzt. Speziell Internet Explorer bereitete einige
+          Probleme, von Abst&uuml;rzen zu falschem documentMode, userAgent oder der Sprachauswahl, was
+          nun alles funktionieren sollte.<br>
+
+          
+<span class="margin"><span class="note">Hinweis</span></span>
+          Der neue Edge Browser von Microsoft wird noch nicht unterst&uuml;tzt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swt_N208899"></a><span class="note">SWT</span></span>
+
+          Die Unterst&uuml;tzung f&uuml;r Eclipse/SWT 4.5 wurde f&uuml;r die finale Release von Eclipse 4.5
+          "Mars" aktualisiert.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N208904"></a><span class="note">Web</span></span>
+
+          Firefox Version 40 wird nun experimentell unterst&uuml;tzt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N208909"></a><span class="note">Web</span></span>
+
+          Die Unterst&uuml;tzung f&uuml;r das AJAX Toolkit RAP wurde f&uuml;r RAP Version 3.0 aktualisiert.
+          Hierf&uuml;r - und r&uuml;ckwirkend bis RAP Version 2.2 - k&ouml;nnen nun Namen, die entwicklungsseitig
+          &uuml;ber <code>widget.setData("name", ...)</code> vergeben wurden, analog zu SWT automatisch
+          von QF-Test verwendet werden.
+        </li>
+      
+</ul>
+
+      
+<p>
+        
+<b>Beseitigte Bugs:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><a name="fx_N208926"></a><span class="note">JavaFX</span></span>
+
+          F&uuml;r JavaFX unter Mac OS X kann QF-Test nun das Setzen des Fokus in den Fenstern des SUT
+          erzwingen, was eine zentrale Voraussetzung f&uuml;r die stabile und zuverl&auml;ssige Ausf&uuml;hrung
+          von Tests ist.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N208931"></a><span class="note">JavaFX</span></span>
+
+          JavaFX Table und TreeTable Komponenten mit unsichtbaren Spalten werden nun korrekt
+          behandelt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N208936"></a><span class="note">JavaFX</span></span>
+
+          Aufnahmen f&uuml;r editierbare ComboBox Elemente in JavaFX wurden mangels Bezug auf den Button
+          zum &Ouml;ffnen der Popup-Liste nicht korrekt wiedergegeben. Die Button und TextField
+          Elemente innerhalb der editierbaren ComboBox werden nun automatisch als combo@:Button
+          und combo@:TextField adressiert. Checks f&uuml;r den Wert von ComboBoxen wurden ebenfalls
+          verbessert.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N208941"></a><span class="note">JavaFX</span></span>
+
+          Selbst implementierte Spalten&uuml;berschriften in JavaFX Tabellen werden nun korrekt
+          behandelt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N208946"></a><span class="note">Web</span></span>
+
+          Unter Windows st&uuml;rzte die finale Release von Firefox 39 mit QF-Test 4.0.5 aufgrund einer
+          &Auml;nderung am Speichermanagement von Firefox ab.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N208951"></a><span class="note">Web</span></span>
+
+          Firefox Version 38.1 ESR wurde von QF-Test 4.0.5 nicht richtig erkannt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swt_N208956"></a><span class="note">SWT</span></span>
+
+          Die Geometrie von SWT Widgets innerhalb eines Group Widget mit Titel war f&uuml;r die SWT
+          Versionen 4.4. und 4.5 unter Linux nicht korrekt.
+        </li>
+      
+</ul>
+    
+
+    
+    
+
+    
+<a name="relnotes_4.0.5"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_relnotes_4.0.5">B.7.8.7</a></span>
+</div>
+<a href="contents.html#toc_relnotes_4.0.5">Version 4.0.5 - 12. Mai 2015</a>
+</h5>
+
+      
+<p>
+        
+<b>Neue Features:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><a name="web_N208982"></a><span class="note">Web</span></span>
+
+          Es werden nun die Firefox Versionen 38 und 39 unterst&uuml;tzt.
+        </li>
+        
+<li>
+          Es gibt nun einen Standard-Check f&uuml;r Tooltips.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N208990"></a><span class="note">JavaFX</span></span>
+
+          F&uuml;r JavaFX Anwendungen wurde die Synchronisation der Wiedergabe von QF-Test Events mit dem
+          FX Toolkit stark verbessert, was die Robustheit der Tests deutlich erh&ouml;ht.
+        </li>
+        
+        
+        
+        
+        
+<li>
+          Die neue 'Prozedur' <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.utils.dumpComponents"><code>qfs.utils.dumpComponents</code></a> in der
+          Standardbibliothek <code>qfs.qft</code> schreibt Geometrie und Klassen-Informationen zu
+          einer (Teil-)Hierarchie von Komponenten in das Protokoll, was w&auml;hrend der Erstellung von
+          Tests von Nutzen sein kann.
+        </li>
+        
+<li>
+          Drag&amp;Drop Operationen zwischen Komponenten verschiedener GUI Engines, unabh&auml;ngigen
+          Anwendungen oder einem SUT und dem Desktop k&ouml;nnen nun mittels der 'Prozedur'
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.utils.dragAndDrop"><code>qfs.utils.dragAndDrop</code></a> durchgef&uuml;hrt werden.
+        </li>
+      
+</ul>
+
+      
+<p>
+        
+<b>Beseitigte Bugs:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          Ein Thread-Dump f&uuml;r das SUT kann unter Windows nun auch f&uuml;r 64 Bit Java VMs ausgel&ouml;st
+          werden.
+        </li>
+        
+<li>
+          Bei der Aufnahme von Prozeduren mit einer Template-Suite, die eine leere Parameterliste
+          f&uuml;r Container-Prozeduren enthielt, waren die resultierenden Prozeduraufrufe so kaputt,
+          dass die Testsuite nicht mehr gespeichert werden konnte.
+        </li>
+        
+<li>
+          Der Speicherverbrauch bei der Generierung von XML oder HTML Reports aus geteilten
+          Protokollen wurde deutlich reduziert.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swing_N209042"></a><span class="note">Swing</span></span>
+
+          Die in QF-Test Version 4.0.4 sp&uuml;rbar langsamere Wiedergabe von Swing Events l&auml;uft nun
+          wieder mit der vollen Geschwindigkeit.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N209047"></a><span class="note">JavaFX</span></span>
+
+          In wenigen speziellen F&auml;llen war die Wiedergabe von Mausevents auf JavaFX Men&uuml;s
+          mit Java 8 Update 40 nicht mehr korrekt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N209052"></a><span class="note">JavaFX</span></span>
+
+          Die Verbindung mit dem SUT f&uuml;r die FX Engine wird nun erst hergestellt, wenn das FX
+          Toolkit vollst&auml;ndig initialisiert ist. Damit werden auch Anwendungen mit eingebetteten
+          FX Komponenten unterst&uuml;tzt, die beim Start nur einzelne Klassen von FX ansprechen und
+          das FX Toolkit erst dann initialisieren, wenn die erste FX Komponente angezeigt wird.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N209057"></a><span class="note">JavaFX</span></span>
+
+          Ein m&ouml;gliches Deadlock f&uuml;r kombinierte Swing und FX Anwendungen mit gemeinsamem Event
+          Dispatch Thread wurde beseitigt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209062"></a><span class="note">Web</span></span>
+
+          Die Aufl&ouml;sung von Klassen trotz komprimiertem oder obfuskiertem JavaScript wurde
+          deutlich verbessert und beschleunigt, so dass auf dem AJAX Toolkit GWT basierende
+          Webanwendungen nun viel schneller laufen.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209067"></a><span class="note">Web</span></span>
+
+          In einigen F&auml;llen wurde die Check-Aufnahme im Chrome Browser nicht korrekt beendet, was
+          die weitere Aufnahme von Events blockierte.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209072"></a><span class="note">Web</span></span>
+
+          Aufgrund eines Rundungsfehlers konnten Abbild-Checks im Chrome Browser einen Pixel
+          daneben liegen.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209077"></a><span class="note">Web</span></span>
+
+          Beim Check von Text in Webanwendungen wurden Kombinationen von NBSP und normalen
+          Leerzeichen nicht immer korrekt interpretiert.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209082"></a><span class="note">Web</span></span>
+
+          Der QF-Test Browser hatte ein Speicherleck, wenn ein verschachtelter FRAME oder IFRAME bei
+          einer Seitenavigation entladen wurde.
+        </li>
+      
+</ul>
+    
+
+    
+    
+
+    
+<a name="relnotes_4.0.4"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_relnotes_4.0.4">B.7.8.8</a></span>
+</div>
+<a href="contents.html#toc_relnotes_4.0.4">Version 4.0.4 - 5. M&auml;rz 2015</a>
+</h5>
+
+      
+<p>
+        
+<b>Neue Features:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><a name="web_N209108"></a><span class="note">Web</span></span>
+
+          QF-Test unterst&uuml;tzt nun das Testen von 64 Bit Firefox Versionen unter Linux.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209113"></a><span class="note">Web</span></span>
+
+          Das AJAX UI Framework jQuery EasyUI wird nun dediziert unterst&uuml;tzt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209118"></a><span class="note">Web</span></span>
+
+          Die Firefox Unterst&uuml;tzung wurde f&uuml;r die &ouml;ffentlich freigegebene Firefox Version 36
+          aktualisiert und Firefox Version 37 ist neu hinzugekommen.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swt_N209123"></a><span class="note">SWT</span></span>
+
+          Die Unterst&uuml;tzung f&uuml;r Eclipse/SWT 4.4 "Luna" wurde f&uuml;r die Eclipse 4.4 SR2 Release
+          aktualisiert.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209128"></a><span class="note">Web</span></span>
+
+          Die Java Version zum Start von QF-Test's Browser ist nicht l&auml;nger auf das Java beschr&auml;nkt,
+          mit dem QF-Test selbst l&auml;uft, sondern &uuml;ber das Attribut
+          <a href="processes.html#att_WebEngineClientStarter_executable" shape="rect">'Ausf&uuml;hrbares Programm'</a> im 'Browser starten' Knoten
+          einstellbar. Dadurch wird es einfacher, 32 Bit und 64 Bit Java Versionen zu mischen oder
+          das System JRE f&uuml;r den Browser zu verwenden, was f&uuml;r Java Applets im QF-Test Browser eine
+          Voraussetzung ist.
+        </li>
+        
+<li>
+          Mit der speziellen Variablen-Syntax ${qftest:32} (oder deren Alternative ${qftest:32bit})
+          kann ermittelt werden, ob QF-Test in einer 32 Bit Java VM l&auml;uft, mit den offensichtlichen
+          Gegenst&uuml;cken ${qftest:64} bzw. ${qftest:64bit} f&uuml;r eine 64 Bit VM.
+        </li>
+        
+<li>
+          &Uuml;ber das neue Kommandozeilenargument <a href="tech_execution.html#arg_daemonrmiport" shape="rect"><code>-daemonrmiport &lt;Port&gt;</code></a> kann der QF-Test Daemon hinter
+          einer Firewall betrieben werden indem ein dedizierter Port f&uuml;r die RMI Kommunikation
+          zus&auml;tzlich zum Daemon Lookup Port angegeben wird, der mittels <a href="tech_execution.html#arg_daemonport" shape="rect"><code>-daemonport &lt;Port&gt;</code></a>
+          gesetzt wird.
+        </li>
+        
+<li>
+          Der Standardwert f&uuml;r die Option <a href="opt_play.html#opt_waitforcomponent">Warten auf nicht vorhandene Komponente (ms)</a> wird nun w&auml;hrend
+          des Starts des SUT vor&uuml;bergehend auf mindestens 30000 ms gesetzt. Es wird nach wie vor
+          empfohlen, einen <a href="miscnodes.html#step_ComponentWaiter" shape="rect">'Warten auf Komponente'</a> Knoten in die Startsequenz f&uuml;r das SUT
+          einzubauen.
+        </li>
+      
+</ul>
+
+      
+<p>
+        
+<b>Beseitigte Bugs:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          Beim automatischen Anpassen von Referenzen nach einem Refactoring wurde bei mehrstufiger
+          Syntax f&uuml;r Unterelemente nach der zweiten Stufe abgeschnitten.
+        </li>
+        
+<li>
+          Die neue Operation "Ungenutzte auffindbare Knoten finden/l&ouml;schen" stufte Prozeduren,
+          die nur aus Abh&auml;ngigkeiten aufgerufen wurden, als ungenutzt ein.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swing_N209184"></a><span class="note">Swing</span></span>
+
+          Die Umgehung der Fokus-Probleme von Java 8 unter Windows greift jetzt direkt an der
+          Wurzel des Problems statt zu versuchen, die St&ouml;reffekte unter Kontrolle zu halten.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209189"></a><span class="note">Web</span></span>
+
+          Die Prozeduren im Package <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.browser.settings"><code>qfs.web.browser.settings</code></a> der
+          Standardbibliothek pr&uuml;fen nun explizit den Parameter "browser" auf G&uuml;ltigkeit, statt
+          still und leise ohne Effekt fehlzuschlagen.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209197"></a><span class="note">Web</span></span>
+
+          Chrome kann nun <a href="requests.html#step_RequestStep" shape="rect">'Server HTTP Request'</a> und <a href="requests.html#step_ClientRequestStep" shape="rect">'Browser HTTP Request'</a> aufnehmen.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209214"></a><span class="note">Web</span></span>
+
+          Chrome konnte bei der Navigation zu einer bereits vorher besuchten Seite abst&uuml;rzen.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209219"></a><span class="note">Web</span></span>
+
+          In einzelnen F&auml;llen konnte das automatische Expandieren von Baumknoten in Chrome zu
+          einem Deadlock f&uuml;hren.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209224"></a><span class="note">Web</span></span>
+
+          Beim Erstellen einer neuen Startsequenz mit dem Schnellstart-Assistenten f&uuml;r das AJAX
+          Toolkit GWT wurde die Version f&uuml;r den GWT Resolver f&auml;lschlich auf 1 statt 2 gesetzt. Das
+          gleiche Problem betraf die automatische Erkennung von GWT.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209229"></a><span class="note">Web</span></span>
+
+          Das AJAX Toolkit jQuery UI war bei der automatischen Erkennung der AJAX Resolver nicht
+          erfasst worden.
+        </li>
+      
+</ul>
+    
+
+    
+    
+
+    
+<a name="relnotes_4.0.3"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_relnotes_4.0.3">B.7.8.9</a></span>
+</div>
+<a href="contents.html#toc_relnotes_4.0.3">Version 4.0.3 - 29. Januar 2015</a>
+</h5>
+
+      
+<p>
+        
+<b>Neue Features:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><a name="web_N209255"></a><span class="note">Web</span></span>
+
+          Die Firefox Unterst&uuml;tzung wurde f&uuml;r die &ouml;ffentlich freigegebene Firefox Version 35
+          aktualisiert und Firefox Version 36 ist neu hinzugekommen.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209260"></a><span class="note">Web</span></span>
+
+          Eine Neuimplementierung des Resolvers f&uuml;r das AJAX Framework GWT bringt eine deutlich
+          breitere Unterst&uuml;tzung der GWT Komponenten auf Basis von GWT Version 2.7.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swt_N209265"></a><span class="note">SWT</span></span>
+
+          Es wird nun Eclipse/SWT 4.5 "Mars" unterst&uuml;tzt, basierend auf Eclipse Version 4.5M4.
+        </li>
+
+        
+<li>
+          
+<span class="margin"><a name="fx_N209270"></a><span class="note">JavaFX</span></span>
+
+          Die Aufnahme von Drag&amp;Drop ist nun auch f&uuml;r JavaFX implementiert.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N209275"></a><span class="note">JavaFX</span></span>
+
+          Neben der Einbettung von JavaFX Komponenten in Swing werden nun auch hybride
+          Anwendungen mit dem umgekehrten Ansatz unterst&uuml;tzt, die Swing Komponenten in JavaFX
+          einbetten. Dazu geh&ouml;rt auch Unterst&uuml;tzung f&uuml;r die gemeinsame Nutzung des Event Dispatch
+          Thread durch JavaFX und Swing.
+        </li>
+        
+<li>
+          Die neue Operation "Ungenutzte auffindbare Knoten finden/l&ouml;schen" wurde eingef&uuml;hrt, um
+          Prozeduren, die nicht verwendet werden, aus den Testsuiten entfernen zu k&ouml;nnen.
+        </li>
+        
+<li>
+          Die neue Prozedur <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.check.compareDates"><code>qfs.check.compareDates</code></a> in der Standardbibliothek
+          <code>qfs.qft</code> dient zum Vergleich von zwei Datumsangaben in beliebigem Format.
+        </li>
+        
+<li>
+          Die Prozedur <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.utils.xml.compareXMLFiles"><code>qfs.utils.xml.compareXMLFiles</code></a> hat zwei neue Parameter
+          zum Entfernen von Leerzeichen und zur Behandlung von Namespace-Definitionen.
+        </li>
+        
+<li>
+          Die Diagnoseinformationen, die f&uuml;r jeden Fehler und jede Exception in das Protokoll
+          geschrieben werden, beinhalten nun auch einen kompletten Thread Dump des SUT sowie
+          Angaben zur Java Speichernutzung des SUT und der aktuellen Systemlast.
+        </li>
+        
+<li>
+          Wird QF-Test im Batchmodus zur Generierung von Reports oder f&uuml;r andere Kommandos gestartet,
+          die keine Tests ausf&uuml;hren, l&auml;uft QF-Test nun im AWT Headless-Modus, sofern das
+          Kommandozeilenargument <a href="tech_execution.html#arg_nomessagewindow" shape="rect"><code>-nomessagewindow</code></a> angegeben wird. Dies ist z.B. f&uuml;r die
+          Ausf&uuml;hrung aus einem Continuous Integration Server heraus sinnvoll, der selbst ohne
+          Display l&auml;uft.
+        </li>
+        
+<li>
+          
+<a href="requests.html#step_RequestStep" shape="rect">'Server HTTP Request'</a> Knoten k&ouml;nnen nun die Syntax
+          <code>http://user:passwd@mydomain.com</code> verwenden, um einen Request an einen
+          gesicherten Server zu senden.
+        </li>
+        
+<li>
+          Die Standard-Einstellung des f&uuml;r QF-Test verf&uuml;gbaren Java Speichers ist nun 512 MB, der
+          Java Speicher f&uuml;r QF-Test's Browser wurde auf 256 MB heraufgesetzt.
+        </li>
+        
+<li>
+          &Uuml;ber das neue <code>ResetListener</code> API kann das Verhalten des Befehls
+          &raquo;<em>Wiedergabe</em>&laquo;-&raquo;<em>Alles zur&uuml;cksetzen</em>&laquo; beeinflusst werden, um zum Beispiel einen bestimmten Client-Prozess
+          nicht abzuschie&szlig;en oder um zus&auml;tzliche Aufr&auml;umarbeiten wie das L&ouml;schen von Jython oder
+          Groovy Variablen anzusto&szlig;en. Details finden Sie in <a href="tech_miscellaneouslisteners.html#sec_miscellaneouslisteners">Abschnitt 50.8</a>.
+        </li>
+      
+</ul>
+
+      
+<p>
+        
+<b>Beseitigte Bugs:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          Die Reihenfolge von <a href="control.html#step_CatchSequence" shape="rect">'Catch'</a> Knoten unterhalb eines <a href="control.html#step_TryStep" shape="rect">'Try'</a>
+          Knotens konnte nach Einf&uuml;hrung des optionalen <a href="control.html#step_ElseSequence" shape="rect">'Else'</a> Knotens in QF-Test
+          Version 4.0.2 nicht mehr ver&auml;ndert werden.
+        </li>
+        
+<li>
+          Die Anzeige gro&szlig;er Textausgaben des SUT im Terminal konnte QF-Test und die Testausf&uuml;hrung
+          stark ausbremsen, wenn die RichText Formatierung f&uuml;r das Terminal aktiviert war.
+        </li>
+        
+<li>
+          In sehr seltenen F&auml;llen konnte unter Windows die Testausf&uuml;hrung im Batchmodus h&auml;ngen
+          bleiben, wenn das SUT in ein Deadlock lief.
+        </li>
+        
+<li>
+          Abh&auml;ngig vom Timing wurden beim Beenden von QF-Test manchmal nicht alle Client-Prozesse
+          terminiert.
+        </li>
+        
+<li>
+          Der Import von Testsuiten konnte extrem langsam werden, wenn der tolerante Vergleich von
+          Klassen aktiviert war.
+        </li>
+        
+<li>
+          Wenn ein Excel Tabellenblatt sehr tief verschachtelte Funktionen enth&auml;lt, wirft QF-Test nun
+          eine TestException statt solche Zellen zu ignorieren. F&uuml;r die korrekte Behandlung
+          solcher Excel Dateien muss QF-Test mit gr&ouml;&szlig;erem Speicherplatz f&uuml;r den Thread Stack
+          gestartet werden, z.B. &uuml;ber das Kommandozeilenargument -J-Xss512k.
+        </li>
+        
+<li>
+          Bei der Aufnahme von Prozeduren wurden einzelne Platzhalter in verschachtelten Sequenzen
+          der Vorlage nicht korrekt ersetzt.
+        </li>
+        
+<li>
+          Bei der Prozedur-Aufnahme sind nun auch Container-Prozeduren mit normalen Event Knoten
+          und Sequenzen m&ouml;glich, ohne sich auf komponentenspezifische Prozeduren zu beziehen.
+        </li>
+        
+<li>
+          Wurde bei der Ausf&uuml;hrung eines <a href="requests.html#step_RequestStep" shape="rect">'Server HTTP Request'</a> Knotens wegen eines Status-Codes
+          &gt; 399 eine HTTP Exception geworfen, waren die Variablen 'responseDate' und
+          'statusCode' nicht korrekt gesetzt.
+        </li>
+        
+<li>
+          Der horizontale Scrollbar des internen Skripteditors wurde falsch angezeigt, wenn harte
+          TAB Zeichen im Code enthalten waren.
+        </li>
+        
+<li>
+          Das Warten auf die Abwesenheit von mehrstufigen Unterelementen funktioniert nun korrekt.
+        </li>
+        
+<li>
+          F&uuml;r WebStart Anwendungen behandelt QF-Test nun auch die deutsche Variante der HTTPS
+          Zertifikat-Warnung automatisch.
+        </li>
+        
+<li>
+          HTML Reports, testdoc und pkgdoc Dokumente konnten durch mehrzeilige HTML Kommentare
+          zerschossen werden, falls das Durchreichen von HTML aktiviert war.
+        </li>
+        
+<li>
+          Die Deklaration und die tats&auml;chliche Kodierung von XML Reports, testdoc und pkgdoc
+          Dokumenten waren inkonsistent, falls die Standard-Kodierung von QF-Test's Java VM eine
+          andere als ISO-8859-1 war.
+        </li>
+        
+<li>
+          Das Tool f&uuml;r die "QF-Test Java Konfiguration" konnte keine Werte in der Windows Registry
+          speichern, wenn nicht zuvor wenigstens einmal setup.exe ausgef&uuml;hrt worden war.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swing_N209419"></a><span class="note">Swing</span></span>
+
+          Bei der Aufnahme in Swing-Anwendungen mit einer gro&szlig;en Anzahl von Komponenten konnte die
+          Performance stark einbrechen.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swing_N209424"></a><span class="note">Swing</span></span>
+
+          Bei Swing-Anwendungen unter Java 8 konnte die Anzeige des Men&uuml;s f&uuml;r die Check-Aufnahme
+          anschlie&szlig;end Eingaben in Textfelder verhindern.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swing_N209429"></a><span class="note">Swing</span></span>
+
+          Die Umgehung des Fokus Bugs in Java 8 unter Windows beim &Auml;ndern des Topmost-Status von
+          Fenstern wurde verbessert und schlie&szlig;t nun einen weiteren Sonderfall ein.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N209434"></a><span class="note">JavaFX</span></span>
+
+          Bei hybriden JavaFX und Swing Anwendungen wird beim Abspielen eines Events auf eine
+          eingebettete Komponente nun das umgebende Fenster des anderen Toolkits korrekt nach
+          vorne gebracht und aktiviert, was die Stabilit&auml;t solcher Tests erh&ouml;ht.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N209439"></a><span class="note">JavaFX</span></span>
+
+          Bei der Wiedergabe einer Dateiauswahl zum Speichern einer Datei in JavaFX wird nun der
+          ExtensionFilter passend zur Endung der gew&auml;hlten Datei gesetzt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swt_N209444"></a><span class="note">SWT</span></span>
+
+          Der Versuch, einen Check direkt auf den Kopf einer SWT Tabelle aufzunehmen, f&uuml;hrte zu
+          einer Exception.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209449"></a><span class="note">Web</span></span>
+
+          Plugins und Erweiterungen wurden in Firefox 30 und h&ouml;her nicht korrekt initialisiert.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209454"></a><span class="note">Web</span></span>
+
+          Die Aufl&ouml;sung von Listenelementen funktioniert nun auch f&uuml;r
+          &lt;SELECT&gt; Knoten und generische ComboBox Elemente, die in einer
+          anderen Liste enthalten sind.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209462"></a><span class="note">Web</span></span>
+
+          Der Resolver f&uuml;r das AJAX Framework ZK wurde zu Version 1.1.1 aktualisiert, die einige
+          kleinere Probleme beseitigt und die Behandlung von MenuItems verbessert.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209467"></a><span class="note">Web</span></span>
+
+          Die Wiedergabe von semiharten Mausevents mit Modifiern wie [Strg]
+          wurde korrigiert.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swt_N209475"></a><span class="note">SWT</span></span>
+
+          Checks f&uuml;r Tabellenzellen in KTable Komponenten wurden nicht korrekt aufgenommen.
+        </li>
+      
+</ul>
+    
+
+    
+    
+
+    
+<a name="relnotes_4.0.2_p2"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_relnotes_4.0.2_p2">B.7.8.10</a></span>
+</div>
+<a href="contents.html#toc_relnotes_4.0.2_p2">Version 4.0.2-p2</a>
+</h5>
+      
+<p>
+        
+<b>Neue Features:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><a name="web_N209501"></a><span class="note">Web</span></span>
+
+          Die Firefox Unterst&uuml;tzung wurde f&uuml;r die &ouml;ffentlich freigegebene Firefox Version 34
+          aktualisiert und Firefox Version 35 ist neu hinzugekommen.
+        </li>
+      
+</ul>
+
+      
+<p>
+        
+<b>Beseitigte Bugs:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><a name="web_N209515"></a><span class="note">Web</span></span>
+
+          In QF-Test Version 4.0.2-p1 war der vom Firefox Browser gelieferte User Agent unvollst&auml;ndig.
+        </li>
+      
+</ul>
+    
+
+    
+    
+
+    
+<a name="relnotes_4.0.2_p1"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_relnotes_4.0.2_p1">B.7.8.11</a></span>
+</div>
+<a href="contents.html#toc_relnotes_4.0.2_p1">Version 4.0.2-p1</a>
+</h5>
+      
+<p>
+        
+<b>Beseitigte Bugs:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><a name="web_N209541"></a><span class="note">Web</span></span>
+
+          Die Unterst&uuml;tzung f&uuml;r Firefox 33 wurde aktualisiert und kommt nun auch mit dem neuen
+          Firefox Versionsschema zurecht, das mit Firefox 33.1 eingef&uuml;hrt wurde.
+        </li>
+      
+</ul>
+    
+
+    
+    
+
+    
+<a name="relnotes_4.0.2"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_relnotes_4.0.2">B.7.8.12</a></span>
+</div>
+<a href="contents.html#toc_relnotes_4.0.2">Version 4.0.2 - 22. Oktober 2014</a>
+</h5>
+
+      
+<p>
+        
+<b>Neue Features:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><a name="web_N209567"></a><span class="note">Web</span></span>
+
+          Es werden nun die Firefox Versionen 33 und 34 unterst&uuml;tzt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swt_N209572"></a><span class="note">SWT</span></span>
+
+          Die Unterst&uuml;tzung f&uuml;r Eclipse/SWT 4.4 "Luna" wurde f&uuml;r die Eclipse 4.4 SR1 Release
+          aktualisiert.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N209577"></a><span class="note">JavaFX</span></span>
+
+          Die Unterst&uuml;tzung f&uuml;r JavaFX wurde an einige &Auml;nderungen an FX in Java Update 8u20
+          angepasst.
+        </li>
+        
+<li>
+          Der QF-Test Agent Mechanismus ist nun kompatibel zu den sch&auml;rferen Sicherheitsvorkehrungen
+          in Java Updates 8u25 und 7u71/7u72.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N209585"></a><span class="note">JavaFX</span></span>
+
+          JavaFX Charts werden nun vollst&auml;ndig unterst&uuml;tzt, mit verbesserten Komponenten f&uuml;r
+          deren Bestandteile und mit verschiedenen speziellen Checks.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209590"></a><span class="note">Web</span></span>
+
+          Die AJAX Toolkits Ext JS und PrimeFaces werden nun auch jeweils f&uuml;r Ext JS Version 5 und
+          PrimeFaces Version 5 unterst&uuml;tzt.
+        </li>
+        
+<li>
+          Die R&uuml;ckw&auml;rtskompatibilit&auml;t f&uuml;r die Aufnahme von Komponenten mit generischen Klassen in
+          Testsuiten mit vor-QF-Test-4.0 Komponenten wurde erweitert, so dass nun auch der Import von
+          solchen Komponenten funktioniert.
+        </li>
+        
+<li>
+          Das <a href="control.html#step_TryStep" shape="rect">'Try'</a>/<a href="control.html#step_CatchSequence" shape="rect">'Catch'</a>/<a href="control.html#step_FinallySequence" shape="rect">'Finally'</a> Konstrukt wurde um
+          einen optionalen <a href="control.html#step_ElseSequence" shape="rect">'Else'</a> Knoten erweitert, der ausgef&uuml;hrt wird, wenn der
+          Inhalt des 'Try' Knotens keine Exception wirft.
+        </li>
+        
+<li>
+          
+<a href="components.html#step_WindowStep" shape="rect">'Fenster'</a> Knoten unterst&uuml;tzen das <a href="components.html#att_WindowStep_extrafeatures" shape="rect">'Weitere Merkmale'</a> Attribut nun
+          ebenso wie <a href="components.html#step_ComponentStep" shape="rect">'Komponente'</a> und <a href="components.html#step_WebPageStep" shape="rect">'Webseite'</a> Knoten.
+        </li>
+        
+          
+          
+          
+        
+        
+<li>
+          Die Ermittlung von generischen Klassen durch QF-Test kann nun durch Implementieren eines
+          <code>GenericClassNameResolvers</code>, wie in <a href="tech_resolversmodule.html#sec_genericclassnameresolver">Abschnitt 50.1.7</a> beschrieben, beeinflusst werden.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209674"></a><span class="note">Web</span></span>
+
+          Mit <a href="tech_customajax.html#sec_customajax">Abschnitt 47.1</a> gibt es nun einen eigenen Abschnitt im Handbuch, der
+          erkl&auml;rt, wie Resolver f&uuml;r AJAX Web Toolkits, die QF-Test noch nicht out-of-the-box
+          unterst&uuml;tzt, relativ einfach selbst erstellt werden k&ouml;nnen.
+        </li>
+      
+</ul>
+      
+<p>
+        
+<b>Beseitigte Bugs:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          In manchen F&auml;llen blieb der Aufnahme-Button aktiv, selbst wenn kein SUT Client mehr mit
+          QF-Test verbunden war.
+        </li>
+        
+<li>
+          Auf einer Windows Maschine, auf der nur ein 64 Bit Java installiert ist, sucht QF-Test nun
+          explizit nach der 64 Bit Java Installation in "C:\Programme", falls es kein
+          <code>javaw.exe</code> Programm im PATH findet.
+        </li>
+        
+<li>
+          Die Prozeduren im Package <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.utils.ssh"><code>qfs.utils.ssh</code></a> verwendeten nicht die korrekte
+          <code>known_hosts</code> Datei.
+        </li>
+        
+<li>
+          Der <a href="datadriver.html#step_ExcelDataBinder" shape="rect">'Excel Datei'</a> Knoten behandelt die Zeichenkodierung in alten .xls Dateien
+          nun korrekt.
+        </li>
+        
+<li>
+          Die runid wurde nicht korrekt im Protokoll gespeichert, falls ein Batch-Test durch
+          Angabe des Kommandozeilenarguments <a href="tech_execution.html#arg_splitlog" shape="rect"><code>-splitlog=false</code></a> ohne Unterst&uuml;tzung f&uuml;r
+          geteilte Protokolle ausgef&uuml;hrt wurde.
+        </li>
+        
+<li>
+          Checks auf die Sichtbarkeit von Unterelementen konnten f&auml;lschlicherweise mit einer
+          <code>IndexNotFoundException</code> fehlschlagen, statt einen erfolgreichen oder
+          fehlgeschlagenen Check zu melden.
+        </li>
+        
+<li>
+          Die proc-builder Konfigurationsdatei konnte bei der Bearbeitung in QF-Test besch&auml;digt
+          werden, wenn gleichzeitig neue Prozeduren aufgenommen und die Datei bearbeitet wurde.
+        </li>
+        
+<li>
+          Der Context-Diff f&uuml;r einen fehlgeschlagenen <a href="checks.html#step_CheckItemsStep" shape="rect">'Check Elemente'</a> Knoten war in
+          wenigen speziellen F&auml;llen unvollst&auml;ndig.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swing_N209745"></a><span class="note">Swing</span></span>
+
+          Der Start von WebStart und Applets ist nun noch robuster. Auch eine selten in Applets
+          auftretende <code>ClassCastException</code> wurde beseitigt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swing_N209753"></a><span class="note">Swing</span></span>
+
+          Die neu eingef&uuml;hrte Unterst&uuml;tzung f&uuml;r spezielle, mittels
+          <code>JTabbedPane.setTabComponent</code> erstellte Tab-Komponenten konnte die korrekte
+          Wiedergabe von bestehenden Aufnahmen f&uuml;r solche Tabs verhindern.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swt_N209761"></a><span class="note">SWT</span></span>
+
+          Zellen einer Nebula Grid Komponente k&ouml;nnen nun auch an einem durch Scrollen verschobenen
+          Ort aufgenommen werden und die Adressierung solcher Zellen mit negativen Indizes wird nun
+          ebenfalls unterst&uuml;tzt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N209766"></a><span class="note">JavaFX</span></span>
+
+          Bei SWT basierten SUTs mit eingebetteten FX Komponenten entstehen keine Duplikate mehr
+          bei der Aufnahme von Events auf solche FX Komponenten und Checks auf dieselben k&ouml;nnen nun
+          ganz normal aufgezeichnet werden.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209771"></a><span class="note">Web</span></span>
+
+          Der standardm&auml;&szlig;ig eingestellte Kompatibilit&auml;tsmodus im Internet Explorer 10 und h&ouml;her
+          ist nun korrekt. Zudem entspricht der vom IE f&uuml;r <code>document.documentMode</code>
+          gelieferte User Agent nun immer dem aktuell eingestellten Kompatibilit&auml;tsmodus.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209779"></a><span class="note">Web</span></span>
+
+          Das Warten auf einen dynamisch eingef&uuml;gten FRAME und sein Dokument funktioniert nun in
+          allen Browsern korrekt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209784"></a><span class="note">Web</span></span>
+
+          QF-Test verwendet nun in allen Browsern eine neue Methode zur Ermittlung der Geometrie von
+          TEXT Knoten, die effizienter und weniger invasiv ist. Die alte Methode konnte in
+          speziellen F&auml;llen zu Konflikten mit dem JavaScript Code einer Webseite f&uuml;hren.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209789"></a><span class="note">Web</span></span>
+
+          Es gab eine knifflige Race Condition insbesondere im Zusammenhang mit einer speziellen
+          Art von Download, der &uuml;ber das &Ouml;ffnen einer tempor&auml;ren Webseite ausgel&ouml;st wird, die
+          sofort wieder automatisch geschlossen wird. QF-Test behandelt solche Situationen und diese
+          Art von Download nun korrekt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209794"></a><span class="note">Web</span></span>
+
+          Der Chrome Browser zeigt nun einen Best&auml;tigungsdialog an, wenn ein Fenster geschlossen
+          werden soll, f&uuml;r das ein onbeforeunloadhandler registriert ist.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209799"></a><span class="note">Web</span></span>
+
+          Die Aufnahme von Komponenten und Prozeduren im Chrome Browser erfolgt jetzt deutlich
+          schneller.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209804"></a><span class="note">Web</span></span>
+
+          Der eingebettete Chrome Browser kann nun Videos darstellen.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209809"></a><span class="note">Web</span></span>
+
+          Doppelklicks werden jetzt auch im Chrome Browser korrekt aufgenommen.
+        </li>
+      
+</ul>
+    
+
+    
+    
+
+    
+<a name="relnotes_4.0.1"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_relnotes_4.0.1">B.7.8.13</a></span>
+</div>
+<a href="contents.html#toc_relnotes_4.0.1">Version 4.0.1 - 28. August 2014</a>
+</h5>
+
+      
+<p>
+        
+<b>Neue Features:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><a name="fx_N209835"></a><span class="note">JavaFX</span></span>
+
+          Die JavaFX <code>TreeTableView</code> Komponente, die mit Java 8 eingef&uuml;hrt wurde,
+          wird nun vollst&auml;ndig unterst&uuml;tzt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swing_N209843"></a><span class="note">Swing</span></span>
+
+          Bei <code>JTabbedPane</code> Komponenten unterst&uuml;tzt QF-Test nun die Aufnahme und Checks
+          auch f&uuml;r solche Tabs, die &uuml;ber die Methode <code>setTabComponent</code> als spezielle
+          Komponenten implementiert sind.
+        </li>
+        
+<li>
+          Ist das <a href="datadriver.html#att_CSVDataBinder_encoding" shape="rect">'Kodierung der Datei'</a> Attribut eines <a href="datadriver.html#step_CSVDataBinder" shape="rect">'CSV Datei'</a> Knotens auf
+          "UTF-8" gesetzt, versucht QF-Test nun selbst herauszufinden, ob die angegebene Datei mit
+          einem Byte Order Mark (BOM) beginnt oder nicht und dies entsprechend zu behandeln. Auch
+          ein 'Kodierung der Datei' Attribut mit dem Wert "x-UTF-8-BOM" oder "x-UTF-8-No-BOM" behandelt
+          QF-Test korrekt, obwohl Java diese Encodings nicht direkt unterst&uuml;tzt.
+        </li>
+        
+<li>
+          Wird der Mauszeiger &uuml;ber ein Abbild in einer Testsuite oder einem Protokoll bewegt,
+          zeigt QF-Test nun die (X,Y) Koordinaten und Farbwerte des zugeh&ouml;rigen Pixels an.
+        </li>
+      
+</ul>
+
+      
+<p>
+        
+<b>Beseitigte Bugs:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          Die &uuml;ber die Option <a href="opt_play.html#opt_waitforsubitem">Warten auf nicht vorhandenes Element (ms)</a> definierte implizite Wartezeit
+          wurde in einigen F&auml;llen ignoriert, z.B. bei Checks mit einem Timeout.
+        </li>
+        
+<li>
+          Ein 'Weiteres Merkmal' mit Variablen f&uuml;r einen Regul&auml;ren Ausdruck konnte
+          f&auml;lschlicherweise eine BadRegexpException ausl&ouml;sen.
+        </li>
+        
+<li>
+          In QF-Test Version 4 werden f&uuml;hrende und nachgestellte Leerzeichen aus den Namen von
+          Unterelementen entfernt. Kompatibilit&auml;t f&uuml;r die Wiedergabe war f&uuml;r die meisten F&auml;lle
+          sicher gestellt, aber nicht f&uuml;r alle. Dies sollte nun konsistent funktionieren.
+        </li>
+        
+<li>
+          Der Context-Diff f&uuml;r einen fehlgeschlagenen <a href="checks.html#step_CheckSelectableItemsStep" shape="rect">'Check selektierbare Elemente'</a> Knoten im
+          Protokoll stellt nun auch den erwarteten und erhaltenen selected Status der Elemente dar
+          und wird auch dann korrekt angezeigt, wenn die Abweichungen ausschlie&szlig;lich den selected
+          Status betreffen.
+        </li>
+        
+<li>
+          F&uuml;r Formeln in Excel Dateien, die Boolean Werte liefern oder verschachtelte Formeln mit
+          mehrfachem Typwechsel, liefern <a href="datadriver.html#step_ExcelDataBinder" shape="rect">'Excel Datei'</a> Knoten und die Prozedur
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.utils.files.readExcelFile"><code>qfs.utils.files.readExcelFile</code></a> nun korrekte Werte.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swing_N209920"></a><span class="note">Swing</span></span>
+
+          In einer hybriden Anwendung mit Swing und JavaFX Komponenten war die Behandlung von
+          Swing <code>JTable</code> Komponenten durch den ItemResolver f&uuml;r JavaFX Tabellen gest&ouml;rt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N209928"></a><span class="note">JavaFX</span></span>
+
+          Die Aufnahme von Elementen in einem JavaFX Tree, dessen Wurzelknoten nicht angezeigt
+          wird, ist nun korrekt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swt_N209933"></a><span class="note">SWT</span></span>
+
+          Das Hervorheben von Komponenten im Check-Aufnahme-Modus funktionierte bei Eclipse / SWT
+          Anwendungen nicht mehr.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swt_N209938"></a><span class="note">SWT</span></span>
+
+          Es gab immer noch eine Abh&auml;ngigkeit von einer neuen glibc Version in den
+          Instrumentierungs-Dateien f&uuml;r 64 Bit Versionen von Eclipse, die zu Fehlern auf einigen
+          Linux Systemen mit einer alten glibc Version f&uuml;hrte, z.B. RHEL 6.5.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209943"></a><span class="note">Web</span></span>
+
+          Tests mit den Firefox Versionen 27 und 28 funktionierten nicht korrekt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209948"></a><span class="note">Web</span></span>
+
+          Text Checks f&uuml;r Tabellen&uuml;berschriften funktionierten in einigen Web Tabellen nicht mehr.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209953"></a><span class="note">Web</span></span>
+
+          Eine Proxy-Auto-Config-Datei (PAC-Datei), die &uuml;ber einen Aufruf der Prozedur <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.browser.settings.setProxy"><code>qfs.web.browser.settings.setProxy</code></a> definiert wurde, interpretiert QF-Test nun
+          korrekt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209961"></a><span class="note">Web</span></span>
+
+          Im Chrome Browser wird nun ein Best&auml;tigungsdialog angezeigt, wenn ein Fenster
+          geschlossen wird, f&uuml;r das ein onbeforeunload Handler definiert ist.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209966"></a><span class="note">Web</span></span>
+
+          JavaScript Fehler im Chrome Browser werden nun nicht mehr in das QF-Test Terminal
+          geschrieben, sondern in das Protokoll.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209971"></a><span class="note">Web</span></span>
+
+          Im Chrome Browser waren die Koordinaten innerhalb eines IFRAMEs versetzt, falls der Frame
+          einen Rahmen hatte. Dies f&uuml;hrte zu Verschiebungen beim Hervorheben von Komponenten und zu
+          Fehlern bei Abbild-Checks durch ungen&uuml;gendes automatisches Scrolling.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209976"></a><span class="note">Web</span></span>
+
+          Drag&amp;Drop mit Hilfe der Prozedur <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.general.dragFromTo"><code>qfs.web.general.dragFromTo</code></a>
+          funktioniert nun auch im Chrome Browser.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209984"></a><span class="note">Web</span></span>
+
+          Das L&ouml;schen des Browser-Cache funktionierte mit Firefox Version 32 nicht.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N209989"></a><span class="note">Web</span></span>
+
+          Die Prozedur <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.table.getRowCount"><code>qfs.web.table.getRowCount</code></a> konnte in dem seltenen Fall
+          fehlschlagen, wenn die erste Spalte einer Tabelle unsichtbar ist.
+        </li>
+      
+</ul>
+    
+
+    
+    
+
+    
+<a name="highlights_4"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_highlights_4">B.7.8.14</a></span>
+</div>
+<a href="contents.html#toc_highlights_4">Wesentliche neue Features in Version 4</a>
+</h5>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span>
+
+        Eine detaillierte Aufstellung der Neuigkeiten finden Sie in den Release Notes f&uuml;r QF-Test
+        Version 4.0.0-beta1 bis Version 4.0.0 weiter unten.
+      </p>
+      
+<p>
+        
+<b>Die folgenden neuen Features wurden f&uuml;r Version 4 von QF-Test implementiert:</b>
+      
+</p>
+      
+<a name="table_B.5"></a><a name="table_B.5"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Beschreibung</th>
+            <th rowspan="1" colspan="1">Weiterf&uuml;hrende Informationen</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" texalign="X" rowspan="1" colspan="1">
+              Neue GUI Engine: JavaFX
+            </td>
+            <td align="left" texalign="X" rowspan="1" colspan="1">
+              Volle Unterst&uuml;tzung f&uuml;r JavaFX Anwendungen
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">
+              Unterst&uuml;tzung f&uuml;r Chrome Browser
+            </td>
+            <td rowspan="1" colspan="1">
+              Aktuell nur unter Windows
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">
+              Verbesserte Unterst&uuml;tzung f&uuml;r Java WebStart und Applets
+            </td>
+            <td rowspan="1" colspan="1">
+              Schneller und zuverl&auml;ssiger Start und Verbindung &uuml;ber Java Agent
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">
+              Unterst&uuml;tzung f&uuml;r das AJAX Framework jQuery UI
+            </td>
+            <td rowspan="1" colspan="1">
+              <a href="tech_ajax.html#sec_ajax">Besondere Unterst&uuml;tzung f&uuml;r verschiedene Webframeworks</a>
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">
+              Generische Klassen f&uuml;r Komponenten
+            </td>
+            <td rowspan="1" colspan="1">
+              Einheitliche Klassen f&uuml;r alle GUI Engines
+              (<a href="usec_componentclass.html#usec_componentclassgeneric">Abschnitt 5.4.1.1</a>)
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">
+              Konzept f&uuml;r mehrstufige Unterelemente
+            </td>
+            <td rowspan="1" colspan="1">
+              QPath Konzept, vergleichbar mit XPath (<a href="user_subitems.html#usec_multilevelsubitemsqpath">Adressierung mit QPath</a>)
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">
+              Unterst&uuml;tzung f&uuml;r eingebettete Browser
+            </td>
+            <td rowspan="1" colspan="1">
+              JavaFX WebView und JxBrowser 4
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">
+              Verbesserte Oberfl&auml;che mit farbigen Syntax-Hervorhebungen
+            </td>
+            <td rowspan="1" colspan="1">
+              Option <a href="opt_general.html#opt_treenodesyntaxhigh">Syntax-Hervorhebungen f&uuml;r Baumknoten</a>,
+               <a href="opt_play.html#sec_opt_terminal">Terminal Optionen</a>
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">
+              Neues Package f&uuml;r clientseitige ssh Verbindungen
+            </td>
+            <td rowspan="1" colspan="1">
+              Standardbibliothek <code>qfs.qft</code>, Package <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.utils.ssh"><code>qfs.utils.ssh</code></a>
+            </td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;B.5</a>:&nbsp;&nbsp;Neue Features in QF-Test Version 4</td><td class="captionglue"></td>
+</tr>
+</table>
+
+      
+<p>
+        
+<b>&Auml;nderungen mit m&ouml;glichen Auswirkungen auf die Testausf&uuml;hrung:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          Der <a href="miscnodes.html#step_ComponentWaiter" shape="rect">'Warten auf Komponente'</a> Knoten wartet implizit auf die Verbindung mit dem
+          entsprechenden SUT Client und der ben&ouml;tigten GUI Engine. Falls das Warten fehlschl&auml;gt,
+          wird eine <a href="exceptions.html#ex_ComponentNotFoundException" shape="rect"><code>ComponentNotFoundException</code></a> geworfen, deren Meldung erkl&auml;rt, ob die
+          Komponente nicht gefunden wurde, der SUT Client nicht verbunden ist oder keine passende
+          GUI Engine f&uuml;r diesen Client zur Verf&uuml;gung steht. &Uuml;ber das Attribut
+          <a href="control.html#att_CatchSequence_catchmessage" shape="rect">'Erwartete Meldung'</a> eines <a href="control.html#step_CatchSequence" shape="rect">'Catch'</a> Knotens kann zwischen
+          diesen F&auml;llen unterschieden werden.<br> In fr&uuml;heren QF-Test Versionen gab es eine
+          Inkonsistenz im Verhalten bei fehlendem Client: Abh&auml;ngig davon, ob der Client fr&uuml;her
+          schon einmal verbunden war oder nicht, wurde eine <code>ComponentNotFoundException</code> oder
+          eine <a href="exceptions.html#ex_ClientNotConnectedException" shape="rect"><code>ClientNotConnectedException</code></a> geworfen. Falls Ihr Test eine
+          <code>ClientNotConnectedException</code> erwartet, m&uuml;ssen Sie entweder den 'Catch'
+          Knoten &auml;ndern, einen weiteren 'Catch' Knoten einf&uuml;gen oder dem
+          'Warten auf Komponente' Knoten einen <a href="processes.html#step_ClientWaiter" shape="rect">'Warten auf Client'</a> Knoten voranstellen.
+        </li>
+        
+<li>
+          &Uuml;ber die neue Option <a href="opt_play.html#opt_errorstatedisabledcomponent">Behandlung von ausgeschalteten Komponenten</a> wird festgelegt,
+          wie QF-Test damit umgeht, wenn bei der Wiedergabe ein deaktivierter 'Komponente'
+          Knoten referenziert wird. In fr&uuml;heren QF-Test Versionen wurde dieser Zustand ignoriert, was
+          zu &Uuml;berraschungen f&uuml;hren konnte. Nun wird standardm&auml;&szlig;ig ein Fehler in das Protokoll
+          geschrieben. Konsequenterweise werden nun deaktivierte 'Komponente' Knoten bei der
+          Aufnahme nicht mehr wiederverwendet.
+        </li>
+        
+<li>
+          Die neue Option <a href="opt_play.html#opt_defaultchecktimeout">Standard-Wartezeit f&uuml;r Checks (ms)</a> definiert - wie ihr Name sagt
+          - den Standardwert f&uuml;r das <a href="checks.html#att_CheckStringStep_timeout" shape="rect">'Wartezeit'</a> Attribut von 'Check'
+          Knoten, bei denen dieses Attribut nicht explizit gesetzt ist. Sie verbessert die
+          Stabilit&auml;t der Ausf&uuml;hrung von Checks generell. Falls Ihre Tests viele 'Check'
+          Knoten ohne explizite 'Wartezeit' enthalten, bei denen davon ausgegangen wird, dass sie
+          fehlschlagen, kann die Ausf&uuml;hrungszeit Ihrer Tests darunter leiden. In diesem Fall
+          k&ouml;nnen Sie diese Option oder - bevorzugt - das 'Wartezeit' Attribut der betreffenden
+          Knoten auf 0 setzen.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N210291"></a><span class="note">Web</span></span>
+
+          Das AJAX Toolkit RAP definiert IDs nicht im 'ID' Attribut des DOM Knotens, daher hatte
+          die Option <a href="opt_web.html#opt_websuppressnumerals">Alle Ziffern aus 'ID' Attributen eliminieren</a> bisher f&uuml;r RAP keinen Einfluss.
+          Dies wurde nun korrigiert, so dass bei aktivierter Option ebenfalls Ziffern aus den f&uuml;r
+          RAP Elemente ermittelten IDs entfernt werden. Sollte dies zu Problemen mit bestehenden
+          Tests f&uuml;hren, deaktivieren Sie einfach die Option <a href="opt_web.html#opt_websuppressnumerals">Alle Ziffern aus 'ID' Attributen eliminieren</a>.
+        </li>
+      
+</ul>
+
+      
+<p>
+        
+<b>Nicht mehr unterst&uuml;tzte Software:</b>
+      
+</p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span>
+
+        Eine detaillierte Aufstellung der Systemvoraussetzungen und der unterst&uuml;tzten
+        Technologieversionen finden Sie in <a href="user_installation.html#usec_install_system">Abschnitt 1.1</a>.
+      </p>
+      
+<p>
+        QFS bem&uuml;ht sich um R&uuml;ckw&auml;rtskompatibilit&auml;t auch mit sehr alter Software. QF-Test l&auml;uft nach
+        wie vor z.B. unter Windows XP und mit einem auf Java 1.5 oder 1.6 basierenden SUT, aber
+        wir k&ouml;nnen f&uuml;r Systeme, die von deren Herstellern nicht mehr unterst&uuml;tzt werden, keinen
+        umfassenden Support bieten.<br>
+      
+</p>
+      
+<p>
+        Bibliotheken f&uuml;r die unten aufgef&uuml;hrten Firefox und Eclipse/SWT Versionen sind nicht mehr
+        Teil der Standard-Installation von QF-Test. Sie werden zum gr&ouml;&szlig;ten Teil noch weiter gepflegt,
+        aber nur eingeschr&auml;nkt getestet. Falls Sie die jeweilige Unterst&uuml;tzung ben&ouml;tigen, wenden
+        Sie sich bitte via <code>support@qfs.de</code> an QFS.<br>
+      
+</p>
+      
+<p>
+        Offiziell nicht mehr unterst&uuml;tzt werden Java 1.5, Internet Explorer 7 und &auml;lter, Firefox
+        25 und &auml;lter (mit Ausnahme von Firefox 24 ESR) sowie Eclipse/SWT 3.6 und &auml;lter.
+      </p>
+    
+
+    
+    
+
+    
+<a name="relnotes_4.0.0"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_relnotes_4.0.0">B.7.8.15</a></span>
+</div>
+<a href="contents.html#toc_relnotes_4.0.0">Version 4.0.0 - 31. Juli 2014</a>
+</h5>
+
+      
+<p>
+        
+<b>Neue Features:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><a name="web_N210353"></a><span class="note">Web</span></span>
+
+          Es werden nun die Firefox Versionen 31 und 32 unterst&uuml;tzt.
+        </li>
+        
+<li>
+          Eine etwas anwenderfreundlichere Methode zum Update einer QF-Test Lizenz steht nun &uuml;ber das
+          Men&uuml; &raquo;<em>Hilfe</em>&laquo;-&raquo;<em>Lizenz aktualisieren...</em>&laquo; zur Verf&uuml;gung.
+        </li>
+        
+<li>
+          Beim &Ouml;ffnen eines Jython oder Groovy Terminals f&uuml;r einen SUT Client wird nun die
+          Historie der Eingaben vom zuletzt ge&ouml;ffneten Jython oder Groovy Terminal kopiert. Dies
+          vereinfacht das Ausprobieren des gleichen Skripts bei wiederholtem Neustart des SUTs.
+        </li>
+        
+<li>
+          Beim Import von QF-Test Ergebnissen in TestLink kann nun die 'QF-Test ID' zur Assoziation mit
+          Testf&auml;llen verwendet und die Plattform ausgelassen werden.
+        </li>
+        
+<li>
+          Beim Start von QF-Test zeigt der Aufnahme-Button nun zun&auml;chst ein kleines "Hilfe" Icon, das
+          den Schnellstart-Assistenten f&uuml;r das SUT &ouml;ffnet. Dieses Feature soll Erstanwender von
+          QF-Test unterst&uuml;tzen, die sich oft vergeblich fragen, warum sie nicht gleich mit der
+          Aufnahme starten k&ouml;nnen.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N210380"></a><span class="note">Web</span></span>
+
+          Die Prozedur <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.ajax.installToolkitResolver"><code>qfs.web.ajax.installToolkitResolver</code></a> erlaubt nun die
+          Angabe von Defaultwerten f&uuml;r die zu installierende Version eines automatisch erkannten
+          AJAX Toolkit Resolvers. Dadurch wird dem versehentlichen Update zu einer m&ouml;glicherweise
+          inkompatiblen Resolver-Version im Zuge eines QF-Test Updates vorgebeugt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N210388"></a><span class="note">Web</span></span>
+
+          Die Default-Fehlerstufe f&uuml;r einen JavaScript Fehler in einer Webseite ist nun "Warnung".
+          Aktuelle Browser ignorieren JavaScript Probleme einfach, so dass deren Behandlung seitens
+          QF-Test als Fehler zu Irritationen f&uuml;hrte. Diese Einstellung kann &uuml;ber die Option <a href="opt_web.html#opt_webscripterror">Behandlung von Fehlern in einer Webanwendung</a> ge&auml;ndert werden.
+        </li>
+      
+</ul>
+
+      
+<p>
+        
+<b>Beseitigte Bugs:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><a name="swt_N210405"></a><span class="note">SWT</span></span>
+
+          Auf Linux Systemen mit einer alten glibc Version, z.B. RHEL 6.5, konnte die
+          instrumentierte 64 Bit Version von Eclipse nicht starten. Diese Abh&auml;ngigkeit von einer
+          neueren glibc Version wurde beseitigt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swt_N210410"></a><span class="note">SWT</span></span>
+
+          Falls der QF-Test Agent aktiviert war, wurde eine Eclipse / SWT Anwendung mit eingebetteten
+          Swing Komponenten f&auml;lschlicherweise als zwei SUT Clients statt einem SUT mit zwei GUI
+          Engines erkannt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N210415"></a><span class="note">JavaFX</span></span>
+
+          De Spaltenk&ouml;pfe in JavaFX Tabellen werden nun korrekt adressiert.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N210420"></a><span class="note">JavaFX</span></span>
+
+          CheckBox Elemente innerhalb von JavaFX Tabellenzellen oder Baumknoten werden nun mit der
+          neuen Syntax @:CheckBox aufgenommen.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N210425"></a><span class="note">Web</span></span>
+
+          Der Check f&uuml;r den editable Status von TextField, PasswordField und TextAreas Knoten
+          fehlte bei Web Clients.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N210430"></a><span class="note">Web</span></span>
+
+          Wurde durch die Auswahl in einer ComboBox in einer Webseite zu einer anderen Seite
+          navigiert, konnte Internet Explorer abst&uuml;rzen.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N210435"></a><span class="note">Web</span></span>
+
+          Die Aufnahme von Checks im Browser war in Bereichen nicht m&ouml;glich, die von einem
+          unsichtbaren IFRAME &uuml;berdeckt wurden.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N210440"></a><span class="note">Web</span></span>
+
+          Die Synchronisation von Events f&uuml;r das AJAX Toolkit Ext JS ber&uuml;cksichtigt modale Dialoge
+          nun korrekt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N210445"></a><span class="note">Web</span></span>
+
+          Beim Festlegen der Proxy-Einstellungen f&uuml;r den Internet Explorer &uuml;ber die Prozedur
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.browser.settings.doStartupSettings"><code>qfs.web.browser.settings.doStartupSettings</code></a> wurden
+          <code>proxy.pac</code> Dateien nicht korrekt interpretiert.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swing_N210456"></a><span class="note">Swing</span></span>
+
+          In neueren Java und Browser Versionen hat sich das Verhalten beim Start eines Applets
+          dahingehend ver&auml;ndert, dass manchmal zwei JRE Versionen gleichzeitig starten. Je nach
+          Timing konnte dies dazu f&uuml;hren, dass sich das eigentliche Applet als $(client):2 anstatt
+          $(client) verbindet. QF-Test umgeht dieses Problem nun, indem es sich zu Applets erst
+          verbindet, wenn diese sichtbar sind.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swing_N210461"></a><span class="note">Swing</span></span>
+
+          Der "Alle Zeilen" Check wurde f&uuml;r Swing JTextArea Komponenten nicht korrekt aufgenommen,
+          wenn unterhalb der ersten Zeile geklickt wurde.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swing_N210466"></a><span class="note">Swing</span></span>
+
+          Es gibt nun zwei unterschiedliche Text-Checks f&uuml;r JEditorPane Komponenten, die HTML
+          darstellen, den "Text" Check f&uuml;r den sichtbaren Text und den "HTML Quelltext" Check f&uuml;r
+          das zu Grunde liegende HTML. In vielen F&auml;llen ist der erste Check f&uuml;r den reinen Text
+          hilfreicher als der fr&uuml;here Standard-Check f&uuml;r den HTML Quelltext. Au&szlig;erdem wurde der
+          Text Check f&uuml;r JEditorPane Komponenten korrigiert, die RTF darstellen.
+        </li>
+        
+<li>
+          Wird die Bearbeitung eines Knotens in der Detailansicht oder das Hinzuf&uuml;gen eines neuen
+          Knotens abgebrochen, pr&uuml;ft QF-Test nun, ob bereits Modifikationen vorgenommen wurden und
+          fragt nach Best&auml;tigung, bevor diese verworfen werden. Dieser Best&auml;tigungsdialog kann
+          &uuml;ber die Option <a href="opt_general.html#opt_askdiscard">Vor dem Verwerfen von &Auml;nderungen in den Details nachfragen</a> unterdr&uuml;ckt werden.
+        </li>
+        
+<li>
+          Beim Ein- oder Ausschalten des selektierten Knotens im Baum wurden noch nicht best&auml;tigte
+          Modifikationen in der Detailansicht stillschweigend verworfen.
+        </li>
+      
+</ul>
+    
+
+    
+    
+
+    
+<a name="relnotes_4.0.0-rc1"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_relnotes_4.0.0-rc1">B.7.8.16</a></span>
+</div>
+<a href="contents.html#toc_relnotes_4.0.0-rc1">Version 4.0.0-rc1 - 4. Juli 2014</a>
+</h5>
+
+      
+<p>
+        
+<b>Neue Features:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          QF-Test unterst&uuml;tzt nun mehrstufige Unterelemente, um Komponenten innerhalb von
+          Unterelementen zu adressieren. Ein typisches Beispiel ist ein Textfeld innerhalb einer
+          Tabellenzelle, das nun als table@Header&amp;row@:TextField angesprochen werden kann.
+          Die verwendete Syntax ist sehr m&auml;chtig und wird weiter ausgebaut werden, um QF-Test's
+          Repr&auml;sentation mit einer XPath-&auml;hnlichen Syntax zu mischen (siehe <a href="user_subitems.html#usec_multilevelsubitemsqpath">Adressierung mit QPath</a>).
+        </li>
+        
+<li>
+          Das vormalige 'Id' Attribut von 'Fenster' und 'Komponente' Knoten hei&szlig;t nun
+          'QF-Test ID', um es klar von den verschiedenen IDs zu unterscheiden, die von den
+          unterst&uuml;tzten GUI Engines verwendet werden.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N210519"></a><span class="note">Web</span></span>
+
+          Generische Klassen werden nun auch ohne dedizierten AJAX Resolver f&uuml;r HTML Knoten
+          verwendet.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N210524"></a><span class="note">Web</span></span>
+
+          Die Unterst&uuml;tzung f&uuml;r das AJAX Toolkit RichFaces wurde f&uuml;r RichFaces Version 3
+          aktualisiert.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swt_N210529"></a><span class="note">SWT</span></span>
+
+          Die Unterst&uuml;tzung f&uuml;r Eclipse/SWT wurde f&uuml;r Eclipse Version 4.4 "Luna" aktualisiert.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swt_N210534"></a><span class="note">SWT</span></span>
+
+          Die Nebula Grid Komponente wird nun standardm&auml;&szlig;ig unterst&uuml;tzt und automatisch
+          erkannt.
+        </li>
+        
+<li>
+          Es kann nun ein eigenes Verzeichnis f&uuml;r die Ablage von tempor&auml;ren Protokollen im
+          interaktiven Modus angegeben werden, entweder &uuml;ber die Option <a href="opt_log.html#opt_recentlogdirectory">Verzeichnis f&uuml;r Protokolle</a> oder beim Start von QF-Test &uuml;ber das Kommandozeilenargument
+          <a href="tech_execution.html#arg_runlogdir" shape="rect"><code>-runlogdir &lt;Verzeichnis&gt;</code></a>.
+        </li>
+        
+<li>
+          Die neue Option <a href="opt_log.html#opt_suitedirectorymap">Verweise zwischen Verzeichnissen mit Testsuiten</a> dient dazu, Verzeichnisse mit
+          Testsuiten aufeinander abzubilden. Das ist besonders hilfreich, wenn ein Protokoll von
+          einer Maschine mit unterschiedlicher Verzeichnisstruktur analysiert wird (z.B. Windows
+          vs. Unix), da QF-Test mit korrekt definierten Verweisen durch diese Option ohne manuelle
+          Hilfe direkt in die betreffenden Testsuiten springen kann.
+        </li>
+        
+<li>
+          Mit zwei neuen Variablengruppen k&ouml;nnen Sonderzeichen bequem gesch&uuml;tzt werden.
+          ${quoteitem:...} k&uuml;mmert sich um Zeichen wie '@' oder '&amp;' im textuellen Index eines
+          Unterelements und ${quoteregexp:...} behandelt '.', '(', '[' etc. in einem regul&auml;ren
+          Ausdruck.
+        </li>
+        
+<li>
+          Bei Lesezeichen kann nun auch ein Verzeichnis als Ziel angegeben werden (siehe <a href="opt_general.html#sec_opt_bookmarks">Abschnitt 37.1.3</a>). Bei Auswahl eines solchen Lesezeichens wird dann der
+          Dateiauswahldialog direkt f&uuml;r dieses Verzeichnis ge&ouml;ffnet.
+        </li>
+      
+</ul>
+
+      
+<p>
+        
+<b>Beseitigte Bugs:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><a name="web_N210575"></a><span class="note">Web</span></span>
+
+          Es k&ouml;nnen nun mehrere Instanzen des Chrome Browsers auf einem Rechner ausgef&uuml;hrt werden.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N210580"></a><span class="note">Web</span></span>
+
+          Performanz, Stabilit&auml;t und die Menge der unterst&uuml;tzten Funktionen f&uuml;r eingebettete
+          Browser via JavaFX WebView und JxBrowser wurden weiter verbessert.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N210585"></a><span class="note">Web</span></span>
+
+          Das AJAX Toolkit RAP definiert IDs nicht im 'ID' Attribut des DOM Knotens, daher hatte
+          die Option <a href="opt_web.html#opt_websuppressnumerals">Alle Ziffern aus 'ID' Attributen eliminieren</a> bisher f&uuml;r RAP keinen Einfluss.
+          Dies wurde nun korrigiert, so dass bei aktivierter Option ebenfalls Ziffern aus den f&uuml;r
+          RAP Elemente ermittelten IDs entfernt werden. Sollte dies zu Problemen mit bestehenden
+          Tests f&uuml;hren, deaktivieren Sie einfach die Option <a href="opt_web.html#opt_websuppressnumerals">Alle Ziffern aus 'ID' Attributen eliminieren</a>.
+        </li>
+        
+<li>
+          Mit der Unterst&uuml;tzung f&uuml;r JavaFX und dessen Swing InterOp Einbettungsm&ouml;glichkeiten
+          sowie der Unterst&uuml;tzung f&uuml;r eingebettete Browser kommt es immer &ouml;fter vor, dass ein SUT
+          mehr als eine GUI Engine beinhaltet. Dies f&uuml;hrte zu Problemen mit 'SUT Skript'
+          Knoten in der Standardbibliothek <code>qfs.qft</code>, die generell die Standard GUI
+          Engine verwendeten. Alle Prozeduren mit 'SUT Skript' Knoten haben nun einen
+          optionalen Parameter namens <code>guiengine</code> der korrekt vordefiniert ist, so dass
+          z.B. eine Prozedur im <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web"><code>qfs.web</code></a> Package auch in einem eingebetteten
+          Browser automatisch funktioniert. Im au&szlig;ergew&ouml;hnlichen Fall eines SUT Clients mit mehr
+          als einer GUI Engine desselben Typs k&ouml;nnen Sie mit dem <code>guiengine</code> Parameter
+          dediziert die gew&uuml;nschte Engine ansprechen.
+        </li>
+        
+<li>
+          Nach der Einf&uuml;hrung von generischen Klassen funktionierte die Wiedergabe f&uuml;r den Fall
+          nicht mehr, dass von Hand eine anonyme innere Klasse f&uuml;r eine Komponente angegeben
+          worden war.
+        </li>
+        
+<li>
+          W&auml;hrend der Aufl&ouml;sung von Abh&auml;ngigkeiten wurden die 'Standardwerte f&uuml;r Parameter'
+          von 'Abh&auml;ngigkeit' Knoten nicht korrekt gebunden.
+        </li>
+        
+<li>
+          Die Geschwindigkeit der Testausf&uuml;hrung im interaktiven Modus litt durch
+          Repaint-Probleme im Zusammenhang mit den neuen Syntax-Hervorhebungen im Baum.
+        </li>
+      
+</ul>
+    
+
+    
+    
+
+    
+<a name="relnotes_4.0.0-beta3"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_relnotes_4.0.0-beta3">B.7.8.17</a></span>
+</div>
+<a href="contents.html#toc_relnotes_4.0.0-beta3">Version 4.0.0-beta3 - 13. Mai 2014</a>
+</h5>
+      
+<p>
+        
+<b>Neue Features:</b>
+      
+</p>
+      
+<ul>
+       
+<li>
+          
+<span class="margin"><a name="web_N210653"></a><span class="note">Web</span></span>
+
+          Es wird nun Firefox Version 30 unterst&uuml;tzt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N210658"></a><span class="note">JavaFX</span></span>
+
+          Die Aufnahme von Prozeduren ist f&uuml;r FX nun vollst&auml;ndig unterst&uuml;tzt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N210663"></a><span class="note">Web</span></span>
+
+          F&uuml;r Webanwendungen, die auf dem AJAX Framework ZK basieren, l&ouml;st QF-Test nun die von der
+          Entwicklung vergebenen IDs auf und &uuml;bernimmt diese als Namen.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N210668"></a><span class="note">Web</span></span>
+
+          Die Unterst&uuml;tzung f&uuml;r den Chrome Browser wird immer besser. Up- und Download werden nun
+          vollst&auml;ndig unterst&uuml;tzt, ebenso Login-Dialoge, das Schlie&szlig;en von Browserfenstern und
+          Texteingabe inklusive Modifier und Cursorposition. Zudem wird nun ein lokales
+          Verzeichnis f&uuml;r das Profil verwendet, um Testautomatisierung und normalen Gebrauch von
+          Chrome zu trennen, womit nun auch das L&ouml;schen des Cache und von Cookies funktioniert,
+          sowie Sprach- und Proxyeinstellungen.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N210673"></a><span class="note">Web</span></span>
+
+          Eingebettete Browser im JavaFX WebView oder via JxBrowser machen ebenfalls gro&szlig;e
+          Fortschritte und es k&ouml;nnen nun mehrere in einem Fenster eingebettete Browser korrekt
+          angesprochen werden.
+        </li>
+        
+<li>
+          Einfach, aber &auml;u&szlig;erst n&uuml;tzlich: Der nach einem Fehler oder einer Exception angezeigte
+          Dialog enth&auml;lt nun einen Button, um direkt zur entsprechenden Stelle im Protokoll zu
+          springen.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N210681"></a><span class="note">JavaFX</span></span>
+
+          Es gibt nun einen Check f&uuml;r den "ausgew&auml;hlt" Status einer CheckBox in einer JavaFX
+          Tabellenzelle, einem Baumknoten oder einem Listeneintrag.
+        </li>
+        
+<li>
+          Die neue Prozedur <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.general.dragFromTo"><code>qfs.web.general.dragFromTo</code></a> bietet HTML5 Drag&amp;Drop
+          ohne dabei die Anwendung zu blockieren, alternativ auf JavaScript Ebene oder mittels
+          harter Events.
+        </li>
+        
+<li>
+          F&uuml;r die TestLink Integration k&ouml;nnen Sie beim ImportResults Skript nun den Buildnamen
+          direkt beim Import angeben, das &Uuml;berschreiben der Runid beim Testlauf ist nicht l&auml;nger
+          n&ouml;tig.
+        </li>
+       
+</ul>
+
+      
+<p>
+        
+<b>Beseitigte Bugs:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><a name="swt_N210704"></a><span class="note">SWT</span></span>
+
+          Die Einf&uuml;hrung von generischen Klassen f&uuml;hrte bei SWT zu einem ernsthaften
+          Performance-Problem, welches nun beseitigt wurde.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swt_N210709"></a><span class="note">SWT</span></span>
+
+          Bei SWT weigerte sich QF-Test, harte Events auf negative Koordinaten abzuspielen, was
+          allerdings n&ouml;tig sein kann, um unter Windows ein Fenster auf einem zweiten Bildschirm zu
+          erreichen, der links vom prim&auml;ren Monitor aufgestellt ist.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N210714"></a><span class="note">Web</span></span>
+
+          Der Druckdialog wird im Firefox nun korrekt angezeigt.
+        </li>
+        
+<li>
+          In sehr speziellen F&auml;llen konnte ein Test im QF-Test Daemon an einer fehlenden
+          Engine-Lizenz scheitern, obwohl die Lizenz eigentlich vorhanden war.
+        </li>
+      
+</ul>
+    
+
+    
+    
+
+    
+<a name="relnotes_4.0.0-beta2"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_relnotes_4.0.0-beta2">B.7.8.18</a></span>
+</div>
+<a href="contents.html#toc_relnotes_4.0.0-beta2">Version 4.0.0-beta2 - 11. April 2014</a>
+</h5>
+      
+<p>
+        
+<b>Neue Features:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          Generische Klassen sind nun auch f&uuml;r Swing und SWT implementiert.
+        </li>
+        
+<li>
+          QF-Test nimmt nun die generische Klasse, die konkrete Klasse und die Systemklasse einer
+          Komponente als weiteres Merkmal namens qfs:genericclass, qfs:class oder qfs:systemclass
+          auf. Dies ist als Information hilfreich und kann genutzt werden, wenn eine Komponente
+          auf eine mehr oder weniger spezifische Klasse umgestellt werden soll. Falls eine
+          generische Klasse einen konkreten Untertyp besitzt, nimmt QF-Test diesen als weiteres
+          Merkmal qfs:type auf, z.B. "PanelTitle" f&uuml;r ein Label, das der Titel eines TitledPanel
+          ist.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N210749"></a><span class="note">Web</span></span>
+
+          F&uuml;r Chrome werden nun auch Downloads, die Behandlung von Prompt- und Best&auml;tigunsdialogen
+          sowie das Auslesen und Setzen der Cursorposition in einem Textfeld unterst&uuml;tze.
+          Letzteres ist Voraussetzung f&uuml;r die Aufnahme von Mausevents relativ zu einem
+          Zeichenposition und f&uuml;r 'Texteingabe' Knoten, die Text innerhalb von bereits
+          bestehendem Text einf&uuml;gen.
+        </li>
+        
+<li>
+          Als eingebettete Browser werden nun JavaFX WebView und JxBrowser 4 unterst&uuml;tzt. Dieses
+          Feature befindet sich noch in der Entwicklung, Aufnahme und Wiedergabe von Mausevents
+          ist aber bereits m&ouml;glich.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N210760"></a><span class="note">Web</span></span>
+
+          Beim Start aus QF-Test akzeptiert Chrome nun ebenfalls automatisch SSL Zertifikate f&uuml;r
+          HTTPS Verbindungen.
+        </li>
+        
+<li>
+          Es stehen nun verschiedene Anordnungen der Testsuiten im Auswahldialog f&uuml;r
+          'Prozeduren' zur Verf&uuml;gung.
+        </li>
+      
+</ul>
+
+      
+<p>
+        
+<b>Beseitigte Bugs:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><a name="fx_N210780"></a><span class="note">JavaFX</span></span>
+
+          Dank verbessertem Fokus-Management sollte die Wiedergabe f&uuml;r JavaFX unter Linux nun
+          stabiler funktionieren, insbesondere die Auswahl von Men&uuml;eintr&auml;gen.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="fx_N210785"></a><span class="note">JavaFX</span></span>
+
+          Die Wiedergabe von harten Mausklicks mit der mittleren oder rechten Taste funktionierte
+          f&uuml;r JavaFX nicht korrekt.
+        </li>
+        
+<li>
+          Ein Tabellenblatt in Excel 2010 mit einer Referenz auf eine Zahl in einem anderen
+          Tabellenblatt wird nun vom 'Excel Datei' Knoten korrekt behandelt.
+        </li>
+      
+</ul>
+    
+
+    
+    
+
+    
+<a name="relnotes_4.0.0-beta1"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_relnotes_4.0.0-beta1">B.7.8.19</a></span>
+</div>
+<a href="contents.html#toc_relnotes_4.0.0-beta1">Version 4.0.0-beta1 - 26. M&auml;rz 2014</a>
+</h5>
+      
+<p>
+        
+<b>Neue Features:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><a name="fx_N210817"></a><span class="note">JavaFX</span></span>
+
+          JavaFX ist der Nachfolger von Swing als Standard-Oberfl&auml;che in Java 8. QF-Test Version
+          4.0 bietet mit der neu eingef&uuml;hrten Produktlinie QF-Test/fx volle Unterst&uuml;tzung f&uuml;r das
+          Testen von JavaFX Anwendungen. Diese GUI Engine ist nahezu komplett. Aktuell fehlt noch
+          die Aufnahme von Prozeduren und die Anbindung von WebView Komponenten als vollwertige
+          QF-Test Web Engine ist noch nicht vollst&auml;ndig.
+        </li>
+        
+<li>
+          Die Unterst&uuml;tzung f&uuml;r den Chrome Browser unter Windows ist weit fortgeschritten und im
+          Wesentlichen stabil. Wie zuvor mit Internet Explorer und Firefox ist es das Ziel,
+          Unterschiede zwischen den Browsern zu verbergen und zu erm&ouml;glichen, dass ein Test
+          unver&auml;ndert auf allen drei Browsern lauff&auml;hig ist. Zu diesem Zeitpunkt sind einige
+          Browser-Dialoge sowie Datei Up- und Download noch nicht implementiert. Au&szlig;erdem kann
+          aktuell nur eine Instanz von Chrome parallel von QF-Test aus gestartet werden.
+        </li>
+        
+<li>
+          Das Konzept der generischen Klassen, welches zun&auml;chst nur f&uuml;r die Web Engine verf&uuml;gbar
+          war, wurde erweitert, um zun&auml;chst auch JavaFX und demn&auml;chst alle GUI Engines zu
+          unterst&uuml;tzen. Es bietet die Grundlage f&uuml;r Tests, die unver&auml;ndert f&uuml;r verschiedene GUI
+          Engines lauff&auml;hig sind, erh&ouml;ht den Abstraktionsgrad und bietet eine flexiblere und
+          robustere Wiedererkennung von Komponenten. Die Aufnahme von generischen Klassen wird
+          &uuml;ber die Option <a href="opt_record.html#opt_recordgenericclass">Generische Klassen f&uuml;r Komponenten aufzeichnen</a> gesteuert.<br>
+
+          Sehen Sie hierzu auch das Video <a href="http://www.qfs.de/de/qftest/web-gui-testing-reduction-of-complexity.html" shape="rect">Die Explosion der Komplexit&auml;t in der Web Testautomatisierung eind&auml;mmen</a>, welches
+          die Explosion der Komplexit&auml;t in AJAX Oberfl&auml;chen lebhaft veranschaulicht. Es trifft
+          analog f&uuml;r JavaFX zu, welches die Probleme bei der Automatisierung von Oberfl&auml;chen mit
+          sehr vielen kleinen Komponenten teilt und f&uuml;r das QF-Test's Ansatz mit generischen Klassen
+          hervorragend funktioniert.
+        </li>
+        
+<li>
+          Toleranter Vergleich von Klassen bei der Aufnahme: Bestehende Knoten in QF-Test's
+          Komponentenhierarchie werden wiederverwendet, sofern ihre Klasse einer der Klassen der
+          aufzunehmenden Komponente entspricht. Dadurch kann zur Aufnahme von generischen Klassen
+          &uuml;bergegangen werden, ohne dass alle Komponenten neu aufgezeichnet werden. Die Funktion
+          'Komponenten aktualisieren' ist davon nicht betroffen, sie bringt die betreffenden
+          Komponenten immer auf den Stand, der den aktuellen Aufnahme-Einstellungen entspricht.
+        </li>
+        
+<li>
+          Die Verbindung mit dem SUT wird nun standardm&auml;&szlig;ig &uuml;ber den Java Agent Mechanismus
+          hergestellt. Er ist schneller, stabiler - insbesondere f&uuml;r Java WebStart und Applets -
+          und wesentlich flexibler und m&auml;chtiger. In Problemf&auml;llen kann der Java Agent Mechanismus
+          &uuml;ber die Option <a href="opt_runtime.html#opt_connectviaagent">&Uuml;ber QF-Test Agent verbinden</a> deaktiviert werden.
+        </li>
+        
+<li>
+          Farbige Syntax-Hervorhebungen der Baumknoten verbessern die Lesbarkeit von Testsuiten
+          deutlich.
+        </li>
+        
+<li>
+          F&uuml;r das gemeinsame Terminal von QF-Test k&ouml;nnen Schriftsatz und Gr&ouml;&szlig;e nun individuell
+          festgelegt werden. Zudem werden die verschiedenen Arten von Meldungen nun mit
+          unterschiedlichen Farben hervorgehoben, auch das Filtern von Meldungen ist m&ouml;glich. Die
+          entsprechenden Einstellungen sind in der Gruppe <a href="opt_play.html#sec_opt_terminal">Terminal Optionen</a>
+          zusammengefasst.
+        </li>
+        
+<li>
+          Beim Start des SUT werden Jython und Groovy nun erst bei Bedarf geladen, wodurch der
+          Start schneller und stabiler wird. Speziell Jython war f&uuml;r einige der Probleme mit Java
+          WebStart verantwortlich. Zudem reduziert sich Overhead und Speicherverbrauch, falls eine
+          Sprache gar nicht verwendet wird.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="web_N210859"></a><span class="note">Web</span></span>
+
+          Es wird nun das AJAX Framework jQuery UI unterst&uuml;tzt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swt_N210864"></a><span class="note">SWT</span></span>
+
+          Es wird nun Eclipse/SWT Version 4.4 "Luna" unterst&uuml;tzt.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swt_N210869"></a><span class="note">SWT</span></span>
+
+          Die Nebula NatTable Komponente wird nun standardm&auml;&szlig;ig unterst&uuml;tzt und automatisch
+          erkannt.
+        </li>
+        
+<li>
+          Es k&ouml;nnen nun Breakpoints auf 'Komponente' Knoten gesetzt werden, um einen Test im
+          Debugger anzuhalten, sobald ein solcher Knoten referenziert wird.
+        </li>
+        
+<li>
+          F&uuml;r einen fehlgeschlagenen <a href="checks.html#step_CheckItemsStep" shape="rect">'Check Elemente'</a> Knoten wird in Protokoll und Report
+          nun ein Context-Diff der erwarteten und erhaltenen Werte angezeigt, wodurch sich alle
+          Abweichungen schnell erkennen lassen.
+        </li>
+        
+<li>
+          Es werden nun auch relative <a href="sequences.html#step_TestCall" shape="rect">'Testaufrufe'</a> mit f&uuml;hrendem '.' im Attribut
+          <a href="sequences.html#att_TestCall_calledtest" shape="rect">'Name des Tests'</a> unterst&uuml;tzt.
+        </li>
+        
+<li>
+          Wo QF-Test regul&auml;re Ausdr&uuml;cke unterst&uuml;tzt, z.B. <a href="checks.html#att_CheckStringStep_text" shape="rect">'Text'</a>,
+          <a href="components.html#att_ComponentStep_feature" shape="rect">'Merkmal'</a> oder <a href="checks.html#att_CheckItemsStep_items" shape="rect">'Elemente'</a>, kann normaler Text nun
+          durch einen Rechts-Klick und Auswahl von 'Text in einen regul&auml;ren Ausdruck konvertieren'
+          in einen gleichwertigen, korrekt maskierten regul&auml;ren Ausdruck umgewandelt werden.
+        </li>
+        
+<li>
+          Der Umgang mit mehrzeiligem Text in Unterelementen wie Baumknoten,
+          Tabellen&uuml;berschriften oder -zellen, Listeneintr&auml;gen etc. wurde verbessert.
+        </li>
+        
+<li>
+          Such- und Ersetzungsvorg&auml;nge f&uuml;r Variablen k&ouml;nnen nun auch getrennt auf den Namen oder
+          den Wert von Variablen begrenzt werden.
+        </li>
+        
+<li>
+          Das Kapitel im Handbuch &uuml;ber die Integration mit HP ALM - QualityCenter wurde komplett
+          &uuml;berarbeitet: <a href="user_qc.html#usec_qc">Abschnitt 25.1</a>.
+        </li>
+      
+</ul>
+
+      
+<p>
+        
+<b>&Auml;nderungen mit m&ouml;glichen Auswirkungen auf die Testausf&uuml;hrung:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          Der <a href="miscnodes.html#step_ComponentWaiter" shape="rect">'Warten auf Komponente'</a> Knoten wartet implizit auf die Verbindung mit dem
+          entsprechenden SUT Client und der ben&ouml;tigten GUI Engine. Falls das Warten fehlschl&auml;gt,
+          wird eine <a href="exceptions.html#ex_ComponentNotFoundException" shape="rect"><code>ComponentNotFoundException</code></a> geworfen, deren Meldung erkl&auml;rt, ob die
+          Komponente nicht gefunden wurde, der SUT Client nicht verbunden ist oder keine passende
+          GUI Engine f&uuml;r diesen Client zur Verf&uuml;gung steht. &Uuml;ber das Attribut
+          <a href="control.html#att_CatchSequence_catchmessage" shape="rect">'Erwartete Meldung'</a> eines <a href="control.html#step_CatchSequence" shape="rect">'Catch'</a> Knotens kann zwischen
+          diesen F&auml;llen unterschieden werden.<br> In fr&uuml;heren QF-Test Versionen gab es eine
+          Inkonsistenz im Verhalten bei fehlendem Client: Abh&auml;ngig davon, ob der Client fr&uuml;her
+          schon einmal verbunden war oder nicht, wurde eine <code>ComponentNotFoundException</code> oder
+          eine <a href="exceptions.html#ex_ClientNotConnectedException" shape="rect"><code>ClientNotConnectedException</code></a> geworfen. Falls Ihr Test eine
+          <code>ClientNotConnectedException</code> erwartet, m&uuml;ssen Sie entweder den 'Catch'
+          Knoten &auml;ndern, einen weiteren 'Catch' Knoten einf&uuml;gen oder dem
+          'Warten auf Komponente' Knoten einen <a href="processes.html#step_ClientWaiter" shape="rect">'Warten auf Client'</a> Knoten voranstellen.
+        </li>
+        
+<li>
+          &Uuml;ber die neue Option <a href="opt_play.html#opt_errorstatedisabledcomponent">Behandlung von ausgeschalteten Komponenten</a> wird festgelegt,
+          wie QF-Test damit umgeht, wenn bei der Wiedergabe ein deaktivierter 'Komponente'
+          Knoten referenziert wird. In fr&uuml;heren QF-Test Versionen wurde dieser Zustand ignoriert, was
+          zu &Uuml;berraschungen f&uuml;hren konnte. Nun wird standardm&auml;&szlig;ig ein Fehler in das Protokoll
+          geschrieben. Konsequenterweise werden nun deaktivierte 'Komponente' Knoten bei der
+          Aufnahme nicht mehr wiederverwendet.
+        </li>
+        
+<li>
+          Die neue Option <a href="opt_play.html#opt_defaultchecktimeout">Standard-Wartezeit f&uuml;r Checks (ms)</a> definiert - wie ihr Name sagt
+          - den Standardwert f&uuml;r das <a href="checks.html#att_CheckStringStep_timeout" shape="rect">'Wartezeit'</a> Attribut von 'Check'
+          Knoten, bei denen dieses Attribut nicht explizit gesetzt ist. Sie verbessert die
+          Stabilit&auml;t der Ausf&uuml;hrung von Checks generell. Falls Ihre Tests viele 'Check'
+          Knoten ohne explizite 'Wartezeit' enthalten, bei denen davon ausgegangen wird, dass sie
+          fehlschlagen, kann die Ausf&uuml;hrungszeit Ihrer Tests darunter leiden. In diesem Fall
+          k&ouml;nnen Sie diese Option oder - bevorzugt - das 'Wartezeit' Attribut der betreffenden
+          Knoten auf 0 setzen.
+        </li>
+      
+</ul>
+
+
+      
+<p>
+        
+<b>Neue Packages und Prozeduren in der Standardbibliothek <code>qfs.qft</code>:</b>
+      
+</p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><a name="fx_N211050"></a><span class="note">JavaFX</span></span>
+
+          Das neue Package <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.fx"><code>qfs.fx</code></a> enth&auml;lt einen vollst&auml;ndigen Satz von
+          Prozeduren zur Interaktion mit JavaFX Komponenten.
+        </li>
+        
+<li>
+          Das neue <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.utils.ssh"><code>qfs.utils.ssh</code></a> Package bietet Unterst&uuml;tzung f&uuml;r
+          clientseitige ssh Verbindungen.
+        </li>
+        
+<li>
+          Es gibt eine neue Hilfsprozedur f&uuml;r Checks namens
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.check.checkValueInRange"><code>qfs.check.checkValueInRange</code></a>.
+        </li>
+        
+<li>
+          
+<span class="margin"><a name="swing_N211070"></a><span class="note">Swing</span></span>
+          Diverse neue Prozeduren zur Interaktion mit Swing Komponenten:<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.checkbox.deselectWithCoordinates"><code>qfs.swing.checkbox.deselectWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.checkbox.selectWithCoordinates"><code>qfs.swing.checkbox.selectWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.checkbox.setWithCoordinates"><code>qfs.swing.checkbox.setWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.general.clickAtComponentWithDetails"><code>qfs.swing.general.clickAtComponentWithDetails</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.general.doClickWithDetails"><code>qfs.swing.general.doClickWithDetails</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.general.waitForComponent"><code>qfs.swing.general.waitForComponent</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.general.waitForComponentForAbsence"><code>qfs.swing.general.waitForComponentForAbsence</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.list.clickItemWithDetails"><code>qfs.swing.list.clickItemWithDetails</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.menu.selectItemWithCoordinates"><code>qfs.swing.menu.selectItemWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.menu.selectSubItemWithCoordinates"><code>qfs.swing.menu.selectSubItemWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.menu.setCheckItemWithCoordinates"><code>qfs.swing.menu.setCheckItemWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.menu.setSubCheckItemWithCoordinates"><code>qfs.swing.menu.setSubCheckItemWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.menu.selectMenuItemInHierarchyWithCoordinates"><code>qfs.swing.menu.selectMenuItemInHierarchyWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.menu.selectCheckMenuItemInHierarchyWithCoordinates"><code>qfs.swing.menu.selectCheckMenuItemInHierarchyWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.popupmenu.clickItemWithDetails"><code>qfs.swing.popupmenu.clickItemWithDetails</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.popupmenu.selectSubItemWithCoordinates"><code>qfs.swing.popupmenu.selectSubItemWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.popupmenu.setCheckItemWithCoordinates"><code>qfs.swing.popupmenu.setCheckItemWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.popupmenu.setSubCheckItemWithCoordinates"><code>qfs.swing.popupmenu.setSubCheckItemWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.radiobutton.selectWithCoordinates"><code>qfs.swing.radiobutton.selectWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.table.checkbox.deselectWithCoordinates"><code>qfs.swing.table.checkbox.deselectWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.table.checkbox.selectWithCoordinates"><code>qfs.swing.table.checkbox.selectWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.table.checkbox.setWithCoordinates"><code>qfs.swing.table.checkbox.setWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.table.clickCellWithDetails"><code>qfs.swing.table.clickCellWithDetails</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.tree.clickNodeWithDetails"><code>qfs.swing.tree.clickNodeWithDetails</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.tree.collapseWithCoordinates"><code>qfs.swing.tree.collapseWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.tree.collapseNodeWithCoordinates"><code>qfs.swing.tree.collapseNodeWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.tree.expandWithCoordinates"><code>qfs.swing.tree.expandWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.tree.expandNodeWithCoordinates"><code>qfs.swing.tree.expandNodeWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swing.tree.expandNodesWithCoordinates"><code>qfs.swing.tree.expandNodesWithCoordinates</code></a>
+        
+</li>
+        
+<li>
+          
+<span class="margin"><a name="swt_N211192"></a><span class="note">SWT</span></span>
+          Diverse neue Prozeduren zur Interaktion mit SWT Komponenten:<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.checkbox.deselectWithCoordinates"><code>qfs.swt.checkbox.deselectWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.checkbox.selectWithCoordinates"><code>qfs.swt.checkbox.selectWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.checkbox.setWithCoordinates"><code>qfs.swt.checkbox.setWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.general.clickAtComponentWithDetails"><code>qfs.swt.general.clickAtComponentWithDetails</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.general.doClickWithDetails"><code>qfs.swt.general.doClickWithDetails</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.general.waitForComponent"><code>qfs.swt.general.waitForComponent</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.general.waitForComponentForAbsence"><code>qfs.swt.general.waitForComponentForAbsence</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.list.clickItemWithDetails"><code>qfs.swt.list.clickItemWithDetails</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.menu.selectItemWithCoordinates"><code>qfs.swt.menu.selectItemWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.menu.selectSubItemWithCoordinates"><code>qfs.swt.menu.selectSubItemWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.menu.setCheckItemWithCoordinates"><code>qfs.swt.menu.setCheckItemWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.menu.setSubCheckItemWithCoordinates"><code>qfs.swt.menu.setSubCheckItemWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.menu.selectMenuItemInHierarchyWithCoordinates"><code>qfs.swt.menu.selectMenuItemInHierarchyWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.menu.selectCheckMenuItemInHierarchyWithCoordinates"><code>qfs.swt.menu.selectCheckMenuItemInHierarchyWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.popupmenu.clickItemWithDetails"><code>qfs.swt.popupmenu.clickItemWithDetails</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.popupmenu.selectSubItemWithCoordinates"><code>qfs.swt.popupmenu.selectSubItemWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.popupmenu.setCheckItemWithCoordinates"><code>qfs.swt.popupmenu.setCheckItemWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.popupmenu.setSubCheckItemWithCoordinates"><code>qfs.swt.popupmenu.setSubCheckItemWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.radiobutton.selectWithCoordinates"><code>qfs.swt.radiobutton.selectWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.table.checkbox.deselectWithCoordinates"><code>qfs.swt.table.checkbox.deselectWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.table.checkbox.selectWithCoordinates"><code>qfs.swt.table.checkbox.selectWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.table.checkbox.setWithCoordinates"><code>qfs.swt.table.checkbox.setWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.table.clickCellWithDetails"><code>qfs.swt.table.clickCellWithDetails</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.tree.clickNodeWithDetails"><code>qfs.swt.tree.clickNodeWithDetails</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.tree.collapseWithCoordinates"><code>qfs.swt.tree.collapseWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.tree.collapseNodeWithCoordinates"><code>qfs.swt.tree.collapseNodeWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.tree.expandWithCoordinates"><code>qfs.swt.tree.expandWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.tree.expandNodeWithCoordinates"><code>qfs.swt.tree.expandNodeWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.swt.tree.expandNodesWithCoordinates"><code>qfs.swt.tree.expandNodesWithCoordinates</code></a>
+        
+</li>
+        
+<li>
+          
+<span class="margin"><a name="web_N211314"></a><span class="note">Web</span></span>
+          Diverse neue Prozeduren zur Interaktion mit Web Komponenten:<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.checkbox.deselectWithCoordinates"><code>qfs.web.checkbox.deselectWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.checkbox.selectWithCoordinates"><code>qfs.web.checkbox.selectWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.checkbox.setWithCoordinates"><code>qfs.web.checkbox.setWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.general.clickAtComponentWithDetails"><code>qfs.web.general.clickAtComponentWithDetails</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.general.doClickWithDetails"><code>qfs.web.general.doClickWithDetails</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.general.waitForComponent"><code>qfs.web.general.waitForComponent</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.general.waitForComponentForAbsence"><code>qfs.web.general.waitForComponentForAbsence</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.list.clickItemWithDetails"><code>qfs.web.list.clickItemWithDetails</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.radiobutton.selectWithCoordinates"><code>qfs.web.radiobutton.selectWithCoordinates</code></a>
+<br>
+          
+<a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.web.table.clickCellWithDetails"><code>qfs.web.table.clickCellWithDetails</code></a>
+        
+</li>
+      
+</ul>
+
+      
+<p>
+        
+<b>Nicht mehr unterst&uuml;tzte Software:</b>
+      
+</p>
+      
+<p>
+        QFS bem&uuml;ht sich um R&uuml;ckw&auml;rtskompatibilit&auml;t auch mit sehr alter Software. QF-Test l&auml;uft nach
+        wie vor z.B. unter Windows XP und mit einem auf Java 1.5 oder 1.6 basierenden SUT, aber
+        wir k&ouml;nnen f&uuml;r Systeme, die von deren Herstellern nicht mehr unterst&uuml;tzt werden, keinen
+        umfassenden Support bieten.<br>
+      
+</p>
+      
+<p>
+        Bibliotheken f&uuml;r die unten aufgef&uuml;hrten Firefox und Eclipse/SWT Versionen sind nicht mehr
+        Teil der Standard-Installation von QF-Test. Sie werden zum gr&ouml;&szlig;ten Teil noch weiter gepflegt,
+        aber nur eingeschr&auml;nkt getestet. Falls Sie die jeweilige Unterst&uuml;tzung ben&ouml;tigen, wenden
+        Sie sich bitte via <code>support@qfs.de</code> an QFS.<br>
+      
+</p>
+      
+<p>
+        Offiziell nicht mehr unterst&uuml;tzt werden Java 1.5, Internet Explorer 7 und &auml;lter, Firefox
+        25 und &auml;lter (mit Ausnahme von Firefox 24 ESR) sowie Eclipse/SWT 3.7 und &auml;lter.
+      </p>
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="history41.html#features_4_1"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: B.7.7&nbsp;QF-Test Version 4.1" title="Vorheriges Kapitel: B.7.7&nbsp;QF-Test Version 4.1"></a></td><td class="navicon"><a href="history3.html#features_3"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: B.8&nbsp;QF-Test Version 3" title="N&auml;chste Seite: B.8&nbsp;QF-Test Version 3"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="history4.html#features_4"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: B.7&nbsp;QF-Test Version 4" title="Kapitel-&Uuml;bersicht: B.7&nbsp;QF-Test Version 4"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Starting the Application</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2002-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="tut_startsutjava"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="loadsuitejava.html#tut_loadsuitejava"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 1.1&nbsp;Loading the Test-suite" title="Previous Chapter: 1.1&nbsp;Loading the Test-suite"></a></td><td class="navicon"><a href="firsttestjava.html#tut_firsttestjava"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 1.3&nbsp;First Test-case" title="Next Page: 1.3&nbsp;First Test-case"></a></td><td class="navicon"><a href="firsttestjava.html#tut_firsttestjava"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 1.3&nbsp;First Test-case" title="Next Chapter: 1.3&nbsp;First Test-case"></a></td><td class="navicon"><a href="demojava.html#sec_demojava"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 1&nbsp;Working with a Sample Test-suite (Java)" title="Chapter Overview: 1&nbsp;Working with a Sample Test-suite (Java)"></a></td><td class="navicon"><a href="../../tutorial_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_tut_startsutjava">1.2</a></span>
+</div>
+<a href="contents.html#toc_tut_startsutjava">Starting the Application</a>
+</h4>
+      
+<p>
+        Our first step is to examine the "Setup" node:
+      </p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><span class="note">Action</span></span><strong>Expand</strong> the <strong>Setup: Start Demo</strong> node
+          now.
+        </li>
+      
+</ul>
+      
+<a name="fig_firstSetupJava"></a><a name="figure_1.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/FirstSetupJava.png" target="_blank"><img texscale=".66" src="images/FirstSetupJava.png" width="389" height="50"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;1.3</a>:&nbsp;&nbsp;The Setup Node</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        In the "Setup" node you'll see two child-nodes:
+      </p>
+      
+<ol>
+        
+<li>
+        
+<strong>Set variable</strong> - set the  variable 'client' to the connection name
+          for the SUT, which will be needed for every action replayed to the application.
+        </li>
+        
+<li>
+          
+<strong>Sequence: Start client if necessary dependent on OS</strong> -
+          starts the System Under Test (SUT) for the respective operating system
+          in case it is not already running.
+        </li>
+      
+</ol>
+      
+<p>
+        Let's also have a brief look inside the <strong>Sequence: Start client if necessary and
+        dependent on OS</strong>:
+      </p>
+      
+<a name="fig_firstStartJava"></a><a name="figure_1.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/FirstStartJava.png" target="_blank"><img texscale=".66" src="images/FirstStartJava.png" width="546" height="130"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;1.4</a>:&nbsp;&nbsp;The Sequence to start the SUT</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        QF-Test allows you to test applications on Microsoft Windows, macOS as well as on Unix
+        systems.  The test-suite described in the tutorial can be replayed on any of them. The only node
+        where we need to differentiate between the operating systems is the startup of the
+        application. This is done by means of an <strong>If - Else</strong> structure running a
+        <code>.bat</code> file on Windows, respectively a <code>.sh</code> file otherwise (on
+        macOS or Linux).
+      </p>
+      
+<p>
+        The <strong>Start SUT client</strong> node starts the application (SUT) and sets up a link
+        between <em>qftest</em> and the SUT. In order to be independent of the actual installation we use
+        a relative path, starting from the QF-Test version directory, contained in the QF-Test
+        variable <code>${qftest:dir.version}</code> (see manual chapter <a href="../../manual/en/user_variables.html" shape="rect">Variables</a>).
+      </p>
+      
+<p>
+        Please also note that the application is only started in case the client has not yet
+        been connected.
+      </p>
+      
+<p>
+        At this point, we're ready to actually start the SUT:
+      </p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><span class="note">Action</span></span><strong>Click</strong> on the <img src="images/setup_node.png" style="vertical-align: text-bottom" alt="Setup" title="Setup" width="40" height="40" texscale=".5">
+            <strong>Setup: Start Demo"</strong> so it is selected and still expanded (the
+            child-nodes stay visible).
+        </li>
+        
+<li>
+          
+<strong>Click</strong> the <img src="images/play.png" style="vertical-align: text-bottom" alt="Play" title="Play" width="26" height="26" texscale=".5"> <strong>Start test run</strong>
+            toolbar button. This button causes the selected node to be executed.
+        </li>
+      
+</ul>
+      
+<p>
+        During execution QF-Test marks the active step by use of an arrow pointer
+        <strong>-&gt;</strong>.
+      </p>
+      
+<p>
+        When the setup sequence is completed, our demo application "JCarConfigurator" is going to
+        appear on the screen. As QF-Test gets back the focus after the replay action, thus being
+        raised to the foreground, the demo application might be hiding behind it.
+      </p>
+      
+<a name="fig_jCarConfigDemo"></a><a name="figure_1.5"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/JCarConfigurator.png" target="_blank"><img texscale=".66" src="images/JCarConfigurator.png" width="350" height="400"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;1.5</a>:&nbsp;&nbsp;The JCarConfigurator Demo</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="loadsuitejava.html#tut_loadsuitejava"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 1.1&nbsp;Loading the Test-suite" title="Previous Chapter: 1.1&nbsp;Loading the Test-suite"></a></td><td class="navicon"><a href="firsttestjava.html#tut_firsttestjava"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 1.3&nbsp;First Test-case" title="Next Page: 1.3&nbsp;First Test-case"></a></td><td class="navicon"><a href="firsttestjava.html#tut_firsttestjava"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 1.3&nbsp;First Test-case" title="Next Chapter: 1.3&nbsp;First Test-case"></a></td><td class="navicon"><a href="demojava.html#sec_demojava"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 1&nbsp;Working with a Sample Test-suite (Java)" title="Chapter Overview: 1&nbsp;Working with a Sample Test-suite (Java)"></a></td><td class="navicon"><a href="../../tutorial_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 2002-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

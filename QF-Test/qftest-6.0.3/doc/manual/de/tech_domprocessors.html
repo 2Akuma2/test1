@@ -1,0 +1,446 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>DOM Prozessoren</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_domprocessors"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_miscellaneouslisteners.html#sec_miscellaneouslisteners"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 50.8&nbsp;ResetListener" title="Vorheriges Kapitel: 50.8&nbsp;ResetListener"></a></td><td class="navicon"><a href="tech_api_iwext.html#sec_api_iwext"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 50.10&nbsp;Image API Erweiterungen" title="N&auml;chste Seite: 50.10&nbsp;Image API Erweiterungen"></a></td><td class="navicon"><a href="tech_api_iwext.html#sec_api_iwext"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 50.10&nbsp;Image API Erweiterungen" title="N&auml;chstes Kapitel: 50.10&nbsp;Image API Erweiterungen"></a></td><td class="navicon"><a href="tech_extensions.html#sec_extensions"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 50&nbsp;APIs f&uuml;r Erweiterungen" title="Kapitel-&Uuml;bersicht: 50&nbsp;APIs f&uuml;r Erweiterungen"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_domprocessors">50.9</a></span>
+</div>
+<a href="contents.html#toc_sec_domprocessors">DOM Prozessoren</a>
+</h4>
+        
+
+        
+<p>
+          Beim Erstellen eines Reports aus einem Protokoll, oder der Generierung
+          von Package Dokumentation aus einer Testsuite, arbeitet QF-Test mit
+          einem zweistufigen Prozess. Im ersten Schritt wird ein XML Dokument
+          erstellt, welches im zweiten Schritt zu einem HTML Dokument
+          weiterverarbeitet wird. Beide Transformationen werden mittels XSLT
+          Stylesheets durchgef&uuml;hrt.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span> Der Begriff DOM (f&uuml;r <em>Document Object Model</em>)
+          findet auch bei XML Dokumenten Anwendung, nicht nur bei HTML Webseiten. Dieser Abschnitt
+          befasst sich ausschlie&szlig;lich mit XML und XSLT und hat nichts mit dem DOM eines Web SUT zu
+          tun.
+        </p>
+        
+<p>
+          Leider sind XSLT Stylesheets nicht sonderlich brauchbar, wenn es
+          darum geht, reinen Text zu bearbeiten. Die 'Bemerkung' Felder in
+          'Testfallsatz', 'Testfall', 'Testschritt', 'Package' oder 'Prozedur'
+          Knoten enthalten aber oft zus&auml;tzliche Informationen in einer
+          internen Struktur, die von Anwender zu Anwender verschieden ist, je
+          nachdem, welche Konventionen verwendet werden. So werden zum
+          Beispiel h&auml;ufig JavaDoc Tags verwendet, um die Parameter einer
+          'Prozedur' zu beschreiben. Nach der ersten Stufe der
+          Transformation sieht zum Beispiel die 'Bemerkung' der
+          'Prozedur' <code>qfs.swing.menu.select</code> aus unserer
+          Standardbibliothek wie folgt aus:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>&lt;comment&gt;Select an item from a menu.
+For example: for the File -&gt; Open action, the QF-Test component ID
+ "File" is the menu, and the QF-Test component ID "Open" is the item.
+
+@param  client  The name of the SUT client.
+@param  menu    The QF-Test ID of the menu.
+@param  item    The QF-Test ID of menu item.&lt;/comment&gt;</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;50.48:&nbsp;&nbsp;Beispiel 'Bemerkung' nach der ersten Transformation</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Es ist &uuml;beraus schwierig, nur mittels XSLT die <code>@param</code>
+          Tags auszuwerten. Hier kommen nun die DOM Prozessoren ist Spiel.
+          Zwischen der ersten und zweiten Transformation f&uuml;hrt QF-Test optional
+          eine zus&auml;tzliche Transformation direkt auf dem DOM des XML Dokuments
+          aus. Bei dieser Transformation durchl&auml;uft QF-Test den gesamten DOM Baum
+          und ruft f&uuml;r jedes Element die daf&uuml;r registrierten DOM Prozessoren
+          auf, die dadurch die M&ouml;glichkeit haben, das DOM zu ver&auml;ndern.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r JDK&nbsp;1.4 ist das XML Document Object
+          Model (DOM) Teil des standard API. F&uuml;r &auml;ltere JDK Versionen wird
+          es vom XML Parser xerces (aus dem Apache Projekt) bereitgestellt,
+          der Teil von QF-Test ist. Die API Spezifikation des DOM finden Sie
+          unter anderem unter
+          <a href="http://download.oracle.com/javase/1.5.0/docs/api/org/w3c/dom/package-summary.html" shape="rect">
+          http://download.oracle.com/javase/1.5.0/docs/api/org/w3c/dom/package-summary.html</a>.
+        </p>
+
+        
+        
+
+        
+<a name="sec_N181913"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N181913">50.9.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N181913">Das <code class="interfacedef">DOMProcessor</code> Interface</a>
+</h5>
+          
+<p>
+            Das zu implementierende Interface ist
+            <code>de.qfs.apps.qftest.extensions.DOMProcessor</code>. Es ist im
+            Grunde trivial und besteht nur aus einer einzigen Methode:
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Element process(Element node)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Verarbeitet einen Element Knoten.
+              </td>
+</tr>
+<tr>
+<td class="return"><strong>R&uuml;ckgabewert</strong></td><td class="returndesc">
+                Ein Element oder null. Wird null zur&uuml;ckgegeben, werden die
+                Kindknoten des Elements ganz normal verarbeitet, andernfalls
+                werden die Kindknoten nicht weiter betrachtet. Wird ein
+                anderes Element als das Original zur&uuml;ckgeliefert, wird das
+                Original im DOM durch den R&uuml;ckgabewert ersetzt.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+
+          
+<p>
+            In der <code>process</code> Methode kann der Prozessor tun und
+            lassen, was er will, solange er sich dabei auf den Knoten und
+            seine (direkten oder indirekten) Unterknoten beschr&auml;nkt. Das
+            Element kann durch R&uuml;ckgabe eines anderen Elements komplett
+            ersetzt werden.
+          </p>
+
+          
+<p>
+            
+<span class="margin"><span class="note">Hinweis</span></span> Um ein Element aus dem DOM zu l&ouml;schen,
+            muss der <code>DOMProcessor</code> f&uuml;r einen h&ouml;her gelegenen
+            Knoten, z.B. den Vaterknoten, registriert werden. Der aktuelle
+            Knoten darf in der <code>process</code> Methode nicht aus dem DOM
+            entfernt werden.
+          </p>
+
+          
+<p>
+            Mit QF-Test werden zwei Beispiel Implementationen von DOM Prozessoren
+            ausgeliefert. Der <code>ParagraphProcessor</code> ist in Java
+            geschrieben und wird zur Illustration im Verzeichnis
+            <code>misc</code> zur Verf&uuml;gung gestellt. Er wird intern
+            verwendet, um 'Bemerkungen' an Leerzeilen in einzelne Abs&auml;tze
+            aufzubrechen.
+          </p>
+
+          
+<p>
+            Ebenfalls im <code>misc</code> Verzeichnis befindet sich der
+            <code>DocTagProcessor</code>, der zur Transformation von JavaDoc Tags dient, wie sie
+            im obigen Beispiel beschrieben wurden. Nach seinem Einsatz s&auml;he dieses Beispiel wie
+            folgt aus:
+          </p>
+
+          
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>&lt;comment&gt;Select an item from a menu.
+For example: for the File -&gt; Open action, the QF-Test component ID
+ "File" is the menu, and the QF-Test component ID "Open" is the item.&lt;/comment&gt;
+&lt;param name="client"&gt;The name of the SUT client.&lt;/param&gt;
+&lt;param name="menu"&gt;The QF-Test ID of the menu.&lt;/param&gt;
+&lt;param name="item"&gt;The QF-Test ID of menu item.&lt;/param&gt;</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;50.49:&nbsp;&nbsp;Beispiel 'Bemerkung' nach Einsatz eines DOM Prozessors</td><td class="captionglue"></td>
+</tr>
+</table>
+
+          
+<p>
+            Daraus kann im zweiten Schritt ohne gro&szlig;en Aufwand sinnvolles HTML
+            generiert werden.
+          </p>
+        
+
+        
+        
+
+        
+<a name="sec_N182006"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N182006">50.9.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N182006">Die <code class="classdef">DOMProcessorRegistry</code></a>
+</h5>
+          
+<p>
+            Damit ein DOM Prozessor zum Einsatz kommen kann, muss er zun&auml;chst f&uuml;r die
+            entsprechenden Elemente registriert werden. Dies geschieht mit Hilfe der
+            <code>DOMProcessorRegistry</code>.
+          </p>
+
+          
+<p>
+            F&uuml;r jede Art von Transformation gibt es eine <code>DOMProcessorRegistry</code>
+            Instanz, die durch einen Namen identifiziert wird. F&uuml;r die Reportgenerierung lautet
+            dieser <code>"report"</code>, f&uuml;r die Testfall Dokumentation <code>"testdoc"</code>
+            und f&uuml;r die Package Dokumentation <code>"pkgdoc"</code>. Dazu kommt je eine Variante
+            f&uuml;r die Generierung der Zusammenfassungen mit den Namen <code>"report-summary"</code>,
+            <code>"testdoc-summary"</code> und <code>"pkgdoc-summary"</code>. Eine Instanz der
+            Registry erhalten Sie mit Hilfe der Methode <code>instance</code>:
+          </p>
+
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>DOMProcessorRegistry instance(String identifier)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Liefert eine Registry Instanz .</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>identifier</code></strong></td><td class="paramdesc">Der Bezeichner der entsprechenden
+              Transformation.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+
+          
+<p>
+            Bei den restlichen Methoden handelt es sich um den &uuml;blichen Satz von
+            register/unregister Varianten:
+          </p>
+
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void registerDOMProcessor(DOMProcessor processor)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Registriert einen generischen DOM Prozessor, der f&uuml;r alle Arten von
+                von Elementen aufgerufen wird.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>processor</code></strong></td><td class="paramdesc">Der zu registrierende Prozessor.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void registerDOMProcessor(String node, DOMProcessor processor)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Registriert einen DOM Prozessor f&uuml;r ein spezifisches
+                Element.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">Der Name des Elements.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>processor</code></strong></td><td class="paramdesc">Der zu registrierende Prozessor.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void unregisterDOMProcessor(DOMProcessor processor)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Entfernt einen generischen DOM Prozessor, der f&uuml;r alle Arten von
+                von Elementen aufgerufen wird.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>processor</code></strong></td><td class="paramdesc">Der zu entfernende Prozessor.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void unregisterDOMProcessor(String node, DOMProcessor processor)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Entfernt einen DOM Prozessor f&uuml;r ein spezifisches
+                Element.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">Der Name des Elements.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>processor</code></strong></td><td class="paramdesc">Der zu entfernende Prozessor.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void unregisterDOMProcessors()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Entfernt alle DOM Prozessoren.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+
+        
+        
+
+        
+<a name="sec_N182144"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N182144">50.9.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N182144">Fehlerbehandlung</a>
+</h5>
+          
+<p>
+            Exceptions, die in der <code>process</code> Methode geworfen werden, f&auml;ngt QF-Test ab und
+            meldet sie. Die Transformation wird in diesem Fall gestoppt.
+          </p>
+        
+
+        
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_miscellaneouslisteners.html#sec_miscellaneouslisteners"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 50.8&nbsp;ResetListener" title="Vorheriges Kapitel: 50.8&nbsp;ResetListener"></a></td><td class="navicon"><a href="tech_api_iwext.html#sec_api_iwext"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 50.10&nbsp;Image API Erweiterungen" title="N&auml;chste Seite: 50.10&nbsp;Image API Erweiterungen"></a></td><td class="navicon"><a href="tech_api_iwext.html#sec_api_iwext"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 50.10&nbsp;Image API Erweiterungen" title="N&auml;chstes Kapitel: 50.10&nbsp;Image API Erweiterungen"></a></td><td class="navicon"><a href="tech_extensions.html#sec_extensions"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 50&nbsp;APIs f&uuml;r Erweiterungen" title="Kapitel-&Uuml;bersicht: 50&nbsp;APIs f&uuml;r Erweiterungen"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

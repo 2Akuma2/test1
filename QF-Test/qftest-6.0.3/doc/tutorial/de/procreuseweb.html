@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Wiederverwendbare Abschnitte identifizieren</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2002-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="tut_procreuseweb"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="procmanualweb.html#tut_procmanualweb"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 12.2&nbsp;Manuelle Erstellung von Prozeduren" title="N&auml;chste Seite: 12.2&nbsp;Manuelle Erstellung von Prozeduren"></a></td><td class="navicon"><a href="procmanualweb.html#tut_procmanualweb"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 12.2&nbsp;Manuelle Erstellung von Prozeduren" title="N&auml;chstes Kapitel: 12.2&nbsp;Manuelle Erstellung von Prozeduren"></a></td><td class="navicon"><a href="firstprocweb.html#sec_FirstProzedurWeb"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 12&nbsp;Eine Prozedur erstellen (Web)" title="Kapitel-&Uuml;bersicht: 12&nbsp;Eine Prozedur erstellen (Web)"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_tut_procreuseweb">12.1</a></span>
+</div>
+<a href="contents.html#toc_tut_procreuseweb">Wiederverwendbare Abschnitte identifizieren</a>
+</h4>
+      
+<p>
+        In diesem Abschnitt werden wir die Testsuite ErsteWebTests.qft, die Sie
+        bereits aus Kapitel 1 kennen, weiterentwickeln.
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Aktion</span></span>
+          <strong>Kopieren Sie ErsteWebTests.qft</strong> aus dem Unterverzeichnis
+          <code>qftest-6.0.3/doc/tutorial</code> der QF-Test Installation in
+          ein Arbeitsverzeichnis und
+        </li>
+        
+<li>
+          
+<strong>&ouml;ffnen Sie ErsteWebTests.qft</strong>.
+        </li>
+        
+<li>
+          Wenn Sie die &Auml;nderung, die wir an der Demo-Testsuite vornehmen werden,
+          sichern wollen, so
+          <strong>speichern Sie diese in einem Arbeitsverzeichnis</strong> wie am Ende
+          von <a href="quickstartweb.html#tut_quickstartweb">Abschnitt 11.1</a> beschrieben.
+        </li>
+      
+</ul>
+      
+<p>
+        Bitte sehen Sie sich den Testschritt "Zur&uuml;cksetzen" in den beiden Testf&auml;llen an.
+        Die beiden Testschritte sind identisch.
+      </p>
+      
+<a name="IdenticalTeststepsWeb"></a><a name="figure_12.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/IdenticalTeststepsWeb.png" target="_blank"><img src="images/IdenticalTeststepsWeb.png" alt="Zwei identische Testschritte" texscale=".5" width="369" height="322"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;12.1</a>:&nbsp;&nbsp;Zwei identische Testschritte</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Gem&auml;&szlig; obiger &Uuml;berlegungen w&auml;re es also sinnvoll, den Testschritt in eine
+        Prozedur umzuwandeln.
+      </p>
+
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="procmanualweb.html#tut_procmanualweb"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 12.2&nbsp;Manuelle Erstellung von Prozeduren" title="N&auml;chste Seite: 12.2&nbsp;Manuelle Erstellung von Prozeduren"></a></td><td class="navicon"><a href="procmanualweb.html#tut_procmanualweb"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 12.2&nbsp;Manuelle Erstellung von Prozeduren" title="N&auml;chstes Kapitel: 12.2&nbsp;Manuelle Erstellung von Prozeduren"></a></td><td class="navicon"><a href="firstprocweb.html#sec_FirstProzedurWeb"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 12&nbsp;Eine Prozedur erstellen (Web)" title="Kapitel-&Uuml;bersicht: 12&nbsp;Eine Prozedur erstellen (Web)"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 2002-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

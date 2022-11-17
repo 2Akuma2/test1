@@ -1,0 +1,3136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Scripting (Jython, Groovy and JavaScript)</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_scripting"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_misc.html#tsec_miscellaneous"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 45&nbsp;Technical details about miscellaneous issues" title="Previous Chapter: 45&nbsp;Technical details about miscellaneous issues"></a></td><td class="navicon"><a href="tech_web.html#sec_web"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 47&nbsp;Web" title="Next Page: 47&nbsp;Web"></a></td><td class="navicon"><a href="tech_web.html#sec_web"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 47&nbsp;Web" title="Next Chapter: 47&nbsp;Web"></a></td><td class="navicon"><a href="technical.html#sec_technical"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: IV&nbsp;Technical reference" title="Chapter Overview: IV&nbsp;Technical reference"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_scripting">46</a></span>
+</div>
+<a href="contents.html#toc_sec_scripting">Scripting (Jython, Groovy and JavaScript)</a>
+</h3>
+    
+<p>
+      This section explains technical details about the Jython integration
+      in QF-Test and serves as a reference for the whole API exposed by QF-Test
+      for use in Jython, Groovy and JavaScript scripts. For a more gentle introduction including
+      examples please take a look at <a href="user_scripting.html#usec_scripting">chapter 11</a>.
+    </p>
+
+    
+
+    
+<a name="sec_moduledir"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_moduledir">46.1</a></span>
+</div>
+<a href="contents.html#toc_sec_moduledir">Module load-path</a>
+</h4>
+      
+<p>
+        The load-path for scripting modules is
+        assembled from various sources in the following order:
+      </p>
+      
+<ul>
+        
+<li>
+          the script directory in the <a href="user_installation.html#usec_configfile" shape="rect">user configuration directory</a>
+        
+</li>
+        
+<li>
+          the directory
+          <code>qftest/qftest-6.0.3/&lt;scriptlanguage&gt;</code>
+        
+</li>
+      
+</ul>
+      
+<p>
+        In addition, during 'Server script' or 'SUT script' node
+        execution, the directory of the containing test-suite is prepended
+        to the path.
+      </p>
+      
+<p>
+        The directory
+        <code>qftest/qftest-6.0.3/&lt;scriptlanguage&gt;</code> contains
+        internal modules of the specific script language. You should
+        not modify these files, since they may change in later versions of
+        QF-Test.
+      </p>
+      
+<p>
+        The script directory in the <a href="user_installation.html#usec_configfile" shape="rect">user configuration directory</a>
+        is the place to put your own shared modules.
+        These will be left untouched during an update of QF-Test.
+        You can locate the rescpective script directory via
+        &raquo;<em>Help</em>&laquo;
+        under "System info" as "dir.&lt;scriptlanguage&gt;".
+      </p>
+      
+<p>
+        Modules that are specific to a test-suite can also be placed
+        in the same directory as the test-suite. The file extension for all
+        modules must be <code>.py</code>.
+      </p>
+      
+<p>
+        In Jython you can add additional directories to the load-path by defining the <code>python.path</code>
+        system property.
+      </p>
+    
+
+    
+    
+
+    
+<a name="sec_plugindir"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_plugindir">46.2</a></span>
+</div>
+<a href="contents.html#toc_sec_plugindir">The plugin directory</a>
+</h4>
+      
+<p>
+        The script languages can also be used to access Java classes and methods
+        beyond the scope of QF-Test by simply importing such classes, e.g.
+      </p>
+      
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>from java.util import Date
+from java.text import SimpleDateFormat
+print SimpleDateFormat("yyyy-MM-dd").format(Date())</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;46.1:&nbsp;&nbsp;Accessing Java classes from Jython</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        The classes available for import are those on the <code>CLASSPATH</code> during
+        startup of QF-Test or the SUT respectively, all classes of the standard Java API and
+        QF-Test's own classes. For the SUT things also depend on the ClassLoader concept in use.
+        WebStart and Eclipse/RCP in particular make it difficult to import classes directly from
+        the SUT.
+      </p>
+      
+<p>
+        Additionally, there are plugin directories into which you can simply drop a jar file to
+        make it available to scripts.
+        QF-Test searches for a directory called <code>plugin</code>.
+        You can locate the currently used plugin directory via &raquo;<em>Help</em>&laquo; under "System info" as "dir.plugin".
+        The location of the plugin directory can be overridden with the command line argument
+        <a href="tech_execution.html#arg_plugindir" shape="rect"><code>-plugindir &lt;directory&gt;</code></a>.
+      </p>
+      
+<p>
+        Jar files in the main plugin directory are available to both
+        'Server script' and 'SUT script' nodes. To make a jar
+        available solely to 'Server scripts' or solely to
+        'SUT scripts', drop it in the respective sub-directory called
+        <code>qftest</code> or <code>sut</code> instead.
+      </p>
+    
+
+    
+    
+
+    
+<a name="sec_N164514"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N164514">46.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N164514">Initialization (Jython)</a>
+</h4>
+      
+<p>
+        During QF-Test and SUT startup an embedded Jython interpreter is
+        created. For QF-Test, the module named <code>qftest</code> is
+        imported, for the SUT the module named <code>qfclient</code>.
+        Both are based on <code>qfcommon</code> which contains shared code.
+        These modules are required to provide the run-context interface and
+        to set up the global namespace.
+      </p>
+      
+<p>
+        Next the load-path <code>sys.path</code> is searched for your
+        personal initialization files. For QF-Test initialization, the file
+        called <code>qfserver.py</code> is loaded, the file called
+        <code>qfsut.py</code> is used for the SUT. In both cases
+        <code>execfile</code> is used to execute the contents of these files
+        directly in the global namespace instead of loading them as
+        modules. This is much more convenient for an initialization file
+        because everything defined and all modules imported will be directly
+        available to 'Server scripts' and 'SUT scripts'. Note that
+        at initialization time no run-context is available and no
+        test-suite-specific directory is added to <code>sys.path</code>.
+      </p>
+    
+
+    
+    
+
+    
+<a name="sec_N164561"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N164561">46.4</a></span>
+</div>
+<a href="contents.html#toc_sec_N164561">Namespace environment for script execution (Jython)</a>
+</h4>
+      
+<p>
+        The environments in which 'Server scripts' or 'SUT scripts'
+        are executed are defined by the global and local namespaces in
+        effect during execution. Namespaces in Jython are dictionaries
+        which serve as containers for global and local variable
+        bindings.
+      </p>
+      
+<p>
+        The global namespace is shared between all scripts run in the same
+        Jython interpreter. Initially it will contain the classes
+        <code>TestException</code> and <code>UserException</code>, the
+        module <code>qftest</code> or <code>qfclient</code> for QF-Test or
+        the SUT respectively, and everything defined in or imported by
+        <code>qfserver.py</code> or <code>qfsut.py</code>. When assigning a
+        value to a variable declared to be global with the
+        <code>global</code> statement, that variable is added to the global
+        namespace and available to scripts run consecutively. Additionally,
+        QF-Test ensures that all modules imported during script execution are
+        globally available.
+      </p>
+      
+<p>
+        The local namespace is unique for each script and its lifetime is
+        limited to the script's execution. Upon invocation the local
+        namespace contains <code>rc</code>, the interface to QF-Test's
+        run-context, and <code>true</code> and <code>false</code> bound to
+        <code>1</code> and <code>0</code> respectively for better
+        integration with QF-Test.
+      </p>
+      
+<p>
+        Accessing or setting global variables in a different Jython
+        interpreter is enabled through the methods <code>fromServer</code>,
+        <code>fromSUT</code>, <code>toServer</code> and <code>toSUT</code>.
+      </p>
+    
+
+    
+    
+
+    
+<a name="sec_api_rc"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_api_rc">46.5</a></span>
+</div>
+<a href="contents.html#toc_sec_api_rc">Run-context API</a>
+</h4>
+      
+<p>
+        The run-context object <code>rc</code> is an interface to
+        the execution state of the currently running test in QF-Test. Providing
+        this wrapper instead of directly exposing QF-Test's Java API
+        leaves us free to change the implementation of QF-Test without
+        affecting the interface for scripts.
+      </p>
+      
+<p>
+        Following is a list of the methods of the run-context object
+        <code>rc</code> in alphabetical order. The syntax used is a bit of a
+        mixture of Java and Python. Python doesn't support static
+        typing, but the parameters are passed on to Java, so they must be
+        of the correct type to avoid triggering exceptions.
+        If a parameter is followed by an '=' character and a value, that
+        value is the default and the parameter is optional.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        Please note that the Groovy syntax for keyword parameters is different from Jython and
+        requires a ':' instead of '='. The tricky bit is that, for example,
+        <code>rc.logMessage("bla", report=true)</code> is perfectly legal Groovy code yet
+        doesn't have the desired effect. The '=' here is an assignment resulting in the value
+        true, which is simply passed as the second parameter, thus the above is equal to
+        <code>rc.logMessage("bla", true)</code> and the true is passed to
+        <code>dontcompactify</code> instead of <code>report</code>. The correct Groovy version
+        is <code>rc.logMessage("bla", report:true)</code>.
+      </p>
+      
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void addDaemonLog(byte[] data, String name=None, String comment=None, String externalizename=None)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Add a run-log retrieved from a DaemonRunContext to the current run-log.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>data</code></strong></td><td class="paramdesc">
+            The byte array retrieved via DaemonRunContext.getRunLog().
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">
+            An optional name for the daemon log node. If unspecified the ID of the Daemon is
+            used.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>comment</code></strong></td><td class="paramdesc">
+            An optional comment for the daemon log node.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>externalizename</code></strong></td><td class="paramdesc">
+            An optional name to externalize the daemon log and save it as a partial log of a
+            split run-log.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void addResetListener(ResetListener listener)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            <strong>Server only</strong>.
+            Register a <code>ResetListener</code> within the current run-context.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>listener</code></strong></td><td class="paramdesc">
+            The Listener that should be added. The listener should implement the interface
+            de.qfs.apps.qftest.extensions.qftest.ResetListener.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void addTestRunListener(TestRunListener listener)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Register a <code>TestRunListener</code> with the current run-context. In interactive
+            mode and batch mode there is a single, shared run-context, so the listener will
+            remain in effect until it gets removed via <code>removeTestRunListener</code> or
+            <code>clearTestRunListeners</code>. In daemon mode, each
+            <code>DaemonRunContext</code> has its own set of listeners. See <a href="tech_testrunlisteners.html#sec_testrunlisteners">section 50.7</a> for details about the <code>TestRunListener</code> API.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>listener</code></strong></td><td class="paramdesc">
+            The listener to register.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String callProcedure(String name, dictionary parameters=None)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              Call a <a href="procedures.html#step_Procedure" shape="rect">'Procedure'</a> in a test-suite.
+            </p>
+            
+<p>
+              
+<span class="margin"><span class="note">Note</span></span> As a convenience, this method can also
+              be called from an 'SUT script'. Care should be taken
+              however, because the script is executed inside the AWT event
+              dispatch thread, so weird side-effects are possible, though
+              QF-Test does its best to avoid these. If possible, call
+              'Procedures' from a 'Server script' instead.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">
+            The fully qualified name of the 'Procedure'.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>parameters</code></strong></td><td class="paramdesc">
+            The parameters for the 'Procedure'. This should be a
+            dictionary. Its keys and values can be arbitrary values. They
+            are converted to strings for the call.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The value returned from the 'Procedure' through an optional
+          <a href="procedures.html#step_ReturnStep" shape="rect">'Return'</a> node.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int callTest(String name, dictionary parameters=None)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              
+<strong>Server only</strong>.
+              Call a <a href="sequences.html#step_TestCase" shape="rect">'Test-case'</a> or <a href="sequences.html#step_TestSet" shape="rect">'Test-set'</a> in a test-suite or an entire test-suite.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">
+            The fully qualified name of the 'Test-case' or 'Test-set'.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>parameters</code></strong></td><td class="paramdesc">
+            The parameters for the 'Test-case' or 'Test-set'. This should be a
+            dictionary. Its keys and values can be arbitrary values. They
+            are converted to strings for the call.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The final state of the execution. Either rc.OK,
+          rc.WARNING, rc.ERROR, rc.EXCEPTION, rc.SKIPPED or rc.NOT_IMPLEMENTED.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int callTestAsProcedure(String name, dictionary parameters=None)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              
+<strong>Server only</strong>.
+              Call a <a href="sequences.html#step_TestCase" shape="rect">'Test-case'</a> or <a href="sequences.html#step_TestSet" shape="rect">'Test-set'</a> in a test-suite or an entire test-suite but treat it
+              as a procedure call so that an uncaught exception terminates the entire call instead of just the
+              currently executing 'Test-case'.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">
+            The fully qualified name of the 'Test-case' or 'Test-set'.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>parameters</code></strong></td><td class="paramdesc">
+            The parameters for the 'Test-case' or 'Test-set'. This should be a
+            dictionary. Its keys and values can be arbitrary values. They
+            are converted to strings for the call.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The final state of the execution. Either rc.OK,
+          rc.WARNING, rc.ERROR, rc.EXCEPTION, rc.SKIPPED or rc.NOT_IMPLEMENTED.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Boolean check(boolean condition, String message, int level=rc.ERROR, boolean report=true, boolean nowrap=false)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              Check or "assert" that a condition is true and log a message
+              according to the result.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>condition</code></strong></td><td class="paramdesc">
+            The condition to evaluate.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>message</code></strong></td><td class="paramdesc">
+            The message to log. It will be preceded by "Check OK: " or
+            "Check failed: " depending on the result. For the old-style XML or HTML
+            report the message will be treated like a 'Check' node if it
+            starts with an '!' character.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>level</code></strong></td><td class="paramdesc">
+            
+<p>
+              The error level in case of failure. The following constants are
+              defined in the run-context:
+            </p>
+            
+<ul>
+              
+<li>
+<code>rc.OK</code>
+</li>
+              
+<li>
+<code>rc.WARNING</code>
+</li>
+              
+<li>
+<code>rc.ERROR</code>
+</li>
+              
+<li>
+<code>rc.EXCEPTION</code>
+</li>
+            
+</ul>
+            
+<p>
+              If the level is <code>rc.EXCEPTION</code>, a
+              <a href="exceptions.html#ex_UserException" shape="rect"><code>UserException</code></a> will be thrown if the check fails.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>report</code></strong></td><td class="paramdesc">
+            If true, the check will appear in the report. Only applicable if level &lt;=
+            rc.WARNING.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>nowrap</code></strong></td><td class="paramdesc">
+            If true, lines of the message will not be wrapped in the report. Use for
+            potentially long messages.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The result of the check.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Boolean checkEqual(Object actual, Object expected, String message, int level=rc.ERROR, boolean report=true, boolean nowrap=false)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              Check or "assert" that an object matches a given value and log a message
+              according to the result. Comparison is done using the <code>==</code> operator.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>actual</code></strong></td><td class="paramdesc">
+            The actual value.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>expected</code></strong></td><td class="paramdesc">
+            The expected value.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>message</code></strong></td><td class="paramdesc">
+            The message to log. It will be preceded by "Check OK: " or
+            "Check failed: " depending on the result. In case of failure, the expected and
+            actual values will also be logged.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>level</code></strong></td><td class="paramdesc">
+            
+<p>
+              The error level in case of failure. The following constants are
+              defined in the run-context:
+            </p>
+            
+<ul>
+              
+<li>
+<code>rc.OK</code>
+</li>
+              
+<li>
+<code>rc.WARNING</code>
+</li>
+              
+<li>
+<code>rc.ERROR</code>
+</li>
+              
+<li>
+<code>rc.EXCEPTION</code>
+</li>
+            
+</ul>
+            
+<p>
+              If the level is <code>rc.EXCEPTION</code>, a
+              <a href="exceptions.html#ex_UserException" shape="rect"><code>UserException</code></a> will be thrown if the check fails.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>report</code></strong></td><td class="paramdesc">
+            If true, the check will appear in the report. Only applicable if level &lt;=
+            rc.WARNING.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>nowrap</code></strong></td><td class="paramdesc">
+            If true, lines of the message will not be wrapped in the report. Use for
+            potentially long messages.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The result of the check.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Boolean checkImage(ImageRep actual, ImageRep expected, String message, int level=rc.ERROR, boolean report=true, boolean nowrap=false)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              Check or "assert" two given <code>ImageRep</code>
+              (see <a href="tech_api_iwext.html#sec_api_imagerep">subsection 50.10.1</a>) objects for
+              equality and log a message according to the result. Comparison is done using
+              the <code>equals</code> method of the <code>ImageComparator</code>
+              (see <a href="tech_api_iwext.html#sec_api_imagecomp">subsection 50.10.2</a>) of the expected object.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>actual</code></strong></td><td class="paramdesc">
+            The actual value <code>ImageRep</code> object.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>expected</code></strong></td><td class="paramdesc">
+            The expected <code>ImageRep</code> object.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>message</code></strong></td><td class="paramdesc">
+            The message to log. It will be preceded by "Check OK: " or
+            "Check failed: " depending on the result. In case of failure, the expected and
+            actual values will also be logged.
+            For the old-style XML or HTML
+            report the message will be treated like a 'Check' node if it
+            starts with an '!' character.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>level</code></strong></td><td class="paramdesc">
+            
+<p>
+              The error level in case of failure. The following constants are
+              defined in the run-context:
+            </p>
+            
+<ul>
+              
+<li>
+<code>rc.OK</code>
+</li>
+              
+<li>
+<code>rc.WARNING</code>
+</li>
+              
+<li>
+<code>rc.ERROR</code>
+</li>
+              
+<li>
+<code>rc.EXCEPTION</code>
+</li>
+            
+</ul>
+            
+<p>
+              If the level is <code>rc.EXCEPTION</code>, a
+              <a href="exceptions.html#ex_UserException" shape="rect"><code>UserException</code></a> will be thrown if the check fails.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>report</code></strong></td><td class="paramdesc">
+            If true, the check will appear in the report. Only applicable if level &lt;=
+            rc.WARNING.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>nowrap</code></strong></td><td class="paramdesc">
+            If true, lines of the message will not be wrapped in the report. Use for
+            potentially long messages.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The result of the check.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Object[] checkImageAdvanced(ImageRep actual, ImageRep expected, String message, String algorithm, int level=rc.ERROR, boolean report=true, boolean nowrap=false)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              Check or "assert" two given <code>ImageRep</code>
+              (see <a href="tech_api_iwext.html#sec_api_imagerep">subsection 50.10.1</a>) objects for
+              equality and log a message according to the result. Comparison is done using the
+              specified algorithm.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>actual</code></strong></td><td class="paramdesc">
+            The actual value <code>ImageRep</code> object.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>expected</code></strong></td><td class="paramdesc">
+            The expected <code>ImageRep</code> object.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>message</code></strong></td><td class="paramdesc">
+            The message to log. It will be preceded by "Check OK: " or
+            "Check failed: " depending on the result. In case of failure, the expected and
+            actual values will also be logged.
+            For the old-style XML or HTML
+            report the message will be treated like a 'Check' node if it
+            starts with an '!' character.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>algorithm</code></strong></td><td class="paramdesc">
+            The algorithm to use for the comparison as described in <a href="tech_imagealgorithmdetails.html#sec_imagealgorithmdetails">chapter 55</a>.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>level</code></strong></td><td class="paramdesc">
+            
+<p>
+              The error level in case of failure. The following constants are
+              defined in the run-context:
+            </p>
+            
+<ul>
+              
+<li>
+<code>rc.OK</code>
+</li>
+              
+<li>
+<code>rc.WARNING</code>
+</li>
+              
+<li>
+<code>rc.ERROR</code>
+</li>
+              
+<li>
+<code>rc.EXCEPTION</code>
+</li>
+            
+</ul>
+            
+<p>
+              If the level is <code>rc.EXCEPTION</code>, a
+              <a href="exceptions.html#ex_UserException" shape="rect"><code>UserException</code></a> will be thrown if the check fails.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>report</code></strong></td><td class="paramdesc">
+            If true, the check will appear in the report. Only applicable if level &lt;=
+            rc.WARNING.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>nowrap</code></strong></td><td class="paramdesc">
+            If true, lines of the message will not be wrapped in the report. Use for
+            potentially long messages.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">An array with following content:<br>
+            The result of the check as Boolean.<br>
+            The result of the check as probability.<br>
+            The transformed image of the expected image as <code>ImageRep</code>, depending on the algorithm.<br>
+            The transformed image of the actual image as <code>ImageRep</code>, depending on the algorithm.<br>
+            Further information where appropriate.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void clearGlobals()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              
+<strong>Server only</strong>. Undefine all global variables.
+            </p>
+          
+</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void clearProperties(String group)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              
+<strong>Server only</strong>. Delete a given set of loaded properties or resources.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>group</code></strong></td><td class="paramdesc">The group name of the properties or resources.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void clearTestRunListeners()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Remove all <code>TestRunListeners</code> from the current run-context.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String expand(String text)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              Expand a string using standard QF-Test variable expansion for
+              <code>$(...)</code> or <code>${...:...}</code> syntax.
+            </p>
+            
+<p>
+              
+<span class="margin"><span class="note">Note</span></span> Remember to double the '$' signs to
+              avoid expansion before the script is executed (see <a href="tech_quoting.html#sec_quoting">section 45.5</a>).
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>text</code></strong></td><td class="paramdesc">
+            The string to expand.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The expanded string.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Object fromServer(String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              
+<strong>SUT only</strong>. Retrieve the value of a global
+              variable in the Jython or Groovy interpreter of QF-Test. If the variable
+              is undefined, a KeyError is raised.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">
+            The name of the variable.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The value of the variable.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Object fromSUT(String client, String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              
+<strong>Server only</strong>. Retrieve the value of a global
+              variable in the Jython or Groovy interpreter of the SUT. If the
+              variable is undefined, a KeyError is raised.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>client</code></strong></td><td class="paramdesc">
+            The name of the SUT client.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">
+            The name of the variable.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The value of the variable.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Boolean getBool(String varname)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Look up the value of a QF-Test variable, similar to <code>lookup()</code>, but treat it
+            as a boolean.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>varname</code></strong></td><td class="paramdesc">The name of the variable.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The value of the variable.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Boolean getBool(String group, String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Look up the value of a QF-Test resource or property, similar to
+            <code>lookup()</code>, but treat it as a boolean.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>group</code></strong></td><td class="paramdesc">The name of the group.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name of the resource or property.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The value of the resource or property.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Exception getCaughtException()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              
+<strong>Server only</strong>. If the script is run inside a
+              <a href="control.html#step_CatchSequence" shape="rect">'Catch'</a> node, the exception that was caught is
+              returned. In all other cases,
+              <code>None</code> is returned.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The caught exception.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Component getComponent(String id, int timeout=0, boolean hidden=false)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            <strong>SUT only</strong>. Find a component or a component's
+            sub-item using QF-Test's component recognition mechanism.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>id</code></strong></td><td class="paramdesc">
+            The <a href="components.html#att_ComponentStep_id" shape="rect">'QF-Test ID'</a> of the <a href="components.html#step_ComponentStep" shape="rect">'Component'</a> node that
+            represents the component in the test-suite.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>timeout</code></strong></td><td class="paramdesc">
+            This parameter is ignored and always 0 for SUT scripts that are running on the event
+            dispatch thread of the respective GUI engine because it is not possible to free this
+            thread in a safe way in order to wait for the respective component.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>hidden</code></strong></td><td class="paramdesc">
+            If true, find invisible components as well. Useful for
+            menu-items.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+            The actual Java component. For sub-items, a pair of
+            the form <code>(component, index)</code> is returned, where the
+            type of <code>index</code> depends on the type of the item. For
+            tree nodes it is a <code>javax.swing.tree.TreePath</code>
+            object, for tablecells a pair of the form <code>(row,
+            column)</code> and an integer for all other kinds of items.<br>
+            
+<span class="margin"><span class="note">Note</span></span> Column indexes returned are always given
+            in table coordinates, not in model coordinates.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>List getConnectedClients()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Get the names of the currently connected SUT clients.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+            A list with the names of the currently connected SUT clients, an empty list in case
+            there are none.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Properties getGlobals()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              Get the global variables bound in the current context.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The global variables of the current context.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Integer getInt(String varname)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Look up the value of a QF-Test variable, similar to <code>lookup()</code>, but treat it
+            as an integer.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>varname</code></strong></td><td class="paramdesc">The name of the variable.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The value of the variable.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Integer getInt(String group, String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Look up the value of a QF-Test resource or property, similar to
+            <code>lookup()</code>, but treat it as an integer.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>group</code></strong></td><td class="paramdesc">The name of the group.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name of the resource or property.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The value of the resource or property.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Object getLastComponent()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            <strong>SUT only</strong>. Get the last component that was addressed by QF-Test for
+            replaying some event, check or miscellaneous operation. Calls to
+            <code>rc.getComponent()</code> have no impact.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The last component addressed by QF-Test.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Exception getLastException()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            <strong>Server only</strong>. Get the last exception (caught or
+            uncaught) that was thrown during the test-run. In most cases
+            <code>getCaughtException</code> is probably more useful.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The most recent exception that was thrown.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Object getLastItem()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            <strong>SUT only</strong>. Get the last item that was addressed by QF-Test for
+            replaying some event, check or miscellaneous operation. Calls to
+            <code>rc.getComponent()</code> have no impact.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The last item addressed by QF-Test.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Properties getLocals(nonEmpty=false)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              Get the innermost local bindings of the context. Mostly useful within a procedure
+              to get the parameters of the procedure call and implement something similar to
+              keyword arguments in Jython or Groovy.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>nonEmpty</code></strong></td><td class="paramdesc">
+            True to get the first non-empty set of bindings, false to get the innermost bindings
+            even when empty.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The innermost local variable bindings of the current context.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Number getNum(String varname)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Look up the value of a QF-Test variable, similar to <code>lookup()</code>, but treat it
+            as a number, i.e. as int or float for Jython and as Integer or BigDecimal for Groovy.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>varname</code></strong></td><td class="paramdesc">The name of the variable.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The value of the variable.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Number getNum(String group, String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Look up the value of a QF-Test resource or property, similar to <code>lookup()</code>,
+            but treat it as a number, i.e. as int or float for Jython and as Integer or
+            BigDecimal for Groovy.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>group</code></strong></td><td class="paramdesc">The name of the group.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name of the resource or property.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The value of the resource or property.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Object getOption(String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Get an option value at run time. This method is provided more for the sake of
+            completeness, you will probably not need it. For the obvious use case of restoring
+            the value of an option to its previous value after a change with
+            <code>setOption</code> you should use <code>unsetOption</code> instead because
+            values set at script level hide values set interactively in the options dialog.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name of the option, a constant from the
+            <code>Options</code> class which is automatically imported in Jython and Groovy
+            scripts. The names of the options that can be read in this way are documented in
+            <a href="options.html#sec_options">chapter 37</a>.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+            The current value of the option.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Pattern getPattern(String varname)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Look up the value of a QF-Test variable, similar to <code>lookup()</code>, but treat it
+            as a regular expression.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>varname</code></strong></td><td class="paramdesc">The name of the variable.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">A Java Pattern-Object with the value of the variable
+            as regular expression.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Pattern getPattern(String group, String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Look up the value of a QF-Test resource or property, similar to
+            <code>lookup()</code>, but treat it as a regular expression.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>group</code></strong></td><td class="paramdesc">The name of the group.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name of the resource or property.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">A Java Pattern-Object with the value of the resource or property
+            as regular expression.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Properties getProperties(String group)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              Get a set of loaded properties or resources.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>group</code></strong></td><td class="paramdesc">The group name of the properties or resources.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+            The variables bound for the given group or null if no such group exists.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getPropertyGroupNames()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            List all available property group names defined by the user. Names are
+            returned in alphabetic order.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+            A string listing all the names of all user defined property groups. Names
+            are sorted alphabetically and separated by newlines.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getStr(String varname, boolean expand=true)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Look up the value of a QF-Test variable, similar to <code>lookup()</code>.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>varname</code></strong></td><td class="paramdesc">The name of the variable.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>expand</code></strong></td><td class="paramdesc">
+            Whether to expand the value of the variable recursively. If, for
+            example, the value of <code>$(varname)</code> is the literal
+            string <code>"$(othervar)"</code>, this method will return the
+            expanded value of <code>$(othervar)</code> if
+            <code>expand</code> is true and <code>"$(othervar)"</code>
+            itself if <code>expand</code> is false. Note that if you want to
+            set this parameter, you must use Python keyword syntax to
+            avoid conflicts with <code>getStr(String group, String
+              name)</code>, i.e. <code>rc.getStr("var", expand=0)</code>
+            instead of <code>rc.getStr("var", 0)</code>.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The value of the variable.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getStr(String group, String name, boolean expand=true)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Look up the value of a QF-Test resource or property, similar to
+            <code>lookup()</code>.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>group</code></strong></td><td class="paramdesc">The name of the group.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name of the resource or property.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>expand</code></strong></td><td class="paramdesc">
+            Whether to expand the value of recursively. If, for example, the
+            value of <code>${group:name}</code> is the literal string
+            <code>"$(othervar)"</code>, this method will return the expanded
+            value of <code>$(othervar)</code> if <code>expand</code> is true
+            and <code>"$(othervar)"</code> itself if <code>expand</code> is
+            false.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The value of the resource or property.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String id(String id)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Return the QF-Test ID of a specified component. This method should be
+            used to take care that this 'QF-Test component ID' becomes updated when
+            moving or changing the QF-Test ID of the referenced component.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>id</code></strong></td><td class="paramdesc">The 'QF-Test component ID'.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The 'QF-Test component ID'.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>boolean isOptionSet(String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Test whether an option has been set at script level.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name of the option, a constant from the
+            <code>Options</code> class which is automatically imported in Jython and Groovy
+            scripts. The names of the options that can be read in this way are documented in
+            <a href="options.html#sec_options">chapter 37</a>.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+            True if the option has been set, false otherwise.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>boolean isResetListenerRegistered(ResetListener listener)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            <strong>Server only</strong>.
+            Checks if a <code>ResetListener</code> is registered.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>listener</code></strong></td><td class="paramdesc">
+            The <code>ResetListener</code> to check, if it is registered.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+            True if the ResetListener has been registered, otherwise False.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void logDiagnostics(String client)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            <strong>Server only</strong>. Adds event information stored in
+            the SUT for possible error diagnosis to the run-log.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>client</code></strong></td><td class="paramdesc">The name of the SUT client from which
+          to get the information.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void logError(String msg, boolean nowrap=false)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Add a user-defined error message to the run log.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>msg</code></strong></td><td class="paramdesc">The message to log.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>nowrap</code></strong></td><td class="paramdesc">
+            If true, lines of the message will not be wrapped in the report. Use for potentially
+            long messages.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void logImage(ImageRep image, String title=None, boolean dontcompactify=false, boolean report=false)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Add an <code>ImageRep</code>
+          (see <a href="tech_api_iwext.html#sec_api_imagerep">subsection 50.10.1</a>) object to the run log.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>image</code></strong></td><td class="paramdesc">The <code>ImageRep</code> object to log.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>title</code></strong></td><td class="paramdesc">
+            An optional title for the image.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>dontcompactify</code></strong></td><td class="paramdesc">
+            If true, the message will never be removed from a compact run-log.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>report</code></strong></td><td class="paramdesc">
+            True to log the image in the report (implies dontcompactify).
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void logMessage(String msg, boolean dontcompactify=false, boolean report=false, boolean nowrap=false)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Add a plain message to the run log.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>msg</code></strong></td><td class="paramdesc">The message to log.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>dontcompactify</code></strong></td><td class="paramdesc">If true, the message will never be removed from a
+          compact run-log.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>report</code></strong></td><td class="paramdesc">If true, the message will appear in the report.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>nowrap</code></strong></td><td class="paramdesc">
+            If true, lines of the message will not be wrapped in the report. Use for potentially
+            long messages.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void logWarning(String msg, boolean report=true, boolean nowrap=false)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">Add a user-defined warning message to the run log.</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>msg</code></strong></td><td class="paramdesc">The message to log.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>report</code></strong></td><td class="paramdesc">If true (the default), the warning will be listed in the
+          report. Set this to false to exclude this specific warning from the report.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>nowrap</code></strong></td><td class="paramdesc">
+            If true, lines of the message will not be wrapped in the report. Use for potentially
+            long messages.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String lookup(String varname, boolean expand=true)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Look up the value of a QF-Test variable, similar to
+            <code>$(varname)</code>.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>varname</code></strong></td><td class="paramdesc">The name of the variable.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>expand</code></strong></td><td class="paramdesc">
+            Whether to expand the value of the variable recursively. If, for
+            example, the value of <code>$(varname)</code> is the literal
+            string <code>"$(othervar)"</code>, this method will return the
+            expanded value of <code>$(othervar)</code> if
+            <code>expand</code> is true and <code>"$(othervar)"</code>
+            itself if <code>expand</code> is false. Note that if you want to
+            set this parameter, you must use Python keyword syntax to
+            avoid conflicts with <code>lookup(String group, String
+              name)</code>, i.e. <code>rc.lookup("var", expand=0)</code>
+            instead of <code>rc.lookup("var", 0)</code>.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The value of the variable.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String lookup(String group, String name, boolean expand=true)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Look up the value of a QF-Test resource or property, similar to
+            <code>${group:name}</code>.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>group</code></strong></td><td class="paramdesc">The name of the group.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name of the resource or property.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>expand</code></strong></td><td class="paramdesc">
+            Whether to expand the value of recursively. If, for example, the
+            value of <code>${group:name}</code> is the literal string
+            <code>"$(othervar)"</code>, this method will return the expanded
+            value of <code>$(othervar)</code> if <code>expand</code> is true
+            and <code>"$(othervar)"</code> itself if <code>expand</code> is
+            false.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The value of the resource or property.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void overrideElement(String id, Component com)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            <strong>SUT only</strong>. Override the target GUI element for component
+            recognition for an element with the given QF-Test ID. When that QF-Test ID is referenced QF-Test
+            ignores all associated information and directly returns the given element.<br>
+          
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>id</code></strong></td><td class="paramdesc">The QF-Test ID of the GUI element to override.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>com</code></strong></td><td class="paramdesc">
+            The GUI element to return as the resolved target. None/null to revert to the default
+            mechanism.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void removeResetListener(ResetListener listener)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            <strong>Server only</strong>.
+            Remove a <code>ResetListener</code>.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>listener</code></strong></td><td class="paramdesc">
+          The <code>ResetListener</code> to remove.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void removeTestRunListener(TestRunListener listener)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Remove a <code>TestRunListener</code> from the current run-context.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>listener</code></strong></td><td class="paramdesc">
+            The listener to remove.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void resetDependencies(String namespace=None)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Completely reset the dependency stack without executing any cleanup.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>namespace</code></strong></td><td class="paramdesc">
+            An optional namespace to reset the dependencies for.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void resolveDependency(String dependency, String namespace=None, dictionary parameters=None)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Resolve a <a href="dependencies.html#step_Dependency" shape="rect">'Dependency'</a>.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>dependency</code></strong></td><td class="paramdesc">
+            The fully qualified name of the 'Dependency' to resolve.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>namespace</code></strong></td><td class="paramdesc">
+            An optional namespace to resolve the 'Dependency' in.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>parameters</code></strong></td><td class="paramdesc">
+            The parameters for the 'Dependency'. This should be a
+            dictionary. Its keys and values can be arbitrary values. They
+            are converted to strings for the call.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void rollbackDependencies(String namespace=None)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Unroll the dependency stack.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>namespace</code></strong></td><td class="paramdesc">
+            An optional namespace to unroll the dependencies in.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setGlobal(String name, object value)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Define a global QF-Test variable.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name of the variable.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>value</code></strong></td><td class="paramdesc">
+            An arbitrary value for the variable. It is automatically converted to a string. A
+            value of <code>None</code> unsets the variable.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setLocal(String name, object value)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Define a local QF-Test variable.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name of the variable.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>value</code></strong></td><td class="paramdesc">
+            An arbitrary value for the variable. It is automatically converted to a string. A
+            value of <code>None</code> unsets the variable.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setOption(String name, object value)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Set an option value at run time. Any value thus set overrides the value read from
+            the system configuration file or set via the option dialog, but is never shown in
+            the option dialog or saved to a configuration file. The default value can be
+            restored via <code>unsetOption</code>.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name of the option, a constant from the
+            <code>Options</code> class which is automatically imported in Jython and Groovy
+            scripts. The names of the options that can be set in this way are documented in
+            <a href="options.html#sec_options">chapter 37</a>.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>value</code></strong></td><td class="paramdesc">
+            The value to set, typically a boolean, a number or a constant from the
+            <code>Options</code> class for options edited via a drop-down list. For hotkey
+            options like the "Don't panic" hotkey this value should be a string like "F12" or
+            "Shift-F6". Supported modifiers are "Shift", "Control" or "Ctrl", "Alt" and "Meta"
+            and combinations thereof. Key specifiers are prepended with "VK_" and then looked up
+            in the class <code>java.awt.event.KeyEvent</code>. Case is irrelevant for both, so
+            "shift-alt-enter" will work as well.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setProperty(String group, String name, object value)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Set the value of a resource or property in a group.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>group</code></strong></td><td class="paramdesc">
+            The name of the group. A new group is created automatically if necessary.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name of the  resource or property.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>value</code></strong></td><td class="paramdesc">
+            An arbitrary value for the property. It is automatically converted to a string. A
+            value of <code>None</code> unsets the property.<br>
+            
+<span class="margin"><span class="note">Note</span></span> This method also works for the special groups 'system' and
+            'env' and can be used as a means to set environment variables and system properties.
+            Values in the special group 'qftest' cannot be set or changed that way.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void skipTestCase()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Stop the execution of the current test-case and mark it as skipped.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void skipTestSet()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Stop the execution of the current test-set and mark it as skipped.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void stopTest()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Terminate the current test-run.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void stopTestCase(boolean expectedFail=false)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Stop the execution of the current test-case.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>expectedFail</code></strong></td><td class="paramdesc">If true, mark possible errors in this test-case as
+            expected failures.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void stopTestSet()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Stop the execution of the current test-set.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void syncThreads(String name, int timeout, int count=-1, boolean throw=true, int remote=0)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            <strong>Server only</strong>. Synchronize a number of parallel threads for load
+            testing. The current thread is blocked until all threads have reached this
+            synchronization point or the timeout is exceeded. In the latter case, a
+            <a href="exceptions.html#ex_TestException" shape="rect"><code>TestException</code></a> is thrown or an error logged.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">An identifier for the synchronization point.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>timeout</code></strong></td><td class="paramdesc">The maximum time to wait in milliseconds.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>count</code></strong></td><td class="paramdesc">
+            The number of threads to wait for. Default value -1 means all threads in the current
+            QF-Test instance.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>throw</code></strong></td><td class="paramdesc">
+            Whether to throw an exception (default) or just log an error if the timeout is
+            exceeded without all threads reaching the synchronization point.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>remote</code></strong></td><td class="paramdesc">
+            The number of QF-Test instances - potentially running on different machines - to
+            synchronize. Default 0 means don't do remote synchronization.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void toServer(...)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              
+<strong>SUT only</strong>. Set some global variables in the
+              Jython or Groovy interpreter of QF-Test.
+            </p>
+            
+<p>
+              Each argument can be any of:
+            </p>
+            
+<dl>
+              
+<dt>A string</dt>
+              
+<dd>
+                This is treated as the name of a global variable in the
+                local interpreter. The variable by the same name in QF-Test's
+                interpreter is set to its value.
+              </dd>
+              
+<dt>A dictionary with string keys</dt>
+              
+<dd>
+                For each key in the dictionary, a global variable by that
+                name is set to the corresponding value from the dictionary.
+              </dd>
+              
+<dt>A keyword argument in the form <code>name=value</code>
+</dt>
+              
+<dd>
+                The global variable named <code>name</code> is set to
+                <code>value</code>.
+              </dd>
+            
+</dl>
+          
+</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void toSUT(String client, ...)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              
+<strong>Server only</strong>. Set some global variables in the
+              Jython or Groovy interpreter of the SUT.
+            </p>
+            
+<p>
+              Except for <code>client</code>, each argument can be any of:
+            </p>
+            
+<dl>
+              
+<dt>A string</dt>
+              
+<dd>
+                This is treated as the name of a global variable in the
+                local interpreter. The variable by the same name in SUT's
+                interpreter is set to its value.
+              </dd>
+              
+<dt>A dictionary with string keys</dt>
+              
+<dd>
+                For each key in the dictionary, a global variable by that
+                name is set to the corresponding value from the dictionary.
+              </dd>
+              
+<dt>A keyword argument in the form <code>name=value</code>
+</dt>
+              
+<dd>
+                The global variable named <code>name</code> is set to
+                <code>value</code>.
+              </dd>
+            
+</dl>
+          
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>client</code></strong></td><td class="paramdesc">
+            The name of the SUT client.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void unsetOption(String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Restore an option value by removing a possible override from a previous call to
+            <code>setOption</code>.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name of the option to unset, a constant from the
+            <code>Options</code> class which is automatically imported in Jython and Groovy
+            scripts. The constants for options that can be set in this way are documented in
+            <a href="options.html#sec_options">chapter 37</a>.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+    
+
+    
+    
+
+    
+<a name="sec_api_qf"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_api_qf">46.6</a></span>
+</div>
+<a href="contents.html#toc_sec_api_qf">The <code class="moduledef">qf</code> module</a>
+</h4>
+      
+<p>
+        In some cases there is no run-context available, especially when implementing some of
+        the extension interfaces described in the following sections. The module <code>qf</code>
+        enables logging in those cases and also provides some generally useful methods that
+        can be used without depending on a run-context. Following is a list of the methods of
+        the <code>qf</code> module in alphabetical order. Unless mentioned otherwise, methods are
+        available in Groovy and Jython and for both 'Server script' and 'SUT script'
+        nodes.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span>
+
+        Please note that the Groovy syntax for keyword parameters is different from Jython and
+        requires a ':' instead of '='. The tricky bit is that, for example,
+        <code>qf.logMessage("bla", report=true)</code> is perfectly legal Groovy code yet
+        doesn't have the desired effect. The '=' here is an assignment resulting in the value
+        true, which is simply passed as the second parameter, thus the above is equal to
+        <code>qf.logMessage("bla", true)</code> and the true is passed to
+        <code>dontcompactify</code> instead of <code>report</code>. The correct Groovy version
+        is <code>qf.logMessage("bla", report:true)</code>.
+      </p>
+      
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Pattern asPattern(String regexp)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            This method interprets the input as regular expression and returns the corresponding
+            Java Pattern object. Valid input values are defined in the
+            <a href="https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html" shape="rect">Java API
+            of the Pattern object</a>.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>regexp</code></strong></td><td class="paramdesc">The regular expression</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+            A Pattern object, which can be used for string comparisons.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String getClassName(Object objectOrClass)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Get the fully qualified name of the Class of a Java object, or of a Java class
+            itself. Mostly useful for Jython where getting the name of a class can become a real
+            hassle.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>objectOrClass</code></strong></td><td class="paramdesc">
+            The Java object or class to get the class name for.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+            The class name or None in case something non-Java is passed in.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Object getProperty(Object object, String name)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Get a property for an object that was previously set via <code>setProperty</code>.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>object</code></strong></td><td class="paramdesc">The object to get the property for.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name of the property.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The property value.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>boolean isInstance(Object object, String className)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            This is a simple alternative to <code>instanceof</code> in Groovy and
+            <code>isinstance()</code> in Jython that deliberately compares class and instance
+            names only so conflicts with differing class loaders are avoided.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>object</code></strong></td><td class="paramdesc">The object to check.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>className</code></strong></td><td class="paramdesc">The name of the class or interface to test for.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+            True if the object is an instance of the given class or implements the given
+            interface.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void logError(String msg, boolean nowrap=false)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Add a user-defined error message to the run-log. If a run-context is available it is used and
+            logging takes effect immediately. Otherwise the message is buffered and logged at
+            the next opportunity.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>msg</code></strong></td><td class="paramdesc">The message to log.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>nowrap</code></strong></td><td class="paramdesc">
+            If true, lines of the message will not be wrapped in the report. Use for potentially
+            long messages. This parameter has no effect if the message needs to be buffered.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void logMessage(String msg, boolean dontcompactify=false, boolean report=false, boolean nowrap=false)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Add a plain message to the run log. If a run-context is available it is used and
+            logging takes effect immediately. Otherwise the message is buffered and logged at
+            the next opportunity.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>msg</code></strong></td><td class="paramdesc">The message to log.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>dontcompactify</code></strong></td><td class="paramdesc">If true, the message will never be removed from a
+          compact run-log.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>report</code></strong></td><td class="paramdesc">If true, the message will appear in the report.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>nowrap</code></strong></td><td class="paramdesc">
+            If true, lines of the message will not be wrapped in the report. Use for potentially
+            long messages. This parameter has no effect if the message needs to be buffered.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void logWarning(String msg, boolean report=true, boolean nowrap=false)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Add a user-defined warning message to the run log. If a run-context is available it is used and
+            logging takes effect immediately. Otherwise the message is buffered and logged at
+            the next opportunity.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>msg</code></strong></td><td class="paramdesc">The message to log.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>report</code></strong></td><td class="paramdesc">If true (the default), the warning will be listed in the
+          report. Set this to false to exclude this specific warning from the report.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>nowrap</code></strong></td><td class="paramdesc">
+            If true, lines of the message will not be wrapped in the report. Use for potentially
+            long messages. This parameter has no effect if the message needs to be buffered.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void print(Object object, ...)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Prints a string or the string representation of an object to the terminal. If more than one object is
+            specified there representations are joint with a space character. In contrast to a simple
+            <code>print</code> statement, the text is not transferred using the standard output stream.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>object</code></strong></td><td class="paramdesc">The object, which should be printed.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void println(Object object)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Prints a string or the string representation of an object to the terminal, and starts a new line. If
+            more than one object is specified there representations are joint with a space character. In contrast to
+            a simple <code>println</code> statement, the text is not transferred using the standard output stream.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>object</code></strong></td><td class="paramdesc">The object, which should be printed.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void setProperty(Object object, String name, Object value)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Set an arbitrary property for an object. For Swing, SWT or web components the value
+            is stored in the respective user data via <code>putClientProperty</code>,
+            <code>setData</code> or <code>setProperty</code> respectively. For everything else a
+            <code>WeakHashMap</code> is used. Either way the property will not prevent garbage
+            collection of the object.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>object</code></strong></td><td class="paramdesc">The object to set the property for.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>name</code></strong></td><td class="paramdesc">The name of the property.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>value</code></strong></td><td class="paramdesc">The value to set. Null to remove the property.</td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>String toString(Object object, String nullValue)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            Get the string representation of an object. Mostly useful for Jython but sometimes
+            also useful for Groovy thanks to the default conversion of null to the empty string.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>object</code></strong></td><td class="paramdesc">The object to get the string representation for.</td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>nullValue</code></strong></td><td class="paramdesc">The value to return if object is None, the empty string by default.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+            Jython 8-bit or Unicode strings are returned unchanged, Java objects are turned into
+            a string via <code>toString</code>. In Jython, everything else is converted into an
+            8-bit Jython string.
+          </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+    
+
+    
+    
+
+    
+<a name="sec_api_iw"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="margin"><a name="new_N167224"></a><span class="note">3.0+</span></span><span class="numtitle"><a href="contents.html#toc_sec_api_iw">46.7</a></span>
+</div>
+<a href="contents.html#toc_sec_api_iw">Image API</a>
+</h4>
+      
+<p>
+        The Image API provides classes and interfaces to take screenshots, to
+        save or load images or for own image comparisons. The image API is designed so that the
+        different methods in general do not throw any exception. Instead, the different methods
+        are logging warnings.
+      </p>
+
+      
+
+      
+<a name="sec_api_imagewrapper"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_api_imagewrapper">46.7.1</a></span>
+</div>
+<a href="contents.html#toc_sec_api_imagewrapper">The <code class="classdef">ImageWrapper</code> class</a>
+</h5>
+        
+<p>
+          For taking screenshots you can use the Jython class ImageWrapper, located in the module
+          <code>imagewrapper.py</code>, which comes with the QF-Test
+          installation.
+        </p>
+        
+<p>
+          Here is a short sample Jython script demonstrating the usage of the
+          Image API:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>from imagewrapper import ImageWrapper
+#create ImageWrapper instance
+iw = ImageWrapper(rc)
+
+#take screenshot of the whole screen
+currentScreenshot = iw.grabScreenshot()
+
+#save screenshot to a file
+iw.savePng("/tmp/screenshot.png", currentScreenshot)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;46.2:&nbsp;&nbsp;Image API in Jython</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          And the same in Groovy:
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>import de.qfs.ImageWrapper
+
+def iw = new ImageWrapper(rc)
+def currentScreenshot = iw.grabScreenshot()
+iw.savePng("/tmp/screenshot.png", currentScreenshot)</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;46.3:&nbsp;&nbsp;Image API in Groovy</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Following is a list of the methods of the <code>ImageWrapper</code>
+          class in alphabetical order. The syntax used is a bit of a
+          mixture of Java and Python. Python doesn't support static
+          typing, but the parameters are passed on to Java, so they must be
+          of the correct type to avoid triggering exceptions.
+          If a parameter is followed by an '=' character and a value, that
+          value is the default and the parameter is optional.
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>ImageWrapper ImageWrapper(RunContext rc)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              Constructor method of the <code>ImageWrapper</code> class.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>rc</code></strong></td><td class="paramdesc">
+            The current run context of QF-Test.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>int getMonitorCount()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              Return the number of monitors.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">The total number of monitors.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>ImageRep grabImage(Object com, int x=None, int y=None, int width=None, int height=None)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              Take screenshot of a given component. If you use the parameters
+              x, y, width and height, you can take a screenshot of
+              a specific region of the component.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>com</code></strong></td><td class="paramdesc">
+            The QF-Test ID of the component to take a screenshot from.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>x</code></strong></td><td class="paramdesc">
+            The X coordinate of the left upper corner of the region to take the screenshot.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>y</code></strong></td><td class="paramdesc">
+            The Y coordinate of the left upper corner of the region to take the screenshot.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>width</code></strong></td><td class="paramdesc">
+            The width of the region to take the screenshot.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>height</code></strong></td><td class="paramdesc">
+            The height of the region to take the screenshot.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">An <code>ImageRep</code> object containing the actual screenshot.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>ImageRep grabScreenshot(int x=None, int y=None, int width=None, int height=None)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              Take screenshot of the whole screen. If you use the parameters
+              x, y, width and height, you can take a screenshot of
+              a specific region of the screen.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>x</code></strong></td><td class="paramdesc">
+            The X coordinate of the left upper corner of the region to take the screenshot.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>y</code></strong></td><td class="paramdesc">
+            The Y coordinate of the left upper corner of the region to take the screenshot.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>width</code></strong></td><td class="paramdesc">
+            The width of the region to take the screenshot.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>height</code></strong></td><td class="paramdesc">
+            The height of the region to take the screenshot.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">An <code>ImageRep</code> object containing the actual screenshot.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>ImageRep[] grabScreenshots(int monitor=None)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              Take screenshots of all available screens. This procedure might be
+              useful, if you work with more than one screen.
+            </p>
+            
+<p>
+            If you want to take a screenshot of one specific screen, you can
+            also use this procedure.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>monitor</code></strong></td><td class="paramdesc">
+            Index of the monitor to take the screenshot from. The first
+            monitor has 0, the second 1 and so on.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">An array of <code>ImageRep</code> objects of all
+          screenshots or the specific <code>ImageRep</code> object, if the <code>monitor</code>
+          parameter has been used.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>ImageRep loadPng(String filename)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              Load an image from a given file return an <code>ImageRep</code>
+              object containing this image. The file has to contain the image
+              in PNG format.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>filename</code></strong></td><td class="paramdesc">
+              The path to the file, where the image is stored.
+          </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">An <code>ImageRep</code> object containing loaded image.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void savePng(String filename, ImageRep image)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+            
+<p>
+              Save the given <code>ImageRep</code> object to a file. The file
+              will be in PNG format.
+            </p>
+          
+</td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>filename</code></strong></td><td class="paramdesc">
+              The path to the file, where the image should be stored to.
+          </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>image</code></strong></td><td class="paramdesc">
+              The <code>ImageRep</code> object to store.
+          </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+      
+
+        
+    
+
+    
+    
+
+    
+<a name="sec_api_exceptions"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_api_exceptions">46.8</a></span>
+</div>
+<a href="contents.html#toc_sec_api_exceptions">Exception handling</a>
+</h4>
+      
+<p>
+        All QF-Test exceptions listed in <a href="exceptions.html#sec_exceptions">chapter 39</a> are
+        automatically imported in Jython scripts and can be used for
+        <code>try/except</code> clauses like
+      </p>
+      
+<pre xml:space="preserve">try:
+    com = rc.getComponent("someId")
+except ComponentNotFoundException:
+    ...</pre>
+        
+<p>
+          When working with Groovy you must first import the exception:
+        </p>
+        
+<pre xml:space="preserve">import de.qfs.apps.qftest.shared.exceptions.
+      ComponentNotFoundException
+
+try {
+    com = rc.getComponent("someId")
+} catch (ComponentNotFoundException) {
+    ...
+}</pre>
+      
+<p>
+        Only the following exceptions should be raised explicitly from
+        script code (with <code>raise</code> or <code>throw new</code> respectively):
+      </p>
+      
+<ul>
+        
+<li>
+          
+<code>UserException("Some message here...")</code> should be
+          used to signal exceptional error conditions.
+        </li>
+        
+<li>
+          
+<code>BreakException()</code> or <code>raise
+          BreakException("loopId")</code> can be used to break out of a
+          <a href="control.html#step_RepeatSequence" shape="rect">'Loop'</a> or <a href="control.html#step_WhileSequence" shape="rect">'While'</a> node, either without
+          parameters to break out of the innermost loop or with the QF-Test loop ID
+          parameter to break out of a specific loop with the respective QF-Test ID.
+        </li>
+        
+<li>
+          
+<code>ReturnException()</code> or <code>raise ReturnException("value")</code>
+          can be used to return - with or without a value - from a <a href="procedures.html#step_Procedure" shape="rect">'Procedure'</a> node, similar
+          to executing a <a href="procedures.html#step_ReturnStep" shape="rect">'Return'</a> node.
+        </li>
+      
+</ul>
+
+    
+
+    
+    
+
+    
+<a name="sec_N167599"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N167599">46.9</a></span>
+</div>
+<a href="contents.html#toc_sec_N167599">Debugging scripts (Jython)</a>
+</h4>
+      
+<p>
+                When working with Jython modules you don't have to restart QF-Test
+                or the SUT after you made changes.
+                You can simply use <code>reload(&lt;modulename&gt;)</code> to load the module anew.
+      </p>
+      
+<p>
+        Debugging scripts in an embedded Jython interpreter can be tedious. To simplify this
+        task, QF-Test offers an active terminal window for communicating with each interpreter.
+        These terminals are accessible through the &raquo;<em>Clients</em>&laquo; menu or
+        through &raquo;<em>Extras</em>&laquo;-&raquo;<em>Jython Terminal...</em>&laquo;.
+      </p>
+      
+<p>
+        Alternatively, a network connection can be established to talk remotely to the Jython
+        interpreter - in QF-Test as well as within the SUT - and get an interactive command line.
+        To enable this feature you must use the command line argument <a href="tech_execution.html#arg_jythonport" shape="rect"><code>-jythonport &lt;number&gt;</code></a> to set
+        the port number that the Jython interpreter should listen on. For the SUT
+        <code>-jythonport=&lt;port&gt;</code> can be defined in the "Extra"
+        <a href="processes.html#att_JavaClientStarter_parameter" shape="rect">'Executable parameters'</a> of the <a href="processes.html#step_JavaClientStarter" shape="rect">'Start Java SUT client'</a> or
+        <a href="processes.html#step_SUTClientStarter" shape="rect">'Start SUT client'</a> node. You can then connect to the Jython interpreter, for
+        example with
+      </p>
+      
+<p>
+        
+<code>telnet localhost &lt;port&gt;</code>
+      
+</p>
+      
+<p>
+        Combined with Jython's ability to access the full Java API, this is not only useful
+        for debugging scripts but can also be used to debug the SUT itself.
+      </p>
+    
+
+    
+
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_misc.html#tsec_miscellaneous"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 45&nbsp;Technical details about miscellaneous issues" title="Previous Chapter: 45&nbsp;Technical details about miscellaneous issues"></a></td><td class="navicon"><a href="tech_web.html#sec_web"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 47&nbsp;Web" title="Next Page: 47&nbsp;Web"></a></td><td class="navicon"><a href="tech_web.html#sec_web"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 47&nbsp;Web" title="Next Chapter: 47&nbsp;Web"></a></td><td class="navicon"><a href="technical.html#sec_technical"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: IV&nbsp;Technical reference" title="Chapter Overview: IV&nbsp;Technical reference"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

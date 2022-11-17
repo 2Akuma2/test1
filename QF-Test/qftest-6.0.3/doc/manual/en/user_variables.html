@@ -1,0 +1,1581 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Variables</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_variables"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 5&nbsp;Components" title="Previous Chapter: 5&nbsp;Components"></a></td><td class="navicon"><a href="user_debugging.html#usec_debugging"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 7&nbsp;Problem analysis and debugging" title="Next Page: 7&nbsp;Problem analysis and debugging"></a></td><td class="navicon"><a href="user_debugging.html#usec_debugging"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 7&nbsp;Problem analysis and debugging" title="Next Chapter: 7&nbsp;Problem analysis and debugging"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;User manual" title="Chapter Overview: I&nbsp;User manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_variables">6</a></span>
+</div>
+<a href="contents.html#toc_usec_variables">Variables</a>
+</h3>
+
+    
+
+    
+<p>
+      
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+      Video: <a href="https://www.qfs.de/en/yt/variables.html" class="videolink" target="_blank">'Variables'</a> .
+    </p>
+    
+<p>
+      Variables are the primary means to add flexibility to a
+      test-suite. Though they are used mainly as parameters for
+      <a href="procedures.html#step_Procedure" shape="rect">'Procedures'</a>, they are also useful in many other cases.
+    </p>
+    
+<p>
+      Variable syntax can be used in almost every attribute of the nodes of
+      a suite, except for boolean values (check boxes).  There are three
+      versions of variable references:
+    </p>
+    
+<ul>
+      
+<li>
+        
+<code>$(<em>varname</em>)</code> expands to the value of some
+        previously defined variable.
+      </li>
+      
+<li>
+        
+<code>${<em>group</em>:<em>name</em>}</code> accesses <a href="#usec_externaldata" shape="rect">external data</a> from a resource bundle or
+        property file. The groups <code>system</code> and <code>qftest</code> are always
+        defined and have a special meaning (see <a href="#usec_externaldata">section 6.5</a>).
+      </li>
+      
+<li>
+        
+<code>$[<em>expression</em>]</code> evaluates some mathematical <a href="#usec_expressions" shape="rect">expressions</a>.
+      </li>
+    
+</ul>
+
+    
+    
+
+    
+<a name="usec_var_lookup"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_var_lookup">6.1</a></span>
+</div>
+<a href="contents.html#toc_usec_var_lookup">Variable lookup</a>
+</h4>
+      
+<p>
+        To understand the reasons of why and how variables are defined in
+        multiple places, you first have to learn about how the values of
+        variables are determined.
+      </p>
+      
+<p>
+        Each set of variable definitions, called bindings, is placed on
+        one of two stacks of bindings. One stack is used for actual - or
+        direct - definitions and one for fallback bindings or default
+        values. When a variable's value is requested via
+        <code>$(...)</code>, QF-Test first searches the stack of direct
+        bindings from top to bottom, then the stack of fallbacks, also top down. The
+        first value found is used. If there is no binding at all for a
+        name, an <a href="exceptions.html#ex_UnboundVariableException" shape="rect"><code>UnboundVariableException</code></a> is thrown unless you use the special syntax
+        <code>${default:varname:defaultvalue}</code> to
+        provide a default value for this case as described in <a href="#usec_externaldata">section 6.5</a>.
+      </p>
+      
+<a name="figure_6.1"></a><a name="figure_6.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="" target="_blank">
+<table align="center" cellspacing="5" cellpadding="0" border="0">
+          
+<tr>
+            
+<td align="center" valign="bottom" rowspan="1" colspan="1">
+              
+<table align="center" width="250" texwidth="5.5cm" cellspacing="0" cellpadding="10" border="1" texvalign="b">
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">
+                    Topmost bindings<br>
+                    (highest precedence)
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">...</td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">
+                    Bottommost bindings<br>
+                    (lowest precedence)
+                  </td>
+                
+</tr>
+              
+</table>
+            
+</td>
+            <td width="40" rowspan="1" colspan="1"></td>
+            <td align="center" valign="bottom" rowspan="1" colspan="1">
+              
+<table align="center" width="250" texwidth="5.5cm" cellspacing="0" cellpadding="10" border="1" texvalign="b">
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">
+                    Topmost bindings<br>
+                    (highest precedence)
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">...</td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">
+                    Bottommost bindings<br>
+                    (lowest precedence)
+                  </td>
+                
+</tr>
+              
+</table>
+            
+</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">
+              <strong>Primary stack<br>
+                      (Direct bindings)</strong>
+            </td>
+            <td rowspan="1" colspan="1"></td>
+            <td align="center" rowspan="1" colspan="1">
+              <strong>Secondary stack<br>
+                      (Default values)</strong>
+            </td>
+          
+</tr>
+        
+</table>
+</a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;6.1</a>:&nbsp;&nbsp;Direct and fallback bindings</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        This mechanism supports recursive or self-referencing variable
+        definitions. For example, setting a variable named
+        <code>classpath</code> to the value
+        <code>some/path/archive.jar:$(classpath)</code> will extend a binding
+        for <code>classpath</code> with lower precedence. If no such binding
+        exists, a <a href="exceptions.html#ex_RecursiveVariableException" shape="rect"><code>RecursiveVariableException</code></a> is thrown.
+      </p>
+    
+
+    
+    
+
+    
+<a name="sec_N75457"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N75457">6.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N75457">Defining variables</a>
+</h4>
+      
+<p>
+        Variables are defined in various places with different orders of
+        precedence. You define a variable by adding a row to the
+        appropriate table with the name and value of the variable in the
+        respective columns.
+      </p>
+      
+<a name="figure_6.2"></a><a name="figure_6.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/SystemVariables.png" target="_blank"><img src="images/SystemVariables.png" alt="System variables" width="586" height="353" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;6.2</a>:&nbsp;&nbsp;System variables</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Four sets of variable definitions are accessible from the <a href="opt_vars.html#sec_opt_vars" shape="rect">global options</a>:
+      </p>
+      
+<dl>
+        
+<dt>System variables</dt>
+        
+<dd>
+          The most basic set of bindings, commonly used for system-specific definitions like path
+          names, JDK version, operating system stuff etc. These are placed at the bottom of the
+          fallback stack so they have the least possible precedence. The system bindings are saved
+          in the system configuration file together with the other QF-Test system options.
+        </dd>
+        
+<dt>Suite variables</dt>
+        
+<dd>
+          These are general definitions for a test-suite and saved as part
+          of the suite. The bindings of the suite from which a test run is
+          started, are placed at the bottom of the direct bindings
+          stack. When a procedure from a different suite is called, or a
+          different suite's window or component is accessed, the bindings
+          of that suite are temporarily placed on top of the fallback
+          stack.
+        </dd>
+        
+<dt>Variables from the command line</dt>
+        
+<dd>
+          You can define variables on the command line when starting
+          QF-Test with the <a href="tech_execution.html#arg_variable" shape="rect"><code>-variable &lt;name&gt;=&lt;value&gt;</code></a> argument which can be used
+          multiple times. These bindings are placed above the suite
+          bindings on the direct bindings stack, so they override the
+          bindings of the suite. For example, a variable
+          <code>count=1</code> can be defined for the suite and used as
+          <code>$(count)</code> for the <a href="control.html#att_RepeatSequence_count" shape="rect">'Number of iterations'</a> of a
+          <a href="control.html#step_RepeatSequence" shape="rect">'Loop'</a> node for quick trial runs. Then you can use
+          <code>qftest -batch -variable count=100 ...</code> for the
+          actual testing. The command line bindings are accessible mainly
+          for your information, but you can also edit them for
+          experimentation.
+        </dd>
+        
+<dt>Global variables</dt>
+        
+<dd>
+          Placed above the command line variables on the direct call stack, these bindings are a
+          means to pass values between unrelated parts of a test run. Values read from the SUT
+          by a <a href="queries.html#step_FetchTextStep" shape="rect">'Fetch text'</a> or a <a href="queries.html#step_FetchIndexStep" shape="rect">'Fetch index'</a> node are bound
+          here, as well as definitions from a <a href="miscnodes.html#step_SetGlobalStep" shape="rect">'Set variable'</a> node. The globals
+          are not cleared in between test runs as a convenience and you can edit them for the
+          same reason. To simulate a real test run you should clear them via the &raquo;<em>Run</em>&laquo;-&raquo;<em>Clear global variables</em>&laquo; menu
+          first. When run in batch mode (see <a href="user_installation.html#usec_execution">section 1.7</a>) QF-Test clears the
+          global variables before the execution of each test given with the <a href="tech_execution.html#arg_test" shape="rect"><code>-test &lt;n&gt;|&lt;ID&gt;</code></a>
+          command line argument.
+        </dd>
+      
+</dl>
+
+      
+<p>
+        The rest of the variable definitions are part of the test-suite
+        itself:
+      </p>
+      
+<ul>
+        
+<li>
+          Each sequence type node defines a set of bindings that are placed
+          on top of the direct bindings stack when the test run enters the
+          node and removed when the node is exited.
+        </li>
+        
+<li>
+          A <a href="procedures.html#step_ProcedureCall" shape="rect">'Procedure call's'</a> bindings are placed on top of the direct
+          bindings stack before executing the <a href="procedures.html#step_Procedure" shape="rect">'Procedure'</a>.
+          The bindings defined by a 'Procedure' are placed on top of the
+          fallback stack during execution of the 'Procedure'. Think of them
+          as default values for the expected parameters. Once the procedure
+          returns, both sets of bindings are removed.
+        </li>
+      
+</ul>
+    
+
+    
+    
+
+    
+<a name="sec_N75610"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N75610">6.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N75610">Variable example</a>
+</h4>
+      
+<p>
+        Consider the following example:
+      </p>
+      
+<a name="figure_6.3"></a><a name="figure_6.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/VariableExample.png" target="_blank"><img src="images/VariableExample.png" width="328" height="114" alt="Variable example" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;6.3</a>:&nbsp;&nbsp;Variable example</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        The 'Sequence' "Login" contains a 'Procedure call' of the
+        'Procedure' "login" which expects two parameters: <code>user</code>
+        and <code>password</code>.  The 'Procedure's' default bindings are
+        <code>user=username</code> and <code>password=pwd</code>. The
+        'Procedure call' overrides these with <code>user=myname</code> and
+        <code>password=mypassword</code>.
+      </p>
+      
+<p>
+        The "login" 'Procedure' itself holds 'Procedure calls' of 'Procedures'
+        in another test-suite called "lib.qft" to write the user and password
+        to some GUI components.  We assume that the 'Procedures' in this
+        library have most parameters in common, so they don't define default
+        values themselves but in the suite bindings of "lib.qft" where they
+        are set to <code>user=libuser</code> and <code>password=libpwd</code>.
+        This is useful for creating and editing the procedures in the library
+        since they can all be executed and tried out separately without having
+        to define 'Procedure calls'.
+      </p>
+      
+<p>
+        The following diagram shows the State of the binding stacks during the
+        execution of the 'Procedure' "lib.qft#setUser":
+      </p>
+      
+<a name="figure_6.4"></a><a name="figure_6.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="" target="_blank">
+<table align="center" cellspacing="5" cellpadding="0" border="0">
+          
+<tr>
+            
+<td align="center" valign="bottom" rowspan="1" colspan="1">
+              
+<table align="center" width="250" texwidth="5.5cm" cellspacing="0" cellpadding="10" border="1" texvalign="b">
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">
+                    'Procedure call' "lib.qft#setUser"
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">
+                    'Procedure call' "login"<br>
+                    
+<code>user=myname</code>
+<br>
+                    
+<code>password=mypassword</code>
+<br>
+                  
+</td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">'Sequence' "Login"</td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">Global bindings</td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">Command line bindings</td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">Suite bindings</td>
+                
+</tr>
+              
+</table>
+            
+</td>
+            <td width="50" rowspan="1" colspan="1"></td>
+            <td align="center" valign="bottom" rowspan="1" colspan="1">
+              
+<table align="center" width="250" texwidth="5.5cm" cellspacing="0" cellpadding="10" border="1" texvalign="b">
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">
+                    'Procedure' "lib.qft#setUser"
+                  </td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">
+                    Test-suite "lib.qft"<br>
+                    
+<code>user=libuser</code>
+<br>
+                    
+<code>password=libpwd</code>
+<br>
+                  
+</td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">
+                    'Procedure' "Login"<br>
+                    
+<code>user=user</code>
+<br>
+                    
+<code>password=pwd</code>
+<br>
+                  
+</td>
+                
+</tr>
+                
+<tr>
+                  
+<td rowspan="1" colspan="1">System bindings</td>
+                
+</tr>
+              
+</table>
+            
+</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="center" rowspan="1" colspan="1">
+              <strong>Primary stack<br>
+                      (Direct bindings)</strong>
+            </td>
+            <td rowspan="1" colspan="1"></td>
+            <td align="center" rowspan="1" colspan="1">
+              <strong>Secondary stack<br>
+                      (Default values)</strong>
+            </td>
+          
+</tr>
+        
+</table>
+</a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;6.4</a>:&nbsp;&nbsp;Variable bindings example</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        The important thing to note here is that the 'Procedure call' to
+        "lib.qft#setUser" inside the 'Procedure' "login" does not need to
+        define the <code>user</code> parameter again, the parameter is "passed
+        through".  As a rule of thumb, when calling one 'Procedure' from
+        another, define a parameter value in the 'Procedure call' if and only
+        if the value has not been explicitly defined yet or you want to pass a
+        different value.
+      </p>
+
+    
+
+    
+    
+
+    
+<a name="sec_N75929"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N75929">6.4</a></span>
+</div>
+<a href="contents.html#toc_sec_N75929">Fetching data from the GUI</a>
+</h4>
+      
+<p>
+        Often it is necessary to fetch some kind of data from the SUT's GUI to use it as
+        test input.
+      </p>
+      
+<p>
+        QF-Test offers a special set of <a href="queries.html#sec_queries">query nodes</a> for this
+        kind of task, available via &raquo;<em>Insert</em>&laquo;-&raquo;<em>Miscellaneous</em>&laquo;:
+      </p>
+      
+<ul>
+        
+<li>
+          
+<a href="queries.html#step_FetchTextStep" shape="rect">'Fetch text'</a> to fetch a component or item text,
+        </li>
+        
+<li>
+          
+<a href="queries.html#step_FetchIndexStep" shape="rect">'Fetch index'</a> to fetch the index of an components item,
+        </li>
+        
+<li>
+          
+<a href="queries.html#step_FetchGeometryStep" shape="rect">'Fetch geometry'</a> to fetch a component or items geometry.
+        </li>
+      
+</ul>
+      
+<p>
+        The retrieved values are assigned to local or global variables that can be declared in the fetch node.
+      </p>
+      
+<p>
+        Instead of inserting fetch nodes by hand they can easily be created by first recording a
+        mouse click node the the respective component and then use the <a href="user_gui.html#usec_transform_nodes">transform operation</a> to convert the same to the fetch
+        node you need.
+      </p>
+
+    
+
+    
+    
+
+    
+<a name="usec_externaldata"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_externaldata">6.5</a></span>
+</div>
+<a href="contents.html#toc_usec_externaldata">External data and special groups</a>
+</h4>
+      
+<p>
+        External data is made available by the <a href="miscnodes.html#step_LoadResourcesStep" shape="rect">'Load resources'</a> and
+        <a href="miscnodes.html#step_LoadPropertiesStep" shape="rect">'Load properties'</a> nodes. These assign a group name to a set
+        of definitions from a resource bundle or properties file. To access
+        the value of the definition for <em>name</em>, use the syntax
+        <code>${<em>group</em>:<em>name</em>}</code>.
+      </p>
+      
+<p>
+        When run in batch mode (see <a href="user_installation.html#usec_execution">section 1.7</a>) QF-Test clears the resources and
+        properties before the execution of each test given with the <a href="tech_execution.html#arg_test" shape="rect"><code>-test &lt;n&gt;|&lt;ID&gt;</code></a> command line
+        argument. In normal mode QF-Test keeps them around to ease building a suite, but for a true
+        trial run you should clear them via the &raquo;<em>Run</em>&laquo;-&raquo;<em>Clear resources and properties</em>&laquo; menu first.
+      </p>
+      
+<p>
+        Some special group names are predefined and always
+        available:
+      </p>
+      
+<dl>
+        
+<dt>system</dt>
+        
+<dd>
+          The group <code>system</code> gives access to the system
+          properties of the Java VM (for programmers:
+          <code>java.lang.System.getProperties()</code>),
+          e.g. <code>${system:user.home}</code> for the user's home
+          directory or <code>${system:java.class.path}</code> for the
+          <code>CLASSPATH</code> with which QF-Test was started. Which names are defined in the group
+          <code>system</code> depends on the utilised JDK.<br>
+          The group always refers to the VM QF-Test was started with, because
+          variable expansion takes place there.
+        </dd>
+        
+<dt>env</dt>
+        
+<dd>
+          On operating systems which support environment variables like <code>PATH</code>, <code>CLASSPATH</code>
+          or <code>JAVA_HOME</code> (practically all systems QF-Test runs on), these environment
+          variables can be accessed with the help of the group
+          <code>env</code>.
+        </dd>
+        
+<dt>default</dt>
+        
+<dd>
+<span class="margin"><a name="new_N76101"></a><span class="note">3.4+</span></span>
+          You can specify a default value for a variable with the group <code>default</code>. The
+          syntax is <code>${default:varname:defaultvalue}</code>. This is extremely useful for
+          things like generic components or in almost every place where there is a reasonable
+          default for a variable because the default value is then tightly coupled with the
+          use of the variable and doesn't have to be specified at 'Sequence' or test-suite
+          level. Of course you should only use this syntax if the variable lookup in question is
+          more or less unique. If you are using the same variable with the same default in
+          different places it is preferable to use normal syntax and explicitly set the default,
+          so that the default for all values can be changed in a single place.
+        </dd>
+
+        
+<dt>id</dt>
+        
+<dd>
+<span class="margin"><a name="new_N76118"></a><span class="note">3.1+</span></span>
+          The group <code>id</code> can be used to reference QF-Test component IDs. Values in this group
+          simply expand to themselves, i.e. "${id:whatever}" expands to "whatever". Though
+          QF-Test component IDs can be referenced without the help of this group, its use increases the
+          readability of tests. Most notably however, QF-Test component ID references in this group will be updated
+          automatically in case the referenced target component gets moved or its QF-Test ID changed.
+        </dd>
+        
+<dt>idlocal</dt>
+        
+<dd>
+<span class="margin"><a name="new_N76129"></a><span class="note">4.2.3+</span></span>
+          The group <code>idlocal</code> is similar to the <code>id</code> group but includes the path to the current
+          test-suite, i.e. "${idlocal:x}" expands to "path/to/current/suite/suite.qft#x". This enforces use of the
+          component referenced in the suite that is current at the time of expansion, irrespective of whether there
+          is a component with the same %attId; in the target suite of a procedure call.
+        </dd>
+        
+<dt>quoteitem</dt>
+        
+<dd>
+<span class="margin"><a name="new_N76143"></a><span class="note">4.0+</span></span>
+
+          Via the <code>quoteitem</code> group you can conveniently escape special characters like
+          '@', '&amp;' and '%' in the name of a textual sub-item index to prevent it from being
+          treated as several items, e.g. "${quoteitem:user@host.org}" will result in
+          "user\@host.org".
+        </dd>
+        
+<dt>quoteregex, quoteregexp</dt>
+        
+<dd>
+<span class="margin"><a name="new_N76154"></a><span class="note">4.0+</span></span>
+
+          The group <code>quoteregex</code> with its alias <code>quoteregexp</code> can be used to
+          escape characters with special meaning in regular expressions. This is often useful when
+          building regular expressions dynamically or when referencing subitems with special
+          characters in their name by a regular expression index,
+          e.g. "componentid%${quoteregex:foo(baa)}.*" allows you to address the
+          first occurrence of items beginning with 'foo(baa)'.
+        </dd>
+        
+<dt>quotesmartid</dt>
+        
+<dd>
+<span class="margin"><a name="new_N76168"></a><span class="note">6.0.1+</span></span>
+
+          The <code>quotesmartid</code> group is similar to <code>quoteitem</code>. In addition to the item syntax
+	  special characters '@', '&amp;' and '%' it also escapes the characters ':', '=', '&lt;' and '&gt;' that
+	  have special meaning in SmartIDs, e.g. "${quotesmartid:Name: A &amp; B}" will result in
+          "Name\: A \&amp; B".
+        </dd>
+        
+<dt>qftest</dt>
+        
+<dd>
+          The special group named <code>qftest</code> provides miscellaneous values that may be
+          useful during a test run. The following tables list the values currently defined.
+          
+          
+
+          <a name="table_6.1"></a><a name="table_6.1"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth">
+              
+<tr>
+                
+<th rowspan="1" colspan="1">Name</th>
+                <th rowspan="1" colspan="1">Meaning</th>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>32</code> or <code>32bit</code></td>
+                <td texalign="p{3.5in}" rowspan="1" colspan="1">
+                  <em>true</em> if QF-Test is running in a 32bit Java VM - which is not the same as
+                  running on a 32bit Operating System - <em>false</em> otherwise.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>64</code> or <code>64bit</code></td>
+                <td rowspan="1" colspan="1">
+                  <em>true</em> if QF-Test is running in a 64bit Java VM, <em>false</em> otherwise.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>batch</code></td>
+                <td rowspan="1" colspan="1">
+                  <em>true</em> if QF-Test is running in batch mode, <em>false</em> for interactive
+                  mode.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>client.exitcode.&lt;name&gt;</code></td>
+                <td rowspan="1" colspan="1">
+                  The exit-code of the last process started with the
+                  <a href="processes.html#att_JavaClientStarter_client" shape="rect">'Client'</a> attribute set to <em>&lt;name&gt;</em>. In case
+                  the process is still alive the result is the empty string.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>client.output.&lt;name&gt;</code></td>
+                <td rowspan="1" colspan="1">
+                  The output of the last process started with the
+                  <a href="processes.html#att_JavaClientStarter_client" shape="rect">'Client'</a> attribute set to
+                  <em>&lt;name&gt;</em>. The maximum size for buffered output is defined
+                  by the option <a href="opt_play.html#opt_clientoutputsize">Maximum size of client terminal (kB)</a>.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>client.stdout.&lt;name&gt;</code></td>
+                <td rowspan="1" colspan="1">
+                  The output on the standard output stream (stdout) of the last
+                  process (started with the <a href="processes.html#att_JavaClientStarter_client" shape="rect">'Client'</a> attribute set to
+                  <em>&lt;name&gt;</em>). The maximum size for buffered output is defined
+                  by the option <a href="opt_play.html#opt_clientoutputsize">Maximum size of client terminal (kB)</a>.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>client.stderr.&lt;name&gt;</code></td>
+                <td rowspan="1" colspan="1">
+                  The output on the standard error stream (stderr) of the last
+                  process (started with the <a href="processes.html#att_JavaClientStarter_client" shape="rect">'Client'</a> attribute set to
+                  <em>&lt;name&gt;</em>). The maximum size for buffered output is defined
+                  by the option <a href="opt_play.html#opt_clientoutputsize">Maximum size of client terminal (kB)</a>.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>clients</code></td>
+                <td rowspan="1" colspan="1">
+                  A list of the names of all active process clients, separated by a newline.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>clients.all</code></td>
+                <td rowspan="1" colspan="1">
+                  A list of the names of all process clients, separated by a newline. This
+                  includes live clients as well as the recent dead clients similar to those listed
+                  in the "Clients" menu.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>count.exceptions</code></td>
+                <td rowspan="1" colspan="1">
+                  Number of exceptions in the current test-run.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>count.errors</code></td>
+                <td rowspan="1" colspan="1">
+                  Number of errors in the current test-run.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>count.warnings</code></td>
+                <td rowspan="1" colspan="1">
+                  Number of warnings in the current test-run.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>count.testcases</code></td>
+                <td rowspan="1" colspan="1">
+                  Total number of total test-cases (run and skipped) in the current test-run.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>count.testcases.exception</code></td>
+                <td rowspan="1" colspan="1">
+                  Number of test-cases with exceptions in the current test-run.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>count.testcases.error</code></td>
+                <td rowspan="1" colspan="1">
+                  Number of test-cases with errors in the current test-run.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>count.testcases.expectedtofail</code></td>
+                <td rowspan="1" colspan="1">
+                  Number of test-cases expected to fail in the current test-run.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>count.testcases.ok</code></td>
+                <td rowspan="1" colspan="1">
+                  Number of successful test-cases in the current test-run.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>count.testcases.ok.percentage</code></td>
+                <td rowspan="1" colspan="1">
+                  Percentage of successful test-cases in the current test-run.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>count.testcases.skipped</code></td>
+                <td rowspan="1" colspan="1">
+                  Number of skipped test-cases in the current test-run.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>count.testcases.notimplemented</code></td>
+                <td rowspan="1" colspan="1">
+                  Number of not implemented test-cases in the current test-run.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>count.testcases.run</code></td>
+                <td rowspan="1" colspan="1">
+                  Number of run test-cases in the current test-run.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>count.testsets.skipped</code></td>
+                <td rowspan="1" colspan="1">
+                  Number of skipped test-sets in the current test-run.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>dir.groovy</code></td>
+                <td rowspan="1" colspan="1">Directory of Groovy</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>dir.javascript</code></td>
+                <td rowspan="1" colspan="1">Directory of JavaScript</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>dir.jython</code></td>
+                <td rowspan="1" colspan="1">Directory of Jython</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>dir.log</code></td>
+                <td rowspan="1" colspan="1">Log directory of QF-Test</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>dir.plugin</code></td>
+                <td rowspan="1" colspan="1">Plugin directory of QF-Test</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>dir.root</code></td>
+                <td rowspan="1" colspan="1">Root directory of QF-Test</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>dir.runlog</code></td>
+                <td rowspan="1" colspan="1">Run-log directory of QF-Test</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>dir.system</code></td>
+                <td rowspan="1" colspan="1">
+                System-specific configuration directory of QF-Test.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>dir.user</code></td>
+                <td rowspan="1" colspan="1">User-specific configuration directory of QF-Test</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>dir.version</code></td>
+                <td rowspan="1" colspan="1">Version-specific directory of QF-Test</td>
+              
+</tr>
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>engine.&lt;componentId&gt;</code></td>
+                <td rowspan="1" colspan="1">Retrieves the GUI-Engine responsible for the given component.</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>license</code></td>
+                <td rowspan="1" colspan="1">The path to the license file</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>systemcfg</code></td>
+                <td rowspan="1" colspan="1">The path to the system configuration file</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>usercfg</code></td>
+                <td rowspan="1" colspan="1">The path to the user specific configuration file</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>executable</code></td>
+                <td rowspan="1" colspan="1">
+                  The <code>qftest</code> executable matching the currently running QF-Test version,
+                  including the full path to its <code>bin</code> directory and with
+                  <code>.exe</code> appended on Windows. Useful if you need to run QF-Test from QF-Test
+                  for example to call a daemon or create reports.
+                </td>
+              
+</tr>
+               
+<tr>
+                
+<td rowspan="1" colspan="1"><code>isInRerun</code></td>
+                <td rowspan="1" colspan="1">"true", if current execution is in re-run mode, "false" otherwise,
+                 see <a href="user_rerun.html#usec_rerun_node">subsection 22.3.2</a>.</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>isInRerunFromLog</code></td>
+                <td rowspan="1" colspan="1">"true", if test-run has been re-started from run-log, "false" otherwise,
+                see <a href="user_rerun.html#usec_rerun_from_log">subsection 22.3.1</a>.</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>java</code></td>
+                <td rowspan="1" colspan="1">Standard Java program (<code>javaw</code> under
+                  Windows, <code>java</code> under Linux/Unix) or the explicit
+                  Java argument if QF-Test is started with <a href="tech_execution.html#arg_java" shape="rect"><code>-java &lt;executable&gt;</code></a></td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>java.mainversion</code></td>
+                <td rowspan="1" colspan="1">
+		  The major version of the JRE that QF-Test currently runs on, using 8 for Java 1.8 so the result is
+		  something like 8, 11 or 17.
+		</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>java.subversion</code></td>
+                <td rowspan="1" colspan="1">
+		  The sub-version of the JRE that QF-Test currently runs on. For Java 8 the sub-version taken from after
+		  the '_', so for java.version 1.8.0_302 this results in 302. For Java 9 or higher this is the minor
+		  version, e.g. 9 in case of java.version 11.0.9.
+		</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>linux</code></td>
+                <td rowspan="1" colspan="1">"true" under Linux, "false" otherwise</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>macos</code></td>
+                <td rowspan="1" colspan="1">"true" under macOS, "false" otherwise</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>os.fullversion</code></td>
+                <td rowspan="1" colspan="1">The whole version of the operating system</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>os.mainversion</code></td>
+                <td rowspan="1" colspan="1">The main version of the operating system, e.g. "10" for Windows 10</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>os.name</code></td>
+                <td rowspan="1" colspan="1">The name of the operating system</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>os.version</code></td>
+                <td rowspan="1" colspan="1">The version of the operating system. In some cases that's not the whole one then you should use <code>os.fullversion</code> instead.</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>reruncounter</code></td>
+                <td rowspan="1" colspan="1">Number of current re-run attempt, default is 0, for details see <a href="user_rerun.html#usec_rerun_node">subsection 22.3.2</a>.</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>return</code></td>
+                <td rowspan="1" colspan="1">
+                  The most recent value returned from a <a href="procedures.html#step_Procedure" shape="rect">'Procedure'</a> through a
+                  <a href="procedures.html#step_ReturnStep" shape="rect">'Return'</a> node.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>runid</code></td>
+                <td rowspan="1" colspan="1">
+                  The runid of the current test-run. See <a href="user_report.html#usec_reports">section 21.1</a> for further
+                  information about the runid.
+                </td>
+              
+</tr>
+              
+                
+                
+              
+              
+<tr>
+                
+<td align="left" rowspan="1" colspan="1"><code>screen.height</code></td>
+                <td rowspan="1" colspan="1">Screen height in pixels</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>screen.width</code></td>
+                <td rowspan="1" colspan="1">Screen width in pixels</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>skipnode</code></td>
+                <td rowspan="1" colspan="1">
+                  This magic value is not for the casual user. It causes QF-Test to skip execution of
+                  the current node. Its primary use is as the value for a variable defined in the
+                  <a href="events.html#att_TextInputStep_text" shape="rect">'Text'</a> attribute of a <a href="events.html#step_TextInputStep" shape="rect">'Text input'</a> node which also has
+                  its <a href="events.html#att_TextInputStep_clear" shape="rect">'Clear target component first'</a> attribute set. An empty value would clear the
+                  field whereas $_{qftest:skipnode} leaves the field unchanged. But skipnode is
+                  also applicable for fine-grained execution control by placing a variable in the
+                  comment of a node and selectively passing $_{qftest:skipnode} to that variable.
+                  Please note that you almost always want to use lazy syntax '$_' with this
+                  variable. Otherwise its expansion as the parameter in a 'Procedure call' node
+                  would cause skipping the whole call.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>suite.dir</code></td>
+                <td rowspan="1" colspan="1">Directory of the current suite</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>suite.file</code></td>
+                <td rowspan="1" colspan="1">File name of the current suite without directory</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>suite.path</code></td>
+                <td rowspan="1" colspan="1">File name of the current suite including directory</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>testcase.name</code></td>
+                <td rowspan="1" colspan="1">
+                  The name of the current 'Test-case', empty if no 'Test-case' is currently being
+                  executed.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>testcase.id</code></td>
+                <td rowspan="1" colspan="1">
+                  The QF-Test ID of the current 'Test-case', empty if no 'Test-case' is currently being
+                  executed.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>testcase.qname</code></td>
+                <td rowspan="1" colspan="1">
+                  The qualified name of the current 'Test-case', including the names of its parent
+                  'Test-sets'. Empty if no 'Test-case' is currently being executed.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>testcase.reportname</code></td>
+                <td rowspan="1" colspan="1">
+                  The expanded report name of the current 'Test-case', empty if no 'Test-case' is
+                  currently being executed.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>testcase.splitlogname</code></td>
+                <td rowspan="1" colspan="1">
+                  The qualified name of the current 'Test-case' converted to a filename, including
+                  the names of its parent 'Test-sets' as directories. Empty if no 'Test-case' is
+                  currently being executed.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>testset.name</code></td>
+                <td rowspan="1" colspan="1">
+                  The name of the current 'Test-set', empty if no 'Test-set' is currently being
+                  executed.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>testset.id</code></td>
+                <td rowspan="1" colspan="1">
+                  The QF-Test ID of the current 'Test-set', empty if no 'Test-set' is currently being
+                  executed.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>testset.qname</code></td>
+                <td rowspan="1" colspan="1">
+                  The qualified name of the current 'Test-set', including the names of its parent
+                  'Test-sets'. Empty if no 'Test-set' is currently being executed.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>testset.reportname</code></td>
+                <td rowspan="1" colspan="1">
+                  The expanded report name of the current 'Test-set', empty if no 'Test-set' is
+                  currently being executed.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>testset.splitlogname</code></td>
+                <td rowspan="1" colspan="1">
+                  The qualified name of the current 'Test-set' converted to a filename, including
+                  the names of its parent 'Test-sets' as directories. Empty if no 'Test-set' is
+                  currently being executed.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>teststep.name</code></td>
+                <td rowspan="1" colspan="1">
+                  The name of the current 'Test-step', empty if no 'Test-step' is currently being
+                  executed.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>teststep.qname</code></td>
+                <td rowspan="1" colspan="1">
+                  The qualified name of the current 'Test-step', including the names of its parent
+                  'Test-steps', but not including 'Test-cases' or 'Test-sets'. Empty if no 'Test-step'
+                  is currently being executed.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>teststep.reportname</code></td>
+                <td rowspan="1" colspan="1">
+                  The expanded report name of the current 'Test-step', empty if no 'Test-step' is
+                  currently being executed.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>thread</code></td>
+                <td rowspan="1" colspan="1">
+                  The index of the current thread. Always 0 except if QF-Test is started with the
+                  argument <a href="tech_execution.html#arg_threads" shape="rect"><code>-threads &lt;number&gt;</code></a>.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>threads</code></td>
+                <td rowspan="1" colspan="1">
+                  The number of parallel threads. Always 1 except if QF-Test is started with the
+                  argument <a href="tech_execution.html#arg_threads" shape="rect"><code>-threads &lt;number&gt;</code></a>.
+                </td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>version</code></td>
+                <td rowspan="1" colspan="1">QF-Test version</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>version.build</code></td>
+                <td rowspan="1" colspan="1">QF-Test build number</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>windows</code></td>
+                <td rowspan="1" colspan="1">"true" under Windows, "false" otherwise</td>
+              
+</tr>
+            
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;6.1</a>:&nbsp;&nbsp;
+              Definitions in the special group <code>qftest</code>
+            </td><td class="captionglue"></td>
+</tr>
+</table>
+
+          
+        
+</dd>
+      
+</dl>
+    
+
+    
+    
+
+    
+<a name="usec_expressions"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_expressions">6.6</a></span>
+</div>
+<a href="contents.html#toc_usec_expressions">Expressions</a>
+</h4>
+      
+<p>
+        The <code>$[...]</code> syntax for mathematical expressions
+        supports operations like <code>+</code>, <code>-</code>,
+        <code>*</code>, <code>\</code> and <code>%</code> (modulo) as well
+        as braces. It comes in handy when calculating coordinates, e.g. in
+        a loop.
+      </p>
+      
+<p>
+        In fact these expressions are far more powerful, since they are
+        evaluated by the Jython interpreter. You can use arbitrary
+        constructs that are legal syntax for the Jython method
+        <code>eval</code>. See <a href="user_scripting.html#usec_scripting">chapter 11</a> for details
+        about Jython scripting.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> Accessing QF-Test variables in an expression
+        follows the same rules as in Jython scripts (see <a href="user_scripting.html#usec_scriptvars">subsection 11.2.3</a>). You can use the standard QF-Test syntax
+        <code>$(...)</code> and <code>${...:...}</code> for numeric or Boolean
+        values. String values should be accessed with
+        <code>rc.lookup(...)</code>.
+      </p>
+    
+
+    
+    
+
+    
+<a name="usec_immediatebindings"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="margin"><a name="new_N77637"></a><span class="note">3.0+</span></span><span class="numtitle"><a href="contents.html#toc_usec_immediatebindings">6.7</a></span>
+</div>
+<a href="contents.html#toc_usec_immediatebindings">Immediate and lazy binding</a>
+</h4>
+      
+<p>
+        There is a very subtle issue in using QF-Test variables that requires further explanation:
+      </p>
+      
+<p>
+        When a new set of variable bindings is pushed on one of the variable stacks, there are two
+        possibilities for handling variable references in the value of a binding, for example when
+        the variable named 'x' is bound to the value '$(y)'. The value '$(y)' can be stored
+        literally, in which case it will be expanded some time in the future when '$(x)' is
+        referenced somewhere, or it can be expanded immediately, so that the value of the variable
+        'y' is bound instead. The first approach is called 'lazy' or 'late binding', the second
+        approach 'immediate binding'.
+      </p>
+      
+<p>
+        The difference, of course, is the time and thus the context in which a variable is
+        expanded. In most cases there is no difference at all, but there are situations where it
+        is essential to use either lazy or immediate binding. Consider the following two examples:
+      </p>
+      
+<p>
+        A utility test-suite contains a procedure for starting the SUT with different JDK
+        versions. The variable 'jdk' is passed as a parameter to this procedure. For ease of use,
+        the author of the test-suite defines some additional useful variables at test-suite level,
+        for example a variable for the java executable named 'javabin' with the value
+        '/opt/java/$(jdk)/bin/java'. At the time 'javabin' is bound in the test-suite variables,
+        'jdk' may be undefined, so immediate binding would cause an exception. But even if 'jdk'
+        were bound to some value, immediate binding would not have the desired effect, because the
+        java executable is supposed to be the one from the JDK defined later by passing the
+        parameter 'jdk' to a procedure. Thus lazy binding is the method of choice here.
+      </p>
+      
+<p>
+        Imagine another utility test-suite with a procedure to copy a file. Two parameters called
+        'source' and 'dest' specify the source file and destination directory. The caller of the
+        procedure wants to copy a file called 'data.csv' from the same directory as the calling
+        test-suite to some other place. The natural idea is to bind the variable 'source' to the
+        value '${qftest:suite.dir}/data.csv' in the procedure call. With immediate binding,
+        '${qftest:suite.dir}' will indeed expand to the directory in which the calling suite
+        resides. However, if lazy binding were used, the actual expansion would take place inside
+        the procedure. In that case, '${qftest:suite.dir}' would expand to the directory of the
+        utility suite, which most likely is not what the caller intended.
+      </p>
+      
+<p>
+        In versions of QF-Test up to and including 2.2 all variable expansion was lazy. As the
+        examples above show, both variants are sometimes necessary. Since immediate binding is
+        more intuitive it is now the default. This can be changed with the option <a href="opt_vars.html#opt_immediatebinding">When binding variables, expand values immediately</a>. The option <a href="opt_vars.html#opt_immediatebindingfallback">Fall back to lazy binding if immediate binding fails</a>
+        complements this and helps to ease migration of old test-suites to the use of Immediate
+        Binding. The warnings issued in this context help locating the few spots where you should
+        use explicit lazy binding as described below. Except for very rare cases where lazy
+        binding is required but immediate binding also works so that the fallback is not
+        triggered, all tests should work out of the box.
+      </p>
+      
+<p>
+        In the few cases where it makes a difference whether a variable is expanded immediately or
+        lazily, the expansion of choice can be selected individually, independent of the setting
+        of the above option, by using an alternative variable syntax. For immediate binding use
+        '$!' instead of just '$'. Lazy binding is selected with '$_'. For example, to define a
+        variable at test-suite level that specifies a file located in this test-suite's directory,
+        use '$!{qftest:suite.dir}/somefile'. If immediate binding is the default and you require
+        lazy binding as in the 'jdk' example above, use '$_(jdk)'.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> With lazy binding the order of variable or parameter definitions in
+        a node or a data driver did not matter because nothing was expanded during the binding
+        stage. With immediate bindings, variables are expanded top-to-bottom or, in a data driver,
+        left-to-right. This means that if you define x=1 and y=$(x) it will work, with y being set
+        to 1, if x is defined first. If y is defined first the definition will either fail or
+        trigger the lazy definition fallback described above.
+      </p>
+    
+  
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_components.html#usec_components"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 5&nbsp;Components" title="Previous Chapter: 5&nbsp;Components"></a></td><td class="navicon"><a href="user_debugging.html#usec_debugging"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 7&nbsp;Problem analysis and debugging" title="Next Page: 7&nbsp;Problem analysis and debugging"></a></td><td class="navicon"><a href="user_debugging.html#usec_debugging"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 7&nbsp;Problem analysis and debugging" title="Next Chapter: 7&nbsp;Problem analysis and debugging"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;User manual" title="Chapter Overview: I&nbsp;User manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

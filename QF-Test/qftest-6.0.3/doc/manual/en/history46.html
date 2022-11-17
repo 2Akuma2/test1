@@ -1,0 +1,354 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>QF-Test version 4.6</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="features_4_6"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="history47.html#features_4_7"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: B.7.1&nbsp;QF-Test version 4.7" title="Previous Chapter: B.7.1&nbsp;QF-Test version 4.7"></a></td><td class="navicon"><a href="history45.html#features_4_5"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: B.7.3&nbsp;QF-Test version 4.5" title="Next Page: B.7.3&nbsp;QF-Test version 4.5"></a></td><td class="navicon"><a href="history45.html#features_4_5"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: B.7.3&nbsp;QF-Test version 4.5" title="Next Chapter: B.7.3&nbsp;QF-Test version 4.5"></a></td><td class="navicon"><a href="history4.html#features_4"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: B.7&nbsp;QF-Test version 4" title="Chapter Overview: B.7&nbsp;QF-Test version 4"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+	
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_features_4_6">B.7.2</a></span>
+</div>
+<a href="contents.html#toc_features_4_6">QF-Test version 4.6</a>
+</h5>
+	
+
+	
+<a name="sec_N205154"></a>
+	  
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N205154">B.7.2.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N205154">Version 4.6.0 - June 18, 2019</a>
+</h5>
+	  
+
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+
+	  
+	  
+<p>
+            
+<b>New features:</b>
+	  
+</p>
+	  
+<ul>
+            
+<li>
+              
+              
+<span class="margin"><a name="web_N205266"></a><span class="note">Web</span></span>
+
+              QF-Test now supports testing web applications in Opera browser on Windows, macOS and Linux.
+            </li>
+            
+<li>
+              
+              
+<span class="margin"><a name="web_N205273"></a><span class="note">Web</span></span>
+
+              QF-Test now also supports the new Microsoft Edge browser based on Chromium.
+            </li>
+            
+<li>
+              
+
+              Support was added for Eclipse/SWT version 4.12 alias "2019-06".
+            </li>
+            
+<li>
+              
+
+              Via the new methods <code>print</code> and <code>println</code> that were added to the <code>qf</code>
+              module it is now possible to print messages directly to QF-Test's terminal from both <a href="control.html#step_ServerScriptStep" shape="rect">'Server script'</a>
+              and <a href="control.html#step_ClientScriptStep" shape="rect">'SUT script'</a> nodes, irrespective of whether the SUT output gets redirected or not and
+              whether there's a RunContext available or the code is part of a resolver during recording.
+            </li>
+            
+<li>
+              
+
+              The new command line argument <a href="tech_execution.html#arg_license.waitfor" shape="rect"><code>-license-waitfor &lt;seconds&gt;</code></a> allows waiting for a QF-Test license to become
+              available during startup.
+            </li>
+            
+<li>
+              
+
+              For better conformance with regulations for protection of personal data the <code>licenseserver.log</code>
+              file written by the QF-Test license server now contains hashes instead of user name, host name or IP address.
+              This can be turned off via the new command line argument -licenseserver.hashlogentries=false.
+            </li>
+            
+<li>
+              
+
+              A "mouseButton" parameter was added to the various <code>clickAtImage</code> procedures in the <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autoscreen"><code>qfs.autoscreen</code></a> package of the standard library <code>qfs.qft</code>.
+            </li>
+            
+<li>
+              
+
+              The new shortcut [Shift-Ctrl-Right] can be used in the parameters table
+              of <a href="procedures.html#step_ProcedureCall" shape="rect">'Procedure call'</a> nodes to quickly create a forward - i.e. <code>x</code> -&gt; <code>$(x)</code> -
+              of the current variable value for the selected table rows.
+            </li>
+            
+<li>
+              
+              
+
+              The embedded JUnit Jupiter library was updated to version 5.4.2.
+            </li>
+	  
+</ul>
+	  
+<p>
+            
+<b>Bugs fixed:</b>
+	  
+</p>
+	  
+<ul>
+            
+<li>
+              
+
+              Importing procedures from large test-suites could lead to an <code>OutOfMemoryError</code>.
+            </li>
+            
+<li>
+              
+
+              Closing QF-Test in check recording mode without killing the SUT process would leave the SUT in a completely
+              unusable state.
+            </li>
+            
+<li>
+              
+
+              The command line argument <a href="tech_execution.html#arg_killrunninginstances" shape="rect"><code>-kill-kunning-instances</code></a> could inadvertently terminate QF-Test processes on
+              other machines in the local network provided those were started with <a href="tech_execution.html#arg_allowkilling" shape="rect"><code>-allowkilling</code></a>.
+            </li>
+            
+<li>
+              
+
+              Auto-saving test-suites could accidentally trigger re-compression of images. For test-suites with many or
+              large images this could slow down QF-Test noticeably.
+            </li>
+            
+<li>
+              
+
+              Reading the license file from a slow network drive could occasionally fail.
+            </li>
+            
+<li>
+              
+
+              Opening a test-suite in Windows explorer via the context menu of the suite tab failed in case the
+              file name contained spaces.
+            </li>
+            
+<li>
+              
+
+              In rare cases waiting for a component during SUT startup could trigger a
+              <code>ClientNotConnectedException</code> instead of the expected <code>ComponentNotFoundException</code>.
+            </li>
+            
+<li>
+              
+
+              The procedure <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.acrobat.saveAsText"><code>qfs.autowin.acrobat.saveAsText</code></a> was updated for Acrobat version
+              19.12.20034.1161 and newer.
+            </li>
+            
+<li>
+              
+
+              Variables bound in the data driver of a <a href="sequences.html#step_TestStep" shape="rect">'Test-step'</a> were lost when using "continue from here" inside
+              the 'Test-step'.
+            </li>
+            
+<li>
+              
+
+              Output of the -licenseserver.dump* batch commands was missing information for the JavaFX engine. In
+              addition to fixing that, information about Windows engine licenses was added, the "AWT" columns were
+              renamed to "Swing" and information for engines that are not available in the server license is no longer
+              displayed. These changes all apply to the interactive license administration tool as well.
+            </li>
+            
+<li>
+              
+              
+              
+<span class="margin"><a name="web_N205466"></a><span class="note">Web</span></span>
+
+              Closing a popup window in Firefox or closing a browser tab in any WebDriver controlled browser could
+              sometimes cause the entire SUT to terminate.
+            </li>
+            
+<li>
+              
+              
+<span class="margin"><a name="web_N205473"></a><span class="note">Web</span></span>
+
+              Frames in a popup window were not recognized correctly if the browser was connected via WebDriver.
+            </li>
+            
+<li>
+              
+              
+              
+              
+<span class="margin"><a name="web_N205484"></a><span class="note">Web</span></span>
+
+              Performance for web tests has been improved, for both QF-Driver and WebDriver connection modes. The
+              effects are very dependent on the specific web application.
+            </li>
+            
+<li>
+              
+              
+<span class="margin"><a name="web_N205491"></a><span class="note">Web</span></span>
+
+              A workaround for an Electron bug now allows testing with current ChromeDriver versions.
+            </li>
+            
+<li>
+              
+              
+<span class="margin"><a name="web_N205498"></a><span class="note">Web</span></span>
+
+              Arguments passed to an Electron application were accidentally prefixed with "--".
+            </li>
+            
+<li>
+              
+              
+<span class="margin"><a name="web_N205505"></a><span class="note">Web</span></span>
+
+              Electron applications without native menus are now handled correctly.
+            </li>
+            
+<li>
+              
+              
+<span class="margin"><a name="web_N205512"></a><span class="note">Web</span></span>
+
+              Cleanup of browser processes has been improved even in case a browser crashes at startup.
+            </li>
+            
+<li>
+              
+              
+<span class="margin"><a name="web_N205519"></a><span class="note">Web</span></span>
+
+              Original third party cookie settings were not always restored correctly after closing a browser.
+            </li>
+            
+<li>
+              
+              
+<span class="margin"><a name="web_N205526"></a><span class="note">Web</span></span>
+
+              In a web application <a href="queries.html#step_FetchTextStep" shape="rect">'Fetch text'</a>, <a href="queries.html#step_FetchIndexStep" shape="rect">'Fetch index'</a> and <a href="queries.html#step_FetchGeometryStep" shape="rect">'Fetch geometry'</a> nodes could fail
+              with an internal error when trying to determine the value while the target node got dynamically removed
+              from the DOM. Now the operation is retried instead.
+            </li>
+            
+<li>
+              
+              
+<span class="margin"><a name="web_N205551"></a><span class="note">Web</span></span>
+
+              Navigation to an anchor within the same page in JXBrowser is now handled correctly.
+            </li>
+            
+<li>
+              
+              
+<span class="margin"><a name="fx_N205558"></a><span class="note">JavaFX</span></span>
+
+              Event replay for JavaFX is now more resilient against unexpected window focus changes on Linux, especially
+              for menu item selections.
+            </li>
+	  
+</ul>
+	
+
+	
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="history47.html#features_4_7"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: B.7.1&nbsp;QF-Test version 4.7" title="Previous Chapter: B.7.1&nbsp;QF-Test version 4.7"></a></td><td class="navicon"><a href="history45.html#features_4_5"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: B.7.3&nbsp;QF-Test version 4.5" title="Next Page: B.7.3&nbsp;QF-Test version 4.5"></a></td><td class="navicon"><a href="history45.html#features_4_5"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: B.7.3&nbsp;QF-Test version 4.5" title="Next Chapter: B.7.3&nbsp;QF-Test version 4.5"></a></td><td class="navicon"><a href="history4.html#features_4"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: B.7&nbsp;QF-Test version 4" title="Chapter Overview: B.7&nbsp;QF-Test version 4"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Mapping of Lists</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_customajax_list"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_customajax_tree.html#sec_customajax_tree"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 47.1.6&nbsp;Mapping of Trees" title="Previous Chapter: 47.1.6&nbsp;Mapping of Trees"></a></td><td class="navicon"><a href="tech_customajax_combobox.html#sec_customajax_combobox"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 47.1.8&nbsp;Mapping of Comboboxes" title="Next Page: 47.1.8&nbsp;Mapping of Comboboxes"></a></td><td class="navicon"><a href="tech_customajax_combobox.html#sec_customajax_combobox"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 47.1.8&nbsp;Mapping of Comboboxes" title="Next Chapter: 47.1.8&nbsp;Mapping of Comboboxes"></a></td><td class="navicon"><a href="tech_customajax.html#sec_customajax"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 47.1&nbsp;Improving component recognition with a CustomWebResolver" title="Chapter Overview: 47.1&nbsp;Improving component recognition with a CustomWebResolver"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_customajax_list">47.1.7</a></span>
+</div>
+<a href="contents.html#toc_sec_customajax_list">Mapping of Lists</a>
+</h5>
+          
+<p>
+            In order to resolve List components correctly, it is necessary to map the component
+            containing all list entries, i.e the list itself
+            as well as the components which represent the individual list entries.
+          </p>
+          
+<a name="table_47.3"></a><a name="table_47.3"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth" valign="center">
+            
+<tr>
+              
+<th rowspan="1" colspan="1">Class</th>
+              <th rowspan="1" colspan="1">Required components and sub items</th>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">List</td>
+              <td rowspan="1" colspan="1">Represents the List component, contains all list entries.</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Item:ListItem</td>
+              <td rowspan="1" colspan="1">Represents the individual list entry.</td>
+            
+</tr>
+            
+<tr>
+              
+<th rowspan="1" colspan="1">&nbsp;</th>
+              <th rowspan="1" colspan="1">Optional sub items</th>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">CheckBox:ListItemCheckBox</td>
+              <td rowspan="1" colspan="1">(Optional) Represents a checkbox inside the list entry.</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Icon:ListItemIcon</td>
+              <td rowspan="1" colspan="1">(Optional) Represents an icon inside the list entry.</td>
+            
+</tr>
+          
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Table&nbsp;47.3</a>:&nbsp;&nbsp;Mapping of Lists</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            In the case of comboboxes you can also map the specific ComboBoxList:
+            <code>List:ComboBoxList</code> and <code>Item:ComboBoxListItem</code>.
+          </p>
+          
+<p>
+            
+<strong>Sample:</strong>
+          
+</p>
+          
+<p>
+            The following HTML Code represents a list:
+          </p>
+            
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>&lt;ul class="datalist"&gt;
+  &lt;li class="list-item"&gt;Entry A&lt;/li&gt;
+  &lt;li class="list-item"&gt;Entry B&lt;/li&gt;
+  &lt;li class="list-item"&gt;Entry C&lt;/li&gt;
+  &lt;li class="list-item"&gt;Entry D&lt;/li&gt;
+  &lt;li class="list-item"&gt;Entry E&lt;/li&gt;
+&lt;/ul&gt;</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;47.3:&nbsp;&nbsp;HTML List</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            This HTML code offers the choice whether to map the HTML tags or the css classes.
+            We highly recommend to use the css classes as this will be a lot preciser
+            than the omnipresent tags <code>ul</code> and <code>li</code>.
+            <code>datalist</code> strongly hints that the object would be a data list.
+            With <code>list-item</code> we can add <code>@::ancestor=List</code>
+            to be sure not to map sub items of other complex components (e.g. with
+            table cells not shown here, which very well could have the css class <code>list-item</code>)
+          </p>
+          
+<p>
+            If you used the HTML tags this might easily lead to wrong mappings
+            with other components.
+            If such a thing should happen and you find it difficult to tell why
+            a mapping does not work you can use the procedure
+            <code>qfs.web.ajax.dumpCustomWebResolverProperties</code>
+            to show the current mappings.
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>installCustomWebResolver</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                List mappings.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>resolver</code></strong></td><td class="paramdesc">
+                custom
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>version</code></strong></td><td class="paramdesc">
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>genericClasses</code></strong></td><td class="paramdesc">
+                datalist=List,<br>
+                list-item=Item:ListItem@::ancestor=List
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_customajax_tree.html#sec_customajax_tree"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 47.1.6&nbsp;Mapping of Trees" title="Previous Chapter: 47.1.6&nbsp;Mapping of Trees"></a></td><td class="navicon"><a href="tech_customajax_combobox.html#sec_customajax_combobox"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 47.1.8&nbsp;Mapping of Comboboxes" title="Next Page: 47.1.8&nbsp;Mapping of Comboboxes"></a></td><td class="navicon"><a href="tech_customajax_combobox.html#sec_customajax_combobox"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 47.1.8&nbsp;Mapping of Comboboxes" title="Next Chapter: 47.1.8&nbsp;Mapping of Comboboxes"></a></td><td class="navicon"><a href="tech_customajax.html#sec_customajax"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 47.1&nbsp;Improving component recognition with a CustomWebResolver" title="Chapter Overview: 47.1&nbsp;Improving component recognition with a CustomWebResolver"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

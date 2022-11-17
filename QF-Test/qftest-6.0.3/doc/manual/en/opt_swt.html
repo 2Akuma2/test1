@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>SWT options</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_opt_swt"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="opt_web.html#sec_opt_web"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 37.5&nbsp;Web options" title="Previous Chapter: 37.5&nbsp;Web options"></a></td><td class="navicon"><a href="opt_debugger.html#sec_opt_debugger"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 37.7&nbsp;Debugger options" title="Next Page: 37.7&nbsp;Debugger options"></a></td><td class="navicon"><a href="opt_debugger.html#sec_opt_debugger"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 37.7&nbsp;Debugger options" title="Next Chapter: 37.7&nbsp;Debugger options"></a></td><td class="navicon"><a href="options.html#sec_options"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 37&nbsp;Options" title="Chapter Overview: 37&nbsp;Options"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="margin"><a name="swt_N106668"></a><span class="note">SWT</span></span><span class="numtitle"><a href="contents.html#toc_sec_opt_swt">37.6</a></span>
+</div>
+<a href="contents.html#toc_sec_opt_swt">SWT options</a>
+</h4>
+      
+      
+<p>
+        The following options are used specifically for SWT testing.
+      </p>
+      
+<a name="figure_37.32"></a><a name="figure_37.32"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_SWT.png" target="_blank"><img src="images/opt_SWT.png" alt="SWT options" texscale=".66" width="393" height="145"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.32</a>:&nbsp;&nbsp;SWT options</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<dl class="option">
+        
+
+        
+        
+<a name="opt_swtviaagent"></a>
+<dt>
+<span class="margin"><a name="new_N106708"></a><span class="note">4.5+</span></span>Connect without SWT instrumentation (System)</dt>
+<dd>Server script name: OPT_PLAY_SWT_VIA_AGENT<br>
+            
+<p>
+              With this option activated there is no need to instrument SWT based applications, except for older SWT
+              versions on Linux. For detailed technical information please see <a href="tech_swt_instrumentation.html#sec_swt_instrumentation">section 43.2</a>.
+            </p>
+          
+</dd>
+
+        
+        
+
+        
+        
+<a name="opt_swtpreferredgtkversion"></a>
+<dt>
+<span class="margin"><a name="new_N106738"></a><span class="note">4.5+</span></span>Preferred GTK version for SWT (Linux only) (System)</dt>
+<dd>Server script name: OPT_PLAY_SWT_PREFERRED_GTK_VERSION<br>
+            
+<p>
+              On Linux systems Eclipse/SWT applications with SWT versions 4.3 through 4.9 can be run either in GTK2 or
+              GTK3 mode. Older version support GTK2 only, newer version GTK3. This option can be set to "2" or "3" in
+              order to enforce a specific GTK version or left empty to use the default for the respective SWT version.
+            </p>
+          
+</dd>
+
+        
+        
+
+        
+        
+<a name="opt_swtgtk2xsync"></a>
+<dt>
+<span class="margin"><a name="new_N106765"></a><span class="note">4.5+</span></span>Activate XSync for SWT with GTK2 (Linux only) (System)</dt>
+<dd>Server script name: OPT_PLAY_SWT_GTK2_XSYNC<br>
+            
+<p>
+              SWT with GTK2 has become unstable on newer Linux systems and can crash under heavy load which is not
+              uncommon when driven by QF-Test at full speed. A fix for this is to turn on XSync, an option specific to
+              X11 that causes X11 events to be synchronized. This can have a performance impact however, so if you
+              need to run your SWT application with GTK2 and it appears to be slow, you can try to deactivate this
+              option to see if this speeds things up without causing the SUT to crash occasionally.
+            </p>
+          
+</dd>
+
+        
+      
+</dl>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="opt_web.html#sec_opt_web"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 37.5&nbsp;Web options" title="Previous Chapter: 37.5&nbsp;Web options"></a></td><td class="navicon"><a href="opt_debugger.html#sec_opt_debugger"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 37.7&nbsp;Debugger options" title="Next Page: 37.7&nbsp;Debugger options"></a></td><td class="navicon"><a href="opt_debugger.html#sec_opt_debugger"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 37.7&nbsp;Debugger options" title="Next Chapter: 37.7&nbsp;Debugger options"></a></td><td class="navicon"><a href="options.html#sec_options"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 37&nbsp;Options" title="Chapter Overview: 37&nbsp;Options"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

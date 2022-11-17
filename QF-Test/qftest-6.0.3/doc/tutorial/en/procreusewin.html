@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Identifying reusable parts</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2002-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="tut_procreusewin"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="procmanualwin.html#tut_procmanualwin"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 21.2&nbsp;Manual creation of procedures" title="Next Page: 21.2&nbsp;Manual creation of procedures"></a></td><td class="navicon"><a href="procmanualwin.html#tut_procmanualwin"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 21.2&nbsp;Manual creation of procedures" title="Next Chapter: 21.2&nbsp;Manual creation of procedures"></a></td><td class="navicon"><a href="firstprocwin.html#sec_FirstProcedureWin"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 21&nbsp;Writing a Procedure (Win)" title="Chapter Overview: 21&nbsp;Writing a Procedure (Win)"></a></td><td class="navicon"><a href="../../tutorial_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_tut_procreusewin">21.1</a></span>
+</div>
+<a href="contents.html#toc_tut_procreusewin">Identifying reusable parts</a>
+</h4>
+      
+<p>
+        In this chapter we will work with the test-suite FirstWinTests.qft you already know
+        from chapter 19.
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Action</span></span>
+          <strong>Copy FirstWinTests.qft</strong> from the subdirectory
+          <code>qftest-6.0.3/doc/tutorial</code> of the QF-Test installation to
+          a working directory and
+        </li>
+        
+<li>
+          
+<strong>open FirstWinTests.qft</strong>.
+        </li>
+        
+<li>
+          If you want to keep the changes you will be making to the demo test-suite
+          <strong>save it in a working directory</strong> as described at the end
+          of <a href="quickstartwin.html#tut_quickstartwin">section 20.1</a>.
+        </li>
+      
+</ul>
+      
+<p>
+        Please have a look at the test-step "Reset" in the two test-cases. They are exactly the
+        same.
+      </p>
+      
+<a name="IdenticalTeststepsWin"></a><a name="figure_21.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/IdenticalTeststepsWin.png" target="_blank"><img src="images/IdenticalTeststepsWin.png" alt="Two identical test-steps" texscale=".5" width="377" height="322"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;21.1</a>:&nbsp;&nbsp;Two identical test-steps</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Following above concepts it would be a good idea to turn them into a procedure.
+      </p>
+
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="procmanualwin.html#tut_procmanualwin"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 21.2&nbsp;Manual creation of procedures" title="Next Page: 21.2&nbsp;Manual creation of procedures"></a></td><td class="navicon"><a href="procmanualwin.html#tut_procmanualwin"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 21.2&nbsp;Manual creation of procedures" title="Next Chapter: 21.2&nbsp;Manual creation of procedures"></a></td><td class="navicon"><a href="firstprocwin.html#sec_FirstProcedureWin"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 21&nbsp;Writing a Procedure (Win)" title="Chapter Overview: 21&nbsp;Writing a Procedure (Win)"></a></td><td class="navicon"><a href="../../tutorial_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 2002-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

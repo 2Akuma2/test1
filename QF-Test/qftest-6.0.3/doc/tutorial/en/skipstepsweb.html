@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Skipping Execution of Nodes</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2002-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="tut_skip_steps_web"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="debugstepsweb.html#tut_debug_steps_web"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 14.2&nbsp;Stepping Through a Test or Sequence" title="Previous Chapter: 14.2&nbsp;Stepping Through a Test or Sequence"></a></td><td class="navicon"><a href="debugonerrorweb.html#tut_debug_start_web"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 14.4&nbsp;Error or Exception triggering Debugging Mode" title="Next Page: 14.4&nbsp;Error or Exception triggering Debugging Mode"></a></td><td class="navicon"><a href="debugonerrorweb.html#tut_debug_start_web"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 14.4&nbsp;Error or Exception triggering Debugging Mode" title="Next Chapter: 14.4&nbsp;Error or Exception triggering Debugging Mode"></a></td><td class="navicon"><a href="debuggerweb.html#sec_DebuggerWeb"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 14&nbsp;Using the Debugger (Web)" title="Chapter Overview: 14&nbsp;Using the Debugger (Web)"></a></td><td class="navicon"><a href="../../tutorial_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_tut_skip_steps_web">14.3</a></span>
+</div>
+<a href="contents.html#toc_tut_skip_steps_web">Skipping Execution of Nodes</a>
+</h4>
+      
+<p>
+        The "skip" functions expand the QF-Test debugger's capabilities in a powerful way which is
+        not typically possible for a debugger in a standard programming environment. In short,
+        they allow you to jump over one or more nodes without having to execute them. This
+        may be helpful for various reasons, e.g. to quickly navigate to a certain position
+        in your test run or to skip a node which currently leads to an error.
+      </p>
+      
+<p>
+        With the end of the last section, the test-suite should have reached the following state:
+      </p>
+      
+<a name="fig_DebugSkipOverInitialStateWeb"></a><a name="figure_14.7"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DebugSkipOverInitialStateWeb.png" target="_blank"><img src="images/DebugSkipOverInitialStateWeb.png" alt="Activate debugging mode" texscale=".5" width="345" height="226"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;14.7</a>:&nbsp;&nbsp;Pause execution at first node of the second test-case</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Action</span></span>
+          Now press the <strong>Skip over</strong> <img src="images/skip_over.png" style="vertical-align: text-bottom" alt="Skip-Over" title="Skip-Over" width="26" height="26" texscale=".5"> button.
+        QF-Test simply jumps over the active node without executing any
+        child nodes. The active node now is the next node to be
+        executed on the same level.
+        </li>
+      
+</ul>
+      
+<a name="fig_DebugSkipOverWeb"></a><a name="figure_14.8"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DebugSkipOverWeb.png" target="_blank"><img src="images/DebugSkipOverWeb.png" alt="Step over" texscale=".5" width="345" height="226"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;14.8</a>:&nbsp;&nbsp;Skip over a node</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Action</span></span>
+          At last, press the
+          <strong>Skip out</strong> <img src="images/skip_out.png" style="vertical-align: text-bottom" alt="Skip-Out" title="Skip-Out" width="26" height="26" texscale=".5">
+          button. You see that QF-Test skips all nodes on the same (or lower) level and
+          directly jumps to the next node one level up in hierarchy.
+        </li>
+      
+</ul>
+      
+<a name="fig_DebugSkipOutWeb"></a><a name="figure_14.9"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DebugSkipOutWeb.png" target="_blank"><img src="images/DebugSkipOutWeb.png" alt="Step out" texscale=".5" width="345" height="226"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;14.9</a>:&nbsp;&nbsp;Skip out of a node</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+<span class="margin"><span class="note">Note</span></span>
+        Use "Skip over" and "Skip out" cautiously as skipping
+        out of a sequence before it is completed can leave the SUT
+        in an unknown state that other sequences or tests in your
+        test-suite cannot react to.
+      </p>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="debugstepsweb.html#tut_debug_steps_web"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 14.2&nbsp;Stepping Through a Test or Sequence" title="Previous Chapter: 14.2&nbsp;Stepping Through a Test or Sequence"></a></td><td class="navicon"><a href="debugonerrorweb.html#tut_debug_start_web"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 14.4&nbsp;Error or Exception triggering Debugging Mode" title="Next Page: 14.4&nbsp;Error or Exception triggering Debugging Mode"></a></td><td class="navicon"><a href="debugonerrorweb.html#tut_debug_start_web"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 14.4&nbsp;Error or Exception triggering Debugging Mode" title="Next Chapter: 14.4&nbsp;Error or Exception triggering Debugging Mode"></a></td><td class="navicon"><a href="debuggerweb.html#sec_DebuggerWeb"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 14&nbsp;Using the Debugger (Web)" title="Chapter Overview: 14&nbsp;Using the Debugger (Web)"></a></td><td class="navicon"><a href="../../tutorial_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 2002-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

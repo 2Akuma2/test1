@@ -1,0 +1,1049 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Run-log options</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_opt_log"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="opt_debugger.html#sec_opt_debugger"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 37.7&nbsp;Debugger options" title="Previous Chapter: 37.7&nbsp;Debugger options"></a></td><td class="navicon"><a href="opt_vars.html#sec_opt_vars"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 37.9&nbsp;Variables" title="Next Page: 37.9&nbsp;Variables"></a></td><td class="navicon"><a href="opt_vars.html#sec_opt_vars"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 37.9&nbsp;Variables" title="Next Chapter: 37.9&nbsp;Variables"></a></td><td class="navicon"><a href="options.html#sec_options"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 37&nbsp;Options" title="Chapter Overview: 37&nbsp;Options"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_opt_log">37.8</a></span>
+</div>
+<a href="contents.html#toc_sec_opt_log">Run-log options</a>
+</h4>
+      
+      
+<p>
+        These options let you control which information is collected in a
+        run-log, if and when a run-log is shown and how to locate errors.
+      </p>
+      
+
+      
+<a name="sec_opt_showrunlog"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_opt_showrunlog">37.8.1</a></span>
+</div>
+<a href="contents.html#toc_sec_opt_showrunlog">General run-log options</a>
+</h5>
+        
+<a name="figure_37.34"></a><a name="figure_37.34"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_RunLog.png" target="_blank"><img src="images/opt_RunLog.png" alt="Run-log options" texscale=".66" width="471" height="446"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.34</a>:&nbsp;&nbsp;General run-log options</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+        
+<dl class="option">
+          
+
+          
+<a name="opt_whentoshowlog"></a>
+<dt>When to show run-logs (User)</dt>
+<dd>
+              
+<p>
+                A run-log is created for every execution of a test. A number of recent run-logs
+                are available from the &raquo;<em>Run</em>&laquo; menu, the most recent run-log
+                can also be opened by pressing [Control-L].
+                Additionally the run-log can be shown during execution or after an error as
+                follows:
+              </p>
+              
+<p>
+                
+<strong>At start</strong>
+<br>
+                This choice causes QF-Test to open the run-log when it begins executing a test
+                sequence. The nodes of the log will be added as execution proceeds.
+              </p>
+              
+<p>
+                
+<strong>After finish</strong>
+<br>
+                With this choice the run-log is shown after replay is finished.
+              </p>
+              
+<p>
+                
+<strong>On exception</strong>
+<br>
+                The run-log is shown only if an uncaught exception is thrown.
+              </p>
+              
+<p>
+                
+<strong>Don't show</strong>
+<br>
+                The run-log is not displayed automatically. You have to open
+                it via the &raquo;<em>Run</em>&laquo; menu or by pressing
+                [Control-L].
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_logdurationindicators"></a>
+<dt>
+<span class="margin"><a name="new_N107076"></a><span class="note">6.0+</span></span>Show relative duration indicators (User)</dt>
+<dd>Server script name: OPT_LOG_DURATION_INDICATORS<br>
+              
+<p>
+		To analyze the run-time behaviour of a test it is helpful to see at a glance which branches are taking
+		up the most time. To that end, display of duration indicators can be activated via this option, which
+		is also directly accessible via the &raquo;<em>View</em>&laquo; menu of a run-log.
+              </p>
+	      
+<p>
+		The length of the bars shown represents the percentage of the time taken for execution of the
+		respective node relative to the time taken by its parent node.
+	      </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_logdurationindicatorskind"></a>
+<dt>
+<span class="margin"><a name="new_N107118"></a><span class="note">6.0+</span></span>Duration indicator kind (User)</dt>
+<dd>Server script name: OPT_LOG_DURATION_INDICATORS_KIND<br>Possible Values: VAL_LOG_DURATION_INDICATORS_KIND_DURATION, VAL_LOG_DURATION_INDICATORS_KIND_REALTIME, VAL_LOG_DURATION_INDICATORS_KIND_BOTH<br>
+              
+<p>
+		This option determines whether duration indicators show duration, real time spent or both.
+              </p>
+	      
+<p>
+		
+<span class="margin"><span class="note">Note</span></span>The difference between the values of "Duration" and "Real time spent" are
+		explicit delays introduced in nodes via the 'Delay before/after' attribute or user
+		interrupts.
+	      </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_numberoflogstokeep"></a>
+<dt>Number of run-logs in menu (User)</dt>
+<dd>
+              
+<p>
+                A limit for the number of menu items for recent run-logs kept
+                in the &raquo;<em>Run</em>&laquo; menu.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_autosaverecentlogs"></a>
+<dt>
+<span class="margin"><a name="new_N107174"></a><span class="note">3.0+</span></span>Automatically save run-logs (User)</dt>
+<dd>
+              
+<p>
+                To prevent excessive memory use through run-logs and also to make the most recent
+                run-logs persistent between QF-Test sessions, the recent run-logs kept in the
+                &raquo;<em>Run</em>&laquo; menu are saved automatically to the
+                <a href="user_installation.html#usec_configfile" shape="rect">user configuration directory</a>
+                or the directory defined
+                in the option <a href="#opt_recentlogdirectory">Directory for run-logs</a>. The filename for the
+                run-log is based on a timestamp. QF-Test uses file locks to prevent collisions and
+                accidental removal in case of parallel sessions and automatically keeps the
+                <a href="user_installation.html#usec_configfile" shape="rect">user configuration directory</a>
+		clean by removing unreferenced logs, so there
+                should be no reason to disable this feature. Still, you can do so by disabling
+                this option.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_recentlogdirectory"></a>
+<dt>
+<span class="margin"><a name="new_N107215"></a><span class="note">4.0+</span></span>Directory for run-logs (User)</dt>
+<dd>
+              
+<p>
+                By default, run-logs created during interactive use of QF-Test are stored in the
+                <a href="user_installation.html#usec_configfile" shape="rect">user configuration directory</a>. This
+                option can be used to specify a different target directory.
+              </p>
+              
+<p>
+                
+<span class="margin"><span class="note">Note</span></span>
+
+                This option is interpreted by QF-Test whenever a test is started. At that point,
+                test-suite and global variable bindings are already in place and in contrast to
+                other options it is possible to use QF-Test variable syntax here. This includes
+                special variables like ${env:HOME} to look up an environment variable or even
+                ${qftest:suite.dir} to save the run-log next to the test-suite. If the directory
+                is dynamic, like in the latter case, QF-Test may not be able to clean up old run-logs
+                regularly. Errors in variable expansion are silently ignored and the
+                <a href="user_installation.html#usec_configfile" shape="rect">user configuration directory</a> is used instead.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_lognodesexpanded"></a>
+<dt>
+<span class="margin"><a name="new_N107255"></a><span class="note">3.1+</span></span>Show expanded variable values in tree nodes (User)</dt>
+<dd>
+              
+<p>
+                The nodes in the tree view of a run-log can either be displayed with variables
+                expanded to the value they had at run-time or with the original variables. Both
+                views have their use, so you can toggle between them via this option or more
+                quickly via the menu item &raquo;<em>View</em>&laquo;-&raquo;<em>Show                 nodes expanded</em>&laquo;.
+              </p>
+            
+</dd>
+
+          
+          
+          
+
+          
+          
+<a name="opt_finderrorskip"></a>
+<dt>Skip suppressed errors (User)</dt>
+<dd>
+              
+<p>
+                Like the previous one, this option controls the search for
+                errors in a run-log. If activated, warnings, errors or
+                exceptions that have not propagated to the top, are not
+                found. Thus exceptions caught by a
+                <a href="control.html#step_TryStep" shape="rect">'Try'</a>/<a href="control.html#step_CatchSequence" shape="rect">'Catch'</a> clause or messages
+                suppressed through the
+                <a href="sequences.html#att_BasicSequence_maxerror" shape="rect">'Maximum error level'</a> attribute are skipped.
+              </p>
+              
+<p>
+                This option is also accessible through the
+                &raquo;<em>Edit</em>&laquo;-&raquo;<em>Skip suppressed errors</em>&laquo;
+                menu item.
+              </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_finderrorcleanup"></a>
+<dt>
+<span class="margin"><a name="new_N107340"></a><span class="note">3.0+</span></span>Cleanup tree when jumping to next or previous error (User)</dt>
+<dd>
+              
+<p>
+                When repeatedly jumping to errors in a run-log the tree can easily get cluttered
+                with many expanded nodes. If this option is activated, QF-Test will automatically
+                clean up the tree each time you navigate to an error so that only the parents of
+                the error node are expanded.
+              </p>
+              
+<p>
+                
+<span class="margin"><span class="note">Note</span></span> When viewing split run-logs, partial run-logs containing an
+                error will remain in memory as long as their nodes are expanded. Keeping this
+                option activated will ensure that partial run-logs will be released as soon as
+                possible, keeping memory use manageable even viewing the errors of a very large
+                run-logs.
+              </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_prefercompressed"></a>
+<dt>Save compressed run-logs (*.qrz) (System)</dt>
+<dd>Server script name: OPT_LOG_SAVE_COMPRESSED<br>
+              
+<p>
+                Run-logs can either be saved as plain or as compressed XML files. For large
+                run-logs without screenshots the compression factor can be as high as 10, so it's
+                advisable to use compressed logs where possible. The only reason not to use
+                compression is if you want to transform the XML run-log afterwards. But even then
+                compressed run-logs are an option because the compression method used is standard
+                gzip format, so converting to and from compressed run-logs can easily be done
+                using <code>gzip</code>.
+              </p>
+              
+<p>
+                When saving a log-file interactively you can always switch between compressed or
+                non-compressed format by choosing the appropriate filter or by giving the file the
+                extension <code>.qrz</code> or <code>.qrl</code>.
+              </p>
+              
+<p>
+                In batch mode, the default run-log format is compressed. To create an uncompressed
+                run-log, simply specify the extension <code>.qrl</code> in the parameter for the
+                <a href="tech_execution.html#arg_runlog" shape="rect"><code>-runlog [&lt;file&gt;]</code></a> command line argument.
+              </p>
+            
+</dd>
+
+        
+        
+</dl>
+      
+
+      
+      
+
+      
+<a name="sec_N107413"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N107413">37.8.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N107413">Options for splitting run-logs</a>
+</h5>
+        
+<a name="figure_37.35"></a><a name="figure_37.35"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_SplitRunLogs.png" target="_blank"><img src="images/opt_SplitRunLogs.png" alt="Split run-log options" texscale=".66" width="393" height="241"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.35</a>:&nbsp;&nbsp;Options for splitting run-logs</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl class="option">
+          
+
+          
+          
+<a name="opt_supportsplitlog"></a>
+<dt>
+<span class="margin"><a name="new_N107448"></a><span class="note">3.0+</span></span>Create split run-logs (User)</dt>
+<dd>Server script name: OPT_LOG_SAVE_SPLIT<br>
+              
+<p>
+                A run-log can be split into several parts by setting the
+                <a href="datadriver.html#att_DataDriver_externalizename" shape="rect">'Name for separate run-log'</a> attribute of a <a href="datadriver.html#step_DataDriver" shape="rect">'Data driver'</a> or any of the
+                various test nodes. By turning this option off you can temporarily disable support
+                for split run-logs in order to get a normal, single run-log without having to
+                modify any 'Name for separate run-log' attributes.
+              </p>
+              
+<p>
+                See <a href="user_debugging.html#usec_splitlogs">subsection 7.1.5</a> for further information about split run-logs.
+              </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_preferzipped"></a>
+<dt>
+<span class="margin"><a name="new_N107496"></a><span class="note">3.0+</span></span>Save split run-logs as ZIP files (*.qzp) (User)</dt>
+<dd>Server script name: OPT_LOG_SAVE_SPLIT_ZIP<br>
+              
+<p>
+                Split run-logs can either be saved as a single ZIP file with the extension
+                <code>.qzp</code>, containing the main run-log and all partial logs together, or
+                as a normal <code>.qrl</code> or <code>.qrz</code> run-log that is accompanied by
+                a directory with the same base name and the suffix <code>_logs</code>, e.g. the
+                file <code>runlog.qrz</code> plus the directory <code>runlog_logs</code>. This
+                option determines the format in which split run-logs are created in interactive
+                mode. It has no effect if the option <a href="#opt_autosaverecentlogs">Automatically save run-logs</a> is
+                turned off.
+              </p>
+              
+<p>
+                See <a href="user_debugging.html#usec_splitlogs">subsection 7.1.5</a> for further information about split run-logs.
+              </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_autosplitlogthreshold"></a>
+<dt>
+<span class="margin"><a name="new_N107550"></a><span class="note">3.4+</span></span>Minimum size for automatic splitting (kB) (System)</dt>
+<dd>Server script name: OPT_LOG_AUTO_SPLIT_SIZE<br>
+              
+<p>
+                
+<span class="margin"><span class="note">Note</span></span>
+
+                This option exclusively applies to 'Test-case' and 'Test-set' nodes. At other places run-logs are split
+                only when 'Name for separate run-log' has explicitly been set.
+              </p>
+              
+<p>
+                Split run-logs are the only reliable way to prevent running out of memory during
+                very long running tests or when the run-log grows quickly due to screenshots or
+                output from the SUT. They are also more efficient when transforming run-logs into
+                reports. However, explicit setting of 'Name for separate run-log' attributes requires an
+                understanding of the issues involved and either making decisions about where best
+                to split a run-log or tedious typing when trying to split into small pieces.
+              </p>
+              
+<p>
+                As a compromise, QF-Test makes a very rough calculation about the size of a run-log
+                during executing, taking screenshots and program output into account. When
+                execution of a 'Test-case' or 'Test-set' has finished and the approximate size of
+                the run-log pertaining to that node is larger than the threshold specified in this
+                option, the run-log is split off and saved automatically. A value of 0 prevents
+                automatic splitting.
+              </p>
+              
+<p>
+                See <a href="user_debugging.html#usec_splitlogs">subsection 7.1.5</a> for further information about split run-logs.
+              </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_testcasesplitlogname"></a>
+<dt>
+<span class="margin"><a name="new_N107609"></a><span class="note">3.4+</span></span>Name for automatically split 'Test-case' run-log (System)</dt>
+<dd>Server script name: OPT_LOG_AUTO_SPLIT_TESTCASE_NAME<br>
+              
+<p>
+                This option specifies the name to use for an external log when it is split off
+                automatically after execution of a 'Test-case' has finished as described in the
+                previous option. Variables can be used as well as the '%...' placeholders documented
+                for the attribute <a href="sequences.html#att_TestCase_externalizename" shape="rect">'Name for separate run-log'</a>.
+              </p>
+              
+<p>
+                The special variable ${qftest:testcase.splitlogname} is a good base. It expands to
+                a path name created from the name of the 'Test-case' with possible parent 'Test-set'
+                nodes as directories.
+              </p>
+              
+<p>
+                See <a href="user_debugging.html#usec_splitlogs">subsection 7.1.5</a> for further information about split run-logs.
+              </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_testsetsplitlogname"></a>
+<dt>
+<span class="margin"><a name="new_N107660"></a><span class="note">3.4+</span></span>Name for automatically split 'Test-set' run-log (System)</dt>
+<dd>Server script name: OPT_LOG_AUTO_SPLIT_TESTSET_NAME<br>
+              
+<p>
+                This option specifies the name to use for an external log when it is split off
+                automatically after execution of a 'Test-set' has finished as described in the
+                option <a href="#opt_autosplitlogthreshold">Minimum size for automatic splitting (kB)</a>. Variables can be used as well
+                as the '%...' placeholders documented for the attribute
+                <a href="sequences.html#att_TestSet_externalizename" shape="rect">'Name for separate run-log'</a>.
+              </p>
+              
+<p>
+                The special variable ${qftest:testset.splitlogname} is a good base. It expands to
+                a path name created from the name of the 'Test-set' with possible parent 'Test-set'
+                nodes as directories.
+              </p>
+              
+<p>
+                See <a href="user_debugging.html#usec_splitlogs">subsection 7.1.5</a> for further information about split run-logs.
+              </p>
+            
+</dd>
+
+        
+        
+</dl>
+      
+
+      
+      
+
+      
+<a name="sec_N107706"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N107706">37.8.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N107706">Options determining run-log content</a>
+</h5>
+        
+<a name="figure_37.36"></a><a name="figure_37.36"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_RunLogContent.png" target="_blank"><img src="images/opt_RunLogContent.png" alt="Run-log content options" texscale=".66" width="393" height="589"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.36</a>:&nbsp;&nbsp;Options determining run-log content</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl class="option">
+          
+
+          
+          
+<a name="opt_logexpansion"></a>
+<dt>Log variable expansion (System)</dt>
+<dd>Server script name: OPT_LOG_CONTENT_VARIABLE_EXPANSION<br>
+              
+<p>
+                If this option is activated, every <a href="user_variables.html#usec_variables" shape="rect">variable expansion</a> is logged.
+              </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_logparent"></a>
+<dt>Log parent nodes of components (System)</dt>
+<dd>Server script name: OPT_LOG_CONTENT_PARENT_COMPONENTS<br>
+              
+<p>
+                Setting this option will cause all direct and indirect parent
+                nodes to be logged in addition to the target component node
+                for every event, check, etc.
+              </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_loglevel"></a>
+<dt>Log level for the SUT (System)</dt>
+<dd>Server script name: OPT_LOG_CONTENT_SUT_LEVEL<br>Possible Values: VAL_LOG_SUT_LEVEL_MESSAGE, VAL_LOG_SUT_LEVEL_WARNING, VAL_LOG_SUT_LEVEL_ERROR<br>
+              
+<p>
+                The level for automatically generated messages in the SUT during replay, e.g.
+                details for component recognition. Only messages with the respective level, i.e.
+                plain messages, warnings or errors will be logged. This option has no effect on
+                messages created explicitly via <code>rc.logMessage</code> or
+                <code>qf.logMessage</code>.
+              </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_logdiagnostics"></a>
+<dt>Number of events to log for error diagnosis (System)</dt>
+<dd>SUT script name: OPT_LOG_CONTENT_DIAGNOSIS<br>
+              
+<p>
+                During replay of a test QF-Test logs various events and other
+                things going on behind the scenes. This information is quickly
+                discarded except when an error happens. In that case the most
+                recent events are written to a special run-log node. The
+                information may also be useful to developers but is mostly
+                required for error diagnosis when requesting support from
+                Quality First Software GmbH.
+              </p>
+              
+<p>
+                This option determines the number of recent internal events
+                to keep. Setting it to 0 disables the feature altogether. You
+                should not set this value to less than about 400 without a good
+                reason. Because the information is logged only for errors, the
+                cost for gathering it is minimal.
+              </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_maximumscreenshots"></a>
+<dt>Maximum number of errors with screenshots per run-log (System)</dt>
+<dd>Server script name: OPT_LOG_CONTENT_SCREENSHOT_MAX<br>
+              
+<p>
+                The maximum number of screenshots that QF-Test takes and stores in the run-log during
+                a test-run on situations of exception or errors. Setting this value to 0 disables
+                taking screenshots entirely, a negative value means unlimited screenshots.
+              </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_maximumscreenshotsperlog"></a>
+<dt>Count screenshots individually for each split log (System)</dt>
+<dd>Server script name: OPT_LOG_CONTENT_SCREENSHOT_PER_SPLIT_LOG<br>
+              
+<p>
+                If this option is set, each partial log of a split run-log may contain the maximum
+                number of screenshots defined above without affecting the count for the main
+                run-log. Otherwise the limit applies for the sum of all parts belonging to the
+                same main run-log.
+              </p>
+              
+<p>
+                See <a href="user_debugging.html#usec_splitlogs">subsection 7.1.5</a> for further information about split run-logs.
+              </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_wholescreenshots"></a>
+<dt>Create screenshots of the whole screen upon error (System)</dt>
+<dd>Server script name: OPT_LOG_CONTENT_SCREENSHOT_FULLSCREEN<br>
+              
+<p>
+                Activating this option causes QF-Test to take an image of the whole screen and save
+                it in the run-log when a screenshot is triggered by an exception or error.
+              </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_relevantscreenshotsonly"></a>
+<dt>
+<span class="margin"><a name="new_N107945"></a><span class="note">6.0+</span></span>Limit screenshots to relevant screens (System)</dt>
+<dd>Server script name: OPT_LOG_CONTENT_SCREENSHOT_RELEVANT_ONLY<br>
+              
+<p>
+		If multiple monitors are connected when taking screenshots it may not be desirable to take screenshots
+		of all screens, especially on personal workstations where this might expose private or confidential
+		information.
+              </p>
+	      
+<p>
+		If this option is active (the default), QF-Test will try to determine the screens on which an SUT window
+		or the QF-Test workbench are showing and exclude the rest.
+	      </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_partialscreenshots"></a>
+<dt>Create screenshots of the client's windows upon error in client (System)</dt>
+<dd>Server script name: OPT_LOG_CONTENT_SCREENSHOT_WINDOW<br>
+              
+<p>
+                Activating this option causes QF-Test to record images of all windows and dialogs of
+                the SUT and store them in the run-log when screenshots are triggered due to
+                exceptions or errors coming from that SUT. In many cases this will work even for windows that are
+                covered by other windows or in cases where a full screenshot is not possible, for
+                example when a screen is locked.
+              </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_allclientscreenshots"></a>
+<dt>
+<span class="margin"><a name="new_N108000"></a><span class="note">4.3+</span></span>Create screenshots of all client windows upon error (System)</dt>
+<dd>Server script name: OPT_LOG_CONTENT_SCREENSHOT_ALL_WINDOWS<br>
+              
+<p>
+                If this option is active QF-Test will log images of all windows of all connected SUTs for any exception
+                or error, regardless of where the exception or error is coming from. This option also affects
+		which screens are considered relevant, depending on where SUT windows are showing.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_warningscreenshots"></a>
+<dt>
+<span class="margin"><a name="new_N108027"></a><span class="note">6.0+</span></span>Create screenshots for warnings (System)</dt>
+<dd>Server script name: OPT_LOG_CONTENT_WARNING_SCREENSHOTS<br>
+              
+<p>
+                If this option is active, screenshots will also be saved when warnings are logged in the run log.
+		Otherwise this is done for errors and exceptions only.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_screenshotsadvancedok"></a>
+<dt>
+<span class="margin"><a name="new_N108054"></a><span class="note">3.4+</span></span>Log successful advanced image checks (System)</dt>
+<dd>Server script name: OPT_LOG_CONTENT_SCREENSHOT_ADVANCED_ALWAYS<br>
+              
+<p>
+                If this option is activated, QF-Test will store the expected and actual images as
+                well as the transformed images for successful advanced image checks in the
+                run-log. Otherwise these details are kept for failed image checks only.
+              </p>
+              
+<p>
+                Activating this option can raise the size of the run-log drastically so be sure to
+                use it in combination with compact run-logs and/or split run-logs.
+              </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_screenshotscompress"></a>
+<dt>
+<span class="margin"><a name="new_N108084"></a><span class="note">4.5+</span></span>Compress images in run logs and test suites (System)</dt>
+<dd>Server script name: OPT_LOG_CONTENT_COMPRESS_SCREENSHOTS<br>
+              
+<p>
+                If this option is activated, QF-Test will store new images in test-suites
+                and run-logs losslessly compressed.
+              </p>
+              
+<p>
+                This option can reduce the memory consumption of protocols and test suites on disk
+                and in memory significantly. On the other hand, compression and decompression requires
+                some CPU time, so the option can be deactivated for very time-critical test executions.
+              </p>
+            
+</dd>
+
+          
+          
+
+          
+          
+<a name="opt_compactlog"></a>
+<dt>Create compact run-log (System)</dt>
+<dd>Server script name: OPT_LOG_CONTENT_COMPACT<br>
+              
+<p>
+                Activating this option causes QF-Test to discard every node from a run-log that is
+                neither relevant for error diagnosis, nor for the XML/HTML report. After an error
+                or exception, as well as at the end of a test-run, the 100 most recent nodes are
+                not discarded, so the most relevant information should remain available.
+              </p>
+              
+<p>
+                Even large tests should not cause memory issues, provided the option <a href="#opt_supportsplitlog">Create split run-logs</a> is turned on and used as described in <a href="user_debugging.html#usec_splitlogs">Split run-logs</a>. But if you do run out of memory,
+                activating this option can be useful.
+              </p>
+              
+<p>
+                This option is used only when QF-Test is run in interactive
+                mode. It is ignored in batch mode (see <a href="user_installation.html#usec_execution">section 1.7</a>) to avoid accidental loss of
+                information. To create a compact run-log in batch mode, use
+                the <a href="tech_execution.html#arg_compact" shape="rect"><code>-compact</code></a> command line argument.
+              </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_suppresslog"></a>
+<dt>Don't create run-log (System)</dt>
+<dd>Server script name: OPT_LOG_CONTENT_SUPPRESS<br>
+              
+<p>
+                For very-long-running tests or demos that are run in an endless loop, memory
+                consumption of the run-log is an issue, but split run-logs are an ideal solution.
+                Before split run-logs were available, turning run-logs off completely via this
+                option was sometimes the only way to get long-running tests to work. Now this
+                option is only retained for backwards compatibility.
+              </p>
+              
+<p>
+                
+<span class="margin"><span class="note">Note</span></span> In batch mode this option is ignored. To suppress the
+                run-log, use the argument <a href="tech_execution.html#arg_nolog" shape="rect"><code>-nolog</code></a>.
+              </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_logsplitio"></a>
+<dt>
+<span class="margin"><a name="new_N108196"></a><span class="note">3.0+</span></span>Log SUT output individually (System)</dt>
+<dd>SUT script name: OPT_LOG_CONTENT_SPLIT_IO<br>
+              
+<p>
+                If set, any text that an SUT client prints to its stdout or stderr stream is also
+                logged in the run-log. For each interaction with the SUT QF-Test collects text
+                printed before the event and after the event during synchronization. This makes it
+                possible to associate output like an exception stacktrace that is triggered by an
+                event with the event itself, something that is impossible if all output is kept in
+                a single piece.
+              </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_compactifysplitio"></a>
+<dt>
+<span class="margin"><a name="new_N108223"></a><span class="note">3.0+</span></span>Compactify individually logged SUT output (System)</dt>
+<dd>Server script name: OPT_LOG_CONTENT_COMPACTIFY_SPLIT_IO<br>
+              
+<p>
+                Output from an SUT client tends to accumulate and can consume a lot of memory. If
+                this option is activated, individually logged SUT output for events that are no
+                longer of interest can be removed along with the events in compact run-logs.
+                Please see the option <a href="#opt_compactlog">Create compact run-log</a> for further information
+                about compact run-logs.
+              </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_logcommentstorunlog"></a>
+<dt>
+<span class="margin"><a name="new_N108253"></a><span class="note">5.0+</span></span>Log comments to run-log (System)</dt>
+<dd>Server script name: OPT_LOG_COMMENTS_TO_RUNLOG<br>
+              
+<p>
+                If this option is activated, <a href="components.html#step_ComponentStep" shape="rect">'Component'</a> steps are added to the run-log.
+              </p>
+            
+</dd>
+
+        
+          
+
+          
+          
+<a name="opt_logwrapexceptionmessage"></a>
+<dt>
+<span class="margin"><a name="new_N108286"></a><span class="note">5.3+</span></span>Wrap lines in exception messages (System)</dt>
+<dd>Server script name: OPT_LOG_WRAP_EXCEPTION_MESSAGE<br>
+              
+<p>
+		If activated, display of exceptions messages in the run-log or an error dialog are displayed using
+		word-wrap to break long lines.
+              </p>
+            
+</dd>
+
+        
+        
+</dl>
+      
+
+      
+      
+
+      
+<a name="sec_N108305"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="margin"><a name="new_N108309"></a><span class="note">4.0+</span></span><span class="numtitle"><a href="contents.html#toc_sec_N108305">37.8.4</a></span>
+</div>
+<a href="contents.html#toc_sec_N108305">Options for mapping between directories with
+          test-suites</a>
+</h5>
+        
+<a name="figure_37.37"></a><a name="figure_37.37"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/opt_RunLogSuiteMap.png" target="_blank"><img src="images/opt_RunLogSuiteMap.png" alt="Test-suite directory options" texscale=".66" width="393" height="139"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;37.37</a>:&nbsp;&nbsp;Options for mapping between directories with test-suites</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl class="option">
+          
+
+          
+          
+<a name="opt_suitedirectorymap"></a>
+<dt>Directory map for test-suites (System)</dt>
+<dd>
+              
+<p>
+                When analyzing a run-log it is often necessary to quickly switch between the
+                run-log and the respective test-suite. However, when running automated tests on
+                different systems like Windows and Linux, the directories from which test-suites
+                are loaded during the test vary and there is no automatic way to map between
+                different directory layouts.
+              </p>
+              
+<p>
+                With this option you can assist QF-Test in locating test-suites. The 'From' column is
+                a glob pattern that must match from the beginning of the path of the test-suite
+                stored in the run-log to the end of some directory in that path. The 'To' column
+                is the respective replacement for the matching part and can also contain a glob
+                pattern. When searching for the test-suite, QF-Test processes this list top to
+                bottom, performing the replacement for every match found and the first match
+                leading to an actual test-suite is used.
+              </p>
+              
+<p>
+                
+<span class="margin"><span class="note">Note</span></span>
+
+                A glob patterns is a simpler form of a regular expression often used by
+                development tools: An '*' stands for any number of characters up to the next file
+                separator while '**' means 0 or more characters of any kind, including '/'.
+                Some examples:
+              </p>
+              
+<dl>
+                
+<dt>
+<code>**/test-suites</code>
+</dt>
+                
+<dd>All directories named <code>test-suites</code> at any depth.</dd>
+                
+<dt>
+<code>T:/test/sut_*</code>
+</dt>
+                
+<dd>
+                  All directories starting with <code>sut_</code> in the <code>T:/test</code>
+                  directory.
+                </dd>
+              
+</dl>
+            
+</dd>
+
+        
+        
+</dl>
+      
+
+      
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="opt_debugger.html#sec_opt_debugger"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 37.7&nbsp;Debugger options" title="Previous Chapter: 37.7&nbsp;Debugger options"></a></td><td class="navicon"><a href="opt_vars.html#sec_opt_vars"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 37.9&nbsp;Variables" title="Next Page: 37.9&nbsp;Variables"></a></td><td class="navicon"><a href="opt_vars.html#sec_opt_vars"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 37.9&nbsp;Variables" title="Next Chapter: 37.9&nbsp;Variables"></a></td><td class="navicon"><a href="options.html#sec_options"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 37&nbsp;Options" title="Chapter Overview: 37&nbsp;Options"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

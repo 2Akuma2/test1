@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>General configuration</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_customajax_mapping_general"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_customajax_analysis.html#sec_customajax_analysis"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 47.1.2&nbsp;Analyzing a web page" title="Next Page: 47.1.2&nbsp;Analyzing a web page"></a></td><td class="navicon"><a href="tech_customajax_analysis.html#sec_customajax_analysis"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 47.1.2&nbsp;Analyzing a web page" title="Next Chapter: 47.1.2&nbsp;Analyzing a web page"></a></td><td class="navicon"><a href="tech_customajax.html#sec_customajax"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 47.1&nbsp;Improving component recognition with a CustomWebResolver" title="Chapter Overview: 47.1&nbsp;Improving component recognition with a CustomWebResolver"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_customajax_mapping_general">47.1.1</a></span>
+</div>
+<a href="contents.html#toc_sec_customajax_mapping_general">General configuration</a>
+</h5>
+          
+<p>
+            
+<a href="tech_custom_web_resolver.html#sec_custom_web_resolver">The procedure <code>installCustomWebResolver</code></a>
+            of the standard library  <code>qfs.qft</code> offers the following functionality:
+          </p>
+          
+<dl>
+            
+<dt>
+              Mapping of HTML objects to functional components
+            </dt>
+            
+<dd>
+              You can map functional GUI objects as buttons, text fiels, data tables etc to QF-Test
+              components of a certain generic class.
+              Advantages:<br>
+              - recording of additional criteria for recognition,<br>
+              - class specific checks,<br>
+              - indexing of sub items at recording, <br>
+              - recording of generic class types, <br>
+              - better component recognition just via specific generic QF-Test classes vs common HTML classes.<br>
+<br>
+              The data recorded for a certain object depends on its generic class as described
+              in <a href="tech_genericclasses.html#sec_genericclasses">Generic classes</a>.
+            </dd>
+            
+<dt>
+              Reduction of the recorded component hierarchy
+            </dt>
+            
+<dd>
+              You can tell the recording algorith to ignore certain HTML components in the component's hierarchy.
+              This reduces the complexity of a recorded web-page from the full HTML structure
+              to a component hierarchy relevant for recognition or  structuring.
+            </dd>
+            
+<dd>
+	      
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+              The video <a href="https://www.qfs.de/en/yt/web-test-automation-40.html" class="videolink" target="_blank">'Dealing with the
+              explosion of complexity in web test automation'</a> gives you a good idea of how QF-Test
+              handles a deeply nested DOM structure.
+            </dd>
+          
+<a name="figure_47.1"></a><a name="figure_47.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="" target="_blank">
+<table border="0" cellspacing="10" cellpadding="0">
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1"><img src="images/WebCarConfigFull_table.png" alt="Current recording" texscale=".5" width="428" height="514"></td>
+                <td align="center" rowspan="1" colspan="1"><img src="images/WebCarConfigCustomFull_table.png" alt="Simplified recording" texscale=".5" width="335" height="210"></td>
+              
+</tr>
+              
+<tr>
+                
+<td align="center" rowspan="1" colspan="1">Current recording</td>
+                <td align="center" rowspan="1" colspan="1">Simplified recording</td>
+              
+</tr>
+            
+</table>
+</a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;47.1</a>:&nbsp;&nbsp;Reduction of complexity for WebCarConfigurator demo</td><td class="captionglue"></td>
+</tr>
+</table>
+            
+<dt>
+              Using alternative attributes for ids
+            </dt>
+            
+<dd>
+              By default QF-Test uses the HTML attributes <code>id</code> or <code>name</code>
+              to identify a component and saves them in the 'Name' attribute of the
+              'Component' node. You can configure <code>installCustomWebResolver</code>
+              to use a different HTML attribute as id.
+            </dd>
+            
+<dt>
+              Specification of further attributes for recognition
+            </dt>
+            
+<dd>
+              You can specify an attribute useful for
+              component recognition, the value of which
+              QF-Test will save to the 'Feature' attribute of the component.
+            </dd>
+          
+</dl>
+          
+<p>
+            You can use the following HTML features to identiy a GUI object:
+          </p>
+          
+<ul>
+            
+<li>
+              the <code>class</code> attribute,
+            </li>
+            
+<li>
+              any other attribute,
+            </li>
+            
+<li>
+              the HTML tag.
+            </li>
+          
+</ul>
+          
+<p>
+            The mapping of the HTML attributes can be subject to certain conditions.
+            QF-Test offers the following options to set conditions for single mappings.
+            It is possible to combine them.
+          </p>
+          
+<ul>
+            
+<li>
+              The use of regular expressions.
+            </li>
+            
+<li>
+              Map only if the object is a child component (at a given depth) of another object
+              of a given class.
+            </li>
+            
+<li>
+              Map only if the object has a certain HTML tag, additonally to the other
+              criteria.
+            </li>
+          
+</ul>
+          
+<p>
+            A functional component often may consist of nested layers of elements.
+            Some of the layers may have attributes useful for component
+            recognition, others not. For recording and replay it does not matter which layer
+            you map. The main thing is to has attributes for component recognition.
+            QF-Test will also check nested components for further attributes and
+            save them with the mapped QF-Test component. Example:
+            <a href="tech_customajax_tabpanel.html#sec_customajax_tabpanel">Mapping of TabPanels and Accordions</a>
+          
+</p>
+          
+<p>
+            In addition you get functional components such as combo boxes, lists, tables
+            and trees which have to be implemented in HTML via several objects,
+            named 'complex components' in QF-Test, i.e. a list, where you need to
+            tell QF-Test which HTML object will be the list container and which
+            HTML objects will be the list items.
+          </p>
+          
+<p>
+            The following sections provide a list of mandatory and optional GUI elements
+            which need to be mapped for a complex component to be recognized as such,
+            each containing a comprehensive example.
+          </p>
+          
+<ul>
+            
+<li>
+              
+<a href="tech_customajax_combobox.html#sec_customajax_combobox">Mapping of Comboboxes</a>
+            
+</li>
+            
+<li>
+              
+<a href="tech_customajax_list.html#sec_customajax_list">Mapping of Lists</a>
+            
+</li>
+            
+<li>
+              
+<a href="tech_customajax_table.html#sec_customajax_table">Mapping of Tables and TreeTables</a>
+            
+</li>
+            
+<li>
+              
+<a href="tech_customajax_tabpanel.html#sec_customajax_tabpanel">Mapping of TabPanels and Accordions</a>
+            
+</li>
+            
+<li>
+              
+<a href="tech_customajax_tree.html#sec_customajax_tree">Mapping of Trees</a>
+            
+</li>
+          
+</ul>
+          
+<p>
+            In most cases the HTML attribute <code>class</code> is
+            significant for component recognition and provides information about
+            the functional type of the component, sometimes it is other attributes.
+            And some frameworks use JavaScript methods a lot.
+            For adapting QF-Test to those frameworks you need to implement
+            other resolvers additionally to <code>installCustomWebResolver</code>.
+            In this chapter, the focus is on the first two.
+            For adapting QF-Test to frameworks based on JavaScript methods
+            please get in touch with our support.
+          </p>
+        
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><img src="../icons/linkprevdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_customajax_analysis.html#sec_customajax_analysis"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 47.1.2&nbsp;Analyzing a web page" title="Next Page: 47.1.2&nbsp;Analyzing a web page"></a></td><td class="navicon"><a href="tech_customajax_analysis.html#sec_customajax_analysis"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 47.1.2&nbsp;Analyzing a web page" title="Next Chapter: 47.1.2&nbsp;Analyzing a web page"></a></td><td class="navicon"><a href="tech_customajax.html#sec_customajax"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 47.1&nbsp;Improving component recognition with a CustomWebResolver" title="Chapter Overview: 47.1&nbsp;Improving component recognition with a CustomWebResolver"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

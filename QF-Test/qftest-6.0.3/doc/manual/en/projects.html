@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Projects</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_projects"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_organization.html#usec_organization"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 8&nbsp;Organizing the test-suite" title="Previous Chapter: 8&nbsp;Organizing the test-suite"></a></td><td class="navicon"><a href="user_stdlib.html#usec_stdlib"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 10&nbsp;The standard library" title="Next Page: 10&nbsp;The standard library"></a></td><td class="navicon"><a href="user_stdlib.html#usec_stdlib"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 10&nbsp;The standard library" title="Next Chapter: 10&nbsp;The standard library"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;User manual" title="Chapter Overview: I&nbsp;User manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="margin"><a name="new_N81627"></a><span class="note">3.5+</span></span><span class="numtitle"><a href="contents.html#toc_usec_projects">9</a></span>
+</div>
+<a href="contents.html#toc_usec_projects">Projects</a>
+</h3>
+
+    
+<p>
+      Projects provide a better overview, improve navigation between test-suites and expand the
+      scope for search and replace operations. Also, QF-Test automatically manages dependencies
+      resulting from includes or absolute references between test-suites that belong to the same
+      project (see <a href="user_distributed.html#usec_suitereference">section 23.1</a>). Many other features have already been
+      implemented or are under development.
+    </p>
+    
+<p>
+      Technically a QF-Test project is a set of test-suites located in one or more directories with a
+      common root. There is a 1:1 relation between the project and its directory and the name of
+      the directory automatically becomes the name of the project.
+    </p>
+    
+<p>
+      To create a new project, select the menu item &raquo;<em>File</em>&laquo;-&raquo;<em>New project...</em>&laquo; and choose the directory. QF-Test then creates a file
+      called <code>qftest.qpj</code> in that directory which identifies it as a project. All
+      test-suites located below that directory, except those specified in the option <a href="opt_general.html#opt_projectexcludes">Project files and directories to exclude</a> automatically belong to this project. Please see <a href="opt_general.html#sec_opt_projects">subsection 37.1.1</a> for options affecting projects, including the exclusion list.
+    </p>
+    
+<p>
+      A sub-project is sub-directory of a project which is itself a project. Test-suites within a
+      sub-project also belong to all outer projects containing the sub-project. <em>The</em>
+      project of a test-suite is the innermost sub-project it belongs to. Automatic dependency
+      resolution always covers the whole outermost project of a suite including all sub-projects.
+    </p>
+    
+<a name="figure_9.1"></a><a name="figure_9.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/ProjectView.png" target="_blank"><img src="images/ProjectView.png" alt="The project view" texscale=".66" width="1086" height="753"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;9.1</a>:&nbsp;&nbsp;The project view</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+      The project view with one or more projects can be turned on or off via the menu item
+      &raquo;<em>View</em>&laquo;-&raquo;<em>Show projects</em>&laquo;. The
+      project tree shows the hierarchy of directories and test-suites starting from the project
+      root, possibly limited by the filter at the top of the tree which matches on test-suite names.
+      Double clicking a test-suite opens it, as does pressing the [Return] key. You can select several files or directories to be opened in one go,
+      including all test-suites located below the selected directories.
+    </p>
+    
+<p>
+      The hierarchy is refreshed automatically at intervals defined in the option <a href="opt_general.html#opt_projectrefreshinterval">Project refresh interval (s)</a>. You can refresh a directory including its complete
+      hierarchy at any time by selecting it and pressing [F5]. For a more
+      thorough rescan that does not rely on modification times but may take significantly longer
+      for large projects, press [Shift-F5] instead.
+    </p>
+    
+<p>
+      To switch keyboard focus back and forth between the test-suite and the project view, press
+      [F6]. Via [Shift-F6] you can navigate
+      to the node representing the current test-suite in the project tree. If necessary, project
+      view and project are automatically shown.
+    </p>
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_organization.html#usec_organization"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 8&nbsp;Organizing the test-suite" title="Previous Chapter: 8&nbsp;Organizing the test-suite"></a></td><td class="navicon"><a href="user_stdlib.html#usec_stdlib"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 10&nbsp;The standard library" title="Next Page: 10&nbsp;The standard library"></a></td><td class="navicon"><a href="user_stdlib.html#usec_stdlib"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 10&nbsp;The standard library" title="Next Chapter: 10&nbsp;The standard library"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;User manual" title="Chapter Overview: I&nbsp;User manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,523 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Schleifen</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2002-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_loopsweb"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="ifelseweb.html#sec_ifweb"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 17.1&nbsp;If - else" title="Vorheriges Kapitel: 17.1&nbsp;If - else"></a></td><td class="navicon"><a href="ownappweb.html#sec_ownappweb"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 18&nbsp;Nun ist es Zeit, Ihre eigene Anwendung zu starten (Web)" title="N&auml;chste Seite: 18&nbsp;Nun ist es Zeit, Ihre eigene Anwendung zu starten (Web)"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="controlsweb.html#sec_controlstructuresweb"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 17&nbsp;Ablaufsteuerung (Web)" title="Kapitel-&Uuml;bersicht: 17&nbsp;Ablaufsteuerung (Web)"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_loopsweb">17.2</a></span>
+</div>
+<a href="contents.html#toc_sec_loopsweb">Schleifen</a>
+</h4>
+      
+<p>
+        QF-Test stellt zwei Knotentypen f&uuml;r die Implementierung von Schleifen zur Verf&uuml;gung:
+      </p>
+      
+<ul>
+        
+<li>
+          'Schleife' Knoten f&uuml;hren ihre Kindknoten so oft aus, wie angegeben ist.
+          Man kann die Schleife jedoch &uuml;ber einen 'Break' Knoten jederzeit
+          verlassen.
+        </li>
+        
+<li>
+          'While' Knoten f&uuml;hren ihre Kindknoten so oft aus, bis die
+          angegebene Bedingung nicht mehr gegeben ist. Derartige Schleifen k&ouml;nnen ebenfalls &uuml;ber einen
+          'Break' Knoten jederzeit verlassen werden.
+        </li>
+      
+</ul>
+      
+<p>
+<span class="margin"><span class="note">Hinweis</span></span>
+        'Schleife' Knoten enden auf jeden Fall nach der angegeben Anzahl von
+        Wiederholungen. Bei 'While' Knoten muss man jedoch selbst daf&uuml;r
+        sorgen, dass die Ausf&uuml;hrung irgendwann endet, indem die Bedingung falsch wird.
+        Ansonsten kommt es zur Endlosschleife. Im interaktiven Modus k&ouml;nnen Sie
+        in so einem Fall einfach die Pausetaste <img src="images/pause_continue.png" style="vertical-align: text-bottom" alt="Continue" title="Continue" width="26" height="26" texscale=".5">
+        dr&uuml;cken. Im Batch-Modus, d.h. wenn Sie QF-Test mit dem Kommandozeilenpameter
+        <code>-batch</code> starten um die angegebene Testsuite ohne die QF-Test
+        Benutzeroberfl&auml;che auszuf&uuml;hren, m&uuml;ssen Sie dann jedoch den QF-Test Prozess "abschie&szlig;en".
+      </p>
+      
+<p>
+        In der folgenden &Uuml;bung wollen wir einen Testfall implementieren, der pr&uuml;ft,
+        ob eine bestimmte Zeile in der Tabelle des CarConfig Demos angezeigt wird.
+      </p>
+      
+<p>
+        Die im Testfall durchgef&uuml;hrten Aktionen sind:
+      </p>
+      
+<ul>
+        
+<li>
+          Anzahl Tabellenzeilen bestimmen.
+        </li>
+        
+<li>
+          &Uuml;ber alle Zeilen iterieren und pr&uuml;fen, ob die Zeile passt.
+        </li>
+        
+<li>
+          Wenn die Zeile gefunden wurde, die Schleife abbrechen.
+        </li>
+        
+<li>
+          Falls die Zeile nicht gefunden wurde, einen Fehler ins Protokoll schreiben.
+        </li>
+      
+</ul>
+      
+<p>
+        Bitte beginnen Sie mit der Aufnahme eines Checks auf die zu suchende Zeile:
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Aktion</span></span>
+          <strong>Aktivieren Sie den Check-Aufnahmemodus</strong> &uuml;ber "Checks aufnehmen"
+          <img src="images/check.png" style="vertical-align: text-bottom" alt="Record a check" title="Record a check" width="26" height="26" texscale=".5">.
+        </li>
+        
+<li>
+          
+<strong>F&uuml;hren Sie einen Rechtsklick auf eine Tabellenzeile</strong> im CarConfig
+          Demo aus und w&auml;hlen Sie den Men&uuml;punkt &raquo;<em>Zeile</em>&laquo;
+          aus dem Popup-Men&uuml;.
+        </li>
+        
+<li>
+          
+<strong>Beenden Sie die Aufnahme</strong> &uuml;ber "Aufnahme beenden"
+          <img src="images/stop.png" style="vertical-align: text-bottom" alt="Stop" title="Stop" width="26" height="26" texscale=".5">.
+        </li>
+        
+<li>
+          
+<strong>&Auml;ndern Sie den Namen der aufgenommenen Sequenz</strong> z.B. in <code>Zeile pr&uuml;fen</code>.
+        </li>
+        
+<li>
+          
+<strong>Wandeln Sie die Sequenz in einen Testfall um:</strong> Rechtsklick
+          auf den 'Sequenz' Knoten und Auswahl des Untermen&uuml;punkts
+          &raquo;<em>Knoten konvertieren in</em>&laquo;-&raquo;<em>Testfall</em>&laquo; im Popup-Men&uuml;.
+        </li>
+      
+</ul>
+      
+<a name="fig_ControlsTransformNodeIntoWeb"></a><a name="figure_17.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/ControlsTransformNodeIntoWeb.png" target="_blank"><img texscale=".66" src="images/ControlsTransformNodeIntoWeb.png" width="886" height="723"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;17.4</a>:&nbsp;&nbsp;Knoten konvertieren</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        In QF-Test k&ouml;nnen Sie sehr effizient Knoten hinzuf&uuml;gen, indem Sie einen Knoten in einen
+        anderen einpacken:
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Aktion</span></span>
+          &Ouml;ffnen Sie den Testfall Knoten und <strong>packen Sie den aufgenommenen
+          'Check' Knoten in eine Schleife</strong>
+          indem Sie rechts auf den Knoten klicken und in dem sich &ouml;ffnenden Popupmen&uuml; den Punkt
+          &raquo;<em>Knoten einpacken in</em>&laquo;-&raquo;<em>Schleife</em>&laquo; ausw&auml;hlen.
+        </li>
+      
+</ul>
+      
+<a name="fig_ControlsPackNodeIntoWeb"></a><a name="figure_17.5"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/ControlsPackNodeIntoWeb.png" target="_blank"><img texscale=".66" src="images/ControlsPackNodeIntoWeb.png" width="886" height="723"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;17.5</a>:&nbsp;&nbsp;Knoten einpacken</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        QF-Test ermittelt dynamisch, in welche Knoten ein Knoten eingepackt werden kann
+        und bietet nur diese zur Auswahl an. Entsprechend kann es passieren, dass Sie "Schleife"
+        im Untermen&uuml; nicht finden. Sie sollten dann pr&uuml;fen, ob Sie den Rechtsklick
+        auf den richtigen Knoten ausgef&uuml;hrt haben. Dasselbe gilt f&uuml;r die Operationen "Knoten
+        konvertieren in" und "Knoten einf&uuml;gen".
+      </p>
+      
+<p>
+        Als n&auml;chstes setzen wir den Wert f&uuml;r das 'Anzahl Wiederholungen' Attribut des
+        'Schleife' Knoten. Dazu m&uuml;ssen wir bestimmen, wie viele Zeilen die
+        Tabelle hat. Es gibt keinen Knoten, der diese Operation direkt ausf&uuml;hren kann.
+        Allerdings gibt es eine derartige Prozedur in der im letzten Kapitel besprochenen
+        Standardbibliothek. Diese befindet sich im Package <code>qfs.web.table</code>
+        und hei&szlig;t <code>getRowCount</code>.
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Aktion</span></span>
+          <strong>Selektieren Sie den 'Testfall' Knoten und dr&uuml;cken [Strg-A]</strong>.
+        </li>
+        
+<li>
+          
+<strong>Klicken Sie die Schaltfl&auml;che "Prozedur ausw&auml;hlen" <img src="images/procedure_select.png" style="vertical-align: text-bottom" alt="Prozedurauswahl" title="Prozedur ausw&auml;hlen" width="20" height="20" texscale=".5"></strong>
+          links neben der &Uuml;berschrift 'Name der Prozedur'.
+        </li>
+        
+<li>
+          
+<strong>W&auml;hlen Sie den Reiter 'qfs.qft'</strong> im 'Prozedur ausw&auml;hlen' Dialog.
+        </li>
+        
+<li>
+          
+<strong>Navigieren Sie zu 'getRowCount' im Package 'qfs.web.table'</strong>
+        
+</li>
+        
+<li>
+          
+<strong>Dr&uuml;cken Sie 'OK'</strong> um die Prozedur auszuw&auml;hlen.
+        </li>
+        
+<li>
+          
+<strong>Dr&uuml;cken Sie 'OK'</strong> um den 'Prozeduraufruf' Dialog zu schlie&szlig;en.
+        </li>
+      
+</ul>
+      
+<p>
+        Das Hinzuf&uuml;gen einer Prozedur &uuml;ber [Strg-A] wurde
+        in <a href="procmanualweb.html#tut_procmanualweb">Manuelle Erstellung von Prozeduren</a> beschrieben. Dort finden Sie auch
+        Screenshots zur Aktion.
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Aktion</span></span>
+          <strong>F&uuml;gen Sie eine Variable</strong> mit dem Namen <code>Zeilen</code> <strong>im
+          'Variable f&uuml;r R&uuml;ckgabewert' Attribut ein</strong>.
+        </li>
+        
+<li>
+          
+<strong>&Auml;ndern Sie den Standardwert f&uuml;r <code>id</code> in</strong> der
+          Variablen Definitionen Tabelle auf die QF-Test Komponenten ID der Tabelle
+          <strong><code>VehicleTable</code></strong>.
+        </li>
+        
+<li>
+          Klicken Sie <strong>OK</strong>.
+        </li>
+        
+<li>
+          
+<strong>W&auml;hlen Sie den 'Schleife' Knoten</strong>.
+        </li>
+        
+<li>
+          Im Attribut 'Anzahl Wiederholungen' des 'Schleife' Knotens
+          <strong>tragen Sie eine Referenz auf die Variable <code>$(Zeilen)</code>
+          ein</strong>.
+        </li>
+        
+<li>
+          
+<strong>Tragen Sie den Namen der Z&auml;hlervariable</strong>, z.B. <code>i</code>,
+          im entsprechenden Attribut des 'Schleife' Knotens <strong>ein</strong>.
+        </li>
+        
+<li>
+          Klicken Sie <strong>OK</strong>.
+        </li>
+      
+</ul>
+      
+<a name="fig_ControlsLoopDetailsWeb"></a><a name="figure_17.6"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/ControlsLoopDetails.png" target="_blank"><img texscale=".66" src="images/ControlsLoopDetails.png" width="393" height="413"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;17.6</a>:&nbsp;&nbsp;Details eines 'Schleife' Knotens</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        In den Details des 'Check' Knotens tragen wir nun in der QF-Test ID der
+        Komponente statt des aufgenommenen Zeilenindex
+        eine Referenz auf die Z&auml;hlervariable ein und setzen eine Ergebnisvariable.
+        Au&szlig;erdem f&uuml;gen wir einen 'If' Knoten unter dem
+        'Check' Knoten hinzu, der das Ergebnis auswertet und die Schleife &uuml;ber
+        einen 'Break' Knoten verl&auml;sst, wenn die entsprechende Zeile gefunden wurde.
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Aktion</span></span>
+          <strong>&Ouml;ffnen Sie den 'Schleife' Knoten</strong>.
+        </li>
+        
+<li>
+          
+<strong>Selektieren Sie den 'Check' Knoten</strong>.
+        </li>
+        
+<li>
+          
+<strong>&Auml;ndern Sie den aufgenommenen Zeilenindex</strong> der QF-Test ID der Komponente
+          in Z&auml;hlervariable <code>$(i)</code>. Die QF-Test ID der Komponente sollte nun
+          <code>VehicleTable@Modell&amp;$(i)</code> lauten.
+        </li>
+        
+<li>
+          
+<strong>Tragen Sie den Variablennamen <code>ZeileGefunden</code> in das Attribut 'Variable
+          f&uuml;r Ergebnis' ein</strong> und klicken <strong>OK</strong>.
+        </li>
+        
+<li>
+          F&uuml;hren Sie einen <strong>Rechtsklick auf den 'Check' Knoten</strong> aus und
+          w&auml;hlen Sie aus dem Popup-Men&uuml; den Unterpunkt
+          &raquo;<em>Knoten einf&uuml;gen</em>&laquo;-&raquo;<em>Ablaufsteuerung</em>&laquo;-&raquo;<em>Break</em>&laquo; aus.
+        </li>
+        
+<li>
+          
+<strong>Dr&uuml;cken Sie 'OK'</strong> im 'Break' Dialog.
+        </li>
+        
+<li>
+          
+<strong>Packen Sie den 'Break' Knoten in einen 'If' Knoten</strong>
+          mittels des Tastaturk&uuml;rzels
+          [Strg-Umschalt-I] (Sie k&ouml;nnen nat&uuml;rlich auch &uuml;ber
+          das Men&uuml; gehen).
+        </li>
+        
+<li>
+          In den Details des 'If' Knotens
+          <strong>tragen Sie <code>$(ZeileGefunden)</code> im Attribut 'Bedingung' ein</strong>
+          und klicken <strong>OK</strong>.
+        </li>
+      
+</ul>
+      
+<p>
+        Die Variable <code>ZeileGefunden</code> wird vom 'Check' Knoten entweder auf den Wert
+        'true' oder auf den Wert 'false' gesetzt, so dass wir im 'Bedingung' Attribut des
+        'If' Knoten nur die Referenz auf die Variable <code>$(ZeileGefunden)</code>
+        einzutragen brauchen.
+      </p>
+      
+<p>
+        In den n&auml;chsten Schritten wollen wir einen 'Else' Knoten als letzten
+        Knoten im 'Schleife' Knoten einf&uuml;gen. Er wird nur ausgef&uuml;hrt, wenn die Schleife
+        so oft wie angegeben ausgef&uuml;hrt wurde, was in unserem Fall bedeutet, dass die
+        Variable <code>ZeileGefunden</code> nie wahr wurde, weil die Zeile nicht gefunden wurde.
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Aktion</span></span>
+          <strong>Schlie&szlig;en Sie den 'If' Knoten</strong>, falls dies nicht bereits
+          der Fall ist. Dies ist wichtig,
+          da sonst der 'Else' Knoten zum 'If' Knoten
+          und nicht zum 'Schleife' Knoten geh&ouml;ren w&uuml;rde.
+        </li>
+        
+<li>
+          F&uuml;hren Sie einen Rechtsklick auf den 'If' Knoten aus und
+          w&auml;hlen Sie auf dem Popup-Men&uuml; den Unterpunkt
+          <strong>&raquo;<em>Knoten einf&uuml;gen</em>&laquo;-&raquo;<em>Ablaufsteuerung</em>&laquo;-&raquo;<em>Else</em>&laquo;</strong>.
+        </li>
+        
+<li>
+          
+<strong>Klicken Sie im 'Else' Dialog 'OK'</strong>.
+        </li>
+        
+<li>
+          
+<strong>&Ouml;ffnen Sie den 'Else' Knoten</strong>.
+        </li>
+        
+<li>
+          
+<strong>F&uuml;gen Sie</strong> aus der Standardbibliothek <strong>die Prozedur <code>logError</code></strong> aus dem
+          Package <code>qfs.run-log</code> wie oben beschrieben <strong>ein</strong>.
+        </li>
+        
+<li>
+          In der 'Variablen Definitionen' Tabelle <strong>tragen Sie <code>Zeile nicht gefunden
+          </code></strong> als Wert der Zeile <code>message</code> <strong>ein.</strong>
+        
+</li>
+        
+<li>
+          
+<strong>Tragen Sie <code>true</code></strong>
+          als Wert der Zeile <code>withScreenshots</code> <strong>ein.</strong>
+        
+</li>
+        
+<li>
+          Dr&uuml;cken Sie <strong>OK</strong>.
+        </li>
+      
+</ul>
+      
+<p>
+        Wenn Sie die Tests im Batch-Modus ausf&uuml;hren, sind Screenshots eine gute
+        Unterst&uuml;tzung bei der Fehleranalyse. Da aber eine gro&szlig;e Zahl Screenshots
+        sehr gro&szlig;e Protokolldateien erzeugen w&uuml;rden, ist der Standardwert f&uuml;r
+        <code>withScreenshots false</code>.
+      </p>
+      
+<p>
+        Nun bleibt nur noch, den Testfall mit 'Vorbereitung' und 'Aufr&auml;umen' Knoten
+        zu vervollst&auml;ndigen und ihn in den oberen Teil der Testsuite zu verschieben.
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Aktion</span></span>
+          <strong>Kopieren Sie die 'Vorbereitung' und 'Aufr&auml;umen' Knoten</strong> aus
+           'Testset: Einfache Tests' in den neuen Testfall als ersten und letzten Knoten.
+        </li>
+        
+<li>
+          
+<strong>Verschieben Sie den Testfall</strong> aus dem Bereich 'Extrasequenzen'
+          in den oberen Bereich der Testsuite hinter den Knoten 'Testset: Simple Tests' Knoten.
+        </li>
+      
+</ul>
+      
+<p>
+        Damit w&uuml;rde der neue Testfall wie folgt aussehen:
+      </p>
+      
+<a name="fig_ControlsTestcaseWeb"></a><a name="figure_17.7"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/ControlsTestcaseWeb.png" target="_blank"><img texscale=".66" src="images/ControlsTestcaseWeb.png" width="477" height="242"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;17.7</a>:&nbsp;&nbsp;Der neue Testfall</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Aktion</span></span>
+          <strong>F&uuml;hren Sie den neuen Testfall aus.</strong>
+        
+</li>
+      
+</ul>
+      
+<p>
+        Er sollte ohne Fehler laufen.
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Aktion</span></span>
+          <strong>&Auml;ndern Sie</strong> nun in den Details des 'Check Elemente' Knotens
+          <strong>den Namen des Fahrzeugs zum Beispiel auf <code>Falscher Wert</code></strong>.
+        </li>
+      
+</ul>
+      
+<a name="fig_ControlsCheckDetailsWeb"></a><a name="figure_17.8"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/ControlsCheckDetails.png" target="_blank"><img texscale=".66" src="images/ControlsCheckDetails.png" width="393" height="681"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;17.8</a>:&nbsp;&nbsp;Details eines 'Check Elemente' Knoten</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Aktion</span></span>
+          <strong>F&uuml;hren Sie den Testfall nochmals aus.</strong>
+        
+</li>
+      
+</ul>
+      
+<p>
+        Nun sollte der Test den 'Else' Knoten der Schleife ausf&uuml;hren
+        und eine Fehlermeldung anzeigen.
+      </p>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="ifelseweb.html#sec_ifweb"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 17.1&nbsp;If - else" title="Vorheriges Kapitel: 17.1&nbsp;If - else"></a></td><td class="navicon"><a href="ownappweb.html#sec_ownappweb"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 18&nbsp;Nun ist es Zeit, Ihre eigene Anwendung zu starten (Web)" title="N&auml;chste Seite: 18&nbsp;Nun ist es Zeit, Ihre eigene Anwendung zu starten (Web)"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="controlsweb.html#sec_controlstructuresweb"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 17&nbsp;Ablaufsteuerung (Web)" title="Kapitel-&Uuml;bersicht: 17&nbsp;Ablaufsteuerung (Web)"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 2002-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

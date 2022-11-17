@@ -1,0 +1,1086 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Automated creation of basic procedures</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2002-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_AdvProcbuilder"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="dependencies.html#sec_AdvDeps"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 29&nbsp;Dependencies: Automatically ensuring correct prerequisites for
+    each 'Test-case'" title="Previous Chapter: 29&nbsp;Dependencies: Automatically ensuring correct prerequisites for
+    each 'Test-case'"></a></td><td class="navicon"><img src="../icons/linkcontdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="advanced.html#sec_advanced"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: V&nbsp;Advanced features of QF-Test" title="Chapter Overview: V&nbsp;Advanced features of QF-Test"></a></td><td class="navicon"><a href="../../tutorial_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_AdvProcbuilder">30</a></span>
+</div>
+<a href="contents.html#toc_sec_AdvProcbuilder">Automated creation of basic procedures</a>
+</h3>
+
+    
+<p>
+      This chapter describes how procedures for each UI component can be created automatically by
+      QF-Test. The advantage of this approach is that you do not need to record each step of your
+      tests manually. Furthermore you will also get a standardized structure of 'Packages' and
+      'Procedures' for testing all dialogs of your SUT.
+    </p>
+    
+<p>
+      You can find the following examples in the file
+    
+      <code>qftest-6.0.3/doc/tutorial/advanced-demos/en/automated_procedures.qft</code>
+    
+    
+    . There is also a second test-suite
+    
+      <code>qftest-6.0.3/doc/tutorial/advanced-demos/en/automated_procedures_work.qft</code>
+    
+    
+    to perform your own implementations. Please take care to copy all test-suites to a project-related folder first and modify them there.
+  </p>
+
+    
+
+    
+<a name="sec_apbGeneral"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_apbGeneral">30.1</a></span>
+</div>
+<a href="contents.html#toc_sec_apbGeneral">General</a>
+</h4>
+      
+<p>
+        If we want to create tests for all features of the JCarConfigurator,
+        we have to record steps on each element that will be touched by a
+        test.
+        The JCarConfigurator is a small application with five dialogs and
+        perhaps approximately thirty graphical elements. So creating all
+        important test-cases for this application can be achieved within one
+        or two days. But
+        imagine a big project like an ERP system with about fifty dialogs and
+        hundreds of elements. Creating test-cases for such a huge system
+        will definitely take longer and also the maintenance of recorded tests
+        could become quite difficult.
+      </p>
+      
+<p>As first organizational step we recommend to record each
+        test step as a 'Procedure' and call it from the
+        'Test-cases' requiring it. If you organize your tests in different
+        test-suites, you could split those test-suites into two levels. The
+        first level contains only UI component related procedures and the
+        second level contains only test-cases calling procedures of level one.
+  
+      </p>
+      
+<p>
+        The approach of implementing each test step as procedure brings us
+        to a situation where we could split the work into two parts:
+      </p>
+      
+<ol>
+        
+<li>Creating and maintaining the procedures representing
+          the test steps</li>
+        
+<li>Creating and maintaining the test-cases</li>
+      
+</ol>
+      
+<p>
+        QF-Test brings a feature which creates that basic
+        procedures for each UI component automatically. The usage of this feature should drastically minimize
+        the time for creating test-suites and test-cases and supports you in
+        making easier maintainable test-suites.
+      </p>
+      
+<p>
+        You can find a demo suite containing some test-cases created by this
+        
+          <code>qftest-6.0.3/doc/tutorial/advanced-demos/en/automated_procedures.qft</code>
+        
+        
+        .
+      </p>
+      
+<a name="fig_advPbTestSuite"></a><a name="figure_30.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/ProcbuilderTestsuite.png" target="_blank"><img texscale=".66" src="images/ProcbuilderTestsuite.png" width="720" height="642"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;30.1</a>:&nbsp;&nbsp;Screenshot of test-suite</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        The following sections demonstrate how to create those procedures and
+        organize your test-cases.
+      </p>
+    
+
+    
+    
+
+  
+<a name="sec_abpCreation"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_abpCreation">30.2</a></span>
+</div>
+<a href="contents.html#toc_sec_abpCreation">Automated creation of procedures</a>
+</h4>
+      
+<p>
+        Please copy the demo test-suite
+        
+          <code>qftest-6.0.3/doc/tutorial/advanced-demos/en/automated_procedures_work.qft</code>
+        
+        
+        to a project-related folder and open it there.
+      </p>
+      
+<p>
+      This test-suite contains a 'Test-set' referring to a 'Start SUT' 'Dependency'.
+      </p>
+      
+<a name="fig_autoProcSuite"></a><a name="figure_30.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/ProcbuilderWorkSuite.png" target="_blank"><img texscale=".66" src="images/ProcbuilderWorkSuite.png" width="366" height="50"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;30.2</a>:&nbsp;&nbsp;The test-suite automated_procedures_work.qft</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        First we have to launch the SUT via selecting the 'Dependency reference' and
+        pressing 'Start test run'.
+      </p>
+      
+<p>
+        Once the SUT is up and running we are ready to record the test steps.
+        Normally we would press the 'Start recording' button, then
+        record the according test steps and then press 'Stop recording'.
+        After that we would re-organize the recorded steps, i.e. generating procedures
+        and parametrizing them. Exactly those steps can be
+        performed automatically now.
+      </p>
+      
+<p>
+        Let us generate the basic procedures for the main window first.
+        Before we can start, please modify the
+        settings of QF-Test.
+      </p>
+      
+<p>
+        Open the QF-Test options via &raquo;<em>Edit</em>&laquo;-&raquo;<em>Options</em>&laquo;. Then switch to 'Record'
+        -&gt; 'Procedures'. Please change the value for the 'Configuration file
+        for recorded procedures' to
+        the full path of the demo configuration test-suite at
+        <code>qftest-6.0.3/demo/procbuilder/carconfig-procbuilderdef.qft</code>.
+       Then close the 'Options' via pressing 'OK'.
+        You will see more details about that file in the following chapters.
+      </p>
+      
+<p>
+        After altering the settings proceed with following steps:
+      </p>
+      
+<ul>
+        
+<li>Press the 'Record procedures' button.</li>
+        
+<li>Perform a right mouse-click in the SUT.</li>
+        
+<li>Select 'Whole window'.</li>
+        
+<li>Press the 'Record procedures' button again.</li>
+      
+</ul>
+      
+<p>
+        Now QF-Test creates the basic procedures of the main window. You should see
+        a new 'Package' called <code>procbuilder</code> under 'Procedures' of your test-suite.
+        This package contains several packages and procedures for actions on the
+        whole dialog and its single UI components.
+  </p>
+  
+<p>
+        
+<span class="margin"><span class="note">Note</span></span> The current configuration created a 'Package'
+        <code>JCarConfigurator</code> under the <code>procbuilder</code>
+        'Package'. This 'Package' is
+        indicated to be the container for all actions performed on
+        the main window.
+      </p>
+      
+<a name="fig_autoProcFirstRecord"></a><a name="figure_30.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/RecordedProcedures.png" target="_blank"><img texscale=".66" src="images/RecordedProcedures.png" width="816" height="306"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;30.3</a>:&nbsp;&nbsp;The recorded procedures</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Please note that the involved components have also been recorded in 'Windows and components'.
+      </p>
+      
+<p>
+        The next step is to check which procedures are
+        useful for us and which are obsolete.
+      </p>
+      
+<p>
+        Let us take a closer look at the created 'Packages':
+      </p>
+      
+<a name="table_30.1"></a><a name="table_30.1"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth" valign="center">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Package</th>
+            <th rowspan="1" colspan="1">Content</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1"><code>JCarConfigurator</code></td>
+            <td rowspan="1" colspan="1">
+              This package contains all procedures for actions on components
+              of the JCarConfigurator window. It has been created
+              because the configuration file uses the
+              component hierarchy for creating the package structure.
+            </td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a>Table&nbsp;30.1</a>:&nbsp;&nbsp;</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        The 'Package' <code>JCarConfigurator</code> contains several packages which are:
+      </p>
+      
+<a name="table_30.2"></a><a name="table_30.2"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth" valign="center">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Package</th>
+            <th rowspan="1" colspan="1">Content</th>
+          
+</tr>
+
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1"><code>MenuBar</code></td>
+            <td rowspan="1" colspan="1">
+              This package contains procedures for clicking at the items
+              of the menu.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1"><code>VehicleTablePanel</code></td>
+            <td rowspan="1" colspan="1">
+              This package contains all procedures for actions on components
+              on the 'VehicleTable' panel of the SUT. In our case there are
+              only procedures for the 'VehicleTable' object, because that is
+              the only component on that panel.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1"><code>check</code></td>
+            <td rowspan="1" colspan="1">
+              This package contains procedures for checking components.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1"><code>check-window</code></td>
+            <td rowspan="1" colspan="1">
+              This package contains procedures which can be called to check
+              the components of one frame using one call. Those procedures are
+              container procedures.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1"><code>get</code></td>
+            <td rowspan="1" colspan="1">
+              This package contains procedures for getting the current values
+              of components, e.g. reading the text of a text-field.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1"><code>select</code></td>
+            <td rowspan="1" colspan="1">
+              This package contains procedures for selecting items of
+              elements - in our case only one procedure to select a tab in the TabbedPane.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1"><code>set</code></td>
+            <td rowspan="1" colspan="1">
+              This package contains procedures for setting several components of
+              the current window - in our case several setters for the text
+              fields of the frame.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1"><code>set-window</code></td>
+            <td rowspan="1" colspan="1">
+              This package contains procedures setting several component of
+              certain frames or dialogs - in our case one procedure calling all procedure
+              for the package 'set' of the JCarConfigurator frame. Those
+              container procedures are
+             typical workflow procedures.
+            </td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1"><code>wait</code></td>
+            <td rowspan="1" colspan="1">
+              This package contains all procedure waiting for several components.
+            </td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a>Table&nbsp;30.2</a>:&nbsp;&nbsp;</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        In our case all procedures might be useful. So we
+        can move the whole 'JCarConfigurator' 'Package' from the
+        <code>procbuilder</code> 'Package' directly under the 'Procedures'
+        node. Press 'Yes' on the occurring 'Update Reference' dialog.
+      </p>
+      
+<p>
+        Now the procedures can be used by test-cases or other procedures.
+      </p>
+      
+<p>
+        Finally our test-suite should look like this:
+      </p>
+      
+<a name="fig_autoProcTestSuite1"></a><a name="figure_30.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/MovedProcedures.png" target="_blank"><img texscale=".66" src="images/MovedProcedures.png" width="344" height="258"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;30.4</a>:&nbsp;&nbsp;The test-suite containing the procedures</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Repeat that recording now for the 'Specials' and the
+        'Accessories' panel and just move the respective procedures or packages
+        for the important components to the 'JCarConfigurator' package. In our
+        case these are only the packages 'SpecialsPanel' and
+        'AccessoryTablePanel'.
+  </p>
+  
+<p>The full test-suite should then look like this:
+      </p>
+      
+<a name="fig_autoProcTestSuite2"></a><a name="figure_30.5"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/FullProcedures.png" target="_blank"><img texscale=".66" src="images/FullProcedures.png" width="344" height="290"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;30.5</a>:&nbsp;&nbsp;The procedures for all panels</td><td class="captionglue"></td>
+</tr>
+</table>
+
+      
+<p>
+        We are ready for creating test-cases using the automatically recorded
+        test steps. You could of course also repeat that recording for all other dialogs, e.g. the 'Vehicles' dialog which can be reached via
+        the menu 'Options' -&gt; 'Vehicles' as well as for the 'Accessories' and
+        'Specials' dialogs.
+      </p>
+  
+<p>
+    You do not need to record the whole window all the time. You could also select 'Component only' to record one dedicated component or
+    'Component with children' to record procedures for a certain panel.
+    </p>
+    
+
+    
+    
+
+  
+<a name="sec_apbConf"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_apbConf">30.3</a></span>
+</div>
+<a href="contents.html#toc_sec_apbConf">Configuration of the automated creation</a>
+</h4>
+
+      
+<a name="sec_apbConfIntro"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_apbConfIntro">30.3.1</a></span>
+</div>
+<a href="contents.html#toc_sec_apbConfIntro">Introduction</a>
+</h5>
+        
+<p>
+          In the previous example we used the file
+          
+            <code>qftest-6.0.3/demo/procbuilder/carconfig-procbuilderdef.qft</code>
+          
+          
+          as configuration file for the automated
+          creation. In this section we want to take a closer look at the
+          configuration capabilities of QF-Test. So please open that file.
+        </p>
+
+        
+<a name="fig_apbConfiguration"></a><a name="figure_30.6"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/ProcbuilderConfig.png" target="_blank"><img texscale=".66" src="images/ProcbuilderConfig.png" width="867" height="514"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;30.6</a>:&nbsp;&nbsp;The current configuration</td><td class="captionglue"></td>
+</tr>
+</table>
+
+        
+<p>
+          The package <code>procbuilder</code> is the root-package for all created
+          packages. If you want to use another name for the automatically
+          created procedures, feel free to rename the package.
+        </p>
+        
+<p>
+          If you open that package, you can see the 'class' level. This level
+          describes the classes of the UI components  which should be taken
+          into account for creating the packages. The next levels contains
+          information about the created package structure and procedures. You
+          can find a detailed description of those capabilities in the manual in
+          chapter <a href="../../manual/en/tech_procbuilderdef.html" shape="rect">The
+          Procbuilder definition file</a>.
+        </p>
+      
+
+      
+<a name="sec_apbFirstExample"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_apbFirstExample">30.3.2</a></span>
+</div>
+<a href="contents.html#toc_sec_apbFirstExample">First example</a>
+</h5>
+        
+<p>
+      In our first example we want to create a new settings file which we
+          will build up step by step.
+        </p>
+        
+<p>Please perform following actions at the beginning:
+        </p>
+        
+<ul>
+          
+<li>Open a new test-suite file and save it. Specify a name like
+            'mySettings.qft' or something similar.
+          </li>
+          
+<li>Create a new 'Package' with the name 'myProcedures'.</li>
+        
+</ul>
+        
+<p>
+          The new test-suite should look like this:
+        </p>
+        
+<a name="fig_apbOwnConf1"></a><a name="figure_30.7"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/OwnProcbuilderConfigPackage.png" target="_blank"><img texscale=".66" src="images/OwnProcbuilderConfigPackage.png" width="207" height="98"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;30.7</a>:&nbsp;&nbsp;The own configuration file</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Now we are ready to configure procedure templates for specific
+          classes. Let us
+          create procedures for the text-fields on the main panel of the
+          JCarConfigurator first. It
+          might be interesting for our project to check the content of those
+          text-fields, so we need to create procedures for checking the text of
+          each text-field.
+        </p>
+      
+<p>To create those procedures we have to insert a new package to the
+        package 'myProcedures'. Please call that package
+        'javax_swing_JTextField'. 'javax.swing.JTextField' is the class of
+        those text-fields, but we have to use '_' in the package's name,
+        because '.' is not allowed in that attribute.
+        This package will instruct QF-Test to create the procedures in
+        it, if it meets a component of the class
+        'javax.swing.JTextField' only. That is an important aspect, because we
+        should realize that procedure templates can be created per classes of components.
+        </p>
+      
+<p>
+        Consecutively we want to create a template for a procedure checking the text
+        of a component. The template procedure has to be part of another
+        package. The name of this package should indicate its purpose, e.g. 'checkers'.
+        After creating the 'checkers' package you can add a procedure 'checkText' to
+        it.
+    The procedure should contain a 'Check Text' node which is meant
+        to check the text of components. Please insert such a 'Check text'
+        node via right mouse click at the expanded procedure and &raquo;<em>Insert node</em>&laquo;-&raquo;<em>Check nodes</em>&laquo;-&raquo;<em>Check Text</em>&laquo;. Specify <code>$(client)</code> as client,
+        'dummy' as QF-Test component ID and <code>$(text)</code> as text.
+      </p>
+      
+<p>
+        Of course, after confirming these entries, we will get a warning that a
+        component named 'dummy' does not exist. In this case we are allowed to
+        ignore this warning.
+      </p>
+        
+<p>
+          The test-suite will then look like this:
+        </p>
+        
+<a name="fig_apbOwnConfProc"></a><a name="figure_30.8"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/OwnProcbuilderConfigCheck.png" target="_blank"><img texscale=".66" src="images/OwnProcbuilderConfigCheck.png" width="944" height="476"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;30.8</a>:&nbsp;&nbsp;The <code>checkText</code> procedure</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>The procedure contains an empty default value for the
+        parameter 'text'.
+        </p>
+        
+<a name="fig_apbOwnConfParams"></a><a name="figure_30.9"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/OwnProcbuilderConfigParams.png" target="_blank"><img texscale=".66" src="images/OwnProcbuilderConfigParams.png" width="944" height="476"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;30.9</a>:&nbsp;&nbsp;The <code>checkText</code> procedure with parameters</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Now we have nearly completed our first procedure template, but we have to think
+          about one more issue. Each component has its specific and unique
+          'QF-Test ID', so it
+          would be great to use that 'QF-Test ID' attribute immediately during
+          creation, otherwise we have to do that manually afterwards. We also want the
+          procedure to have a component-related name instead of 'checkText'
+          only. The place holder <code>&lt;COMPID&gt;</code> points out to QF-Test
+          to replace it with the QF-Test ID of the current component.
+          So we have to change the procedure name to
+          <code>checkText_&lt;COMPID&gt;</code> and we have to insert the <code>&lt;COMPID&gt;</code>
+          place holder directly in the 'QF-Test component ID' attribute of the 'Check text' node.
+        </p>
+        
+<p>
+          Finally the template procedure should look like this:
+        </p>
+        
+<a name="fig_apbOwnConfPlaceholderCompId"></a><a name="figure_30.10"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/OwnProcbuilderConfigCompID.png" target="_blank"><img texscale=".66" src="images/OwnProcbuilderConfigCompID.png" width="944" height="476"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;30.10</a>:&nbsp;&nbsp;Using the <code>&lt;COMPID&gt;</code> place holder</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          We are ready to begin now. First we have to order QF-Test to use
+          that file. That is achieved via the options of QF-Test. Open the
+          options dialog via &raquo;<em>Edit</em>&laquo;-&raquo;<em>Options</em>&laquo; and change to 'Record' -&gt;
+          'Procedures.' Specify the path of your 'mySettings.qft' for the
+          'Configuration file for recorded procedures' and press 'OK'.
+        </p>
+        
+<p>
+          Then start the JCarConfigurator again. Once it is up and running, please
+          proceed with following steps:
+        </p>
+        
+<ul>
+          
+<li>Press the 'Record procedures' button.</li>
+          
+<li>Perform a right mouse-click in the SUT.</li>
+          
+<li>Select 'Whole window'.</li>
+          
+<li>Press the 'Record procedures' button again.</li>
+        
+</ul>
+        
+<p>
+          Congratulations, you have instructed QF-Test to record test steps for you.
+        </p>
+        
+<a name="fig_apbOwnConfFirstCreation"></a><a name="figure_30.11"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/OwnProcbuilderConfigTestSuite1.png" target="_blank"><img texscale=".66" src="images/OwnProcbuilderConfigTestSuite1.png" width="944" height="476"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;30.11</a>:&nbsp;&nbsp;Your first automatically created
+            procedures</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+<a name="sec_apbCurrentText"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_apbCurrentText">30.3.3</a></span>
+</div>
+<a href="contents.html#toc_sec_apbCurrentText">Using the current text for checking</a>
+</h5>
+        
+<p>
+          The 'checkText' procedures have a parameter 'text' for the text to check.
+          Up to now we have to specify that
+          value each time we call that 'Procedure' of the according
+          text-field. Let us assume we have a scenario where we intend to check
+          the default values of the JCarConfigurator after its startup. In
+          this case we would have to add the single procedure calls of all
+          four 'checkText' procedures and specify the according
+          values. However, QF-Test
+          offers a place holder to set the current value of a text-field
+          automatically to the created procedures. Therefore we have to change
+          the default-value of the 'text' parameter to
+          <code>&lt;CURRENTVALUE&gt;</code> in our configuration test-suite. After that you have to ensure that the
+          <code>myProcedures</code> package doesn't exist under the
+          'Procedures' node anymore, then re-create
+          the packages like in the previous example. Otherwise QF-Test will
+          create a package <code>myProcedures1</code> to ensure that each
+          creation process has its own unique target package.
+        </p>
+        
+<p>
+          The configuration file looks like this:
+        </p>
+        
+<a name="fig_apbExampleCurrentText"></a><a name="figure_30.12"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/OwnProcbuilderConfigCurrentText.png" target="_blank"><img texscale=".66" src="images/OwnProcbuilderConfigCurrentText.png" width="944" height="476"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;30.12</a>:&nbsp;&nbsp;The configuration for the current text</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          The newly created procedures displays like below:
+        </p>
+        
+<a name="fig_apbExampleCurrentText2"></a><a name="figure_30.13"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/OwnProcbuilderConfigTestSuiteCT.png" target="_blank"><img texscale=".66" src="images/OwnProcbuilderConfigTestSuiteCT.png" width="944" height="476"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;30.13</a>:&nbsp;&nbsp;The created procedures with the current text</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+<a name="sec_abpContainer"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_abpContainer">30.3.4</a></span>
+</div>
+<a href="contents.html#toc_sec_abpContainer">Creating container procedures</a>
+</h5>
+        
+<p>In the previous example we have created the 'checkText' procedure for
+          checking single text-fields. Now you should be able to create a 'set'
+          procedure for setting the text of a text-field or a 'press' procedure
+          for pressing a button. Those procedures are created similarly. Keep
+        in mind that all those procedures work with one single component.
+        </p>
+        
+<p>
+          In some test scenarios it might be interesting to call one procedure
+          for checking all components of a specific dialog or specific
+          panel or to fill all visible text-fields. Because such procedures
+          deal with components which act as containers, we call those
+          procedures 'container'-procedures.
+        </p>
+        
+<p>
+          In our case we could consider one procedure calling all single
+          'checkText' procedures of the JCarConfigurator. But how to create
+          such a procedure like that?
+        </p>
+        
+<p>
+          First of all add a new 'class'-package to your 'mySettings.qft'
+          file with the name 'javax_swing_JFrame'. The main window of the JCarConfigurator is an
+          instance of <code>javax.swing.JFrame</code>, that is why we have to
+          use that specific package name. The 'class'-package has to contain a
+          'type'-package which we call 'checkers-window' now. The 'type'-package has to contain a
+          procedure <code>checkTextOfElements_&lt;COMPID&gt;</code>, intended to perform the actual checks. We use the
+          <code>&lt;COMPID&gt;</code> placeholder again for the procedure name to
+          determine which dialog is affected by the created procedures.
+        </p>
+        
+<p>
+          The next step is to specify the procedure content. Let us see how we
+          can configure this.
+      </p>
+    
+<p>We have four text-fields which can be checked by using the same procedure
+          <code>checkText_&lt;COMPID&gt;</code>. QF-Test allows to call all
+          four procedures with just one configured 'Procedure call' node.
+          Therefore insert a 'Procedure call' for the procedure
+          <code>javax_swing_JTextField.checkers.checkText_&lt;CCOMPID&gt;</code>.
+  </p>
+      
+<p>
+          The configuration file should look like below:
+        </p>
+        
+<a name="fig_apbContainerExample"></a><a name="figure_30.14"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/OwnProcbuilderConfigContainer.png" target="_blank"><img texscale=".66" src="images/OwnProcbuilderConfigContainer.png" width="571" height="162"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;30.14</a>:&nbsp;&nbsp;The template for container procedures</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          The last step is to make QF-Test to create a 'container' procedure and
+          not a normal 'component' procedure. This can be achieved by setting
+          <code>@FORCHILDREN</code> in the comment attribute of the
+       <code>checkTextOfElements_&lt;COMPID&gt;</code> procedure.
+        </p>
+        
+<a name="fig_apbForChildrenTag"></a><a name="figure_30.15"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/OwnProcbuilderConfigForChildren.png" target="_blank"><img texscale=".66" src="images/OwnProcbuilderConfigForChildren.png" width="360" height="500"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;30.15</a>:&nbsp;&nbsp;Usage of <code>@FORCHILDREN</code> tag</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          Now you can record the procedures like in the previous examples. Do
+          not forget to remove the 'myProcedures' from 'Procedures' before.
+          You should then get something like this under 'Procedures':
+        </p>
+        
+<a name="fig_apbCreatedContainer"></a><a name="figure_30.16"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/OwnProcbuilderConfigTestSuiteContainer.png" target="_blank"><img texscale=".66" src="images/OwnProcbuilderConfigTestSuiteContainer.png" width="944" height="476"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;30.16</a>:&nbsp;&nbsp;The created container procedures</td><td class="captionglue"></td>
+</tr>
+</table>
+  
+<p>
+    
+<span class="margin"><span class="note">Note</span></span> QF-Test replaces the 'class' part of the
+    procedure-calls by the top package of the configuration. In our case this
+    is 'myProcedures'.
+  </p>
+      
+
+      
+<a name="sec_apbCurrentChildValue"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_apbCurrentChildValue">30.3.5</a></span>
+</div>
+<a href="contents.html#toc_sec_apbCurrentChildValue">Using the current value of child components</a>
+</h5>
+        
+<p>We could meet a similar situation like in the example <a href="#sec_apbCurrentText">Using the current text for checking</a>, where we want to record the current values of
+        each text-field during creation. In the example  <a href="#sec_apbCurrentText">Using the current text for checking</a> we used
+        <code>&lt;CURRENTVALUE&gt;</code>. Now we have to specify the current
+        text as parameter at the procedure-call in the 'container'-procedure
+        'checkTextElements'. Therefore we add the parameter 'text' to
+        the procedure-call in your 'mySettings.qft' file and the value should
+        be <code>&lt;CCURRENTVALUE&gt;</code>.
+        </p>
+        
+<a name="fig_apbContainerCurrentText"></a><a name="figure_30.17"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/OwnProcbuilderConfigCCValue.png" target="_blank"><img texscale=".66" src="images/OwnProcbuilderConfigCCValue.png" width="1184" height="376"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;30.17</a>:&nbsp;&nbsp;Configuration of <code>&lt;CCURRENTVALUE&gt;</code></td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          If you create the procedures again, you will
+          see the current values at the procedure-calls. Please do not forget
+          to remove the 'myProcedures' package from 'Procedures'.
+        </p>
+        
+<a name="fig_apbContainerCurrentTextTestSuite"></a><a name="figure_30.18"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/OwnProcbuilderConfigTestSuiteCCV.png" target="_blank"><img texscale=".66" src="images/OwnProcbuilderConfigTestSuiteCCV.png" width="944" height="476"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;30.18</a>:&nbsp;&nbsp;Test-suite using <code>&lt;CCURRENTVALUE&gt;</code></td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          If you take a closer look at the created procedure 'checkTextElements_', you will see
+          that each procedure-call gets the parameter text. Perhaps it might
+          be convenient for test development to set the according 'text'
+          parameters as default values for the 'container'-procedure.
+          To achieve this you have to add one more parameter to the
+          procedure call in the settings file. The name of the parameter has to
+          be <code>&lt;CCOMPID&gt;</code> and the value will be
+          <code>&lt;CCURRENTVALUE&gt;</code>. Then you have to change the value of the
+          text parameter of that procedure-call to <code>$(&lt;CCOMPID&gt;)</code>.
+          The configuration should look like this now:
+          </p>
+        
+<a name="fig_apbContainerParams"></a><a name="figure_30.19"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/OwnProcbuilderConfigCCValue2.png" target="_blank"><img texscale=".66" src="images/OwnProcbuilderConfigCCValue2.png" width="1184" height="376"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;30.19</a>:&nbsp;&nbsp;Parameters for container procedures</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          If you create the procedures again, you will see that the
+          'checkTextElements' procedure has four more parameters with the
+          current value of the elements as default values. Additionally each
+          single procedure call uses a variable - named after the component-id
+          - as 'text' parameter.
+          </p>
+        
+<a name="fig_apbContainerParamsTestSuite"></a><a name="figure_30.20"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/OwnProcbuilderConfigTestSuiteCCV2.png" target="_blank"><img texscale=".66" src="images/OwnProcbuilderConfigTestSuiteCCV2.png" width="944" height="476"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;30.20</a>:&nbsp;&nbsp;Parameters for container procedures in test-suite</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+
+      
+<a name="sec_apbMore"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_apbMore">30.3.6</a></span>
+</div>
+<a href="contents.html#toc_sec_apbMore">More configuration capabilities</a>
+</h5>
+        
+<p>As you have seen in the previous sections there is a lot of
+          configuration capability for the automated creation of basic
+          procedures. But there are even more options available. Please take a
+        look at the manual chapter <a href="../../manual/en/tech_procbuilderdef.html" shape="rect">The Procbuilder definition file</a>.
+        </p>
+      
+
+  
+
+    
+
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="dependencies.html#sec_AdvDeps"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 29&nbsp;Dependencies: Automatically ensuring correct prerequisites for
+    each 'Test-case'" title="Previous Chapter: 29&nbsp;Dependencies: Automatically ensuring correct prerequisites for
+    each 'Test-case'"></a></td><td class="navicon"><img src="../icons/linkcontdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="advanced.html#sec_advanced"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: V&nbsp;Advanced features of QF-Test" title="Chapter Overview: V&nbsp;Advanced features of QF-Test"></a></td><td class="navicon"><a href="../../tutorial_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 2002-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

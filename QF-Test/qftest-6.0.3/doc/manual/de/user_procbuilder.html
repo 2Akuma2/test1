@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>
+      Automatisierte Erstellung von Basisprozeduren</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_procbuilder"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_distributed.html#usec_distributeddevelopment"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 23&nbsp;Verteilte Entwicklung von Tests" title="Vorheriges Kapitel: 23&nbsp;Verteilte Entwicklung von Tests"></a></td><td class="navicon"><a href="user_testmanagement.html#usec_testmanagement"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 25&nbsp;Anbindung an Testmanagementtools" title="N&auml;chste Seite: 25&nbsp;Anbindung an Testmanagementtools"></a></td><td class="navicon"><a href="user_testmanagement.html#usec_testmanagement"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 25&nbsp;Anbindung an Testmanagementtools" title="N&auml;chstes Kapitel: 25&nbsp;Anbindung an Testmanagementtools"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch" title="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h3 class="header-container h3">
+<div>
+<span class="margin"><a name="new_N92240"></a><span class="note">3.0+</span></span><span class="numtitle"><a href="contents.html#toc_usec_procbuilder">24</a></span>
+</div>
+<a href="contents.html#toc_usec_procbuilder">
+      Automatisierte Erstellung von Basisprozeduren</a>
+</h3>
+
+    
+  
+<a name="usec_pbIntro"></a>
+
+    
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_pbIntro">24.1</a></span>
+</div>
+<a href="contents.html#toc_usec_pbIntro">Einf&uuml;hrung</a>
+</h4>
+    
+<p>Am Beginn eines typischen QF-Test Projektes werden die ersten
+      Schritte aufgezeichnet und auch meistens erfolgreich ausgef&uuml;hrt. Nach den ersten Erfolgen und einigen
+      solcher Aufnahmen bemerkt man, dass einfaches Aufnehmen oder ein
+      Kopieren/Einf&uuml;gen Ansatz einige Probleme bereiten, die Tests wartbar zu
+      halten. Denken Sie nur an eine &Auml;nderungen im Haupt-Panel des
+      Workflows. In diesem Fall muss beinahe jeder Test angepasst werden. Wegen
+      solcher Probleme empfehlen wir, die Tests modularisiert zu entwickeln und
+      Prozeduren und Variablen einzusetzen. F&uuml;r eine genauere Beschreibung
+      modularisierter Testentwicklung siehe <a href="user_organization.html#usec_procedures">Abschnitt 8.5</a>.
+    </p>
+    
+<p>In Projekten, die eine gro&szlig;e Menge an Dialogen und grafischen Elementen
+      beinhalten, ist es mitunter empfehlenswert, solche Prozeduren in
+      komponentenspezifische Prozeduren, z.B. "Klicke Button OK", und in
+      eigenst&auml;ndige Workflow Prozeduren, z.B. "Ein Fahrzeug anlegen",
+      aufzuteilen. Dieser Ansatz erm&ouml;glicht es, dass neue Testf&auml;lle relativ
+      schnell angelegt werden k&ouml;nnen, jedoch m&uuml;ssen vorher diese Basisprozeduren
+      erstellt werden.
+    </p>
+    
+<p>
+      QF-Test liefert den Procedure Builder, der genau diese Basisprozeduren
+      automatisiert erstellt. Wenn Sie diesen Procedure Builder verwenden,
+      wird sich die Zeit f&uuml;r Aufnahme und Erstellung der Prozeduren f&uuml;r die
+      grafischen Elemente drastisch verk&uuml;rzen. Damit kann sich der Tester auf
+      seine eigentliche Aufgabe, Testf&auml;lle zu erzeugen und zu planen
+      bzw. Testdaten bereitzustellen, konzentrieren.
+    </p>
+    
+
+    
+    
+      
+<a name="usec_pbHowToUse"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_pbHowToUse">24.2</a></span>
+</div>
+<a href="contents.html#toc_usec_pbHowToUse">Die Verwendung vom Procedure Builder</a>
+</h4>
+    
+<p>
+      Um die Basisprozeduren automatisiert zu erzeugen, m&uuml;ssen Sie folgende
+      Schritte ausf&uuml;hren:
+    </p>
+    
+<ul>
+      
+<li>Starten Sie das SUT von QF-Test aus.</li>
+      
+<li>Gehen Sie im SUT zum Fenster oder der Komponente, f&uuml;r welche Sie die
+      Basisprozeduren erzeugen wollen.</li>
+      
+<li>Dr&uuml;cken Sie in QF-Test den 'Prozeduren erstellen' <img src="../icons/procedure_tb.png" style="vertical-align: text-bottom" alt="Prozeduren erstellen" title="Prozeduren erstellen" width="26" height="26" texscale=".66">
+          Knopf, w&auml;hlen Sie den entsprechenden Men&uuml;eintrag aus oder nutzen Sie
+      den <a href="opt_record.html#opt_hotkeyprocedure">Hotkey f&uuml;r Prozedurenaufnahme</a>.</li>
+      
+<li>F&uuml;hren Sie einen Rechtsklick auf die entsprechende Komponente im SUT
+      durch.</li>
+      
+<li>W&auml;hlen Sie den entsprechenden Aufnahmemodus aus.</li>
+      
+<li>Stoppen Sie die Prozedurenaufnahme mittels Klick auf den 'Prozeduren
+      erstellen' Knopf, mittels Auswahl des entsprechenden Men&uuml;eintrages in QF-Test oder &uuml;ber den <a href="opt_record.html#opt_hotkeyprocedure">Hotkey f&uuml;r Prozedurenaufnahme</a>.</li>
+      
+</ul>
+          
+<p>Nun sollten Sie die neu erstellten Packages unter den <a href="procedures.html#step_PackageRoot" shape="rect">'Prozeduren'</a> Knoten der aktuellen
+          Testsuite, in der Sie die Aufzeichnung gestoppt haben, finden. Diese Packages beinhalten die erstellten Prozeduren f&uuml;r
+          die Komponenten. Standardm&auml;&szlig;ig wird ein Package <code>procbuilder</code> erzeugt. Falls dieses schon existiert, wird
+          ein Package <code>procbuilder1</code> erzeugt und so weiter. Wenn Sie dieses Package &ouml;ffnen, finden Sie weitere Packages
+          f&uuml;r bestimmte Funktionen wie <code>check</code>, <code>get</code>, <code>select</code>, <code>wait</code> etc..
+          Diese beinhalten die Prozeduren f&uuml;r die Komponenten, welche Sie aufgenommen haben. Unter dem <code>check</code> Package
+          finden Sie noch eine weitere Ebene f&uuml;r unterschiedliche Checkarten. Diese Struktur ist die Standardstruktur, welche Sie allerdings
+          anders konfigurieren k&ouml;nnen. Eine Beschreibung hierf&uuml;r finden Sie im n&auml;chsten Abschnitt.
+          </p>
+        
+<a name="figure_24.1"></a><a name="figure_24.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/RecordedProcbuilderSuite.png" target="_blank"><img src="images/RecordedProcbuilderSuite.png" alt="RecordedProcbuilderSuite" width="432" height="402" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;24.1</a>:&nbsp;&nbsp;Aufgezeichnete Prozeduren</td><td class="captionglue"></td>
+</tr>
+</table>
+  
+     
+    
+    
+<a name="usec_pbHowPbAdapt"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_pbHowPbAdapt">24.3</a></span>
+</div>
+<a href="contents.html#toc_usec_pbHowPbAdapt">Konfiguration des Procedure Builder</a>
+</h4>
+      
+<p>Die Erstellung der Prozeduren wird &uuml;ber eine Template Testsuite
+      gesteuert, diese Testsuite finden Sie unter
+      <code>qftest-6.0.3/include/procbuilderdef.qft</code>. Diese
+      Datei sollte in ein projektspezifisches Verzeichnis kopiert werden,
+      falls Sie diese anpassen m&ouml;chten. Den Speicherort dieser Datei k&ouml;nnen
+      Sie dann in den QF-Test Einstellungen unter <a href="opt_record.html#opt_pbconffile">
+              Konfigurationsdatei f&uuml;r die Prozedurenaufnahme
+            </a> konfigurieren.
+      </p>
+      
+<p>Die Template Testsuite beinhaltet Prozedurvorlagen f&uuml;r die am meisten
+      verwendeten GUI Elemente und deren Aktionen. Wenn Sie eine eigene
+      Aktion definieren m&ouml;chten, k&ouml;nnen Sie einfach eine entsprechende
+      Prozedur einf&uuml;gen.
+      </p>
+      
+<p>Die Testsuite selbst hat eine bestimmte Struktur. Diese Struktur ist
+        im <a href="#usec_pbSkeletons">Abschnitt 24.3.1</a> beschrieben. Die
+        Definition erlaubt es den Tester, Prozedurvorlagen f&uuml;r Komponenten
+        einer bestimmten Klasse zu erstellen oder f&uuml;r Prozeduren, die sich auf
+        alle Elemente eines Fenster bzw. Dialoges beziehen, eigene Prozeduren
+        zu definieren.
+		</p>
+	
+<p>
+	Sie finden auch einige Beispielkonfigurationen unter <code>qftest-6.0.3/demo/procbuilder</code>.
+	</p>
+
+      
+  
+<a name="usec_pbSkeletons"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_pbSkeletons">24.3.1</a></span>
+</div>
+<a href="contents.html#toc_usec_pbSkeletons">Die Procedure Builder Definitionsdatei</a>
+</h5>
+        
+<p>Die automatisierte Erstellung der Basisprozeduren liefert
+      je nach Komponenten unterschiedliche Prozeduren. Ein Textfeld ben&ouml;tigt
+      eine Setzen-Methode f&uuml;r den Text, ein Button braucht eine Dr&uuml;ck-Methode
+      und ein Fenster ben&ouml;tigt eine Setzen-Methode, die die Setzen-Methoden aller
+      enthaltenen Elemente aufruft etc..
+        </p>
+        
+<a name="figure_24.2"></a><a name="figure_24.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/Procbuilderdef.png" target="_blank"><img src="images/Procbuilderdef.png" alt="Procbuilderdef" width="502" height="446" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;24.2</a>:&nbsp;&nbsp;Die Procedure Builder Definitionsdatei</td><td class="captionglue"></td>
+</tr>
+</table>
+
+        
+<p>
+          Das oberste 'Package' im <a href="procedures.html#step_PackageRoot" shape="rect">'Prozeduren'</a> Knoten ist der Name
+          des neuerstellen Packages. Der Defaultname hierf&uuml;r ist
+          <code>procbuilder</code>. Falls das 'Package' <code>procbuilder</code>
+          bereits besteht, wird ein 'Package' <code>procbuilder1</code>
+          erzeugt usw..
+          </p>
+        
+<p>Die n&auml;chste Ebene ist die Klassenebene. Hier k&ouml;nnen Sie ein Package
+          pro Klasse definieren. Das Package ben&ouml;tigt den kompletten
+          Klassenname, wobei jedoch alle '.' durch '_' ersetzt werden, weil
+          Punkte in Packagenamen nicht erlaubt sind. Der Procedure Builder
+          erzeugt die Prozeduren auch f&uuml;r die abgeleiteten Klassen. Falls Ihre
+          Klasse einen '_' beinhalten sollte, dann m&uuml;ssen Sie diesen mit '\_' kennzeichnen.
+        </p>
+        
+<p>Die darauffolgenden Ebenen k&ouml;nnen frei definiert werden, weil diese
+          die Packagestruktur der Prozeduren vorgeben.
+        </p>
+        
+<p>Am Ende m&uuml;ssen Sie jedoch eine Prozedur definieren, welche die
+          entsprechenden Schritte beinhaltet.
+        </p>
+        
+<p>Sie k&ouml;nnen auch einige Variablen, z.B. <code>&lt;COMPID&gt;</code>,
+          in der Definition verwenden.
+       </p>
+       
+<p>Variablen, z.B. die aktuelle QF-Test ID der Komponente oder der Komponentenname,
+          k&ouml;nnen f&uuml;r den Prozedurnamen verwendet werden. Des Weiteren k&ouml;nnen
+          Sie auf die aktuellen Werte eines Textfeldes oder den aktuellen
+          Status einer Checkbox zugreifen. Es ist sogar m&ouml;glich, die gesamte
+          Packagestruktur variabel zu gestalten. F&uuml;r eine &Uuml;bersicht &uuml;ber alle
+          verwendbaren Variablen siehe <a href="tech_procbuilderdef.html#sec_pbProcbuilderdef">Kapitel 52</a>.
+        </p>
+      
+
+      
+
+    
+    
+
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_distributed.html#usec_distributeddevelopment"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 23&nbsp;Verteilte Entwicklung von Tests" title="Vorheriges Kapitel: 23&nbsp;Verteilte Entwicklung von Tests"></a></td><td class="navicon"><a href="user_testmanagement.html#usec_testmanagement"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 25&nbsp;Anbindung an Testmanagementtools" title="N&auml;chste Seite: 25&nbsp;Anbindung an Testmanagementtools"></a></td><td class="navicon"><a href="user_testmanagement.html#usec_testmanagement"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 25&nbsp;Anbindung an Testmanagementtools" title="N&auml;chstes Kapitel: 25&nbsp;Anbindung an Testmanagementtools"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch" title="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

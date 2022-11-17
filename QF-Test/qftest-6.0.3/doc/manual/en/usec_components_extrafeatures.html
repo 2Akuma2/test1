@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Extra features</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_components_extrafeatures"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="usec_components_feature.html#usec_components_feature"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 5.4.3&nbsp;Feature" title="Previous Chapter: 5.4.3&nbsp;Feature"></a></td><td class="navicon"><a href="usec_components_index.html#usec_components_index"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 5.4.5&nbsp;Index" title="Next Page: 5.4.5&nbsp;Index"></a></td><td class="navicon"><a href="usec_components_index.html#usec_components_index"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 5.4.5&nbsp;Index" title="Next Chapter: 5.4.5&nbsp;Index"></a></td><td class="navicon"><a href="user_component_recognition_criteria.html#usec_component_recognition_criteria"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 5.4&nbsp;Recognition criteria" title="Chapter Overview: 5.4&nbsp;Recognition criteria"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_components_extrafeatures">5.4.4</a></span>
+</div>
+<a href="contents.html#toc_usec_components_extrafeatures">Extra features</a>
+</h5>
+        
+<p>
+          The table <a href="components.html#att_ComponentStep_extrafeatures" shape="rect">'Extra features'</a> stores various information
+          useful for the recognition of the component.
+          In the chapter about <a href="components.html#att_ComponentStep_extrafeatures" shape="rect">'Extra features'</a>
+          you will find a list of the default entries.
+          But you can also add your own via an <code>ExtraFeatureResolver</code>
+          (see <a href="tech_resolversmodule.html#sec_extrafeatureresolver">subsection 50.1.10</a>).
+        </p>
+        
+<p>
+          Some of the additional features are recorded preventatively
+          and are not usually used for component recognition.
+          This mostly concerns information about the component class,
+          which QF-Test uses to derive the <a href="usec_componentclass.html#usec_componentclassgeneric">Generic classes</a>.
+          By default, they have the status "Ignore".
+          This can be changed if the original value is of interest in special cases.
+        </p>
+        
+<p>
+          Among the 'Extra features', <code>qfs:label</code> is interesting for recognition.
+        </p>
+
+        
+
+        
+<a name="usec_components_qfslabel"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_components_qfslabel">5.4.4.1</a></span>
+</div>
+<a href="contents.html#toc_usec_components_qfslabel">qfs:label</a>
+</h5>
+          
+<p>
+            Component recognition is influenced by the extra feature <code>qfs:label</code>.
+            During component analysis a label for the component is searched for depending on the generic class, and stored here.
+            For a button, this is firstly its own text, secondly a programmatically assigned label.
+            The next choice is a nearby component with the class <code>Label</code>,
+            then the tooltip, then the icon description.
+            The exact selection depends on the generic class of the component
+            and can be referenced in <a href="tech_genericclasses.html#sec_genericclasses">Generic classes</a>.
+          </p>
+          
+<p>
+            The influence of the extra feature <code>qfs:label</code> on the 'QF-Test component ID' is described in <a href="tech_qftestid.html#sec_qftestid_creation">Generating the component 'QF-Test ID'</a>.
+          </p>
+          
+<p>
+            Components can also be directly addressed in a <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a> via <code>qfs:label</code> without recording a <a href="user_componentstep.html#usec_componentstep">'Component' node</a>.
+          </p>
+        
+
+        
+        
+
+        
+<a name="usec_components_qfstext"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_components_qfstext">5.4.4.2</a></span>
+</div>
+<a href="contents.html#toc_usec_components_qfstext">qfs:text</a>
+</h5>
+          
+<p>
+            
+<code>qfs:text</code> contains the text of the component itself.
+              For text fields or PDF components, this is an additional information
+              which could not be used for component recognition
+              without an additional resolver up until QF-Test version 5.3.
+          </p>
+        
+
+        
+
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="usec_components_feature.html#usec_components_feature"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 5.4.3&nbsp;Feature" title="Previous Chapter: 5.4.3&nbsp;Feature"></a></td><td class="navicon"><a href="usec_components_index.html#usec_components_index"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 5.4.5&nbsp;Index" title="Next Page: 5.4.5&nbsp;Index"></a></td><td class="navicon"><a href="usec_components_index.html#usec_components_index"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 5.4.5&nbsp;Index" title="Next Chapter: 5.4.5&nbsp;Index"></a></td><td class="navicon"><a href="user_component_recognition_criteria.html#usec_component_recognition_criteria"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 5.4&nbsp;Recognition criteria" title="Chapter Overview: 5.4&nbsp;Recognition criteria"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

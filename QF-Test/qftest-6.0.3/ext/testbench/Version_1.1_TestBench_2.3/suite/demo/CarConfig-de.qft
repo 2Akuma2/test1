@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="root"
+          signature="302D021500848B43AC10F46F08FDD46738DFF471AAC086683902144D5B7AF9A4FC4FDD22F4F19E250B8B9AC4DA7F13"
+          version="6.0.3">
+  <include>qfs.qft</include>
+  <include>../TestBench_Automation.qft</include>
+  <comment>(c) 2014 imbus AG
+Version 1.1</comment>
+  <TestSet id="_1nSD" name="TestBench Automatisierung">
+    <TestCall calledtest="Standalone test executor" id="_1nSE"/>
+  </TestSet>
+  <PackageRoot id="_3">
+    <Package id="_6" name="Preisberechnung">
+      <Procedure id="_C" name="CarConfig Starten">
+        <SetGlobalStep id="_1nTY" varname="client">
+          <default>Car Configurator</default>
+        </SetGlobalStep>
+        <TryStep id="_1nTd" maxerror="0">
+          <ClientStopper client="$(client)" id="_1nTR"/>
+          <CatchSequence exception="TestException" id="_1nTe" maxerror="0"/>
+        </TryStep>
+        <JavaClientStarter class="de.qfs.apps.qftest.demo.multi.CarConfigurator"
+                           client="$(client)"
+                           directory="${qftest:dir.version}/demo/carconfig"
+                           executable="${qftest:java}" id="_1nTc">
+          <parameter>-classpath</parameter>
+          <parameter>../../qflib/qfdemo.jar;../../qflib/qflib.jar;../../lib/looks.jar</parameter>
+        </JavaClientStarter>
+        <ClientWaiter client="$(client)" id="_E" timeout="30000"/>
+      </Procedure>
+      <Procedure id="_7" name="Fahrzeug wählen">
+        <variable name="Fahrzeugname"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="TabbedPane.Fahrzeuge" event="MOUSE_MPRC"
+                        id="_1nSN" modifiers="16"/>
+        <ProcedureCall id="_1ju-"
+                       procedure="qfs.swing.table.getRowIndexOfCell"
+                       retvarname="index">
+          <variable name="id">VehicleTable</variable>
+          <variable name="column">Modell</variable>
+          <variable name="row">$(Fahrzeugname)</variable>
+          <variable name="columnSeparator">@</variable>
+          <variable name="rowSeparator">@</variable>
+        </ProcedureCall>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="VehicleTable@Modell&amp;$(index)"
+                        event="MOUSE_MPRC" id="_V" modifiers="16"/>
+      </Procedure>
+      <Procedure id="_A" name="Sondermodell wählen">
+        <variable name="Sondermodellname"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="TabbedPane.Sondermodelle"
+                        event="MOUSE_MPRC" id="_1nSO" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="SpecialsCombo.button" event="MOUSE_MPRC"
+                        id="_11" modifiers="16"/>
+        <IfSequence id="_1nSv"
+                    test="&#34;$(Sondermodellname)&#34; == &#34;-&#34;">
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="popupInvokerName:_SpecialsCombo.list.-_kein_Sondermodell_-"
+                          event="MOUSE_MPRC" id="_1P" modifiers="16"/>
+          <ElseSequence id="_1nSw">
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="popupInvokerName:_SpecialsCombo.list.$(Sondermodellname)"
+                            event="MOUSE_MPRC" id="_1nSg" modifiers="16"/>
+          </ElseSequence>
+        </IfSequence>
+      </Procedure>
+      <Procedure id="_B" name="Zubehör wählen">
+        <variable name="Zubehörname"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="TabbedPane.Zubehör" event="MOUSE_MPRC"
+                        id="_j" modifiers="16"/>
+        <IfSequence id="_1nSx"
+                    test="&#34;$(Zubehörname)&#34; &lt;&gt; &#34;-&#34;">
+          <ProcedureCall id="_1nSG"
+                         procedure="qfs.swing.table.getRowIndexOfCell"
+                         retvarname="index">
+            <variable name="id">AccessoryTable</variable>
+            <variable name="column">Beschreibung</variable>
+            <variable name="row">$(Zubehörname)</variable>
+            <variable name="columnSeparator">@</variable>
+            <variable name="rowSeparator">@</variable>
+          </ProcedureCall>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AccessoryTable._&amp;$(index)"
+                          event="MOUSE_MPRC" id="_1nSL" modifiers="16"/>
+        </IfSequence>
+      </Procedure>
+      <Procedure id="_1nTF" name="Rabatt gewähren">
+        <variable name="Rabatt"/>
+        <TextInputStep client="$(client)" component="DiscountValue"
+                       id="_1nTM">
+          <text>$(Rabatt)</text>
+        </TextInputStep>
+      </Procedure>
+      <Procedure id="_9" name="Preis prüfen">
+        <variable name="Preis"/>
+        <CheckStringStep client="$(client)" component="CalculatedPrice"
+                         id="_1B">
+          <text>$(Preis)</text>
+        </CheckStringStep>
+      </Procedure>
+      <Procedure id="_8" name="CarConfig Beenden">
+        <MouseEventStep clicks="1" client="$(client)" component="mFile"
+                        event="MOUSE_MPRC" id="_1G" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)" component="miExit"
+                        event="MOUSE_MPRC" id="_1H" modifiers="16"/>
+      </Procedure>
+    </Package>
+  </PackageRoot>
+  <ExtraSequence id="_4"/>
+  <WindowList id="_5">
+    <WindowStep class="javax.swing.JFrame"
+                feature="JCarConfigurator - Version 1" height="400"
+                id="JCarConfigurator" name="JCarConfigurator" uid="_1nS4"
+                width="350" x="0" y="0">
+      <ComponentStep class="javax.swing.JMenuBar" classcount="1"
+                     classindex="0" height="33" id="MenuBar" name="MenuBar"
+                     uid="_1C" width="334" x="8" y="30">
+        <ComponentStep class="javax.swing.JMenu" classcount="4" classindex="0"
+                       feature="Datei" height="29" id="mFile" name="mFile"
+                       uid="_1D" width="49" x="2" y="2">
+          <ComponentStep class="javax.swing.JMenuItem" classcount="2"
+                         classindex="1" feature="Beenden" height="26"
+                         id="miExit" name="miExit" uid="_1E" width="139"/>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="javax.swing.JTabbedPane" classcount="1"
+                     classindex="0" height="209" id="TabbedPane"
+                     name="TabbedPane" uid="_1nS5" width="334" x="8" y="63">
+        <SubItemStep id="TabbedPane.Fahrzeuge" uid="_t">
+          <primary>Fahrzeuge</primary>
+        </SubItemStep>
+        <SubItemStep id="TabbedPane.Sondermodelle" uid="_u">
+          <primary>Sondermodelle</primary>
+        </SubItemStep>
+        <SubItemStep id="TabbedPane.Zubehör" uid="_1nSM">
+          <primary>Zubehör</primary>
+        </SubItemStep>
+        <ComponentStep class="com.jgoodies.looks.plastic.PlasticComboBoxButton"
+                       classcount="1" classindex="0" id="SpecialsCombo.button"
+                       uid="_1nSX"/>
+        <ComponentStep class="de.qfs.apps.qftest.demo.multi.CarConfigurator$VehicleTablePanel"
+                       classcount="1" classindex="0" feature="Tab: Fahrzeuge"
+                       height="177" id="VehicleTablePanel"
+                       name="VehicleTablePanel" uid="_1nS-" width="329" x="2"
+                       y="29">
+          <ComponentStep class="javax.swing.JScrollPane" classcount="1"
+                         classindex="0" height="151" id="VehicleScrollPane"
+                         name="VehicleScrollPane" uid="_1nT0" width="321"
+                         x="4" y="22">
+            <ComponentStep class="javax.swing.JTable" classcount="1"
+                           classindex="0" id="VehicleTable"
+                           name="VehicleTable" uid="_1nT1"/>
+          </ComponentStep>
+        </ComponentStep>
+        <ComponentStep class="de.qfs.apps.qftest.demo.multi.CarConfigurator$AccessoryTablePanel"
+                       classcount="1" classindex="0" feature="Tab: Zubehör"
+                       height="177" id="AccessoryTablePanel"
+                       name="AccessoryTablePanel" uid="_1nT7" width="329"
+                       x="2" y="29">
+          <ComponentStep class="javax.swing.JScrollPane" classcount="1"
+                         classindex="0" height="151" id="AccessoryScrollPane"
+                         name="AccessoryScrollPane" uid="_1nT8" width="321"
+                         x="4" y="22">
+            <ComponentStep class="javax.swing.JTable" classcount="1"
+                           classindex="0" id="AccessoryTable"
+                           name="AccessoryTable" uid="_1nT9">
+              <SubItemStep id="AccessoryTable._" uid="_1nTA">
+                <primary> </primary>
+              </SubItemStep>
+            </ComponentStep>
+          </ComponentStep>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="com.jgoodies.looks.plastic.PlasticComboBoxUI$PlasticComboPopup"
+                     feature="InvokerName: SpecialsCombo" height="90"
+                     id="popupInvokerName:_SpecialsCombo" uid="_1nSY"
+                     width="321" x="14" y="141">
+        <ComponentStep class="javax.swing.JScrollPane" classcount="1"
+                       classindex="0" height="88"
+                       id="popupInvokerName:_SpecialsCombo.scroll" uid="_1nSZ"
+                       width="319" x="1" y="1">
+          <ComponentStep class="javax.swing.JList" classcount="1"
+                         classindex="0"
+                         id="popupInvokerName:_SpecialsCombo.list"
+                         uid="_1nSa">
+            <SubItemStep id="popupInvokerName:_SpecialsCombo.list.Luxus"
+                         uid="_1nSb">
+              <primary>Luxus</primary>
+            </SubItemStep>
+            <SubItemStep id="popupInvokerName:_SpecialsCombo.list.-_kein_Sondermodell_-"
+                         uid="_1nSj">
+              <primary>- kein Sondermodell -</primary>
+            </SubItemStep>
+            <SubItemStep id="popupInvokerName:_SpecialsCombo.list.Gomera"
+                         uid="_1nSk">
+              <primary>Gomera</primary>
+            </SubItemStep>
+            <SubItemStep id="popupInvokerName:_SpecialsCombo.list.Jazz"
+                         uid="_1nSl">
+              <primary>Jazz</primary>
+            </SubItemStep>
+          </ComponentStep>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="de.qfs.apps.qftest.demo.multi.CarConfigurator$CalculatorPanel"
+                     classcount="1" classindex="0" height="120"
+                     id="CalculatorPanel" name="CalculatorPanel" uid="_1nTB"
+                     width="334" x="8" y="272">
+        <ComponentStep class="javax.swing.JTextField" classcount="4"
+                       classindex="2" feature="Label: Rabatt" height="30"
+                       id="DiscountValue" name="DiscountValue" uid="_1nTC"
+                       width="48" x="276" y="60"/>
+        <ComponentStep class="javax.swing.JTextField" classcount="4"
+                       classindex="3" feature="Label: Endpreis" height="20"
+                       id="CalculatedPrice" name="CalculatedPrice" uid="_1nTQ"
+                       width="130" x="194" y="95"/>
+      </ComponentStep>
+    </WindowStep>
+  </WindowList>
+</RootStep>

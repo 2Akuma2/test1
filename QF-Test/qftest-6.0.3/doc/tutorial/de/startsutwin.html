@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Starten der Anwendung</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2002-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="tut_startSutWin"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="loadsuitewin.html#tut_loadSuiteWin"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 19.1&nbsp;Laden der Testsuite" title="Vorheriges Kapitel: 19.1&nbsp;Laden der Testsuite"></a></td><td class="navicon"><a href="firsttestwin.html#tut_firstTestWin"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 19.3&nbsp;Ein erster Testfall" title="N&auml;chste Seite: 19.3&nbsp;Ein erster Testfall"></a></td><td class="navicon"><a href="firsttestwin.html#tut_firstTestWin"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 19.3&nbsp;Ein erster Testfall" title="N&auml;chstes Kapitel: 19.3&nbsp;Ein erster Testfall"></a></td><td class="navicon"><a href="demowin.html#sec_demoWin"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 19&nbsp;Bearbeiten einer Beispiel-Testsuite (Win)" title="Kapitel-&Uuml;bersicht: 19&nbsp;Bearbeiten einer Beispiel-Testsuite (Win)"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_tut_startSutWin">19.2</a></span>
+</div>
+<a href="contents.html#toc_tut_startSutWin">Starten der Anwendung</a>
+</h4>
+      
+<p>
+        Zuerst wollen wir die Vorbereitung genauer unter die Lupe
+        nehmen:
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Aktion</span></span><strong>Expandieren</strong> Sie den Knoten <strong>Vorbereitung:
+          Demo starten</strong>, wie im folgenden Bild gezeigt.
+        </li>
+      
+</ul>
+      
+<a name="fig_firstSetupWin"></a><a name="figure_19.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/FirstSetupWin.png" target="_blank"><img texscale=".66" src="images/FirstSetupWin.png" width="324" height="50"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;19.3</a>:&nbsp;&nbsp;Der Knoten "Vorbereitung"</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Es werden zwei Kindknoten sichtbar:
+      </p>
+      
+<ol>
+        
+<li>
+          
+<strong>Variable setzen</strong> - der Variablen 'client', wird der
+          Verbindungsname f&uuml;r das zu startende SUT zugewiesen, der f&uuml;r jeden Zugriff
+          auf die Applikation ben&ouml;tigt wird.
+        </li>
+        
+<li>
+          
+<strong>Sequenz: Starte Client wenn n&ouml;tig</strong> - startet das zu testende System (SUT), wenn es nicht schon l&auml;uft.
+        </li>
+      
+</ol>
+      
+<p>
+        Lassen Sie uns noch einen kurzen Blick in die <strong>Sequenz: Starte Client wenn n&ouml;tig</strong> werfen:
+      </p>
+      
+<a name="fig_firstStartWin"></a><a name="figure_19.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/FirstStartWin.png" target="_blank"><img texscale=".66" src="images/FirstStartWin.png" width="735" height="114"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;19.4</a>:&nbsp;&nbsp;Die Sequenz zum Starten des Client</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Zu Beginn steht ein <strong>Warten auf Client</strong> Knoten, der pr&uuml;ft, ob der Client
+        bereits l&auml;uft. Nur wenn dies nicht der Fall ist, wird er gestartet.
+      </p>
+      
+<p>
+        Der <strong>Windows Client starten</strong> Konten f&uuml;hrt die Anwendung aus und stellt die
+        Verbindung zwischen dem Client und QF-Test her.  Um unabh&auml;ngig vom absoluten
+        Verzeichnispfad der Applikation zu sein, verwenden wir einen relativen Pfad, ausgehend vom
+        QF-Test Installationsverzeichnis, dass &uuml;ber die Variable <code>${qftest:dir.version}</code>
+        angegeben wird (siehe Handbuchkapitel <a href="../../manual/de/user_variables.html" shape="rect">Variablen</a>).
+      </p>
+      
+<p>
+        Wir wollen nun die Anwendung wirklich starten:
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Aktion</span></span>
+          <strong>Markieren</strong> Sie dazu bitte den Knoten <img src="images/setup_node.png" style="vertical-align: text-bottom" alt="Vorbereitung" title="Vorbereitung" width="40" height="40" texscale=".5"> <strong>Vorbereitung: Demo starten</strong>, doch belassen Sie ihn
+          aufgeklappt.
+        </li>
+        
+<li>
+          
+<strong>Klicken Sie</strong> den Knopf <img src="images/play.png" style="vertical-align: text-bottom" alt="Play" title="Play" width="26" height="26" texscale=".5"> <strong>Wiedergabe</strong>. Dies
+            f&uuml;hrt den aktuellen ausgew&auml;hlten Knoten aus.
+        </li>
+      
+</ul>
+      
+<p>
+        W&auml;hrend der Ausf&uuml;hrung wird der
+        gerade aktive Knoten durch "<strong>-&gt;</strong>" markiert.
+      </p>
+      
+<p>
+        Nach Abschluss der Startsequenz sollte die Demoapplikation "CarConfiguratorNet Form" am
+        Bildschirm erscheinen. Da QF-Test nach Ende der Wiedergabe den Fokus zur&uuml;ckerh&auml;lt,
+        kann die Demoapplikation dadurch auch wieder verdeckt worden sein.
+      </p>
+      
+<a name="fig_CarConfigWin"></a><a name="figure_19.5"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/CarConfiguratorWin.png" target="_blank"><img texscale=".66" src="images/CarConfiguratorWin.png" width="367" height="438"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;19.5</a>:&nbsp;&nbsp;Das Windows CarConfigurator Demo</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="loadsuitewin.html#tut_loadSuiteWin"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 19.1&nbsp;Laden der Testsuite" title="Vorheriges Kapitel: 19.1&nbsp;Laden der Testsuite"></a></td><td class="navicon"><a href="firsttestwin.html#tut_firstTestWin"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 19.3&nbsp;Ein erster Testfall" title="N&auml;chste Seite: 19.3&nbsp;Ein erster Testfall"></a></td><td class="navicon"><a href="firsttestwin.html#tut_firstTestWin"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 19.3&nbsp;Ein erster Testfall" title="N&auml;chstes Kapitel: 19.3&nbsp;Ein erster Testfall"></a></td><td class="navicon"><a href="demowin.html#sec_demoWin"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 19&nbsp;Bearbeiten einer Beispiel-Testsuite (Win)" title="Kapitel-&Uuml;bersicht: 19&nbsp;Bearbeiten einer Beispiel-Testsuite (Win)"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 2002-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

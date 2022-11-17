@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Die Standardbibliothek (Java)</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2002-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_StandardLibrary"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="variablestack.html#sec_variablestack"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 6&nbsp;Variablen und Prozedurparameter (Java)" title="Vorheriges Kapitel: 6&nbsp;Variablen und Prozedurparameter (Java)"></a></td><td class="navicon"><a href="stdliboverview.html#sec_StandardLibraryOverview"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 7.1&nbsp;Erforschen der Standardbibliothek" title="N&auml;chste Seite: 7.1&nbsp;Erforschen der Standardbibliothek"></a></td><td class="navicon"><a href="controls.html#sec_controlstructures"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 8&nbsp;Ablaufsteuerung (Java)" title="N&auml;chstes Kapitel: 8&nbsp;Ablaufsteuerung (Java)"></a></td><td class="navicon"><a href="java.html#sec_java"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Java GUIs testen mit QF-Test" title="Kapitel-&Uuml;bersicht: I&nbsp;Java GUIs testen mit QF-Test"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_StandardLibrary">7</a></span>
+</div>
+<a href="contents.html#toc_sec_StandardLibrary">Die Standardbibliothek (Java)</a>
+</h3>
+    
+    
+<p>
+      
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+      Dieses Kapitel ist auch als Video verf&uuml;gbar unter <a href="http://www.qfs.de/de/yt/tutorial-7.html" class="videolink" target="_blank">'Die Standardbibliothek'</a>.
+    </p>
+    
+<p>
+      QF-Test stellt eine gewisse Anzahl an Knotentypen bereit, die f&uuml;r die Testerstellung genutzt
+      werden k&ouml;nnen. Wenn Sie Funktionalit&auml;t ben&ouml;tigen, die dar&uuml;ber hinausgeht, k&ouml;nnen Sie
+      diese mittels Skript Knoten implementieren. Um Ihnen die Arbeit zu erleichtern,
+      wurden viele Funktionen, die h&auml;ufig ben&ouml;tigt werden, bereits in Prozeduren implementiert und
+      werden in einer Standard-Prozeduren-Bibliothek mit QF-Test ausgeliefert.
+    </p>
+    
+<p>
+      Wenn Sie also eine Aufgabenstellung haben, die nicht &uuml;ber die bereitgestellten
+      Knoten gel&ouml;st werden kann, sollten Sie zun&auml;chst einmal in der Standardbibliothek
+      forschen, ob Sie dort eine passende oder &auml;hnliche L&ouml;sung finden. Wenn Sie
+      eine &auml;hnliche L&ouml;sung finden, kopieren Sie einfach die vorhandene Standardprozedur
+      und passen sie Sie gem&auml;&szlig; Ihrer Bed&uuml;rfnisse an. Informationen
+      zum Arbeiten mit Skripten erhalten Sie im Handbuch, Kapitel 12 "Skripting".
+    </p>
+    
+<p>
+      Die Bibliothek ist in der Datei <code>qfs.qft</code> enthalten und ist Teil der QF-Test
+      Distribution. Da sie mit jeder QF-Test Version weiterentwickelt wird, ist es nicht
+      ratsam, &Auml;nderungen in der ausgelieferten Standardbibliothek vorzunehmen, sondern
+      bei Bedarf eine Prozedur in eine eigene Testsuite zu kopieren und dort anzupassen.
+    </p>
+    
+<p>
+      Um die Bibliothek <code>qfs.qft</code> verwenden zu k&ouml;nnen, muss sie im "Testsuite"
+      Wurzelknoten Ihrer Suite in den "Include Dateien" eingebunden werden. Bei neuen Testsuiten
+      ist dies automatisch der Fall.
+    </p>
+    
+<ul>
+      
+<li>
+<span class="margin"><span class="note">Aktion</span></span>
+        W&auml;hlen Sie den 'Testsuite' Wurzelknoten Ihrer Testsuite aus.
+      </li>
+      
+<li>
+        &Uuml;berpr&uuml;fen Sie in den Details des 'Testsuite' Wurzelknoten, dass <code>qfs.qft</code>
+        im Attribut "Include Dateien" aufgef&uuml;hrt ist.
+      </li>
+      
+<li>
+        F&uuml;gen Sie <code>qfs.qft</code> zu dieser Liste dazu, falls es noch nicht enthalten ist.
+      </li>
+    
+</ul>
+    
+<p>
+<span class="margin"><span class="note">Hinweis</span></span>
+      Eine Pfadangabe ist nicht notwendig, da das <code>include</code>
+      Verzeichnis von QF-Test automatisch im Bibliothekspfad (siehe auch
+      <a href="../../manual/de/opt_general.html#sec_opt_libpath" shape="rect">Referenzteil des Handbuchs</a>)
+      enthalten ist.
+    </p>
+    
+<p>
+      Im Folgenden beschreiben wir eine Auswahl der am h&auml;ufigsten ben&ouml;tigten Standardprozeduren.
+      Eine vollst&auml;ndige HTML-Dokumentation der Standardbibliothek finden Sie unter dem Men&uuml;punkt
+      &raquo;<em>Hilfe</em>&laquo;-&raquo;<em>Standardbibliothek qfs.qft...</em>&laquo;.
+    </p>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="stdliboverview.html#sec_StandardLibraryOverview"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="stdliboverview.html#sec_StandardLibraryOverview">7.1</a></span>
+</div>
+<a href="stdliboverview.html#sec_StandardLibraryOverview">Erforschen der Standardbibliothek</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="stdlibpackages.html#sec_StandardLibraryPackages"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="stdlibpackages.html#sec_StandardLibraryPackages">7.2</a></span>
+</div>
+<a href="stdlibpackages.html#sec_StandardLibraryPackages">Ausgew&auml;hlte Packages und Prozeduren</a>
+</h4>
+
+    
+
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="variablestack.html#sec_variablestack"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 6&nbsp;Variablen und Prozedurparameter (Java)" title="Vorheriges Kapitel: 6&nbsp;Variablen und Prozedurparameter (Java)"></a></td><td class="navicon"><a href="stdliboverview.html#sec_StandardLibraryOverview"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 7.1&nbsp;Erforschen der Standardbibliothek" title="N&auml;chste Seite: 7.1&nbsp;Erforschen der Standardbibliothek"></a></td><td class="navicon"><a href="controls.html#sec_controlstructures"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 8&nbsp;Ablaufsteuerung (Java)" title="N&auml;chstes Kapitel: 8&nbsp;Ablaufsteuerung (Java)"></a></td><td class="navicon"><a href="java.html#sec_java"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Java GUIs testen mit QF-Test" title="Kapitel-&Uuml;bersicht: I&nbsp;Java GUIs testen mit QF-Test"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 2002-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

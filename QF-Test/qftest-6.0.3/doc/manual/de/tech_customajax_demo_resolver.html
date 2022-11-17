@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>installCustomWebResolver - Erweiterung eines Webframework-Resolvers</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_customajax_demo_resolver"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_custom_web_resolver.html#sec_custom_web_resolver"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 47.1.3&nbsp;Die Prozedur installCustomWebResolver" title="Vorheriges Kapitel: 47.1.3&nbsp;Die Prozedur installCustomWebResolver"></a></td><td class="navicon"><a href="tech_customajax_table.html#sec_customajax_table"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 47.1.5&nbsp;installCustomWebResolver - Tabelle und TreeTable" title="N&auml;chste Seite: 47.1.5&nbsp;installCustomWebResolver - Tabelle und TreeTable"></a></td><td class="navicon"><a href="tech_customajax_table.html#sec_customajax_table"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 47.1.5&nbsp;installCustomWebResolver - Tabelle und TreeTable" title="N&auml;chstes Kapitel: 47.1.5&nbsp;installCustomWebResolver - Tabelle und TreeTable"></a></td><td class="navicon"><a href="tech_customajax.html#sec_customajax"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 47.1&nbsp;Verbesserte Komponentenerkennung mittels CustomWebResolver" title="Kapitel-&Uuml;bersicht: 47.1&nbsp;Verbesserte Komponentenerkennung mittels CustomWebResolver"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_customajax_demo_resolver">47.1.4</a></span>
+</div>
+<a href="contents.html#toc_sec_customajax_demo_resolver"><code>installCustomWebResolver</code> - Erweiterung eines Webframework-Resolvers</a>
+</h5>
+          
+<p>
+            Beim Definieren eines CustomWebResolvers kann man auf einem der mit QF-Test ausgelieferten
+            Resolver f&uuml;r Web Frameworks aufsetzen. Der nachfolgende Prozeduraufruf erweitert beispielhaft den Resolver f&uuml;r des Angular Framework.
+          </p>
+          
+<p>
+            Zus&auml;tzlich zu den vordefinierten Mappings f&uuml;r das Angluar Framework wird weiterhin:
+          </p>
+          
+<ul>
+            
+<li>
+              alle GUI elemente mit der CSS-Klasse <code>angButton</code>
+              zu einer QF-Test Komponente des generischen typs <code>Button</code> gemappt,
+            </li>
+            
+<li>
+              alle Elemente mit der CSS-Klasse <code>tc</code> zu einer <code>TableCell</code>
+              gemappt, aber nur wenn die direkte Parent-Komponente vom typ <code>TableRow</code> ist,
+            </li>
+            
+<li>
+              alle Knoten mit einem <code>id</code> Attribut welches dem regul&auml;ren Ausdruck
+              <code>.*list</code> entsprechen (also mit <code>list</code> aufh&ouml;ren) zu einer
+              QF-Test Komponente des Typs <code>List</code> gemappt.
+            </li>
+          
+</ul>
+          
+<p>
+            QF-Test behandelt das Attribute <code>qfs-id</code> als Id, d.h.
+            Verwendung f&uuml;r das 'Name' Attribut, den <code>id</code> Eintrag in der
+            'Weitere Merkmale' Tabelle im 'Komponente' Knoten.
+          </p>
+          
+<p>
+            Das Attribut <code>specific</code> wird nur dann als Id verwendet,
+            wenn eine &uuml;bergeordnete Komponente die Klasse <code>Panel:TitledPanel</code> hat -
+            das Element muss sich also in einem Panel mit Beschriftung befinden.
+          </p>
+          
+<p>
+            GUI-Elemente mit den Tags <code>div</code> oder <code>span</code> und
+            ohne Zuordnung zu einer QF-Test Klasse werden
+            nicht in der Komponentenhierarchie aufgenommen.
+          </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>installCustomWebResolver</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Erweitert den Angular Resolver.
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameter</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>resolver</code></strong></td><td class="paramdesc">
+                angular
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>version</code></strong></td><td class="paramdesc">
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>genericClasses</code></strong></td><td class="paramdesc">
+                agButton=Button,tc=TableCell@::parent=TableRow
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>attributesToGenericClasses</code></strong></td><td class="paramdesc">
+                
+                id=%.*list=List
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>ignoreTags</code></strong></td><td class="paramdesc">
+                DIV,SPAN
+              </td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>customIdAttributes</code></strong></td><td class="paramdesc">
+                qfs-id,specific@::ancestor=Panel:TitledPanel
+              </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_custom_web_resolver.html#sec_custom_web_resolver"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 47.1.3&nbsp;Die Prozedur installCustomWebResolver" title="Vorheriges Kapitel: 47.1.3&nbsp;Die Prozedur installCustomWebResolver"></a></td><td class="navicon"><a href="tech_customajax_table.html#sec_customajax_table"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 47.1.5&nbsp;installCustomWebResolver - Tabelle und TreeTable" title="N&auml;chste Seite: 47.1.5&nbsp;installCustomWebResolver - Tabelle und TreeTable"></a></td><td class="navicon"><a href="tech_customajax_table.html#sec_customajax_table"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 47.1.5&nbsp;installCustomWebResolver - Tabelle und TreeTable" title="N&auml;chstes Kapitel: 47.1.5&nbsp;installCustomWebResolver - Tabelle und TreeTable"></a></td><td class="navicon"><a href="tech_customajax.html#sec_customajax"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 47.1&nbsp;Verbesserte Komponentenerkennung mittels CustomWebResolver" title="Kapitel-&Uuml;bersicht: 47.1&nbsp;Verbesserte Komponentenerkennung mittels CustomWebResolver"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

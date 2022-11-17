@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Keyword-Driven Testing mit dynamischen/generischen Komponenten</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_keywords_components"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_keywords_simple.html#usec_keywords_simple"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 27.2&nbsp;Einfaches Keyword-Driven Testing mit QF-Test" title="Vorheriges Kapitel: 27.2&nbsp;Einfaches Keyword-Driven Testing mit QF-Test"></a></td><td class="navicon"><a href="user_keywords_bdt.html#usec_keywords_bdt"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 27.4&nbsp;Behavior-Driven Testing (BDT)" title="N&auml;chste Seite: 27.4&nbsp;Behavior-Driven Testing (BDT)"></a></td><td class="navicon"><a href="user_keywords_bdt.html#usec_keywords_bdt"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 27.4&nbsp;Behavior-Driven Testing (BDT)" title="N&auml;chstes Kapitel: 27.4&nbsp;Behavior-Driven Testing (BDT)"></a></td><td class="navicon"><a href="user_keyworddriven.html#usec_keyworddriven"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 27&nbsp;Schl&uuml;sselwortgetriebenes bzw. Keyword-Driven Testing mit QF-Test" title="Kapitel-&Uuml;bersicht: 27&nbsp;Schl&uuml;sselwortgetriebenes bzw. Keyword-Driven Testing mit QF-Test"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_keywords_components">27.3</a></span>
+</div>
+<a href="contents.html#toc_usec_keywords_components">Keyword-Driven Testing mit dynamischen/generischen Komponenten</a>
+</h4>
+        
+<p>
+        Im vorigen Abschnitt haben wir gesehen, wie schl&uuml;sselwortgetriebenene Tests anhand einer Testplanung
+        unterschiedliche Prozeduren aufrufen k&ouml;nnen. Allerdings ist hierbei die Erkennung der grafischen Komponenten
+        noch in den QF-Test Prozeduren geblieben. Dieser Ansatz erfordert, dass jede Prozedur entsprechend vorab
+        aufgezeichnet bzw. anderweitig erzeugt wird.
+        </p>                    
+        
+<p>
+        Es gibt allerdings noch die M&ouml;glichkeit die Information f&uuml;r die Komponentenerkennung auch in die Testplanung mitaufzunehmen
+        und entsprechend in QF-Test zu interpretieren. Das dazugeh&ouml;rige Beispiel finden Sie unter 
+        <code>qftest-6.0.3/demo/keywords/generic/Keywords_With_Generics.qft</code>. 
+        Der dazugeh&ouml;rige Testplan liegt unter <code>qftest-6.0.3/demo/keywords/generic/keywords-generic.xlsx</code>.
+    Bitte achten Sie darauf, dass Sie den Ordner in ein projektspezifisches Verzeichnis kopieren und diese dort modifizieren.
+        </p>
+        
+<p>
+        Grundlage dieses Verfahrens ist die generische Komponentenerkennung von QF-Test. Dieses Verfahren erlaubt es Ihnen Variablen
+        in die aufgezeichneten Komponenten einzuf&uuml;gen, und sogar noch Komponenten aus der aufgezeichneten Hierarchie zu l&ouml;sen., siehe <a href="sec_bpCRGeneric.html#sec_bpCRGeneric">Abschnitt 5.8</a>.
+        </p>
+        
+<p>
+        Wenden wir uns wieder unserem Beispieltestfall zu. Der Testfall "Fahrzeug anlegen", wird nun wie folgt beschrieben:
+        </p>
+        
+<ol>
+            
+<li>Anwendung starten, wenn notwendig</li>
+            
+<li>Men&uuml;punkt "Einstellungen" ausw&auml;hlen</li>
+            
+<li>Men&uuml;punkt "Fahrzeuge..." ausw&auml;hlen</li>
+            
+<li>Textfeld Name f&uuml;llen</li>
+            
+<li>Textfeld Preis f&uuml;llen</li>
+            
+<li>Button Neu klicken, um das Fahrzeug anzulegen</li>
+            
+<li>Button OK klicken, um den Dialog zu schlie&szlig;en</li>
+            
+<li>Tabelle der Fahrzeuge pr&uuml;fen, ob sich das neue Fahrzeug darin befindet</li>
+        
+</ol>
+        
+<p>
+        Wie Sie sehen, wird der Testfall genau so beschrieben, wie bei den atomaren Prozeduren im vorigen Abschnitt. 
+        </p>
+        
+<p>
+        Die Exceldatei hierzu sieht wie folgt aus:
+        </p>
+        
+<a name="fig_keywords_excel_generics"></a><a name="figure_27.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/keywords_excel_generic.png" target="_blank"><img texscale=".66" src="images/keywords_excel_generic.png" width="741" height="279"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;27.4</a>:&nbsp;&nbsp;Exceldatei generische Komponenten</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+        In dieser Exceldatei sehen wir nun, dass die Werte f&uuml;r <code>teststep</code> auf Werte wie <code>selectMenu</code> oder <code>dialog.clickButton</code> gesetzt sind.
+        Des Weiteren ist eine neue Spalte <code>target</code> hinzugekommen. Diese Variable werden wir in den n&auml;chsten Abs&auml;tzen genauer erkl&auml;ren.
+        Wie wir in den vorigen Abschnitten schon gelernt haben, sollten hierf&uuml;r entsprechende Prozeduren in der Testsuite <code>qftest-6.0.3/demo/keywords/generic/Keywords_With_Generics.qft</code>
+        bestehen. Diese finden wir unter dem Package <code>generic</code>.
+    Bitte achten Sie darauf, dass Sie den Ordner in ein projektspezifisches Verzeichnis kopieren und diese dort modifizieren.
+        </p>
+        
+<a name="fig_keywords_generics"></a><a name="figure_27.5"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/keywords_generics.png" target="_blank"><img texscale=".66" src="images/keywords_generics.png" width="966" height="753"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;27.5</a>:&nbsp;&nbsp;Testsuite generische Komponenten</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+        Werfen wir kurz einen Blick auf die Prozedur <code>selectMenu</code>. Diese Prozedur besteht aus einem Mausklick auf die Komponente <code>GenericMenuItem</code>. 
+        Wenn wir nun zu der entsprechenden
+        Komponente springen sehen wir, dass diese Komponente nur einen Wert f&uuml;r das Attribut <code>Klasse</code> besitzt, n&auml;mlich <code>MenuItem</code>, keinen Wert f&uuml;r Name und Merkmal, 
+        danach einen Wert f&uuml;r das <code>Weitere Merkmal</code> <code>qfs:label</code> mit dem Status <code>Muss &uuml;bereinstimmen</code> und dem Wert <code>$(target)</code>. Das Attribut
+        <code>Struktur</code> ist leer und bei den Werten f&uuml;r <code>Geometrie</code> steht ein '-'. Details zum '-', siehe <a href="sec_bpCRGeneric.html#sec_bpCRGeneric">Abschnitt 5.8</a>.
+        </p>
+        
+<p>
+        Diese Definition bedeutet nun, dass die Erkennung dieser Komponente vom Inhalt der Variable <code>target</code> abh&auml;ngt. Diese Variable wird f&uuml;r das <code>qfs:label</code> verwendet.
+        Das weitere Merkmal <code>qfs:label</code> steht f&uuml;r die Beschriftung der Komponente, z.B. bei MenuItems oder Buttons oder f&uuml;r eine Beschriftung in der N&auml;he, z.B. bei Textfeldern.
+        Wenn wir uns nun noch einmal der Exceldatei zuwenden, werden wir sehen, dass in der Spalte <code>target</code> genau diese beschreibenden
+        Texte der jeweiligen Komponenten stehen. Bei den anderen Komponenten ist das Vorgehen &auml;hnlich.
+        </p>
+        
+<p>
+        Eine zweite Auf&auml;lligkeit ist das Package <code>dialog</code> unter dem Package <code>generic</code>. Grund hierf&uuml;r ist, dass QF-Test f&uuml;r die Erkennung der Komponenten nicht nur die eigentliche
+        Komponente, sondern auch immer das Fenster oder den Dialog mit in Betracht zieht. Bei Fenstern und Dialogen gibt es zwei Kategorien. Normale Fenster, die die Eingabe auf weiteren Fenstern nicht
+        blockieren und so genannten modale Fenster, die die Eingabe auf weiteren Fenstern blockieren. Es ist in der Regel einfacher diese zwei Fensterkategorien &uuml;ber unterschiedliche Keywords
+        anzusprechen. Man k&ouml;nnte allerdings auch dies noch weiter verallgemeinern. Bei Webanwendungen muss diese Unterscheidung nicht getroffen zu werden,
+        weil sich alle Komponenten unterhalb einer Webseite befinden.
+        </p>
+        
+<p>
+        In diesem Abschnitt haben wir also gesehen, wie man die Komponentenerkennung mit Variablen versehen kann, um nur noch eine Prozedur pro Aktion und Zielkomponente anzulegen.
+        Dies erlaubt es den gesamten Test in Excel zu definieren. Die notwendigen Prozeduren samt generischer Komponenten m&uuml;ssen noch am Anfang des Projektes angelegt werden.
+        Nat&uuml;rlich kann dieser Ansatz mit aufgezeichneten Prozeduren erg&auml;nzt werden. Diese Prozeduren k&ouml;nnen wie im Abschnitt f&uuml;r fachliche Prozeduren (siehe <a href="user_keywords_simple_business.html#usec_keywords_simple_business">Abschnitt 27.2.1</a>) angesprochen werden.
+        </p>   
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_keywords_simple.html#usec_keywords_simple"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 27.2&nbsp;Einfaches Keyword-Driven Testing mit QF-Test" title="Vorheriges Kapitel: 27.2&nbsp;Einfaches Keyword-Driven Testing mit QF-Test"></a></td><td class="navicon"><a href="user_keywords_bdt.html#usec_keywords_bdt"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 27.4&nbsp;Behavior-Driven Testing (BDT)" title="N&auml;chste Seite: 27.4&nbsp;Behavior-Driven Testing (BDT)"></a></td><td class="navicon"><a href="user_keywords_bdt.html#usec_keywords_bdt"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 27.4&nbsp;Behavior-Driven Testing (BDT)" title="N&auml;chstes Kapitel: 27.4&nbsp;Behavior-Driven Testing (BDT)"></a></td><td class="navicon"><a href="user_keyworddriven.html#usec_keyworddriven"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 27&nbsp;Schl&uuml;sselwortgetriebenes bzw. Keyword-Driven Testing mit QF-Test" title="Kapitel-&Uuml;bersicht: 27&nbsp;Schl&uuml;sselwortgetriebenes bzw. Keyword-Driven Testing mit QF-Test"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

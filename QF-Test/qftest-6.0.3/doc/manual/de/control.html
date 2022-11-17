@@ -1,0 +1,3230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Ablaufsteuerung</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_control"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="procedures.html#sec_procedures"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 38.5&nbsp;Prozeduren" title="Vorheriges Kapitel: 38.5&nbsp;Prozeduren"></a></td><td class="navicon"><a href="processes.html#sec_processes"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 38.7&nbsp;Prozesse" title="N&auml;chste Seite: 38.7&nbsp;Prozesse"></a></td><td class="navicon"><a href="processes.html#sec_processes"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 38.7&nbsp;Prozesse" title="N&auml;chstes Kapitel: 38.7&nbsp;Prozesse"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite" title="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_control">38.6</a></span>
+</div>
+<a href="contents.html#toc_sec_control">Ablaufsteuerung</a>
+</h4>
+    
+<p>
+      Neben den normalen <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a> verf&uuml;gt
+      QF-Test &uuml;ber eine Reihe von speziellen Kontrollstrukturen, die der
+      Steuerung des Ablaufs eines Tests dienen. Diese orientieren sich an
+      den g&auml;ngigen Kontrollstrukturen, wie sie auch in Java vorhanden
+      sind.
+    </p>
+    
+<p>
+      Au&szlig;er Schleifen und bedingter Ausf&uuml;hrung erbt QF-Test von Java auch
+      die Art der Fehlerbehandlung mittels
+
+      <em><a name="idx_N121840"></a>Exceptions</em>,
+
+      die im Fehlerfall bei der Ausf&uuml;hrung eines Knotens "geworfen"
+      werden. Eine Exception bricht die Ausf&uuml;hrung eines Testlaufs
+      schrittweise von unten nach oben ab, so lange bis sie durch ein
+      <a href="#step_CatchSequence" shape="rect">'Catch'</a> abgefangen wird, oder bis der gesamte Test
+      beendet ist.
+    </p>
+    
+<p>
+      F&uuml;r Java Entwickler ist dieses Konzept Teil der t&auml;glichen
+      Arbeit. Wenn es Ihnen als Tester verwirrend erscheint, werden Ihre
+      Entwickler es Ihnen sicher gerne erl&auml;utern.
+    </p>
+    
+<p>
+      Die Klassenhierarchie der Exceptions mit denen QF-Test arbeitet, hat
+      ihre Wurzel in der Klasse <a href="exceptions.html#ex_TestException" shape="rect"><code>TestException</code></a>. Andere Exceptions wie
+      <a href="exceptions.html#ex_ComponentNotFoundException" shape="rect"><code>ComponentNotFoundException</code></a> sind Spezialisierungen davon. In
+      <a href="exceptions.html#sec_exceptions">Kapitel 39</a> erfahren Sie mehr zu diesem Thema.
+    </p>
+    
+<p>
+      Au&szlig;erdem wird Skripting in Form von Jython (fr&uuml;her <em>JPython</em>),
+      Groovy und JavaScript unterst&uuml;tzt. Mehr dazu in <a href="user_scripting.html#usec_scripting">Kapitel 11</a>.
+    </p>
+    
+
+    
+<a name="step_RepeatSequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_RepeatSequence">38.6.1</a></span>
+</div>
+<a href="contents.html#toc_step_RepeatSequence">'Schleife'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/repeat.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Hierbei handelt es sich um eine Sequenz die
+            mehrfach ausgef&uuml;hrt werden kann. Neben der Anzahl der
+            Wiederholungen kann auch der Name einer Variable angegeben
+            werden, die die Nummer des jeweiligen Durchgangs zugewiesen
+            bekommt.
+          </p>
+          
+<p>
+            Dieser Knoten dient vor allem dazu, die Aussage eines Tests
+            &uuml;ber die Zuverl&auml;ssigkeit des SUT und der Testvorschriften zu
+            verbessern. Ein Test der 100 mal funktioniert sagt mehr aus,
+            als ein Test der einmal funktioniert.
+          </p>
+          
+<p>
+            Das Verhalten von 'Schleifen' kann durch Zuweisen eines
+            Wertes an die <a href="#att_RepeatSequence_var" shape="rect">'Z&auml;hlervariable'</a> innerhalb der
+            'Schleife' beeinflusst werden.
+          </p>
+          
+<p>
+            Die Ausf&uuml;hrung der 'Schleife' kann mittels eines <a href="#step_BreakStep" shape="rect">'Break'</a> Knotens
+            vorzeitig abgebrochen werden. Ein optionaler <a href="#step_ElseSequence" shape="rect">'Else'</a> Knoten am Ende der
+            'Schleife' wird ausgef&uuml;hrt, falls alle Iterationen der 'Schleife'
+            komplett durchlaufen wurden, ohne auf ein 'Break' zu treffen.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Beliebig</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die Variablen der Sequenz werden gebunden. Die Laufvariable
+          erh&auml;lt den Wert 0 und die Childknoten werden einer nach dem
+          anderen ausgef&uuml;hrt. F&uuml;r jede Wiederholung wird der Wert der
+          Laufvariable um 1 erh&ouml;ht und die Children erneut ausgef&uuml;hrt.
+          Anschlie&szlig;end werden die Variablen der Sequenz wieder gel&ouml;scht.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.25"></a><a name="figure_38.25"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_RepeatSequence.png" target="_blank"><img src="images/att_RepeatSequence.png" alt="Schleife Attribute" texscale=".66" width="393" height="413"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.25</a>:&nbsp;&nbsp;'Schleife' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_RepeatSequence_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        Der Name einer Sequenz ist eine Art Kurzkommentar. Er wird in der
+        Baumdarstellung der Testsuite angegeben und sollte etwas &uuml;ber die
+        Funktion der Sequenz aussagen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_RepeatSequence_count"></a>
+<dt>'Anzahl Wiederholungen'</dt>
+<dd>
+            
+            
+<p>
+              Dieser Wert legt die Anzahl der Durchg&auml;nge f&uuml;r die
+              Ausf&uuml;hrung fest.
+            </p>
+            
+<p>
+              Dieses Attribut ist pr&auml;destiniert f&uuml;r den Einsatz von
+              Variablen. Wenn Sie die Anzahl Wiederholungen z.B. auf
+              <code>$(count)</code> setzen, k&ouml;nnen Sie den Wert f&uuml;r die
+              Variable <code>count</code> in den Variablen der Suite
+              (vgl. <a href="user_variables.html#usec_variables">Kapitel 6</a>) auf 1 oder 2 setzen.
+              Das vereinfacht das Erstellen und Ausprobieren der Testsuite.
+            </p>
+            
+<p>
+              Wenn Sie den Test dann ernsthaft ausf&uuml;hren, z.B. automatisch
+              mittels <code>qftest -batch</code>, k&ouml;nnen Sie durch Angabe
+              von <code>-variable count=100</code> auf der Kommandozeile den
+              Wert f&uuml;r <code>count</code> nach Belieben variieren.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> &gt;0</p>
+</dd>
+<a name="att_RepeatSequence_var"></a>
+<dt>'Z&auml;hlervariable'</dt>
+<dd>
+            
+            
+<p>
+              Hier geben Sie den Namen einer Variablen an, die w&auml;hrend der
+              Ausf&uuml;hrung die Nummer des aktuellen Durchgangs enth&auml;lt,
+              beginnend bei 0. Bei verschachtelten Schleifen sollten Sie
+              unterschiedliche Namen f&uuml;r die 'Z&auml;hlervariable' verwenden.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_RepeatSequence_variable"></a>
+<dt>'Variablen Definitionen'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie Werte f&uuml;r Variablen definieren, die w&auml;hrend der
+        Ausf&uuml;hrung der Children der Sequenz G&uuml;ltigkeit besitzen. N&auml;heres zur
+        Arbeit mit der Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+        Eine detaillierte Erkl&auml;rung zur Definition und Verwendung
+        von Variablen finden Sie in <a href="user_variables.html#usec_variables">Kapitel 6</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Namen der Variablen nein, Werte ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_RepeatSequence_maxerror"></a>
+<dt>'Maximaler Fehler'</dt>
+<dd>
+      
+<p>
+        Wenn beim Ablauf des Tests innerhalb der Sequenz eine Warnung, ein
+        Fehler oder eine Exception auftritt, wird dieser Status im Protokoll
+        normalerweise an die &uuml;bergeordneten Knoten weitergeleitet.  Mit diesem
+        Attribut k&ouml;nnen Sie den Fehlerstatus, den das Protokoll f&uuml;r diese
+        Sequenz erh&auml;lt, beschr&auml;nken.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Dieser Wert beeinflusst ausschlie&szlig;lich den
+        Status des Protokolls und damit den R&uuml;ckgabewert von QF-Test falls es
+        im Batchmodus l&auml;uft (vgl. <a href="user_installation.html#usec_execution">Abschnitt 1.7</a>). Auf die
+        Behandlung von Exceptions hat er keinen Einfluss.
+      </p>
+      
+<p>
+        Auch f&uuml;r die Erstellung kompakter Protokolle (vgl. <a href="opt_log.html#opt_compactlog" shape="rect">Kompakte Protokolle erstellen</a>), hat dieser
+        Wert keinen Einfluss. Eine Sequenz, in der eine Warnung oder ein
+        Fehler auftritt, wird nicht aus einem kompakten Protokoll entfernt,
+        selbst wenn &uuml;ber dieses Attribut der Fehlerstatus auf "Keinen Fehler"
+        zur&uuml;ckgesetzt wird.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_RepeatSequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+            
+            
+<p>
+              Die 'QF-Test ID' der 'Schleife' kann in einem
+              <a href="#step_BreakStep" shape="rect">'Break'</a> Knoten angegeben werden, um bei
+              verschachtelten Schleifen gezielt die Schleife mit dieser QF-Test ID
+              abzubrechen.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+            Darf nicht leer sein, keines der Zeichen '#', '$', '@',
+            '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+            ('_') beginnen.
+          </p>
+</dd>
+<a name="att_RepeatSequence_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_RepeatSequence_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_WhileSequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_WhileSequence">38.6.2</a></span>
+</div>
+<a href="contents.html#toc_step_WhileSequence">'While'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/while.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Hierbei handelt es sich um eine Sequenz die immer wieder
+            ausgef&uuml;hrt wird, so lange eine Bedingung erf&uuml;llt ist.
+          </p>
+          
+<p>
+            Die Ausf&uuml;hrung des 'While' Knotens kann mittels
+            eines <a href="#step_BreakStep" shape="rect">'Break'</a> Knotens vorzeitig abgebrochen werden.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Beliebig</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die Variablen der Sequenz werden gebunden. Die Bedingung wird
+          &uuml;berpr&uuml;ft und wenn sie erf&uuml;llt ist, werden die
+          Childknoten einer nach dem
+          anderen ausgef&uuml;hrt. Dies wiederholt sich so lange, bis die
+          Bedingung nicht mehr erf&uuml;llt ist oder der Vorgang durch eine
+          Exception oder einen <a href="#step_BreakStep" shape="rect">'Break'</a> Knoten abgebrochen wird.
+          Anschlie&szlig;end werden die Variablen der Sequenz wieder gel&ouml;scht.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.26"></a><a name="figure_38.26"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_WhileSequence.png" target="_blank"><img src="images/att_WhileSequence.png" alt="While Attribute" texscale=".66" width="393" height="413"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.26</a>:&nbsp;&nbsp;'While' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_WhileSequence_test"></a>
+<dt>'Bedingung'</dt>
+<dd>
+      
+<p>
+        Eine Bedingung ist ein Ausdruck, dessen Wert entweder wahr oder
+        falsch ist. QF-Test unterscheidet hierbei zwischen einfachen
+        Ausdr&uuml;cken, die es selbst auswertet und komplexen Ausdr&uuml;cken,
+        die es an die Skriptsprache Jython weiterreicht.
+      </p>
+      
+<p>
+        Leeren Text, sowie den Text <code>false</code> (unabh&auml;ngig von
+        Gro&szlig;- oder Kleinschreibung) interpretiert QF-Test als falsch,
+        den Text <code>true</code> als wahr. Ganze Zahlen sind genau
+        dann wahr, wenn sie nicht 0 sind.
+      </p>
+      
+<p>
+        Durch die Auswertung komplexer Ausdr&uuml;cke mittels Jython stehen
+        hier sehr weitreichende M&ouml;glichkeiten zur Verf&uuml;gung, die noch
+        gr&ouml;&szlig;er werden, wenn Skripting vollst&auml;ndig integriert ist.
+        F&uuml;r den Moment muss die folgende Kurzzusammenfassung gen&uuml;gen:
+        Jython unterst&uuml;tzt die &uuml;blichen Operatoren <code>==</code>,
+        <code>!=</code>, <code>&gt;</code>, <code>&gt;=</code>,
+        <code>&lt;</code> und <code>&lt;=</code>. Sie k&ouml;nnen Ausdr&uuml;cke
+        mit <code>and</code> und <code>or</code> verkn&uuml;pfen und die
+        Priorit&auml;t durch Klammerung festlegen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Der Zugriff auf QF-Test Variablen in
+        Bedingungen folgt den selben Regeln wie in Jython Skripten
+        (vgl. <a href="user_scripting.html#usec_scriptvars">Abschnitt 11.2.3</a>). Die standard QF-Test Syntax
+        <code>$(...)</code> und <code>${...:...}</code> kann f&uuml;r numerische
+        und boolesche Werte verwendet werden. Auf Zeichenketten sollte mittels
+        <code>rc.lookup(...)</code> zugegriffen werden.
+      </p>
+      
+<p>
+        
+<strong>Wichtig:</strong> Wenn Sie Zeichenketten (im Gegensatz
+        zu Zahlen) vergleichen wollen, m&uuml;ssen Sie diese f&uuml;r Jython mit
+        einem einfachen oder doppelten Anf&uuml;hrungszeichen sch&uuml;tzen.
+        Andernfalls interpretiert Jython diese als Jython-Variablen,
+        die nat&uuml;rlich nicht definiert sind und damit zu einem
+        Syntaxfehler f&uuml;hren.
+      </p>
+      
+<p>
+        Einige Beispiele zum besseren Verst&auml;ndnis:
+      </p>
+      
+<a name="table_38.13"></a><a name="table_38.13"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="2">
+          
+<tr>
+            
+<th align="left" rowspan="1" colspan="1">Ausdruck</th>
+            <th align="left" rowspan="1" colspan="1">Wert</th>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">Leerer Text</td>
+            <td rowspan="1" colspan="1">Falsch</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">0</td>
+            <td rowspan="1" colspan="1">Falsch</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">21</td>
+            <td rowspan="1" colspan="1">Wahr</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">False</td>
+            <td rowspan="1" colspan="1">Falsch</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">True</td>
+            <td rowspan="1" colspan="1">Wahr</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">abc abc</td>
+            <td rowspan="1" colspan="1">Syntaxfehler</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">25 &gt; 0</td>
+            <td rowspan="1" colspan="1">Wahr</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">${qftest:batch}</td>
+            <td rowspan="1" colspan="1">True if QF-Test is run in batch mode</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">not ${qftest:batch}</td>
+            <td rowspan="1" colspan="1">True if QF-Test is run in interactive mode</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">rc.lookup("system", "java.version") == "1.3.1"</td>
+            <td rowspan="1" colspan="1">Wahr falls JDK Version 1.3.1 ist</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">rc.lookup("system", "java.version")[0] == "1"</td>
+            <td rowspan="1" colspan="1">Wahr falls JDK Version mit 1 beginnt </td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">(1 &gt; 0 and 0 == 0) or 2 &lt; 1</td>
+            <td rowspan="1" colspan="1">Wahr</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.13</a>:&nbsp;&nbsp;Beispiele f&uuml;r Bedingungen</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Syntax</p>
+</dd>
+<a name="att_WhileSequence_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        Der Name einer Sequenz ist eine Art Kurzkommentar. Er wird in der
+        Baumdarstellung der Testsuite angegeben und sollte etwas &uuml;ber die
+        Funktion der Sequenz aussagen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_WhileSequence_variable"></a>
+<dt>'Variablen Definitionen'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie Werte f&uuml;r Variablen definieren, die w&auml;hrend der
+        Ausf&uuml;hrung der Children der Sequenz G&uuml;ltigkeit besitzen. N&auml;heres zur
+        Arbeit mit der Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+        Eine detaillierte Erkl&auml;rung zur Definition und Verwendung
+        von Variablen finden Sie in <a href="user_variables.html#usec_variables">Kapitel 6</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Namen der Variablen nein, Werte ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_WhileSequence_maxerror"></a>
+<dt>'Maximaler Fehler'</dt>
+<dd>
+      
+<p>
+        Wenn beim Ablauf des Tests innerhalb der Sequenz eine Warnung, ein
+        Fehler oder eine Exception auftritt, wird dieser Status im Protokoll
+        normalerweise an die &uuml;bergeordneten Knoten weitergeleitet.  Mit diesem
+        Attribut k&ouml;nnen Sie den Fehlerstatus, den das Protokoll f&uuml;r diese
+        Sequenz erh&auml;lt, beschr&auml;nken.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Dieser Wert beeinflusst ausschlie&szlig;lich den
+        Status des Protokolls und damit den R&uuml;ckgabewert von QF-Test falls es
+        im Batchmodus l&auml;uft (vgl. <a href="user_installation.html#usec_execution">Abschnitt 1.7</a>). Auf die
+        Behandlung von Exceptions hat er keinen Einfluss.
+      </p>
+      
+<p>
+        Auch f&uuml;r die Erstellung kompakter Protokolle (vgl. <a href="opt_log.html#opt_compactlog" shape="rect">Kompakte Protokolle erstellen</a>), hat dieser
+        Wert keinen Einfluss. Eine Sequenz, in der eine Warnung oder ein
+        Fehler auftritt, wird nicht aus einem kompakten Protokoll entfernt,
+        selbst wenn &uuml;ber dieses Attribut der Fehlerstatus auf "Keinen Fehler"
+        zur&uuml;ckgesetzt wird.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_WhileSequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+            
+            
+<p>
+              Die 'QF-Test ID' des 'While' Knotens kann in einem
+              <a href="#step_BreakStep" shape="rect">'Break'</a> Knoten angegeben werden, um bei
+              verschachtelten Schleifen gezielt die Schleife mit dieser QF-Test ID
+              abzubrechen.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+            Darf nicht leer sein, keines der Zeichen '#', '$', '@',
+            '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+            ('_') beginnen.
+          </p>
+</dd>
+<a name="att_WhileSequence_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_WhileSequence_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_BreakStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_BreakStep">38.6.3</a></span>
+</div>
+<a href="contents.html#toc_step_BreakStep">'Break'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/break.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Dieser Knoten dient dazu, <a href="#step_RepeatSequence" shape="rect">'Schleifen'</a> und
+            <a href="#step_WhileSequence" shape="rect">'While'</a> Knoten vorzeitig zu beenden.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Es wird eine <code>BreakException</code> geworfen. Wird diese
+          von einer passenden Schleife gefangen, so wird die Schleife
+          beendet. Andernfalls f&uuml;hrt sie zu einem Fehler.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.27"></a><a name="figure_38.27"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_BreakStep.png" target="_blank"><img src="images/att_BreakStep.png" alt="Break Attribute" texscale=".66" width="393" height="236"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.27</a>:&nbsp;&nbsp;'Break' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_BreakStep_loopid"></a>
+<dt>'QF-Test ID der Schleife'</dt>
+<dd>
+            
+            
+<p>
+              Hiermit k&ouml;nnen Sie bei verschachtelten Schleifen gezielt die Schleife ausw&auml;hlen, die
+              abgebrochen werden soll, indem Sie im <a href="#step_RepeatSequence" shape="rect">'Schleife'</a> Knoten das
+              <a href="#att_RepeatSequence_id" shape="rect">'QF-Test ID'</a> setzen und hier referenzieren. Das gleiche gilt f&uuml;r
+              <a href="#step_WhileSequence" shape="rect">'While'</a> Knoten mit dem <a href="#att_WhileSequence_id" shape="rect">'QF-Test ID'</a> Attribut. Ist dieses Feld leer,
+              wird die innerste Schleife abgebrochen.
+              Falls Sie eine Schleife des <a href="datadriver.html#step_DataDriver" shape="rect">'Datentreiber'</a> Knotens abbrechen wollen, so geben Sie hier den Wert des 'Name' Attributes des jeweiligen <a href="datadriver.html#step_DataDriver" shape="rect">'Datentreibers'</a> an.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_BreakStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_BreakStep_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_BreakStep_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_IfSequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_IfSequence">38.6.4</a></span>
+</div>
+<a href="contents.html#toc_step_IfSequence">'If'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/if.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Analog zu Java werden die Childknoten dieser Sequenz nur
+            dann ausgef&uuml;hrt, wenn eine Bedingung erf&uuml;llt ist. Allerdings
+            unterscheidet sich QF-Test von g&auml;ngigen Programmiersprachen in
+            der Art in der die Alternativzweige angeordnet sind.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> 
+          Beliebige Knoten, gefolgt von beliebig vielen
+          <a href="#step_ElseifSequence" shape="rect">'Elseif'</a> Knoten mit einem optionalen
+          <a href="#step_ElseSequence" shape="rect">'Else'</a> Knoten am Ende.
+        </p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die Variablen der Sequenz werden gebunden. Die Bedingung wird
+          &uuml;berpr&uuml;ft und wenn sie erf&uuml;llt ist, werden die normalen Childknoten
+          einer nach dem anderen ausgef&uuml;hrt. Ist die Bedingung nicht erf&uuml;llt,
+          werden die Bedingungen der <a href="#step_ElseifSequence" shape="rect">'Elseif'</a> Childknoten eine
+          nach der anderen gepr&uuml;ft, bis eine Bedingung erf&uuml;llt ist und der
+          entsprechende <a href="#step_ElseifSequence" shape="rect">'Elseif'</a> Knoten ausgef&uuml;hrt wird. Ist
+          kein <a href="#step_ElseifSequence" shape="rect">'Elseif'</a> Childknoten vorhanden oder keine der
+          Bedingungen erf&uuml;llt, wird der <a href="#step_ElseSequence" shape="rect">'Else'</a> Knoten
+          ausgef&uuml;hrt, sofern vorhanden. Anschlie&szlig;end werden die Variablen der
+          Sequenz wieder gel&ouml;scht.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.28"></a><a name="figure_38.28"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_IfSequence.png" target="_blank"><img src="images/att_IfSequence.png" alt="If Attribute" texscale=".66" width="393" height="413"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.28</a>:&nbsp;&nbsp;'If' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_IfSequence_test"></a>
+<dt>'Bedingung'</dt>
+<dd>
+      
+<p>
+        Eine Bedingung ist ein Ausdruck, dessen Wert entweder wahr oder
+        falsch ist. QF-Test unterscheidet hierbei zwischen einfachen
+        Ausdr&uuml;cken, die es selbst auswertet und komplexen Ausdr&uuml;cken,
+        die es an die Skriptsprache Jython weiterreicht.
+      </p>
+      
+<p>
+        Leeren Text, sowie den Text <code>false</code> (unabh&auml;ngig von
+        Gro&szlig;- oder Kleinschreibung) interpretiert QF-Test als falsch,
+        den Text <code>true</code> als wahr. Ganze Zahlen sind genau
+        dann wahr, wenn sie nicht 0 sind.
+      </p>
+      
+<p>
+        Durch die Auswertung komplexer Ausdr&uuml;cke mittels Jython stehen
+        hier sehr weitreichende M&ouml;glichkeiten zur Verf&uuml;gung, die noch
+        gr&ouml;&szlig;er werden, wenn Skripting vollst&auml;ndig integriert ist.
+        F&uuml;r den Moment muss die folgende Kurzzusammenfassung gen&uuml;gen:
+        Jython unterst&uuml;tzt die &uuml;blichen Operatoren <code>==</code>,
+        <code>!=</code>, <code>&gt;</code>, <code>&gt;=</code>,
+        <code>&lt;</code> und <code>&lt;=</code>. Sie k&ouml;nnen Ausdr&uuml;cke
+        mit <code>and</code> und <code>or</code> verkn&uuml;pfen und die
+        Priorit&auml;t durch Klammerung festlegen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Der Zugriff auf QF-Test Variablen in
+        Bedingungen folgt den selben Regeln wie in Jython Skripten
+        (vgl. <a href="user_scripting.html#usec_scriptvars">Abschnitt 11.2.3</a>). Die standard QF-Test Syntax
+        <code>$(...)</code> und <code>${...:...}</code> kann f&uuml;r numerische
+        und boolesche Werte verwendet werden. Auf Zeichenketten sollte mittels
+        <code>rc.lookup(...)</code> zugegriffen werden.
+      </p>
+      
+<p>
+        
+<strong>Wichtig:</strong> Wenn Sie Zeichenketten (im Gegensatz
+        zu Zahlen) vergleichen wollen, m&uuml;ssen Sie diese f&uuml;r Jython mit
+        einem einfachen oder doppelten Anf&uuml;hrungszeichen sch&uuml;tzen.
+        Andernfalls interpretiert Jython diese als Jython-Variablen,
+        die nat&uuml;rlich nicht definiert sind und damit zu einem
+        Syntaxfehler f&uuml;hren.
+      </p>
+      
+<p>
+        Einige Beispiele zum besseren Verst&auml;ndnis:
+      </p>
+      
+<a name="table_38.14"></a><a name="table_38.14"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="2">
+          
+<tr>
+            
+<th align="left" rowspan="1" colspan="1">Ausdruck</th>
+            <th align="left" rowspan="1" colspan="1">Wert</th>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">Leerer Text</td>
+            <td rowspan="1" colspan="1">Falsch</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">0</td>
+            <td rowspan="1" colspan="1">Falsch</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">21</td>
+            <td rowspan="1" colspan="1">Wahr</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">False</td>
+            <td rowspan="1" colspan="1">Falsch</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">True</td>
+            <td rowspan="1" colspan="1">Wahr</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">abc abc</td>
+            <td rowspan="1" colspan="1">Syntaxfehler</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">25 &gt; 0</td>
+            <td rowspan="1" colspan="1">Wahr</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">${qftest:batch}</td>
+            <td rowspan="1" colspan="1">True if QF-Test is run in batch mode</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">not ${qftest:batch}</td>
+            <td rowspan="1" colspan="1">True if QF-Test is run in interactive mode</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">rc.lookup("system", "java.version") == "1.3.1"</td>
+            <td rowspan="1" colspan="1">Wahr falls JDK Version 1.3.1 ist</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">rc.lookup("system", "java.version")[0] == "1"</td>
+            <td rowspan="1" colspan="1">Wahr falls JDK Version mit 1 beginnt </td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">(1 &gt; 0 and 0 == 0) or 2 &lt; 1</td>
+            <td rowspan="1" colspan="1">Wahr</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.14</a>:&nbsp;&nbsp;Beispiele f&uuml;r Bedingungen</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Syntax</p>
+</dd>
+<a name="att_IfSequence_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        Der Name einer Sequenz ist eine Art Kurzkommentar. Er wird in der
+        Baumdarstellung der Testsuite angegeben und sollte etwas &uuml;ber die
+        Funktion der Sequenz aussagen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_IfSequence_variable"></a>
+<dt>'Variablen Definitionen'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie Werte f&uuml;r Variablen definieren, die w&auml;hrend der
+        Ausf&uuml;hrung der Children der Sequenz G&uuml;ltigkeit besitzen. N&auml;heres zur
+        Arbeit mit der Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+        Eine detaillierte Erkl&auml;rung zur Definition und Verwendung
+        von Variablen finden Sie in <a href="user_variables.html#usec_variables">Kapitel 6</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Namen der Variablen nein, Werte ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_IfSequence_maxerror"></a>
+<dt>'Maximaler Fehler'</dt>
+<dd>
+      
+<p>
+        Wenn beim Ablauf des Tests innerhalb der Sequenz eine Warnung, ein
+        Fehler oder eine Exception auftritt, wird dieser Status im Protokoll
+        normalerweise an die &uuml;bergeordneten Knoten weitergeleitet.  Mit diesem
+        Attribut k&ouml;nnen Sie den Fehlerstatus, den das Protokoll f&uuml;r diese
+        Sequenz erh&auml;lt, beschr&auml;nken.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Dieser Wert beeinflusst ausschlie&szlig;lich den
+        Status des Protokolls und damit den R&uuml;ckgabewert von QF-Test falls es
+        im Batchmodus l&auml;uft (vgl. <a href="user_installation.html#usec_execution">Abschnitt 1.7</a>). Auf die
+        Behandlung von Exceptions hat er keinen Einfluss.
+      </p>
+      
+<p>
+        Auch f&uuml;r die Erstellung kompakter Protokolle (vgl. <a href="opt_log.html#opt_compactlog" shape="rect">Kompakte Protokolle erstellen</a>), hat dieser
+        Wert keinen Einfluss. Eine Sequenz, in der eine Warnung oder ein
+        Fehler auftritt, wird nicht aus einem kompakten Protokoll entfernt,
+        selbst wenn &uuml;ber dieses Attribut der Fehlerstatus auf "Keinen Fehler"
+        zur&uuml;ckgesetzt wird.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_IfSequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_IfSequence_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_IfSequence_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ElseifSequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ElseifSequence">38.6.5</a></span>
+</div>
+<a href="contents.html#toc_step_ElseifSequence">'Elseif'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/elseif.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Dieser Knoten stellt einen Alternativzweig in einem
+            <a href="#step_IfSequence" shape="rect">'If'</a> Knoten dar. Ist die Bedingung des
+            'If' Knotens nicht erf&uuml;llt, wird der erste
+            'Elseif' Knoten ausgef&uuml;hrt, dessen Bedingung erf&uuml;llt
+            ist.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> <a href="#step_IfSequence" shape="rect">'If'</a>
+</p>
+<p>
+<strong>Kinder:</strong> Beliebig</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die Variablen der Sequenz werden gebunden und die Childknoten
+          einer nach dem anderen ausgef&uuml;hrt. Anschlie&szlig;end werden die
+          Variablen der Sequenz wieder gel&ouml;scht.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.29"></a><a name="figure_38.29"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ElseifSequence.png" target="_blank"><img src="images/att_ElseifSequence.png" alt="ElseIf Attribute" texscale=".66" width="393" height="413"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.29</a>:&nbsp;&nbsp;'Elseif' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ElseifSequence_test"></a>
+<dt>'Bedingung'</dt>
+<dd>
+      
+<p>
+        Eine Bedingung ist ein Ausdruck, dessen Wert entweder wahr oder
+        falsch ist. QF-Test unterscheidet hierbei zwischen einfachen
+        Ausdr&uuml;cken, die es selbst auswertet und komplexen Ausdr&uuml;cken,
+        die es an die Skriptsprache Jython weiterreicht.
+      </p>
+      
+<p>
+        Leeren Text, sowie den Text <code>false</code> (unabh&auml;ngig von
+        Gro&szlig;- oder Kleinschreibung) interpretiert QF-Test als falsch,
+        den Text <code>true</code> als wahr. Ganze Zahlen sind genau
+        dann wahr, wenn sie nicht 0 sind.
+      </p>
+      
+<p>
+        Durch die Auswertung komplexer Ausdr&uuml;cke mittels Jython stehen
+        hier sehr weitreichende M&ouml;glichkeiten zur Verf&uuml;gung, die noch
+        gr&ouml;&szlig;er werden, wenn Skripting vollst&auml;ndig integriert ist.
+        F&uuml;r den Moment muss die folgende Kurzzusammenfassung gen&uuml;gen:
+        Jython unterst&uuml;tzt die &uuml;blichen Operatoren <code>==</code>,
+        <code>!=</code>, <code>&gt;</code>, <code>&gt;=</code>,
+        <code>&lt;</code> und <code>&lt;=</code>. Sie k&ouml;nnen Ausdr&uuml;cke
+        mit <code>and</code> und <code>or</code> verkn&uuml;pfen und die
+        Priorit&auml;t durch Klammerung festlegen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Der Zugriff auf QF-Test Variablen in
+        Bedingungen folgt den selben Regeln wie in Jython Skripten
+        (vgl. <a href="user_scripting.html#usec_scriptvars">Abschnitt 11.2.3</a>). Die standard QF-Test Syntax
+        <code>$(...)</code> und <code>${...:...}</code> kann f&uuml;r numerische
+        und boolesche Werte verwendet werden. Auf Zeichenketten sollte mittels
+        <code>rc.lookup(...)</code> zugegriffen werden.
+      </p>
+      
+<p>
+        
+<strong>Wichtig:</strong> Wenn Sie Zeichenketten (im Gegensatz
+        zu Zahlen) vergleichen wollen, m&uuml;ssen Sie diese f&uuml;r Jython mit
+        einem einfachen oder doppelten Anf&uuml;hrungszeichen sch&uuml;tzen.
+        Andernfalls interpretiert Jython diese als Jython-Variablen,
+        die nat&uuml;rlich nicht definiert sind und damit zu einem
+        Syntaxfehler f&uuml;hren.
+      </p>
+      
+<p>
+        Einige Beispiele zum besseren Verst&auml;ndnis:
+      </p>
+      
+<a name="table_38.15"></a><a name="table_38.15"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="2">
+          
+<tr>
+            
+<th align="left" rowspan="1" colspan="1">Ausdruck</th>
+            <th align="left" rowspan="1" colspan="1">Wert</th>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">Leerer Text</td>
+            <td rowspan="1" colspan="1">Falsch</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">0</td>
+            <td rowspan="1" colspan="1">Falsch</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">21</td>
+            <td rowspan="1" colspan="1">Wahr</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">False</td>
+            <td rowspan="1" colspan="1">Falsch</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">True</td>
+            <td rowspan="1" colspan="1">Wahr</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">abc abc</td>
+            <td rowspan="1" colspan="1">Syntaxfehler</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">25 &gt; 0</td>
+            <td rowspan="1" colspan="1">Wahr</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">${qftest:batch}</td>
+            <td rowspan="1" colspan="1">True if QF-Test is run in batch mode</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">not ${qftest:batch}</td>
+            <td rowspan="1" colspan="1">True if QF-Test is run in interactive mode</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">rc.lookup("system", "java.version") == "1.3.1"</td>
+            <td rowspan="1" colspan="1">Wahr falls JDK Version 1.3.1 ist</td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">rc.lookup("system", "java.version")[0] == "1"</td>
+            <td rowspan="1" colspan="1">Wahr falls JDK Version mit 1 beginnt </td>
+          
+</tr>
+          
+<tr>
+            
+<td rowspan="1" colspan="1">(1 &gt; 0 and 0 == 0) or 2 &lt; 1</td>
+            <td rowspan="1" colspan="1">Wahr</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.15</a>:&nbsp;&nbsp;Beispiele f&uuml;r Bedingungen</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Syntax</p>
+</dd>
+<a name="att_ElseifSequence_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        Der Name einer Sequenz ist eine Art Kurzkommentar. Er wird in der
+        Baumdarstellung der Testsuite angegeben und sollte etwas &uuml;ber die
+        Funktion der Sequenz aussagen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ElseifSequence_variable"></a>
+<dt>'Variablen Definitionen'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie Werte f&uuml;r Variablen definieren, die w&auml;hrend der
+        Ausf&uuml;hrung der Children der Sequenz G&uuml;ltigkeit besitzen. N&auml;heres zur
+        Arbeit mit der Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+        Eine detaillierte Erkl&auml;rung zur Definition und Verwendung
+        von Variablen finden Sie in <a href="user_variables.html#usec_variables">Kapitel 6</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Namen der Variablen nein, Werte ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ElseifSequence_maxerror"></a>
+<dt>'Maximaler Fehler'</dt>
+<dd>
+      
+<p>
+        Wenn beim Ablauf des Tests innerhalb der Sequenz eine Warnung, ein
+        Fehler oder eine Exception auftritt, wird dieser Status im Protokoll
+        normalerweise an die &uuml;bergeordneten Knoten weitergeleitet.  Mit diesem
+        Attribut k&ouml;nnen Sie den Fehlerstatus, den das Protokoll f&uuml;r diese
+        Sequenz erh&auml;lt, beschr&auml;nken.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Dieser Wert beeinflusst ausschlie&szlig;lich den
+        Status des Protokolls und damit den R&uuml;ckgabewert von QF-Test falls es
+        im Batchmodus l&auml;uft (vgl. <a href="user_installation.html#usec_execution">Abschnitt 1.7</a>). Auf die
+        Behandlung von Exceptions hat er keinen Einfluss.
+      </p>
+      
+<p>
+        Auch f&uuml;r die Erstellung kompakter Protokolle (vgl. <a href="opt_log.html#opt_compactlog" shape="rect">Kompakte Protokolle erstellen</a>), hat dieser
+        Wert keinen Einfluss. Eine Sequenz, in der eine Warnung oder ein
+        Fehler auftritt, wird nicht aus einem kompakten Protokoll entfernt,
+        selbst wenn &uuml;ber dieses Attribut der Fehlerstatus auf "Keinen Fehler"
+        zur&uuml;ckgesetzt wird.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ElseifSequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_ElseifSequence_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_ElseifSequence_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ElseSequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ElseSequence">38.6.6</a></span>
+</div>
+<a href="contents.html#toc_step_ElseSequence">'Else'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/else.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Ein 'Else' Knoten wird ausgef&uuml;hrt, wenn weder die
+            Bedingung seines <a href="#step_IfSequence" shape="rect">'If'</a> Parents, noch die Bedingungen
+            der <a href="#step_ElseifSequence" shape="rect">'Elseif'</a> Knoten erf&uuml;llt sind.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> <a href="#step_IfSequence" shape="rect">'If'</a>, <a href="#step_RepeatSequence" shape="rect">'Schleife'</a>, <a href="#step_TryStep" shape="rect">'Try'</a>
+</p>
+<p>
+<strong>Kinder:</strong> Beliebig</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die Variablen der Sequenz werden gebunden und die Childknoten
+          einer nach dem anderen ausgef&uuml;hrt. Anschlie&szlig;end werden die
+          Variablen der Sequenz wieder gel&ouml;scht.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.30"></a><a name="figure_38.30"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ElseSequence.png" target="_blank"><img src="images/att_ElseSequence.png" alt="Else Attribute" texscale=".66" width="393" height="367"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.30</a>:&nbsp;&nbsp;'Else' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ElseSequence_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        Der Name einer Sequenz ist eine Art Kurzkommentar. Er wird in der
+        Baumdarstellung der Testsuite angegeben und sollte etwas &uuml;ber die
+        Funktion der Sequenz aussagen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ElseSequence_variable"></a>
+<dt>'Variablen Definitionen'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie Werte f&uuml;r Variablen definieren, die w&auml;hrend der
+        Ausf&uuml;hrung der Children der Sequenz G&uuml;ltigkeit besitzen. N&auml;heres zur
+        Arbeit mit der Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+        Eine detaillierte Erkl&auml;rung zur Definition und Verwendung
+        von Variablen finden Sie in <a href="user_variables.html#usec_variables">Kapitel 6</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Namen der Variablen nein, Werte ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ElseSequence_maxerror"></a>
+<dt>'Maximaler Fehler'</dt>
+<dd>
+      
+<p>
+        Wenn beim Ablauf des Tests innerhalb der Sequenz eine Warnung, ein
+        Fehler oder eine Exception auftritt, wird dieser Status im Protokoll
+        normalerweise an die &uuml;bergeordneten Knoten weitergeleitet.  Mit diesem
+        Attribut k&ouml;nnen Sie den Fehlerstatus, den das Protokoll f&uuml;r diese
+        Sequenz erh&auml;lt, beschr&auml;nken.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Dieser Wert beeinflusst ausschlie&szlig;lich den
+        Status des Protokolls und damit den R&uuml;ckgabewert von QF-Test falls es
+        im Batchmodus l&auml;uft (vgl. <a href="user_installation.html#usec_execution">Abschnitt 1.7</a>). Auf die
+        Behandlung von Exceptions hat er keinen Einfluss.
+      </p>
+      
+<p>
+        Auch f&uuml;r die Erstellung kompakter Protokolle (vgl. <a href="opt_log.html#opt_compactlog" shape="rect">Kompakte Protokolle erstellen</a>), hat dieser
+        Wert keinen Einfluss. Eine Sequenz, in der eine Warnung oder ein
+        Fehler auftritt, wird nicht aus einem kompakten Protokoll entfernt,
+        selbst wenn &uuml;ber dieses Attribut der Fehlerstatus auf "Keinen Fehler"
+        zur&uuml;ckgesetzt wird.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ElseSequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_ElseSequence_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_ElseSequence_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_TryStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_TryStep">38.6.7</a></span>
+</div>
+<a href="contents.html#toc_step_TryStep">'Try'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/try.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Ein Try ist eine besondere Sequenz, deren Semantik dem Java
+            Konstrukt <code>try-catch-finally</code> entspricht. Dieses
+            Konstrukt wurde, wie bei Python, erweitert, sodass optionale
+            <code>else</code> Bl&ouml;cke im Try m&ouml;glich sind. Sie
+            verh&auml;lt sich wie eine normale <a href="sequences.html#step_BasicSequence" shape="rect">'Sequenz'</a>, die
+            zus&auml;tzlich &uuml;ber die M&ouml;glichkeit verf&uuml;gt, Fehler zu erkennen
+            und abzufangen. Dies kann z.B. verhindern, dass der Ablauf
+            einer ganzen Testsuite nur wegen einem relativ unbedeutenden
+            Fehler abgebrochen wird. Au&szlig;erdem kann es wichtig sein,
+            einzelne Aufr&auml;umarbeiten auch im Fehlerfall durchzuf&uuml;hren.
+          </p>
+          
+<p>
+            Um einen Fehler, d.h. eine Exception, abzufangen, k&ouml;nnen nach den
+            normalen Children des Try ein oder mehrere <a href="#step_CatchSequence" shape="rect">'Catch'</a>
+            Knoten eingef&uuml;gt werden. Diese speziellen Sequenzen werden nur
+            ausgef&uuml;hrt, wenn die Exception zu ihrem
+            <a href="#att_CatchSequence_exception" shape="rect">'Exception Klasse'</a> Attribut passt. Es wird immer
+            h&ouml;chstens ein Catch ausgef&uuml;hrt, und zwar der erste, der auf die
+            Exception passt.
+          </p>
+          
+<p>
+            Ein m&ouml;glicher <a href="#step_ElseSequence" shape="rect">'Else'</a> Knoten am Ende wird genau
+            dann ausgef&uuml;hrt, wenn kein <a href="#step_CatchSequence" shape="rect">'Catch'</a> Knoten
+            ausgef&uuml;hrt wurde. Das hei&szlig;t, wenn kein Fehler im Try Block
+            aufgetreten ist.
+          </p>
+          
+<p>
+            Ganz am Ende des Try darf au&szlig;erdem ein
+            <a href="#step_FinallySequence" shape="rect">'Finally'</a> Knoten stehen. Dabei handelt es sich
+            um eine Sequenz, die in jedem Fall abgearbeitet wird,
+            unabh&auml;ngig davon, ob eine Exception auftritt und unabh&auml;ngig
+            davon, ob Sie von einem Catch behandelt wird.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> 
+          Beliebige Knoten, gefolgt von beliebig vielen
+          <a href="#step_CatchSequence" shape="rect">'Catch'</a> Knoten mit einem optionalen
+          <a href="#step_ElseSequence" shape="rect">'Else'</a> Knoten und/oder
+          <a href="#step_FinallySequence" shape="rect">'Finally'</a> Knoten am Ende.
+        </p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die Variablen der Sequenz werden gebunden und die Childknoten
+          einer nach dem anderen ausgef&uuml;hrt. Wird dabei eine Exception
+          ausgel&ouml;st, wird deren Ausf&uuml;hrung beendet und unter den Catch
+          Knoten der Sequenz die erste ermittelt, die diese Exception
+          abf&auml;ngt. Ist ein solcher Catch Knoten vorhanden, wird er
+          ausgef&uuml;hrt. Die Exception ist damit "entsch&auml;rft", der Test wird
+          nach dem Try normal fortgesetzt. Ist kein passender Catch
+          vorhanden, wird die Exception nach oben weitergereicht. Ist ein
+          Finally Knoten vorhanden, wird er in jedem Fall als letztes
+          ausgef&uuml;hrt, auch wenn keine Exception auftritt oder eine
+          Exception nicht behandelt wurde. Zuletzt werden die Variablen
+          der Sequenz wieder gel&ouml;scht. Tritt eine Exception w&auml;hrend der
+          Ausf&uuml;hrung eines Catch auf, so wird der Try - nach Ausf&uuml;hrung des
+          Finally - mit dieser neuen Exception beendet. Eine Exception
+          innerhalb des Finally Knotens beendet diesen und den Try sofort.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.31"></a><a name="figure_38.31"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_TryStep.png" target="_blank"><img src="images/att_TryStep.png" alt="Try Attribute" texscale=".66" width="393" height="367"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.31</a>:&nbsp;&nbsp;'Try' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_TryStep_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        Der Name einer Sequenz ist eine Art Kurzkommentar. Er wird in der
+        Baumdarstellung der Testsuite angegeben und sollte etwas &uuml;ber die
+        Funktion der Sequenz aussagen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TryStep_variable"></a>
+<dt>'Variablen Definitionen'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie Werte f&uuml;r Variablen definieren, die w&auml;hrend der
+        Ausf&uuml;hrung der Children der Sequenz G&uuml;ltigkeit besitzen. N&auml;heres zur
+        Arbeit mit der Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+        Eine detaillierte Erkl&auml;rung zur Definition und Verwendung
+        von Variablen finden Sie in <a href="user_variables.html#usec_variables">Kapitel 6</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Namen der Variablen nein, Werte ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TryStep_maxerror"></a>
+<dt>'Maximaler Fehler'</dt>
+<dd>
+      
+<p>
+        Wenn beim Ablauf des Tests innerhalb der Sequenz eine Warnung, ein
+        Fehler oder eine Exception auftritt, wird dieser Status im Protokoll
+        normalerweise an die &uuml;bergeordneten Knoten weitergeleitet.  Mit diesem
+        Attribut k&ouml;nnen Sie den Fehlerstatus, den das Protokoll f&uuml;r diese
+        Sequenz erh&auml;lt, beschr&auml;nken.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Dieser Wert beeinflusst ausschlie&szlig;lich den
+        Status des Protokolls und damit den R&uuml;ckgabewert von QF-Test falls es
+        im Batchmodus l&auml;uft (vgl. <a href="user_installation.html#usec_execution">Abschnitt 1.7</a>). Auf die
+        Behandlung von Exceptions hat er keinen Einfluss.
+      </p>
+      
+<p>
+        Auch f&uuml;r die Erstellung kompakter Protokolle (vgl. <a href="opt_log.html#opt_compactlog" shape="rect">Kompakte Protokolle erstellen</a>), hat dieser
+        Wert keinen Einfluss. Eine Sequenz, in der eine Warnung oder ein
+        Fehler auftritt, wird nicht aus einem kompakten Protokoll entfernt,
+        selbst wenn &uuml;ber dieses Attribut der Fehlerstatus auf "Keinen Fehler"
+        zur&uuml;ckgesetzt wird.
+      </p>
+      
+<p>
+        Bei einem 'Try' Knoten wird der Status des Protokolls
+        zus&auml;tzlich durch den <a href="#att_CatchSequence_maxerror" shape="rect">'Maximalen Fehler'</a> des
+        <a href="#step_CatchSequence" shape="rect">'Catch'</a> Knotens beschr&auml;nkt, der eine Exception abf&auml;ngt.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_TryStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_TryStep_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_TryStep_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_CatchSequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_CatchSequence">38.6.8</a></span>
+</div>
+<a href="contents.html#toc_step_CatchSequence">'Catch'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/catch.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Ein 'Catch' Knoten ist eine spezielle <a href="sequences.html#step_BasicSequence" shape="rect">'Sequenz'</a> und kann nur
+            innerhalb eines <a href="#step_TryStep" shape="rect">'Try'</a> oder eines <a href="dependencies.html#step_Dependency" shape="rect">'Abh&auml;ngigkeit'</a> Knotens stehen.
+            Er dient dazu, Exceptions abzufangen, die w&auml;hrend der Ausf&uuml;hrung eines 'Try'
+            Knotens oder eines <a href="sequences.html#step_TestCase" shape="rect">'Testfall'</a> Knotens mit einer 'Abh&auml;ngigkeit' auftreten
+            k&ouml;nnen.
+          </p>
+          
+<p>
+            Ein 'Catch' Knoten kann eine Exception fangen, wenn die Klasse der
+            auftretenden Exception entweder die im <a href="#att_CatchSequence_exception" shape="rect">'Exception Klasse'</a> Attribut des
+            'Catch' definierten Klasse, oder eine ihrer Basisklassen ist. Das
+            entspricht dem Verhalten in Java.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> <a href="#step_TryStep" shape="rect">'Try'</a>, <a href="dependencies.html#step_Dependency" shape="rect">'Abh&auml;ngigkeit'</a>
+</p>
+<p>
+<strong>Kinder:</strong> Beliebig</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die <a href="#att_CatchSequence_variable" shape="rect">'Variablen Definitionen'</a> der 'Catch' Sequenz werden gebunden und die
+          Childknoten einer nach dem anderen ausgef&uuml;hrt. Anschlie&szlig;end werden die Variablen der
+          Sequenz wieder gel&ouml;scht.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.32"></a><a name="figure_38.32"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_CatchSequence.png" target="_blank"><img src="images/att_CatchSequence.png" alt="Catch Attribute" texscale=".66" width="393" height="528"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.32</a>:&nbsp;&nbsp;'Catch' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_CatchSequence_exception"></a>
+<dt>'Exception Klasse'</dt>
+<dd>
+            
+            
+<p>
+              In dieser <em>ComboBox</em> w&auml;hlen Sie die Klasse der Exception aus,
+              die von diesem Knoten abgefangen werden soll. Alle Exceptions in QF-Test sind von der
+              Klasse <a href="exceptions.html#ex_TestException" shape="rect"><code>TestException</code></a> abgeleitet. Eine Aufstellung
+              aller m&ouml;glichen Exceptions finden Sie in <a href="exceptions.html#sec_exceptions">Kapitel 39</a>.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_CatchSequence_catchmessage"></a>
+<dt>'Erwartete Meldung'</dt>
+<dd>
+            
+            
+<p>
+              Sie k&ouml;nnen die zu fangende Exception genauer eingrenzen, indem Sie hier die zu
+              erwartende Meldung festlegen. Ist dieses Attribut leer, werden alle Exceptions der
+              angegebenen Klasse gefangen. Andernfalls wird es mit dem R&uuml;ckgabewert von
+              <code>exception.getMessage()</code> verglichen und die Exception nur bei
+              &Uuml;bereinstimmung gefangen.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Regexp, falls 'Als Regexp' gesetzt ist.</p>
+</dd>
+<a name="att_CatchSequence_regexp"></a>
+<dt>'Als Regexp'</dt>
+<dd>
+            
+            
+<p>
+              Ist dieses Attribut gesetzt, findet der Vergleich mit der Meldung der Exception
+              mittels eines regul&auml;ren Ausdrucks statt (vgl. <a href="tech_regexp.html#sec_regexp">Abschnitt 45.3</a>),
+              andernfalls als 1:1 Textvergleich.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_CatchSequence_matchlocalized"></a>
+<dt>'Mit lokalisierter Meldung vergleichen'</dt>
+<dd>
+            
+            
+<p>
+              Die meisten Exceptions haben zwei Arten von Fehlermeldung: Die Rohmeldung ist
+              typischerweise ein kurzer, englischer Text, w&auml;hrend die lokalisierte Meldung mehr
+              Details enth&auml;lt, allerdings auch abh&auml;ngig von den QF-Test Spracheinstellungen entweder
+              in Deutsch oder Englisch gehalten ist. Ist dieses Attribut gesetzt, wird mit der
+              lokalisierten Meldung verglichen, andernfalls mit der Rohmeldung. Letzteres ist
+              &uuml;blicherweise vorzuziehen, da man sich nicht von der Spracheinstellung abh&auml;ngig
+              macht bzw. beide Varianten per regul&auml;rem Ausdruck abdecken muss.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_CatchSequence_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        Der Name einer Sequenz ist eine Art Kurzkommentar. Er wird in der
+        Baumdarstellung der Testsuite angegeben und sollte etwas &uuml;ber die
+        Funktion der Sequenz aussagen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_CatchSequence_variable"></a>
+<dt>'Variablen Definitionen'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie Werte f&uuml;r Variablen definieren, die w&auml;hrend der
+        Ausf&uuml;hrung der Children der Sequenz G&uuml;ltigkeit besitzen. N&auml;heres zur
+        Arbeit mit der Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+        Eine detaillierte Erkl&auml;rung zur Definition und Verwendung
+        von Variablen finden Sie in <a href="user_variables.html#usec_variables">Kapitel 6</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Namen der Variablen nein, Werte ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_CatchSequence_maxerror"></a>
+<dt>'Maximaler Fehler'</dt>
+<dd>
+      
+<p>
+        Im Gegensatz zu dem <a href="sequences.html#att_BasicSequence_maxerror" shape="rect">'Maximalen Fehler'</a> der anderen <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>, bestimmt dieses Attribut nicht,
+        welchen Fehlerstatus das Protokoll f&uuml;r den 'Catch' Knoten
+        selbst weitergibt, sondern legt den maximalen Fehler f&uuml;r seinen
+        <a href="#step_TryStep" shape="rect">'Try'</a> Parentknoten fest, sofern dieser 'Catch'
+        Knoten zur Behandlung einer Exception ausgef&uuml;hrt wird.
+      </p>
+      
+<p>
+        Fehler die innerhalb dieses 'Catch' Knotens auftreten,
+        werden mit <strong>unver&auml;ndertem</strong> Status weitergegeben, damit Probleme, die
+        w&auml;hrend der Behandlung einer Exception auftreten, nicht &uuml;bersehen
+        werden.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_CatchSequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_CatchSequence_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_CatchSequence_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_FinallySequence"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_FinallySequence">38.6.9</a></span>
+</div>
+<a href="contents.html#toc_step_FinallySequence">'Finally'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/finally.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Ein besondere Bedeutung kommt dem Finally am Ende eines
+            <a href="#step_TryStep" shape="rect">'Try'</a> Knotens zu, da es in jedem Fall ausgef&uuml;hrt
+            wird. Damit kann sichergestellt werden, dass Aufr&auml;umarbeiten,
+            wie z.B. das L&ouml;schen einer tempor&auml;ren Datei oder das Schlie&szlig;en
+            eines Fensters, tats&auml;chlich durchgef&uuml;hrt werden.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> <a href="#step_TryStep" shape="rect">'Try'</a>
+</p>
+<p>
+<strong>Kinder:</strong> Beliebig</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die Variablen der Sequenz werden gebunden und die Childknoten
+          einer nach dem anderen ausgef&uuml;hrt. Anschlie&szlig;end werden die
+          Variablen der Sequenz wieder gel&ouml;scht.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.33"></a><a name="figure_38.33"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_FinallySequence.png" target="_blank"><img src="images/att_FinallySequence.png" alt="Finally Attribute" texscale=".66" width="393" height="367"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.33</a>:&nbsp;&nbsp;'Finally' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_FinallySequence_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        Der Name einer Sequenz ist eine Art Kurzkommentar. Er wird in der
+        Baumdarstellung der Testsuite angegeben und sollte etwas &uuml;ber die
+        Funktion der Sequenz aussagen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_FinallySequence_variable"></a>
+<dt>'Variablen Definitionen'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie Werte f&uuml;r Variablen definieren, die w&auml;hrend der
+        Ausf&uuml;hrung der Children der Sequenz G&uuml;ltigkeit besitzen. N&auml;heres zur
+        Arbeit mit der Tabelle finden Sie in <a href="user_gui.html#usec_tables">Abschnitt 2.2.5</a>.
+        Eine detaillierte Erkl&auml;rung zur Definition und Verwendung
+        von Variablen finden Sie in <a href="user_variables.html#usec_variables">Kapitel 6</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Namen der Variablen nein, Werte ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_FinallySequence_maxerror"></a>
+<dt>'Maximaler Fehler'</dt>
+<dd>
+      
+<p>
+        Wenn beim Ablauf des Tests innerhalb der Sequenz eine Warnung, ein
+        Fehler oder eine Exception auftritt, wird dieser Status im Protokoll
+        normalerweise an die &uuml;bergeordneten Knoten weitergeleitet.  Mit diesem
+        Attribut k&ouml;nnen Sie den Fehlerstatus, den das Protokoll f&uuml;r diese
+        Sequenz erh&auml;lt, beschr&auml;nken.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Dieser Wert beeinflusst ausschlie&szlig;lich den
+        Status des Protokolls und damit den R&uuml;ckgabewert von QF-Test falls es
+        im Batchmodus l&auml;uft (vgl. <a href="user_installation.html#usec_execution">Abschnitt 1.7</a>). Auf die
+        Behandlung von Exceptions hat er keinen Einfluss.
+      </p>
+      
+<p>
+        Auch f&uuml;r die Erstellung kompakter Protokolle (vgl. <a href="opt_log.html#opt_compactlog" shape="rect">Kompakte Protokolle erstellen</a>), hat dieser
+        Wert keinen Einfluss. Eine Sequenz, in der eine Warnung oder ein
+        Fehler auftritt, wird nicht aus einem kompakten Protokoll entfernt,
+        selbst wenn &uuml;ber dieses Attribut der Fehlerstatus auf "Keinen Fehler"
+        zur&uuml;ckgesetzt wird.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_FinallySequence_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_FinallySequence_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_FinallySequence_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ThrowStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ThrowStep">38.6.10</a></span>
+</div>
+<a href="contents.html#toc_step_ThrowStep">'Throw'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/throw.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Dieser Knoten dient dazu, explizit eine Exception zu werfen, um
+            auf eine besondere Ausnahmesituation zu reagieren.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Eine <a href="exceptions.html#ex_UserException" shape="rect"><code>UserException</code></a> mit der Fehlermeldung aus dem Attribut
+          <a href="#att_ThrowStep_throwmessage" shape="rect">'Meldung f&uuml;r die Exception'</a> wird ausgel&ouml;st.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.34"></a><a name="figure_38.34"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ThrowStep.png" target="_blank"><img src="images/att_ThrowStep.png" alt="Throw Attribute" texscale=".66" width="393" height="236"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.34</a>:&nbsp;&nbsp;'Throw' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ThrowStep_throwmessage"></a>
+<dt>'Meldung f&uuml;r die Exception'</dt>
+<dd>
+            
+            
+<p>
+              Hier k&ouml;nnen Sie eine beliebige Fehlermeldung f&uuml;r die
+              zu werfende <a href="exceptions.html#ex_UserException" shape="rect"><code>UserException</code></a> angeben.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_ThrowStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_ThrowStep_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_ThrowStep_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_RethrowStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_RethrowStep">38.6.11</a></span>
+</div>
+<a href="contents.html#toc_step_RethrowStep">'Rethrow'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/throw.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Eine Exception, die von einem <a href="#step_CatchSequence" shape="rect">'Catch'</a> Knoten
+            abgefangen wurde, kann mit Hilfe dieses Knotens erneut geworfen
+            werden. Dies ist besonders in Situationen n&uuml;tzlich, wo alle
+            Exceptions au&szlig;er einer bestimmten abgefangen werden sollen. Dies
+            erreichen Sie, indem Sie unterhalb eines <a href="#step_TryStep" shape="rect">'Try'</a> Knotens
+            zun&auml;chst einen 'Catch' f&uuml;r die spezielle Exception
+            anlegen, gefolgt von einem 'Catch' f&uuml;r eine
+            <a href="exceptions.html#ex_TestException" shape="rect"><code>TestException</code></a>. In den ersten 'Catch' f&uuml;gen Sie
+            dann einen 'Rethrow' Knoten ein.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> 
+          Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>. Der
+          'Rethrow' Knoten muss sich nicht direkt unterhalb des
+          entsprechenden 'Catch' Knotens befinden. Er kann
+          z.B. auch in einer <a href="procedures.html#step_Procedure" shape="rect">'Prozedur'</a> untergebracht werden, die zur
+          Behandlung der Exception aufgerufen wird.
+        </p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die letzte Exception, die von einem <a href="#step_CatchSequence" shape="rect">'Catch'</a> Knoten
+          abgefangen wurde, wird erneut geworfen. Gibt es keine solche
+          Exception, wird eine <a href="exceptions.html#ex_CannotRethrowException" shape="rect"><code>CannotRethrowException</code></a> ausgel&ouml;st.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.35"></a><a name="figure_38.35"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_RethrowStep.png" target="_blank"><img src="images/att_RethrowStep.png" alt="Rethrow Attribute" texscale=".66" width="393" height="190"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.35</a>:&nbsp;&nbsp;'Rethrow' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_RethrowStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_RethrowStep_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_RethrowStep_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ServerScriptStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ServerScriptStep">38.6.12</a></span>
+</div>
+<a href="contents.html#toc_step_ServerScriptStep">'Server Skript'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/script.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Server-seitige Skripte werden von einem in QF-Test eingebetteten
+            Interpreter (Jython, Groovy oder JavaScript) ausgef&uuml;hrt. Skripte werden
+            ausf&uuml;hrlich in <a href="user_scripting.html#usec_scripting">Kapitel 11</a> und <a href="tech_scripting.html#sec_scripting">Kapitel 46</a> erl&auml;utert. Nachdem server-seitige Skripte im QF-Test Interpreter
+            laufen, k&ouml;nnen diese nicht auf das SUT zugreifen. Sie sollten diese Skripte f&uuml;r Aktionen ohne
+            SUT bzw.
+            zeitintensive Aktionen verwenden, wie Zugriffen auf eine Datenbank oder Dateioperationen.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> 
+          Alle Arten von von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.
+        </p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Das Skript wird von einem Interpreter ausgef&uuml;hrt.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.36"></a><a name="figure_38.36"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ServerScriptStep.png" target="_blank"><img src="images/att_ServerScriptStep.png" alt="Server Skript Attribute" texscale=".66" width="400" height="430"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.36</a>:&nbsp;&nbsp;'Server Skript' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ServerScriptStep_code"></a>
+<dt>'Skript'</dt>
+<dd>
+      
+<p>
+        Das Skript das ausgef&uuml;hrt werden soll.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> In Jython-Skripten k&ouml;nnen QF-Test Variablen der Form $(var) oder ${Gruppe:Name} 
+        verwendet werden. Diese werden expandiert bevor das Skript an den Interpreter &uuml;bergeben wird. 
+        Dies kann zu unerw&uuml;nschten Effekten f&uuml;hren.
+        Stattdessen sollte daf&uuml;r die Methode <code>rc.lookup(...)</code> verwendet werden,
+        die in allen Skriptsprachen zur Verf&uuml;gung steht (vgl. <a href="user_scripting.html#sub_accessing_variables">Abschnitt 11.2.3.1</a>).
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Trotz Syntax-Highlighting und automatischer
+        Einr&uuml;ckung ist dieses Textfeld wom&ouml;glich nicht der geeignete Ort,
+        um komplexe Skripte zu schreiben. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden,
+        in dem nach Dr&uuml;cken von [Alt-Eingabe]
+        oder Klicken des <img src="../icons/row_edit.png" alt="Edit row" width="20" height="20" align="middle" texscale="1"> Buttons das
+        Skript komfortabel bearbeitet werden kann. Au&szlig;erdem k&ouml;nnen komplexe
+        Skripte in separate Module ausgelagert werden, die dann in QF-Test
+        Skripte importiert werden. (vgl. <a href="tech_scripting.html#sec_scripting">Kapitel 46</a>).
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Syntax</p>
+</dd>
+<a name="att_ServerScriptStep_interpreter"></a>
+<dt>'Skriptsprache'</dt>
+<dd>
+      
+<p>
+        Dieses Attribut legt den Interpreter fest, in dem das Skript ausgef&uuml;hrt wird, oder in
+        anderen Worten die Skriptsprache. M&ouml;gliche Werte sind "Jython", "Groovy" und "JavaScript".
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ServerScriptStep_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        Der Name eines Skripts ist eine Art Kurzkommentar. Er wird in der
+        Baumdarstellung der Testsuite angegeben und sollte etwas &uuml;ber die
+        Funktion des Skripts aussagen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ServerScriptStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_ServerScriptStep_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_ServerScriptStep_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_ClientScriptStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_ClientScriptStep">38.6.13</a></span>
+</div>
+<a href="contents.html#toc_step_ClientScriptStep">'SUT Skript'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/script.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Client-seitige Skripte werden von einem Interpreter (Jython, Groovy oder JavaScript)
+            ausgef&uuml;hrt, den QF-Test in das SUT einbettet. Skripte
+            werden ausf&uuml;hrlich in <a href="user_scripting.html#usec_scripting">Kapitel 11</a> und <a href="tech_scripting.html#sec_scripting">Kapitel 46</a> erl&auml;utert. Nachdem client-seitige Skripte innerhalb des SUTs laufen,
+            k&ouml;nnen diese auf die Komponenten zugreifen.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> 
+          Alle Arten von von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.
+        </p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Das Skript wird von einem Interpreter im SUT ausgef&uuml;hrt.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.37"></a><a name="figure_38.37"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_ClientScriptStep.png" target="_blank"><img src="images/att_ClientScriptStep.png" alt="SUT Skript Attribute" texscale=".66" width="393" height="504"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.37</a>:&nbsp;&nbsp;'SUT Skript' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_ClientScriptStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Der Name unter dem der Java Prozess des SUT gestartet wurde,
+        in dem das Skript ausgef&uuml;hrt werden soll.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_ClientScriptStep_code"></a>
+<dt>'Skript'</dt>
+<dd>
+      
+<p>
+        Das Skript das ausgef&uuml;hrt werden soll.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> In Jython-Skripten k&ouml;nnen QF-Test Variablen der Form $(var) oder ${Gruppe:Name} 
+        verwendet werden. Diese werden expandiert bevor das Skript an den Interpreter &uuml;bergeben wird. 
+        Dies kann zu unerw&uuml;nschten Effekten f&uuml;hren.
+        Stattdessen sollte daf&uuml;r die Methode <code>rc.lookup(...)</code> verwendet werden,
+        die in allen Skriptsprachen zur Verf&uuml;gung steht (vgl. <a href="user_scripting.html#sub_accessing_variables">Abschnitt 11.2.3.1</a>).
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Trotz Syntax-Highlighting und automatischer
+        Einr&uuml;ckung ist dieses Textfeld wom&ouml;glich nicht der geeignete Ort,
+        um komplexe Skripte zu schreiben. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden,
+        in dem nach Dr&uuml;cken von [Alt-Eingabe]
+        oder Klicken des <img src="../icons/row_edit.png" alt="Edit row" width="20" height="20" align="middle" texscale="1"> Buttons das
+        Skript komfortabel bearbeitet werden kann. Au&szlig;erdem k&ouml;nnen komplexe
+        Skripte in separate Module ausgelagert werden, die dann in QF-Test
+        Skripte importiert werden. (vgl. <a href="tech_scripting.html#sec_scripting">Kapitel 46</a>).
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> G&uuml;ltige Syntax</p>
+</dd>
+<a name="att_ClientScriptStep_interpreter"></a>
+<dt>'Skriptsprache'</dt>
+<dd>
+      
+<p>
+        Dieses Attribut legt den Interpreter fest, in dem das Skript ausgef&uuml;hrt wird, oder in
+        anderen Worten die Skriptsprache. M&ouml;gliche Werte sind "Jython", "Groovy" und "JavaScript".
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ClientScriptStep_engine"></a>
+<dt>'GUI Engine'</dt>
+<dd>
+            
+            
+<p>
+              Die GUI Engine in der das Skript ausgef&uuml;hrt werden soll. Nur relevant f&uuml;r SUTs mit
+              mehr als einer GUI Engine wie in <a href="tech_engines.html#sec_engines">Kapitel 41</a> beschrieben.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Siehe <a href="tech_engines.html#sec_engines">Kapitel 41</a>
+</p>
+</dd>
+<a name="att_ClientScriptStep_name"></a>
+<dt>'Name'</dt>
+<dd>
+      
+<p>
+        Der Name eines Skripts ist eine Art Kurzkommentar. Er wird in der
+        Baumdarstellung der Testsuite angegeben und sollte etwas &uuml;ber die
+        Funktion des Skripts aussagen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_ClientScriptStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_ClientScriptStep_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_ClientScriptStep_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="procedures.html#sec_procedures"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 38.5&nbsp;Prozeduren" title="Vorheriges Kapitel: 38.5&nbsp;Prozeduren"></a></td><td class="navicon"><a href="processes.html#sec_processes"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 38.7&nbsp;Prozesse" title="N&auml;chste Seite: 38.7&nbsp;Prozesse"></a></td><td class="navicon"><a href="processes.html#sec_processes"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 38.7&nbsp;Prozesse" title="N&auml;chstes Kapitel: 38.7&nbsp;Prozesse"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite" title="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>ResetListener</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_miscellaneouslisteners"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_testrunlisteners.html#sec_testrunlisteners"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 50.7&nbsp;Test run listeners" title="Previous Chapter: 50.7&nbsp;Test run listeners"></a></td><td class="navicon"><a href="tech_domprocessors.html#sec_domprocessors"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 50.9&nbsp;DOM processors" title="Next Page: 50.9&nbsp;DOM processors"></a></td><td class="navicon"><a href="tech_domprocessors.html#sec_domprocessors"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 50.9&nbsp;DOM processors" title="Next Chapter: 50.9&nbsp;DOM processors"></a></td><td class="navicon"><a href="tech_extensions.html#sec_extensions"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 50&nbsp;Extension APIs" title="Chapter Overview: 50&nbsp;Extension APIs"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="margin"><a name="new_N182117"></a><span class="note">4.0.3+</span></span><span class="numtitle"><a href="contents.html#toc_sec_miscellaneouslisteners">50.8</a></span>
+</div>
+<a href="contents.html#toc_sec_miscellaneouslisteners">ResetListener</a>
+</h4>
+        
+<p>
+          During test development you sometimes want to stop all connected clients and reset all
+          dependencies as well as delete global QF-Test variables in order to establish a well
+          defined starting point for the next test execution.
+        </p>
+        
+<p>
+          For that purpose QF-Test offers &raquo;<em>Run</em>&laquo;-&raquo;<em>Reset           everything</em>&laquo; in its main menu. To accommodate their particular needs
+          test developers can additionally implement a ResetListener which allows to
+        </p>
+        
+<ul>
+            
+<li>keep (certain) clients alive</li>
+            
+<li>restore global QF-Test variables</li>
+            
+<li>perform custom operations, for example deleting global Jython variables</li>
+        
+</ul>
+        
+<p>
+          To manage ResetListeners the <a href="tech_scripting.html#sec_api_rc" shape="rect">QF-Test runcontext</a>
+          provides the methods <code>addResetListener()</code>,
+          <code>isResetListenerRegistered()</code> and <code>removeResetListener()</code>.
+        </p>
+        
+<p>
+          The ResetListener interface itself has two methods:
+        </p>
+        
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>void afterReset()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              This method is called when the reset was executed.
+            </td>
+</tr>
+<tr></tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Set&lt;String&gt; beforeReset()</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+              This method is called before dependencies are reset, global QF-Test variables deleted
+              and clients terminated when invoking &raquo;<em>Run</em>&laquo;-&raquo;<em>Reset everything</em>&laquo;. Implement this method when you want to
+              prevent certain clients from being terminated.
+            </td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">
+              A <code>java.util.Set&lt;String&gt;</code> object containing the names of all
+              clients that should stay alive.
+            </td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+        
+<p>
+          The following example shows the implementation and registration of a ResetListener. It
+          restores the global QF-Test variable <code>client</code> and prevents from closing the
+          respective SUT.
+        </p>
+        
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>from java.util import HashSet
+from de.qfs.apps.qftest.extensions.qftest import ResetListener
+from de.qfs.apps.qftest.shared.exceptions import UnboundVariableException
+
+class RL(ResetListener):
+    def beforeReset(self):
+        try:
+            self.client = rc.lookup("client")
+            h = HashSet()
+            h.add(self.client)
+            return h
+        except UnboundVariableException:
+            self.client = None
+    def afterReset(self):
+        if self.client != None:
+            rc.setGlobal("client", self.client)
+
+global resetListener
+try:
+    rc.removeResetListener(resetListener)
+except:
+    pass
+resetListener = RL()
+rc.addResetListener(resetListener)
+          </pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.47:&nbsp;&nbsp;Example of a ResetListener implementation</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_testrunlisteners.html#sec_testrunlisteners"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 50.7&nbsp;Test run listeners" title="Previous Chapter: 50.7&nbsp;Test run listeners"></a></td><td class="navicon"><a href="tech_domprocessors.html#sec_domprocessors"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 50.9&nbsp;DOM processors" title="Next Page: 50.9&nbsp;DOM processors"></a></td><td class="navicon"><a href="tech_domprocessors.html#sec_domprocessors"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 50.9&nbsp;DOM processors" title="Next Chapter: 50.9&nbsp;DOM processors"></a></td><td class="navicon"><a href="tech_extensions.html#sec_extensions"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 50&nbsp;Extension APIs" title="Chapter Overview: 50&nbsp;Extension APIs"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

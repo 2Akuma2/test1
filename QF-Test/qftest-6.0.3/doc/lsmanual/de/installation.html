@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Lizenzserver-Installation</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2014-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="ls_installation"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="lsmanual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="quickstart.html#ls_quickstart"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 1&nbsp;Schnellstart" title="Vorheriges Kapitel: 1&nbsp;Schnellstart"></a></td><td class="navicon"><a href="running.html#ls_startoptions"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 3&nbsp;QF-Test Startoptionen f&uuml;r den Betrieb und die Administration des Lizenzservers" title="N&auml;chste Seite: 3&nbsp;QF-Test Startoptionen f&uuml;r den Betrieb und die Administration des Lizenzservers"></a></td><td class="navicon"><a href="running.html#ls_startoptions"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 3&nbsp;QF-Test Startoptionen f&uuml;r den Betrieb und die Administration des Lizenzservers" title="N&auml;chstes Kapitel: 3&nbsp;QF-Test Startoptionen f&uuml;r den Betrieb und die Administration des Lizenzservers"></a></td><td class="navicon"><a href="lsmanual.html#all"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: QF-Test - Das Lizenzserver Handbuch" title="Kapitel-&Uuml;bersicht: QF-Test - Das Lizenzserver Handbuch"></a></td><td class="navicon"><a href="../../lsmanual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_ls_installation">2</a></span>
+</div>
+<a href="contents.html#toc_ls_installation">Lizenzserver-Installation</a>
+</h3>
+      
+<a name="ls_preconditions"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_ls_preconditions">2.1</a></span>
+</div>
+<a href="contents.html#toc_ls_preconditions">Voraussetzungen</a>
+</h4>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span>
+
+          Der QF-Test Lizenzserver sollte mit Java 8 betrieben werden oder zumindest mit Java 7. Der
+          serverseitige SSL Code in Java 6 oder davor ist instabil und kann gelegentlich unter
+          Last Verbindungsprobleme verursachen.
+        </p>
+        
+<p>
+          Die Funktionalit&auml;t des QF-Test Lizenzservers ist Teil der QF-Test Installation und nicht
+          separat erh&auml;ltlich, so dass die Installation des Lizenzservers im Zuge der Installation
+          von QF-Test selbst, wie im QF-Test Handbuch, <a href="http://www.qfs.de/qftest/manual/de/user_installation.html#usec_installation" shape="rect">Kapitel
+          1</a>, beschrieben, erfolgt.
+        </p>
+        
+<p>
+          Es ist m&ouml;glich, aber nicht unbedingt n&ouml;tig, den Lizenzserver unter einem eigenen
+          Benutzerkonto zu starten. Aus Sicherheitsgr&uuml;nden sollten daf&uuml;r die Benutzerkonten "root"
+          und "Administrator" nicht verwendet werden.
+        </p>
+      
+      
+<a name="ls_licensefiles"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_ls_licensefiles">2.2</a></span>
+</div>
+<a href="contents.html#toc_ls_licensefiles">Lizenzdateien</a>
+</h4>
+        
+<p>
+          Zus&auml;tzlich zu den &uuml;blichen Daten zu Anzahl und Art der Lizenzen und GUI Engines, werden
+          zwei weitere Parameter f&uuml;r Server- und Client-Lizenzen ben&ouml;tigt: Der Rechnername oder
+          die IP Adresse des Lizenzservers sowie ein dedizierter Port, der auf diesem Rechner f&uuml;r
+          den Lizenzserver reserviert ist. Bitte &uuml;bermitteln Sie diese an Quality First Software GmbH, so dass die
+          Lizenzdateien f&uuml;r Server und Clients erstellt werden k&ouml;nnen. Der Lizenzserver ist auf
+          den spezifizierten Rechner und den angegebenen Port festgelegt.
+        </p>
+        
+<p>
+          Der QF-Test Lizenzserver ben&ouml;tigt eine spezielle Server-Lizenz, die unter dem Namen
+          "<code>license.server</code>" in das Systemverzeichnis von QF-Test abgelegt werden sollte.
+          Unter Windows ist dies je nach Installationsvariante <code>%PROGRAMDATA%\QFS\QF-Test</code>
+          oder, wie unter Linux, das Wurzelverzeichnis von QF-Test. Diese Lizenz kann nicht auf einem
+          anderen Rechner verwendet werden.
+        </p>
+        
+<p>
+          Eine passende Client-Lizenz wird f&uuml;r die Administration des Servers ben&ouml;tigt. Die
+          Client-Lizenz entspricht einer normalen QF-Test Lizenz und sollte bei
+          dem jeweiligen Client in dessen Systemverzeichnis von QF-Test abgelegt werden.
+          Achten Sie darauf, dass die Datei den Namen <code>license</code> ohne Erweiterungen erh&auml;lt.
+        </p>
+        
+<p>
+          QF-Test Instanzen, die ihre Lizenz vom Server beziehen, ben&ouml;tigen eine Client-Lizenz anstelle
+          einer normalen Lizenz.
+        </p>
+        
+<p>
+          Eine andere Lizenzdatei kann jederzeit &uuml;ber das Befehlszeilenargument <a href="running.html#arg_license" shape="rect"><code>-license &lt;Datei&gt;</code></a>
+          festgelegt werden.
+        </p>
+      
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="lsmanual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="quickstart.html#ls_quickstart"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 1&nbsp;Schnellstart" title="Vorheriges Kapitel: 1&nbsp;Schnellstart"></a></td><td class="navicon"><a href="running.html#ls_startoptions"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 3&nbsp;QF-Test Startoptionen f&uuml;r den Betrieb und die Administration des Lizenzservers" title="N&auml;chste Seite: 3&nbsp;QF-Test Startoptionen f&uuml;r den Betrieb und die Administration des Lizenzservers"></a></td><td class="navicon"><a href="running.html#ls_startoptions"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 3&nbsp;QF-Test Startoptionen f&uuml;r den Betrieb und die Administration des Lizenzservers" title="N&auml;chstes Kapitel: 3&nbsp;QF-Test Startoptionen f&uuml;r den Betrieb und die Administration des Lizenzservers"></a></td><td class="navicon"><a href="lsmanual.html#all"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: QF-Test - Das Lizenzserver Handbuch" title="Kapitel-&Uuml;bersicht: QF-Test - Das Lizenzserver Handbuch"></a></td><td class="navicon"><a href="../../lsmanual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 2014-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,737 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Testen von PDF Dokumenten</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_pdf"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_androidtesting.html#usec_androidtesting"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 15&nbsp;Testen von Android Anwendungen" title="Vorheriges Kapitel: 15&nbsp;Testen von Android Anwendungen"></a></td><td class="navicon"><a href="user_jib.html#usec_jib"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 17&nbsp;Testen von Java Desktopanwendungen im Browser mit Webswing oder JPro" title="N&auml;chste Seite: 17&nbsp;Testen von Java Desktopanwendungen im Browser mit Webswing oder JPro"></a></td><td class="navicon"><a href="user_jib.html#usec_jib"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 17&nbsp;Testen von Java Desktopanwendungen im Browser mit Webswing oder JPro" title="N&auml;chstes Kapitel: 17&nbsp;Testen von Java Desktopanwendungen im Browser mit Webswing oder JPro"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch" title="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_pdf">16</a></span>
+</div>
+<a href="contents.html#toc_sec_pdf">Testen von PDF Dokumenten</a>
+</h3>
+<span class="margin"><a name="new_N87097"></a><span class="note">4.2+</span></span>
+      
+<p>
+        QF-Test bietet ab Version 4.2 die M&ouml;glichkeit, PDF-Dokumente analog zu GUIs zu
+        testen. D.h. QF-Test analysiert die Struktur des PDF-Dokuments und erkennt einzelne
+        Komponenten, deren Eigenschaften getestet werden k&ouml;nnen.<br>
+        QF-Test kann mittels <a href="user_capture.html#usec_capturereplay" shape="rect">Aufnahme und Wiedergabe</a>
+        direkt <a href="#sec_pdf_events" shape="rect">Events</a> sowie diverse <a href="#sec_pdf_checks" shape="rect">Checks</a>
+        aufnehmen und wiedergeben.
+      </p>
+      
+<p>
+	
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+        Video: <a href="https://www.qfs.de/de/yt/pdf-dokumente-testen-42.html" class="videolink" target="_blank">'PDF-Dokumente testen mit
+        QF-Test'</a>
+      
+</p>
+    
+      
+<a name="sec_pdf_client"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_pdf_client">16.1</a></span>
+</div>
+<a href="contents.html#toc_sec_pdf_client">PDF Client</a>
+</h4>
+        
+<p>
+          Das zu testende PDF-Dokument wird von QF-Test in einen Viewer geladen, der von QF-Test
+          als Client-Prozess gestartet wird.
+        </p>
+    
+        
+<a name="sec_pdf_client_start"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_pdf_client_start">16.1.1</a></span>
+</div>
+<a href="contents.html#toc_sec_pdf_client_start">PDF Client starten</a>
+</h5>
+          
+<p>
+            Mit Hilfe des Schnellstart-Assistenten l&auml;sst sich die passende Setup-Sequenz erstellen,
+            wobei als Typ der Anwendung "PDF Dokument" zu w&auml;hlen ist (vgl. <a href="user_quickstart.html#usec_quickstart">Kapitel 3</a>).
+            Dies erm&ouml;glicht den einfachen Start des Viewers. Als konkreter Startknoten wird hierbei der
+            <a href="processes.html#step_PDFClientStarter" shape="rect">'PDF Client starten'</a> Knoten verwendet.
+          </p>
+        
+    
+    
+        
+<a name="sec_pdf_client_window"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_pdf_client_window">16.1.2</a></span>
+</div>
+<a href="contents.html#toc_sec_pdf_client_window">Das Fenster des PDF Client</a>
+</h5>
+          
+<p>
+            Im Fenster des PDF Client befindet sich links eine Navigationsspalte mit einer &Uuml;bersucht der Seiten
+            des PDF Dokuments.<br>
+            Im rechten Fensterbereich wird die aktuell selektierte Seite angezeigt.<br>
+            Der folgende Screenshot zeigt den PDF Client mit einem ge&ouml;ffneten Demo PDF Dokument.
+          </p>
+          
+<p>
+            
+<a name="figure_16.1"></a><a name="figure_16.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/PDFClient_mainWindow.png" target="_blank"><img src="images/PDFClient_mainWindow.png" alt="PDF Client Hauptfenster mit ge&ouml;ffnetem PDF Dokument" width="900" height="980" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;16.1</a>:&nbsp;&nbsp;PDF Client Hauptfenster mit ge&ouml;ffnetem PDF Dokument</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</p>
+        
+    
+      
+    
+    
+      
+<a name="sec_pdf_events"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_pdf_events">16.2</a></span>
+</div>
+<a href="contents.html#toc_sec_pdf_events">PDF Events</a>
+</h4>
+          
+<p>
+            Um w&auml;hrend der Testausf&uuml;hrung z.B. ein anderes Dokument zu &ouml;ffnen oder die Seite des ge&ouml;ffneten PDFs zu &auml;ndern,
+            k&ouml;nnen <a href="events.html#step_SelectionEventStep" shape="rect">'Auswahl'</a> Knoten
+            verwendet werden. Diese Aktionen lassen sich direkt im Aufnahme-Modus aufzeichen.
+            Im Auswahl Knoten muss als Komponente das "Window" des PDFs angegeben werden.
+          </p>
+      
+        
+<a name="usec_pdf_events_open_doc"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_pdf_events_open_doc">16.2.1</a></span>
+</div>
+<a href="contents.html#toc_usec_pdf_events_open_doc">PDF Dokument &ouml;ffnen</a>
+</h5>
+          
+<p>
+            Es ist m&ouml;glich, w&auml;hrend der Ausf&uuml;hrungszeit ein anderes PDF-Dokument zu &ouml;ffnen.
+            Dazu muss im
+            <a href="events.html#att_SelectionEventStep_detail" shape="rect">Detail</a>-Attribut des
+            <a href="events.html#step_SelectionEventStep" shape="rect">'Auswahl'</a> Knotens
+            das <code>open:</code> Event angegeben werden.
+          </p>
+          
+<p>
+            Hierbei kann nun der Pfad zum PDF-Dokument angegeben werden.
+            Relative Pfade werden relativ zum aktuellen Verzeichnis der Testuite aufgel&ouml;st.
+          </p>
+          
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>open:C:\Users\qfs\meinPDFDokument.pdf</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;16.1:&nbsp;&nbsp;Laden eines PDF-Dokuments</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            Wenn das Dokument nicht gefunden oder geladen werden kann wird eine <a href="exceptions.html#ex_TestException" shape="rect"><code>TestException</code></a> geworfen.
+          </p>
+        
+    
+    
+          
+<a name="usec_pdf_events_switch_page"></a>
+            
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_pdf_events_switch_page">16.2.2</a></span>
+</div>
+<a href="contents.html#toc_usec_pdf_events_switch_page">Seite wechseln</a>
+</h5>
+            
+<p>
+              Um auf eine besimmte Seite zu wechseln, kann im
+              <a href="events.html#att_SelectionEventStep_detail" shape="rect">Detail</a>-Attribut des
+              <a href="events.html#step_SelectionEventStep" shape="rect">'Auswahl'</a> Knotens
+              das <code>goto:</code> Event angegeben werden.
+            </p>
+            
+<p>
+              Hier kann analog zu dem <a href="processes.html#att_PDFClientStarter_pagenumber" shape="rect">Seitennummer</a>-Attribut,
+              die Seite als Zahl f&uuml;r die Seitennummer bzw. in Anf&uuml;hrungszeichen f&uuml;r den Seitentitel angegeben werden.
+            </p>
+            
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>goto:3 bzw. goto:"Einleitung"</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;16.2:&nbsp;&nbsp;&Ouml;ffnen einer bestimmten Seite</td><td class="captionglue"></td>
+</tr>
+</table>
+            
+<p>
+              Sollte die gew&uuml;nschte Seite nicht zur Verf&uuml;gung stehen, so wird eine <code>PageNotFoundException</code> geworfen.
+            </p>
+        
+    
+     
+    
+    
+      
+<a name="sec_pdf_checks"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_pdf_checks">16.3</a></span>
+</div>
+<a href="contents.html#toc_sec_pdf_checks">Checks f&uuml;r PDF-Komponenten</a>
+</h4>
+        
+<p>
+          F&uuml;r PDF-Komponenten (vgl. <a href="#sec_pdf_comp_types">Abschnitt 16.4</a>) stehen folgende Checks zur Verf&uuml;gung,
+          die auch direkt mittels dem Check-Aufnahme-Modus aufgezeichnet werden k&ouml;nnen:
+        </p>
+    
+        
+<a name="sec_pdf_text_check"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_pdf_text_check">16.3.1</a></span>
+</div>
+<a href="contents.html#toc_sec_pdf_text_check">'Check Text'</a>
+</h5>
+          
+<p>
+            Der 'Check Text' Knoten ist in <a href="checks.html#step_CheckStringStep" shape="rect">'Check Text'</a> beschrieben.
+            F&uuml;r PDF-Text-Komponenten gibt es bei Text-Komponente zwei Check-Typen: "default" und "Text positioniert".
+          </p>
+          
+<p>
+            Zeilenumbr&uuml;che sind im PDF-Dokument nicht enthalten, Leerzeichen nicht zwingend.
+            Die Abst&auml;nde ergeben sich aus den Koordinaten der einzelnen Buchstaben.
+            Der Check-Typ "default" pr&uuml;ft den Text wie er im PDF-Dokument abgespeichert ist -
+            ohne Zeilenumbr&uuml;che und eventuell ohne Leerzeichen, wenn keine enthalten sind.
+            QF-Test errechnet aus den Koordinaten der einzelnen Buchstaben wo die Zeilenumbr&uuml;che
+            angezeigt werden und wo Abst&auml;nde, die auf Leerzeichen schlie&szlig;en lassen, vorhanden
+            sind. Der Check-Typ "Text positioniert" greift auf diesen aufbereiteten Text zu.
+          </p>
+          
+<p>
+            
+<a name="figure_16.2"></a><a name="figure_16.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/PDFClient_qftest_checkText_default.png" target="_blank"><img src="images/PDFClient_qftest_checkText_default.png" alt="Check Text 'default' Aufnahme" width="591" height="56" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;16.2</a>:&nbsp;&nbsp;Check Text 'default' Aufnahme</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</p>
+          
+<p>
+            
+<a name="figure_16.3"></a><a name="figure_16.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/PDFClient_qftest_checkText_positioned.png" target="_blank"><img src="images/PDFClient_qftest_checkText_positioned.png" alt="Check Text 'Text positioniert' Aufnahme" width="591" height="74" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;16.3</a>:&nbsp;&nbsp;Check Text 'Text positioniert' Aufnahme</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</p>
+          
+<p>
+<span class="margin"><a name="new_N87399"></a><span class="note">4.4+</span></span>
+            Zus&auml;tzlich kann der gesamte Text der Seite auf der Main Stage mit den Check-Typen
+            "Text (gesamte Seite)", "Text positioniert (gesamte Seite)", "Text als Elemente (gesamte Seite)"
+            sowie "Text positioniert als Elemente (gesamte Seite)" gepr&uuml;ft werden.<br>
+            Dabei werden alle Text-Komponenten der Seite sortiert nach Y/X-Position aufgenommen. Die Check-Typen unterscheiden sich
+            dabei, ob der Text positioniert/aufbereitet wird (siehe oben) oder nicht
+            und ob die einzelnen Text-Komponenten als <a href="checks.html#step_CheckItemsStep" shape="rect">'Check Elemente'</a> oder als gemeinsamer <a href="checks.html#step_CheckStringStep" shape="rect">'Check Text'</a> aufgenommen werden.
+          </p>
+          
+<p>
+            
+<a name="figure_16.4"></a><a name="figure_16.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/PDFClient_qftest_checkItems_text_whole_page_items.png" target="_blank"><img src="images/PDFClient_qftest_checkItems_text_whole_page_items.png" alt="Check Elemente 'Text als Elemente (gesamte Seite)' Aufnahme" width="591" height="345" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;16.4</a>:&nbsp;&nbsp;Check Elemente 'Text als Elemente (gesamte Seite)' Aufnahme</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</p>
+          
+<p>
+            
+<a name="figure_16.5"></a><a name="figure_16.5"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/PDFClient_qftest_checkItems_text_positioned_whole_page_items.png" target="_blank"><img src="images/PDFClient_qftest_checkItems_text_positioned_whole_page_items.png" alt="Check Elemente 'Text positioniert als Elemente (gesamte Seite)' Aufnahme" width="591" height="345" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;16.5</a>:&nbsp;&nbsp;Check Elemente 'Text positioniert als Elemente (gesamte Seite)' Aufnahme</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</p>
+          
+<p>
+            
+<a name="figure_16.6"></a><a name="figure_16.6"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/PDFClient_qftest_checkText_text_whole_page.png" target="_blank"><img src="images/PDFClient_qftest_checkText_text_whole_page.png" alt="Check Text 'Text (gesamte Seite)' Aufnahme" width="591" height="339" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;16.6</a>:&nbsp;&nbsp;Check Text 'Text (gesamte Seite)' Aufnahme</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</p>
+          
+<p>
+            
+<a name="figure_16.7"></a><a name="figure_16.7"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/PDFClient_qftest_checkText_text_positioned_whole_page.png" target="_blank"><img src="images/PDFClient_qftest_checkText_text_positioned_whole_page.png" alt="Check Text 'Text positioniert (gesamte Seite)' Aufnahme" width="591" height="506" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;16.7</a>:&nbsp;&nbsp;Check Text 'Text positioniert (gesamte Seite)' Aufnahme</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</p>
+        
+    
+    
+        
+<a name="sec_pdf_image_check"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_pdf_image_check">16.3.2</a></span>
+</div>
+<a href="contents.html#toc_sec_pdf_image_check">'Check Abbild'</a>
+</h5>
+          
+<p>
+            Der 'Check Abbild' Knoten ist in <a href="checks.html#step_CheckImageStep" shape="rect">'Check Abbild'</a> beschrieben.
+            F&uuml;r alle Komponenten Typen gibt es den Check-Typ "default".
+          </p>
+          
+<p>
+            Der Check-Typ "default" pr&uuml;ft das Objekt, wie es auf der PDF-Seite angezeigt wird,
+            ggf. skaliert und mit &uuml;berdeckenden Objekten oder Objektteilen. Das aufgenommene Bild
+            entspricht also der tats&auml;chlichen Darstellung.
+          </p>
+          
+<p>
+            
+<a name="figure_16.8"></a><a name="figure_16.8"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/PDFClient_qftest_checkImage_text_default.png" target="_blank"><img src="images/PDFClient_qftest_checkImage_text_default.png" alt="Check Abbild 'default' Aufnahme eines Text Objekts" width="591" height="100" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;16.8</a>:&nbsp;&nbsp;Check Abbild 'default' Aufnahme eines Text Objekts</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</p>
+          
+<p>
+            
+<a name="figure_16.9"></a><a name="figure_16.9"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/PDFClient_qftest_checkImage_image_default.png" target="_blank"><img src="images/PDFClient_qftest_checkImage_image_default.png" alt="Check Abbild 'default' Aufnahme eines Image Objekts" width="591" height="100" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;16.9</a>:&nbsp;&nbsp;Check Abbild 'default' Aufnahme eines Image Objekts</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</p>
+          
+<p>
+            In PDF-Dokumenten k&ouml;nnen auch echte Bilder eingebettet werden. Dieses Image kann f&uuml;r die
+            Anzeige auf der PDF-Seite skaliert werden. F&uuml;r echte Bilder werden noch weitere Check-Typen
+            angeboten:
+          </p>
+          
+<p>
+            Der Check-Typ "unskaliert" pr&uuml;ft das in der Datei originale eingebettete unskalierte
+            Bild.
+          </p>
+          
+<p>
+            
+<a name="figure_16.10"></a><a name="figure_16.10"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/PDFClient_qftest_checkImage_image_unscaled.png" target="_blank"><img src="images/PDFClient_qftest_checkImage_image_unscaled.png" alt="Check Abbild 'unskaliert' Aufnahme eines Image Objekts" width="591" height="237" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;16.10</a>:&nbsp;&nbsp;Check Abbild 'unskaliert' Aufnahme eines Image Objekts</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</p>
+          
+<p>
+            Der Check-Typ "skaliert" pr&uuml;ft das auf der PDF-Seite angezeigte, ggf.
+            skalierte Bild ohne &uuml;berdeckende Objekte. Somit k&ouml;nnen auch teilverdeckte Abschnitte dieser Bilder gepr&uuml;ft werden.
+          </p>
+          
+<p>
+            
+<a name="figure_16.11"></a><a name="figure_16.11"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/PDFClient_qftest_checkImage_image_scaled.png" target="_blank"><img src="images/PDFClient_qftest_checkImage_image_scaled.png" alt="Check Abbild 'skaliert' Aufnahme eines Image Objekts" width="591" height="100" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;16.11</a>:&nbsp;&nbsp;Check Abbild 'skaliert' Aufnahme eines Image Objekts</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+</p>
+        
+    
+    
+        
+<a name="sec_pdf_font_check"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_pdf_font_check">16.3.3</a></span>
+</div>
+<a href="contents.html#toc_sec_pdf_font_check">'Check Font'</a>
+</h5>
+          
+<p>
+            Der 'Check Text' Knoten mit dem Check-Typ "text_font" erlaubt das &Uuml;berpr&uuml;fen des Fonts.
+          </p>
+          
+<p>
+            Innerhalb einer PDF-Text-Komponente k&ouml;nnen verschiedene Fonts verwendet werden.
+            'Check Font' gibt f&uuml;r eine Text-Komponente den Font zur&uuml;ck, der mehrheitlich verwendet wird.
+          </p>
+        
+    
+    
+        
+<a name="sec_pdf_fontsize_check"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_pdf_fontsize_check">16.3.4</a></span>
+</div>
+<a href="contents.html#toc_sec_pdf_fontsize_check">'Check Font Gr&ouml;&szlig;e'</a>
+</h5>
+          
+<p>
+            Der 'Check Text' Knoten mit dem Check-Typ "text_fontsize" erlaubt das &Uuml;berpr&uuml;fen der Fontgr&ouml;&szlig;e.
+          </p>
+          
+<p>
+            Innerhalb einer PDF-Text-Komponente k&ouml;nnen verschiedene Fontgr&ouml;&szlig;en verwendet werden.
+            'Check Font Gr&ouml;&szlig;e' gibt f&uuml;r ein Textobjekt die Fontgr&ouml;&szlig;e zur&uuml;ck, der mehrheitlich verwendet wird.
+          </p>
+        
+    
+      
+    
+    
+      
+<a name="sec_pdf_comp_types"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_pdf_comp_types">16.4</a></span>
+</div>
+<a href="contents.html#toc_sec_pdf_comp_types">PDF Komponententypen</a>
+</h4>
+        
+<p>
+          QF-Test erkennt folgende Objekttypen:
+        </p>
+        
+<a name="table_16.1"></a><a name="table_16.1"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth">
+            
+<tr>
+              
+<th width="25%" rowspan="1" colspan="1">PDF Objekttyp</th>
+              <th width="25%" rowspan="1" colspan="1">QF-Test Komponententyp</th>
+              <th rowspan="1" colspan="1">Bemerkung</th>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Text</td>
+              <td rowspan="1" colspan="1">Text oder Label</td>
+              <td rowspan="1" colspan="1">Ansammlung von Buchstaben, denen Font und Fontsize zugeordnet sind.</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Image</td>
+              <td rowspan="1" colspan="1">Graphics</td>
+              <td rowspan="1" colspan="1">Ansammlung von Pixeln. Kann auch Buchstabenform haben.</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Shader und Vektoren</td>
+              <td rowspan="1" colspan="1">Graphics</td>
+              <td rowspan="1" colspan="1">Ansammlung von Vektoren, die entweder geometrische Figuren oder auch Buchstabenformen darstellen.</td>
+            
+</tr>
+            
+<tr>
+              
+<td rowspan="1" colspan="1">Main stage</td>
+              <td rowspan="1" colspan="1">MainPanel</td>
+              <td rowspan="1" colspan="1">Die zugrunde liegende Seite, auf der alle Objekte dargestellt werden.</td>
+            
+</tr>
+          
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;16.1</a>:&nbsp;&nbsp;Unterst&uuml;tzte PDF-Objekte</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            QF-Test kann die erkannten PDF-Objekte farbig umranden, wenn diese Funktion
+            im Men&uuml; View -&gt; Show components oder das Tastenk&uuml;rzel STRG-T aktiviert wird.
+            Bei der Aufnahme und Wiedergabe muss diese Funktion deaktiviert sein, da die Rahmen
+            ansonsten bei Abbild-Vergleichen mit aufgenommen werden.<br>
+            F&uuml;r die einzelnen Objekttypen gilt folgender Farbcode:
+          </p>
+            
+<a name="table_16.2"></a><a name="table_16.2"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth">
+              
+<tr>
+                
+<th rowspan="1" colspan="1">Farbe</th>
+                <th rowspan="1" colspan="1">PDF Objekttyp</th>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Rot</td>
+                <td rowspan="1" colspan="1">Text</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Blau</td>
+                <td rowspan="1" colspan="1">Image</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">Gr&uuml;n</td>
+                <td rowspan="1" colspan="1">Shader und Vektoren</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1">T&uuml;rkis</td>
+                <td rowspan="1" colspan="1">Main stage</td>
+              
+</tr>
+            
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;16.2</a>:&nbsp;&nbsp;Farbcode der PDF-Objekte</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+    
+    
+      
+<a name="sec_pdf_comp_recognition"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_pdf_comp_recognition">16.5</a></span>
+</div>
+<a href="contents.html#toc_sec_pdf_comp_recognition">PDF Komponentenerkennung</a>
+</h4>
+        
+<p>
+          QF-Test stellt die PDF-Objekte als Swing-Komponenten dar, auf die &uuml;ber das Swing-API
+          z.B. aus SUT-Skripten heraus zugegriffen werden kann (vgl. <a href="user_scripting.html#usec_scripting">Kapitel 11</a>)
+        </p>
+        
+<p>
+          Die Basisinformationen f&uuml;r die Identifizierung der PDF-Objekte auf der Seite
+          sind, wie bei allen QF-Test-Komponenten, ihre Klasse, Geometrie und
+          Strukturinformationen (Index). F&uuml;r Textkomponenten stehen
+          au&szlig;erdem &uuml;ber 'Weitere Merkmale' der mehrheitlich zugeordnete Font und die mehrheitlich verwendete Fontgr&ouml;&szlig;e zur
+          Verf&uuml;gung. F&uuml;r
+          Image-Objekte wird in  'Weitere Merkmale' der Image hash und f&uuml;r Shader-Objekte
+          der Shader-Typ mit aufgenommen.
+        </p>
+        
+<p>
+          Des weiteren versucht QF-Test bei einem Textobjekt anhand seiner Merkmale zu erkennen, ob es sich
+          um eine &Uuml;berschrift oder Beschriftung handelt.
+          In diesem Fall erh&auml;lt das Textobjekt die QF-Test Klasse "Label". &Uuml;ber den QF-Test
+          Standardalgorithmus f&uuml;r "qfs:label" in 'Weitere Merkmale' kann dieses Label
+          anderen QF-Test Komponenten zugeordet werden.
+        </p>
+        
+<p>
+          Da der Standardalgorithmus zur Erkennung von &Uuml;berschriften und Beschriftungen
+          mit Annahmen und Wahrscheinlichkeiten arbeiten muss, kann es auch zu
+          Fehltreffern (false positive) oder Nichterkennung kommen. In diesem Fall k&ouml;nnen Resolver
+          (<a href="tech_resolversmodule.html#sec_resolversmodule">Abschnitt 50.1</a>) zur Verbesserung der Erkennung eingesetzt werden.
+          Auch die Zuordnung der Label-Komponente zu anderen Komponenten kann
+          &uuml;ber Resolver gesteuert werden.
+        </p>
+      
+    
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_androidtesting.html#usec_androidtesting"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 15&nbsp;Testen von Android Anwendungen" title="Vorheriges Kapitel: 15&nbsp;Testen von Android Anwendungen"></a></td><td class="navicon"><a href="user_jib.html#usec_jib"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 17&nbsp;Testen von Java Desktopanwendungen im Browser mit Webswing oder JPro" title="N&auml;chste Seite: 17&nbsp;Testen von Java Desktopanwendungen im Browser mit Webswing oder JPro"></a></td><td class="navicon"><a href="user_jib.html#usec_jib"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 17&nbsp;Testen von Java Desktopanwendungen im Browser mit Webswing oder JPro" title="N&auml;chstes Kapitel: 17&nbsp;Testen von Java Desktopanwendungen im Browser mit Webswing oder JPro"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch" title="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

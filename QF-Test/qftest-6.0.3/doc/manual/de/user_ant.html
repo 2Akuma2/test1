@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Ant</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_ant"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_eclipseplugin.html#usec_eclipseplugin"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 26.1&nbsp;Eclipse" title="Vorheriges Kapitel: 26.1&nbsp;Eclipse"></a></td><td class="navicon"><a href="user_maven.html#usec_maven"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 26.3&nbsp;Maven" title="N&auml;chste Seite: 26.3&nbsp;Maven"></a></td><td class="navicon"><a href="user_maven.html#usec_maven"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 26.3&nbsp;Maven" title="N&auml;chstes Kapitel: 26.3&nbsp;Maven"></a></td><td class="navicon"><a href="buildtools.html#usec_buildtools"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 26&nbsp;Integration mit Entwickler-Tools" title="Kapitel-&Uuml;bersicht: 26&nbsp;Integration mit Entwickler-Tools"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_ant">26.2</a></span>
+</div>
+<a href="contents.html#toc_usec_ant">Ant</a>
+</h4>
+      
+<p>
+        Wer Apache Ant (<a href="http://ant.apache.org" shape="rect">http://ant.apache.org</a>) als
+        Buildsystem einsetzt, kann die Testausf&uuml;hrung mit QF-Test in die Builddatei integrieren:
+      </p>
+      
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>
+&lt;project name="QF-Test" default="runtest"&gt;
+
+    &lt;property name="qftest"
+	  location="c:\Program Files\qfs\qftest\qftest-6.0.3\bin\qftest.exe" /&gt;
+    &lt;property name="logdir" value="c:\mylogs" /&gt;
+
+    &lt;target name="runtest" description="Run a test in batchmode"&gt;
+        &lt;echo message="Running ${suite} ..." /&gt;
+        &lt;exec executable="${qftest}" failonerror="false"
+	  resultproperty="returncode"&gt;
+            &lt;arg value="-batch" /&gt;
+            &lt;arg value="-compact" /&gt;
+            &lt;arg value="-runlog" /&gt;
+            &lt;arg value="${logdir}\+b" /&gt;
+            &lt;arg value="${suite}" /&gt;
+        &lt;/exec&gt;
+        &lt;condition property="result"
+	  value="Test terminated successfully."&gt;
+            &lt;equals arg1="${returncode}" arg2="0" /&gt;
+        &lt;/condition&gt;
+        &lt;condition property="result"
+	  value="Test terminated with warnings."&gt;
+            &lt;equals arg1="${returncode}" arg2="1" /&gt;
+        &lt;/condition&gt;
+        &lt;condition property="result"
+	  value="Test terminated with errors."&gt;
+           &lt;equals arg1="${returncode}" arg2="2" /&gt;
+        &lt;/condition&gt;
+        &lt;condition property="result"
+	  value="Test terminated with exceptions."&gt;
+            &lt;equals arg1="${returncode}" arg2="3" /&gt;
+        &lt;/condition&gt;
+        &lt;echo message="${result}" /&gt;
+    &lt;/target&gt;
+
+&lt;/project&gt;
+        </pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Beispiel&nbsp;26.1:&nbsp;&nbsp;Ant Builddatei <code>build.xml</code> zur Ausf&uuml;hrung einer Testsuite</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Im obigen Beispiel wird davon ausgegangen, dass die auszuf&uuml;hrende Testsuite beim
+        Aufruf von <code>ant</code> als Property definiert wird: <code>ant
+          -Dsuite="c:\Program Files\qfs\qftest\qftest-6.0.3\demo\carconfig\carconfig_en.qft"</code>.
+      </p>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_eclipseplugin.html#usec_eclipseplugin"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 26.1&nbsp;Eclipse" title="Vorheriges Kapitel: 26.1&nbsp;Eclipse"></a></td><td class="navicon"><a href="user_maven.html#usec_maven"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 26.3&nbsp;Maven" title="N&auml;chste Seite: 26.3&nbsp;Maven"></a></td><td class="navicon"><a href="user_maven.html#usec_maven"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 26.3&nbsp;Maven" title="N&auml;chstes Kapitel: 26.3&nbsp;Maven"></a></td><td class="navicon"><a href="buildtools.html#usec_buildtools"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 26&nbsp;Integration mit Entwickler-Tools" title="Kapitel-&Uuml;bersicht: 26&nbsp;Integration mit Entwickler-Tools"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

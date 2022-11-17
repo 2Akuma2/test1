@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="root"
+          signature="302D021500D89B5C4DA859877C91CDC43E19C54C73133FEBFD02141FBB98B73B61E953B95243FFFF2A2806A5C77C82"
+          version="6.0.3">
+  <comment>This test-suite contains various simple examples to explain the concepts and use of dependencies. Please execute the Example test-cases one by one and inspect the results in the respective run-log. You might want to reset the dependencies after each example using Run-&gt;Reset dependencies. See manual for a description of dependencies in general.
+
+See also description within the single test-cases.</comment>
+  <TestSet id="_5" name="Simple dependency examples">
+    <TestCase id="_7" name="Example 1 - [A,B,C,D]">
+      <comment>Causes a dependency stack A-B-C-D for Test1</comment>
+      <DependencyReference id="_M" reference="Dep1.D"/>
+      <BasicSequence id="_i" name="Test 1"/>
+    </TestCase>
+    <TestCase id="_Q" name="Example 2a - Forced Cleanup for C">
+      <comment>Rollback parts of the dependency stack through a "forced clenup" attribute in C after Test2a is executed. Perform a "Run-&gt;Reset Dependencies" before executing this example to get the expected result.</comment>
+      <DependencyReference id="_h" reference="Dep2.D"/>
+      <BasicSequence id="_k" name="Test 2a"/>
+    </TestCase>
+    <TestCase id="_m" name="Example 2b - Extra dependency E based on A">
+      <comment>Rollback and build up again to A-E</comment>
+      <DependencyReference id="_s" reference="Dep2.E"/>
+      <BasicSequence id="_t" name="Test 2b"/>
+    </TestCase>
+    <TestCase id="_u" name="Example 3 - Error escalation">
+      <comment>An exception in dependency C causes the rollback down to B</comment>
+      <DependencyReference id="_v" reference="Dep3.D"/>
+      <BasicSequence id="_w" name="Test 3"/>
+    </TestCase>
+    <TestSet id="_1P" name="Example 4 - Characteristic variables">
+      <discriminator>JDK</discriminator>
+      <variable name="JDK">1.4</variable>
+      <TestCase id="_1I" name="4a">
+        <DependencyReference id="_1L" reference="Dep4.A"/>
+        <BasicSequence id="_4E" name="Test 4a"/>
+      </TestCase>
+      <TestCase id="_2Q" name="4b - unchanged">
+        <DependencyReference id="_2R" reference="Dep4.A"/>
+        <BasicSequence id="_4F" name="Test 4b"/>
+      </TestCase>
+      <TestCase id="_2L" name="4c - changed">
+        <variable name="JDK">1.6</variable>
+        <DependencyReference id="_2M" reference="Dep4.A"/>
+        <BasicSequence id="_4G" name="Test 4c"/>
+      </TestCase>
+    </TestSet>
+    <TestSet id="_2S" name="Example 5 - Error handling">
+      <TestCase id="_2T" name="Catch Exceptions">
+        <DependencyReference id="_2a" reference="Dep5.A"/>
+        <ThrowStep id="_2k" throwmessage="A user exception"/>
+      </TestCase>
+      <TestCase id="_2i" name="Error handling">
+        <DependencyReference id="_2j" reference="Dep5.B"/>
+        <ServerScriptStep id="_4D" name="An error">
+          <code>rc.logError("bla")</code>
+        </ServerScriptStep>
+      </TestCase>
+    </TestSet>
+  </TestSet>
+  <PackageRoot id="_2">
+    <Package id="_9" name="Dep1">
+      <Dependency id="_A" name="A">
+        <SetupSequence id="_K"/>
+        <CleanupSequence id="_L"/>
+      </Dependency>
+      <Dependency id="_B" name="B">
+        <DependencyReference id="_O" reference="Dep1.A"/>
+        <SetupSequence id="_I"/>
+        <CleanupSequence id="_J"/>
+      </Dependency>
+      <Dependency id="_C" name="C">
+        <SetupSequence id="_G"/>
+        <CleanupSequence id="_H"/>
+      </Dependency>
+      <Dependency id="_D" name="D">
+        <DependencyReference id="_N" reference="Dep1.B"/>
+        <DependencyReference id="_P" reference="Dep1.C"/>
+        <SetupSequence id="_E"/>
+        <CleanupSequence id="_F"/>
+      </Dependency>
+    </Package>
+    <Package id="_y" name="Dep2">
+      <Dependency id="_z" name="A">
+        <SetupSequence id="_+"/>
+        <CleanupSequence id="_-"/>
+      </Dependency>
+      <Dependency id="_10" name="B">
+        <DependencyReference id="_11" reference="Dep2.A"/>
+        <SetupSequence id="_12"/>
+        <CleanupSequence id="_13"/>
+      </Dependency>
+      <Dependency forcedcleanup="true" id="_14" name="C">
+        <comment>Forced Cleanup set!</comment>
+        <SetupSequence id="_15"/>
+        <CleanupSequence id="_16"/>
+      </Dependency>
+      <Dependency id="_18" name="D">
+        <DependencyReference id="_19" reference="Dep2.B"/>
+        <DependencyReference id="_1A" reference="Dep2.C"/>
+        <SetupSequence id="_1B"/>
+        <CleanupSequence id="_1C"/>
+      </Dependency>
+      <Dependency id="_1D" name="E">
+        <DependencyReference id="_1E" reference="Dep2.A"/>
+        <SetupSequence id="_1G"/>
+        <CleanupSequence id="_1H"/>
+      </Dependency>
+    </Package>
+    <Package id="_R" name="Dep3">
+      <Dependency id="_S" name="A">
+        <SetupSequence id="_T"/>
+        <CleanupSequence id="_U"/>
+      </Dependency>
+      <Dependency id="_V" name="B">
+        <DependencyReference id="_Z" reference="Dep3.A"/>
+        <SetupSequence id="_W"/>
+        <CleanupSequence id="_X"/>
+      </Dependency>
+      <Dependency forcedcleanup="true" id="_Y" name="C">
+        <comment>Forced Cleanup set!</comment>
+        <SetupSequence id="_a"/>
+        <CleanupSequence id="_b">
+          <ThrowStep id="_x" throwmessage="DeadlockException"/>
+        </CleanupSequence>
+      </Dependency>
+      <Dependency id="_c" name="D">
+        <DependencyReference id="_e" reference="Dep3.B"/>
+        <DependencyReference id="_d" reference="Dep3.C"/>
+        <SetupSequence id="_f"/>
+        <CleanupSequence id="_g"/>
+      </Dependency>
+    </Package>
+    <Package id="_1J" name="Dep4">
+      <Dependency id="_1K" name="A">
+        <discriminator>JDK</discriminator>
+        <SetupSequence id="_2O"/>
+        <CleanupSequence id="_2P"/>
+      </Dependency>
+    </Package>
+    <Package id="_2V" name="Dep5">
+      <Dependency id="_2W" name="A">
+        <SetupSequence id="_2X"/>
+        <CleanupSequence id="_2Y"/>
+        <ErrorHandler id="_2n" name=""/>
+        <CatchSequence exception="UserException" id="_2b" maxerror="0"/>
+      </Dependency>
+      <Dependency id="_2d" name="B">
+        <SetupSequence id="_2e"/>
+        <CleanupSequence id="_2f"/>
+        <ErrorHandler id="_2h" name=""/>
+        <CatchSequence exception="UserException" id="_2l" maxerror="0"/>
+      </Dependency>
+    </Package>
+  </PackageRoot>
+  <ExtraSequence id="_3"/>
+  <WindowList id="_4"/>
+</RootStep>

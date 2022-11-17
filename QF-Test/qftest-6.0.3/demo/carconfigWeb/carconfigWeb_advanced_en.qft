@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="root"
+          signature="302C021464EA9C314A52D75222625D5F0BD63A1511253E5E0214338A3147FED6B3A900F7A79DF7BEAE890910F04A"
+          version="6.0.3">
+  <include>carconfigWeb_en.qft</include>
+  <reference>qfs.qft</reference>
+  <variable name="buggyMode">False</variable>
+  <variable name="browsername"/>
+  <variable name="browserdir"/>
+  <comment>This test-suite contains a number of advanced sample usages of QF-Test which are focused on extending the functionality of QF-Test.
+
+The test-case "Integrating Selenium tests" shows how Selenium tests and QF-Test tests can be combined. Take care, that this test-case will re-start the browser to ensure that the browser has been connected via WebDriver mode.
+
+@param	buggyMode    If you set this variable to true some test-cases will fail, so you can check the error reporting of QF-Test.
+
+@author QFS
+@since 4.2</comment>
+  <TestCase id="_1p6L" name="Integrating Selenium tests">
+    <comment>This test-case shows how to integrate Selenium tests into QF-Test.
+
+Take care, that this test-case will re-start the browser to ensure that the browser has been connected via WebDriver mode. Therefore, the global variables called "*_WebDriver" are used in order configure the browser.
+
+@author	QFS</comment>
+    <DependencyReference id="_1p6t"
+                         reference="dependencies.sutStartedAndReset">
+      <variable name="connectionMode">WebDriver only</variable>
+      <variable name="useConnectorLoader">True</variable>
+    </DependencyReference>
+    <TestStep id="_1p8I" name="Using WebDriver directly in QF-Test scripts">
+      <ProcedureCall id="_1pFk" procedure="mainwindow.menu.reset"/>
+      <ComponentWaiter client="$(client)" component="VehicleTable" id="_1pFi"
+                       timeout="30000"/>
+      <ClientScriptStep client="$(client)" engine="web" id="_1p8G"
+                        interpreter="groovy"
+                        name="Use WebDriver By locators to identify components">
+        <code>import org.openqa.selenium.By
+import de.qfs.WebDriverConnection
+
+def wd = new WebDriverConnection(rc)
+def driver = wd.getDriver()
+
+def element = driver.findElement(By.className("button"))
+//print element
+
+//Assign the found element to a QF-Test component to use it in QF-Test nodes
+rc.overrideElement("PriorityWebComponent", wd.getComponent(element))</code>
+      </ClientScriptStep>
+      <MouseEventStep clicks="1" client="$(client)"
+                      component="PriorityWebComponent" event="MOUSE_MPRC"
+                      hardevent="true" id="_1p8F" modifiers="16"/>
+      <CheckStringStep client="$(client)" component="DiscountValue"
+                       id="_1pFo">
+        <text>5</text>
+      </CheckStringStep>
+    </TestStep>
+    <TestStep id="_1p6-" name="Using Selenium Tests inside QF-Test">
+      <ProcedureCall id="_1pFj" procedure="mainwindow.menu.reset"/>
+      <MouseEventStep clicks="1" client="$(client)"
+                      component="VehicleTable@Model@I5" event="MOUSE_MPRC"
+                      id="_1p76" modifiers="16"/>
+      <UnitStep client="$(client)" engine="web" id="_1p6s"
+                interpreter="groovy" runInExecutionEnvironment="false">
+        <injections target="driver" type="3"/>
+        <injections target="expectedPrice" type="2">$26,100.00</injections>
+        <classes>de.qfs.apps.qftest.demo.fx.carconfig.structures.UtilityTests</classes>
+        <code>import static org.junit.Assert.*;
+import org.junit.Test;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.By;
+
+@Test
+public void checkCalculatedPrice()
+{
+    def discountBtn = driver.findElement(By.className("button"))
+    discountBtn.click()
+    def discountTxtField = driver.findElement(By.id("DiscountValue_input"))
+    assertEquals("5", discountTxtField.getAttribute("value"))
+    discountBtn.click()
+    assertEquals("10", discountTxtField.getAttribute("value"))
+    def priceField = driver.findElement(By.id("CalculatedPrice_input"))
+    assertEquals(expectedPrice, priceField.getText())
+}</code>
+      </UnitStep>
+    </TestStep>
+    <TestStep id="_1p70"
+              name="Using pre-built Selenium Tests inside QF-Test - please check manual &#34;Unit Testing - WebDriver injections&#34;"/>
+  </TestCase>
+  <TestSet id="_1pFp" name="Emulation of Mobile Devices">
+    <TestCase id="_1pHE"
+              name="CarConfigurator Test in emulation of mobile device">
+      <Dependency id="_1pHC"
+                  name="CarConfig demo started in emulation of mobile device">
+        <SetupSequence id="_1pFq" name="Start Emulation">
+          <SetGlobalStep id="_1pFt" varname="client">
+            <default>carconfigWeb</default>
+          </SetGlobalStep>
+          <ProcedureCall id="_1pFr"
+                         procedure="qfs.web.browser.general.openMobileEmulation">
+            <variable name="client">$(client)</variable>
+            <variable name="url">file://${qftest:dir.version}/demo/carconfigWeb/html/CarConfig.htm?lang=en</variable>
+            <variable name="deviceName">iPhone 6/7/8</variable>
+            <variable name="orientation">horizontal</variable>
+          </ProcedureCall>
+          <BasicSequence id="_1pHA" name="CustomWebResolver installieren">
+            <ProcedureCall id="_1pHB"
+                           procedure="qfs.qft#qfs.web.ajax.installCustomWebResolver">
+              <variable name="client">$(client)</variable>
+              <variable name="resolver">custom</variable>
+              <variable name="version"/>
+              <variable name="genericClasses">button=Button,
+textfield=TextField,
+editable=TextField,
+label=Label,
+menusubitem=MenuItem,
+menuitem=MenuItem,
+Menubar-Widget=MenuBar,
+ui-dialog-title=Label:WindowTitle,
+ui-dialog-titlebar-close=Closer:WindowCloser,
+tree=Tree,
+treenode=TreeNode,
+treetoggler=Expander:TreeNodeExpander,
+treenodespacer=Spacer:TreeNodeSpacer,
+dataTable=Table,
+dataRow=TableRow,
+dataCell=TableCell,
+headerRow=TableHeader,
+headerCell=TableHeaderCell,
+ui-tabs=TabPanel,
+TabItem=Item:TabPanelItem,
+ui-tabs-panel=Panel:TabPanelContent,
+ui-accordion=Accordion,
+ui-accordion-header=Item:AccordionItem,
+ui-accordion-content=Panel:AccordionContent,
+ui-dialog-buttonpane=Panel,
+ui-dialog-content=Panel,
+panel=Panel,</variable>
+              <variable name="attributesToGenericClasses">role=dialog=Window:Dialog,</variable>
+              <variable name="tagsToGenericClasses"/>
+              <variable name="ignoreTags">DIV,SPAN,CENTER,NOSCRIPT,FORM,UL,TR,TD,TABLE,HR,</variable>
+              <variable name="ignoreByAttributes"/>
+              <variable name="autoIdPatterns"/>
+              <variable name="customIdAttributes"/>
+              <variable name="interestingByAttributes"/>
+              <variable name="attributesToQftFeature"/>
+              <variable name="documentJS"/>
+              <comment>Dieser Aufruf installiert einen CustomWebResolver für AJAX Toolkits.
+Ein CustomWebResolver erlaubt es Ihnen die Spezifika Ihrer Webanwendung nach generischen Klassen von QF-Test zu übersetzen. Dieser Ansatz verbessert die Komponentenerkennung und erweitert die angebotenen Checkvarianten. Ihre Testfälle werden dadurch stabiler, robuster und lesbarer.
+Der wichtigste Parameter ist 'genericClasses'. Damit können Sie Werte des 'class' Attributes einer Komponente, z.B. 'btn', in einen QF-Test Button übersetzen. Dies geschieht mittels Angabe von btn=Button. Weitere Übersetzungen können sie kommasepariert angeben.
+Sie finden weitere Informationen im Kommentar der Prozedur selbst, hierfür einfach doppelt auf den Prozeduraufruf klicken.
+Im Handbuch finden Sie ein vollständiges Beispiel.</comment>
+            </ProcedureCall>
+          </BasicSequence>
+          <ComponentWaiter client="$(client)" component="mFile" id="_3iK"/>
+        </SetupSequence>
+        <CleanupSequence id="_1pHD"
+                         name="Must be empty so the test-case to be called will not close the emulation"/>
+      </Dependency>
+      <TestCall actasproccall="true"
+                calledtest="CarConfiguratorWeb Demo.Model prices" id="_1pFs"/>
+    </TestCase>
+  </TestSet>
+  <PackageRoot id="_3"/>
+  <ExtraSequence id="_4"/>
+  <WindowList id="_5"/>
+</RootStep>

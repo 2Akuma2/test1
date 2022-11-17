@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="root"
+          signature="302D02147F884F41BFBF24CC2EDF16293F0F60F9054198DD021500D1C88B15334D79E310E885AB7B468F5AA369AA69"
+          version="6.0.3">
+  <include>carconfig_en.qft</include>
+  <reference>qfs.qft</reference>
+  <variable name="buggyMode">False</variable>
+  <variable name="browserClient">web</variable>
+  <variable name="browser">chrome</variable>
+  <comment>This test-suite contains a  number of sample scenarios and work flows for the Swing-based car configuration demo application that is also used and described in the advanced tutorial. 
+
+Especially means of extending QF-Test functionality using scripts like a custom checkers or the integration of unit testing is demonstrated.
+
+@param	buggyMode    If you set this variable to true some test-cases will fail, so you can check the error reporting of QF-Test.
+
+@author QFS
+@since  4.2</comment>
+  <TestSet id="_3H0" name="Custom check">
+    <comment>In this test-set a custom checker will be registered.
+
+The custom checker is then able to record text-checks on the text-fields, but it will remove the currency information from the check. So the check can be used on different systems with different currencies.</comment>
+    <DependencyReference id="_3HF"
+                         reference="dependencies.sutStartedAndResetWithCustomCheck">
+      <comment>In the Setup node of this dependency the checker is registered.</comment>
+    </DependencyReference>
+    <TestCase id="_3H1" name="Custom check">
+      <CheckStringStep checktype="CurrencyText_checked" client="$(client)"
+                       component="CalculatedPrice" id="_3HE">
+        <text>0.00</text>
+        <comment>Recorded after registering the check.</comment>
+      </CheckStringStep>
+    </TestCase>
+  </TestSet>
+  <TestSet id="_3JN" name="Custom check - Image check with algorithm">
+    <comment>In this test-set a custom checker will be registered.
+
+This custom checker is able to record an image check. It automatically adds an algorithm for tolerant image checks.</comment>
+    <DependencyReference id="_3JO"
+                         reference="dependencies.sutStartedAndResetWithCustomAlgorithmCheck">
+      <comment>In the Setup node of this dependency the checker is registered.</comment>
+    </DependencyReference>
+    <TestCase id="_3JQ" name="Custom check">
+      <ProcedureCall id="_3Jf" procedure="mainwindow.menu.info"/>
+      <CheckImageStep algorithm="algorithm=similarity;expected=0.95"
+                      checktype="algorithm" client="$(client)"
+                      component="dialogInfo.labelCar_Configurator_Version_2.0______Copyright_(C)_2004_-_2015_____Quality_First_Software_GmbH_____based_on_C++_implementation_of_Imbus_AG______Showing_graphs_uses_the_JGraphX_library:_____Copyright_(c)_2001-2009,_JGraph_Ltd_____All_rights_reserved."
+                      id="_3Jh">
+        <ImageNode height="32" name="checkimage" width="32">
+          <webp size="1566">UaRz8PMAv(*wpBQPT?2OLCAA\@y(HAjDZbZTU2UgLwsW*9liKbvXeJoz@+p(;^lq`Vpc3Z?51`ejDs-}8w
+y9uS'MT2Hc2W:}hG42nn[`#A7BtuGFf'|}4`h5B4zK7aVR)1|%F8{v++W$|y+]WL1?Y$O=1^F;J2ob%{
+~hb$:l_*vm'Iqx!'$YPF,t[]HF+cFF1+4H#Ial$$yS^x2eG`T_Gqix|pEU`f"oM={CU'Fes;Y$O=zpw^
+PPM=YT^E"0c,0mb$p!@3Vb5a:Mb$?%f'c[`)Ak68dJQj^F`FeL[ipZ@T3aB.Akn|1K)'ur$GiKXt`-DJ
+ga?lC;)-c3ij+0t5v4Wvx7=81*{wm~[1fm=r~Gi)YXnv_*JnYi9U-nJZF}tO;_Zb0rj.;oyROS79_%.8
+?q_l#w'(K*e7*QL\eWR|;`,xcWV*[nlYdii^iF3Z^YOxHQ:_m*)rMIGl#Z|1A1/S^0g~y|D=Nm=UE[@7
+}^#'8j?tiKDVV'hk;'\lWsZW"h.I$$p1qIO/kzMyO9iQy*P}C7h^'p;jd$hjEG^:`N'FSZmcknZ=4FY4
+|7MaZ]u8cx;v"["stn/V0\FPh0ePnbEYuIam/'`(vXAJm^tlue/Rmwm+@{f(n1LA_~|:pa@4kD;+i{[4
+v/v4I`-ss"~W$0Vif(VgP,PkG"NqvWY4HP_c;lb%0r8*5E4}b7P:D`L(^PVA2e9P*%SgXL9Bm4u\@sQ2
+o?taZ4-rdrfy"#hbj:R_vw[K[omK#3P!""C-\wz,lnfQBw#_b!}sQ:p$POqIC{?m;X@,[$vth!S`K_9@
+@.:#w7cF2Tn/#Oow;U\}*s=9GN7;!6/0LK~A7}LGA?r^LKe--9qts+k}?3LABB}b'-IVd'mdBmVr(@u5
+=T.K2j-I7;7`kr{#'3v9@G1}G;-sd2OB?mF)!C70!H%'DqPt[b,@XucYsu9!QZ#hE!qo5lhV{LG[(YuD
+P3sga*9d{ncl7v)v_}ne=w]B0dBwbX"tB.G}fAM{='Bs]5$pLo`|!\j-b5=ur|dT(qL.4|N\SM[WO7iw
+bfv2bCTL;~Z.PwB?\#OhpiLMK$VNE~gRH;w*P}rA0vT/asI\dl.8%+aPo*Wp~dFf[d[(iNRlhwk6JF/%
+#@x%O+2Ih!(!:JqQ%ZAu7GjA37hJ7@i[/i)3EFOOaj)^[bHq19C56|YSH'P5#T/H7.1}Yj+r"h+)[xh|
+x~)-}zZ]hoa9HA;C[yfq^}alzFHK=f;k*A{!:%H_Jpk"\\`Jam:wr[^4L7_f9osT}f7kCJM#K~hqmZ;l
+JBk);CdjDz:X1:j$6Qpz,vjb[d?S"fzk3_,'-egIumZhx/jO@'9t06L(9p-y2:K1[WMcnvpcq?zm$rxt
+]CWG=[e"00_FcDqI3e$$xd\)^pBS#?W"gL8!(bIr`{9q,urtdH]U}mC=D#Eoyao{+$sTJ/#TDwdrO}|i
+[:eQF42;!H*Bk$/[FRdV,{3hw,:2C_]9ct|jJ-+jBJ~n]sf,saz:E{pIX#w9h,NOZ(0{[.C3leYp;1Rz
+a~Q%dPH4.ABGPOEh8/,/cyMYnk6$=?kpiyl|h+939D#Lh}J=A~I.EE-|FloNG@{cxzJ0TaxS%;VFre%%
+3fu@#^qeEluCY4b0UNpmQxg$YsG.Jt5hBYnV^Ul!!YCI)S3|E#:4Cl+Nd!wL73im*ZMaW03hNa4u^}a=
+eqx/QRG):9JQu:[dfs9Z+ZxT`c_eW03Bh328=9?tKakR\O9*WlI;DVnzF9[/B$vP9Ye5{"hB?pcS32'z
+W1z03|X6-+CbB1X$]j7tUX4+vH3:~I:\5H'afk-rG96xz|EwOtyrn=.X3nh`bzrgcMb%dkQmOXn=zh`d
+X?PR3oa*0E6fAs/.$aPS*uarSCl6D!K:HSgg$\-_-'i{K4/{h%W*LE=e?imiE)A)2a-NX8QfWP16EE%|
+CAA</webp>
+        </ImageNode>
+        <comment>Recorded custom checker.
+The actual component is identical, thus result is 100%.</comment>
+      </CheckImageStep>
+      <ProcedureCall id="_3Ji"
+                     procedure="qfs.swing.cleanup.closeAllModalDialogs">
+        <variable name="maxDialogs">5</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_3Jr" procedure="mainwindow.menu.newVersion"/>
+      <ProcedureCall id="_3Js" procedure="mainwindow.menu.info"/>
+      <CheckImageStep algorithm="algorithm=similarity;expected=0.95"
+                      checktype="algorithm" client="$(client)"
+                      component="dialogInfo.labelCar_Configurator_Version_2.0______Copyright_(C)_2004_-_2015_____Quality_First_Software_GmbH_____based_on_C++_implementation_of_Imbus_AG______Showing_graphs_uses_the_JGraphX_library:_____Copyright_(c)_2001-2009,_JGraph_Ltd_____All_rights_reserved."
+                      id="_1p6s">
+        <ImageNode height="32" name="checkimage" width="32">
+          <webp size="1566">UaRz8PMAv(*wpBQPT?2OLCAA\@y(HAjDZbZTU2UgLwsW*9liKbvXeJoz@+p(;^lq`Vpc3Z?51`ejDs-}8w
+y9uS'MT2Hc2W:}hG42nn[`#A7BtuGFf'|}4`h5B4zK7aVR)1|%F8{v++W$|y+]WL1?Y$O=1^F;J2ob%{
+~hb$:l_*vm'Iqx!'$YPF,t[]HF+cFF1+4H#Ial$$yS^x2eG`T_Gqix|pEU`f"oM={CU'Fes;Y$O=zpw^
+PPM=YT^E"0c,0mb$p!@3Vb5a:Mb$?%f'c[`)Ak68dJQj^F`FeL[ipZ@T3aB.Akn|1K)'ur$GiKXt`-DJ
+ga?lC;)-c3ij+0t5v4Wvx7=81*{wm~[1fm=r~Gi)YXnv_*JnYi9U-nJZF}tO;_Zb0rj.;oyROS79_%.8
+?q_l#w'(K*e7*QL\eWR|;`,xcWV*[nlYdii^iF3Z^YOxHQ:_m*)rMIGl#Z|1A1/S^0g~y|D=Nm=UE[@7
+}^#'8j?tiKDVV'hk;'\lWsZW"h.I$$p1qIO/kzMyO9iQy*P}C7h^'p;jd$hjEG^:`N'FSZmcknZ=4FY4
+|7MaZ]u8cx;v"["stn/V0\FPh0ePnbEYuIam/'`(vXAJm^tlue/Rmwm+@{f(n1LA_~|:pa@4kD;+i{[4
+v/v4I`-ss"~W$0Vif(VgP,PkG"NqvWY4HP_c;lb%0r8*5E4}b7P:D`L(^PVA2e9P*%SgXL9Bm4u\@sQ2
+o?taZ4-rdrfy"#hbj:R_vw[K[omK#3P!""C-\wz,lnfQBw#_b!}sQ:p$POqIC{?m;X@,[$vth!S`K_9@
+@.:#w7cF2Tn/#Oow;U\}*s=9GN7;!6/0LK~A7}LGA?r^LKe--9qts+k}?3LABB}b'-IVd'mdBmVr(@u5
+=T.K2j-I7;7`kr{#'3v9@G1}G;-sd2OB?mF)!C70!H%'DqPt[b,@XucYsu9!QZ#hE!qo5lhV{LG[(YuD
+P3sga*9d{ncl7v)v_}ne=w]B0dBwbX"tB.G}fAM{='Bs]5$pLo`|!\j-b5=ur|dT(qL.4|N\SM[WO7iw
+bfv2bCTL;~Z.PwB?\#OhpiLMK$VNE~gRH;w*P}rA0vT/asI\dl.8%+aPo*Wp~dFf[d[(iNRlhwk6JF/%
+#@x%O+2Ih!(!:JqQ%ZAu7GjA37hJ7@i[/i)3EFOOaj)^[bHq19C56|YSH'P5#T/H7.1}Yj+r"h+)[xh|
+x~)-}zZ]hoa9HA;C[yfq^}alzFHK=f;k*A{!:%H_Jpk"\\`Jam:wr[^4L7_f9osT}f7kCJM#K~hqmZ;l
+JBk);CdjDz:X1:j$6Qpz,vjb[d?S"fzk3_,'-egIumZhx/jO@'9t06L(9p-y2:K1[WMcnvpcq?zm$rxt
+]CWG=[e"00_FcDqI3e$$xd\)^pBS#?W"gL8!(bIr`{9q,urtdH]U}mC=D#Eoyao{+$sTJ/#TDwdrO}|i
+[:eQF42;!H*Bk$/[FRdV,{3hw,:2C_]9ct|jJ-+jBJ~n]sf,saz:E{pIX#w9h,NOZ(0{[.C3leYp;1Rz
+a~Q%dPH4.ABGPOEh8/,/cyMYnk6$=?kpiyl|h+939D#Lh}J=A~I.EE-|FloNG@{cxzJ0TaxS%;VFre%%
+3fu@#^qeEluCY4b0UNpmQxg$YsG.Jt5hBYnV^Ul!!YCI)S3|E#:4Cl+Nd!wL73im*ZMaW03hNa4u^}a=
+eqx/QRG):9JQu:[dfs9Z+ZxT`c_eW03Bh328=9?tKakR\O9*WlI;DVnzF9[/B$vP9Ye5{"hB?pcS32'z
+W1z03|X6-+CbB1X$]j7tUX4+vH3:~I:\5H'afk-rG96xz|EwOtyrn=.X3nh`bzrgcMb%dkQmOXn=zh`d
+X?PR3oa*0E6fAs/.$aPS*uarSCl6D!K:HSgg$\-_-'i{K4/{h%W*LE=e?imiE)A)2a-NX8QfWP16EE%|
+CAA</webp>
+        </ImageNode>
+        <comment>Recorded custom checker.
+The actual component is identical, thus result is 100%.</comment>
+      </CheckImageStep>
+      <ProcedureCall id="_3Ju"
+                     procedure="qfs.swing.cleanup.closeAllModalDialogs">
+        <variable name="maxDialogs">5</variable>
+      </ProcedureCall>
+      <ProcedureCall id="_3K3" procedure="mainwindow.menu.newVersion"/>
+    </TestCase>
+  </TestSet>
+  <TestCase id="_3JB" name="Override Element Demo">
+    <comment>This test-case shows the usage of the PriorityAwtSwingComponent component from the standard library qfs.qft.
+This concept can be utilized to search for a certain component only once (either via generic components or via scripts). Once the component has been found, it can be assigned to PriorityAwtSwingComponent and now everyone can access the respective component via the id PriorityAwtSwingComponent. You can avoid multiple searching for the same component.
+</comment>
+    <DependencyReference id="_3JA"
+                         reference="dependencies.sutStartedAndReset"/>
+    <TestStep id="_3JD"
+              name="Define a known component as PriorityAwtSwingComponent from qfs.qft">
+      <ProcedureCall id="_3JE"
+                     procedure="qfs.swing.general.setOverrideComponent">
+        <variable name="id">CalculatedPrice</variable>
+        <comment>The PriorityAwtSwingComponent component from qfs.qft will be set to the CalculatedPrice textfield.
+Now you can use the component PriorityAwtSwingComponent, which will forward all actions to the CalculatedPrice textfield.</comment>
+      </ProcedureCall>
+      <CheckStringStep client="$(client)"
+                       component="PriorityAwtSwingComponent" id="_3JG">
+        <text>$$0.00</text>
+        <comment>PriorityAwtSwingComponent acts now as CalculatedPrice textfield.
+The assignment was made in the previous procedure-call.
+</comment>
+      </CheckStringStep>
+      <ProcedureCall id="_3JH"
+                     procedure="qfs.swing.general.deleteOverrideComponent">
+        <comment>Remove assignment of PriorityAwtSwingComponent.</comment>
+      </ProcedureCall>
+    </TestStep>
+    <TestStep id="_3JI"
+              name="Look for an editable textfield and use this later">
+      <ClientScriptStep client="$(client)" id="_3JM" interpreter="groovy"
+                        name="Search for an editable textfield">
+        <code>/*
+The script looks for an editable textfield in the bottom part 
+of the CarConfigurator.
+It should find the Discount textfield.
+This textfield should be set to PriorityAwtSwingComponent
+to be used later.
+*/
+
+panel = rc.getComponent("CalculatorPanel")
+maincalcPanel = panel.getComponent(2)
+
+found = false
+
+maincalcPanel.getComponents().each {
+ linePanel -&gt;
+    linePanel.getComponents().each 
+    { comp -&gt; 
+        if(! found){
+            if (comp instanceof javax.swing.JTextField) {
+                if (comp.isEditable()) {
+                    rc.overrideElement("PriorityAwtSwingComponent", comp)
+                    found = true
+                }
+            }
+        }
+    }
+}</code>
+      </ClientScriptStep>
+      <CheckStringStep client="$(client)"
+                       component="PriorityAwtSwingComponent" id="_3JK">
+        <text>0%</text>
+        <comment>PriorityAwtSwingComponent acts now as DiscountValue textfield.
+The assignment has been made in the previous script.
+</comment>
+      </CheckStringStep>
+      <ProcedureCall id="_3JL"
+                     procedure="qfs.swing.general.deleteOverrideComponent">
+        <comment>Remove assignment of PriorityAwtSwingComponent.</comment>
+      </ProcedureCall>
+    </TestStep>
+  </TestCase>
+  <TestCase id="_1p6L" name="Unit tests provided in jar file">
+    <comment>This test-case shows how to integrate Unit tests into QF-Test.
+
+There are three ways of using Unit tests in QF-Test:
+
+1. Using already implemented Unit tests from a provided .jar file. That test-step also contains a failing test-case to demonstrate error reporting.
+2. Implementing custom Unit tests in scripts.
+3. Live-Unit tests which can access SUT components.
+
+@author	QFS</comment>
+    <DependencyReference id="_1p6q"
+                         reference="dependencies.sutStartedAndReset"/>
+    <TestStep id="_1p6e"
+              name="SUT-independent Unit tests - loaded from jar file">
+      <comment>The Unit tests called inside this test-step have been implemented as traditional unit tests.
+The tests itself and its source code are provided in ${qftest:dir.version}/qflib/qfdemotests.jar.</comment>
+      <UnitStep client="$(client)" id="_1p6a" source="jar">
+        <includefiles name="1">${qftest:dir.version}/qflib/qfdemotests.jar</includefiles>
+        <includefiles name="1">${qftest:dir.version}/qflib/qfdemo.jar</includefiles>
+        <includefiles name="1">${qftest:dir.version}/qflib/qflib.jar</includefiles>
+        <includefiles name="1">${qftest:dir.version}/lib/looks.jar</includefiles>
+        <classes>de.qfs.apps.qftest.demo.CarConfiguratorTests</classes>
+      </UnitStep>
+    </TestStep>
+    <TestStep id="_1p6m"
+              name="SUT-independent Unit tests - implemented in script">
+      <comment>Unit tests called inside this test-step have been implemented inside the Unit Test node.</comment>
+      <UnitStep client="$(client)" id="_1p6n" interpreter="groovy">
+        <includefiles name="1">${qftest:dir.version}/qflib/qfdemo.jar</includefiles>
+        <includefiles name="1">${qftest:dir.version}/qflib/qflib.jar</includefiles>
+        <includefiles name="1">${qftest:dir.version}/lib/looks.jar</includefiles>
+        <injections target="buggyMode" type="2">$(buggyMode)</injections>
+        <classes>de.qfs.apps.qftest.demo.fx.carconfig.structures.UtilityTests</classes>
+        <code>import de.qfs.apps.qftest.demo.multi.carconfigurator.controller.CCControllerSwing;
+import de.qfs.apps.qftest.demo.multi.carconfigurator.model.CCModel;
+import de.qfs.apps.qftest.demo.multi.carconfigurator.model.CCParams;
+
+@Test
+public void isStandardUser()
+{
+    CCModel model = CCModel.getInstance();
+    CCControllerSwing c = new CCControllerSwing(model);
+    model.setM_params(CCParams.builder().build());
+    
+    model.getM_params().setUser("tester");
+    assertTrue(c.isStandardUser());
+}
+
+@Test
+public void isNoStandardUser()
+{
+    CCModel model = CCModel.getInstance();
+    CCControllerSwing c = new CCControllerSwing(model);
+    model.setM_params(CCParams.builder().build());
+
+    model.getM_params().setUser("myuser");
+    assertFalse(c.isStandardUser());
+}
+
+@Test
+public void calculatePriceOk()
+{
+    CCModel model = CCModel.getInstance();
+    CCControllerSwing c = new CCControllerSwing(model);
+    model.setM_params(CCParams.builder().build());
+    
+    model.getM_params().setBuggy(buggyMode == null ? false : Boolean.parseBoolean(buggyMode));
+    double result_price = c.calculatePriceOk(29000, 500, 250, 0, 0, 0);
+    double expected_price = 29750.0;
+    assertEquals(expected_price, result_price, 0);
+}</code>
+      </UnitStep>
+    </TestStep>
+    <TestStep id="_1p6f" name="Live Unit tests using SUT components">
+      <comment>This test-step shows live unit tests using actual components of the SUT.
+This strategy demonstrates a great opportunity to combine Unit tests and QF-Test tests.</comment>
+      <MouseEventStep clicks="1" client="$(client)"
+                      component="TabbedPane@Vehicles" event="MOUSE_MPRC"
+                      id="_1p6r" modifiers="16"/>
+      <MouseEventStep clicks="1" client="$(client)"
+                      component="VehicleTable@Model@I5" event="MOUSE_MPRC"
+                      id="_1p6l" modifiers="16"/>
+      <UnitStep client="$(client)" id="_1p6g" interpreter="groovy"
+                runInExecutionEnvironment="false" source="jar">
+        <includefiles name="1">${qftest:dir.version}/qflib/qfdemotests.jar</includefiles>
+        <injections target="vehiclesTable" type="1">VehicleTable</injections>
+        <injections target="expectedPrice" type="2">26100</injections>
+        <injections target="discount" type="2">10</injections>
+        <injections target="buggyMode" type="2">$(buggyMode)</injections>
+        <classes>de.qfs.apps.qftest.demo.liveunit.LiveTestsCarConfig</classes>
+        <code>import de.qfs.apps.qftest.demo.fx.carconfig.structures.Accessory;
+import de.qfs.apps.qftest.demo.fx.carconfig.structures.Special;
+import de.qfs.apps.qftest.demo.fx.carconfig.structures.Utility;
+import de.qfs.apps.qftest.demo.fx.carconfig.structures.Vehicle;
+
+    @Test
+    public void isStandardUser()
+    {
+        String testuser = "tester";
+        assertTrue(Utility.isStandardUser(testuser));
+    }
+
+    @Test
+    public void isNoStandardUser()
+    {
+        String testuser = "myuser";
+        assertFalse(Utility.isStandardUser(testuser));
+    }
+
+    @Test
+    public void calculatePriceOk()
+    {
+        Vehicle testVehicle = new Vehicle("testCar", 12000);
+        Special testSpecial = new Special("testSpecial", "testdesc", null, 500);
+
+        Accessory testAccessory1 = new Accessory("testAcc2", 100);
+        LinkedList&lt;Accessory&gt; selectedAccessories = new LinkedList&lt;Accessory&gt;();
+        selectedAccessories.add(testAccessory1);
+
+        double result_price = Utility.calculateFinalPrice(false, testVehicle, testSpecial, 0,
+                selectedAccessories, true);
+
+        double expected_price = 12600.0;
+        assertEquals(expected_price, result_price, 0);
+    }</code>
+      </UnitStep>
+      <UnitStep client="$(client)" id="_1p6p" interpreter="groovy"
+                runInExecutionEnvironment="false">
+        <injections target="vehiclesTable" type="1">VehicleTable</injections>
+        <injections target="expectedPrice" type="2">26100</injections>
+        <injections target="discount" type="2">10</injections>
+        <injections target="buggyMode" type="2">$(buggyMode)</injections>
+        <classes>de.qfs.apps.qftest.demo.fx.carconfig.structures.UtilityTests</classes>
+        <code>import de.qfs.apps.qftest.demo.multi.carconfigurator.controller.CCControllerSwing;
+import de.qfs.apps.qftest.demo.multi.carconfigurator.model.CCModel;
+import de.qfs.apps.qftest.demo.multi.carconfigurator.model.CCParams;
+import javax.swing.JTable;
+
+@Test
+public void testCalculatePriceOk()
+{
+    CCModel model = CCModel.getInstance();
+    CCControllerSwing c = new CCControllerSwing(model);
+    model.setM_params(CCParams.builder().build());
+    
+    model.getM_params().setBuggy(buggyMode == null ? false : Boolean.parseBoolean(buggyMode));
+
+    int selRow = vehiclesTable.getSelectedRow();
+    Double vehiclePrice = (Double) vehiclesTable.getValueAt(selRow, 1);
+
+    double result_price = c.calculatePriceOk(vehiclePrice, 0, 0, 0, 0, Double.parseDouble(discount));
+
+    assertEquals(Double.parseDouble(expectedPrice), result_price, 0);
+}</code>
+      </UnitStep>
+    </TestStep>
+  </TestCase>
+  <TestSet id="_1p6t" name="Catch external browser open">
+    <comment>This test-set shows how to catch calls from a java application which open an external browser.
+
+To prepare the application, you must first call the procedure qfs.web.browser.external.prepareForBrowserOpen, which prevents a start of the real browser process.
+
+Afterwards, you can trigger the action which would open the browser and call the procedure qfs.web.browser.external.waitForBrowserOpen to either check the url of the browser call, and/or to open a QF-Test controlled browser instance to perform additional checks on the website.
+
+@author	QFS</comment>
+    <DependencyReference id="_2JFr"
+                         reference="sutStartedAndResetWithPurchaseDialogOpen"/>
+    <TestCase id="_2JFo" name="Click the link and check for the correct url">
+      <TryStep id="_2JEf">
+        <ProcedureCall id="_2JEI"
+                       procedure="qfs.web.browser.external.prepareForBrowserOpen">
+          <variable name="client">$(client)</variable>
+        </ProcedureCall>
+        <CommentStep disabled="true" id="_2JEJ">
+          <heading>Action to open the external browser in SUT, e.g. mouse click, menu item click etc.</heading>
+        </CommentStep>
+        <MouseEventStep clicks="1" client="$(client)" component="weblink"
+                        event="MOUSE_MPRC" id="_2JF7" modifiers="16"/>
+        <CommentStep disabled="true" id="_2JEM">
+          <heading>Check that the correct url was opened:</heading>
+        </CommentStep>
+        <ProcedureCall id="_2JEN" local="true"
+                       procedure="qfs.web.browser.external.waitForBrowserOpen"
+                       retvarname="calledUrl">
+          <variable name="client">$(client)</variable>
+          <variable name="checkUrl">https://www.qfs.de/en/</variable>
+          <variable name="isRegex">false</variable>
+          <variable name="timeout">60000</variable>
+          <variable name="polling">200</variable>
+        </ProcedureCall>
+        <ClientScriptStep client="$(client)" id="_2JEO" interpreter="groovy"
+                          name="Print out the url of the intercepted call">
+          <code>println "Intercepted call to " + rc.lookup("calledUrl")</code>
+        </ClientScriptStep>
+        <FinallySequence id="_2JEh">
+          <ProcedureCall id="_2JEP"
+                         procedure="qfs.web.browser.external.stopInterceptingBrowserOpen">
+            <variable name="client">$(client)</variable>
+          </ProcedureCall>
+        </FinallySequence>
+      </TryStep>
+    </TestCase>
+    <TestCase id="_2JFp" name="Click the link and open a browser">
+      <TestStep id="_2JFk" name="Click the link">
+        <TryStep id="_2JF9">
+          <ProcedureCall id="_2JFA"
+                         procedure="qfs.web.browser.external.prepareForBrowserOpen">
+            <variable name="client">$(client)</variable>
+          </ProcedureCall>
+          <CommentStep disabled="true" id="_2JFB">
+            <heading>Action to open the external browser in SUT, e.g. mouse click, menu item click etc.</heading>
+          </CommentStep>
+          <MouseEventStep clicks="1" client="$(client)" component="weblink"
+                          event="MOUSE_MPRC" id="_2JFC" modifiers="16"/>
+          <CommentStep disabled="true" id="_2JFD">
+            <heading>Open a QF-Test controlled browser to check the web content</heading>
+          </CommentStep>
+          <ProcedureCall id="_2JFE" local="true"
+                         procedure="qfs.web.browser.external.waitForBrowserOpen"
+                         retvarname="calledUrl">
+            <variable name="client">$(client)</variable>
+            <variable name="callProcedure">startBrowser</variable>
+            <variable name="timeout">60000</variable>
+            <variable name="polling">200</variable>
+            <variable name="browserClient">$(browserClient)</variable>
+            <variable name="browser">$(browser)</variable>
+          </ProcedureCall>
+          <FinallySequence id="_2JFG">
+            <ProcedureCall id="_2JFH"
+                           procedure="qfs.web.browser.external.stopInterceptingBrowserOpen">
+              <variable name="client">$(client)</variable>
+            </ProcedureCall>
+          </FinallySequence>
+        </TryStep>
+      </TestStep>
+      <TestStep id="_2JFl" name="Test the webpage">
+        <CheckStringStep client="$(browserClient)" component="linkImprint"
+                         id="_2JFq">
+          <text>Imprint</text>
+        </CheckStringStep>
+      </TestStep>
+      <TestStep id="_2JFm" name="Close the browser">
+        <TryStep id="_3dz" name="Close browser window">
+          <WindowEventStep client="$(browserClient)" component="qfs.de"
+                           event="WINDOW_CLOSING" id="_3e4"/>
+          <ProcessWaiter client="$(browserClient)" id="_3e5"/>
+          <CatchSequence exception="TestException" id="_3e6" maxerror="0"
+                         name="Couldn't close browser window -&gt; kill process">
+            <ClientStopper client="$(browserClient)" id="_3e7"/>
+            <ProcessWaiter client="$(browserClient)" id="_3e8"/>
+          </CatchSequence>
+        </TryStep>
+      </TestStep>
+    </TestCase>
+  </TestSet>
+  <PackageRoot id="_31">
+    <Dependency forcedcleanup="true" id="_3HG"
+                name="sutStartedAndResetWithPurchaseDialogOpen">
+      <comment>Register a custom check.</comment>
+      <DependencyReference id="_3HH"
+                           reference="dependencies.sutStartedAndReset"/>
+      <SetupSequence id="_3H2" name="Navigate to purchaseorder dialog">
+        <ProcedureCall id="_2JEw" procedure="mainwindow.menu.newVersion"/>
+        <MouseEventStep clicks="1" client="$(client)" component="mOrder"
+                        event="MOUSE_MPRC" id="_2JEt" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)" component="miSendOrder"
+                        event="MOUSE_MPRC" id="_2JEu" modifiers="16"/>
+        <ComponentWaiter client="$(client)"
+                         component="SendPurchaseOrderDialog" id="_2JEv"/>
+      </SetupSequence>
+      <CleanupSequence id="_2JFn" name="Close modal dialogs">
+        <ProcedureCall id="_2JEy"
+                       procedure="qfs.swing.cleanup.closeAllModalDialogs">
+          <variable name="maxDialogs">5</variable>
+        </ProcedureCall>
+        <ProcedureCall id="_2JEz" procedure="mainwindow.menu.newVersion"/>
+      </CleanupSequence>
+    </Dependency>
+    <Procedure id="_2JDv" name="startBrowser">
+      <variable name="url"/>
+      <variable name="browserClient"/>
+      <variable name="browser"/>
+      <variable name="browserdir"/>
+      <comment>Example procedure for starting a QF-Test browser</comment>
+      <ServerScriptStep id="_2JE6" interpreter="groovy"
+                        name="Print out the url to open">
+        <code>println "Opening browser for url: " + rc.lookup("url")</code>
+      </ServerScriptStep>
+      <TryStep id="_Y" name="Open Url in Browser Window">
+        <ClientWaiter client="$(browserClient)" id="_b" timeout="0"/>
+        <ProcedureCall id="_a" procedure="qfs.web.browser.general.showUrl">
+          <variable name="url">$(url)</variable>
+          <variable name="client">$(browserClient)</variable>
+        </ProcedureCall>
+        <CatchSequence exception="ClientNotConnectedException" id="_Z"
+                       maxerror="0" name="Start Browser instance">
+          <BasicSequence id="_G" name="Start web engine">
+            <BrowserClientStarter browser="$(browser)"
+                                  client="$(browserClient)"
+                                  executable="${qftest:java}" id="_H"
+                                  mozhome="$(browserdir)" openwindow="false"/>
+            <ClientWaiter client="$(browserClient)" id="_I"/>
+          </BasicSequence>
+          <BasicSequence id="_J" name="Perform browser settings">
+            <ProcedureCall id="_K"
+                           procedure="qfs.qft#qfs.web.browser.settings.doStartupSettings">
+              <variable name="client">$(browserClient)</variable>
+              <variable name="browser">$(browser)</variable>
+              <variable name="mozhome">$(browserdir)</variable>
+              <variable name="emptyCache">true</variable>
+              <variable name="enableCookies">true</variable>
+              <variable name="deleteCookies">true</variable>
+              <variable name="locale">de</variable>
+              <variable name="enableProxy">false</variable>
+              <variable name="proxyAddress"/>
+              <variable name="proxyPort"/>
+              <variable name="proxyAutoconfigurl"/>
+              <variable name="enableProxyBypass">false</variable>
+              <variable name="proxyBypass"/>
+              <variable name="mozprofile"/>
+              <variable name="compatibilitymode">no</variable>
+            </ProcedureCall>
+          </BasicSequence>
+          <BasicSequence id="_L" name="Open browser window">
+            <BrowserClientStarter browser="$(browser)"
+                                  client="$(browserClient)"
+                                  executable="${qftest:java}" id="_M"
+                                  openwindow="true" url="$(url)"/>
+            <DocumentWaiter client="$(browserClient)"
+                            component="genericDocument" id="_N"
+                            timeout="60000"/>
+          </BasicSequence>
+        </CatchSequence>
+      </TryStep>
+      <BasicSequence id="_2JDw" name="Install CustomWebResolver">
+        <ProcedureCall id="_2JDx"
+                       procedure="qfs.qft#qfs.web.ajax.installCustomWebResolver">
+          <variable name="client">$(browserClient)</variable>
+          <variable name="resolver">custom</variable>
+          <variable name="version"/>
+          <variable name="genericClasses"/>
+          <variable name="attributesToGenericClasses"/>
+          <variable name="tagsToGenericClasses"/>
+          <variable name="ignoreTags"/>
+          <variable name="ignoreByAttributes"/>
+          <variable name="autoIdPatterns"/>
+          <variable name="customIdAttributes"/>
+          <variable name="interestingByAttributes"/>
+          <variable name="attributesToQftFeature"/>
+          <variable name="documentJS"/>
+        </ProcedureCall>
+      </BasicSequence>
+    </Procedure>
+  </PackageRoot>
+  <ExtraSequence id="_5y"/>
+  <WindowList id="_61">
+    <WebPageStep class="Window" feature="www.qfs.de" height="671" id="qfs.de"
+                 uid="_2JFI" width="1024">
+      <extrafeature name="baseurl" negate="false" regexp="false" state="0">https://www.qfs.de/en/</extrafeature>
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">DOCUMENT</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Window</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">DOCUMENT</extrafeature>
+      <extrafeature name="title" negate="false" regexp="false" state="0">Test automation tool for Java, Web &amp; Windows - QF-Test</extrafeature>
+      <extrafeature name="url" negate="false" regexp="false" state="0">https://www.qfs.de/en/</extrafeature>
+      <ComponentStep class="Link" classcount="1" classindex="0" height="22"
+                     id="linkImprint" uid="_2JFT" width="60" x="0" y="5">
+        <extrafeature name="href" negate="false" regexp="false" state="1">https://www.qfs.de/en/company/imprint.html</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">A</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Link</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="0">Imprint</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">A</extrafeature>
+        <extrafeature name="tag" negate="false" regexp="false" state="0">A</extrafeature>
+      </ComponentStep>
+    </WebPageStep>
+  </WindowList>
+</RootStep>

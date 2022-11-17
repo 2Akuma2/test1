@@ -1,0 +1,1230 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="root"
+          signature="302E0215009C7C8766E4A7EF2B6FB942CA3E513F4F4F457E26021500DBDC4302300AAD6D07ECACE03205C9DACC99488A"
+          version="6.0.3">
+  <include>qfs.qft</include>
+  <reference>qfs.qft</reference>
+  <variable name="buggyMode">False</variable>
+  <variable name="carConfigVersion">1.1.0</variable>
+  <variable name="executableWin">CarConfig.exe</variable>
+  <variable name="executableMac">CarConfig.app/Contents/MacOS/CarConfig</variable>
+  <variable name="executableLinux">carconfig</variable>
+  <variable name="appdir">${qftest:dir.user}/electron/${qftest:os.name}/carconfig-$(carConfigVersion)</variable>
+  <comment>This test-suite contains a  number of sample scenarios and work flows for the Electron/HTML-based car configuration demo application that is also used and described in the advanced tutorial. Basic and advanced QF-Test techniques are used like test-sets, test-cases, dependencies, procedures, data-drivers, nested loops, try/catch.
+
+@param	buggyMode    If you set this variable to true some test-cases will fail, so you can check the error reporting of QF-Test.
+
+@author QFS</comment>
+  <TestSet id="_1" name="CarConfiguratorElectron Demo">
+    <DependencyReference id="_3G4"
+                         reference="dependencies.sutStartedAndReset"/>
+    <TestSet id="_K" name="Model prices">
+      <comment>Check the standard prices.</comment>
+      <TestSet id="_1pPg" name="Prices without accessories">
+        <comment>Check the prices without accessories.</comment>
+        <DataDriver id="_1pPh">
+          <TableDataBinder id="_1pPi" name="Models and prices">
+            <TableBinderColumn title="refModel" width="71">
+              <data>Rolo</data>
+              <data>Minigolf</data>
+              <data>Rassant</data>
+              <data>Rassant Family</data>
+              <data>I5</data>
+            </TableBinderColumn>
+            <TableBinderColumn title="refPrice" width="217">
+              <data>$$12,300.00</data>
+              <data>$$15,000.00</data>
+              <data>$$17,000.00</data>
+              <data>$$18,500.00</data>
+              <data>$$29,000.00</data>
+            </TableBinderColumn>
+          </TableDataBinder>
+        </DataDriver>
+        <TestCase id="_1pPj" name="Prices in main and options table">
+          <variable name="index"/>
+          <TestStep id="_1pPk" name="check of price in main window">
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="TabbedPane@Vehicles" event="MOUSE_MPRC"
+                            id="_3WH" modifiers="16"/>
+            <FetchIndexStep client="$(client)"
+                            component="VehicleTable@Model@$(refModel)"
+                            id="_1pGh" local="true" varname="index"/>
+            <CheckStringStep client="$(client)"
+                             component="VehicleTable@Price&amp;$(index)"
+                             id="_3Mr">
+              <text>$(refPrice)</text>
+            </CheckStringStep>
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="VehicleTable@Price&amp;$(index)"
+                            event="MOUSE_MPRC" id="_3YL" modifiers="16"/>
+            <CheckStringStep client="$(client)" component="BasePrice"
+                             id="_3NX" timeout="500">
+              <text>$(refPrice)</text>
+            </CheckStringStep>
+            <CheckStringStep client="$(client)" component="CalculatedPrice"
+                             id="_3Ng">
+              <text>$(refPrice)</text>
+            </CheckStringStep>
+          </TestStep>
+          <TestStep id="_1pPq" name="check of price in vehicles dialog">
+            <SelectionEventStep client="$(client)" component="CarConfig"
+                                detail="clickmenu:@Options/Vehicles..."
+                                event="SELECTION" id="_1pPu"/>
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="VehiclesTable@Price&amp;$(index)"
+                            event="MOUSE_MPRC" id="_3Zc" modifiers="16" x="73"
+                            y="10"/>
+            <CheckStringStep client="$(client)"
+                             component="VehiclesTable@Price&amp;$(index)"
+                             id="_3Dk" timeout="500">
+              <text>$(refPrice)</text>
+            </CheckStringStep>
+            <MouseEventStep clicks="1" client="$(client)"
+                            component="CancelButton" event="MOUSE_MPRC"
+                            id="_3Zf" modifiers="16"/>
+          </TestStep>
+        </TestCase>
+      </TestSet>
+    </TestSet>
+    <TestSet id="_1pPv" name="Options">
+      <comment>Check the dialogs.</comment>
+      <TestCase id="_1pPw" name="Vehicle modifications">
+        <TestStep id="_1pPx" name="New">
+          <SelectionEventStep client="$(client)" component="CarConfig"
+                              detail="clickmenu:@Options/Vehicles..."
+                              event="SELECTION" id="_1pQM"/>
+          <ComponentWaiter client="$(client)" component="VehicleName"
+                           id="_3iL"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="VehicleName" event="MOUSE_MPRC" id="_3iC"
+                          modifiers="16"/>
+          <TextInputStep clear="true" client="$(client)"
+                         component="VehicleName" id="_3Rg">
+            <text>Test</text>
+          </TextInputStep>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="VehiclePrice" event="MOUSE_MPRC"
+                          id="_3Ri" modifiers="16"/>
+          <TextInputStep clear="true" client="$(client)"
+                         component="VehiclePrice" id="_3iM">
+            <text>9999</text>
+          </TextInputStep>
+          <MouseEventStep clicks="1" client="$(client)" component="NewButton"
+                          event="MOUSE_MPRC" id="_3Rf" modifiers="16"/>
+          <MouseEventStep clicks="1" client="$(client)" component="OkButton"
+                          event="MOUSE_MPRC" id="_3a9" modifiers="16"/>
+          <FetchIndexStep client="$(client)"
+                          component="VehicleTable@Model@Test" id="_3aB"
+                          local="true" varname="index"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="VehicleTable@Price&amp;$(index)"
+                          event="MOUSE_MPRC" id="_3aI" modifiers="16"/>
+          <CheckStringStep client="$(client)" component="BasePrice" id="_3Rm"
+                           timeout="500">
+            <text>$$9,999.00</text>
+          </CheckStringStep>
+        </TestStep>
+        <TestStep id="_1pQ6" name="Change">
+          <SelectionEventStep client="$(client)" component="CarConfig"
+                              detail="clickmenu:@Options/Vehicles..."
+                              event="SELECTION" id="_1pQN"/>
+          <ComponentWaiter client="$(client)" component="VehicleName"
+                           id="_3iO"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="VehiclesTable@Model&amp;2"
+                          event="MOUSE_MPRC" id="_3gg" modifiers="16" x="38"
+                          y="11"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="VehiclePrice" event="MOUSE_MPRC"
+                          id="_3iN" modifiers="16"/>
+          <TextInputStep clear="true" client="$(client)"
+                         component="VehiclePrice" id="_3SH">
+            <text>7000</text>
+          </TextInputStep>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="ChangeButton" event="MOUSE_MPRC"
+                          id="_3SG" modifiers="16"/>
+          <MouseEventStep clicks="1" client="$(client)" component="OkButton"
+                          event="MOUSE_MPRC" id="_3bQ" modifiers="16"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="VehicleTable@Price&amp;2"
+                          event="MOUSE_MPRC" id="_3bS" modifiers="16"/>
+          <CheckStringStep client="$(client)" component="BasePrice" id="_3SL"
+                           timeout="500">
+            <text>$$7,000.00</text>
+          </CheckStringStep>
+        </TestStep>
+        <TestStep id="_1pQF" name="Delete">
+          <SelectionEventStep client="$(client)" component="CarConfig"
+                              detail="clickmenu:@Options/Vehicles..."
+                              event="SELECTION" id="_1pQO"/>
+          <ComponentWaiter client="$(client)" component="VehicleName"
+                           id="_3iP"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="VehiclesTable@Model&amp;5"
+                          event="MOUSE_MPRC" id="_3ge" modifiers="16" x="38"
+                          y="11"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="DeleteButton" event="MOUSE_MPRC"
+                          id="_3bm" modifiers="16"/>
+          <ComponentWaiter client="$(client)" component="ConfirmDialog"
+                           id="_3bn"/>
+          <SelectionEventStep client="$(client)" component="ConfirmDialog"
+                              detail="OK" event="SELECTION" id="_3bo"/>
+          <MouseEventStep clicks="1" client="$(client)" component="OkButton"
+                          event="MOUSE_MPRC" id="_3bp" modifiers="16"/>
+        </TestStep>
+      </TestCase>
+    </TestSet>
+    <TestSet id="_1pQP" name="Calculations">
+      <comment>Check the calculation of specials and accessories.</comment>
+      <TestCase id="_1pQQ" name="A special with accessories">
+        <comment>This test-case checks whether the prices of an accessory are already taken into account once a special model has been selected.
+Additionally the check is repeated for every special model and every vehicle in order to show the usage of Loop nodes.
+
+Test-steps:
+Select a vehicle.
+Select a special model.
+Store the calculated price.
+Select accessories being part of the special model.
+If everything works correctly the shown calculated price should be the same as before the selection because the prices of the accessories have been taken into account because of the selection of the special model.
+The steps will be repeated for every vehicle and special.</comment>
+        <RepeatSequence count="4" id="_1pQR" name="all special models"
+                        var="special">
+          <RepeatSequence count="5" id="_1pQS" name="all vehicles"
+                          var="model">
+            <variable name="price"/>
+            <ProcedureCall id="_1pQT" procedure="mainwindow.menu.reset"/>
+            <ProcedureCall id="_1pQU" procedure="mainwindow.selectModel"/>
+            <ProcedureCall id="_1pQV" procedure="mainwindow.selectSpecial"/>
+            <ProcedureCall id="_1pQW" local="true"
+                           procedure="mainwindow.readPrice"
+                           retvarname="price"/>
+            <IfSequence id="_1pQX" name="Gomera"
+                        test="&#34;$(special)&#34; == &#34;1&#34;">
+              <ProcedureCall id="_1pQY"
+                             procedure="mainwindow.accessoriesPanel.selectAccessoriesOfGomera"/>
+              <ElseifSequence id="_1pQZ" name="Jazz"
+                              test="&#34;$(special)&#34; == &#34;2&#34;">
+                <ProcedureCall id="_1pQa"
+                               procedure="mainwindow.accessoriesPanel.selectAccessoriesOfJazz"/>
+              </ElseifSequence>
+              <ElseifSequence id="_1pQb" name="Luxus"
+                              test="&#34;$(special)&#34; == &#34;3&#34;">
+                <ProcedureCall id="_1pQc"
+                               procedure="mainwindow.accessoriesPanel.selectAccessoriesOfLuxus"/>
+              </ElseifSequence>
+            </IfSequence>
+            <ProcedureCall id="_1pQd" procedure="mainwindow.checkPrice"/>
+          </RepeatSequence>
+        </RepeatSequence>
+      </TestCase>
+    </TestSet>
+  </TestSet>
+  <PackageRoot id="_3">
+    <Package id="_3Cr" name="dependencies">
+      <comment>Package for dependencies.</comment>
+      <Dependency id="_3Cs" name="sutStarted">
+        <discriminator>browserWin</discriminator>
+        <discriminator>browserMac</discriminator>
+        <discriminator>browserLinux</discriminator>
+        <comment>Ensure the SUT is started.</comment>
+        <SetupSequence id="_3Ac" name="Start SUT, if required">
+          <SetGlobalStep id="_3OU" varname="client">
+            <default>carconfigWeb</default>
+          </SetGlobalStep>
+          <ClientWaiter client="$(client)" id="_1p6G" local="true"
+                        raise="false" resvarname="isSUTRunning" timeout="1">
+            <comment>This node checks whether the SUT is already running. The result of this check will be stored in the variable isSUTRunning. The variable itself can contain true if SUT is already running or false if SUT is not running. This variable will be used in the following 'If' node.</comment>
+          </ClientWaiter>
+          <IfSequence id="_1p6H" name="Launch SUT if not running"
+                      test="not $(isSUTRunning)">
+            <ProcedureCall id="_1p6I" procedure="startStop.start"/>
+          </IfSequence>
+        </SetupSequence>
+        <CleanupSequence id="_3Cm" name="Close SUT">
+          <ProcedureCall id="_3D0" procedure="startStop.terminate"/>
+        </CleanupSequence>
+      </Dependency>
+      <Dependency forcedcleanup="true" id="_3Cw" name="sutStartedAndReset">
+        <comment>Ensure proper state of running SUT.</comment>
+        <DependencyReference id="_3DA" reference="dependencies.sutStarted"/>
+        <SetupSequence id="_3Aj" name="Reset">
+          <ProcedureCall id="_1pFp" procedure="mainwindow.menu.reset"/>
+          <ProcedureCall id="_1pG9" procedure="mainwindow.menu.setBuggy">
+            <variable name="isBuggy">$(buggyMode)</variable>
+          </ProcedureCall>
+        </SetupSequence>
+      </Dependency>
+    </Package>
+    <Package id="_3Fp" name="mainwindow">
+      <comment>Package for actions in the main window.</comment>
+      <Package id="_3Fq" name="menu">
+        <comment>Package for actions with the menu.</comment>
+        <Procedure id="_38o" name="reset">
+          <comment>Reset the SUT.</comment>
+          <SelectionEventStep client="$(client)" component="CarConfig"
+                              detail="clickmenu:@File/Reset" event="SELECTION"
+                              id="_1pOD"/>
+        </Procedure>
+        <Procedure id="_3Jb" name="info">
+          <comment>Click Help -&gt; Menu.</comment>
+          <IfSequence id="_1pNw" test="${qftest:macos}">
+            <SelectionEventStep client="$(client)" component="CarConfig"
+                                detail="clickmenu:@CarConfig/About CarConfig"
+                                event="SELECTION" id="_1pNx"/>
+            <ElseSequence id="_1pNy">
+              <SelectionEventStep client="$(client)" component="CarConfig"
+                                  detail="clickmenu:@Help/Info"
+                                  event="SELECTION" id="_1pNz"/>
+            </ElseSequence>
+          </IfSequence>
+          <MouseEventStep clicks="1" client="$(client)" component="buttonOK"
+                          event="MOUSE_MPRC" id="_3ec" modifiers="16"/>
+        </Procedure>
+        <Procedure id="_3Jj" name="newVersion">
+          <comment>Click Help -&gt; New Version.</comment>
+          <SelectionEventStep client="$(client)" component="CarConfig"
+                              detail="clickmenu:@Help/New version"
+                              event="SELECTION" id="_1pN+"/>
+        </Procedure>
+        <Procedure id="_1p6x" name="setBuggy">
+          <variable name="isBuggy">False</variable>
+          <comment>Set the given state to Help -&gt; Buggy.
+
+@param	isBuggy	If set to true, the buggy mode is activated.
+</comment>
+          <IfSequence id="_1pOB" test="$(buggyMode)">
+            <comment>TODO: getMenu status</comment>
+            <SelectionEventStep client="$(client)" component="CarConfig"
+                                detail="clickmenu:@Help/Buggy"
+                                event="SELECTION" id="_1pN-"/>
+          </IfSequence>
+        </Procedure>
+      </Package>
+      <Package id="_3Fw" name="accessoriesPanel">
+        <comment>Package for actions on the "Accessories" tab.</comment>
+        <Procedure id="_1pQ+" name="selectAccessoriesOfGomera">
+          <comment>Select the accessories belonging to the special 'Gomera'.</comment>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="TabbedPane@Accessories"
+                          event="MOUSE_MPRC" id="_1pQ-" modifiers="16"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AccessoryTable@_&amp;2"
+                          event="MOUSE_MPRC" id="_1pR0" modifiers="16" x="93"
+                          y="13"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AccessoryTable@_&amp;3"
+                          event="MOUSE_MPRC" id="_1pR1" modifiers="16" x="93"
+                          y="13"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AccessoryTable@_&amp;5"
+                          event="MOUSE_MPRC" id="_1pR2" modifiers="16" x="93"
+                          y="13"/>
+        </Procedure>
+        <Procedure id="_1pR3" name="selectAccessoriesOfJazz">
+          <comment>Select the accessories belonging to the special 'Jazz'.</comment>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="TabbedPane@Accessories"
+                          event="MOUSE_MPRC" id="_1pR4" modifiers="16"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AccessoryTable@_&amp;3"
+                          event="MOUSE_MPRC" id="_1pR5" modifiers="16" x="93"
+                          y="13"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AccessoryTable@_&amp;6"
+                          event="MOUSE_MPRC" id="_1pR6" modifiers="16" x="93"
+                          y="13"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AccessoryTable@_&amp;7"
+                          event="MOUSE_MPRC" id="_1pR7" modifiers="16" x="93"
+                          y="13"/>
+        </Procedure>
+        <Procedure id="_1pR8" name="selectAccessoriesOfLuxus">
+          <comment>Select the accessories belonging to the special 'Luxus'.</comment>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="TabbedPane@Accessories"
+                          event="MOUSE_MPRC" id="_1pR9" modifiers="16"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AccessoryTable@_&amp;2"
+                          event="MOUSE_MPRC" id="_1pRA" modifiers="16" x="93"
+                          y="13"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AccessoryTable@_&amp;4"
+                          event="MOUSE_MPRC" id="_1pRB" modifiers="16" x="93"
+                          y="13"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AccessoryTable@_&amp;5"
+                          event="MOUSE_MPRC" id="_1pRC" modifiers="16" x="93"
+                          y="13"/>
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="AccessoryTable@_&amp;6"
+                          event="MOUSE_MPRC" id="_1pRD" modifiers="16" x="93"
+                          y="13"/>
+        </Procedure>
+      </Package>
+      <Procedure id="_3A9" name="selectModel">
+        <variable name="model"/>
+        <comment>Select a given model.
+
+@param model	The index of the model
+</comment>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="TabbedPane@Vehicles" event="MOUSE_MPRC"
+                        id="_3c8" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="VehicleTable@Model&amp;$(model)"
+                        event="MOUSE_MPRC" id="_3c7" modifiers="16"/>
+      </Procedure>
+      <Procedure id="_3FK" name="selectSpecial">
+        <variable name="special"/>
+        <comment>Select a given special.
+
+@param special	The index of the special</comment>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="TabbedPane@Specials" event="MOUSE_MPRC"
+                        id="_3c9" modifiers="16"/>
+        <SelectionEventStep client="$(client)"
+                            component="SpecialsCombo&amp;$(special)"
+                            detail="0" event="SELECTION" id="_3cj"/>
+      </Procedure>
+      <Procedure id="_3FS" name="readPrice">
+        <comment>Return the final price.
+
+@return		The resulting price</comment>
+        <FetchTextStep client="$(client)" component="CalculatedPrice"
+                       id="_3cN" local="true" predelay="500" varname="price"/>
+        <ReturnStep id="_3Fc" retval="$(price)"/>
+      </Procedure>
+      <Procedure id="_3Gh" name="checkPrice">
+        <variable name="price"/>
+        <comment>Check the final price.
+
+@param price	The final price to check.</comment>
+        <CheckStringStep client="$(client)" component="CalculatedPrice"
+                         id="_3Gd" timeout="500">
+          <text>$(price)</text>
+        </CheckStringStep>
+      </Procedure>
+    </Package>
+    <Package id="_3Fr" name="startStop">
+      <comment>Package for starting and stopping the SUT.</comment>
+      <Procedure id="_3N6" name="start">
+        <comment>Start the SUT.
+
+@param	connectionMode	Specifies the connection mode to the browser. This parameter is used to enforce a WebDriver browser for the Selenium demo test cases.
+@param	useConnectorLoader	Enforces the start of the web engine within a dedicated classloader, which allows to manipulate the additional classpath of a unittest step without the need of an engine restart.
+</comment>
+        <BasicSequence id="_1pOM" name="Set global variables">
+          <IfSequence id="_1pON" test="${qftest:windows}">
+            <SetGlobalStep id="_1pOO" varname="executable">
+              <default>$(executableWin)</default>
+            </SetGlobalStep>
+            <ElseSequence id="_1pOP">
+              <IfSequence id="_1pOQ" test="${qftest:macos}">
+                <SetGlobalStep id="_1pOR" varname="executable">
+                  <default>$(executableMac)</default>
+                </SetGlobalStep>
+                <ElseSequence id="_1pOS">
+                  <SetGlobalStep id="_1pOT" varname="executable">
+                    <default>$(executableLinux)</default>
+                  </SetGlobalStep>
+                </ElseSequence>
+              </IfSequence>
+            </ElseSequence>
+          </IfSequence>
+          <SetGlobalStep id="_1pOU" varname="client">
+            <default>CarConfig</default>
+          </SetGlobalStep>
+          <SetGlobalStep id="_1pOV" varname="browser">
+            <default>electron</default>
+          </SetGlobalStep>
+          <SetGlobalStep id="_1pOW" varname="arguments">
+            <default>--lang=en</default>
+          </SetGlobalStep>
+        </BasicSequence>
+        <BasicSequence id="_1pPC" name="Download supplemental files">
+          <SetGlobalStep id="_1pPE" local="true" varname="demoSource">
+            <default>https://www.qfs.de/fileadmin/Webdata/pub/electron/CarConfig-$(carConfigVersion)-$["mac" if ${qftest:macos} else "linux" if ${qftest:linux} else "win"].zip</default>
+          </SetGlobalStep>
+          <ProcedureCall id="_1pPF" local="true"
+                         procedure="qfs.shellutils.exists"
+                         retvarname="demoExists">
+            <variable name="file">$(appdir)/$(executable)</variable>
+          </ProcedureCall>
+          <IfSequence id="_1pPG" test="not $(demoExists)">
+            <ProcedureCall id="_1pO+" procedure="util.download">
+              <variable name="fileURL">$(demoSource)</variable>
+              <variable name="targetDir">$(appdir)</variable>
+              <variable name="targetName">CarConfig.zip</variable>
+            </ProcedureCall>
+            <ProcedureCall id="_1pP2" procedure="util.unzip">
+              <variable name="file">CarConfig.zip</variable>
+              <variable name="destination">$(appdir)</variable>
+            </ProcedureCall>
+            <ProcedureCall id="_1pPJ" procedure="qfs.shellutils.deleteFile">
+              <variable name="file">$(appdir)/CarConfig.zip</variable>
+            </ProcedureCall>
+          </IfSequence>
+        </BasicSequence>
+        <ClientWaiter client="$(client)" id="_1pGm" local="true" raise="false"
+                      resvarname="isSUTRunning" timeout="1">
+          <comment>This node checks whether the SUT is already running. The result of this check will be stored in the variable isSUTRunning. The variable itself can contain true if SUT is already running or false if SUT is not running. This variable will be used in the following 'If' node.</comment>
+        </ClientWaiter>
+        <IfSequence id="_1pGn" name="Launch SUT if not running"
+                    test="not $(isSUTRunning)">
+          <BasicSequence id="_1pGo" name="Start web engine">
+            <BrowserClientStarter browser="$(browser)" client="$(client)"
+                                  executable="${qftest:java}" id="_1pGp"
+                                  mozhome="$(appdir)" openwindow="false">
+              <parameter>-Dqftest.web.webdriver.browserFileName=$(executable)</parameter>
+              <parameter>-Dqftest.web.chrome.args=$(arguments)</parameter>
+            </BrowserClientStarter>
+            <ClientWaiter client="$(client)" id="_1pGq"/>
+          </BasicSequence>
+          <BasicSequence id="_1pGr" name="Perform browser settings">
+            <ProcedureCall id="_1pGs"
+                           procedure="qfs.qft#qfs.web.browser.settings.doStartupSettings">
+              <variable name="client">$(client)</variable>
+              <variable name="browser">$(browser)</variable>
+              <variable name="emptyCache">true</variable>
+              <variable name="enableCookies">true</variable>
+              <variable name="deleteCookies">true</variable>
+              <variable name="locale">en</variable>
+              <variable name="enableProxy">false</variable>
+              <variable name="proxyAddress"/>
+              <variable name="proxyPort"/>
+              <variable name="proxyAutoconfigurl"/>
+              <variable name="enableProxyBypass">false</variable>
+              <variable name="proxyBypass"/>
+              <variable name="mozprofile"/>
+              <variable name="compatibilitymode">no</variable>
+            </ProcedureCall>
+          </BasicSequence>
+          <BasicSequence id="_1pGt" name="Start Electron application">
+            <BrowserClientStarter browser="${default:browser:chrome}"
+                                  client="$(client)"
+                                  executable="${qftest:java}" id="_1pGu"
+                                  openwindow="true"/>
+            <DocumentWaiter client="$(client)" component="genericDocument"
+                            id="_1pGv" timeout="60000"/>
+          </BasicSequence>
+          <BasicSequence id="_1pGw" name="Install CustomWebResolver">
+            <ProcedureCall id="_1pHB"
+                           procedure="qfs.web.ajax.installCustomWebResolver">
+              <variable name="client">$(client)</variable>
+              <variable name="resolver">custom</variable>
+              <variable name="version"/>
+              <variable name="genericClasses">button=Button,
+textfield=TextField,
+editable=TextField,
+label=Label,
+menusubitem=MenuItem,
+menuitem=MenuItem,
+Menubar-Widget=MenuBar,
+ui-dialog-title=Label:WindowTitle,
+ui-dialog-titlebar-close=Closer:WindowCloser,
+tree=Tree,
+treenode=TreeNode,
+treetoggler=Expander:TreeNodeExpander,
+treenodespacer=Spacer:TreeNodeSpacer,
+dataTable=Table,
+dataRow=TableRow,
+dataCell=TableCell,
+headerRow=TableHeader,
+headerCell=TableHeaderCell,
+ui-tabs=TabPanel,
+TabItem=Item:TabPanelItem,
+ui-tabs-panel=Panel:TabPanelContent,
+ui-accordion=Accordion,
+ui-accordion-header=Item:AccordionItem,
+ui-accordion-content=Panel:AccordionContent,
+ui-dialog-buttonpane=Panel,
+ui-dialog-content=Panel,
+panel=Panel,
+ui-widget-overlay=BusyPane,</variable>
+              <variable name="attributesToGenericClasses">role=dialog=Window:Dialog,</variable>
+              <variable name="tagsToGenericClasses"/>
+              <variable name="ignoreTags">DIV,SPAN,CENTER,NOSCRIPT,FORM,UL,TR,TD,TABLE,HR,</variable>
+              <variable name="ignoreByAttributes"/>
+              <variable name="autoIdPatterns"/>
+              <variable name="customIdAttributes"/>
+              <variable name="interestingByAttributes"/>
+              <variable name="attributesToQftFeature"/>
+              <variable name="documentJS"/>
+              <comment>Dieser Aufruf installiert einen CustomWebResolver für AJAX Toolkits.
+Ein CustomWebResolver erlaubt es Ihnen die Spezifika Ihrer Webanwendung nach generischen Klassen von QF-Test zu übersetzen. Dieser Ansatz verbessert die Komponentenerkennung und erweitert die angebotenen Checkvarianten. Ihre Testfälle werden dadurch stabiler, robuster und lesbarer.
+Der wichtigste Parameter ist 'genericClasses'. Damit können Sie Werte des 'class' Attributes einer Komponente, z.B. 'btn', in einen QF-Test Button übersetzen. Dies geschieht mittels Angabe von btn=Button. Weitere Übersetzungen können sie kommasepariert angeben.
+Sie finden weitere Informationen im Kommentar der Prozedur selbst, hierfür einfach doppelt auf den Prozeduraufruf klicken.
+Im Handbuch finden Sie ein vollständiges Beispiel.</comment>
+            </ProcedureCall>
+          </BasicSequence>
+        </IfSequence>
+      </Procedure>
+      <Procedure id="_3dg" name="terminate">
+        <comment>Terminate the SUT.</comment>
+        <TryStep id="_3dl" name="already stopped? ">
+          <ProcessWaiter client="$(client)" id="_3dk" timeout="1"/>
+          <CatchSequence exception="ClientNotTerminatedException" id="_3e3"
+                         maxerror="0" name="not stopped -&gt; stop it">
+            <TryStep id="_3dz" name="Close browser window">
+              <WindowEventStep client="$(client)" component="CarConfig"
+                               event="WINDOW_CLOSING" id="_3e4"/>
+              <ProcessWaiter client="$(client)" id="_3e5"/>
+              <CatchSequence exception="TestException" id="_3e6" maxerror="0"
+                             name="Couldn't close browser window -&gt; kill process">
+                <ClientStopper client="$(client)" id="_3e7"/>
+                <ProcessWaiter client="$(client)" id="_3e8"/>
+              </CatchSequence>
+            </TryStep>
+          </CatchSequence>
+          <FinallySequence id="_1pGe" name="Reset server options">
+            <ServerScriptStep id="_1pGf"
+                              name="Reset option to start web engine in special classloader">
+              <code>rc.unsetOption(Options.OPT_WEB_USE_CONNECTOR_LOADER)</code>
+            </ServerScriptStep>
+          </FinallySequence>
+        </TryStep>
+      </Procedure>
+    </Package>
+    <Package id="_1pOK" name="util">
+      <comment>Hilfsmethoden für Dateioperationen.</comment>
+      <Procedure id="_q" name="download">
+        <variable name="fileURL"/>
+        <variable name="targetDir"/>
+        <variable name="targetName"/>
+        <ServerScriptStep id="_1pPT">
+          <code>print("Download Electron CarConfig Demo. This might take some time...")</code>
+        </ServerScriptStep>
+        <RequestStep id="_1pPS" requestmethod="GET"
+                     responsefile="$(targetDir)${system:file.separator}$(targetName)"
+                     url="$(fileURL)"/>
+      </Procedure>
+      <Procedure id="_1pO-" name="unzip">
+        <variable name="file">$(file)</variable>
+        <variable name="destination">$(destination)</variable>
+        <IfSequence id="_1pP7" name="Windows" test="${qftest:windows}">
+          <ServerScriptStep id="_1pPI" name="Extract zipfile">
+            <code>import zipfile
+
+destination = rc.lookup("destination")
+zipFile = "%s/%s" % (destination,rc.lookup("file"))
+
+try:
+    zip_ref = zipfile.ZipFile(zipFile, 'r')
+    zip_ref.extractall(rc.lookup("destination"))
+finally :
+    zip_ref.close()
+</code>
+          </ServerScriptStep>
+          <ElseSequence id="_1pP9" name="macOS, Linux">
+            <ShellClientStarter client="unzip"
+                                command="/usr/bin/unzip &#34;$(file)&#34;"
+                                directory="$(destination)" id="_1pPA"/>
+            <ProcessWaiter client="unzip" id="_1pPB" timeout="60000"/>
+          </ElseSequence>
+        </IfSequence>
+      </Procedure>
+    </Package>
+  </PackageRoot>
+  <ExtraSequence id="_4"/>
+  <WindowList id="_5">
+    <WebPageStep class="Window" feature="CarConfig.html" height="491"
+                 id="CarConfig" uid="_3e9" width="1024">
+      <extrafeature name="lang" negate="false" regexp="false" state="0">en</extrafeature>
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">DOCUMENT</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Window</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">DOCUMENT</extrafeature>
+      <extrafeature name="title" negate="false" regexp="false" state="0">ElectronCarConfigurator</extrafeature>
+      <ComponentStep class="HTML" classcount="1" classindex="0"
+                     id="CarConfig.html" uid="_3eA">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">HTML</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">HTML</extrafeature>
+        <ComponentStep class="BODY" classcount="1" classindex="0"
+                       feature="CarConfigElectron" id="CarConfigElectron"
+                       name="CarConfigElectron" uid="_3eB">
+          <extrafeature name="id" negate="false" regexp="false" state="1">CarConfigElectron</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">BODY</extrafeature>
+          <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                        state="0">CarConfigElectron</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">BODY</extrafeature>
+          <ComponentStep class="TabPanel" classcount="1" classindex="0"
+                         feature="TabbedPane" height="241" id="TabbedPane"
+                         name="TabbedPane" uid="_3ej" width="700" x="0" y="0">
+            <extrafeature name="class" negate="false" regexp="false"
+                          state="1">ui-tabs ui-widget ui-widget-content ui-corner-all</extrafeature>
+            <extrafeature name="id" negate="false" regexp="false" state="1">TabbedPane</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">DIV</extrafeature>
+            <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                          state="0">TabbedPane</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">DIV</extrafeature>
+            <ComponentStep class="Panel" classindex="0"
+                           feature="Tab: Vehicles" height="186"
+                           id="VehicleTablePanel" name="VehicleTablePanel"
+                           uid="_1pHx" width="692" x="4" y="51">
+              <extrafeature name="class" negate="false" regexp="false"
+                            state="0">ui-tabs-panel ui-widget-content ui-corner-bottom</extrafeature>
+              <extrafeature name="id" negate="false" regexp="false" state="1">VehicleTablePanel</extrafeature>
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">ui-tabs-panel</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">Panel</extrafeature>
+              <extrafeature name="qfs:originalid" negate="false"
+                            regexp="false" state="0">VehicleTablePanel</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">ui-tabs-panel</extrafeature>
+              <extrafeature name="qfs:type" negate="false" regexp="false"
+                            state="0">Panel:TabPanelContent</extrafeature>
+              <extrafeature name="tag" negate="false" regexp="false"
+                            state="0">DIV</extrafeature>
+              <ComponentStep class="Table" classcount="1" classindex="0"
+                             feature="VehicleTable" height="154"
+                             id="VehicleTable" name="VehicleTable" uid="_1pHy"
+                             width="243" x="225" y="16">
+                <extrafeature name="class" negate="false" regexp="false"
+                              state="0">dataTable</extrafeature>
+                <extrafeature name="columns" negate="false" regexp="false"
+                              state="1">2</extrafeature>
+                <extrafeature name="id" negate="false" regexp="false"
+                              state="1">VehicleTable</extrafeature>
+                <extrafeature name="qfs:class" negate="false" regexp="false"
+                              state="0">dataTable</extrafeature>
+                <extrafeature name="qfs:genericclass" negate="false"
+                              regexp="false" state="0">Table</extrafeature>
+                <extrafeature name="qfs:originalid" negate="false"
+                              regexp="false" state="0">VehicleTable</extrafeature>
+                <extrafeature name="qfs:systemclass" negate="false"
+                              regexp="false" state="0">dataTable</extrafeature>
+                <extrafeature name="tag" negate="false" regexp="false"
+                              state="0">TABLE</extrafeature>
+              </ComponentStep>
+            </ComponentStep>
+            <ComponentStep class="Panel" classindex="1"
+                           feature="Tab: Specials" height="205"
+                           id="SpecialsPanel" name="SpecialsPanel" uid="_1pHz"
+                           width="692" x="4" y="51">
+              <extrafeature name="class" negate="false" regexp="false"
+                            state="0">ui-tabs-panel ui-widget-content ui-corner-bottom</extrafeature>
+              <extrafeature name="id" negate="false" regexp="false" state="1">SpecialsPanel</extrafeature>
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">ui-tabs-panel</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">Panel</extrafeature>
+              <extrafeature name="qfs:originalid" negate="false"
+                            regexp="false" state="0">SpecialsPanel</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">ui-tabs-panel</extrafeature>
+              <extrafeature name="qfs:type" negate="false" regexp="false"
+                            state="0">Panel:TabPanelContent</extrafeature>
+              <extrafeature name="tag" negate="false" regexp="false"
+                            state="0">DIV</extrafeature>
+              <ComponentStep class="ComboBox" classcount="1" classindex="0"
+                             feature="SpecialsCombo" height="25"
+                             id="SpecialsCombo" name="SpecialsCombo"
+                             uid="_3ey" width="350" x="171" y="16">
+                <extrafeature name="id" negate="false" regexp="false"
+                              state="1">SpecialsCombo</extrafeature>
+                <extrafeature name="qfs:class" negate="false" regexp="false"
+                              state="0">SELECT</extrafeature>
+                <extrafeature name="qfs:genericclass" negate="false"
+                              regexp="false" state="0">ComboBox</extrafeature>
+                <extrafeature name="qfs:label" negate="false" regexp="false"
+                              state="1">Base Price</extrafeature>
+                <extrafeature name="qfs:originalid" negate="false"
+                              regexp="false" state="0">SpecialsCombo</extrafeature>
+                <extrafeature name="qfs:systemclass" negate="false"
+                              regexp="false" state="0">SELECT</extrafeature>
+              </ComponentStep>
+            </ComponentStep>
+            <ComponentStep class="Panel" classindex="2"
+                           feature="Tab: Accessories" height="318"
+                           id="panelAccessories" uid="_1pHW" width="692" x="4"
+                           y="51">
+              <extrafeature name="class" negate="false" regexp="false"
+                            state="0">ui-tabs-panel ui-widget-content ui-corner-bottom</extrafeature>
+              <extrafeature name="id" negate="false" regexp="false" state="1">AccessoryTablePanel</extrafeature>
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">ui-tabs-panel</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">Panel</extrafeature>
+              <extrafeature name="qfs:originalid" negate="false"
+                            regexp="false" state="0">AccessoryTablePanel</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">ui-tabs-panel</extrafeature>
+              <extrafeature name="qfs:type" negate="false" regexp="false"
+                            state="0">Panel:TabPanelContent</extrafeature>
+              <extrafeature name="tag" negate="false" regexp="false"
+                            state="0">DIV</extrafeature>
+              <ComponentStep class="Table" classcount="1" classindex="0"
+                             feature="AccessoryTable" height="229"
+                             id="AccessoryTable" uid="_1pHX" width="372"
+                             x="160" y="16">
+                <extrafeature name="class" negate="false" regexp="false"
+                              state="0">dataTable</extrafeature>
+                <extrafeature name="columns" negate="false" regexp="false"
+                              state="1">4</extrafeature>
+                <extrafeature name="id" negate="false" regexp="false"
+                              state="1">AccessoryTable</extrafeature>
+                <extrafeature name="qfs:class" negate="false" regexp="false"
+                              state="0">dataTable</extrafeature>
+                <extrafeature name="qfs:genericclass" negate="false"
+                              regexp="false" state="0">Table</extrafeature>
+                <extrafeature name="qfs:label" negate="false" regexp="false"
+                              state="1">Add accessories price to final price</extrafeature>
+                <extrafeature name="qfs:originalid" negate="false"
+                              regexp="false" state="0">AccessoryTable</extrafeature>
+                <extrafeature name="qfs:systemclass" negate="false"
+                              regexp="false" state="0">dataTable</extrafeature>
+                <extrafeature name="tag" negate="false" regexp="false"
+                              state="0">TABLE</extrafeature>
+              </ComponentStep>
+            </ComponentStep>
+          </ComponentStep>
+          <ComponentStep class="Panel" classcount="1" classindex="0"
+                         feature="CalculatorPanel" height="110"
+                         id="CalculatorPanel" name="CalculatorPanel"
+                         uid="_3f2" width="393" x="176" y="327">
+            <extrafeature name="class" negate="false" regexp="false"
+                          state="1">panel</extrafeature>
+            <extrafeature name="columns" negate="false" regexp="false"
+                          state="1">4</extrafeature>
+            <extrafeature name="id" negate="false" regexp="false" state="1">CalculatorPanel</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">TABLE</extrafeature>
+            <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                          state="0">CalculatorPanel</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">TABLE</extrafeature>
+            <ComponentStep class="TextField" classcount="4" classindex="1"
+                           feature="BasePrice" height="30" id="BasePrice"
+                           name="BasePrice" uid="_3f5" width="94" x="144"
+                           y="0">
+              <extrafeature name="class" negate="false" regexp="false"
+                            state="1">textfield</extrafeature>
+              <extrafeature name="id" negate="false" regexp="false" state="1">BasePrice</extrafeature>
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">TD</extrafeature>
+              <extrafeature name="qfs:originalid" negate="false"
+                            regexp="false" state="0">BasePrice</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">TD</extrafeature>
+            </ComponentStep>
+            <ComponentStep class="TextField" classcount="6" classindex="5"
+                           feature="CalculatedPrice" height="28"
+                           id="CalculatedPrice" name="CalculatedPrice"
+                           uid="_1pI3" width="104" x="157" y="80">
+              <extrafeature name="class" negate="false" regexp="false"
+                            state="0">textfield</extrafeature>
+              <extrafeature name="id" negate="false" regexp="false" state="1">CalculatedPrice</extrafeature>
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">textfield</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">TextField</extrafeature>
+              <extrafeature name="qfs:label" negate="false" regexp="false"
+                            state="1">Final Price</extrafeature>
+              <extrafeature name="qfs:originalid" negate="false"
+                            regexp="false" state="0">CalculatedPrice</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">textfield</extrafeature>
+              <extrafeature name="tag" negate="false" regexp="false"
+                            state="0">TD</extrafeature>
+            </ComponentStep>
+            <ComponentStep class="TextField" classcount="6" classindex="1"
+                           feature="DiscountValue" height="25"
+                           id="DiscountValue" name="DiscountValue" uid="_1pI8"
+                           width="73" x="356" y="2">
+              <extrafeature name="class" negate="false" regexp="false"
+                            state="0">textfield</extrafeature>
+              <extrafeature name="id" negate="false" regexp="false" state="1">DiscountValue</extrafeature>
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">textfield</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">TextField</extrafeature>
+              <extrafeature name="qfs:label" negate="false" regexp="false"
+                            state="1">Discount</extrafeature>
+              <extrafeature name="qfs:originalid" negate="false"
+                            regexp="false" state="0">DiscountValue</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">textfield</extrafeature>
+              <extrafeature name="tag" negate="false" regexp="false"
+                            state="0">TD</extrafeature>
+            </ComponentStep>
+          </ComponentStep>
+          <ComponentStep class="Dialog" feature="Info" height="408"
+                         id="dialogInfo" uid="_1pIE" width="508">
+            <extrafeature name="class" negate="false" regexp="false"
+                          state="0">ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">DIV</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Dialog</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">DIV</extrafeature>
+            <extrafeature name="qfs:type" negate="false" regexp="false"
+                          state="0">Window:Dialog</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">DIV</extrafeature>
+            <ComponentStep class="Panel" classcount="2" classindex="1"
+                           height="66" id="dialogInfo.panel" uid="_1pIF"
+                           width="500" x="4" y="338">
+              <extrafeature name="class" negate="false" regexp="false"
+                            state="0">ui-dialog-buttonpane ui-widget-content ui-helper-clearfix</extrafeature>
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">ui-dialog-buttonpane</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">Panel</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">ui-dialog-buttonpane</extrafeature>
+              <extrafeature name="tag" negate="false" regexp="false"
+                            state="0">DIV</extrafeature>
+              <ComponentStep class="Button" classcount="1" classindex="0"
+                             feature="OK" height="37" id="buttonOK"
+                             name="buttonOK" uid="_1pIG" width="60" x="418"
+                             y="14">
+                <extrafeature name="class" negate="false" regexp="false"
+                              state="0">ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-state-focus ui-state-hover</extrafeature>
+                <extrafeature name="id" negate="false" regexp="false"
+                              state="1">buttonOK</extrafeature>
+                <extrafeature name="qfs:class" negate="false" regexp="false"
+                              state="0">BUTTON:BUTTON</extrafeature>
+                <extrafeature name="qfs:genericclass" negate="false"
+                              regexp="false" state="0">Button</extrafeature>
+                <extrafeature name="qfs:label" negate="false" regexp="false"
+                              state="1">OK</extrafeature>
+                <extrafeature name="qfs:originalid" negate="false"
+                              regexp="false" state="0">buttonOK92</extrafeature>
+                <extrafeature name="qfs:systemclass" negate="false"
+                              regexp="false" state="0">BUTTON:BUTTON</extrafeature>
+                <extrafeature name="tag" negate="false" regexp="false"
+                              state="0">BUTTON:BUTTON</extrafeature>
+              </ComponentStep>
+            </ComponentStep>
+          </ComponentStep>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="MenuBar" classcount="1" classindex="0"
+                     feature="MenuBar" height="44" id="MenuBar" name="MenuBar"
+                     uid="_3h3" width="702" x="163" y="54">
+        <extrafeature name="id" negate="false" regexp="false" state="1">MenuBar</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">UL</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Menu</extrafeature>
+        <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                      state="0">MenuBar</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">UL</extrafeature>
+        <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Menu:MenuBar</extrafeature>
+        <extrafeature name="tag" negate="false" regexp="false" state="0">UL</extrafeature>
+        <ComponentStep class="MenuItem" classcount="4" classindex="0"
+                       feature="Datei" height="27" id="mFile" name="mFile"
+                       uid="_6ru" width="153" x="9" y="9">
+          <extrafeature name="class" negate="false" regexp="false" state="0">menuitem</extrafeature>
+          <extrafeature name="id" negate="false" regexp="false" state="1">mFile</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">menuitem</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">MenuItem</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">Datei</extrafeature>
+          <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                        state="0">mFile</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">menuitem</extrafeature>
+          <extrafeature name="tag" negate="false" regexp="false" state="0">LI</extrafeature>
+          <ComponentStep class="MenuItem" classcount="2" classindex="0"
+                         feature="Zurücksetzen" height="27" id="miReset"
+                         name="miReset" uid="_6rv" width="153" x="0" y="27">
+            <extrafeature name="class" negate="false" regexp="false"
+                          state="0">menusubitem</extrafeature>
+            <extrafeature name="id" negate="false" regexp="false" state="1">miReset</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">menusubitem</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">MenuItem</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Zurücksetzen</extrafeature>
+            <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                          state="0">miReset</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">menusubitem</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">LI</extrafeature>
+          </ComponentStep>
+        </ComponentStep>
+        <ComponentStep class="MenuItem" classcount="4" classindex="3"
+                       feature="Help" height="27" id="mHelp" name="mHelp"
+                       uid="_1pGA" width="153" x="509" y="9">
+          <extrafeature name="class" negate="false" regexp="false" state="0">menuitem</extrafeature>
+          <extrafeature name="id" negate="false" regexp="false" state="1">mHelp</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">menuitem</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">MenuItem</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">Help</extrafeature>
+          <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                        state="0">mHelp</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">menuitem</extrafeature>
+          <extrafeature name="tag" negate="false" regexp="false" state="0">LI</extrafeature>
+          <ComponentStep class="MenuItem" classcount="4" classindex="1"
+                         feature="Buggy" height="27" id="miBuggy"
+                         name="miBuggy" uid="_1pGB" width="153" x="0" y="55">
+            <extrafeature name="class" negate="false" regexp="false"
+                          state="0">menusubitem checkable-menu-item</extrafeature>
+            <extrafeature name="id" negate="false" regexp="false" state="1">miBuggy</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">menusubitem</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">MenuItem</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Buggy</extrafeature>
+            <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                          state="0">miBuggy</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">menusubitem</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">LI</extrafeature>
+          </ComponentStep>
+          <ComponentStep class="MenuItem" classcount="4" classindex="0"
+                         feature="Info" height="27" id="miInfo" name="miInfo"
+                         uid="_1pID" width="153" x="0" y="27">
+            <extrafeature name="class" negate="false" regexp="false"
+                          state="0">menusubitem</extrafeature>
+            <extrafeature name="id" negate="false" regexp="false" state="1">miInfo</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">menusubitem</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">MenuItem</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Info</extrafeature>
+            <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                          state="0">miInfo</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">menusubitem</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">LI</extrafeature>
+          </ComponentStep>
+        </ComponentStep>
+        <ComponentStep class="MenuItem" classcount="4" classindex="1"
+                       feature="mOptions" height="26" id="mOptions"
+                       name="mOptions" uid="_3fP" width="153" x="176" y="8">
+          <extrafeature name="class" negate="false" regexp="false" state="1">menuitem</extrafeature>
+          <extrafeature name="id" negate="false" regexp="false" state="1">mOptions</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">LI</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">Options</extrafeature>
+          <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                        state="0">mOptions</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">LI</extrafeature>
+          <ComponentStep class="MenuItem" classcount="3" classindex="0"
+                         feature="miVehicles" height="26" id="miVehicles"
+                         name="miVehicles" uid="_3fS" width="153" x="0" y="0">
+            <extrafeature name="class" negate="false" regexp="false"
+                          state="1">menusubitem</extrafeature>
+            <extrafeature name="id" negate="false" regexp="false" state="1">miVehicles</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">LI</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Vehicles...</extrafeature>
+            <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                          state="0">miVehicles</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">LI</extrafeature>
+            <ComponentStep class="Link" classcount="1" classindex="0"
+                           feature="Vehicles..." height="26"
+                           id="miVehicles_menu" name="miVehicles_menu"
+                           uid="_3fT" width="153" x="0" y="0">
+              <extrafeature name="id" negate="false" regexp="false" state="1">miVehicles_menu</extrafeature>
+              <extrafeature name="lang" negate="false" regexp="false"
+                            state="0">en</extrafeature>
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">A</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">Link</extrafeature>
+              <extrafeature name="qfs:label" negate="false" regexp="false"
+                            state="1">Vehicles...</extrafeature>
+              <extrafeature name="qfs:originalid" negate="false"
+                            regexp="false" state="0">miVehicles_menu</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">A</extrafeature>
+            </ComponentStep>
+          </ComponentStep>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="Dialog" feature="Vehicles Dialog" height="426"
+                     id="VehiclesDialog" name="VehiclesDialog" uid="_3hA"
+                     width="611">
+        <extrafeature name="class" negate="false" regexp="false" state="0">ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable ui-resizable</extrafeature>
+        <extrafeature name="id" negate="false" regexp="false" state="1">VehiclesDialog</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">ui-dialog</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Window</extrafeature>
+        <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                      state="0">VehiclesDialog</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">ui-dialog</extrafeature>
+        <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Window:Dialog</extrafeature>
+        <extrafeature name="tag" negate="false" regexp="false" state="0">DIV</extrafeature>
+        <ComponentStep class="Button" classcount="5" classindex="0"
+                       feature="New" height="37" id="NewButton" uid="_3ih"
+                       width="74" x="0" y="8">
+          <extrafeature name="class" negate="false" regexp="true" state="1">ui-button.*</extrafeature>
+          <extrafeature name="id" negate="false" regexp="false" state="1">NewButton</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">BUTTON:BUTTON</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Button</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">New</extrafeature>
+          <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                        state="0">NewButton1</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">BUTTON:BUTTON</extrafeature>
+          <comment>NOTE: The extra-feature 'class' has been set to a regular expression in order to avoid component recognition warnings due to running the test with multiple languages. See manual chapter "Component" for more details.</comment>
+        </ComponentStep>
+        <ComponentStep class="Button" classcount="5" classindex="1"
+                       feature="Change" height="37" id="ChangeButton"
+                       uid="_3ii" width="101" x="81" y="8">
+          <extrafeature name="class" negate="false" regexp="true" state="1">ui-button.*</extrafeature>
+          <extrafeature name="id" negate="false" regexp="false" state="1">ChangeButton</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">BUTTON:BUTTON</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Button</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">Change</extrafeature>
+          <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                        state="0">ChangeButton1</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">BUTTON:BUTTON</extrafeature>
+          <comment>NOTE: The extra-feature 'class' has been set to a regular expression in order to avoid component recognition warnings due to running the test with multiple languages. See manual chapter "Component" for more details.</comment>
+        </ComponentStep>
+        <ComponentStep class="Button" classcount="5" classindex="2"
+                       feature="Delete" height="37" id="DeleteButton"
+                       uid="_3ij" width="92" x="188" y="8">
+          <extrafeature name="class" negate="false" regexp="true" state="1">ui-button.*</extrafeature>
+          <extrafeature name="id" negate="false" regexp="false" state="1">DeleteButton</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">BUTTON:BUTTON</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Button</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">Delete</extrafeature>
+          <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                        state="0">DeleteButton1</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">BUTTON:BUTTON</extrafeature>
+          <comment>NOTE: The extra-feature 'class' has been set to a regular expression in order to avoid component recognition warnings due to running the test with multiple languages. See manual chapter "Component" for more details.</comment>
+        </ComponentStep>
+        <ComponentStep class="Button" classcount="5" classindex="3"
+                       feature="OK" height="37" id="OkButton" uid="_3ik"
+                       width="60" x="286" y="8">
+          <extrafeature name="class" negate="false" regexp="true" state="1">ui-button.*</extrafeature>
+          <extrafeature name="id" negate="false" regexp="false" state="1">OkButton</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">BUTTON:BUTTON</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Button</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">OK</extrafeature>
+          <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                        state="0">OkButton1</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">BUTTON:BUTTON</extrafeature>
+          <comment>NOTE: The extra-feature 'class' has been set to a regular expression in order to avoid component recognition warnings due to running the test with multiple languages. See manual chapter "Component" for more details.</comment>
+        </ComponentStep>
+        <ComponentStep class="Button" classcount="5" classindex="4"
+                       feature="Cancel" height="37" id="CancelButton"
+                       uid="_3il" width="93" x="353" y="8">
+          <extrafeature name="class" negate="false" regexp="true" state="1">ui-button.*</extrafeature>
+          <extrafeature name="id" negate="false" regexp="false" state="1">CancelButton</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">BUTTON:BUTTON</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Button</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">Cancel</extrafeature>
+          <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                        state="0">CancelButton1</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">BUTTON:BUTTON</extrafeature>
+          <comment>NOTE: The extra-feature 'class' has been set to a regular expression in order to avoid component recognition warnings due to running the test with multiple languages. See manual chapter "Component" for more details.</comment>
+        </ComponentStep>
+        <ComponentStep class="TextField" classcount="2" classindex="0"
+                       feature="VehicleName" height="29" id="VehicleName"
+                       name="VehicleName" uid="_3hE" width="210" x="0" y="0">
+          <extrafeature name="class" negate="false" regexp="false" state="0">editable</extrafeature>
+          <extrafeature name="id" negate="false" regexp="false" state="1">VehicleName</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">editable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">TextField</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">Name</extrafeature>
+          <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                        state="0">VehicleName</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">editable</extrafeature>
+          <extrafeature name="tag" negate="false" regexp="false" state="0">TD</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="TextField" classcount="2" classindex="1"
+                       feature="VehiclePrice" height="29" id="VehiclePrice"
+                       name="VehiclePrice" uid="_3hF" width="210" x="436"
+                       y="0">
+          <extrafeature name="class" negate="false" regexp="false" state="0">editable</extrafeature>
+          <extrafeature name="id" negate="false" regexp="false" state="1">VehiclePrice</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">editable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">TextField</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">Price</extrafeature>
+          <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                        state="0">VehiclePrice</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">editable</extrafeature>
+          <extrafeature name="tag" negate="false" regexp="false" state="0">TD</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       feature="VehiclesTable" height="152" id="VehiclesTable"
+                       name="VehiclesTable" uid="_1pHE" width="518" x="0"
+                       y="19">
+          <extrafeature name="class" negate="false" regexp="false" state="0">dataTable</extrafeature>
+          <extrafeature name="columns" negate="false" regexp="false"
+                        state="1">3</extrafeature>
+          <extrafeature name="id" negate="false" regexp="false" state="1">VehiclesTable</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">dataTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">Vehicles</extrafeature>
+          <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                        state="0">VehiclesTable</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">dataTable</extrafeature>
+          <extrafeature name="tag" negate="false" regexp="false" state="0">TABLE</extrafeature>
+        </ComponentStep>
+      </ComponentStep>
+    </WebPageStep>
+    <WindowStep class="Dialog" engine="web" id="ConfirmDialog" modal="true"
+                name="ConfirmDialog" uid="_3gh">
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">DIALOG:CONFIRM</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Window</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">DIALOG:CONFIRM</extrafeature>
+      <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Window:Dialog</extrafeature>
+    </WindowStep>
+  </WindowList>
+</RootStep>

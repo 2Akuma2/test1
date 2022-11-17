@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Regular expressions</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_regexp"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_timing.html#sec_timing"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 45.2&nbsp;Timing" title="Previous Chapter: 45.2&nbsp;Timing"></a></td><td class="navicon"><a href="tech_linebreaks.html#sec_linebreaks"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 45.4&nbsp;Line breaks under Unix and Windows" title="Next Page: 45.4&nbsp;Line breaks under Unix and Windows"></a></td><td class="navicon"><a href="tech_linebreaks.html#sec_linebreaks"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 45.4&nbsp;Line breaks under Unix and Windows" title="Next Chapter: 45.4&nbsp;Line breaks under Unix and Windows"></a></td><td class="navicon"><a href="tech_misc.html#tsec_miscellaneous"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 45&nbsp;Technical details about miscellaneous issues" title="Chapter Overview: 45&nbsp;Technical details about miscellaneous issues"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_regexp">45.3</a></span>
+</div>
+<a href="contents.html#toc_sec_regexp">Regular expressions</a>
+</h4>
+      
+<p>
+        The regular expressions that you can use in the search and replace dialogs and in places
+        like the <a href="components.html#att_ComponentStep_feature" shape="rect">'Feature'</a> attributes, the <a href="components.html#att_SubItemStep_primary" shape="rect">'Primary index'</a> of an
+        <a href="components.html#step_SubItemStep" shape="rect">'Item'</a> node or in <a href="checks.html#sec_checks" shape="rect">checks</a> all use standard Java
+        regexp syntax. Before QF-Test version 3.1 the default was the GNU regexp package (see also
+        <a href="thirdparty.html#app_software">appendix F</a>). It can still be activated via the option <a href="opt_play.html#opt_usegnuregexp">Use old-style GNU regexps (before 3.1)</a>. One major difference between the two is that '{' and '}' are
+        special characters that need to be escaped with '\' for Java regexps, but normal
+        characters for GNU:
+      </p>
+      
+<p>
+        Detailed regexp documentation with links to further information and even a whole book
+        about regular expressions are provided in the Java documentation for the class
+        <code>java.util.regex.Pattern</code> at <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/util/regex/Pattern.html" target="_blank" shape="rect">http://download.oracle.com/javase/1.5.0/docs/api/java/util/regex/Pattern.html</a>.
+        It's also worth to have a look at the <a href="http://en.wikipedia.org/wiki/Regular_expression" target="_blank" shape="rect">Wikipedia</a> article
+        about regular expressions.<br>
+        Following is a short summary of the basics:
+      </p>
+      
+<ul>
+        
+<li>
+          A '.' stands for any one character except line breaks. With the new Java regexps you
+          can start your regexp with the embedded flag '(?s)' to treat multi-line text like a
+          single line so '.' will match everything. The old GNU regexps have no such flag, so
+          you need to use '(.|\n)' to match everything. Unfortunately this expression causes a
+          <code>StackOverflowException</code> with Java regexps, so if QF-Test finds this
+          expression in any regular expression it will treat it as a GNU regexp regardless of
+          the option setting.
+        </li>
+        
+<li>
+          Character in between '[' and ']' match any one of these characters.
+        </li>
+        
+<li>
+          A '?' says the preceding element is optional, i.e. it may appear 0
+          or 1 times.
+        </li>
+        
+<li>
+          '+' means at least one of the preceding element.
+        </li>
+        
+<li>
+          '*' means 0 or more of the preceding element.
+        </li>
+        
+<li>
+          A group is created with '(' and ')'. A '?', '+' or '*' after the
+          closing brace refers to the whole group. All groups in a regexp
+          are numbered in the order of their opening brace. The first group
+          has the number 1, 0 stands for the whole regexp. For search and
+          replace, <code>$n</code> in the replacement string expands to the
+          part of the original value matched by the n<sup>th</sup>
+          group. Example: To change the extension of file names starting
+          with <code>/tmp/</code> from <code>.foo</code> to
+          <code>.bar</code>, search for <code>(/tmp/.*)\.foo</code> and
+          replace with <code>$1.bar</code>.
+        </li>
+        
+<li>
+          A '|' separates alternatives in a group.
+        </li>
+        
+<li>
+          '\' quotes to suppress the special meaning of the following
+          character or introduces special characters, e.g. '\n' for LineFeed
+          (a line break), '\r' for CarriageReturn (not needed for QF-Test,
+          see <a href="tech_linebreaks.html#sec_linebreaks">section 45.4</a>) or '\t' for Tab.
+        </li>
+      
+</ul>
+      
+<p>
+        Examples:
+      </p>
+      
+<ul>
+        
+<li>
+<code>.*</code> describes a sequence of arbitrary characters, which is optional.</li>
+        
+<li>
+<code>.+</code> describes a sequence of arbitrary characters, but there must be at least
+        one character, i.e. some mandatory characters.</li>
+        
+<li>
+<code>[0-9]</code> describes one arbitrary cipher.</li>
+        
+<li>
+<code>[0-9]+</code> describes a sequence of arbitrary ciphers, but there must
+        be at least one cipher.</li>
+        
+<li>
+<code>[0-9]{1,3}</code> describes a sequence of arbitrary ciphers, but there must
+        be at least one cipher and at maximum three ciphers.</li>
+        
+<li>
+          To match any text that contains the word 'tree' use
+          <code>'.*tree.*'</code>.
+        </li>
+        
+<li>
+          To match arbitrary text possibly including line breaks: <code>'(?s).*'</code> for Java
+          regexps and <code>'(.|\n)*'</code> for GNU.
+        </li>
+        
+<li>
+          To replace 'tree' in arbitrary text with 'node' use
+          <code>'(.*)tree(.*)'</code> to search and <code>$1node$2</code> to
+          replace. In the replace dialog simply replace <code>tree</code>
+          with <code>node</code> and disable the "Match whole string" check
+          box to achieve the same effect.
+        </li>
+        
+<li>
+          To search for 'name' or 'names': <code>'names?'</code>
+        
+</li>
+        
+<li>
+          To search for 'tree' or 'node': <code>'(tree|node)'</code>
+        
+</li>
+        
+<li>
+          An arbitrary word consisting of letters and numbers:
+          [0-9a-zA-Z]+
+        </li>
+        
+<li>...</li>
+      
+</ul>
+      
+<p>
+<span class="margin"><a name="new_N164084"></a><span class="note">4.0+</span></span>
+        QF-Test allows you to use the context menu item &raquo;<em>Escape text for regular expressions</em>&laquo; on all attributes
+        which allow regular expressions in order to escape special
+        characters of regular expressions correctly with '\'.
+      </p>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_timing.html#sec_timing"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 45.2&nbsp;Timing" title="Previous Chapter: 45.2&nbsp;Timing"></a></td><td class="navicon"><a href="tech_linebreaks.html#sec_linebreaks"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 45.4&nbsp;Line breaks under Unix and Windows" title="Next Page: 45.4&nbsp;Line breaks under Unix and Windows"></a></td><td class="navicon"><a href="tech_linebreaks.html#sec_linebreaks"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 45.4&nbsp;Line breaks under Unix and Windows" title="Next Chapter: 45.4&nbsp;Line breaks under Unix and Windows"></a></td><td class="navicon"><a href="tech_misc.html#tsec_miscellaneous"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 45&nbsp;Technical details about miscellaneous issues" title="Chapter Overview: 45&nbsp;Technical details about miscellaneous issues"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

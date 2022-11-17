@@ -1,0 +1,497 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Testing Electron applications</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_electron"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_jib.html#usec_jib"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 17&nbsp;Testing Java desktop applications in a browser with Webswing and JPro" title="Previous Chapter: 17&nbsp;Testing Java desktop applications in a browser with Webswing and JPro"></a></td><td class="navicon"><a href="web_services.html#usec_web_services"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 19&nbsp;Testing web services" title="Next Page: 19&nbsp;Testing web services"></a></td><td class="navicon"><a href="web_services.html#usec_web_services"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 19&nbsp;Testing web services" title="Next Chapter: 19&nbsp;Testing web services"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;User manual" title="Chapter Overview: I&nbsp;User manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_electron">18</a></span>
+</div>
+<a href="contents.html#toc_usec_electron">Testing Electron applications</a>
+</h3>
+<span class="margin"><a name="new_N87594"></a><span class="note">4.5+</span></span>
+    
+<p>
+        
+          
+<a href="https://electronjs.org" shape="rect">Electron</a>
+        
+        
+
+      is a framework for executing cross-platform
+      desktop applications using the web browser Chromium and the Node.js framework.
+      HTML, CSS und JavaScript can be used for the development of the applications.
+      Electron applications can access native functionality of the operating system such as menus,
+      files or the task bar.
+    </p>
+    
+<p>
+      Since version 4.5 QF-Test can handle applications developed via the Electron framework.
+      All features QF-Test supports for the web engine can also be used for Electron testing.
+    </p>
+    
+    
+<a name="sec_electron_setup"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_electron_setup">18.1</a></span>
+</div>
+<a href="contents.html#toc_sec_electron_setup">Starting the Electron Client</a>
+</h4>
+      
+<p>
+        Connecting to an Electron application can be realized using the recommended CDP-Driver connection mode
+        (see <a href="tech_webconnectionmode.html#sec_webconnectionmode_cdp">subsection 47.3.2</a>) or the WebDriver connection mode (see <a href="tech_webconnectionmode.html#sec_webconnectionmode_webdriver">subsection 47.3.3</a>).
+      </p>
+      
+<p>
+        The quickstart wizard (see <a href="user_quickstart.html#usec_quickstart">chapter 3</a>) helps you generate
+        the correct <a href="dependencies.html#step_SetupSequence" shape="rect">'Setup'</a> sequence for an easy start of the application.
+      </p>
+      
+<p>
+        The Electron specific parameters for the quickstart wizard will be explained in this
+        chapter. For the remaining optional parameters you will find an explanation
+        within the quickstart wizard itself.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+          The video shows <a href="https://www.qfs.de/en/yt/electron-45.html" class="videolink" target="_blank">' Starting your Electron application via the Quickstart wizard'.
+        </a>
+      
+</p>
+
+      
+<a name="sec_electron_quickstart"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_electron_quickstart">18.1.1</a></span>
+</div>
+<a href="contents.html#toc_sec_electron_quickstart">Electron settings for the quickstart wizard</a>
+</h5>
+        
+<p>
+         In the quickstart wizard select <code>An Electron application</code> in the
+         section 'Type of the Application'.
+        </p>
+
+        
+<p>
+          Please enter the fully qualified executable for the application in the section 'Electron application'. You can make use of the file selection dialog
+          by clicking the button to the right of the text field.
+          If your application requires
+          specific command line arguments, you can provide them here.
+        </p>
+
+        
+<p>
+          Electron is based on Node.js, which is executed in the JavaScript runtime
+          environment 'V8'. Since Electron 6 and QF-Test 5.4.0 the CDP-Driver connection mode
+          is used to control the application. Older applications require the
+          WebDriver connection mode in combination with a ChromeDriver. In most cases,
+          QF-Test detects the required ChromeDriver automatically and downloads it.
+          The downloaded driver will be saved in the subdirectory <code>chromedriver</code> of the QF-Test installation directory.
+        </p>
+      
+    
+    
+
+    
+    
+<a name="sec_electron_specials"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_electron_specials">18.2</a></span>
+</div>
+<a href="contents.html#toc_sec_electron_specials">Electron specific functionality of QF-Test</a>
+</h4>
+      
+<p>
+        For Electron testing you can use all the features QF-Test offers for web testing
+        plus the following:
+      </p>
+      
+<a name="sec_electron_native_menus"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_electron_native_menus">18.2.1</a></span>
+</div>
+<a href="contents.html#toc_sec_electron_native_menus">Native Menus</a>
+</h5>
+        
+<p>
+          The <a href="events.html#step_SelectionEventStep" shape="rect">'Selection'</a> node allows you to control native menus in Electron
+          applications.
+        </p>
+        
+<p>
+          Please enter the 'QF-Test ID' of the node <code>Web page</code> of the SUT in the
+          attribute 'QF-Test component ID'.
+        </p>
+        
+<p>
+          The menu item to be selected goes in the <a href="events.html#att_SelectionEventStep_detail" shape="rect">'Detail'</a> attribute
+          using the following syntax:
+          <code>clickmenu:/@&lt;menu path&gt;</code>, where
+          <code>&lt;menu path&gt;</code> is the menu name plus the menu item(s), separated by
+          <code>/</code>. For example, if you want to select the menu item <code>Save as</code> in the menu <code>File</code> the correct entry would be
+          <code>clickmenu:@/File/Save as...</code>.
+        </p>
+      
+      
+<a name="sec_electron_native_dialogs"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_electron_native_dialogs">18.2.2</a></span>
+</div>
+<a href="contents.html#toc_sec_electron_native_dialogs">Native Dialogs</a>
+</h5>
+        
+<p>
+          
+<span class="margin"><a name="new_N87754"></a><span class="note">5.1.0+</span></span>
+          QF-Test supports capture, check and control of dialogs instantiated with the <code>dialog</code>-module of Electron.
+		  For technical reasons, during the test the dialogs can be optically different from the usual Electron-dialogs.
+        </p>
+		
+<p>
+          A capture of a native dialog results in a component-node with the class <code>Dialog</code>.
+		  It is possible to check the text of the dialog-window using a node <a href="checks.html#step_CheckStringStep" shape="rect">'Check text'</a>.
+		  The interaction with the dialog-window can be performed using a node <a href="events.html#step_SelectionEventStep" shape="rect">'Selection'</a>.
+		  The <a href="events.html#att_SelectionEventStep_detail" shape="rect">'Detail'</a> value of a 'Selection'-node depends on a type of the dialog:
+		  <ul>
+			  
+<li>
+				  
+<b>Message Box:</b> The value of the <a href="events.html#att_SelectionEventStep_detail" shape="rect">'Detail'</a> attribute is the number of the button to select, e.g. <code>2</code>.
+				  If the <i>Message Box</i> contains a <i>CheckBox</i>, it is possible to append its value separated with <code>:</code>, e.g. <code>2:true</code>.
+			  </li>
+			  
+<li>
+				  
+<b>Error Box:</b> An <i>Error Box</i> contains just one button, so the value of the <a href="events.html#att_SelectionEventStep_detail" shape="rect">'Detail'</a> attribute should be <code>0</code>.
+			  </li>
+			  
+<li>
+				  
+<b>Open File Dialog:</b> The <a href="events.html#att_SelectionEventStep_detail" shape="rect">'Detail'</a> attribute should contain the name of the file to select.
+				  In order to select multiple files, the 'Detail'-attribute should be set to a Json-Array containing their names,
+				  e.g. <code>["file.txt","C:\\TEMP\\other.txt"]</code>.
+				  It is possible to cancel the dialog by setting the 'Detail'-attribute to <code>&lt;CANCEL&gt;</code>.
+			  </li>
+			  
+<li>
+				  
+<b>Save File Dialog:</b> A <i>Save File Dialog</i> can be controlled in the same way as an <i>Open File Dialog</i>.
+				  Selection of multiple files in a <i>Save File Dialog</i> is not supported by Electron.
+			  </li>
+          
+</ul>
+        
+</p>
+      
+      
+<a name="sec_extended_api"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_extended_api">18.2.3</a></span>
+</div>
+<a href="contents.html#toc_sec_extended_api">Extended Javascript-API</a>
+</h5>
+        
+<p>
+          
+<span class="margin"><a name="new_N87885"></a><span class="note">5.4.0+</span></span>
+          In Electron applications separate render processes control the content view of the application windows.
+          In addition, a so called main process, built upon the Node.js engine, executes the main application logic.
+          To execute individual code in the context of this process, QF-Test provides the method <code>mainEvalJS</code>
+          as powerfull extension of the <code>DocumentNode</code>-API (see <a href="tech_dom_document.html#sec_dom_documentnode">subsection 50.11.2</a>). 
+        </p>
+          
+<table class="api" cellspacing="0">
+<tr>
+<td colspan="2" class="apibegin">&nbsp;</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="api">
+<table width="100%" cellspacing="0">
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" class="methoddef"><strong><code>Object mainEvalJS(String script)</code></strong></td>
+</tr>
+<tr>
+<td colspan="2" class="comment">
+                Evaluates Javascript code in the main process of the 
+              </td>
+</tr>
+<tr>
+<td colspan="2" class="params"><strong>Parameters</strong></td>
+</tr>
+<tr>
+<td class="paramname"><strong><code>script</code></strong></td><td class="paramdesc">The script to execute.</td>
+</tr>
+<tr>
+<td class="return"><strong>Returns</strong></td><td class="returndesc">Whatever the script returns, converted to the proper object type.
+                General Javascript objects will be converted to Json objects.
+                The specific variable <code>_qf_window</code>
+                will be replaced by the <code>BrowserWindow</code> objekt, which corresponds to the current
+                <code>DocumentNode</code>.</td>
+</tr>
+<tr>
+<td colspan="2" class="methodsep">&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="apiend">&nbsp;</td>
+</tr>
+</table>
+          
+<p>
+            In the example, the "Chrome Developer Tools"" will be displayed in the current Electron window. 
+          </p>
+          
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>rc.getComponent("genericDocument").mainEvalJS("_qf_window.webContents.openDevTools()")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;18.1:&nbsp;&nbsp;SUT-skript to display the Dev Tools in an Electron window</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+    
+    
+    
+    
+<a name="sec_electron_technical"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_electron_technical">18.3</a></span>
+</div>
+<a href="contents.html#toc_sec_electron_technical">Technical remarks on testing Electron applications in WebDriver connection mode</a>
+</h4>
+      
+<p>
+        To support testing the Electron APIs, e.g. record and replay native menu interaction,
+        QF-Test has to be able to access the core Electron APIs in WebDriver connection mode
+        from the renderer processes of your application.
+        In practice, this means that the <code>nodeIntegration</code> preference of the BrowserWindow should
+        not be set to <code>false</code>. In addition, <code>contextIsolation</code> must be left deactivated and
+        <code>enableRemoteModule</code> must remain <code>true</code>:
+      </p>
+      
+      
+<a name="ex_electron_technical_basic"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre> mainWindow = new BrowserWindow({
+    webPreferences: {
+        nodeIntegration: true,
+        enableRemoteModule: true,
+        contextIsolation: false,
+        ...
+    },
+    ...
+  })</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;18.2:&nbsp;&nbsp;Basic example for good testability in Electron apps</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+      
+<p>
+       If you want to avoid to expose the complete node integration into the browser window web content, you can
+       enable QF-Test to access the API integration using a preload script:
+      </p>
+      
+      
+<a name="ex_electron_preload"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>  mainWindow = new BrowserWindow({
+    webPreferences: {
+        nodeIntegration: false,
+        ...
+        preload: `${__dirname}/preload.js` // absolute pathname required
+    },
+    ...
+  })</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;18.3:&nbsp;&nbsp;The require preferences for limited node integration</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<a name="ex_electron_preload_js"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>  // Expose require API in test mode:
+  if (process.env.NODE_ENV === 'test') {
+    window.electronRequire = require;
+  }</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;18.4:&nbsp;&nbsp;The corresponding <code>preload.js</code></td><td class="captionglue"></td>
+</tr>
+</table>
+      
+      
+<p>
+        Since QF-Test always sets the <code>NODE_ENV</code> environment variable to <code>test</code>, you can
+        use this to dynamically loosen the access security during test:
+      </p>
+      
+      
+<a name="ex_electron_technical_dynamic"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>  const inTestMode = (process.env.NODE_ENV === 'test');
+  mainWindow = new BrowserWindow({
+    webPreferences: {
+        nodeIntegration: inTestMode,
+        enableRemoteModule: inTestMode,
+        contextIsolation: ! inTestMode,
+        ...
+    },
+    ...
+  })</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;18.5:&nbsp;&nbsp;Dynamic example for good testability in Electron apps</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+      
+<p>
+        Starting with Electron 14, the <code>remote</code> module is not part of the Electron API anymore, but
+        must be explicitly included. To do so, add at development time a reference to the <code>@electron/remote</code>
+        module in your <code>package.json</code> and initialize the module in your <code>main.js</code>:
+      </p>
+      
+      
+<a name="ex_electron_initremote"></a>
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>  // in the main process:
+  require('@electron/remote/main').initialize()</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;18.6:&nbsp;&nbsp;How to initialize the <code>@electron/remote</code> module</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+      
+<p>
+        QF-Test automatically uses the new module if detected.
+        More information about the module can be found it the documentation at <a href="https://github.com/electron/remote/" shape="rect">https://github.com/electron/remote/</a>.
+      </p>
+      
+<p>
+        When using the CDP-Driver connection mode, no specific adaptation of the Electron application is required for QF-Test.
+      </p>
+
+    
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_jib.html#usec_jib"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 17&nbsp;Testing Java desktop applications in a browser with Webswing and JPro" title="Previous Chapter: 17&nbsp;Testing Java desktop applications in a browser with Webswing and JPro"></a></td><td class="navicon"><a href="web_services.html#usec_web_services"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 19&nbsp;Testing web services" title="Next Page: 19&nbsp;Testing web services"></a></td><td class="navicon"><a href="web_services.html#usec_web_services"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 19&nbsp;Testing web services" title="Next Chapter: 19&nbsp;Testing web services"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: I&nbsp;User manual" title="Chapter Overview: I&nbsp;User manual"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

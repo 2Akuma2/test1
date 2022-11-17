@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="root"
+          signature="302D0215008B3D747BDD458560303835D0C3C9976F467BE6990214290D23ACD4BAFA8A7B056BED21B966BB500D76F1"
+          version="6.0.3">
+  <include>qfs.qft</include>
+  <comment>(c) 2014 imbus AG
+Version 1.1</comment>
+  <TestCase id="_1nj3" name="do not execute directly">
+    <comment>node;errorlevel&gt;=MESSAGE</comment>
+    <ThrowStep id="_1nj4"
+               throwmessage="Do not execute this test suite directly."/>
+  </TestCase>
+  <TestCase id="_1nit" name="set up automation plugins">
+    <ServerScriptStep id="_1nj7" interpreter="groovy"
+                      name="set up startup plugin">
+      <code>// defined as global function (without "def")
+startupPlugin = { -&gt; println("Example plugin: Startup") }
+</code>
+    </ServerScriptStep>
+    <ServerScriptStep id="_1njD" interpreter="groovy"
+                      name="set up parameter plugin">
+      <code>// defined as global function (without "def")
+parameterPlugin = { name, value -&gt; rc.logMessage("Example plugin: Processing parameter $name -&gt; $value"); return [name, value] }
+</code>
+    </ServerScriptStep>
+    <ServerScriptStep id="_1nj8" interpreter="groovy"
+                      name="set up testcaseset start plugin">
+      <code>// defined as global function (without "def")
+testCaseSetStartPlugin = { -&gt; println ("Example plugin: Start of test case set") }
+</code>
+    </ServerScriptStep>
+    <ServerScriptStep id="_1nj9" interpreter="groovy"
+                      name="set up testcase start plugin">
+      <code>// defined as global function (without "def")
+testCaseStartPlugin = { -&gt; println ("Example plugin: Start of test case") }
+</code>
+    </ServerScriptStep>
+    <ServerScriptStep id="_1njA" interpreter="groovy"
+                      name="set up before interaction plugin">
+      <code>import static de.imbus.itep.ItepConstant.ITEP_OK
+import static de.imbus.itep.ItepConstant.ITEP_C_FALSE
+
+// defined as global function (without "def")
+beforeInteractionPlugin = { -&gt;
+    def condition = itep.firstPreCondition
+    rc.logMessage("Example plugin: Executing interaction preconditions")
+    while(condition.result == ITEP_OK) {
+        rc.logMessage("Example plugin: Executing interaction precondition ${condition.name}")
+        try {
+            def result = rc.callProcedure(condition.name, condition.state)
+            try {
+                itep.setPreCondition(condition.name, result)
+            } catch (MissingMethodException e) {
+                rc.logWarning("Invalid value for precondition ${condition.name}: $result")
+                itep.setPreCondition(condition.name, ITEP_C_FALSE.number)
+            }
+        } catch (MissingMethodException e) {
+            rc.logError("No implementation for precondition ${condition.name}(${condition.state})")
+            itep.setPreCondition(condition.name, ITEP_C_FALSE.number)
+        }
+        condition = itep.nextPreCondition
+    }
+}
+</code>
+    </ServerScriptStep>
+    <ServerScriptStep id="_1njF" interpreter="groovy"
+                      name="set up screenshot plugin">
+      <code>def originalScreenshotPlugin = screenshotPlugin
+
+// defined as global function (without "def")
+screenshotPlugin = { returnCode, comment -&gt;
+    // example: invert result before deciding whether to create screenshot
+    println("Example plugin: Screenshot inverting $returnCode")
+    originalScreenshotPlugin(-1 - returnCode, comment)
+}
+</code>
+    </ServerScriptStep>
+    <ServerScriptStep id="_1njE" interpreter="groovy"
+                      name="set up interaction result plugin">
+      <code>// defined as global function (without "def")
+interactionResultPlugin = { returnCode, comment -&gt; returnCode }
+</code>
+    </ServerScriptStep>
+    <ServerScriptStep id="_1njB" interpreter="groovy"
+                      name="set up after interaction plugin">
+      <code>// defined as global function (without "def")
+afterInteractionPlugin = { returnCode, comment -&gt; }
+</code>
+    </ServerScriptStep>
+    <ServerScriptStep id="_1njC" interpreter="groovy"
+                      name="set up cleanup plugin">
+      <code>// defined as global function (without "def")
+cleanupPlugin = { -&gt; println ("Example plugin: Cleanup") }
+</code>
+    </ServerScriptStep>
+  </TestCase>
+  <PackageRoot id="_3"/>
+  <ExtraSequence id="_4"/>
+  <WindowList id="_5"/>
+</RootStep>

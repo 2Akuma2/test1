@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Imbus TestBench</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_testbench"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_qc.html#usec_qc"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 25.1&nbsp;HP ALM - Quality Center" title="Vorheriges Kapitel: 25.1&nbsp;HP ALM - Quality Center"></a></td><td class="navicon"><a href="user_qmetry.html#usec_qmetry"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 25.3&nbsp;QMetry" title="N&auml;chste Seite: 25.3&nbsp;QMetry"></a></td><td class="navicon"><a href="user_qmetry.html#usec_qmetry"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 25.3&nbsp;QMetry" title="N&auml;chstes Kapitel: 25.3&nbsp;QMetry"></a></td><td class="navicon"><a href="user_testmanagement.html#usec_testmanagement"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 25&nbsp;Anbindung an Testmanagementtools" title="Kapitel-&Uuml;bersicht: 25&nbsp;Anbindung an Testmanagementtools"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_testbench">25.2</a></span>
+</div>
+<a href="contents.html#toc_usec_testbench">Imbus TestBench</a>
+</h4>
+
+         
+
+        
+<a name="usec_itbIntro"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_itbIntro">25.2.1</a></span>
+</div>
+<a href="contents.html#toc_usec_itbIntro">Einf&uuml;hrung</a>
+</h5>
+           
+<p>
+            Die aktuelle Integration von QF-Test und der TestBench der Firma Imbus besteht aus zwei Teilen:
+            </p>
+           
+<p>
+           
+<ul>
+           
+<li>Generieren von QF-Test Vorlagen-Testsuiten aus den TestBench Interaktionen.
+           </li>
+           
+<li>Importieren der QF-Test Resultate in die TestBench.
+           </li>
+           
+</ul>
+           
+</p>
+           
+<p>
+            Sie finden alle ben&ouml;tigten Testsuiten sowie Demoimplementierungen
+            im Ordner <code>qftest-6.0.3/ext/testbench/Version_1.1_TestBench_2.3</code>.
+            Bitte achten Sie darauf, dass Sie alle Testsuiten vor dem eigentlichen Einsatz in einen projektspezifischen Ordner kopieren und diese dort modifizieren.
+          </p>
+          
+<p>
+             Das folgende Kapitel gibt einen &Uuml;berblick &uuml;ber das Konzept der Integration.
+           </p>
+        
+
+         
+         
+
+        
+<a name="usec_itbExport"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_itbExport">25.2.2</a></span>
+</div>
+<a href="contents.html#toc_usec_itbExport">Generieren von QF-Test Vorlage-Testsuiten aus den Interaktionen</a>
+</h5>
+            
+<p>
+             Nachdem Sie den Testfall in der TestBench geplant und die entsprechenden
+             Interaktionen angelegt haben, k&ouml;nnen Sie mittels des QF-Test Export Plug-ins
+             eine QF-Test Datei generieren. Imbus liefert die erforderlichen
+             Informationen, wie Sie dieses Plugin einspielen m&uuml;ssen.
+            </p>
+            
+<p>
+             In dieser QF-Test Datei finden Sie alle Interaktionen als
+             Prozeduren. Ihre Struktur wird durch Packages abgebildet. Nun k&ouml;nnen Sie mit der Aufnahme der
+             einzelnen Interaktionen beginnen und die Prozeduren mit Leben f&uuml;llen.
+           </p>
+           
+<p>
+           Nach Fertigstellung der Aufnahme speichern Sie diese Testsuite in einem projektspezifischen Ordner ab.
+           Diese Datei muss sp&auml;ter bei der Ausf&uuml;hrung in der Ausf&uuml;hrungstestsuite inkludiert werden, um
+           so die Interaktionen ausf&uuml;hren zu k&ouml;nnen. Wir empfehlen diese Datei entweder in das
+           Versionsmanagementsystem mitaufzunehmen oder auf ein Netzlaufwerk zu legen.
+            </p>
+        
+
+         
+         
+
+        
+<a name="usec_itbExec"></a>
+	
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_itbExec">25.2.3</a></span>
+</div>
+<a href="contents.html#toc_usec_itbExec">Importieren der Resultate</a>
+</h5>
+	
+<p>
+	  F&uuml;r die Ausf&uuml;hrung der Tests ben&ouml;tigen Sie spezielle Testf&auml;lle und
+	  Prozeduren, welche Sie in den mitgelieferten Testsuiten finden
+	  k&ouml;nnen. Diese befinden sich im Ordner
+	  <code>qftest-6.0.3/ext/testbench/Version_1.1_TestBench_2.3/suite</code>.
+    Bitte achten Sie darauf, dass Sie alle Testsuiten vor dem eigentlichen Einsatz in einen projektspezifischen Ordner kopieren und diese dort modifizieren.
+	</p>
+	
+<p>
+	  Sie finden im Ordner
+	  <code>qftest-6.0.3/ext/testbench/Version_1.1_TestBench_2.3/suite/demo</code>
+	  eine Beispielimplementierung f&uuml;r den JCarConfigurator.
+	  Hier ist es wichtig, dass Sie eine Testsuite ben&ouml;tigen, die die Testsuite
+	  <code>TestBench_Automation.qft</code> inkludiert.
+	  Falls Sie Ihre Prozeduren &uuml;ber den iTEP Export erstellt haben (siehe auch
+	  <a href="#usec_itbExport">Abschnitt 25.2.2</a>), sollten sie auch diese Testsuite inkludieren.
+	</p>
+	
+<p>
+	  Nun sollten sie noch die Konfiguration der Ausgabedateien in den
+	  Dateien <code>testaut.properties</code> und
+	  <code>user.properties</code> vornehmen.
+	</p>
+	
+<p>
+	  Jetzt k&ouml;nnen Sie den Testfall <code>Standalone test executor</code>
+	  aus <code>TestBench_Automation.qft</code> aufrufen.
+	</p>
+	
+<p>
+	  Nach der Testausf&uuml;hrung k&ouml;nnen Sie die gesamten Ergebnisse in die TestBench importieren. Verwenden Sie
+	  dazu das iTEP bzw. das iTORX Import Plug-in. Die einzelnen
+	  QF-Test Protokolle werden zus&auml;tzlich an die Testinstanzen angeh&auml;ngt.
+	</p>
+      
+      
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_qc.html#usec_qc"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 25.1&nbsp;HP ALM - Quality Center" title="Vorheriges Kapitel: 25.1&nbsp;HP ALM - Quality Center"></a></td><td class="navicon"><a href="user_qmetry.html#usec_qmetry"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 25.3&nbsp;QMetry" title="N&auml;chste Seite: 25.3&nbsp;QMetry"></a></td><td class="navicon"><a href="user_qmetry.html#usec_qmetry"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 25.3&nbsp;QMetry" title="N&auml;chstes Kapitel: 25.3&nbsp;QMetry"></a></td><td class="navicon"><a href="user_testmanagement.html#usec_testmanagement"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 25&nbsp;Anbindung an Testmanagementtools" title="Kapitel-&Uuml;bersicht: 25&nbsp;Anbindung an Testmanagementtools"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

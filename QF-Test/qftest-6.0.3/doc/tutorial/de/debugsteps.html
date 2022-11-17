@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Schrittweise Ausf&uuml;hrung</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2002-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="tut_debug_steps"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="breakpoints.html#tut_breakpoints"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 5.1&nbsp;Setzen eines Breakpoints" title="Vorheriges Kapitel: 5.1&nbsp;Setzen eines Breakpoints"></a></td><td class="navicon"><a href="skipsteps.html#tut_skip_steps"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 5.3&nbsp;Knoten &uuml;berspringen" title="N&auml;chste Seite: 5.3&nbsp;Knoten &uuml;berspringen"></a></td><td class="navicon"><a href="skipsteps.html#tut_skip_steps"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 5.3&nbsp;Knoten &uuml;berspringen" title="N&auml;chstes Kapitel: 5.3&nbsp;Knoten &uuml;berspringen"></a></td><td class="navicon"><a href="debugger.html#sec_Debugger"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 5&nbsp;Benutzen des Debuggers (Java)" title="Kapitel-&Uuml;bersicht: 5&nbsp;Benutzen des Debuggers (Java)"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_tut_debug_steps">5.2</a></span>
+</div>
+<a href="contents.html#toc_tut_debug_steps">Schrittweise Ausf&uuml;hrung</a>
+</h4>
+      
+<p>
+        Nun wollen wir die Testf&auml;lle schrittweise ausf&uuml;hren.
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Aktion</span></span>
+          Bitte experimentieren Sie ein wenig mit
+          <strong>"Einzelschritt ausf&uuml;hren"</strong> <img src="images/step_in.png" style="vertical-align: text-bottom" alt="Step-In" title="Step-In" width="26" height="26" texscale=".5"> , <strong>"Gesamten Knoten ausf&uuml;hren"</strong>
+          <img src="images/step_over.png" style="vertical-align: text-bottom" alt="Step-Over" title="Step-Over" width="26" height="26" texscale=".5"> und
+          <strong>"Bis Knotenende ausf&uuml;hren"</strong>
+          <img src="images/step_out.png" style="vertical-align: text-bottom" alt="Step-Out" title="Step-Out" width="26" height="26" texscale=".5">.
+        </li>
+      
+</ul>
+      
+<p>
+        Wie Sie sicher festgestellt haben werden, &ouml;ffnet <strong>"Einzelschritt ausf&uuml;hren"</strong> <img src="images/step_in.png" style="vertical-align: text-bottom" alt="Step-In" title="Step-In" width="26" height="26" texscale=".5"> einen Knoten mit Kindern und
+        macht den ersten Kindknoten zum aktiven Knoten.  Dies ist wie immer an der
+        Pfeilmarkierung des Knotens erkennbar.
+      </p>
+      
+<p>
+        Wenn Sie an dem Punkt weitergemacht haben, an dem die Ausf&uuml;hrung der Testsuite im letzten
+        Abschnitt pausiert war, d.h. vom Knoten "Testfall: Erster" aus, so w&uuml;rde nun der
+        Testfall ge&ouml;ffnet werden:
+      </p>
+      
+<a name="fig_StepInExample"></a><a name="figure_5.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DebugStepIn.png" target="_blank"><img src="images/DebugStepIn.png" alt="Step in" texscale=".5" width="314" height="162"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;5.4</a>:&nbsp;&nbsp;Einzelschritt ausf&uuml;hren</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Im Falle eines Blattknotens, d.h. eines Knotens, der keine Kinder hat, ist die Wirkung die
+        gleiche wie die der folgenden Funktion.
+      </p>
+      
+<p>
+        Mittels der Schaltfl&auml;che <strong>"Gesamten Knoten ausf&uuml;hren"</strong> <img src="images/step_over.png" style="vertical-align: text-bottom" alt="Step-Over" title="Step-Over" width="26" height="26" texscale=".5">
+        wird ein Knoten inklusive aller Kindknoten ausgef&uuml;hrt. Der als n&auml;chstes auszuf&uuml;hrende Knoten
+        auf der gleichen Ebene wird dann der aktive und erh&auml;lt den Pfeil.
+      </p>
+      
+<a name="fig_StepOverExample"></a><a name="figure_5.5"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DebugStepOver.png" target="_blank"><img src="images/DebugStepOver.png" alt="Step over" texscale=".5" width="314" height="162"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;5.5</a>:&nbsp;&nbsp;Gesamten Knoten ausf&uuml;hren</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        
+<strong>"Bis Knotenende ausf&uuml;hren"</strong> <img src="images/step_out.png" style="vertical-align: text-bottom" alt="Step-Out" title="Step-Out" width="26" height="26" texscale=".5"> f&uuml;hrt die verbleibenden
+              Geschwisterknoten aus und stoppt beim n&auml;chsten auszuf&uuml;hrenden Knoten der &uuml;bergeordneten
+              Hierarchieebene.
+      </p>
+      
+<a name="fig_StepOutExample"></a><a name="figure_5.6"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/DebugStepOut.png" target="_blank"><img src="images/DebugStepOut.png" alt="Step out" texscale=".5" width="314" height="162"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;5.6</a>:&nbsp;&nbsp;Bis Knotenende ausf&uuml;hren</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Im Beispiel ist dies der 'Aufr&auml;umen' Knoten. Wie bereits im ersten Kapitel
+        <a href="firstfullrunjava.html#tut_firstfullrunjava">Ein vollst&auml;ndiger Testlauf</a> erl&auml;utert, haben 'Vorbereitung' und
+        'Aufr&auml;umen' Knoten die besondere Eigenschaft, dass sie vor und nach
+        <strong>jedem Testfall</strong> ausgef&uuml;hrt werden, um so einen definierten
+        Anfangszustand f&uuml;r jeden Testfall herzustellen.
+      </p>
+      
+<p>
+<span class="margin"><span class="note">Hinweis</span></span>
+        Dieses Verhalten tritt nur auf, wenn Sie die komplette Testsuite oder den Testfallsatz
+        gestartet hatten und sich im Debug-Modus befinden. Wenn keine Testausf&uuml;hrung aktiv war
+        und Sie nur den Testfall selektiert hatten, so bewirkt die Funktion "Gesamten Knoten ausf&uuml;hren",
+        dass der Testfall ausgef&uuml;hrt wird und dann der n&auml;chste Testfall selektiert wird.
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Aktion</span></span>
+          F&uuml;hren Sie die 'Aufr&auml;umen' und 'Vorbereitung' Knoten aus, indem Sie mit
+          Hilfe der Schaltfl&auml;che  <img src="images/step_over.png" style="vertical-align: text-bottom" alt="Step-Over" title="Step-Over" width="26" height="26" texscale=".5"> die
+          <strong>gesamten Knoten ausf&uuml;hren</strong> und dann &uuml;ber
+          <img src="images/step_in.png" style="vertical-align: text-bottom" alt="Step-In" title="Step-In" width="26" height="26" texscale=".5"> <strong>den zweiten
+          Testfall &ouml;ffnen</strong>. Dies ist eine Vorbereitung f&uuml;r das n&auml;chste Kapitel, in dem es
+          um das &Uuml;berspringen von Knoten geht.
+        </li>
+      
+</ul>
+      
+<p>
+<span class="margin"><span class="note">Hinweis</span></span>
+        Bitte beachten Sie bei der interaktiven Testerstellung bei Men&uuml;s und Comboboxen, 
+        dass diese h&auml;ufig zuklappen,
+        wenn die Applikation den Fokus verliert, was beim Wechsel in den Debug-Modus der Fall ist.
+        In diesem Fall empfiehlt es sich, den Knoten,
+        der ein Men&uuml; oder eine Combobox &ouml;ffnet, und den Knoten, der die Auswahlaktion durchf&uuml;hrt,
+        gemeinsam auszuf&uuml;hren, also nicht zwischendurch in den Debug-Modus zu gehen. Dies kann
+        man zum Beispiel dadurch erreichen, dass man nach dem Knoten, der die Auswahlaktion
+        durchf&uuml;hrt, einen Haltepunkt
+        <img src="images/bptree.png" style="vertical-align: text-bottom" alt="Continue" title="Continue" width="22" height="22" texscale=".5">
+        setzt und bei Erreichen des Knotens, der das Men&uuml;
+        oder die Combobox &ouml;ffnet, die Testausf&uuml;hrung durch L&ouml;sen der Pausetaste
+        <img src="images/pause_continue.png" style="vertical-align: text-bottom" alt="Continue" title="Continue" width="26" height="26" texscale=".5">
+        freigibt.
+      </p>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="breakpoints.html#tut_breakpoints"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 5.1&nbsp;Setzen eines Breakpoints" title="Vorheriges Kapitel: 5.1&nbsp;Setzen eines Breakpoints"></a></td><td class="navicon"><a href="skipsteps.html#tut_skip_steps"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 5.3&nbsp;Knoten &uuml;berspringen" title="N&auml;chste Seite: 5.3&nbsp;Knoten &uuml;berspringen"></a></td><td class="navicon"><a href="skipsteps.html#tut_skip_steps"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 5.3&nbsp;Knoten &uuml;berspringen" title="N&auml;chstes Kapitel: 5.3&nbsp;Knoten &uuml;berspringen"></a></td><td class="navicon"><a href="debugger.html#sec_Debugger"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 5&nbsp;Benutzen des Debuggers (Java)" title="Kapitel-&Uuml;bersicht: 5&nbsp;Benutzen des Debuggers (Java)"></a></td><td class="navicon"><a href="../../tutorial_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 2002-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Atomic component-oriented procedures</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_keywords_simple_atomic"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_keywords_simple_business.html#usec_keywords_simple_business"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 28.2.1&nbsp;Business-related Procedures" title="Previous Chapter: 28.2.1&nbsp;Business-related Procedures"></a></td><td class="navicon"><a href="user_keywords_components.html#usec_keywords_components"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 28.3&nbsp;Keyword-driven testing using dynamic or generic components" title="Next Page: 28.3&nbsp;Keyword-driven testing using dynamic or generic components"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="user_keywords_simple.html#usec_keywords_simple"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 28.2&nbsp;Simple Keyword-driven testing with QF-Test" title="Chapter Overview: 28.2&nbsp;Simple Keyword-driven testing with QF-Test"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_keywords_simple_atomic">28.2.2</a></span>
+</div>
+<a href="contents.html#toc_usec_keywords_simple_atomic">Atomic component-oriented procedures</a>
+</h5>
+        
+<p>
+        Besides the already known business-related procedures representing workflows you can describe every action individually.
+        Applying this concept results in a very detailed description.
+        You can find the sample test-suite at <code>qftest-6.0.3/demo/keywords/simple_atomic/</code>
+        <code>SimpleAtomicKeywords.qft</code>.
+        The respective test-plan can be found at
+        <code>qftest-6.0.3/demo/keywords/simple_atomic/</code>
+        <code>simple_atomic_keywords.xlsx</code>.
+        Please take care to copy the demo folder to a project-related folder first and modify them there.
+        </p>
+        
+<p>
+        Let's take a look at the "Create vehicle" test-case of the CarConfigurator again.
+        The test-case now consists of the following steps:
+        </p>
+        
+<ol>
+            
+<li>Launch SUT, if necessary</li>
+            
+<li>Select menu 'Options'</li>
+            
+<li>Select menu 'Vehicles...'</li>
+            
+<li>Fill text-field 'Name'</li>
+            
+<li>Fill text-field 'Price'</li>
+            
+<li>Press button 'New' in order to create the vehicle</li>
+            
+<li>Press button 'OK' in order to close the dialog</li>
+            
+<li>Check table, whether new created vehicle appears</li>
+        
+</ol>
+        
+<p>
+           Similar to the business-related keywords you need to specify an Excel file containing the planned test-steps and you need to create the procedures in QF-Test as well.
+           You can find the implemented procedures in the package <code>atomic</code> of the test-suite <code>qftest-6.0.3/demo/keywords/SimpleAtomicKeywords.qft</code>.
+           In case you choose this approach you can also think about using the automated procedure generation (see <a href="user_procbuilder.html#usec_procbuilder">chapter 24</a>).
+        </p>
+        
+<p>
+        The next section describes how to use dynamic procedures. This means that we will still write atomic component-oriented procedures in our test-plan, but there will
+        be no need to create a procedure for each and every step or component. Instead of individual procedures we will create procedures like clickButton or setText. Those
+        procedures will then be re-used every time.
+        </p>
+        
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_keywords_simple_business.html#usec_keywords_simple_business"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 28.2.1&nbsp;Business-related Procedures" title="Previous Chapter: 28.2.1&nbsp;Business-related Procedures"></a></td><td class="navicon"><a href="user_keywords_components.html#usec_keywords_components"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 28.3&nbsp;Keyword-driven testing using dynamic or generic components" title="Next Page: 28.3&nbsp;Keyword-driven testing using dynamic or generic components"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="user_keywords_simple.html#usec_keywords_simple"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 28.2&nbsp;Simple Keyword-driven testing with QF-Test" title="Chapter Overview: 28.2&nbsp;Simple Keyword-driven testing with QF-Test"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

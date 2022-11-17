@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Testausf&uuml;hrung</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_bpTestExec"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="bp_testsyssetup.html#sec_bpTestsyssetup"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 35&nbsp;Aufsetzen von Testsystemen" title="Vorheriges Kapitel: 35&nbsp;Aufsetzen von Testsystemen"></a></td><td class="navicon"><a href="reference.html#sec_reference"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: III&nbsp;Referenzteil" title="N&auml;chste Seite: III&nbsp;Referenzteil"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="bp_bestpractices.html#sec_BestP"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: II&nbsp;Best Practices" title="Kapitel-&Uuml;bersicht: II&nbsp;Best Practices"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpTestExec">36</a></span>
+</div>
+<a href="contents.html#toc_sec_bpTestExec">Testausf&uuml;hrung</a>
+</h3>
+
+      
+<p>
+        Dieses Kapitel gibt Ihnen Hinweise, wie Sie Ihre Tests implementieren
+        k&ouml;nnen um eine stabile und verl&auml;ssliche Testausf&uuml;hrung zu erreichen.
+      </p>
+
+      
+
+      
+<a name="sec_bpDependencies"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpDependencies">36.1</a></span>
+</div>
+<a href="contents.html#toc_sec_bpDependencies">Abh&auml;ngigkeiten</a>
+</h4>
+        
+<p>
+          Das 'Abh&auml;ngigkeiten' Konzept von QF-Test erm&ouml;glicht es, dass alle
+          Vorbedingungen eines Testfalles vor der eigentlichen Ausf&uuml;hrung des
+          Testfalles sichergestellt werden. Es bietet auch M&ouml;glichkeiten, auf
+          ein unerwartetes Verhalten zu reagieren, z.B. Schlie&szlig;en eines
+          unerwarteten Fehlerdialogs.
+        </p>
+        
+<p>
+          Dieses Konzept ist im <a href="dependencies.html#sec_dependencies">Abschnitt 38.3</a>
+          beschrieben. Im Tutorial k&ouml;nnen Sie einen Anwendungsfall im Kapitel
+          'Abh&auml;ngigkeiten' finden.
+        </p>
+        
+<p>
+          Sie sollten zumindest eine 'Abh&auml;ngigkeit' implementieren, die
+          verantwortlich ist das SUT zu starten. Diese 'Abh&auml;ngigkeit' sollte
+          eine 'Vorbereitung' Sequenz, die das SUT startet, eine
+          'Aufr&auml;umen' Sequenz f&uuml;r das normale Beenden des SUTs und
+          dar&uuml;ber hinaus noch einen 'Catch' Knoten, um auf
+          unerwartetes Verhalten zu reagieren, beinhalten.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Hinweis</span></span>
+
+          Wenn Sie eine 'Aufr&auml;umen' Sequenz implementieren, versuchen Sie
+          zuerst das SUT normal zu beenden. Nur wenn das nicht klappt,
+          sollten Sie versuchen das SUT mit einem 'Programm beenden' Knoten abzuschie&szlig;en.
+        </p>
+        
+<p>
+          F&uuml;r SWING und SWT Applikationen, verwenden Sie bitte die Prozeduren
+          <code>qfs.cleanup.swing.closeAllModalDialogs</code> und
+          <code>qfs.cleanup.swt.closeAllModalDialogsAndShells</code> aus der Standardbibliothek
+          <code>qfs.qft</code> um unerwartete Fehlerdialoge zu schlie&szlig;en.</p>
+      
+
+      
+      
+
+      
+<a name="sec_bpTimeoutDelay"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpTimeoutDelay">36.2</a></span>
+</div>
+<a href="contents.html#toc_sec_bpTimeoutDelay">Wartezeiten und Verz&ouml;gerungen</a>
+</h4>
+        
+<p>
+          Zur Optimierung der Ausf&uuml;hrungszeit sollten Sie anstatt der Attribute 'Verz&ouml;gerung vorher' und 'Verz&ouml;gerung
+          nachher' Synchronisationsknoten von QF-Test verwenden.
+        </p>
+        
+<p>
+          Die erste Art von Synchronisationsknoten sind die 'Warte' Knoten wie 'Warten auf Komponente',
+          'Warten auf Client', 'Warten auf Laden des Dokuments' und 'Warten auf Programmende'. Hier
+          k&ouml;nnen Sie das Attribut 'Wartezeit' setzen, um auf eine Komponente,
+          einen Prozess oder ein Dokument zu warten. Der 'Warten auf Komponente'
+          Knoten bietet sogar die M&ouml;glichkeit, auf das Verschwinden von
+          Komponenten zu warten.
+        </p>
+        
+<p>
+          Die zweite Art sind 'Check' Knoten, bei denen Sie auch wieder das
+          Attribut 'Wartezeit' setzen k&ouml;nnen. Diese Knoten k&ouml;nnen verwendet
+          werden, um einen Test erst fortsetzen, wenn eine GUI Komponente
+          einen bestimmten Status erreicht hat.
+        </p>
+      
+
+      
+      
+
+      
+<a name="sec_bpWhatonErrors"></a>
+        
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_bpWhatonErrors">36.3</a></span>
+</div>
+<a href="contents.html#toc_sec_bpWhatonErrors">Was soll man tun, wenn das Protokoll einen Fehler enth&auml;lt?</a>
+</h4>
+
+        
+<p>
+          Wenn der Testreport eine Fehlermeldung oder eine Exception
+          enth&auml;lt, dann sollten Sie folgende Schritte ausf&uuml;hren, um die
+          Fehlerquelle schnell zu finden:
+        </p>
+        
+<ol>
+          
+<li>
+            Analysieren Sie das Protokoll, insbesondere die Bildschirmabbilder
+            und Meldungen.
+          </li>
+          
+<li>
+            Wenn Sie die Fehlerquelle nicht sofort sehen k&ouml;nnen, dann springen
+            Sie zur fehlerhaften Stelle in der Testsuite mit der
+            Tastenkombination
+            [Strg-T].
+          </li>
+          
+<li>Setzen Sie einen Breakpoint vor dem fehlerhaften Schritt.</li>
+          
+<li>Versichern Sie sich, dass der Debugger von QF-Test eingeschaltet ist.</li>
+          
+<li>Starten Sie den fehlerhaften Test.</li>
+          
+<li>
+            Wenn QF-Test den Breakpoint erreicht und die Ausf&uuml;hrung stoppt,
+            &ouml;ffnen Sie das Debuggerfenster und kontrollieren die aktuellen
+            Variablenbelegungen, vielleicht beinhaltet diese ja falsche Werte.
+          </li>
+          
+<li>Vielleicht sehen Sie jetzt auch sofort den Fehler im SUT.</li>
+          
+<li>Wenn Sie immer noch keine Fehlerursache erkennen k&ouml;nnen, dann
+          f&uuml;hren Sie den fehlerhaften Schritt aus.</li>
+          
+<li>
+            Wenn Sie nun immer noch einen Fehler bekommen, dann m&uuml;ssen Sie
+            eventuell einige Schritte vor dem eigentlichen Fehler
+            debuggen. Verwenden Sie hierzu wenn m&ouml;glich die Aktion 'Ausf&uuml;hrung hier
+            fortsetzen' aus dem Kontextmen&uuml;, um zu einem beliebigen Knoten in
+            der Testsuite zu springen anstatt eines Neustarts des kompletten
+            Tests.
+          </li>
+        
+</ol>
+        
+<p>
+          
+<span class="margin"><a name="new_N99334"></a><span class="note">3.1+</span></span>
+
+          Seit QF-Test Version 3.1 ist es m&ouml;glich Knoten mittels Kontextmen&uuml;
+          &raquo;<em>Marke setzen</em>&laquo; zu markieren oder ein Lesezeichen
+          mittels der Kontextmen&uuml;aktion &raquo;<em>Lesezeichen           hinzuf&uuml;gen</em>&laquo; zu setzen. Diese Features erm&ouml;glichen es Ihnen schnell
+          die wichtigsten Knoten wiederzufinden.
+        </p>
+        
+<p>
+          Wenn Sie Probleme mit der Komponentenerkennung haben, dann schauen
+          Sie bitte in die Kapitel <a href="user_troubleshooting.html#usec_troubleshooting">Abschnitt 5.10</a> und <a href="bp_componentrecognition.html#sec_bpComponentRecognition">Abschnitt 5.3</a>.
+        </p>
+      
+
+      
+
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="bp_testsyssetup.html#sec_bpTestsyssetup"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 35&nbsp;Aufsetzen von Testsystemen" title="Vorheriges Kapitel: 35&nbsp;Aufsetzen von Testsystemen"></a></td><td class="navicon"><a href="reference.html#sec_reference"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: III&nbsp;Referenzteil" title="N&auml;chste Seite: III&nbsp;Referenzteil"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="bp_bestpractices.html#sec_BestP"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: II&nbsp;Best Practices" title="Kapitel-&Uuml;bersicht: II&nbsp;Best Practices"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,545 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Testen von Webseiten</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_webtesting"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_unittests.html#usec_unittests"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 12&nbsp;Unit Tests" title="Vorheriges Kapitel: 12&nbsp;Unit Tests"></a></td><td class="navicon"><a href="user_wintesting.html#usec_wintesting"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 14&nbsp;Testen nativer Windows Anwendungen" title="N&auml;chste Seite: 14&nbsp;Testen nativer Windows Anwendungen"></a></td><td class="navicon"><a href="user_wintesting.html#usec_wintesting"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 14&nbsp;Testen nativer Windows Anwendungen" title="N&auml;chstes Kapitel: 14&nbsp;Testen nativer Windows Anwendungen"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch" title="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_webtesting">13</a></span>
+</div>
+<a href="contents.html#toc_usec_webtesting">Testen von Webseiten</a>
+</h3>
+    
+<p>
+      QF-Test erlaubt das intuitive Testen von Webseiten im Browser aus Sicht des Benutzers. Wie auch
+      bei den anderen unterst&uuml;tzten GUI-Technologien k&ouml;nnen Aktionen und Checks direkt
+      aufgenommen, nachbearbeitet, strukturiert und wiedergegeben werden.
+    </p>
+
+    
+<a name="usec_web_browsers"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_web_browsers">13.1</a></span>
+</div>
+<a href="contents.html#toc_usec_web_browsers">Unterst&uuml;tzte Browser</a>
+</h4>
+      
+<p>
+        QF-Test unterst&uuml;tzt die Automatisierung von Tests die folgenden Browser:
+      </p>
+      
+<ul>
+        
+<li>
+          Google Chrome (auch im Headless-Modus, siehe <a href="#usec_webtesting_headless">Abschnitt 13.7</a>)
+        </li>
+        
+<li>
+          Mozilla Firefox (auch im Headless-Modus, siehe <a href="#usec_webtesting_headless">Abschnitt 13.7</a>)
+        </li>
+        
+<li>
+          Microsoft Edge (auch im Headless-Modus, siehe <a href="#usec_webtesting_headless">Abschnitt 13.7</a>)
+        </li>
+        
+<li>
+          Internet Explorer
+        </li>
+        
+<li>
+          Safari
+        </li>
+        
+<li>
+          Opera
+        </li>
+	
+<li>
+	  JxBrowser eingebettet in Swing, JavaFX oder SWT
+	</li>
+	
+<li>
+	  WebView eingebettet in JavaFX
+	</li>
+	
+<li>
+	  Internet Explorer oder Webkit eingebettet in SWT
+	</li>
+      
+</ul>
+      
+<p>
+        Details zu den unterst&uuml;tzten Browser Versionen finden Sie in <a href="user_installation.html#usec_techversions">Abschnitt 1.1.2</a>.
+      </p>
+    
+    
+
+    
+<a name="usec_web_general"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_web_general">13.2</a></span>
+</div>
+<a href="contents.html#toc_usec_web_general">Allgemeine Vorgehensweise</a>
+</h4>
+      
+<p>
+        Eine Schritt-f&uuml;r-Schritt Anleitung zum Einstieg das Web-Testen mit QF-Test finden Sie im
+        entsprechende zweiten Teil des <a href="../../tutorial/de/tutorial.html" shape="rect">Tutorials</a>.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+	Es gibt Teile des Tutorials auch als <a href="https://www.qfs.de/qf-test-tutorial.html" shape="rect">Videos</a>. Nur zur
+	Erzeugung einer passenden Web-Startsequenz empfehlen wir das Video <a href="https://www.qfs.de/de/yt/schnellstart-assistent-web-42.html" class="videolink" target="_blank">Der Schnellstart Assistent
+	Web</a> auf unserem <a href="https://www.qfs.de/de/yt/" shape="rect">QF-Test YouTube Kanal</a>.
+      </p>
+      
+<p>
+        Die Vorgehensweise f&uuml;r die Testerstellung und -ausf&uuml;hrung bei Web-Anwendungen
+        unterscheidet sich nicht wesentlich von der anderer GUI-Technologien, wie dies allgemein
+        ab <a href="user_gui.html#usec_gui">Kapitel 2</a> dieses Handbuchs beschrieben wird. Jedoch sollte ein
+        besonderer Augenmerk auf die Komponentenerkennung gelegt werden, die stark abh&auml;ngig von
+        der konkreten Implementierung der Web-Anwendung ist.  Um herauszufinden, wie gut die
+        direkte Wiedererkennung funktioniert, empfiehlt es sich zu Beginn testweise Aktionen auf
+        unterschiedliche Komponenten und Masken der Web-Anwendung aufzunehmen und das korrekte
+        Abspielen zu &uuml;berpr&uuml;fen. Weitere Hinweise zur Komponentenerkennung und M&ouml;glichkeiten der
+        Optimierung finden Sie in <a href="#usec_web_components">Abschnitt 13.4</a>.
+      </p>
+    
+
+  
+    
+
+    
+<a name="usec_webtesting_connection_mode"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_webtesting_connection_mode">13.3</a></span>
+</div>
+<a href="contents.html#toc_usec_webtesting_connection_mode">Die Verbindung zum Browser</a>
+</h4>
+      
+<p>
+        Im ersten Schritt muss der gew&uuml;nschte Browser von QF-Test gestartet und eine Verbindung
+        hergestellt werden. Sobald die per URL angegebene Web-Anwendung geladen ist, kann mit der
+        Aufnahme und Testerstellung begonnen werden.
+      </p>
+      
+<p>
+        QF-Test verwendet unterschiedliche Methoden, so genannte Driver, um Zugriff auf den
+        Browser zu erlangen und eine Verbindung herzustellen: den <strong>QF-Driver</strong>,
+        den <strong>CDP-Driver</strong> und den <strong>WebDriver</strong>.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span>Je nach Browser stehen unterschiedliche Verbindungsmodi zur Verf&uuml;gung. QF-Test versucht,
+        automatisch den besten Modus zu w&auml;hlen. Sie k&ouml;nnen die Kontrolle dar&uuml;ber mit Hilfe des Attributs
+        <a href="processes.html#att_WebEngineClientStarter_connectionmode" shape="rect">'Verbindungsmodus f&uuml;r den Browser'</a> im <a href="processes.html#step_WebEngineClientStarter" shape="rect">'Web-Engine starten'</a> Knoten
+        &uuml;bernehmen. Details hierzu finden Sie in <a href="tech_webconnectionmode.html#sec_webconnectionmodes">Abschnitt 47.3</a>.
+      </p>
+      
+<p>
+        Beim <strong>QF-Driver</strong> wird der auf dem Rechner des Anwenders installierte Browser in ein so
+        genanntes Wrapper-Fenster eingebunden. Man spricht bei diesem Ansatz auch von
+        Embedding. QF-Test bindet in dieses Fenster den lokal installierten Web-Browser nativ ein
+        und erlangt somit Zugriff auf die Automatisierungs-Interfaces des jeweiligen
+        Browsers. &Uuml;ber diese kann QF-Test dann die ben&ouml;tigten Events vom Browser abgreifen aber
+        auch umgekehrt Events in den Browser einspeisen.
+      </p>
+      
+      
+<p>
+        Die Einbettung des Browsers in ein separates Fenster funktioniert f&uuml;r neuere Browser
+        leider nicht mehr zufriedenstellend oder gar nicht, weshalb alternative Mechanismen
+        zur Verf&uuml;gung stehen.
+      </p>
+      
+<p>
+<span class="margin"><a name="new_N84803"></a><span class="note">5.3+</span></span> Der <strong>CDP-Driver</strong> Mechanismus greift zur Kommunikation
+        auf die in Chromium (und davon abgeleiteten Browsern) eingebaute Debugging-Schnittstelle zur&uuml;ck.
+        Dazu verwendet QF-Test das <a href="https://chromedevtools.github.io/devtools-protocol/" shape="rect">Chrome DevTools Protokoll</a>.
+        Da dies die gleiche Schnittstelle ist, welche auch von den Entwicklungstools im Browser verwendet wird,
+        ist eine enge und effiziente Testausf&uuml;hrung m&ouml;glich. Leider steht das Protokoll noch nicht
+        f&uuml;r alle von QF-Test unterst&uuml;tzen Browser zur Verf&uuml;gung. 
+      </p>
+      
+<p>
+<span class="margin"><a name="new_N84816"></a><span class="note">4.1+</span></span> Der <strong>WebDriver</strong> Mechanismus verwendet als Bindeglied
+        zwischen dem Browser und QF-Test den Selenium WebDriver, der sich zu einem W3C-Standard f&uuml;r die
+        Steuerung von Web-Browsern entwickelt hat (<a href="http://www.w3.org/TR/webdriver/" shape="rect">http://www.w3.org/TR/webdriver/</a>).
+      </p>
+      
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Der WebDriver Modus ist systembedingt leider in Bezug auf Performance und
+        Funktionsumfang im Vergleich zum QF-Driver etwas eingeschr&auml;nkt (siehe <a href="tech_webconnectionmode.html#sec_webdriver_limitations">Abschnitt 47.3.4</a>). Wenn m&ouml;glich sollte die Testerstellung mittels
+        QF-Driver oder CDP-Driver, also z.B. mit dem Chrome Browser durchgef&uuml;hrt werden. Die reine Ausf&uuml;hrung kann dann
+        auch mittels WebDriver erfolgen - leider nicht ganz so performant.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> Um die Aufnahmefunktionalit&auml;ten von QF-Test auch im WebDriver Modus verwenden zu
+        k&ouml;nnen, muss QF-Test die Inhalte des Browser-Fensters kontinuierlich analysieren und auf
+        &Auml;nderungen &uuml;berwachen. Dies kann in einigen Browsern eine Warnung hervorrufen, die sich
+        auf Mixed-Mode-Darstellung bzw. die Verwendung eines unbekannten Zertifikats
+        bezieht. Sollte diese Warnung bzw. Fehlermeldung nur w&auml;hrend des Tests Ihrer Website mit
+        QF-Test auftreten, so kann sie ignoriert werden.
+      </p>
+    
+
+  
+    
+
+    
+<a name="usec_web_components"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_web_components">13.4</a></span>
+</div>
+<a href="contents.html#toc_usec_web_components">Erkennung von Web-Komponenten und Toolkits</a>
+</h4>
+      
+<p>
+        Bei Web-Applikationen haben Entwickler viele Freiheitsgrade, wie sie graphische Objekte in
+        HTML entwickeln. Dies resultiert in einer Vielzahl von Implementierungen f&uuml;r funktionale
+        GUI-Komponenten wie Buttons, Textfelder, Tabellen etc. Hier ein paar Beispiele f&uuml;r die
+        Umsetzung eines Okay Buttons:
+      </p>
+      
+<ol>
+        
+<li>
+           
+<code>&lt;button id="ok1"&gt;OK&lt;/button&gt;</code>
+        
+</li>
+        
+<li>
+           
+<code>&lt;div class="toolkit-btn"&gt;OK&lt;/div&gt;</code>
+        
+</li>
+        
+<li>
+           
+<code>&lt;span class="btn" name="ok2"&gt;OK&lt;/span&gt;</code>
+        
+</li>
+        
+<li>
+           
+<code>&lt;div role="button"&gt;OK&lt;/div&gt;</code>
+        
+</li>
+      
+</ol>
+      
+<p>
+        Zun&auml;chst nimmt QF-Test die GUI-Elemente mit den HTML-Tags als Klassen sowie die
+        Basiswiedererkennungsmerkmale auf.
+      </p>
+      
+<p>
+        Im ersten Beispiel w&uuml;rde somit eine
+        QF-Test Komponente mit der Klasse <code>BUTTON</code>, dem Namen <code>ok1</code>
+        und den f&uuml;r die Anzeige g&uuml;ltigen Struktur- und Geometrieinformationen angelegt.
+        Beim Abspielen der Tests sollte die Komponente somit zuverl&auml;ssig erkannt werden.
+      </p>
+      
+<p>
+        Dar&uuml;ber hinaus pr&uuml;ft QF-Test, ob es sich bei den HTML-Angaben um Quasi-Standards handelt,
+        die einer generischen QF-Test Klasse zugeordnet werden k&ouml;nnen. Dies w&auml;re in diesem
+        Beispiel der Fall und es w&uuml;rde <code>Button</code> zugewiesen.
+      </p>
+      
+<p>
+        Der Vorteil der generischen Klassen ist, dass klassenabh&auml;ngig zus&auml;tzliche Wiedererkennungsmerkmale
+        aufgenommen werden. So wird einem Button zum Beispiel die Beschriftung
+        als 'Merkmal' Attribut zugewiesen. Des weiteren stehen bei der Aufnahme von
+        Checks zus&auml;tzliche klassenspezifische Checks zur Verf&uuml;gung. Bei Tabellen wird zum Beispiel
+        die Aufnahme eines Checks f&uuml;r eine ganze Zeile oder Spalte angeboten. Weitere Vorteile
+        sind in der Einleitung zu <a href="tech_genericclasses.html#sec_genericclasses">Generische Klassen</a>
+        beschrieben. Detaillierte Informationen
+        zu den klassenspezifischen Erweiterungen finden Sie in <a href="tech_genclassesproperties.html#sec_genclassesproperties">Eigenschaften von generischen Klassen</a>.
+      </p>
+      
+<p>
+        Auf dem Markt existieren eine Vielzahl von Web Toolkits, wie Angular, React oder Vue.js,
+        die die Erstellung von Webseiten massiv erleichtern. Jedes dieser Toolkits hat seine
+        eigenen Implementierungen f&uuml;r GUI-Objekte.
+      </p>
+      
+<p>
+        Im zweiten Beispiel verwendet das Toolkit immer die css-Klasse <code>toolkit-btn</code>
+        f&uuml;r Buttons.
+      </p>
+      
+<p>
+        F&uuml;r eine Reihe von Toolkits ist in QF-Test die Zuordnung der GUI-Elemente
+        zu Komponenten einer bestimmten generischen Klassen bereits hinterlegt.
+        In diesen F&auml;llen k&ouml;nnen Sie mit der gewohnt stabilen Komponentenerkennung von QF-Test
+        arbeiten. Weitere Informationen zu den unterst&uuml;tzten Web Toolkits finden Sie in
+        <a href="tech_ajax.html#sec_ajax">Besondere Unterst&uuml;tzung f&uuml;r verschiedene Webframeworks</a>.
+        Im Normalfall erkennt QF-Test selbst&auml;ndig, ob und mit welchem Toolkit
+        die Web-Anwendung erstellt wurde. Alternativ k&ouml;nnen Sie manuell aus den
+        verf&uuml;gbaren Web Toolkits ausw&auml;hlen.
+      </p>
+      
+<p>
+        Das dritte und vierte Beispiel entsprechen keinerlei Standards. Die Wiedererkennung
+        im dritten Beispiel w&uuml;rde &uuml;ber das <code>name</code> Attribut vermutlich ausreichend
+        stabil sein. Im vierten Beispiel bietet das GUI-Objekt von sich aus aber gar keine guten Merkmale
+        f&uuml;r die Wiedererkennung. In beiden F&auml;llen kann jedoch das kennzeichnende HTML-Attribut
+        der generischen Klasse <code>Button</code> zugewiesen werden. Details hierzu finden Sie in
+        <a href="tech_customajax.html#sec_customajax">Verbesserte Komponentenerkennung mittels <code>CustomWebResolver</code></a>.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span>
+        Es ist sinnvoll vor dem Erstellen der Tests zu pr&uuml;fen, zu welcher dieser Kategorien
+        die GUI-Objekte der zu testenden Applikation geh&ouml;ren. Falls die Standarderkennung
+        nicht ausreichend ist, sollte durch Zuordnung von GUI-Objekten zu generischen
+        QF-Test Klassen eine Optimierung erfolgen. Siehe <a href="tech_customajax.html#sec_customajax">Abschnitt 47.1</a>.
+      </p>
+      
+<p>
+        Allgemeine Informationen Komponenten in QF-Test finden Sie in <a href="user_components.html#usec_components">Kapitel 5</a>.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span>
+        Der Umgang mit mehreren
+        Browser-Fenstern wird in <a href="faq.html#faq_25" shape="rect">FAQ 25</a> genauer erl&auml;utert.
+      </p>
+
+    
+    
+    
+
+    
+<a name="usec_web_cross_browser"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_web_cross_browser">13.5</a></span>
+</div>
+<a href="contents.html#toc_usec_web_cross_browser">Cross-Browser Tests</a>
+</h4>
+      
+<p>
+        Browser-&uuml;bergreifende Tests sind einfach realisierbar. Sie erstellen Testf&auml;lle f&uuml;r einen
+        Browser und k&ouml;nnen diese dann auf anderen Browsern abspielen. Im Wesentlichen muss nur in
+        einem <a href="datadriver.html#sec_datadriver">Datentreiber</a> die Variable <code>$(browser)</code>, die den Browser definiert,
+        passend gesetzt werden. Falls Sie es probieren wollen, f&uuml;gen Sie einfach in der mitgelieferten
+        Demo-Testsuite f&uuml;r Web im Testfallsatz "CarConfiguratorWeb Demo" einen 'Datentreiber' wie folgt ein:
+        (Um die Demo-Testsuite zu &ouml;ffnen, w&auml;hlen Sie den Men&uuml;punkt &raquo;<em>Hilfe</em>&laquo;-&raquo;<em>Beispiel-Testsuiten erkunden...</em>&laquo; und klicken den
+        "&ouml;ffnen"-Link hinter "Web CarConfig Suite".)
+      </p>
+      
+<a name="figure_13.1"></a><a name="figure_13.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/web_cross_browsers.png" target="_blank"><img src="images/web_cross_browsers.png" alt="Cross-Browser-Tests" width="966" height="816" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;13.1</a>:&nbsp;&nbsp;Cross-Browser Tests</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Dann werden die vier Testfalls&auml;tze, die gemeinsam mit dem Datentreiber im Testfallsatz
+        "CarConfiguratorWeb Demo" liegen, f&uuml;r jeden Browser-Typ einmal durchlaufen.
+      </p>
+    
+
+    
+    
+
+    
+<a name="sec_webtesting_mobile_emulation"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_webtesting_mobile_emulation">13.6</a></span>
+</div>
+<a href="contents.html#toc_sec_webtesting_mobile_emulation">Testen von mobilen Webseiten</a>
+</h4>
+      
+<p>
+        
+<span class="margin"><a name="new_N85027"></a><span class="note">4.2.1+</span></span>
+        Beim Testen von Webseiten ist h&auml;ufig das Benutzererleben auf mobilen Ger&auml;ten wie
+        Smartphones oder Tablets relevant, da die Webseite aufgrund einer unterschiedlichen Browser-Kennung
+        ("User Agent") und spezifischen Display-Gr&ouml;&szlig;en anders dargestellt wird als im Desktop-Browser
+        ("Responsive Design").
+      </p>
+      
+<p>
+        QF-Test unterst&uuml;tzt solche Szenarien &uuml;ber die Emulation mobiler Browser. Dabei wird ein
+        Desktop-Browser in einem Modus gestartet, in welchem die Fenstergr&ouml;&szlig;en
+        und die Browserkennung den Browser eines Mobilger&auml;tes emuliert.
+      </p>
+      
+<p>
+        Insbesondere Google Chrome ist in der Lage, spezifische Charakteristika der mobilen
+        Variante, wie ein angepasstes Pixel-Verh&auml;ltnis bzw. eine automatische Skalierung
+        nicht-responsiver Webseiten nachzubilden.
+      </p>
+      
+      
+<p>
+        Um mit so einem Szenario zu beginnen, k&ouml;nnen Sie im Schnellstart-Assistenten
+        die Kategorie "Eine Web-Anwendung in einem emulierten mobilen Browser" nutzen und dann
+        das gew&uuml;nschte Mobilger&auml;t ausw&auml;hlen (siehe <a href="user_quickstart.html#usec_quickstart">Kapitel 3</a>).
+      </p>
+      
+<p>
+        Ein Demo finden Sie in der Testsuite "carconfigWeb_advanced_de.qft". Dort die
+        Testsuite "Emulation von mobilen Ger&auml;ten".
+        Dies k&ouml;nnen einfach &ouml;ffnen &uuml;ber das Men&uuml; &raquo;<em>Hilfe</em>&laquo;-&raquo;<em>Beispiel-Testsuiten erkunden...</em>&laquo; und dann
+        Auswahl des letzten Beispiels "CarConfig Web Testprojekt".
+      </p>
+
+    
+
+    
+    
+
+    
+<a name="usec_webtesting_headless"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_webtesting_headless">13.7</a></span>
+</div>
+<a href="contents.html#toc_usec_webtesting_headless">Web-Testen im Headless-Modus</a>
+</h4>
+      
+<p>
+        
+<span class="margin"><a name="new_N85069"></a><span class="note">4.2+</span></span>
+
+        Mit Hilfe der CDP-Driver und WebDriver Ans&auml;tze ist es auch m&ouml;glich, Chrome, Firefox und Microsoft Edge im sogenannten
+        Headless-Modus anzusteuern. Dabei wird der Browser im Hintergrund gestartet, ohne
+        ein sichtbares Fenster auf dem Bildschirm anzuzeigen. Alle Interaktionen mit der Webseite
+        erfolgen im "unsichtbaren" Fenster.
+      </p>
+      
+<p>
+        Anwendungsf&auml;lle f&uuml;r Headless-Browser k&ouml;nnen Web-Lasttests sein (<a href="user_loadtest.html#usec_loadtestingwebheadless">Abschnitt 29.5</a>) oder Tests, die parallel zur Testentwicklung auf dem
+        gleichen Rechner im Hintergrund laufen sollen.
+      </p>
+      
+<p>
+        Um einen bestehenden Web-Test im Headless-Modus auszuf&uuml;hren, muss lediglich der Typ des
+        Browsers im Konten <a href="processes.html#step_WebEngineClientStarter" shape="rect">'Web-Engine starten'</a> von <code>chrome</code> auf
+        <code>headless-chrome</code> bzw. von <code>firefox</code> auf
+        <code>headless-firefox</code> oder von <code>edge</code> auf
+        <code>headless-edge</code>ge&auml;ndert werden.
+      </p>
+    
+
+    
+    
+
+    
+<a name="usec_webtesting_selenium"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_webtesting_selenium">13.8</a></span>
+</div>
+<a href="contents.html#toc_usec_webtesting_selenium">Einbindung vorhandener Selenium Web-Tests</a>
+</h4>
+      
+<p>
+        QF-Test erlaubt bei Verwendung des WebDriver Modus die Kombination mit bereits
+        bestehenden Selenium Skripten.
+      </p>
+      
+<p>
+        Ein Weg ist die direkte Nutzung des WebDriver Java APIs in <a href="control.html#step_ClientScriptStep" shape="rect">'SUT Skript'</a> Knoten
+        (vgl. <a href="tech_webdriversutapi.html#sec_webdriversutapi">Abschnitt 50.12</a>).
+      </p>
+      
+<p>
+        Eine andere M&ouml;glichkeit ist Einbettung von Selenium Skripten als Unit Tests, wie in
+        <a href="user_unittests.html#usec_unittests">Kapitel 12</a> beschrieben. Als sch&ouml;nen Nebeneffekt erh&auml;lt man ein
+        integriertes Reporting, bei dem auch die ausgef&uuml;hrten Unit Tests enthalten sind.
+      </p>
+      
+<p>
+        Ein Demo finden Sie in der Testsuite "carconfigWeb_advanced_de.qft" - dort die
+        Testsuite "Integration von Selenium Tests".
+        (Einfach zu &ouml;ffnen &uuml;ber das Men&uuml; &raquo;<em>Hilfe</em>&laquo;-&raquo;<em>Beispiel-Testsuiten erkunden...</em>&laquo; und dann
+        Auswahl des letzten Beispiels "CarConfig Web Testprojekt".)
+      </p>
+    
+
+
+    
+    
+
+    
+<a name="usec_webtesting_browser_dir"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_webtesting_browser_dir">13.9</a></span>
+</div>
+<a href="contents.html#toc_usec_webtesting_browser_dir">Auswahl der Browser Installation</a>
+</h4>
+      
+<p>
+        Bei der Verwendung des CDP-Driver oder WebDriver Modus kann man im <a href="processes.html#step_WebEngineClientStarter" shape="rect">'Web-Engine starten'</a> auch f&uuml;r
+        andere Browser als Firefox explizit das <a href="processes.html#att_WebEngineClientStarter_mozhome" shape="rect">'Verzeichnis der Browser-Installation'</a> setzen. Ist
+        kein Verzeichnis angegeben, so wird versucht, einen Standard-Browser des entsprechenden
+        Typs zu starten.
+      </p>
+    
+
+    
+
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_unittests.html#usec_unittests"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 12&nbsp;Unit Tests" title="Vorheriges Kapitel: 12&nbsp;Unit Tests"></a></td><td class="navicon"><a href="user_wintesting.html#usec_wintesting"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 14&nbsp;Testen nativer Windows Anwendungen" title="N&auml;chste Seite: 14&nbsp;Testen nativer Windows Anwendungen"></a></td><td class="navicon"><a href="user_wintesting.html#usec_wintesting"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 14&nbsp;Testen nativer Windows Anwendungen" title="N&auml;chstes Kapitel: 14&nbsp;Testen nativer Windows Anwendungen"></a></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch" title="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

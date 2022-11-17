@@ -1,0 +1,1045 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Abfragen</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_queries"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="checks.html#sec_checks"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 38.9&nbsp;Checks" title="Vorheriges Kapitel: 38.9&nbsp;Checks"></a></td><td class="navicon"><a href="miscnodes.html#sec_miscnodes"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 38.11&nbsp;Verschiedenes" title="N&auml;chste Seite: 38.11&nbsp;Verschiedenes"></a></td><td class="navicon"><a href="miscnodes.html#sec_miscnodes"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 38.11&nbsp;Verschiedenes" title="N&auml;chstes Kapitel: 38.11&nbsp;Verschiedenes"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite" title="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_queries">38.10</a></span>
+</div>
+<a href="contents.html#toc_sec_queries">Abfragen</a>
+</h4>
+    
+<p>
+      Das Automatisieren eines Tests wird dann schwierig, wenn sich das
+      SUT dynamisch verh&auml;lt, d.h. wenn sich Dinge bei jedem Programmlauf
+      anders verhalten. Das ist z.B. der Fall, wenn IDs f&uuml;r
+      Datenbankfelder generiert werden, die aktuelle Uhrzeit Eingang in
+      Datens&auml;tze findet, etc.
+    </p>
+    
+<p>
+      Neben seinen Kontrollstrukturen bietet QF-Test die M&ouml;glichkeit,
+      Daten aus Komponenten der Oberfl&auml;che des SUT auszulesen und in der
+      Testsuite weiter zu verwenden, z.B. als Index f&uuml;r ein
+      <a href="components.html#step_SubItemStep" shape="rect">'Element'</a>, oder als Vergleichswert f&uuml;r einen <a href="checks.html#sec_checks" shape="rect">Check</a>.
+    </p>
+    
+
+    
+<a name="step_FetchTextStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_FetchTextStep">38.10.1</a></span>
+</div>
+<a href="contents.html#toc_step_FetchTextStep">'Text auslesen'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/fetchtext.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Mit diesem Knoten kann zur Laufzeit eines Tests der
+            dargestellte Text einer Komponente oder eines Unterelements
+            ausgelesen und einer lokalen oder globalen Variable zugewiesen werden.
+          </p>
+          
+<p>
+            Diese Operation macht nur f&uuml;r Komponenten oder Elemente Sinn,
+            die einen Text darstellen. Die Angabe einer unzul&auml;ssigen
+            Komponente f&uuml;hrt zu einer
+            <code>OperationNotSupportedException</code>, ein &uuml;berfl&uuml;ssiger
+            Index zu einer <code>UnexpectedIndexException</code>. Die
+            folgende Tabelle f&uuml;hrt die m&ouml;glichen Zielkomponenten und
+            Unterelemente auf. (P/S) steht f&uuml;r Prim&auml;rindex/Sekund&auml;rindex.
+          </p>
+          
+<p>
+<span class="margin"><a name="web_N142033"></a><span class="note">Web</span></span>
+            Bei Webanwendungen kann theoretisch jeder Knoten einen Text
+            beinhalten, deshalb wird dort entweder der Text oder ein leerer
+            Text zur&uuml;ckgegeben und des kommt nicht zu einer <code>OperationNotSupportedException</code>.
+          </p>
+          
+<a name="table_38.24"></a><a name="table_38.24"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="3">
+              
+<tr>
+                
+<th align="left" rowspan="1" colspan="1">Klasse</th>
+                <th align="left" rowspan="1" colspan="1">Index (P/S)</th>
+                <th align="left" rowspan="1" colspan="1">Ergebnis</th>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>AbstractButton</code></td>
+                <td rowspan="1" colspan="1">-/-</td>
+                <td rowspan="1" colspan="1"><code>getText()</code></td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Dialog</code></td>
+                <td rowspan="1" colspan="1">-/-</td>
+                <td rowspan="1" colspan="1"><code>getTitle()</code></td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Frame</code></td>
+                <td rowspan="1" colspan="1">-/-</td>
+                <td rowspan="1" colspan="1"><code>getTitle()</code></td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JComboBox</code></td>
+                <td rowspan="1" colspan="1">-/-</td>
+                <td rowspan="1" colspan="1">aktueller Wert (mit Renderer)</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JComboBox</code></td>
+                <td rowspan="1" colspan="1">Listenelement/-</td>
+                <td rowspan="1" colspan="1">Listenelement (mit Renderer)</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JEditorPane</code></td>
+                <td rowspan="1" colspan="1">Zeichenposition/-</td>
+                <td rowspan="1" colspan="1">Strukturelement an Position (experimentell)</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JLabel</code></td>
+                <td rowspan="1" colspan="1">-/-</td>
+                <td rowspan="1" colspan="1"><code>getText()</code></td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JList</code></td>
+                <td rowspan="1" colspan="1">Listenelement/-</td>
+                <td rowspan="1" colspan="1">Element (mit Renderer)</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTabbedPane</code></td>
+                <td rowspan="1" colspan="1">Tab/-</td>
+                <td rowspan="1" colspan="1">Titel des Tab</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTable</code></td>
+                <td rowspan="1" colspan="1">Spalte/Zeile</td>
+                <td rowspan="1" colspan="1">Zelleninhalt (mit Renderer)</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTableHeader</code></td>
+                <td rowspan="1" colspan="1">Spalte/-</td>
+                <td rowspan="1" colspan="1">Spaltentitel (mit Renderer)</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTextArea</code></td>
+                <td rowspan="1" colspan="1">Zeilennummer/-</td>
+                <td rowspan="1" colspan="1">Text in der Zeile</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTextComponent</code></td>
+                <td rowspan="1" colspan="1">-/-</td>
+                <td rowspan="1" colspan="1"><code>getText()</code></td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTree</code></td>
+                <td rowspan="1" colspan="1">Knoten/-</td>
+                <td rowspan="1" colspan="1">Knoten (mit Renderer)</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>Label</code></td>
+                <td rowspan="1" colspan="1">-/-</td>
+                <td rowspan="1" colspan="1"><code><code>getText()</code></code></td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>TextField</code></td>
+                <td rowspan="1" colspan="1">-/-</td>
+                <td rowspan="1" colspan="1"><code><code>getText()</code></code></td>
+              
+</tr>
+            
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.24</a>:&nbsp;&nbsp;Zul&auml;ssige Komponenten f&uuml;r
+              'Text auslesen'</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die Daten der Zielkomponente werden an das SUT geschickt. Die
+            <code>TestEventQueue</code> ermittelt daraus im SUT die passende
+          Komponente, liest deren Text aus und liefert ihn zur&uuml;ck an
+            QF-Test, wo er in einer globalen Variable abgelegt wird.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.67"></a><a name="figure_38.67"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_FetchTextStep.png" target="_blank"><img src="images/att_FetchTextStep.png" alt="Text auslesen Attribute" texscale=".66" width="393" height="357"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.67</a>:&nbsp;&nbsp;'Text auslesen' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_FetchTextStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Der Name unter dem der Java Prozess des SUT gestartet wurde,
+        aus dem die Daten gelesen werden sollen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_FetchTextStep_component"></a>
+<dt>'QF-Test ID der Komponente'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID des <a href="components.html#step_WindowStep" shape="rect">'Fenster'</a>, <a href="components.html#step_ComponentStep" shape="rect">'Komponente'</a> oder
+        <a href="components.html#step_SubItemStep" shape="rect">'Element'</a> Knotens dessen Daten abgefragt werden.
+      </p>
+      
+<p>
+        Der "Komponente ausw&auml;hlen" Button
+	<img src="../icons/select_component.png" style="vertical-align: text-bottom" alt="[Komponente ausw&auml;hlen]" title="Komponente ausw&auml;hlen" width="20" height="20" texscale=".66">
+        &ouml;ffnet einen Dialog, in dem Sie die Komponente (siehe <a href="user_components.html#usec_components">Kapitel 5</a>) direkt ausw&auml;hlen
+        k&ouml;nnen. Diesen erreichen Sie auch mittels [Shift-Return] oder [Alt-Return], sofern sich der Fokus im Textfeld befindet. Alternativ
+        k&ouml;nnen Sie den gew&uuml;nschten Knoten mittels [Strg-C] bzw.
+        &raquo;<em>Bearbeiten</em>&laquo;-&raquo;<em>Kopieren</em>&laquo;
+        kopieren und seine QF-Test ID durch dr&uuml;cken von
+        [Strg-V] in das Textfeld
+        einf&uuml;gen.
+      </p>
+      
+<p>
+        Dieses Attribut unterst&uuml;tzt ein spezielles Format, das es erlaubt,
+        Komponenten in anderen Testsuiten zu referenzieren (siehe 
+        <a href="user_distributed.html#usec_suitereference">Abschnitt 23.1</a>).  Des weiteren
+        k&ouml;nnen Unterelemente von Knoten direkt angegeben werden, ohne dass ein
+        eigener Knoten daf&uuml;r vorhanden sein muss (siehe <a href="user_subitems.html#usec_subitems">Abschnitt 5.9</a>). 
+        Bei der Verwendung
+        von SmartIDs k&ouml;nnen Sie ein GUI-Element direkt
+        &uuml;ber seine Wiedererkennungsmerkmale adressieren. Weitere Informationen
+        hierzu finden Sie in <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a> und 
+        <a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">'Komponente' Knoten versus SmartID</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_FetchTextStep_variable"></a>
+<dt>'Variablenname'</dt>
+<dd>
+            
+            
+<p>
+              Der Name der globalen Variable, in der das Ergebnis der
+              Abfrage abgelegt wird (vgl. <a href="user_variables.html#usec_variables">Kapitel 6</a>).
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_FetchTextStep_Local"></a>
+<dt>'Lokale Variable'</dt>
+<dd>
+      
+<p>
+        Ist dieses Attribut nicht gesetzt, wird die Variable in den globalen Definitionen
+        gebunden. Andernfalls wird - sofern vorhanden - die oberste aktuelle Definition der
+        Variablen &uuml;berschrieben, sofern diese innerhalb des aktuellen <a href="procedures.html#step_Procedure" shape="rect">'Prozedur'</a>,
+        <a href="dependencies.html#step_Dependency" shape="rect">'Abh&auml;ngigkeit'</a> oder <a href="sequences.html#step_TestCase" shape="rect">'Testfall'</a> Knotens liegt. Gibt es keine solche Definition,
+        wird eine neue Definition im aktuellen 'Prozedur', 'Abh&auml;ngigkeit' oder 'Testfall'
+        Knoten angelegt, oder, falls kein solcher existiert, im obersten Knoten auf dem Variablen-Stapel
+	mit Fallback auf die globalen Definitionen. Eine
+        Erl&auml;uterung dieser Begriffe und weitere Details zu Variablen finden Sie in <a href="user_variables.html#usec_variables">Kapitel 6</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_FetchTextStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_FetchTextStep_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_FetchTextStep_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_FetchIndexStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_FetchIndexStep">38.10.2</a></span>
+</div>
+<a href="contents.html#toc_step_FetchIndexStep">'Index auslesen'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/fetchindex.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Hiermit kann die Position eines Unterelements einer komplexen
+            Komponente ermittelt werden, dessen Text bekannt ist.  Als
+            Ziel muss daher ein Unterelement angegeben werden. Das
+            Ergebnis wird einer lokalen oder globalen Variable zugewiesen.
+          </p>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die Daten der Zielkomponente werden an das SUT geschickt. Die
+            <code>TestEventQueue</code> ermittelt daraus im SUT die passende
+          Komponente, sucht das Unterelement und liefert seine Position
+          zur&uuml;ck an QF-Test, wo sie in einer globalen Variable abgelegt
+          wird.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.68"></a><a name="figure_38.68"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_FetchIndexStep.png" target="_blank"><img src="images/att_FetchIndexStep.png" alt="Index auslesen Attribute" texscale=".66" width="393" height="357"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.68</a>:&nbsp;&nbsp;'Index auslesen' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_FetchIndexStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Der Name unter dem der Java Prozess des SUT gestartet wurde,
+        aus dem die Daten gelesen werden sollen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_FetchIndexStep_component"></a>
+<dt>'QF-Test ID der Komponente'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID des <a href="components.html#step_WindowStep" shape="rect">'Fenster'</a>, <a href="components.html#step_ComponentStep" shape="rect">'Komponente'</a> oder
+        <a href="components.html#step_SubItemStep" shape="rect">'Element'</a> Knotens dessen Daten abgefragt werden.
+      </p>
+      
+<p>
+        Der "Komponente ausw&auml;hlen" Button
+	<img src="../icons/select_component.png" style="vertical-align: text-bottom" alt="[Komponente ausw&auml;hlen]" title="Komponente ausw&auml;hlen" width="20" height="20" texscale=".66">
+        &ouml;ffnet einen Dialog, in dem Sie die Komponente (siehe <a href="user_components.html#usec_components">Kapitel 5</a>) direkt ausw&auml;hlen
+        k&ouml;nnen. Diesen erreichen Sie auch mittels [Shift-Return] oder [Alt-Return], sofern sich der Fokus im Textfeld befindet. Alternativ
+        k&ouml;nnen Sie den gew&uuml;nschten Knoten mittels [Strg-C] bzw.
+        &raquo;<em>Bearbeiten</em>&laquo;-&raquo;<em>Kopieren</em>&laquo;
+        kopieren und seine QF-Test ID durch dr&uuml;cken von
+        [Strg-V] in das Textfeld
+        einf&uuml;gen.
+      </p>
+      
+<p>
+        Dieses Attribut unterst&uuml;tzt ein spezielles Format, das es erlaubt,
+        Komponenten in anderen Testsuiten zu referenzieren (siehe 
+        <a href="user_distributed.html#usec_suitereference">Abschnitt 23.1</a>).  Des weiteren
+        k&ouml;nnen Unterelemente von Knoten direkt angegeben werden, ohne dass ein
+        eigener Knoten daf&uuml;r vorhanden sein muss (siehe <a href="user_subitems.html#usec_subitems">Abschnitt 5.9</a>). 
+        Bei der Verwendung
+        von SmartIDs k&ouml;nnen Sie ein GUI-Element direkt
+        &uuml;ber seine Wiedererkennungsmerkmale adressieren. Weitere Informationen
+        hierzu finden Sie in <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a> und 
+        <a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">'Komponente' Knoten versus SmartID</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_FetchIndexStep_variable"></a>
+<dt>'Variablenname'</dt>
+<dd>
+            
+            
+<p>
+              Der Name der globalen Variable, in der das Ergebnis der
+              Abfrage abgelegt wird (vgl. <a href="user_variables.html#usec_variables">Kapitel 6</a>).
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_FetchIndexStep_Local"></a>
+<dt>'Lokale Variable'</dt>
+<dd>
+      
+<p>
+        Ist dieses Attribut nicht gesetzt, wird die Variable in den globalen Definitionen
+        gebunden. Andernfalls wird - sofern vorhanden - die oberste aktuelle Definition der
+        Variablen &uuml;berschrieben, sofern diese innerhalb des aktuellen <a href="procedures.html#step_Procedure" shape="rect">'Prozedur'</a>,
+        <a href="dependencies.html#step_Dependency" shape="rect">'Abh&auml;ngigkeit'</a> oder <a href="sequences.html#step_TestCase" shape="rect">'Testfall'</a> Knotens liegt. Gibt es keine solche Definition,
+        wird eine neue Definition im aktuellen 'Prozedur', 'Abh&auml;ngigkeit' oder 'Testfall'
+        Knoten angelegt, oder, falls kein solcher existiert, im obersten Knoten auf dem Variablen-Stapel
+	mit Fallback auf die globalen Definitionen. Eine
+        Erl&auml;uterung dieser Begriffe und weitere Details zu Variablen finden Sie in <a href="user_variables.html#usec_variables">Kapitel 6</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_FetchIndexStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_FetchIndexStep_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_FetchIndexStep_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+    
+
+    
+<a name="step_FetchGeometryStep"></a>
+      
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_step_FetchGeometryStep">38.10.3</a></span>
+</div>
+<a href="contents.html#toc_step_FetchGeometryStep">'Geometrie auslesen'</a>
+</h5>
+      
+<table class="step" cellspacing="0">
+<tr>
+<td class="margin" valign="top">
+<table class="margin" cellspacing="0">
+<tr>
+<td class="marginimg"><img width="40" height="40" src="../icons/fetchgeometry.png" texscale="1"></td>
+</tr>
+</table>
+</td><td width="100%" valign="top" align="left">
+          
+<p>
+            Hiermit ermitteln Sie die Geometrie eines Fensters, einer
+            Komponente oder eines Unterelements im SUT. Das Ergebnis
+            wird in bis zu vier lokalen oder globalen Variablen abgelegt, je einer f&uuml;r
+            X und Y-Koordinaten, Breite und H&ouml;he.
+          </p>
+          
+<p>
+            Interessant ist dieser Knoten z.B. dann, wenn Sie einen
+            <a href="events.html#step_MouseEventStep" shape="rect">'Mausevent'</a> relativ zur rechten oder unteren Kante
+            einer Komponente definieren wollen. Lesen Sie hierzu zun&auml;chst
+            Breite und H&ouml;he der Komponente aus und definieren Sie
+            dann <a href="events.html#att_MouseEventStep_xy" shape="rect">'X'</a> und <a href="events.html#att_MouseEventStep_xy" shape="rect">'Y'</a>
+            Koordinate des 'Mausevents' &uuml;ber die erweiterte
+            Variablensyntax f&uuml;r Berechnungen (vgl. <a href="user_variables.html#usec_expressions">Abschnitt 6.6</a>).
+          </p>
+          
+<p>
+           Die folgende Tabelle f&uuml;hrt die m&ouml;glichen Unterelemente
+           auf. (P/S) steht f&uuml;r Prim&auml;rindex/Sekund&auml;rindex.
+          </p>
+          
+<a name="table_38.25"></a><a name="table_38.25"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="3">
+              
+<tr>
+                
+<th align="left" rowspan="1" colspan="1">Klasse</th>
+                <th align="left" rowspan="1" colspan="1">Index (P/S)</th>
+                <th align="left" rowspan="1" colspan="1">Ergebnis</th>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JList</code></td>
+                <td rowspan="1" colspan="1">Listenelement/-</td>
+                <td rowspan="1" colspan="1">Element</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTabbedPane</code></td>
+                <td rowspan="1" colspan="1">Tab/-</td>
+                <td rowspan="1" colspan="1">Tab</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTable</code></td>
+                <td rowspan="1" colspan="1">Spalte/-</td>
+                <td rowspan="1" colspan="1">Spalte</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTable</code></td>
+                <td rowspan="1" colspan="1">Spalte/Zeile</td>
+                <td rowspan="1" colspan="1">Zelle</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTableHeader</code></td>
+                <td rowspan="1" colspan="1">Spalte/-</td>
+                <td rowspan="1" colspan="1">Spaltentitel</td>
+              
+</tr>
+              
+<tr>
+                
+<td rowspan="1" colspan="1"><code>JTree</code></td>
+                <td rowspan="1" colspan="1">Knoten/-</td>
+                <td rowspan="1" colspan="1">Knoten</td>
+              
+</tr>
+            
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;38.25</a>:&nbsp;&nbsp;Zul&auml;ssige Unterelemente f&uuml;r
+              'Geometrie auslesen'</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+</td>
+</tr>
+</table>
+<p>
+<strong>Enthalten in:</strong> Alle Arten von <a href="sequences.html#sec_sequences" shape="rect">Sequenzen</a>.</p>
+<p>
+<strong>Kinder:</strong> Keine</p>
+<p>
+<strong>Ausf&uuml;hrung:</strong> 
+          Die Daten der Zielkomponente werden an das SUT geschickt. Die
+          <code>TestEventQueue</code> ermittelt daraus im SUT die passende
+          Komponente, berechnet deren Geometrie und schickt die Daten
+          zur&uuml;ck an QF-Test, wo sie in globalen Variablen abgelegt
+          werden.
+        </p>
+      
+
+      
+<p>
+<strong>Attribute:</strong>
+</p>
+<a name="figure_38.69"></a><a name="figure_38.69"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/att_FetchGeometryStep.png" target="_blank"><img src="images/att_FetchGeometryStep.png" alt="Geometrie auslesen Attribute" texscale=".66" width="393" height="430"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;38.69</a>:&nbsp;&nbsp;'Geometrie auslesen' Attribute</td><td class="captionglue"></td>
+</tr>
+</table>
+<dl class="attribute">
+<a name="att_FetchGeometryStep_client"></a>
+<dt>'Client'</dt>
+<dd>
+      
+<p>
+        Der Name unter dem der Java Prozess des SUT gestartet wurde,
+        aus dem die Daten gelesen werden sollen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein.</p>
+</dd>
+<a name="att_FetchGeometryStep_component"></a>
+<dt>'QF-Test ID der Komponente'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID des <a href="components.html#step_WindowStep" shape="rect">'Fenster'</a>, <a href="components.html#step_ComponentStep" shape="rect">'Komponente'</a> oder
+        <a href="components.html#step_SubItemStep" shape="rect">'Element'</a> Knotens dessen Daten abgefragt werden.
+      </p>
+      
+<p>
+        Der "Komponente ausw&auml;hlen" Button
+	<img src="../icons/select_component.png" style="vertical-align: text-bottom" alt="[Komponente ausw&auml;hlen]" title="Komponente ausw&auml;hlen" width="20" height="20" texscale=".66">
+        &ouml;ffnet einen Dialog, in dem Sie die Komponente (siehe <a href="user_components.html#usec_components">Kapitel 5</a>) direkt ausw&auml;hlen
+        k&ouml;nnen. Diesen erreichen Sie auch mittels [Shift-Return] oder [Alt-Return], sofern sich der Fokus im Textfeld befindet. Alternativ
+        k&ouml;nnen Sie den gew&uuml;nschten Knoten mittels [Strg-C] bzw.
+        &raquo;<em>Bearbeiten</em>&laquo;-&raquo;<em>Kopieren</em>&laquo;
+        kopieren und seine QF-Test ID durch dr&uuml;cken von
+        [Strg-V] in das Textfeld
+        einf&uuml;gen.
+      </p>
+      
+<p>
+        Dieses Attribut unterst&uuml;tzt ein spezielles Format, das es erlaubt,
+        Komponenten in anderen Testsuiten zu referenzieren (siehe 
+        <a href="user_distributed.html#usec_suitereference">Abschnitt 23.1</a>).  Des weiteren
+        k&ouml;nnen Unterelemente von Knoten direkt angegeben werden, ohne dass ein
+        eigener Knoten daf&uuml;r vorhanden sein muss (siehe <a href="user_subitems.html#usec_subitems">Abschnitt 5.9</a>). 
+        Bei der Verwendung
+        von SmartIDs k&ouml;nnen Sie ein GUI-Element direkt
+        &uuml;ber seine Wiedererkennungsmerkmale adressieren. Weitere Informationen
+        hierzu finden Sie in <a href="user_smartid.html#usec_smartid">SmartID (Preview)</a> und 
+        <a href="user_components_step_vs_smartid.html#usec_components_step_vs_smartid">'Komponente' Knoten versus SmartID</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Darf nicht leer sein</p>
+</dd>
+<a name="att_FetchGeometryStep_windowrelative"></a>
+<dt>'Position relativ zum Fenster'</dt>
+<dd>
+            
+            
+<p>
+              Legt fest, ob die X und Y-Koordinaten einer Komponente oder
+              eines Unterelements relativ zum Fenster oder relativ zur
+              Parentkomponente sind.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine.</p>
+</dd>
+<a name="att_FetchGeometryStep_xvarname"></a>
+<dt>'Variable f&uuml;r X'</dt>
+<dd>
+            
+            
+<p>
+              Der Name der globalen Variable, in der die X-Koordinate
+              abgelegt wird (vgl. <a href="user_variables.html#usec_variables">Kapitel 6</a>). Wenn
+              Sie sich f&uuml;r die X-Koordinate nicht interessieren, lassen
+              Sie dieses Feld leer.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_FetchGeometryStep_yvarname"></a>
+<dt>'Variable f&uuml;r Y'</dt>
+<dd>
+            
+            
+<p>
+              Der Name der globalen Variable, in der die Y-Koordinate
+              abgelegt wird (vgl. <a href="user_variables.html#usec_variables">Kapitel 6</a>). Wenn
+              Sie sich f&uuml;r die Y-Koordinate nicht interessieren, lassen
+              Sie dieses Feld leer.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_FetchGeometryStep_widthvarname"></a>
+<dt>'Variable f&uuml;r Breite'</dt>
+<dd>
+            
+            
+<p>
+              Der Name der globalen Variable, in der die Breite
+              abgelegt wird (vgl. <a href="user_variables.html#usec_variables">Kapitel 6</a>). Wenn
+              Sie sich f&uuml;r die Breite nicht interessieren, lassen
+              Sie dieses Feld leer.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_FetchGeometryStep_heightvarname"></a>
+<dt>'Variable f&uuml;r H&ouml;he'</dt>
+<dd>
+            
+            
+<p>
+              Der Name der globalen Variable, in der die H&ouml;he
+              abgelegt wird (vgl. <a href="user_variables.html#usec_variables">Kapitel 6</a>). Wenn
+              Sie sich f&uuml;r die H&ouml;he nicht interessieren, lassen
+              Sie dieses Feld leer.
+            </p>
+          
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_FetchGeometryStep_Local"></a>
+<dt>'Lokale Variable'</dt>
+<dd>
+      
+<p>
+        Ist dieses Attribut nicht gesetzt, werden die Variablen in den globalen Definitionen
+        gebunden. Andernfalls wird - sofern vorhanden - jeweils die oberste aktuelle Definition der
+        Variablen &uuml;berschrieben, sofern diese innerhalb des aktuellen <a href="procedures.html#step_Procedure" shape="rect">'Prozedur'</a>,
+        <a href="dependencies.html#step_Dependency" shape="rect">'Abh&auml;ngigkeit'</a> oder <a href="sequences.html#step_TestCase" shape="rect">'Testfall'</a> Knotens liegt. Gibt es keine solche Definition,
+        wird eine neue Definition im aktuellen 'Prozedur', 'Abh&auml;ngigkeit' oder 'Testfall'
+        Knoten angelegt, oder, falls kein solcher existiert, im obersten Knoten auf dem Variablen-Stapel
+	mit Fallback auf die globalen Definitionen. Eine
+        Erl&auml;uterung dieser Begriffe und weitere Details zu Variablen finden Sie in <a href="user_variables.html#usec_variables">Kapitel 6</a>.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+<a name="att_FetchGeometryStep_id"></a>
+<dt>'QF-Test ID'</dt>
+<dd>
+      
+<p>
+        Die QF-Test ID ist f&uuml;r diesen Knoten zur Zeit ohne Bedeutung.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Nein</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> 
+      Darf keines der Zeichen '\', '#', '$', '@',
+      '&amp;', oder '%' enthalten und nicht mit einem Unterstrich
+      ('_') beginnen.
+    </p>
+</dd>
+<a name="att_FetchGeometryStep_delay"></a>
+<dt>'Verz&ouml;gerung vorher/nachher'</dt>
+<dd>
+      
+<p>
+        Mit diesen Parametern kann vor oder nach der Ausf&uuml;hrung eine
+        Verz&ouml;gerung bewirkt werden. Sind sie nicht gesetzt, wird die <a href="opt_play.html#opt_defaultdelay" shape="rect">Standardverz&ouml;gerung</a> aus den Optionen
+        verwendet.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Leer oder &gt;0</p>
+</dd>
+<a name="att_FetchGeometryStep_comment"></a>
+<dt>'Bemerkung'</dt>
+<dd>
+      
+<p>
+        Hier k&ouml;nnen Sie einen beliebigen Kommentar eintragen.
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note">Hinweis</span></span> F&uuml;r die ausf&uuml;hrliche Dokumentation, insbesondere von 'Testfallsatz',
+        'Testfall' oder 'Prozedur' Knoten, ist dieses Textfeld wom&ouml;glich nicht
+        der geeignete Ort. Es gibt hervorragende Editoren, die
+        wesentlich besser daf&uuml;r geeignet sind. Mittels der Option <a href="opt_general.html#opt_externaleditor">Kommando f&uuml;r externen Editor</a> kann ein externer Editor festgelegt werden, in dem nach Dr&uuml;cken
+        von [Alt-Eingabe] oder Klicken des <img src="../icons/script_edit.png" alt="Externer Editor" width="20" height="20" align="middle" texscale="1"> Buttons der Kommentar komfortabel bearbeitet werden kann.
+      </p>
+      
+<p>
+      F&uuml;r einige Knoten k&ouml;nnen Sie ein spezielles Verhalten per Doctags konfigurieren, siehe <a href="tech_doctags.html#sec_doctags">Doctags</a>.
+      </p>
+      
+<p>
+        Falls bei 'Komponenten' Knoten in dem Bemerkungsfeld eine Eintragung gemacht wurde,
+        wird der Knoten bei der Suche bzw. dem L&ouml;schen von ungenutzten Komponenten &uuml;bersprungen.
+      </p>
+    
+<p>
+<strong>Variabel:</strong> Ja</p>
+<p>
+<strong>Einschr&auml;nkungen:</strong> Keine</p>
+</dd>
+</dl>
+
+      
+    
+
+    
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="checks.html#sec_checks"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 38.9&nbsp;Checks" title="Vorheriges Kapitel: 38.9&nbsp;Checks"></a></td><td class="navicon"><a href="miscnodes.html#sec_miscnodes"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 38.11&nbsp;Verschiedenes" title="N&auml;chste Seite: 38.11&nbsp;Verschiedenes"></a></td><td class="navicon"><a href="miscnodes.html#sec_miscnodes"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 38.11&nbsp;Verschiedenes" title="N&auml;chstes Kapitel: 38.11&nbsp;Verschiedenes"></a></td><td class="navicon"><a href="nodes.html#sec_suite"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite" title="Kapitel-&Uuml;bersicht: 38&nbsp;Bestandteile einer Testsuite"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

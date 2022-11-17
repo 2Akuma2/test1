@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="root"
+          signature="302D0215008202DD90745DA2DC71987BCA44EBEBD3B7C04860021405901899A5B14D1F84174A2A76024BEA3C0CD0A6"
+          version="6.0.3">
+  <include>qfs.qft</include>
+  <comment>This test-suite is used in the first chapter of the QF-Test tutoial.</comment>
+  <TestSet id="_1" name="Simple Tests">
+    <SetupSequence id="_6" name="Start Demo">
+      <SetGlobalStep id="_7" varname="client">
+        <default>CarConfig</default>
+      </SetGlobalStep>
+      <BasicSequence id="_11"
+                     name="Start client if necessary and dependent on OS">
+        <ClientWaiter client="$(client)" id="_1p6O" local="true" raise="false"
+                      resvarname="isSUTRunning" timeout="1">
+          <comment>This node checks whether the SUT is already running. The result of this check will be stored in the variable isSUTRunning. The variable itself can contain true if SUT is already running or false if SUT is not running. This variable will be used in the following 'If' node.</comment>
+        </ClientWaiter>
+        <IfSequence id="_1p6P" name="No client, then start"
+                    test="not $(isSUTRunning)">
+          <IfSequence id="_A" name="Start .cmd on Windows"
+                      test="${qftest:windows}">
+            <SUTClientStarter client="$(client)"
+                              directory="${qftest:dir.version}/demo/carconfig"
+                              executable="${qftest:dir.version}/demo/carconfig/CarConfig.cmd"
+                              id="_8">
+              <parameter>en</parameter>
+            </SUTClientStarter>
+            <ElseSequence id="_B" name="start .sh ">
+              <SUTClientStarter client="$(client)"
+                                directory="${qftest:dir.version}/demo/carconfig"
+                                executable="${qftest:dir.version}/demo/carconfig/CarConfig.sh"
+                                id="_C">
+                <parameter>en</parameter>
+              </SUTClientStarter>
+            </ElseSequence>
+          </IfSequence>
+          <ClientWaiter client="$(client)" id="_9"/>
+        </IfSequence>
+      </BasicSequence>
+    </SetupSequence>
+    <TestCase id="_d" name="First">
+      <TestStep id="_2" name="Reset">
+        <MouseEventStep clicks="1" client="$(client)" component="mFile"
+                        event="MOUSE_MPRC" id="_H" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)" component="miReset"
+                        event="MOUSE_MPRC" id="_I" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="TabbedPane&amp;0" event="MOUSE_MPRC"
+                        id="_f" modifiers="16"/>
+      </TestStep>
+      <TestStep id="_M" name="Select Model I5">
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="VehicleTable&amp;0@I5" event="MOUSE_MPRC"
+                        id="_Y" modifiers="16"/>
+      </TestStep>
+      <TestStep id="_e" name="Select Special Model Jazz">
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="TabbedPane&amp;1" event="MOUSE_MPRC"
+                        id="_Z" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="SpecialsCombo.button" event="MOUSE_MPRC"
+                        id="_a" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="listInvokerName:_SpecialsCombo@Jazz"
+                        event="MOUSE_MPRC" id="_b" modifiers="16"/>
+      </TestStep>
+      <TestStep id="_j" name="Check Final Price">
+        <CheckStringStep client="$(client)" component="CalculatedPrice"
+                         id="_i">
+          <text>$$30,049.00</text>
+        </CheckStringStep>
+      </TestStep>
+    </TestCase>
+    <TestCase id="_q" name="Second (with Error)">
+      <TestStep id="_r" name="Reset">
+        <MouseEventStep clicks="1" client="$(client)" component="mFile"
+                        event="MOUSE_MPRC" id="_s" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)" component="miReset"
+                        event="MOUSE_MPRC" id="_t" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="TabbedPane&amp;0" event="MOUSE_MPRC"
+                        id="_u" modifiers="16"/>
+      </TestStep>
+      <TestStep id="_12" name="Select Model I5">
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="VehicleTable&amp;0@I5" event="MOUSE_MPRC"
+                        id="_13" modifiers="16"/>
+      </TestStep>
+      <TestStep id="_v" name="Grant 10% Discount">
+        <TextInputStep clear="true" client="$(client)"
+                       component="DiscountValue" id="_18">
+          <text>10</text>
+        </TextInputStep>
+      </TestStep>
+      <TestStep id="_-" name="Check Final Price (causing Error)">
+        <CheckStringStep client="$(client)" component="CalculatedPrice"
+                         id="_10">
+          <text>$$29,000.00</text>
+        </CheckStringStep>
+      </TestStep>
+    </TestCase>
+    <CleanupSequence id="_o" name="Stop Demo">
+      <ClientStopper client="$(client)" id="_1p7o"/>
+      <ProcessWaiter client="$(client)" id="_p"/>
+    </CleanupSequence>
+  </TestSet>
+  <PackageRoot id="_3"/>
+  <ExtraSequence id="_4"/>
+  <WindowList id="_5">
+    <WindowStep class="Window" feature="JCarConfigurator - Version 1"
+                height="400" id="JCarConfigurator" name="JCarConfigurator"
+                uid="_D" width="350" x="0" y="0">
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JFrame</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Window</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">javax.swing.JFrame</extrafeature>
+      <ComponentStep class="MenuBar" classcount="1" classindex="0" height="29"
+                     id="MenuBar" name="MenuBar" uid="_E" width="346" x="2"
+                     y="23">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JMenuBar</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">MenuBar</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JMenuBar</extrafeature>
+        <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Menu:MenuBar</extrafeature>
+        <ComponentStep class="MenuItem" classcount="16" classindex="0"
+                       feature="File" height="25" id="mFile" name="mFile"
+                       uid="_F" width="53" x="2" y="2">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javax.swing.JMenu</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">MenuItem</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">Datei</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JMenu</extrafeature>
+          <ComponentStep class="MenuItem" classcount="2" classindex="0"
+                         feature="Reset" height="24" id="miReset"
+                         name="miReset" uid="_G" width="155">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">javax.swing.JMenuItem</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">MenuItem</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Zurücksetzen</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">javax.swing.JMenuItem</extrafeature>
+          </ComponentStep>
+          <ComponentStep class="MenuItem" classcount="2" classindex="1"
+                         feature="Exit" height="24" id="miExit" name="miExit"
+                         uid="_k" width="99">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">javax.swing.JMenuItem</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">MenuItem</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Exit</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">javax.swing.JMenuItem</extrafeature>
+          </ComponentStep>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="TabPanel" classcount="1" classindex="0"
+                     height="236" id="TabbedPane" name="TabbedPane" uid="_N"
+                     width="346" x="2" y="52">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JTabbedPane</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">TabPanel</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JTabbedPane</extrafeature>
+        <ComponentStep class="Panel" classcount="12" classindex="0"
+                       feature="Tab: Vehicles" height="207"
+                       id="VehicleTablePanel" name="VehicleTablePanel"
+                       uid="_O" width="341" x="2" y="26">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.qfs.apps.qftest.demo.multi.CarConfigurator$$VehicleTablePanel</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Panel</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JPanel</extrafeature>
+          <extrafeature name="qfs:type" negate="false" regexp="false"
+                        state="0">Panel:TabPanelContent</extrafeature>
+          <ComponentStep class="Panel" classcount="3" classindex="0"
+                         height="184" id="VehicleScrollPane"
+                         name="VehicleScrollPane" uid="_P" width="333" x="4"
+                         y="19">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">javax.swing.JScrollPane</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Panel</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">javax.swing.JScrollPane</extrafeature>
+            <extrafeature name="qfs:type" negate="false" regexp="false"
+                          state="0">Panel:ScrollPanel</extrafeature>
+            <ComponentStep class="Table" classcount="1" classindex="0"
+                           id="VehicleTable" name="VehicleTable" uid="_Q">
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">javax.swing.JTable</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">Table</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">javax.swing.JTable</extrafeature>
+            </ComponentStep>
+          </ComponentStep>
+        </ComponentStep>
+        <ComponentStep class="Panel" classcount="12" classindex="4"
+                       feature="Tab: Specials" height="207" id="SpecialsPanel"
+                       name="SpecialsPanel" uid="_R" width="341" x="2" y="26">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.qfs.apps.qftest.demo.multi.CarConfigurator$$SpecialsPanel</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Panel</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JPanel</extrafeature>
+          <extrafeature name="qfs:type" negate="false" regexp="false"
+                        state="0">Panel:TabPanelContent</extrafeature>
+          <ComponentStep class="ComboBox" classcount="1" classindex="0"
+                         height="24" id="SpecialsCombo" name="SpecialsCombo"
+                         uid="_S" width="333" x="4" y="19">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">javax.swing.JComboBox</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">ComboBox</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">javax.swing.JComboBox</extrafeature>
+            <ComponentStep class="Button" classcount="1" classindex="0"
+                           id="SpecialsCombo.button" uid="_T">
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">com.jgoodies.looks.plastic.PlasticComboBoxButton</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">Button</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">javax.swing.JButton</extrafeature>
+              <extrafeature name="qfs:type" negate="false" regexp="false"
+                            state="0">Button:ComboBoxButton</extrafeature>
+            </ComponentStep>
+          </ComponentStep>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="Popup" feature="InvokerName: SpecialsCombo"
+                     height="78" id="popupInvokerName:_SpecialsCombo" uid="_U"
+                     width="333" x="8" y="121">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">com.jgoodies.looks.plastic.PlasticComboBoxUI$$PlasticComboPopup</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Popup</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.plaf.basic.BasicComboPopup</extrafeature>
+        <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Popup:ComboBoxPopup</extrafeature>
+        <ComponentStep class="Panel" classcount="2" classindex="0" height="76"
+                       id="popupInvokerName:_SpecialsCombo.scroll" uid="_V"
+                       width="331" x="1" y="1">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javax.swing.JScrollPane</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Panel</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JScrollPane</extrafeature>
+          <extrafeature name="qfs:type" negate="false" regexp="false"
+                        state="0">Panel:ScrollPanel</extrafeature>
+          <ComponentStep class="List" classcount="1" classindex="0"
+                         feature="InvokerName: SpecialsCombo"
+                         id="listInvokerName:_SpecialsCombo" uid="_W">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">javax.swing.JList</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">List</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">javax.swing.JList</extrafeature>
+            <extrafeature name="qfs:type" negate="false" regexp="false"
+                          state="0">List:ComboBoxList</extrafeature>
+          </ComponentStep>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="Panel" classcount="25" classindex="17"
+                     height="108" id="CalculatorPanel" name="CalculatorPanel"
+                     uid="_g" width="346" x="2" y="288">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">de.qfs.apps.qftest.demo.multi.CarConfigurator$$CalculatorPanel</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Panel</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JPanel</extrafeature>
+        <ComponentStep class="TextField" classcount="4" classindex="3"
+                       feature="Label: Final price" height="17"
+                       id="CalculatedPrice" name="CalculatedPrice" uid="_h"
+                       width="140" x="167" y="86">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javax.swing.JTextField</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">TextField</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">Endpreis</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTextField</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="TextField" classcount="4" classindex="2"
+                       feature="Label: Discount" height="30"
+                       id="DiscountValue" name="DiscountValue" uid="_15"
+                       width="48" x="249" y="60">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javax.swing.JTextField</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">TextField</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">Discount</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTextField</extrafeature>
+        </ComponentStep>
+      </ComponentStep>
+    </WindowStep>
+    <WindowStep class="Dialog" feature="CarConfigurator - Error" height="125"
+                id="dialogCarConfigurator_-_Error" modal="true" uid="_16"
+                width="303" x="23" y="137">
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JDialog</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Dialog</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">javax.swing.JDialog</extrafeature>
+      <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Window:Dialog</extrafeature>
+    </WindowStep>
+  </WindowList>
+</RootStep>

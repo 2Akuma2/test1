@@ -1,0 +1,334 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Windows and components Section</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2002-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_componentsteps"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="complex_components.html#sec_addressing_complex_components"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 4.1&nbsp;Addressing subitems of tables, lists and trees" title="Previous Chapter: 4.1&nbsp;Addressing subitems of tables, lists and trees"></a></td><td class="navicon"><a href="debugger.html#sec_Debugger"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 5&nbsp;Using the Debugger (Java)" title="Next Page: 5&nbsp;Using the Debugger (Java)"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="components.html#sec_ComplexComponents"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 4&nbsp;Components (Java)" title="Chapter Overview: 4&nbsp;Components (Java)"></a></td><td class="navicon"><a href="../../tutorial_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_componentsteps">4.2</a></span>
+</div>
+<a href="contents.html#toc_sec_componentsteps">'Windows and components' Section</a>
+</h4>
+      
+<p>
+        The topic 'components' is covered by several videos:
+      </p>
+      
+<p>
+        
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+        The video <a href="https://www.qfs.de/en/yt/component-recognition.html" class="videolink" target="_blank">'Component
+        recognition'</a> first explains the criteria for component recognition, then (starting at min
+        13:07) the use of generic components using regular expressions, followed by generic components using variables
+        in component recognition attributes.
+      </p>
+      
+<p>
+        There are two videos available explaining in detail how to deal with a
+        <code>ComponentNotFoundException</code>:
+      </p>
+      
+<p>
+        The video <a href="https://www.qfs.de/en/yt/componentnotfoundexception-simple-40.html" class="videolink" target="_blank">'ComponentNotFoundException - simple
+        case'</a> shows a simple case.
+      </p>
+      
+<p>
+        A more complex case is discussed in the video <a href="https://www.qfs.de/en/yt/componentnotfoundexception-complex-40.html" class="videolink" target="_blank">'ComponentNotFoundException -
+        complex case'</a>.
+      </p>
+      
+<p>
+        Live recording of the special webinar <a href="https://www.qfs.de/en/yt/component-recognition-51.html" class="videolink" target="_blank">
+        'Component recognition'</a>.
+      </p>
+      
+<p>
+        QF-Test stores the information about how to find a component in the UI of the
+        SUT in the 'Windows and components' section. It analyses the component
+        information when recording actions to the SUT and saves the information
+        for the components the user interacted with in the details of the
+        'Component' nodes.
+      </p>
+      
+<p>
+        Since Java Swing, JavaFX and SWT have a clear concept of how a certain
+        component has to be technically implemented, you rarely have to bother about
+        the information QF-Test stores for a certain component. In most cases QF-Test
+        will recognize the component it has to replay some event to. Only when
+        the UI of your application changed significantly in a way QF-Test cannot compensate,
+        you will have to think about 'Component' nodes.
+      </p>
+      
+<p>
+<span class="margin"><span class="note">Note</span></span>
+        For a detailed instruction about what to do then, please refer to
+        the manual chapter <a href="../../manual/en/user_components.html#usec_troubleshooting" shape="rect">
+          Troubleshooting component recognition problems</a>. There are also
+        links to videos showing respective samples.
+      </p>
+      
+<p>
+        This section is meant to give you an idea about which kind of information is stored
+        in the 'Component' nodes and how QF-Test uses it to recognize a component
+        in the UI.
+      </p>
+      
+<p>
+        Let's have a look at the details of a 'TextField' component node.
+      </p>
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Action</span></span>
+          <strong>Start the CarConfig application</strong>, in case it has not been
+          started already, by executing the 'Setup' node of the test-suite.
+        </li>
+        
+<li>
+          
+<strong>Open the procedure 'Check final price'</strong>.
+        </li>
+        
+<li>
+          
+<strong>Navigate to the text field 'Component' node</strong> by right-clicking
+          the text check node and selecting &raquo;<em>Locate component</em>&laquo;
+          or using the [Ctrl-W] shortcut.
+        </li>
+      
+</ul>
+      
+<a name="fig_components_locate"></a><a name="figure_4.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/Components_locate.png" target="_blank"><img src="images/Components_locate.png" alt="Popup-menu" texscale=".5" width="886" height="723"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;4.2</a>:&nbsp;&nbsp;Locating a component</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        This is going to take you directly to the 'TextField CalculatedPrice' node in the
+        'Windows and components' section.
+      </p>
+      
+<a name="fig_components_tree"></a><a name="figure_4.3"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/Components_tree.png" target="_blank"><img src="images/Components_tree.png" alt="Component tree" texscale=".5" width="886" height="723"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;4.3</a>:&nbsp;&nbsp;Component tree</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Let's have a look at the properties of this component node
+        used to identify the UI element.
+      </p>
+      
+<a name="fig_components_details"></a><a name="figure_4.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/Components_details.png" target="_blank"><img src="images/Components_details.png" alt="Component details" texscale=".5" width="600" height="648"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;4.4</a>:&nbsp;&nbsp;Details of the 'Component' node</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        The topmost attribute is <strong>'QF-Test ID'</strong>, which provides the 'handle' to the
+        component to be used in the test-cases and procedures. All other attributes refer to the
+        component in the UI.
+      </p>
+      
+<p>
+        The next attribute is <strong>'Class name'</strong>. In our case it is 'TextField'. For
+        component recognition it is essential to know the class of a component. In fact this class
+        is a generalized value of the Java class or Java system class. This is helpful to achieve
+        recognition independently of the specific implementation and allows an easy porting of tests
+        e.g. from Java Swing to its successor JavaFX.
+        However, QF-Test saves the specific and the system class in the 'Extra features' table as
+        'Extra features' named <code>qfs:class</code> and <code>qfs:systemclass</code>. By default, they are
+        not used for component recognition.
+      </p>
+      
+<p>
+        Other examples for classes would be 'Panel',
+        'Dialog' or 'Button'.
+      </p>
+      
+<p>
+        The <strong>'Name'</strong> attribute is the name or id given to the UI component by the
+        programmer. If there is a Name then this, together with the class,
+        is all QF-Test needs to identify a component in the UI.
+      </p>
+      
+<p>
+        If the programmer did not set a name or id for the UI component and the
+        'Name' attribute therefore remained empty QF-Test needs other criteria like a certain
+        text associated with the component, index information and geometry.
+      </p>
+      
+<p>
+        A feature associated with a button for example would be the text shown on the button.
+        QF-Test saves a text directly belonging to the UI component in the
+        <strong>'Feature'</strong> attribute.  Texts in the vicinity of a component
+        that could be the label of the component are saved in the 'Feature' attribute with the
+        prefix <code>Label: </code> and in the <strong>'Extra features'</strong> table with the
+        'Extra features' Name <code>qfs:label</code>.
+      </p>
+      
+<p>
+        The <strong>Structure</strong> information refers to all UI components of the respective class.
+        The total number of UI components of that class
+        is saved in the 'Class count' attribute, the index of the component itself in the
+        'Class index' attribute.
+      </p>
+      
+<p>
+        Last there is the <strong>Geometry</strong> information. It is the one
+        having the lowest weight within the recognition algorithm. It can be of value if no other
+        helpful information is available for a component.
+      </p>
+      
+<p>
+        In case you are interested in further details of the component recognition you will find such
+        in the <a href="../../manual/en/tech_recognition.html#sec_recognition" shape="rect">Component recognition</a>
+        chapter of the technical reference of the manual.
+      </p>
+      
+<p>
+        If you want to get a feeling for the component recognition you could play around
+        with the attribute values and see what you need to change to make QF-Test not recognize it
+        anymore or even recognize
+        a wrong component in the UI. You will find that you need to change quite a
+        few attributes before QF-Test recognizes a different component.
+        This means that component recognition with
+        QF-Test is very robust. With regression tests a significant part of the
+        UI component criteria need to change before QF-Test will not recognize the component
+        anymore even if the component has no name or id.
+      </p>
+      
+<p>
+        When you click the 'Component' node QF-Test will highlight the recognized component
+        in the UI by outlining it with a dark blue border.
+      </p>
+      
+      
+      
+<ul>
+        
+<li>
+<span class="margin"><span class="note">Action</span></span>
+          <strong>Delete <code>CalculatedPrice</code> from the 'Name' attribute</strong>. Because
+          as long
+          as there is an entry in the  'Name' attribute QF-Test will not consider the
+          attributes below.
+        </li>
+        
+<li>
+          
+<strong>Change the 'Feature' attribute</strong> from <code>Label: Final price</code> to
+          <code>Label: xxx</code>.
+        </li>
+        
+<li>
+          
+<strong>Click the 'TextField' node</strong> and check QF-Test still highlights
+          the Final Price field in the UI.
+        </li>
+        
+<li>
+          
+<strong>Change the 'Feature' attribute</strong> back to <code>Label: Final price</code>,
+          either via the respective toolbar button or by typing [Ctrl-Z].
+        </li>
+        
+<li>
+          
+<strong>Change the <code>qfs:label</code> value in the 'Extra features' table</strong> from <code>Final price</code> to
+          <code>Discount</code>.
+        </li>
+        
+<li>
+          
+<strong>Click the 'TextField' node</strong> and check QF-Test still highlights
+          the Final Price field in the UI.
+        </li>
+        
+<li>
+          
+<strong>Change the <code>qfs:label</code> value in the 'Extra features' table</strong>
+          back to <code>Final price</code>.
+        </li>
+        
+<li>
+          
+<strong>Change all Structure and 'Geometry' attributes</strong> to a different value
+          and check that QF-Test still highlights the Final Price field in the UI.
+        </li>
+        
+<li>
+          
+<strong>Change the 'Feature' attribute</strong> from <code>Label: Final price</code> to
+          <code>Label: Discount</code>.
+        </li>
+        
+<li>
+          
+<strong>Check that now QF-Test highlights the Discount field</strong>.
+        </li>
+      
+</ul>
+      
+<p>
+        This is just to give you a bit of a feeling for component recognition.
+        In the above mentioned chapters (and some more) of the manual you will
+        find detailed information about what to do when you have
+        trouble with component recognition.
+      </p>
+      
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="complex_components.html#sec_addressing_complex_components"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 4.1&nbsp;Addressing subitems of tables, lists and trees" title="Previous Chapter: 4.1&nbsp;Addressing subitems of tables, lists and trees"></a></td><td class="navicon"><a href="debugger.html#sec_Debugger"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 5&nbsp;Using the Debugger (Java)" title="Next Page: 5&nbsp;Using the Debugger (Java)"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="components.html#sec_ComplexComponents"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 4&nbsp;Components (Java)" title="Chapter Overview: 4&nbsp;Components (Java)"></a></td><td class="navicon"><a href="../../tutorial_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 2002-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

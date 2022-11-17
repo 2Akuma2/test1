@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>The Standard Library (Win)</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2002-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_StandardLibraryWin"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="variablestackwin.html#sec_variablestackwin"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 24&nbsp;Variables and Procedure Parameters (Win)" title="Previous Chapter: 24&nbsp;Variables and Procedure Parameters (Win)"></a></td><td class="navicon"><a href="stdliboverviewwin.html#sec_StandardLibraryOverviewWin"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 25.1&nbsp;Inspecting the Standard Library" title="Next Page: 25.1&nbsp;Inspecting the Standard Library"></a></td><td class="navicon"><a href="controlswin.html#sec_controlstructureswin"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 26&nbsp;Control structures (Win)" title="Next Chapter: 26&nbsp;Control structures (Win)"></a></td><td class="navicon"><a href="win.html#sec_win"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: III&nbsp;Native Windows UI testing with QF-Test" title="Chapter Overview: III&nbsp;Native Windows UI testing with QF-Test"></a></td><td class="navicon"><a href="../../tutorial_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+    
+<h3 class="header-container h3">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_StandardLibraryWin">25</a></span>
+</div>
+<a href="contents.html#toc_sec_StandardLibraryWin">The Standard Library (Win)</a>
+</h3>
+    
+    
+<p>
+      
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+      This chapter is also available as a video tutorial at <a href="http://www.qfs.de/en/yt/tutorial-7.html" class="videolink" target="_blank">"The Standard Library"</a>.
+    </p>
+    
+<p>
+      QF-Test provides a certain number of node types. If you need additional functionality
+      you can implement it in a script node. To make life easier for you QF-Test comes with
+      a set of procedures implementing the most commonly needed additional functions.
+      You will find them in the standard procedures library.
+    </p>
+    
+<p>
+      When you cannot solve a problem using the provided node types it is a good idea
+      to have a look in the standard library whether there is a solution to your
+      problem. If you find a similar solution you can copy the procedure and adapt it
+      to your needs. For information about scripting please refer the the manual,
+      chapter 12 'Scripting'.
+    </p>
+    
+<p>
+      The file <code>qfs.qft</code> holds the standard procedures library.
+      As it is constantly being enhanced and distributed with every new version of
+      QF-Test you should not make any changes to procedures in that file, but
+      copy the procedure to your own test-suite if required and then adapt it.
+    </p>
+    
+<p>
+<span class="margin"><span class="note">Note</span></span>
+      To make use of <code>qfs.qft</code> it needs to be included in your test-suite's root node.
+      With a newly created test-suite the file <code>qfs.qft</code> is added automatically
+      to the list of included files.
+    </p>
+    
+<ul>
+      
+<li>
+<span class="margin"><span class="note">Action</span></span>
+        Select the 'Test-suite' root node of your test-suite.
+      </li>
+      
+<li>
+        Verify the <code>qfs.qft</code> is available within the table for "Include files".
+      </li>
+      
+<li>
+        Add <code>qfs.qft</code> to this list, if it's not already there.
+      </li>
+    
+</ul>
+    
+<p>
+<span class="margin"><span class="note">Note</span></span>
+      Path information is not necessary for <code>qfs.qft</code> as the <code>include</code>
+      directory of QF-Test is contained in the library path (see also
+      <a href="../../manual/en/opt_general.html#sec_opt_libpath" shape="rect">Reference part of the manual</a>).
+    </p>
+    
+<ul>
+      
+<li>
+<span class="margin"><span class="note">Action</span></span>
+        Add a procedure call to an arbitrary procedure from the <code>qfs.qft</code> standard
+        library. In the procedure chooser don't miss to switch to the respective tab.
+      </li>
+    
+</ul>
+    
+<p>
+      In addition to the description provided in this tutorial you can find the full HTML
+      documentation of the standard library available via &raquo;<em>Help</em>&laquo;-&raquo;<em>Standard Library qfs.qft...</em>&laquo;
+    </p>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="stdliboverviewwin.html#sec_StandardLibraryOverviewWin"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="stdliboverviewwin.html#sec_StandardLibraryOverviewWin">25.1</a></span>
+</div>
+<a href="stdliboverviewwin.html#sec_StandardLibraryOverviewWin">Inspecting the Standard Library</a>
+</h4>
+
+    
+    
+
+    
+<h4 class="header-container h4">
+<div class="downlink">
+<a href="stdlibpackageswin.html#sec_StandardLibraryPackagesWin"><img src="../icons/linkdown.png" width="20" height="20"></a><span class="numtitle"><a href="stdlibpackageswin.html#sec_StandardLibraryPackagesWin">25.2</a></span>
+</div>
+<a href="stdlibpackageswin.html#sec_StandardLibraryPackagesWin">Selected Packages and Procedures</a>
+</h4>
+
+    
+
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="variablestackwin.html#sec_variablestackwin"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 24&nbsp;Variables and Procedure Parameters (Win)" title="Previous Chapter: 24&nbsp;Variables and Procedure Parameters (Win)"></a></td><td class="navicon"><a href="stdliboverviewwin.html#sec_StandardLibraryOverviewWin"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 25.1&nbsp;Inspecting the Standard Library" title="Next Page: 25.1&nbsp;Inspecting the Standard Library"></a></td><td class="navicon"><a href="controlswin.html#sec_controlstructureswin"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 26&nbsp;Control structures (Win)" title="Next Chapter: 26&nbsp;Control structures (Win)"></a></td><td class="navicon"><a href="win.html#sec_win"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: III&nbsp;Native Windows UI testing with QF-Test" title="Chapter Overview: III&nbsp;Native Windows UI testing with QF-Test"></a></td><td class="navicon"><a href="../../tutorial_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 2002-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

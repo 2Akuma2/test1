@@ -1,0 +1,519 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Ausf&uuml;hrung manueller Tests mit QF-Test</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_manualtester"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_loadtest.html#usec_loadtest"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 29&nbsp;Durchf&uuml;hrung von Lasttests mit QF-Test" title="Vorheriges Kapitel: 29&nbsp;Durchf&uuml;hrung von Lasttests mit QF-Test"></a></td><td class="navicon"><a href="bp_bestpractices.html#sec_BestP"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: II&nbsp;Best Practices" title="N&auml;chste Seite: II&nbsp;Best Practices"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch" title="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h3 class="header-container h3">
+<div>
+<span class="margin"><a name="new_N97019"></a><span class="note">3.0+</span></span><span class="numtitle"><a href="contents.html#toc_usec_manualtester">30</a></span>
+</div>
+<a href="contents.html#toc_usec_manualtester">Ausf&uuml;hrung manueller Tests mit QF-Test</a>
+</h3>
+
+    
+
+    
+<a name="usec_mtIntro"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_mtIntro">30.1</a></span>
+</div>
+<a href="contents.html#toc_usec_mtIntro">Einf&uuml;hrung</a>
+</h4>
+      
+<p>QF-Test ist in erster Linie ein Werkzeug, das GUI Tests erstellt und automatisiert auszuf&uuml;hrt. Jedoch
+      ist es nicht immer m&ouml;glich - oder wirtschaftlich - die Tests vollst&auml;ndig
+      zu automatisieren, deshalb gibt es in neben dem automatisierten Testen
+      auch manuelle Testf&auml;lle, die auszuf&uuml;hren sind. Eine der gr&ouml;&szlig;ten
+      Herausforderungen in Testprojekten ist die gemeinsame Aufbereitung der
+      automatisierten und manuellen Testergebnisse. Eine solche
+      gemeinsame Aufbereitung ist sehr n&uuml;tzlich, um einen Gesamt&uuml;berblick &uuml;ber
+      die Testausf&uuml;hrung zu erhalten. QF-Test bietet nun die M&ouml;glichkeit
+      Ergebnisse von manuellen und auch von automatisierten Tests gemeinsam
+      anzuzeigen.
+      </p>
+      
+<p>
+      Die Schritte eines manuellen Tests m&uuml;ssen hierf&uuml;r an einer bestimmten
+      Stelle definiert werden. Der <code>ManualTestRunner</code> von QF-Test
+      liefert hierf&uuml;r eine Excel Datei. Diese Testsuite sowie eine
+      beispielhafte Excel Datei finden Sie im Verzeichnis
+      <code>demo/manualtester</code> im QF-Test Installationsverzeichnis.
+      Der Testdesigner muss nun die einzelnen Schritte des Tests in
+      der Excel Datei definieren, inklusive des erwarteten Ergebnisses. Nach
+      Ausf&uuml;hrung des manuellen Tests von QF-Test aus, liefert QF-Test sowohl
+      das Protokoll als auch HTML-Report und zus&auml;tzlich noch eine neue
+      Excel Datei, die die entsprechenden Ergebnisse beinhaltet.
+      F&uuml;r eine genauere Beschreibung siehe <a href="#usec_mtStepByStep">Abschnitt 30.2</a>.
+      </p>
+      
+<p>Der Dialog zur Testausf&uuml;hrung, der ManualStepDialog, sieht wie folgt aus:
+      </p>
+      
+<a name="figure_30.1"></a><a name="figure_30.1"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/ManualStepDialog.png" target="_blank"><img src="images/ManualStepDialog.png" alt="ManualStepDialog" width="886" height="543" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;30.1</a>:&nbsp;&nbsp;Beispiel f&uuml;r einen ManualStepDialog</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+      Der Titel des Dialoges beinhaltet den Namen des Testfalles. Die ersten zwei Textfelder
+      enthalten die Beschreibung des manuellen Schrittes sowie das erwartete
+        Ergebnis.
+      Nach Ausf&uuml;hrung des Testschrittes muss der Tester nun angeben, ob dieser
+      erfolgreich war oder nicht. Falls der Testschritt nicht erfolgreich gewesen
+      sein sollte, so muss der Tester ein erhaltenes Ergebnis dokumentieren. Sie
+      k&ouml;nnen diesen Dialog auch f&uuml;r Ihre eigenen Ans&auml;tze verwenden, siehe <a href="tech_manualstep.html#sec_mtStepDialog">Abschnitt 53.1</a>.
+      </p>
+    
+
+    
+    
+
+    
+<a name="usec_mtStepByStep"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_mtStepByStep">30.2</a></span>
+</div>
+<a href="contents.html#toc_usec_mtStepByStep">Schritt-f&uuml;r-Schritt Anleitung</a>
+</h4>
+      
+<p>
+        Bitte f&uuml;hren Sie folgende Schritte auf dem System aus, wo Sie einen manuellen Test von QF-Test aus starten:
+      </p>
+      
+<ul>
+        
+<li>Kopieren Sie die Excel Datei von
+          <code>qftest-6.0.3/demo/manualtester/SampleTestDescription.xlsx</code>
+          in ein projektspezifisches Verzeichnis. Wie empfehlen auf jedem Testsystem
+          den selben Pfad zu verwenden, vielleicht ein Netzlaufwerk.
+        </li>
+        
+<li>Kopieren Sie auch die Ausf&uuml;hrungstestsuite von
+          <code>qftest-6.0.3/demo/manualtester/ManualTestRunner.qft</code> in
+          ein projektspezifisches Verzeichnis. Wom&ouml;glich sollten Sie diese auch umbenennen.
+        </li>
+        
+<li>&Ouml;ffnen Sie die Excel Datei und definieren Sie die Testschritte.
+        </li>
+        
+<li>Nachdem Sie die &Auml;nderungen der Excel Datei abgespeichert haben, m&uuml;ssen Sie die
+          Ausf&uuml;hrungstestsuite &ouml;ffnen und die globale Variable <code>testFile</code>
+          anpassen, um die projektspezifische Excel Datei einzulesen.
+        </li>
+        
+<li>Schalten Sie den QF-Test Debugger aus. Dieser w&uuml;rde Sie nur w&auml;hrend
+        der Ausf&uuml;hrung der Tests behindern.
+        </li>
+        
+<li>Selektieren Sie nun den Testsuite Knoten und starten Sie die Testsuite
+        mittels des "Wiedergabe starten" Knopfes.
+        </li>
+        
+<li>QF-Test wird nun die Daten aus der Excel Datei einlesen und einen
+          Dialog mit dem ersten Testschritt anzeigen.
+        </li>
+        
+<li>Geben Sie das erhaltene Ergebnis ein und fahren Sie mit der
+          Ausf&uuml;hrung der n&auml;chsten Schritte fort.
+        </li>
+        
+<li>Am Ende der Testausf&uuml;hrung erzeugt QF-Test eine neue Excel Datei
+          mit den erhaltenen Ergebnissen. Sie k&ouml;nnen von QF-Test aus nun auch das QF-Test
+          Protokoll speichern oder den HTML Report erzeugen.
+        </li>
+      
+</ul>
+      
+<p>
+        Bitte beachten Sie auch die Kommentare in der Ausf&uuml;hrungstestsuite und in der
+        Excel Datei. Sie k&ouml;nnen dieses Konzept nat&uuml;rlich auch an Ihre eigenen
+        Anforderungen anpassen und sogar nur bestimmte Tests starten.
+      </p>
+    
+
+    
+    
+
+    
+<a name="usec_mtExcelFile"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_mtExcelFile">30.3</a></span>
+</div>
+<a href="contents.html#toc_usec_mtExcelFile">Aufbau der Excel Datei</a>
+</h4>
+      
+<p>
+        Die Excel Datei hat eine bestimmte Struktur, um einen manuellen Testfall so
+        flexibel wie m&ouml;glich zu beschreiben. Hier folgt eine genauere Beschreibung der
+        einzelnen Spalten:
+      </p>
+      
+<a name="table_30.1"></a><a name="table_30.1"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth" valign="center">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Spalte</th>
+            <th rowspan="1" colspan="1">Beschreibung</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">TestCase</td>
+            <td rowspan="1" colspan="1">Ein eindeutiger Bezeichner f&uuml;r jeden Testfall. Wird kein
+              Bezeichner definiert, so ist der Schritt Teil des vorherigen Testfalles.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">Type of Test</td>
+            <td rowspan="1" colspan="1">Eine optionale Beschreibung des Types des Testfalles, z.B. funktionaler Test oder Benutzerfreundlichkeits-Test.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">Comment</td>
+            <td rowspan="1" colspan="1">Ein individueller Kommentar zu jedem Testfall. Dieser
+              Kommentar wird als Anmerkung im QF-Test Protokoll angezeigt.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">Short Description</td>
+            <td rowspan="1" colspan="1">Eine Kurzbeschreibung des Testfalles.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">Step Description</td>
+            <td rowspan="1" colspan="1">Eine genauere Beschreibung des manuellen Testschrittes.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">Expected Result</td>
+            <td rowspan="1" colspan="1">Eine Beschreibung des erwarteten Ergebnisses.</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;30.1</a>:&nbsp;&nbsp;Beschreibung der Excel Datei f&uuml;r die Testdefinition</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        Die Excel Datei, welche dann die Ergebnisse der manuellen Testausf&uuml;hrung beinhaltet, hat noch zwei zus&auml;tzliche
+        Spalten:
+      </p>
+      
+<a name="table_30.2"></a><a name="table_30.2"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth" valign="center">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Spalte</th>
+            <th rowspan="1" colspan="1">Beschreibung</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">Received Result</td>
+            <td rowspan="1" colspan="1">Das Ergebnis, welches der Tester w&auml;hrend der Testausf&uuml;hrung
+              erhalten hat. Dieses Ergebnis muss gesetzt sein, wenn der Testfall fehl schl&auml;gt.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">State</td>
+            <td rowspan="1" colspan="1">Der Status des Testfalles: PASSED, FAILED, CANCELED bzw. SKIPPED.</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;30.2</a>:&nbsp;&nbsp;Beschreibung der Excel Datei f&uuml;r die Testergebnisse</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+
+    
+    
+
+    
+<a name="usec_mtMTestRunner"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_mtMTestRunner">30.4</a></span>
+</div>
+<a href="contents.html#toc_usec_mtMTestRunner">Die Ausf&uuml;hrungstestsuite</a>
+</h4>
+      
+<p>
+        Die Ausf&uuml;hrungstestsuite <code>ManualTestRunner.qft</code> beinhaltet ein paar
+        globale Variablen, um die Ausf&uuml;hrung zu steuern. Variablen, die hier
+        nicht aufgef&uuml;hrt werden, werden von der Testsuite intern genutzt und
+        sollten nicht ver&auml;ndert werden. Hier folgt eine Beschreibung
+        dieser Variablen:
+      </p>
+      
+<a name="table_30.3"></a><a name="table_30.3"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth" valign="center">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Globale Variable</th>
+            <th rowspan="1" colspan="1">Beschreibung</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">testFile</td>
+            <td rowspan="1" colspan="1">Der Pfad zur Excel Datei mit den Testschritten.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">testSheet</td>
+            <td rowspan="1" colspan="1">Der Tabellenblatt der Excel Datei, welche die Testschritte beinhaltet.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">resultSheet</td>
+            <td rowspan="1" colspan="1">Der Name des Tabellenblattes, in welches die Ergebnisse
+              geschrieben werden sollen.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">tests</td>
+            <td rowspan="1" colspan="1">Eine Liste von Tests, die ausgef&uuml;hrt werden sollen. Wenn Sie
+              diese Variable leer lassen, werden alle Tests aus der Excel Datei
+              ausgef&uuml;hrt. Falls Sie z.B. nur Test 5 und 6 ausf&uuml;hren wollen, dann k&ouml;nnen Sie
+              diese Variable auf <code>5,6</code> oder <code>5-6</code> setzen. Es ist sogar
+              m&ouml;glich, Bereiche zu definieren - wie z.B. <code>1,3-5,7</code> um die Tests 1,
+              3, 4, 5 and 7, zu starten.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">defaultState</td>
+            <td rowspan="1" colspan="1">Der vorbelegte Status, wenn der Dialog erscheint. Er
+              kann entweder auf PASSED oder FAILED gesetzt werden. Jeder andere
+              Status wird auf FAILED konvertiert.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">testCaseColumn</td>
+            <td rowspan="1" colspan="1">Die &Uuml;berschrift der Spalte f&uuml;r die Testfallnummer.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">commentColumn</td>
+            <td rowspan="1" colspan="1">Die &Uuml;berschrift der Spalte f&uuml;r den Kommentar.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">shortDescColumn</td>
+            <td rowspan="1" colspan="1">Die &Uuml;berschrift der Spalte f&uuml;r Kurzbeschreibung des Testschrittes.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">stepDescColumn</td>
+            <td rowspan="1" colspan="1">Die &Uuml;berschrift der Spalte f&uuml;r die detaillierte Beschreibung
+              des Testschrittes.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">expResultColumn</td>
+            <td rowspan="1" colspan="1">Die &Uuml;berschrift der Spalte f&uuml;r das erwartete Ergebnis.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">recResultColumn</td>
+            <td rowspan="1" colspan="1">Die &Uuml;berschrift der Spalte f&uuml;r das erhaltene Ergebnis.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">stateColumn</td>
+            <td rowspan="1" colspan="1">Die &Uuml;berschrift der Spalte f&uuml;r den Status des Testschrittes.</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;30.3</a>:&nbsp;&nbsp;Beschreibung der globalen Variablen in der ManualTestRunner Testsuite</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+
+    
+    
+
+    
+<a name="usec_mtStates"></a>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_mtStates">30.5</a></span>
+</div>
+<a href="contents.html#toc_usec_mtStates">Die m&ouml;glichen Zust&auml;nde</a>
+</h4>
+      
+<p>Ausgef&uuml;hrte Testschritte k&ouml;nnen auf folgende Zust&auml;nde gesetzt werden:
+      </p>
+      
+<a name="table_30.4"></a><a name="table_30.4"></a>
+<table class="table" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table class="tdleft" border="1" cellspacing="0" cellpadding="5" texwidth="\linewidth" valign="center">
+          
+<tr>
+            
+<th rowspan="1" colspan="1">Resultat</th>
+            <th rowspan="1" colspan="1">Beschreibung</th>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">PASSED</td>
+            <td rowspan="1" colspan="1">Der Testschritt war erfolgreich.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">FAILED</td>
+            <td rowspan="1" colspan="1">Der Testschritt war nicht erfolgreich.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">CANCELED</td>
+            <td rowspan="1" colspan="1">Der Testschritt wurde abgebrochen.</td>
+          
+</tr>
+          
+<tr>
+            
+<td align="left" rowspan="1" colspan="1">SKIPPED</td>
+            <td rowspan="1" colspan="1">Der Testschritt wurde &uuml;bersprungen.</td>
+          
+</tr>
+        
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="tables.html#list-of-tables">Tabelle&nbsp;30.4</a>:&nbsp;&nbsp;M&ouml;gliche Zust&auml;nde der manuellen Testausf&uuml;hrung</td><td class="captionglue"></td>
+</tr>
+</table>
+    
+
+    
+
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_loadtest.html#usec_loadtest"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 29&nbsp;Durchf&uuml;hrung von Lasttests mit QF-Test" title="Vorheriges Kapitel: 29&nbsp;Durchf&uuml;hrung von Lasttests mit QF-Test"></a></td><td class="navicon"><a href="bp_bestpractices.html#sec_BestP"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: II&nbsp;Best Practices" title="N&auml;chste Seite: II&nbsp;Best Practices"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="user.html#sec_user"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch" title="Kapitel-&Uuml;bersicht: I&nbsp;Anwenderhandbuch"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

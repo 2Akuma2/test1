@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>A full Test Run</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 2002-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="tut_firstFullRunWin"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="firstcleanupwin.html#tut_firstcleanupwin"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 19.7&nbsp;Stopping the Application" title="Previous Chapter: 19.7&nbsp;Stopping the Application"></a></td><td class="navicon"><a href="firstreportwin.html#tut_firstreportwin"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 19.9&nbsp;Report Generation" title="Next Page: 19.9&nbsp;Report Generation"></a></td><td class="navicon"><a href="firstreportwin.html#tut_firstreportwin"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 19.9&nbsp;Report Generation" title="Next Chapter: 19.9&nbsp;Report Generation"></a></td><td class="navicon"><a href="demowin.html#sec_windemo"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 19&nbsp;Working with a Sample Test-suite (Win)" title="Chapter Overview: 19&nbsp;Working with a Sample Test-suite (Win)"></a></td><td class="navicon"><a href="../../tutorial_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_tut_firstFullRunWin">19.8</a></span>
+</div>
+<a href="contents.html#toc_tut_firstFullRunWin">A full Test Run</a>
+</h4>
+      
+<p>
+        After we have seen how the single elements of the test-set work, let us have a look at the
+        functionality provided by the test-set node.
+      </p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><span class="note">Action</span></span>First, <strong>close the CarConfigurator application</strong> in case
+          it is still running.
+        </li>
+        
+<li>
+          Then <strong>select the "Test-set: Simple Tests"</strong> node.
+        </li>
+        
+<li>
+          Execute it with the replay button <img src="images/play.png" style="vertical-align: text-bottom" alt="Play" title="Play" width="26" height="26" texscale=".5">.
+        </li>
+      
+</ul>
+      
+<p>
+        The result dialog will come up after test execution, informing us about the error caused
+        by the second test-case.
+      </p>
+      
+<ul>
+        
+<li>
+          
+<span class="margin"><span class="note">Action</span></span><strong>Open up the run-log</strong> again by <img src="images/lastlog_tb.png" style="vertical-align: text-bottom" alt="Open latest run-log" title="Open             latest run-log" width="26" height="26" texscale=".5"> to take a closer look:
+        </li>
+      
+</ul>
+
+      
+<a name="fig_winRunlogFull"></a><a name="figure_19.16"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/FirstRunlogFullWin.png" target="_blank"><img texscale=".66" src="images/FirstRunlogFullWin.png" width="246" height="130"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;19.16</a>:&nbsp;&nbsp;Run-Log for the Completed Test-set</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+<p>
+        This shows the special behavior of Setup / Cleanup nodes in a test-set: They are executed
+        before and after <strong>each test-case</strong> to help achieving a proper starting state
+        for each test-case.
+      </p>
+      
+<p>
+<span class="margin"><span class="note">Note</span></span>
+        Stopping the SUT after each test-case is not the smartest way to ensure a clean
+        state. There are more elegant ways for setup and clean-up that will be
+        explained with the advanced features in this tutorial (<a href="dependencies.html#sec_AdvDeps">chapter 29</a>).
+      </p>
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="tutorial.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="firstcleanupwin.html#tut_firstcleanupwin"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 19.7&nbsp;Stopping the Application" title="Previous Chapter: 19.7&nbsp;Stopping the Application"></a></td><td class="navicon"><a href="firstreportwin.html#tut_firstreportwin"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 19.9&nbsp;Report Generation" title="Next Page: 19.9&nbsp;Report Generation"></a></td><td class="navicon"><a href="firstreportwin.html#tut_firstreportwin"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 19.9&nbsp;Report Generation" title="Next Chapter: 19.9&nbsp;Report Generation"></a></td><td class="navicon"><a href="demowin.html#sec_windemo"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 19&nbsp;Working with a Sample Test-suite (Win)" title="Chapter Overview: 19&nbsp;Working with a Sample Test-suite (Win)"></a></td><td class="navicon"><a href="../../tutorial_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 2002-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

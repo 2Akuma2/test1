@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>QMetry</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_qmetry"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_testbench.html#usec_testbench"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 25.2&nbsp;Imbus TestBench" title="Vorheriges Kapitel: 25.2&nbsp;Imbus TestBench"></a></td><td class="navicon"><a href="user_klaros.html#usec_klaros"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 25.4&nbsp;Klaros" title="N&auml;chste Seite: 25.4&nbsp;Klaros"></a></td><td class="navicon"><a href="user_klaros.html#usec_klaros"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 25.4&nbsp;Klaros" title="N&auml;chstes Kapitel: 25.4&nbsp;Klaros"></a></td><td class="navicon"><a href="user_testmanagement.html#usec_testmanagement"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 25&nbsp;Anbindung an Testmanagementtools" title="Kapitel-&Uuml;bersicht: 25&nbsp;Anbindung an Testmanagementtools"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_qmetry">25.3</a></span>
+</div>
+<a href="contents.html#toc_usec_qmetry">QMetry</a>
+</h4>
+
+      
+
+      
+<a name="usec_qmetryIntro"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_qmetryIntro">25.3.1</a></span>
+</div>
+<a href="contents.html#toc_usec_qmetryIntro">Einf&uuml;hrung</a>
+</h5>
+        
+<p>
+          Die aktuelle Integration zwischen QF-Test und QMetry beinhaltet die
+          Unterst&uuml;tzung der Planung von Testf&auml;llen bzw. Testschritten innerhalb
+          von QMetry und anschlie&szlig;end die Weiterleitung der
+          Ausf&uuml;hrungsinformationen an QF-Test. Nachdem QF-Test die Tests ausgef&uuml;hrt
+          hat, werden das Protokoll und der HTML Report in den
+          Testergebnisbereich von QMetry hochgeladen sowie der Status des
+          Testfalles auf das entsprechende Ergebnis gesetzt.
+        </p>
+        
+<p>
+          F&uuml;r die Testausf&uuml;hrung m&uuml;ssen Sie Ihr Testsystem wie folgt vorbereiten:
+        </p>
+        
+<ul>
+          
+<li>Im 'Admin' Bereich der QMetry Testmanagement Ansicht, m&uuml;ssen Sie
+            einen Ausf&uuml;hrungsagenten in den 'Agent' Einstellungen  einrichten.</li>
+          
+<li>Laden Sie die entsprechenden Agentendateien sowie die
+            Konfigurationsdateien auf Ihr Testsystem.</li>
+          
+<li>Installieren Sie den QF-Test QMetry Launcher auf Ihrem Testsystem.</li>
+          
+<li>Installieren Sie eine Testplattform in den 'Platform' Einstellungen, der
+            ebenfalls im 'Admin' Bereich zu finden ist.</li>
+          
+<li>Setzen Sie in der Datei <code>QMetryAgent.properties</code> die
+            ben&ouml;tigten Umgebungsvariablen f&uuml;r den QF-Test Wrapper von QMetry.</li>
+          
+<li>Setzen Sie in der Datei <code>QMetryConfig.properties</code> den
+            korrekten und vollst&auml;ndigen Pfad zur QF-Test Ausf&uuml;hrungsdatei.</li>
+          
+<li>Setzen Sie in der Datei <code>QMetryConfig.properties</code>
+            ggf. erw&uuml;nschte Ausf&uuml;hrungsparameter, siehe auch n&auml;chsten Abschnitt.</li>
+          
+<li>Starten Sie den QMetry Agenten. Unter Windows sollten Sie den Agenten
+            nicht als Dienst / Service starten, damit das SUT nicht in der
+            Service-Session l&auml;uft. Falls Sie den Agenten doch als Service
+            starten m&ouml;chte, dann m&uuml;ssen Sie die QF-Test Tests mittels QF-Test Daemon
+            ausf&uuml;hren, welcher wiederum nicht als Dienst gestartet werden darf.</li>
+        
+</ul>
+        
+<p>
+          Nachdem Sie den QMetry Agenten und Launcher konfiguriert haben, m&uuml;ssen
+          Sie die Testausf&uuml;hrung planen.
+          F&uuml;r die Testausf&uuml;hrung von QF-Test Testf&auml;llen gibt es mehrere Varianten
+          in QMetry. S&auml;mtliche Varianten sind im QMetry IntegrationGuide f&uuml;r
+          QF-Test beschrieben. F&uuml;r die schnellste Variante gehen Sie wie folgt vor:
+        </p>
+        
+<ul>
+          
+<li>In der Testmanagement Ansicht wechseln Sie in den 'Test Cases'
+          Bereich und erstellen die Testf&auml;lle dort.
+          </li>
+          
+<li>
+            Bei jedem Testfall m&uuml;ssen Sie im Attribut 'Test Script Name' den
+            vollst&auml;ndigen Pfad zur ben&ouml;tigten QF-Test Testsuite setzen.
+          </li>
+          
+<li>
+            Der Name des Testfalles sollte genau dem vergebenen 'QF-Test ID' Attribut in
+          QF-Test entsprechen.
+          </li>
+          
+<li>
+            F&uuml;gen Sie den Testfall zu einer ausf&uuml;hrbaren Testsuite in der
+            'Test Suites' Ansicht hinzu.
+          </li>
+        
+</ul>
+        
+<p>
+          Nun k&ouml;nnen Sie die Testf&auml;lle ausf&uuml;hren:
+        </p>
+        
+<ul>
+          
+<li>
+            &Ouml;ffnen Sie die 'Test Suites' Ansicht und selektieren die
+            auszuf&uuml;hrende Testsuite.
+          </li>
+          
+<li>W&auml;hlen Sie den 'Execute TestSuite' Reiter.
+            </li>
+          
+<li>
+            Starten Sie direkt oder planen Sie die Ausf&uuml;hrung eines Testlaufes
+            mittels Klick in die 'Automation' Spalte. W&auml;hlen Sie dort auch den
+            entsprechenden Agenten aus.
+          </li>
+          
+<li>Wenn der QMetry Agent das n&auml;chste Mal die
+            Ausf&uuml;hrungsinformationen vom
+            QMetry Server abholt, wird die Ausf&uuml;hrungsinformation des
+            Testfalles an den QMetry Agenten gesandt.</li>
+          
+<li>Nach Beendigung des Testlauf wird das QF-Test
+            Protokoll und der HTML Report als Resultat im Reiter 'Execution History' der ausgef&uuml;hrten Testsuite
+            in QMetry hochgeladen und der entsprechende Status des Testlaufes gesetzt.</li>
+        
+</ul>
+        
+<p>
+          Die unten stehende Abbildung zeigt den 'Execution History' Reiter in
+          der 'Test Suites' Ansicht inkl. QF-Test Protokoll:
+        <a name="figure_25.14"></a><a name="figure_25.14"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/QMetryLogview.png" target="_blank"><img src="images/QMetryLogview.png" alt="QMetryLog" width="1262" height="708" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;25.14</a>:&nbsp;&nbsp;QF-Test Protokoll in QMetry</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+</p>
+        
+<p>
+          Sie finden detaillierte Informationen sowie weitere Varianten f&uuml;r
+          die QF-Test Integration im Handbuch und IntegrationGuide Dokument von QMetry.
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_qmetryDemoSettings"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_qmetryDemoSettings">25.3.2</a></span>
+</div>
+<a href="contents.html#toc_usec_qmetryDemoSettings">Demokonfiguration Beispiel</a>
+</h5>
+
+        
+<p>F&uuml;r eine einfache Integration empfehlen sich folgende Einstellungen
+          in der Datei <code>QMetryConfig.properties</code>:
+        </p>
+        
+<ul>
+          
+<li>Setzen Sie den Wert von <code>generic.adapter.success.code</code> auf
+          <code>0,1</code>.</li>
+          
+<li>Setzen Sie <code>qftest.additional.arguments</code> auf
+          <code>-test ${QMTestCaseName}</code> im Falle einer lokalen
+          Ausf&uuml;hrung.
+          </li>
+          
+<li>Im Falle einer Ausf&uuml;hrung per QF-Test-Daemon, setzen Sie <code>qftest.additional.arguments</code> auf
+          <code>-test ${QMTestCaseName} -calldaemon -daemonhost
+          &lt;Ihr-Testrechner&gt; -daemonport &lt;Ihr-DaemonPort&gt;
+          </code>.</li>
+        
+</ul>
+        
+<p>
+          Wie bereits im vorigen Kapitel erw&auml;hnt, muss bei dieser
+          Integrationsvariante der Name des
+          Testfalles in QMetry den Wert des 'QF-Test ID' Attributes des Testfall
+          Knotens in QF-Test entsprechen.
+        </p>
+        
+<p>
+          Weitere Varianten der Integration zwischen QMetry und QF-Test finden
+          Sie im Integrationguide Dokument von QMetry.
+        </p>
+      
+
+      
+
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="user_testbench.html#usec_testbench"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 25.2&nbsp;Imbus TestBench" title="Vorheriges Kapitel: 25.2&nbsp;Imbus TestBench"></a></td><td class="navicon"><a href="user_klaros.html#usec_klaros"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 25.4&nbsp;Klaros" title="N&auml;chste Seite: 25.4&nbsp;Klaros"></a></td><td class="navicon"><a href="user_klaros.html#usec_klaros"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="N&auml;chstes Kapitel: 25.4&nbsp;Klaros" title="N&auml;chstes Kapitel: 25.4&nbsp;Klaros"></a></td><td class="navicon"><a href="user_testmanagement.html#usec_testmanagement"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 25&nbsp;Anbindung an Testmanagementtools" title="Kapitel-&Uuml;bersicht: 25&nbsp;Anbindung an Testmanagementtools"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

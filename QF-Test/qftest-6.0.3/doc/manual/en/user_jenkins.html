@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Jenkins/Hudson</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_jenkins"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_maven.html#usec_maven"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 26.3&nbsp;Maven" title="Previous Chapter: 26.3&nbsp;Maven"></a></td><td class="navicon"><a href="user_robotframework.html#usec_robotframework"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 27&nbsp;Integration with Robot Framework (Preview)" title="Next Page: 27&nbsp;Integration with Robot Framework (Preview)"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="buildtools.html#usec_buildtools"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 26&nbsp;Integration with Development Tools" title="Chapter Overview: 26&nbsp;Integration with Development Tools"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="margin"><a name="new_N93804"></a><span class="note">3.3+</span></span><span class="numtitle"><a href="contents.html#toc_usec_jenkins">26.4</a></span>
+</div>
+<a href="contents.html#toc_usec_jenkins">Jenkins/Hudson</a>
+</h4>
+
+      
+<p>
+<span class="margin"><span class="note"><img src="../icons/video.png" width="32" height="32" border="0" alt="Video" title="Video"></span></span>
+          The video
+          <a href="https://www.qfs.de/en/yt/jenkins-plugin-40.html" class="videolink" target="_blank">'QF-Test Jenkins Plugin'</a>
+          shows installation and configuration of the plugin.
+      </p>
+      
+<p>
+        Jenkins/Hudson (<a href="http://jenkins-ci.org" shape="rect">http://jenkins-ci.org</a>)
+        are continuous integration build tools. They are meant to control and
+        monitor the build process within a software project. One important step in this build
+        process is automated testing.
+      </p>
+      
+<p>
+        There are number of benefits to be gained when integrating QF-Test with Jenkins/Hudson:
+      </p>
+      
+<ul>
+        
+<li>
+          In case Jenkins/Hudson is already used for the continuous integration process, integration
+          of automated GUI tests can be easily achieved.
+        </li>
+        
+<li>
+          Easy-to-use administration of scheduled test runs and notification of results via
+          email or RSS.
+        </li>
+        
+<li>
+          Jenkins/Hudson's web based GUI provides good overview and control of test results.
+        </li>
+        
+<li>
+          By use of the HTML Publisher Plugin it is possible to embed QF-Test's HTML reports
+          directly into the Jenkins/Hudson GUI.
+        </li>
+        
+<li>
+          Results generated during the test run such as run-logs and reports can be archived
+          automatically. Therefore maintaining an own directory structure is not needed anymore.
+        </li>
+      
+</ul>
+      
+<p>
+        As Jenkins and Hudson share a <a href="http://en.wikipedia.org/wiki/Hudson_%28software%29#Hudson.E2.80.93Jenkins_split" shape="rect">common
+          history</a>, following sections will use Jenkins as representative.
+      </p>
+      
+
+      
+<a name="usec_jenkinsInstall"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_jenkinsInstall">26.4.1</a></span>
+</div>
+<a href="contents.html#toc_usec_jenkinsInstall">Install and start Jenkins</a>
+</h5>
+
+        
+<p>
+<span class="margin"><span class="note">Note</span></span> For GUI tests, Jenkins must not be configured to run as a service but
+          within a real user session. On Windows the <code>.msi</code> installer unfortunately
+          directly installs Jenkins as service without any further inquiry. Please beware of it
+          therefore and ensure Jenkins is started as real user process as described below.
+        </p>
+        
+<p>
+          To install Jenkins download the <code>war</code> Archive (which can be found
+          <a href="http://mirrors.jenkins-ci.org/war/latest/jenkins.war" shape="rect">here</a>)
+          and start it via <code>java -jar jenkins.war</code>.
+        </p>
+        
+<p>
+          As soon as Jenkins is started its web interface can be accessed via
+          <code>http://localhost:8080</code>. It should look like the
+          following:
+        </p>
+        
+<a name="figure_26.4"></a><a name="figure_26.4"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/jenkinsStart.png" target="_blank"><img src="images/jenkinsStart.png" alt="Jenkins Start Screen" width="950" height="723" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;26.4</a>:&nbsp;&nbsp;Jenkins after start-up.</td><td class="captionglue"></td>
+</tr>
+</table>
+      
+
+      
+      
+
+      
+<a name="jenkinsGuiTests"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_jenkinsGuiTests">26.4.2</a></span>
+</div>
+<a href="contents.html#toc_jenkinsGuiTests">Requirements for GUI tests</a>
+</h5>
+        
+<p>
+          GUI testing requires an unlocked, active desktop. That is the only way to ensure that
+          the SUT behaves the same as if a normal user interacts with it.
+          Chapter <a href="bp_testsyssetup.html#sec_bpTestsyssetup">Hints on setting up test-systems</a> contains useful tips and tricks to set-up the Jenkins/Hudson process.
+        </p>
+        
+<p>
+          Jenkins allows execution of tasks on remote machines. This is of course also relevant for
+          GUI testing. Due to its nature GUI tests are typically not intended to run on the
+          central build server. In addition, tests might need to be executed for different
+          environments, operating systems and SUT versions.
+        </p>
+        
+<p>
+          On a remote machine, a Jenkins agent needs to be launched in order to connect
+          to the Jenkins server and wait for jobs to be processed. As described in the Jenkins
+          documentation, there are several options to launch this agent, but for the GUI tests
+          to properly work the only possible launch method is to use Java Web Start.
+        </p>
+        
+<p>
+          For GUI tests it is vital to have an active, unlocked user session. Therefore it is not
+          possible to start the agent via a windows service but a real (test) user must be logged
+          in (e.g. via auto login) using Windows Autostart to launch the Jenkins
+          agent. Furthermore screen locking needs to be disabled.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Note</span></span>Please see also <a href="faq.html#faq_14" shape="rect">FAQ 14
+          </a> for more technical background details.
+        </p>
+      
+
+      
+      
+
+      
+<a name="usec_jenkinsInstallPlugin"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_jenkinsInstallPlugin">26.4.3</a></span>
+</div>
+<a href="contents.html#toc_usec_jenkinsInstallPlugin">Install QF-Test Plugin</a>
+</h5>
+        
+<p>
+          The <a href="https://www.qfs.de/en/jenkins" shape="rect">QF-Test Plugin</a> enables QF-Test to interact with Jenkins. To install the plugin open the
+          Jenkins dashboard and navigate via "Manage Jenkins" to "Manage Plugins".  Select the
+          <a href="https://www.qfs.de/en/jenkins" shape="rect">QF-Test Plugin</a> from the "Available" tab.  When installing the <a href="https://www.qfs.de/en/jenkins" shape="rect">QF-Test Plugin</a> the <a href="https://wiki.jenkins-ci.org/display/JENKINS/JUnit+Plugin" shape="rect">JUNIT</a> and <a href="https://wiki.jenkins-ci.org/display/JENKINS/HTML+Publisher+Plugin" shape="rect">HTML-Publisher
+          Plugin</a> will also be downloaded automatically, in case they were not already
+          installed.  Finally restart Jenkins to complete the installation. Now the QF-Test Plugin
+          will show up under the Installed tab, as shown in Figure 20.2.
+        </p>
+        
+<p>
+          
+<span class="margin"><span class="note">Note</span></span>Jenkins will automatically use the latest installed version of QF-Test. In case
+          you want to use a different version, you can provide its path under the QF-Test section in
+          the Jenkins configuration (Manage Jenkins -&gt; Configure System).
+        </p>
+        
+<a name="figure_26.5"></a><a name="figure_26.5"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/jenkinsPluginInstalled.png" target="_blank"><img src="images/jenkinsPluginInstalled.png" alt="QF-Test Plugin installed" width="951" height="519" texscale=".66"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Figure&nbsp;26.5</a>:&nbsp;&nbsp;Install QF-Test Plugin.</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<p>
+          As soon as the <a href="https://www.qfs.de/en/jenkins" shape="rect">QF-Test Plugin</a> has been installed successfully,
+          test execution with QF-Test can be included in the build jobs. A detailed explanation about the configuration
+          of jobs can be found in the <a href="https://www.qfs.de/en/jenkins" shape="rect">QF-Test Plugin documentation</a> at
+          <a href="https://www.qfs.de/en/jenkins" shape="rect">https://www.qfs.de/en/jenkins</a>.
+        </p>
+      
+
+      
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="user_maven.html#usec_maven"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 26.3&nbsp;Maven" title="Previous Chapter: 26.3&nbsp;Maven"></a></td><td class="navicon"><a href="user_robotframework.html#usec_robotframework"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 27&nbsp;Integration with Robot Framework (Preview)" title="Next Page: 27&nbsp;Integration with Robot Framework (Preview)"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="buildtools.html#usec_buildtools"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 26&nbsp;Integration with Development Tools" title="Chapter Overview: 26&nbsp;Integration with Development Tools"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

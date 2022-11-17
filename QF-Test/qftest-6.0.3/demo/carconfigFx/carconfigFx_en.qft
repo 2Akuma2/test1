@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="root"
+          signature="302C0214419B7146F8F22436E2AB28911B80EBA33C4092E902147BFD738A745CA2581A058ED0099CC2A6ACBC45DD"
+          version="6.0.3">
+  <include>qfs.qft</include>
+  <variable name="buggyMode">False</variable>
+  <comment>This is a demo testsuite for the CarConfigurator FX. 
+
+@param	buggyMode    If you set this variable to true some test-cases will fail, so you can check the error reporting of QF-Test.
+
+@author	QFS</comment>
+  <TestSet id="_1" name="CarConfigFx">
+    <DependencyReference id="_1mgj"
+                         reference="dependencies.sutStartedAndReset"/>
+    <TestCase id="_2" name="Select car with special and accessory">
+      <comment>Select a vehicle, a special as well as some accessories.
+At the end check the price.
+
+@author	QFS</comment>
+      <TestStep id="_1mgv" name="Selection">
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="TabbedPane@Vehicles" event="MOUSE_MPRC"
+                        id="_P" modifiers="16"/>
+        <ComponentWaiter client="$(client)"
+                         component="VehicleTable@Model&amp;1" id="_Q"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="VehicleTable@Model&amp;1"
+                        event="MOUSE_MPRC" id="_1mh-" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="TabbedPane@Specials" event="MOUSE_MPRC"
+                        id="_R" modifiers="16"/>
+        <ComponentWaiter client="$(client)" component="SpecialsCombo"
+                         id="_S"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="SpecialsCombo" event="MOUSE_MPRC"
+                        id="_1mi2" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="SpecialsCombo@Jazz" event="MOUSE_MPRC"
+                        id="_T" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="TabbedPane@Accessories" event="MOUSE_MPRC"
+                        id="_U" modifiers="16"/>
+        <ComponentWaiter client="$(client)"
+                         component="AccessoryTable&amp;0&amp;1" id="_V"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="AccessoryTable&amp;0&amp;1@:CheckBox"
+                        event="MOUSE_MPRC" id="_1miU" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="AccessoryTable&amp;0&amp;3@:CheckBox"
+                        event="MOUSE_MPRC" id="_1miV" modifiers="16"/>
+      </TestStep>
+      <TestStep id="_1mgw" name="Check">
+        <CheckStringStep client="$(client)" component="CalculatedPrice"
+                         id="_1mh+">
+          <text>$$16,259.00</text>
+        </CheckStringStep>
+      </TestStep>
+    </TestCase>
+  </TestSet>
+  <PackageRoot id="_3">
+    <Package id="_3Cr" name="dependencies">
+      <comment>Package for dependencies.</comment>
+      <Dependency id="_3Cs" name="sutStarted">
+        <comment>Ensure the SUT is started.</comment>
+        <SetupSequence id="_3Ac" name="Start SUT, if required">
+          <SetGlobalStep id="_3dt" varname="client">
+            <default>carconfigFx</default>
+          </SetGlobalStep>
+          <ClientWaiter client="$(client)" id="_1p6G" local="true"
+                        raise="false" resvarname="isSUTRunning" timeout="1">
+            <comment>This node checks whether the SUT is already running. The result of this check will be stored in the variable isSUTRunning. The variable itself can contain true if SUT is already running or false if SUT is not running. This variable will be used in the following 'If' node.</comment>
+          </ClientWaiter>
+          <IfSequence id="_1p6H" name="Launch SUT if not running"
+                      test="not $(isSUTRunning)">
+            <ProcedureCall id="_1p6I" procedure="startStop.start"/>
+          </IfSequence>
+        </SetupSequence>
+        <CleanupSequence id="_3Cm" name="Close SUT">
+          <ProcedureCall id="_3D0" procedure="startStop.terminate"/>
+        </CleanupSequence>
+      </Dependency>
+      <Dependency id="_3Cw" name="sutStartedAndReset">
+        <comment>Ensure proper state of running SUT.
+The buggy mode will be set depending on the global variable 'buggyMode'.</comment>
+        <DependencyReference id="_3DA" reference="dependencies.sutStarted"/>
+        <SetupSequence id="_3Aj" name="Reset">
+          <ProcedureCall id="_3Ak" procedure="mainwindow.menu.reset"/>
+          <ProcedureCall id="_1p6w" procedure="mainwindow.menu.setBuggy">
+            <variable name="isBuggy">$(buggyMode)</variable>
+          </ProcedureCall>
+        </SetupSequence>
+      </Dependency>
+    </Package>
+    <Package id="_3Fp" name="mainwindow">
+      <comment>Package for actions in the main window.</comment>
+      <Package id="_3Fq" name="menu">
+        <comment>Package for actions with the menu.</comment>
+        <Procedure id="_38o" name="reset">
+          <comment>Reset the SUT.</comment>
+          <MouseEventStep clicks="1" client="$(client)" component="mFile"
+                          event="MOUSE_MPRC" id="_1mg-" modifiers="16"/>
+          <MouseEventStep clicks="1" client="$(client)" component="miReset"
+                          event="MOUSE_MPRC" id="_1mh0" modifiers="16"
+                          postdelay="300"/>
+        </Procedure>
+        <Procedure id="_1p6x" name="setBuggy">
+          <variable name="isBuggy">False</variable>
+          <comment>Set the given state to Help -&gt; Buggy.
+
+@param	isBuggy	If set to true, the buggy mode is activated.
+</comment>
+          <ProcedureCall id="_1p6y" procedure="qfs.fx.menu.setCheckItem">
+            <variable name="menu">${id:mHelp}</variable>
+            <variable name="checkItem">${id:miBuggy}</variable>
+            <variable name="checkItemValue">${default:isBuggy:False}</variable>
+          </ProcedureCall>
+        </Procedure>
+      </Package>
+    </Package>
+    <Package id="_3Fr" name="startStop">
+      <comment>Package for starting and stopping the SUT.</comment>
+      <Procedure id="_33x" name="start">
+        <comment>Start the SUT.</comment>
+        <IfSequence id="_33z" test="${qftest:windows}">
+          <SUTClientStarter client="$(client)"
+                            directory="${qftest:dir.version}/demo/carconfigFx"
+                            executable="${qftest:dir.version}/demo/carconfig/CarConfig.cmd"
+                            id="_33+">
+            <parameter>en</parameter>
+            <parameter>-engine</parameter>
+            <parameter>fx</parameter>
+          </SUTClientStarter>
+          <ElseSequence id="_33-">
+            <SUTClientStarter client="$(client)"
+                              directory="${qftest:dir.version}/demo/carconfigFx"
+                              executable="${qftest:dir.version}/demo/carconfig/CarConfig.sh"
+                              id="_3Fl">
+              <parameter>en</parameter>
+              <parameter>-engine</parameter>
+              <parameter>fx</parameter>
+            </SUTClientStarter>
+          </ElseSequence>
+        </IfSequence>
+        <ClientWaiter client="$(client)" id="_1mgA"/>
+        <ComponentWaiter client="$(client)" component="CarConfiguratorFX"
+                         id="_1mgB" timeout="60000"/>
+      </Procedure>
+      <Procedure id="_3C-" name="terminate">
+        <comment>Terminate the SUT.</comment>
+        <TryStep id="_3DH" name="SUT running?">
+          <ClientWaiter client="$(client)" id="_3DI" timeout="500"/>
+          <ProcedureCall id="_3D2"
+                         procedure="qfs.fx.cleanup.implicitExceptionHandler">
+            <variable name="maxDialogs">5</variable>
+          </ProcedureCall>
+          <MouseEventStep clicks="1" client="$(client)" component="mFile"
+                          event="MOUSE_MPRC" id="_1mh3" modifiers="16"/>
+          <MouseEventStep clicks="1" client="$(client)" component="miExit"
+                          event="MOUSE_MPRC" id="_1mh5" modifiers="16"/>
+          <TryStep id="_3G8" name="wait for termination">
+            <ProcessWaiter client="$(client)" id="_3Cp"/>
+            <CatchSequence exception="TestException" id="_3G9" maxerror="0"
+                           name="SUT not terminated">
+              <ClientStopper client="$(client)" id="_3Cq"/>
+              <ProcessWaiter client="$(client)" id="_3GA"/>
+            </CatchSequence>
+          </TryStep>
+          <CatchSequence exception="ClientNotConnectedException" id="_3DJ"
+                         maxerror="0"/>
+        </TryStep>
+      </Procedure>
+    </Package>
+  </PackageRoot>
+  <ExtraSequence id="_4"/>
+  <WindowList id="_5">
+    <WindowStep class="Window" engine="fx"
+                feature="FxCarConfigurator - Version 1" height="458"
+                id="CarConfiguratorFX" name="CarConfiguratorFX" uid="_1miC"
+                width="408">
+      <ComponentStep class="MenuBar" classcount="1" classindex="0" height="24"
+                     id="MenuBar" name="MenuBar" uid="_1miD" width="400" x="4"
+                     y="23">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javafx.scene.control.MenuBar</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Menu</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javafx.scene.control.MenuBar</extrafeature>
+        <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Menu:MenuBar</extrafeature>
+        <ComponentStep class="MenuItem" classcount="4" classindex="0"
+                       feature="File" height="24" id="mFile" name="mFile"
+                       uid="_1miE" width="44" x="9" y="0">
+          <extrafeature name="alignment" negate="false" regexp="false"
+                        state="0">CENTER_LEFT</extrafeature>
+          <extrafeature name="mnemonic_parsing" negate="false" regexp="false"
+                        state="0">true</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javafx.scene.control.MenuButton</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">MenuItem</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">File</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javafx.scene.control.MenuButton</extrafeature>
+          <extrafeature name="qfs:type" negate="false" regexp="false"
+                        state="0">MenuItem:MenuButton</extrafeature>
+          <extrafeature name="wrap_text" negate="false" regexp="false"
+                        state="0">false</extrafeature>
+          <ComponentStep class="MenuItem" classcount="2" classindex="0"
+                         feature="Reset" height="24" id="miReset"
+                         name="miReset" uid="_9" width="50" x="17" y="58">
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Reset</extrafeature>
+          </ComponentStep>
+          <ComponentStep class="MenuItem" classcount="2" classindex="1"
+                         feature="Exit" height="33" id="miExit" name="miExit"
+                         uid="_1mi3" width="83" x="18" y="100">
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Exit</extrafeature>
+          </ComponentStep>
+        </ComponentStep>
+        <ComponentStep class="MenuItem" classcount="4" classindex="3"
+                       feature="Help" height="37" id="mHelp" name="mHelp"
+                       uid="_1p6r" width="62" x="293" y="0">
+          <extrafeature name="alignment" negate="false" regexp="false"
+                        state="0">CENTER</extrafeature>
+          <extrafeature name="mnemonic_parsing" negate="false" regexp="false"
+                        state="0">true</extrafeature>
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javafx.scene.control.MenuButton</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">MenuItem</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">Help</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javafx.scene.control.MenuButton</extrafeature>
+          <extrafeature name="qfs:type" negate="false" regexp="false"
+                        state="0">MenuItem:MenuButton</extrafeature>
+          <extrafeature name="styleclass" negate="false" regexp="false"
+                        state="0">menu-button menu</extrafeature>
+          <extrafeature name="wrap_text" negate="false" regexp="false"
+                        state="0">false</extrafeature>
+          <ComponentStep class="MenuItem" classcount="4" classindex="1"
+                         feature="Buggy" height="37" id="miBuggy"
+                         name="miBuggy" uid="_1p6s" width="182" x="303"
+                         y="111">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">javafx.scene.layout.Region</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">MenuItem</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Buggy</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">javafx.scene.layout.Region</extrafeature>
+            <extrafeature name="styleclass" negate="false" regexp="false"
+                          state="0">menu-item check-menu-item</extrafeature>
+          </ComponentStep>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="TabPanel" classcount="1" classindex="0"
+                     height="300" id="TabbedPane" name="TabbedPane"
+                     uid="_1miF" width="400" x="4" y="47">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javafx.scene.control.TabPane</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">TabPanel</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javafx.scene.control.TabPane</extrafeature>
+        <extrafeature name="side" negate="false" regexp="false" state="0">TOP</extrafeature>
+        <ComponentStep class="Panel" classindex="1" feature="Tab: Vehicles"
+                       height="264" id="panelVehicles" uid="_1miG" width="400"
+                       x="0" y="36">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javafx.scene.layout.StackPane</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Panel</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javafx.scene.layout.StackPane</extrafeature>
+          <extrafeature name="qfs:type" negate="false" regexp="false"
+                        state="0">Panel:TabPanelContent</extrafeature>
+          <ComponentStep class="Panel" classcount="1" classindex="0"
+                         height="264" id="VehicleTablePanel"
+                         name="VehicleTablePanel" uid="_1miH" width="400"
+                         x="0" y="0">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">javafx.scene.layout.GridPane</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Panel</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">javafx.scene.layout.GridPane</extrafeature>
+            <ComponentStep class="Table" classcount="1" classindex="0"
+                           height="229" id="VehicleTable" name="VehicleTable"
+                           uid="_1miI" width="386" x="7" y="28">
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">javafx.scene.control.TableView</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">Table</extrafeature>
+              <extrafeature name="qfs:label" negate="false" regexp="false"
+                            state="1">Vehicles</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">javafx.scene.control.TableView</extrafeature>
+            </ComponentStep>
+          </ComponentStep>
+        </ComponentStep>
+        <ComponentStep class="Panel" classindex="1" feature="Tab: Specials"
+                       height="264" id="panelSpecials" uid="_1miQ" width="400"
+                       x="0" y="36">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javafx.scene.layout.StackPane</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Panel</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javafx.scene.layout.StackPane</extrafeature>
+          <extrafeature name="qfs:type" negate="false" regexp="false"
+                        state="0">Panel:TabPanelContent</extrafeature>
+          <ComponentStep class="Panel" classcount="1" classindex="0"
+                         height="264" id="SpecialsPanel" name="SpecialsPanel"
+                         uid="_1miR" width="400" x="0" y="0">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">javafx.scene.layout.GridPane</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Panel</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">javafx.scene.layout.GridPane</extrafeature>
+            <ComponentStep class="ComboBox" classcount="1" classindex="0"
+                           height="22" id="SpecialsCombo" name="SpecialsCombo"
+                           uid="_1miS" width="386" x="7" y="28">
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">javafx.scene.control.ComboBox</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">ComboBox</extrafeature>
+              <extrafeature name="qfs:label" negate="false" regexp="false"
+                            state="1">Specials</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">javafx.scene.control.ComboBox</extrafeature>
+            </ComponentStep>
+          </ComponentStep>
+        </ComponentStep>
+        <ComponentStep class="Panel" classindex="1" feature="Tab: Accessories"
+                       height="264" id="panelAccessories" uid="_1miN"
+                       width="400" x="0" y="36">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javafx.scene.layout.StackPane</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Panel</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javafx.scene.layout.StackPane</extrafeature>
+          <extrafeature name="qfs:type" negate="false" regexp="false"
+                        state="0">Panel:TabPanelContent</extrafeature>
+          <ComponentStep class="Panel" classcount="1" classindex="0"
+                         height="264" id="AccessoryTablePanel"
+                         name="AccessoryTablePanel" uid="_1miO" width="400"
+                         x="0" y="0">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">javafx.scene.layout.GridPane</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Panel</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">javafx.scene.layout.GridPane</extrafeature>
+            <ComponentStep class="Table" classcount="1" classindex="0"
+                           height="208" id="AccessoryTable"
+                           name="AccessoryTable" uid="_1miP" width="386" x="7"
+                           y="28">
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">javafx.scene.control.TableView</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">Table</extrafeature>
+              <extrafeature name="qfs:label" negate="false" regexp="false"
+                            state="1">Accessories</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">javafx.scene.control.TableView</extrafeature>
+            </ComponentStep>
+          </ComponentStep>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="Panel" classcount="3" classindex="2" height="107"
+                     id="CalculatorPanel" name="CalculatorPanel" uid="_1miL"
+                     width="400" x="4" y="347">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javafx.scene.layout.GridPane</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Panel</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javafx.scene.layout.GridPane</extrafeature>
+        <ComponentStep class="TextField" classcount="4" classindex="3"
+                       height="22" id="CalculatedPrice" name="CalculatedPrice"
+                       uid="_1miM" width="194" x="201" y="80">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javafx.scene.control.TextField</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">TextField</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">Final price</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javafx.scene.control.TextField</extrafeature>
+        </ComponentStep>
+      </ComponentStep>
+    </WindowStep>
+  </WindowList>
+</RootStep>

@@ -1,0 +1,436 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>
+          Working with the Eclipse Graphical Editing Framework (GEF)
+        </title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="sec_gef"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_checkers.html#sec_checkers"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 50.5&nbsp;
+          Implementing custom checks with the Checker interface
+        " title="Previous Chapter: 50.5&nbsp;
+          Implementing custom checks with the Checker interface
+        "></a></td><td class="navicon"><a href="tech_testrunlisteners.html#sec_testrunlisteners"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 50.7&nbsp;Test run listeners" title="Next Page: 50.7&nbsp;Test run listeners"></a></td><td class="navicon"><a href="tech_testrunlisteners.html#sec_testrunlisteners"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 50.7&nbsp;Test run listeners" title="Next Chapter: 50.7&nbsp;Test run listeners"></a></td><td class="navicon"><a href="tech_extensions.html#sec_extensions"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 50&nbsp;Extension APIs" title="Chapter Overview: 50&nbsp;Extension APIs"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="homeicon"><a href="http://www.qfs.de/en/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+        
+<h4 class="header-container h4">
+<div>
+<span class="margin"><a name="new_N181081"></a><span class="note">3.2+</span></span><span class="numtitle"><a href="contents.html#toc_sec_gef">50.6</a></span>
+</div>
+<a href="contents.html#toc_sec_gef">
+          Working with the Eclipse Graphical Editing Framework (GEF)
+        </a>
+</h4>
+        
+
+        
+<p>
+          The <a href="http://www.eclipse.org/gef" shape="rect">Graphical Editing Framework (GEF)</a> is a set
+          of Eclipse plugins for creating editors that support visual editing of arbitrary models.
+          This framework is very popular and QF-Test has supported recording and playback of GEF
+          items for a long time (since about version 2.2). It is also a good example for the
+          power of the <code>ItemResolver</code> concept (see <a href="tech_itemresolvers.html#sec_itemresolvers">section 50.4</a>),
+          because the <code>gef</code> Jython module contains an implementation of just that
+          interface.
+        </p>
+        
+<p>
+          The <code>gef</code> module can deal with GEF editors at a generic level and even
+          support several editors at once. Though reasonable item names are provided out of the
+          box also for GMF applications, there are limits to what can be determined automatically.
+          Depending on the underlying model classes, there might still remain some work for you:
+          Implementing custom resolvers to provide useful names and values for your items.
+        </p>
+
+        
+        
+
+        
+<a name="sec_N181114"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N181114">50.6.1</a></span>
+</div>
+<a href="contents.html#toc_sec_N181114">Recording GEF items</a>
+</h5>
+          
+<p>
+            The actual GEF component is the <code>FigureCanvas</code>. This control displays
+            <code>Figures</code> which represent <code>EditParts</code>. When recording a mouse
+            click on such an element, QF-Test does not register a pure 'Mouse event' node for
+            the canvas component with the corresponding (x,y) position but tries to recognize
+            the object under the mouse cursor. For example, the recorded 'QF-Test component ID' may look
+            like
+          </p>
+          
+<p>
+            &nbsp;&nbsp;<code>canvas@/Diagram/My ship/ShipLargeCargo (wine)</code>
+<br>
+            &nbsp;&nbsp;<code>canvas@Connection-2</code>
+<br>
+            &nbsp;&nbsp;<code>canvas@/Diagram/Rectangle 16329001</code>
+          
+</p>
+          
+<p>
+            where "canvas" is the 'QF-Test ID' of the <code>FigureCanvas</code> component, followed by
+            the item index of the recognized <code>EditPart</code> (see <a href="user_subitems.html#usec_subitems">section 5.9</a>). <code>EditParts</code> reside in a tree like hierarchy which
+            is reflected in the index by a path separator '/'. The names of the individual items
+            are generated as follows:
+          </p>
+          
+<ul>
+            
+<li>
+              The item name is getModel().toString() unless it contains a hash value (e.g.
+              NodeImpl@2d862).
+            </li>
+            
+<li>
+              QF-Test tries to extract a name for the item from the model ("My ship" in the above
+              examples).
+            </li>
+            
+<li>
+              The class name along with a description gets recorded, e.g. "ShipLargeCargo
+              (wine)".
+            </li>
+            
+<li>
+              If there's no description, an index is appended to the class name when there's
+              more than one item of that class, e.g. "Connection-2" for the third connection.
+            </li>
+            
+<li>
+              The root <code>EditPart</code> always reads "Diagram".
+            </li>
+          
+</ul>
+          
+<p>
+            As one can imagine, those generated item names may not always be useful. For
+            example, items might be deleted so that the recorded index is not longer valid. Or
+            the generated item name is unstable as "Rectangle 16329001" in the GEF Shapes
+            example: The number is random and when restarting the application a different one
+            will be created. Three options exist to overcome the problem:
+          </p>
+          
+<ul>
+            
+<li>
+              Instead of working with a textual index, you can try to go with a numerical one. To
+              this end, open the recording options and set the 'Sub-Item format' to 'Number' (see
+              <a href="opt_record.html#sec_opt_relativeevents">subsection 37.2.4</a>). This is probably not satisfying because a
+              numerical index like <code>/0/1</code> tells nothing about an item.
+            </li>
+            
+<li>
+              Get in touch with your developers and convince them to provide a useful
+              implementation of the <code>toString()</code> method of the item's model. It
+              would make live easy for you, but only if the developers are cooperative.
+            </li>
+            
+<li>
+              Write an <code>ItemNameResolver2</code>. This is the tough course but
+              unfortunately the most likely scenario. It is covered in the next section.
+            </li>
+          
+</ul>
+        
+
+        
+        
+
+        
+<a name="sec_N181223"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N181223">50.6.2</a></span>
+</div>
+<a href="contents.html#toc_sec_N181223">Implementing a GEF ItemNameResolver2</a>
+</h5>
+          
+<p>
+            As stated in <a href="tech_resolversmodule.html#sec_resolversmodule">section 50.1</a>, an <code>ItemNameResolver2</code>
+            is the hook to change or provide names for items. To get started, insert a new
+            Jython <a href="control.html#step_ClientScriptStep" shape="rect">'SUT script'</a> in the <a href="sequences.html#step_ExtraSequence" shape="rect">'Extras'</a> node with the following
+            code:
+          </p>
+          
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def getItemName(canvas, item, name):
+    print "name: %s" %name
+    print "item: %s" %(item.__class__)
+    model = item.getModel()
+    print "model: %s" %(model.__class__)
+
+resolvers.addItemNameResolver2("myGefItemNames", getItemName,
+    "org.eclipse.draw2d.FigureCanvas")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.43:&nbsp;&nbsp;Get started with a GEF ItemNameResolver2</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            To ease the installation of the resolver we use the <code>resolvers</code> module
+            described in <a href="tech_resolversmodule.html#sec_resolversmodule">section 50.1</a>. The resolver gets registered for the
+            <code>FigureCanvas</code> class where the items reside. The default item name
+            provided by QF-Test is supplied as the last argument to our function
+            <code>getItemName()</code>. Now run the script, press the record button and then simply
+            move the mouse over your figures on the canvas - supposing you have created some of
+            them previously. Note that this first resolver implementation does nothing but print
+            out out some information into the terminal, something like
+          </p>
+          
+<p>
+            &nbsp;&nbsp;<code>name: Rectangle 16329001</code>
+<br>
+            &nbsp;&nbsp;<code>item: org.eclipse.gef.examples.shapes.parts.ShapeEditPart</code>
+<br>
+            &nbsp;&nbsp;<code>model: org.eclipse.gef.examples.shapes.model.RectangularShape</code>
+          
+</p>
+          
+<p>
+            The question is now: Does the model of the GEF <code>EditPart</code> provide any
+            property that might be used as name for the item? The answer in the case of the GEF
+            Shapes example is "No", and hopefully you are in a better situation with your
+            application. To find out insert a line
+          </p>
+          
+<p>
+            &nbsp;&nbsp;<code>print dir(model)</code>
+          
+</p>
+          
+<p>
+            in the <code>getItemName()</code> function and run the script again. Now you will
+            also see the methods of the model when moving the mouse over the items in record
+            mode. With a bit of luck you will find methods like <code>getId()</code> or
+            <code>getLabel()</code> and can create a resolver like this:
+          </p>
+          
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def getItemName(canvas, item, name):
+    model = item.getModel()
+    return model.getId()
+
+resolvers.addItemNameResolver2("myGefItemNames", getItemName,
+    "org.eclipse.draw2d.FigureCanvas")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.44:&nbsp;&nbsp;A simple ItemNameResolver2</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            Let's go back to the GEF Shapes example where we don't have such useful methods.
+            Only geometry information is available for the shapes and that is not really
+            helpful. At least we can distinguish between rectangles and
+            ellipses. To make the item names unique we simply add a child index as shown in the
+            following resolver:
+          </p>
+          
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def getItemName(canvas, item, name):
+    name = None
+    shapes = "org.eclipse.gef.examples.shapes"
+    diagrammEditPart = shapes + ".parts.DiagramEditPart"
+    shapeEditPart = shapes + ".parts.ShapeEditPart"
+    connectionEditPart = shapes + ".parts.ConnectionEditPart"
+    ellipticalShape = shapes + ".model.EllipticalShape"
+    rectangularShape = shapes + ".model.RectangularShape"
+    if qf.isInstance(item, shapeEditPart):
+        siblings = item.getParent().getChildren()
+        for i in range(len(siblings)):
+            if (item == siblings[i]):
+                if qf.isInstance(item.getModel(), ellipticalShape):
+                    name = "Ellipse " + str(i)
+                elif qf.isInstance(item.getModel(),
+                                                 rectangularShape):
+                    name = "Rectangle " + str(i)
+    elif qf.isInstance(item, connectionEditPart):
+        source = item.getSource()
+        target = item.getTarget()
+        sourceName = getItemName(canvas, source, str(source.getModel()))
+        targetName = getItemName(canvas, target, str(target.getModel()))
+        name = "Connection " + sourceName + " " + targetName
+    elif qf.isInstance(item, diagrammEditPart):
+        name = "Diagram"
+    return name
+
+resolvers.addItemNameResolver2("shapesItemNames", getItemName,
+    "org.eclipse.draw2d.FigureCanvas")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.45:&nbsp;&nbsp;An ItemNameResolver2 for GEF Shapes</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            With this resolver in place, the item index for a rectangle becomes
+          </p>
+          
+<p>
+            &nbsp;&nbsp;<code>/Diagram/Rectangle 1</code>
+          
+</p>
+          
+<p>
+            where the trailing number is the child index of the item. The above implementation
+            also provides names for the connections by calling <code>getItemName()</code>
+            recursively for the source and the target item of the connection. Checking the types
+            with <code>qf.isInstance()</code> (see <a href="tech_scripting.html#sec_api_qf">section 46.6</a>) will save you the need to import the GEF classes,
+            something that is not trivial.
+          </p>
+          
+<p>
+            Once your resolver is working fine you should move the script into your
+            <a href="dependencies.html#step_SetupSequence" shape="rect">'Setup'</a> sequence right behind the <a href="processes.html#step_ClientWaiter" shape="rect">'Wait for client to connect'</a> node. This way the
+            resolver will be registered automatically when the SUT starts.
+          </p>
+        
+
+        
+        
+
+        
+<a name="sec_N181374"></a>
+          
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_sec_N181374">50.6.3</a></span>
+</div>
+<a href="contents.html#toc_sec_N181374">Implementing a GEF ItemValueResolver2</a>
+</h5>
+          
+<p>
+            Usually a GEF editor consists of two parts. Having focused so far on the canvas
+            where you draw the figures, we now take a look at the palette where you select the
+            kind of figure to draw (e.g. 'Rectangle', 'Ellipse' or 'Connection'). Its entries
+            look like tool buttons but actually the palette is a <code>FigureCanvas</code> too.
+            You will be glad to know that this one works out of the box, that is without
+            implementing an <code>ItemNameResolver2</code>. When you click for example on the
+            'Rectangle' button, QF-Test recognizes a
+          </p>
+          
+<p>
+            &nbsp;&nbsp;<code>/Palette Root/Palette Container (Shapes)/Palette Entry (Rectangle)</code>
+          
+</p>
+          
+<p>
+            item. What will happen when you record a check (cf. <a href="user_capture.html#usec_recordchecks">section 4.3</a>) for the 'Object value' for this button? You may expect to
+            get the button text 'Rectangle' but in fact the value of this item is
+          </p>
+          
+<p>
+            &nbsp;&nbsp;<code>Palette Entry (Rectangle)</code>
+          
+</p>
+          
+<p>
+            The reason is that by default name and value of an item are the same. To alter this
+            behavior and provide customized values you need to implement an
+            <code>ItemValueResolver2</code>. This interface is very similar to the
+            <code>ItemNameResolver2</code> above. For the palette we can code the
+            following one:
+          </p>
+          
+<table class="example" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3">
+<table width="100%" cellspacing="0">
+<tr>
+<td class="example"><pre>def getItemValue(canvas, item, value):
+    value = None
+    paletteEditPart = \
+        "org.eclipse.gef.ui.palette.editparts.PaletteEditPart"
+    if qf.isInstance(item, paletteEditPart):
+        value = item.getModel().getLabel()
+    return value
+
+resolvers.addItemValueResolver2("shapesItemValues", getItemValue,
+    "org.eclipse.draw2d.FigureCanvas")</pre></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption">Example&nbsp;50.46:&nbsp;&nbsp;An ItemValueResolver2 for the GEF Shapes palette</td><td class="captionglue"></td>
+</tr>
+</table>
+          
+<p>
+            The method <code>getLabel()</code> returns the text as displayed in the palette.
+          </p>
+        
+
+        
+      
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Table of contents" title="Table of contents"></a></td><td class="navicon"><a href="tech_checkers.html#sec_checkers"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Previous Chapter: 50.5&nbsp;
+          Implementing custom checks with the Checker interface
+        " title="Previous Chapter: 50.5&nbsp;
+          Implementing custom checks with the Checker interface
+        "></a></td><td class="navicon"><a href="tech_testrunlisteners.html#sec_testrunlisteners"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="Next Page: 50.7&nbsp;Test run listeners" title="Next Page: 50.7&nbsp;Test run listeners"></a></td><td class="navicon"><a href="tech_testrunlisteners.html#sec_testrunlisteners"><img src="../icons/linknext.png" width="34" height="36" border="0" alt="Next Chapter: 50.7&nbsp;Test run listeners" title="Next Chapter: 50.7&nbsp;Test run listeners"></a></td><td class="navicon"><a href="tech_extensions.html#sec_extensions"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Chapter Overview: 50&nbsp;Extension APIs" title="Chapter Overview: 50&nbsp;Extension APIs"></a></td><td class="navicon"><a href="../../manual_en.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF version" title="PDF version"></a></td><td class="navcopymod">Last update: 9/6/2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>

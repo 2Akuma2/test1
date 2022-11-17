@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="root"
+          signature="302D021500C6802D280D6768481857B5EFA5A002012A22724D02146DE70D00AAB739E03B3FF5BCA1262A9C65FA3DBE"
+          version="6.0.3">
+  <include>carconfigFx_de.qft</include>
+  <variable name="buggyMode">False</variable>
+  <comment>Diese Testsuite enthält Beispiele für den CarConfigurator FX, welche sich besonders auf die Erweiterungsmöglichkeiten von QF-Test mit Hilfe von Skripting befassen oder die Einbindung von Unit Tests zeigen.
+
+@param	buggyMode    Wenn diese Variable auf True gesetzt wird, dann werden einige Testfälle Fehler beinhalten. Hiermit können Sie die Reporting von Fehlern innerhalb von QF-Test testen.
+
+@author	QFS
+@since	4.2</comment>
+  <TestCase id="_1p6L" name="Integration von Unit Tests">
+    <comment>Dieser Testfall zeigt Beispiele zur Integration von Unit Tests.
+
+Es werden drei Bereiche der Anbindung von Unit Tests gezeigt:
+
+1. Anbindung bereits implementierter Unit Tests aus einer bestehenden .jar Datei.
+2. Anbindung selbst implementierter Unit Test Methoden in Skripten.
+3. Live Unit Tests bei denen aktuelle SUT-Komponenten in Unit Tests verwendet werden.
+
+@author	QFS</comment>
+    <DependencyReference id="_1p6q"
+                         reference="dependencies.SUT_Gestartet_Zurückgesetzt"/>
+    <TestStep id="_1p6e"
+              name="SUT-unabhängige Unit Tests - aus jar Datei geladen">
+      <comment>Die, in diesem Beispiel aufgerufenen, Unit Tests wurden als klassische Unit Tests implementiert.
+Die Tests inkl. deren Sourcecode befindet sich in ${qftest:dir.version}/qflib/qfdemotests.jar.</comment>
+      <UnitStep client="$(client)" id="_1p6a" source="jar">
+        <includefiles name="1">${qftest:dir.version}/qflib/qfdemotests.jar</includefiles>
+        <includefiles name="1">${qftest:dir.version}/qflib/qfdemo.jar</includefiles>
+        <classes>de.qfs.apps.qftest.demo.fx.carconfig.structures.UtilityTests</classes>
+      </UnitStep>
+    </TestStep>
+    <TestStep id="_1p6m"
+              name="SUT-unabhängige Unit Tests - als Skript implementiert">
+      <comment>Die, in diesem Beispiel aufgerufenen, Unit Tests wurden innerhalb des UnitStep Knotens implementiert.</comment>
+      <UnitStep client="$(client)" id="_1p6n" interpreter="groovy">
+        <includefiles name="1">${qftest:dir.version}/qflib/qfdemo.jar</includefiles>
+        <injections target="buggyMode" type="2">$(buggyMode)</injections>
+        <classes>de.qfs.apps.qftest.demo.fx.carconfig.structures.UtilityTests</classes>
+        <code>import de.qfs.apps.qftest.demo.multi.carconfigurator.controller.CCControllerFX;
+import de.qfs.apps.qftest.demo.multi.carconfigurator.model.CCModel;
+import de.qfs.apps.qftest.demo.multi.carconfigurator.model.CCParams;
+
+@Test
+public void isStandardUser()
+{
+        CCModel model = CCModel.getInstance();
+        CCControllerFX c = new CCControllerFX(model);
+        model.setM_params(CCParams.builder().build());
+
+        model.getM_params().setUser("tester");
+        assertTrue(c.isStandardUser());
+}
+
+@Test
+public void isNoStandardUser()
+{
+        CCModel model = CCModel.getInstance();
+        CCControllerFX c = new CCControllerFX(model);
+        model.setM_params(CCParams.builder().build());
+        
+        model.getM_params().setUser("myuser");
+        assertFalse(c.isStandardUser());
+}
+
+@Test
+public void calculatePriceOk()
+{ 
+    CCModel model = CCModel.getInstance();
+    CCControllerFX c = new CCControllerFX(model);
+    model.setM_params(CCParams.builder().build());
+        
+    model.getM_params().setBuggy(buggyMode == null ? false : Boolean.parseBoolean(buggyMode));
+    double result_price = c.calculatePriceOk(12000, 500, 100, 0, 0, 0);
+    double expected_price = 12600.0;
+    assertEquals(expected_price, result_price, 0);
+}</code>
+      </UnitStep>
+    </TestStep>
+    <TestStep id="_1p6f" name="Live Unit Tests im aktuellen SUT">
+      <comment>Dieser Testschritt zeigt Live Unit Tests, die aktuelle Komponenten des SUTs verwenden.
+Dies stellt eine sehr gute Kombination aus Unit Tests und QF-Test Tests dar.</comment>
+      <MouseEventStep clicks="1" client="$(client)"
+                      component="TabbedPane@Fahrzeuge" event="MOUSE_MPRC"
+                      id="_1p6r" modifiers="16"/>
+      <MouseEventStep clicks="1" client="$(client)"
+                      component="VehicleTable@Modell@I5" event="MOUSE_MPRC"
+                      id="_1p6l" modifiers="16"/>
+      <UnitStep client="$(client)" id="_1p6g" interpreter="groovy"
+                runInExecutionEnvironment="false" source="jar">
+        <includefiles name="1">${qftest:dir.version}/qflib/qfdemotests.jar</includefiles>
+        <injections target="vehiclesView" type="1">VehicleTable</injections>
+        <injections target="expectedPrice" type="2">26100.00</injections>
+        <injections target="discount" type="2">10</injections>
+        <injections target="buggyMode" type="2">$(buggyMode)</injections>
+        <classes>de.qfs.apps.qftest.demo.fx.carconfig.liveunittests.LiveTestsCarConfigFX</classes>
+        <code>import de.qfs.apps.qftest.demo.fx.carconfig.structures.Accessory;
+import de.qfs.apps.qftest.demo.fx.carconfig.structures.Special;
+import de.qfs.apps.qftest.demo.fx.carconfig.structures.Utility;
+import de.qfs.apps.qftest.demo.fx.carconfig.structures.Vehicle;
+
+    @Test
+    public void isStandardUser()
+    {
+        String testuser = "tester";
+        assertTrue(Utility.isStandardUser(testuser));
+    }
+
+    @Test
+    public void isNoStandardUser()
+    {
+        String testuser = "myuser";
+        assertFalse(Utility.isStandardUser(testuser));
+    }
+
+    @Test
+    public void calculatePriceOk()
+    {
+        Vehicle testVehicle = new Vehicle("testCar", 12000);
+        Special testSpecial = new Special("testSpecial", "testdesc", null, 500);
+
+        Accessory testAccessory1 = new Accessory("testAcc2", 100);
+        LinkedList&lt;Accessory&gt; selectedAccessories = new LinkedList&lt;Accessory&gt;();
+        selectedAccessories.add(testAccessory1);
+
+        double result_price = Utility.calculateFinalPrice(false, testVehicle, testSpecial, 0,
+                selectedAccessories, true);
+
+        double expected_price = 12600.0;
+        assertEquals(expected_price, result_price, 0);
+    }</code>
+      </UnitStep>
+      <UnitStep client="$(client)" id="_1p6p" interpreter="groovy"
+                runInExecutionEnvironment="false">
+        <injections target="vehiclesView" type="1">VehicleTable</injections>
+        <injections target="expectedPrice" type="2">26100.0</injections>
+        <injections target="discount" type="2">10</injections>
+        <injections target="buggyMode" type="2">$(buggyMode)</injections>
+        <classes>de.qfs.apps.qftest.demo.fx.carconfig.structures.UtilityTests</classes>
+        <code>import de.qfs.apps.qftest.demo.multi.carconfigurator.controller.CCControllerFX;
+import de.qfs.apps.qftest.demo.multi.carconfigurator.model.CCModel;
+import de.qfs.apps.qftest.demo.multi.carconfigurator.model.CCParams;
+import de.qfs.apps.qftest.demo.multi.carconfigurator.model.CCModel.CCVehicle;
+
+
+@Test
+public void testCalculatePriceOk()
+{
+    CCModel model = CCModel.getInstance();
+    CCControllerFX c = new CCControllerFX(model);
+    model.setM_params(CCParams.builder().build());
+        
+    CCVehicle testVehicle = vehiclesView.getSelectionModel().getSelectedItem();
+    Double vehiclePrice = testVehicle.getPrice();
+    model.getM_params().setBuggy(buggyMode == null ? false : Boolean.parseBoolean(buggyMode));
+
+    double result_price = c.calculatePriceOk(vehiclePrice, 0, 0, 0, 0, Double.parseDouble(discount));       
+
+    assertEquals(Double.parseDouble(expectedPrice), result_price, 0);
+}</code>
+      </UnitStep>
+    </TestStep>
+  </TestCase>
+  <PackageRoot id="_3"/>
+  <ExtraSequence id="_4"/>
+  <WindowList id="_5"/>
+</RootStep>

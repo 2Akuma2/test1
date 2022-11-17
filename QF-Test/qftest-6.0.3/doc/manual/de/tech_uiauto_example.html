@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="6.0.3">
+<link rel="shortcut icon" href="../icons/favicon.ico" type="image/vnd.microsoft.icon">
+<title>Beispiel</title>
+<link href="man.css" type="text/css" rel="stylesheet">
+<meta name="organisation" content="Quality First Software GmbH">
+<meta name="copyright" content="(C) 1999-2022 Quality First Software GmbH">
+</head>
+<body bgcolor="white">
+<a name="usec_uiauto_example"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviheader">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_uiauto_general.html#usec_uiauto_general"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 48.1&nbsp;Vorgehensweise" title="Vorheriges Kapitel: 48.1&nbsp;Vorgehensweise"></a></td><td class="navicon"><a href="tech_automac.html#usec_automac"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 49&nbsp;Steuern und Testen von nativen MacOS-Anwendungen" title="N&auml;chste Seite: 49&nbsp;Steuern und Testen von nativen MacOS-Anwendungen"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_uiauto.html#usec_uiauto"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 48&nbsp;Steuern und Testen von nativen Windows Anwendungen -
+               ohne Verwendung der QF-Test win Engine" title="Kapitel-&Uuml;bersicht: 48&nbsp;Steuern und Testen von nativen Windows Anwendungen -
+               ohne Verwendung der QF-Test win Engine"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="homeicon"><a href="http://www.qfs.de/de/qftest/index.html" target="_parent"><img src="../icons/qftest.png" width="127" height="42" border="0" alt="QF-Test" title="QF-Test"></a></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="naviversion">
+<tr>
+<td>Version 6.0.3</td>
+</tr>
+</table>
+      
+<h4 class="header-container h4">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_uiauto_example">48.2</a></span>
+</div>
+<a href="contents.html#toc_usec_uiauto_example">Beispiel</a>
+</h4>
+      
+<p>
+        Die Beispieltestsuiten finden Sie in den Unterverzeichnissen <code>demo/carconfigWpf</code>
+        und <code>demo/carconfigForms</code> des QF-Test Installationsverzeichnisses.
+      </p>
+      
+<a name="usec_uiauto_start_example"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_uiauto_start_example">48.2.1</a></span>
+</div>
+<a href="contents.html#toc_usec_uiauto_start_example">Start der Anwendung</a>
+</h5>
+        
+<p>
+          Die Beispieltestsuiten verwenden f&uuml;r den Start der Anwendung die in der
+          Standardbibliothek mitgelieferte Abh&auml;ngigkeit <code>SUT_started</code> (SUT = System Under Test)
+          aus dem Package <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.dependencies"><code>qfs.autowin.dependencies</code></a>.
+        </p>
+        
+<p>
+        Der Start der Demoapplikation wird &uuml;ber den Knoten
+        </p>
+        
+<ul>
+          
+<li>
+            Shellkommando ausf&uuml;hren
+          </li>
+        
+</ul>
+        
+<p>
+          angesto&szlig;en. Anschlie&szlig;end muss auf die Applikation gewartet werden, bevor
+          die Tests abgespielt werden k&ouml;nnen:
+        </p>
+        
+<ul>
+          
+<li>
+            Prozeduraufruf: <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.checkForExistence"><code>qfs.autowin.checkForExistence</code></a>
+          
+</li>
+        
+</ul>
+        
+<p>
+          Die Demo-Testsuite verwendet die Funktionalit&auml;t des Abh&auml;ngigkeit Knotens,
+          womit sich die Testvor- und -nachbedingungen sehr effizient gestalten
+          lassen. Ganz kurz zusammengefasst besteht die Funktionalit&auml;t eines
+          Abh&auml;ngigkeit Knotens darin, dass er den darin enthaltenen Vorbereitung Knoten
+          vor dem Start des Testfalls ausf&uuml;hrt, damit die implementierte Vorbedingung
+          hergestellt wird. Nach Ausf&uuml;hrung des Testfalls wird der Aufr&auml;umen Knoten
+          der Abh&auml;ngigkeit standardm&auml;&szlig;ig nicht ausgef&uuml;hrt. Dies geschieht erst bei Bedarf
+          bei der Ausf&uuml;hrung des Abh&auml;ngigkeit Knotens des nachfolgenden Testfalls.
+          Der Bedarf ergibt sich dann, wenn der nachfolgende Testfall eine andere
+          Abh&auml;ngigkeit ruft oder dieselbe Abh&auml;ngigkeit mit anderen charakteristischen
+          Variablen. Weitere Informationen zu Abh&auml;ngigkeiten finden Sie Tutorial sowie
+          im Handbuch im Kapitel <a href="user_organization.html#usec_dependencies">Abh&auml;ngigkeit Knoten</a>.
+        </p>
+        
+<p>
+          Weitere Informationen hierzu finden Sie in <a href="tech_uiauto_general.html#usec_uiauto_start_general">Abschnitt 48.1.1</a>.
+        </p>
+      
+      
+<a name="usec_uiauto_dump_controls_example"></a>
+        
+<h5 class="header-container h5">
+<div>
+<span class="numtitle"><a href="contents.html#toc_usec_uiauto_dump_controls_example">48.2.2</a></span>
+</div>
+<a href="contents.html#toc_usec_uiauto_dump_controls_example">&Uuml;bersicht &uuml;ber die GUI-Elemente der Anwendung</a>
+</h5>
+        
+<p>
+          Wenn das SUT l&auml;uft, ist der n&auml;chste Schritt, dass man sich dessen GUI-Elemente
+          anzeigen l&auml;sst. Im vorliegenden Fall wurde die Prozedur
+          <a href="../../../include/qfs_pkgdoc/qfs_pkgdoc.html#qfs.autowin.helpers.dumpComponents"><code>qfs.autowin.helpers.dumpComponents</code></a>
+          verwendet. Das Ergebnis wird in das QF-Test-Terminal geschrieben.
+        </p>
+        
+<p>
+          Wir wollen uns
+          als n&auml;chstes f&uuml;r einige GUI-Elemente der WPF Demo-Anwendung die Informationen,
+          die zur Identifikation zur Verf&uuml;gung stehen, ansehen.
+        </p>
+        
+<a name="fig_uiauto_carconfig"></a><a name="figure_48.2"></a>
+<table class="figure" cellspacing="0">
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td align="center" colspan="3"><a href="images/uiauto_carconfig.png" target="_blank"><img texscale=".66" src="images/uiauto_carconfig.png" width="350" height="379"></a></td>
+</tr>
+<tr>
+<td class="margin">
+<table class="margin"></table>
+</td><td class="captionglue"></td><td class="caption"><a href="figures.html#list-of-figures">Abbildung&nbsp;48.2</a>:&nbsp;&nbsp;Die WPF Demo-Applikation</td><td class="captionglue"></td>
+</tr>
+</table>
+        
+<dl>
+          
+<dt>Fenster (1)</dt>
+          
+<dd>
+            Name: CarConfiguratorNet WPF<br>
+            ClassName: Window<br>
+            ControlType: Window (#50032)<br>
+          
+</dd>
+          
+<p>
+            Das Fenster kann &uuml;ber seinen Namen angesprochen werden, da kein weiteres
+            GUI-Element diesen Namen verwendet.
+          </p>
+          
+<dt>Men&uuml; (2)</dt>
+          
+<dd>
+            Name: Hilfe<br>
+            ClassName: MenuItem<br>
+            ControlType: MenuItem (#50011)<br>
+            AutomationId: mHelp
+          </dd>
+          
+<p>
+            Das GUI-Element kann &uuml;ber die eindeutige AutomationId oder
+            seinen Namen angesprochen werden.
+            Noch eine Alternative ist der ControlType oder ClassName "MenuItem" zusammen mit dem Namen
+            oder dem Index "4".
+          </p>
+          
+<dt>Tabellenzelle (3)</dt>
+          
+<dd>
+            Name: Rolo<br>
+            ClassName: DataGridCell<br>
+            ControlType: Custom (#50025)
+          </dd>
+          
+<p>
+            Die Tabellenzelle kann &uuml;ber den Namen oder den ControlType zusammen mit dem
+            Namen identifiziert werden. Wenn die Tabellenzelle &uuml;ber einen Index angesprochen
+            werden soll, ist es besser, den ClassName anstelle des ControlType zu verwenden,
+            weil der ControlType "Custom" auch f&uuml;r andere GUI-Elemente zum Einsatz kommt. Da bei der
+            Entwicklung keine AutomationId vergeben wurde, steht diese nicht zur Verf&uuml;gung.
+          </p>
+          
+<dt>Eingabefeld (4)</dt>
+          
+<dd>
+            ClassName: TextBox<br>
+            ControlType: Edit (#50004)<br>
+            AutomationId: textBoxDiscountPrice
+          </dd>
+          
+<p>
+            Das Eingabefeld kann &uuml;ber die AutomationId oder den ControlType
+            zusammen mit dem Index 0 angesprochen werden.
+          </p>
+          
+<dt>Anzeigefeld (5)</dt>
+          
+<dd>
+            Name: 12.300,00 &euro;<br>
+            ClassName: Text<br>
+            ControlType: Text (#50020)<br>
+            AutomationId: labelCalculatedPriceOutput
+          </dd>
+          
+<p>
+            Neben der AutomationId und dem ControlType steht hier zwar auch ein Name zur
+            Verf&uuml;gung. Dieser eignet sich jedoch nicht zur Identifikation des GUI-Elements,
+            da dieser je nach angezeigtem Text variiert.
+          </p>
+        
+</dl>
+      
+    
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="navifooter">
+<tr>
+<td class="margin"></td><td class="navicon"><a href="manual.html"><img src="../icons/linktop.png" width="34" height="36" border="0" alt="Top" title="Top"></a></td><td class="navicon"><a href="contents.html#table-of-contents"><img src="../icons/linktoc.png" width="34" height="36" border="0" alt="Inhaltsverzeichnis" title="Inhaltsverzeichnis"></a></td><td class="navicon"><a href="tech_uiauto_general.html#usec_uiauto_general"><img src="../icons/linkprev.png" width="34" height="36" border="0" alt="Vorheriges Kapitel: 48.1&nbsp;Vorgehensweise" title="Vorheriges Kapitel: 48.1&nbsp;Vorgehensweise"></a></td><td class="navicon"><a href="tech_automac.html#usec_automac"><img src="../icons/linkcont.png" width="34" height="36" border="0" alt="N&auml;chste Seite: 49&nbsp;Steuern und Testen von nativen MacOS-Anwendungen" title="N&auml;chste Seite: 49&nbsp;Steuern und Testen von nativen MacOS-Anwendungen"></a></td><td class="navicon"><img src="../icons/linknextdis.png" width="34" height="36" alt="" border="0"></td><td class="navicon"><a href="tech_uiauto.html#usec_uiauto"><img src="../icons/linkup.png" width="34" height="36" border="0" alt="Kapitel-&Uuml;bersicht: 48&nbsp;Steuern und Testen von nativen Windows Anwendungen -
+               ohne Verwendung der QF-Test win Engine" title="Kapitel-&Uuml;bersicht: 48&nbsp;Steuern und Testen von nativen Windows Anwendungen -
+               ohne Verwendung der QF-Test win Engine"></a></td><td class="navicon"><a href="../../manual_de.pdf" target="_parent"><img src="../icons/linkpdf.png" width="34" height="36" border="0" alt="PDF Version" title="PDF Version"></a></td><td class="navcopymod">Letzte &Auml;nderung: 6.9.2022<br>Copyright &copy; 1999-2022 Quality First Software GmbH</td>
+</tr>
+</table>
+</body>
+</html>
