@@ -1,0 +1,64 @@
+#!groovy
+@Library('jenkinsbuild-libs')
+import de.adito.aditoweb.jenkinsbuild.util.FileUtility
+
+//noinspection GroovyAssignabilityCheck
+
+
+/**
+     * Executes the main maven Build-Step without IntegrationTests.
+     * Updates the displayName of the current Build, to ensure the enduser knows what to do with this build
+     */
+    stage('Build') {
+      def fullVersion = getVersionWithHotfixWithoutPostfix("${params.tag}")
+      try {
+        sh """sed -i 's/\${adito.complete.final.version}/${fullVersion}/' addendum/assemblydesigner/buildresources/ADITOdesigner.conf"""
+      } catch (e) {
+        echo "Designer version replacement in ADITOdesigner.conf failed."
+      }
+      try
+      {
+        def buildSuffix = ""
+        maven('.', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion().m2Folder + ' -T 1C -e ' +
+                  '-P adito.maven.resources,adito.maven.javadoc,adito.production ' +
+                  '-DJOB_NAME=${JOB_NAME} ' +
+                  '-Dadito.build.version=\"' + getAditoMajorVerson() + '\" -Dadito.build.suffix=\"' + buildSuffix + '\"')
+
+
+        // Builds the experimental and as of yet empty adito-designer project. In the future the ADITODesigner will be its own project and has to be built before the
+        // ao project because it will be a dependency of the ao project. After clean installing the adito-designer, it will be available as a .zip file in the .m2
+        // folder and can be used to create the final ao artifact
+        withCredentials([
+            sshUserPrivateKey(
+                credentialsId: "ea4c430c-9650-4d51-899c-1d702ecad71e",
+                keyFileVariable: 'keyFileVar')
+        ]) {
+          sh """
+                rm -rf adito-designer
+                export GIT_SSH_COMMAND="ssh -i ${keyFileVar}"
+                git clone -b "${params.tag}" ${env.ADITO_DESIGNER_REPO_URL_SSH}
+           """
+        }
+        // skipping tests because the designer itself should have tests in its CI, and no Tag should be set if those tests fail
+        maven('adito-designer', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion().m2Folder + ' -T 1C -e -DskipTests')
+        sh """rm -rf adito-designer"""
+
+        maven('addendum', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion().m2Folder + ' -e ' +
+            '-P adito.maven.assembly,adito.maven.resources,adito.maven.installer,adito.maven.javadoc,adito.production ' +
+            '-DJOB_NAME=${JOB_NAME} ' +
+            '-Dadito.build.version=\"' + getAditoMajorVerson() + '\" -Dadito.build.suffix=\"' + buildSuffix + '\"')
+
+        // Add "-Candidate" to indicate builds which are not manually approved as "done"
+        currentBuild.displayName = getVersionWithHotfixPostfix()
+      }
+      catch (pErr)
+      {
+        // Collect result on failure
+        step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
+        if (currentBuild.result == 'UNSTABLE')
+          currentBuild.result = 'FAILURE'
+        throw pErr
+      }
+
+      buildStages = prepareBuildStages()
+    }
