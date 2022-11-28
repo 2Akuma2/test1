@@ -1,0 +1,56 @@
+name: build
+run-name: ${{ github.actor }} tried to run build designer
+on: workflow_dispatch
+
+jobs:
+  Preparation:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+    steps:
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '16'
+      - run: java -version
+      - run: echo %JAVA_HOME%
+      - run: mvn -v
+      - run: echo %MAVEN_HOME%
+  
+  #Build:
+    #runs-on: ubuntu-latest
+    #steps:
+      #- uses: actions/checkout@v3
+      #- run: sh """sed -i 's/\${adito.complete.final.version}/${fullVersion}/' addendum/assemblydesigner/buildresources/ADITOdesigner.conf"""
+      
+  
+  
+  #Results:
+  
+  
+  #Packaging:
+  
+  
+  #DockerBuildServer:
+  
+  
+  #DockerBuildDesigner:
+  
+  
+  #DockerBuildProjectDeploy:
+  
+  
+  #DockerCleanup:
+  
+  
+  #ReleaseNotes:
+  
+  
+  #Deploy:
+  
+  
+  #Feed:
+  
+  
+ 
