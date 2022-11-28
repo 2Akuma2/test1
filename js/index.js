@@ -34,8 +34,5 @@ function getVersionWithHotfixWithoutPostfix(versionTag)
   else
   {
     return versionParts[1] + "." + versionParts[2] + "." + versionParts[3] + "." + versionParts[4]
-  }
-
-  
-  
+  }  
 }
