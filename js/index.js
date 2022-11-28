@@ -16,7 +16,7 @@ try
 }
 
 
-function getVersionWithHotfixWithoutPostfix(const versionTag)
+function getVersionWithHotfixWithoutPostfix(versionTag)
 {
   var versionSplit = versionTag.split("_"); // truncate the RC/TEST version after the _
   var finalVersion = versionSplit[0];
