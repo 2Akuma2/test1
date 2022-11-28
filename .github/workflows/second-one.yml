@@ -6,6 +6,10 @@ jobs:
   run-file:
     runs-on: windows-latest
     steps:
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '13'
       -  run: echo %PATH%
       -  run: echo %JAVA_HOME%
       -  run: where java
