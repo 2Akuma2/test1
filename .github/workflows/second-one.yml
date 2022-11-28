@@ -5,10 +5,10 @@ on: workflow_dispatch
 jobs:
   run-file:
     runs-on: windows-latest
-    #env:
-      #INSTALL4J_JAVA_HOME: %JAVA_HOME%
+    defaults:
+      run:
+        shell: cmd
     steps:
-      #- shell: cmd
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
