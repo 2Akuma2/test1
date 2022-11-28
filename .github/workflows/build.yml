@@ -4,12 +4,16 @@ on: workflow_dispatch
 
 jobs:
   Preparation:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
     steps:
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '16'
-      - 
+      - run: echo %JAVA_HOME%
   
   Build:
   
