@@ -27,7 +27,7 @@ function getVersionWithHotfixWithoutPostfix(versionTag)
   var versionSplit = versionTag.split("_"); // truncate the RC/TEST version after the _
   var finalVersion = versionSplit[0];
   var versionParts = finalVersion.split("/"); // split the version tag on the slashes, the first split will be version, the other 4 splits make up the actual version number
-  if(versionParts.length == 5 && versionParts[4] == "0"); // if the version is a not a hotfix version only use the first 3 version letters
+  if(versionParts.length == 5 && versionParts[4] == "0") // if the version is a not a hotfix version only use the first 3 version letters
   {
     return versionParts[1] + "." + versionParts[2] + "." + versionParts[3];
   }
