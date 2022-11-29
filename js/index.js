@@ -36,7 +36,7 @@ try
   core.setFailed(error.message);
 }
 
-
+/*
 
 // missing: adito.complete.final.version, fullVersion, maven(), process.env.sshUserPrivateKey, params.tag, process.env.ADITO_DESIGNER_REPO_URL_SSH, currentBuild.displayName
 
@@ -239,6 +239,6 @@ function getPipelineVersion() // was static?
 
 
 
-
+*/
 
 
