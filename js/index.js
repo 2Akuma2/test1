@@ -36,7 +36,7 @@ try
   core.setFailed(error.message);
 }
 
-/*
+
 
 // missing: adito.complete.final.version, fullVersion, maven(), process.env.sshUserPrivateKey, params.tag, process.env.ADITO_DESIGNER_REPO_URL_SSH, currentBuild.displayName
 
@@ -50,11 +50,11 @@ function stageBuild()
   
   try
   {
-    const replace = spawn('sed', ["-i 's/\${adito.complete.final.version}/${fullVersion}/' addendum/assemblydesigner/buildresources/ADITOdesigner.conf"]);
+    const replace = spawn('sed', [`-i 's/\${adito.complete.final.version}/${fullVersion}/' addendum/assemblydesigner/buildresources/ADITOdesigner.conf`]);
   }
   catch(e)
   {
-    const caught = spawn('echo', ["Designer version replacement in ADITOdesigner.conf failed."]);
+    const caught = spawn('echo', [`Designer version replacement in ADITOdesigner.conf failed.`]);
   }
   
   
@@ -68,12 +68,12 @@ function stageBuild()
                   '-DJOB_NAME=${JOB_NAME} ' +
                   '-Dadito.build.version=\"' + getAditoMajorVerson() + '\" -Dadito.build.suffix=\"' + buildSuffix + '\"');
     
-    const remove = spawn('rm', ["-rf adito-designer"]);
-    const exportGitCmd = spawn('export', ["GIT_SSH_COMMAND=\"ssh -i ${process.env.sshUserPrivateKey}\""]);
-    const gitCloneDesigner = spawn('git clone', ["-b "${params.tag}" ${process.env.ADITO_DESIGNER_REPO_URL_SSH}"]);
+    const remove = spawn('rm', [`-rf adito-designer`]);
+    const exportGitCmd = spawn('export', [`GIT_SSH_COMMAND="ssh -i ${process.env.sshUserPrivateKey}"`]); // vll \"
+    const gitCloneDesigner = spawn('git clone', [`-b "${params.tag}" ${process.env.ADITO_DESIGNER_REPO_URL_SSH}`]);
     
     maven('adito-designer', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion().m2Folder + ' -T 1C -e -DskipTests');
-    const remove2 = spawn('rm', ["-rf adito-designer"]);
+    const remove2 = spawn('rm', [`-rf adito-designer`]);
     
     maven('addendum', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion().m2Folder + ' -e ' +
             '-P adito.maven.assembly,adito.maven.resources,adito.maven.installer,adito.maven.javadoc,adito.production ' +
@@ -102,12 +102,12 @@ function maven(pWorkingDir, pParams)
   const os = require('os');
   if(os.platform == "win32")
   {
-    const winmvn = spawn('mvn', ["-s ${MAVEN_SETTINGS} -t ${MAVEN_TOOLCHAINS} ${pParams}"]);
+    const winmvn = spawn('mvn', [`-s ${MAVEN_SETTINGS} -t ${MAVEN_TOOLCHAINS} ${pParams}`]);
   }
   else
   {
-    const linuxcd = spawn('cd', ["${pWorkingDir}"]);
-    const linuxmvn = spawn('mvn', ["-s ${MAVEN_SETTINGS} -t ${MAVEN_TOOLCHAINS} ${pParams}"]);
+    const linuxcd = spawn('cd', [`${pWorkingDir}`]);
+    const linuxmvn = spawn('mvn', [`-s ${MAVEN_SETTINGS} -t ${MAVEN_TOOLCHAINS} ${pParams}`]);
   }
 }
 
@@ -135,7 +135,7 @@ function getHotfixVersion()
     return versionSplit[3];
   return "0" // resilience
 }
-*/
+
 
 function getVersionWithHotfixWithoutPostfix(versionTag)
 {
@@ -152,7 +152,7 @@ function getVersionWithHotfixWithoutPostfix(versionTag)
   }  
 }
 
-/*
+
 function getVersionWithHotfixPostfix()
 {
   var readable = getAditoVersionReadable();
@@ -239,6 +239,6 @@ function getPipelineVersion() // was static?
 
 
 
-*/
+
 
 
