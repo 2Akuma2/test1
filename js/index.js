@@ -77,6 +77,29 @@ function stageBuild()
 
 
 
+
+
+
+
+
+
+function isHotfix()
+{
+  return getHotfixVersion() != "0";
+}
+
+
+function getHotfixVersion()
+{
+  var theVersion = getAditoVersion();
+  var baseSplit = theVersion.split("_"); // ignore additional version info
+  var versionSplit = baseSplit[0].split("\\.");
+  if (versionSplit.size() == 4)
+    return versionSplit[3];
+  return "0" // resilience
+}
+
+
 function getVersionWithHotfixWithoutPostfix(versionTag)
 {
   var versionSplit = versionTag.split("_"); // truncate the RC/TEST version after the _
@@ -90,4 +113,50 @@ function getVersionWithHotfixWithoutPostfix(versionTag)
   {
     return versionParts[1] + "." + versionParts[2] + "." + versionParts[3] + "." + versionParts[4];
   }  
+}
+
+
+function getVersionWithHotfixPostfix()
+{
+  var readable = getAditoVersionReadable();
+  if(isHotfix())
+  {
+    var splits = readable.split("_");
+    readable = splits[0] + "." + getHotfixVersion();
+    if(splits.length > 1)
+    {
+      readable = readable + "_" + splits[1];
+    }
+  }
+  return readable;
+}
+
+
+// returns the human readable version (e.g. "4.6.110_RC5") of ADITO
+// example: changes "2019.3.2.1" to "2019.3.2", and "2019.3.2.0_RC1" to "2019.3.2-RC1"
+function getAditoVersionReadable() {
+  var theVersion = onlyTheFirstThreeFigures(getAditoVersion());
+
+  if (theVersion.contains("_RC")) 
+  {
+    var versionSplit = theVersion.split("_");
+    var buildSuffix = "_" + versionSplit[1];
+    return versionSplit[0] + buildSuffix;
+  } 
+  else if (theVersion.contains("_T")) 
+  {
+    var versionSplit = theVersion.split("_T");
+    var buildSuffix = "_TEST" + versionSplit[1];
+    return versionSplit[0] + buildSuffix;
+  } 
+  else if (theVersion.contains("_")) 
+  {
+    var versionSplit = theVersion.split("_");
+    var buildSuffix = "_RC" + versionSplit[1];
+    return versionSplit[0] + buildSuffix;
+  } 
+  else 
+  {
+    return theVersion;
+  }
 }
