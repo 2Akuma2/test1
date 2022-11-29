@@ -22,6 +22,52 @@ try
 }
 
 
+
+
+
+function stageBuild(adito.complete.final.version, fullVersion, )
+{
+  const paramTag = core.getInput('paramTag');
+  console.log(`Nice ${paramTag}!`);
+  const resolvedParamTag = getVersionWithHotfixWithoutPostfix(paramTag);
+  core.setOutput("resolvedParamTag", resolvedParamTag);
+  const { spawn } = require('node:child_process');
+  
+  try
+  {
+    const command = spawn('sed', ["-i 's/\${adito.complete.final.version}/${fullVersion}/' addendum/assemblydesigner/buildresources/ADITOdesigner.conf"]);
+  }
+  catch(e)
+  {
+    const caught = spawn('echo', ["Designer version replacement in ADITOdesigner.conf failed."]);
+  }
+  
+  
+  
+  
+  try
+  {
+    const buildSuffix = "";
+    maven('.', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion().m2Folder + ' -T 1C -e ' +
+                  '-P adito.maven.resources,adito.maven.javadoc,adito.production ' +
+                  '-DJOB_NAME=${JOB_NAME} ' +
+                  '-Dadito.build.version=\"' + getAditoMajorVerson() + '\" -Dadito.build.suffix=\"' + buildSuffix + '\"');
+    
+    const command = spawn('rm', ["-rf adito-designer"]);
+    const command = spawn('export', ["GIT_SSH_COMMAND="ssh -i ${keyFileVar}""]);
+    const command = spawn('', [""]);
+    
+  }
+  catch(pErr)
+  {
+    
+  }
+}
+
+
+
+
+
 function getVersionWithHotfixWithoutPostfix(versionTag)
 {
   var versionSplit = versionTag.split("_"); // truncate the RC/TEST version after the _
