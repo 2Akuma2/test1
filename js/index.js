@@ -132,8 +132,10 @@ function getHotfixVersion()
   var baseSplit = theVersion.split("_"); // ignore additional version info
   var versionSplit = baseSplit[0].split("\\.");
   if (versionSplit.size() == 4)
+  {
     return versionSplit[3];
-  return "0" // resilience
+  }
+  return "0" ; // resilience
 }
 
 
