@@ -48,7 +48,7 @@ function stageBuild()
   core.setOutput("fullVersion", fullVersion);
   const { spawn } = require('node:child_process');
   
-  try
+  try // replace ${adito.complete.final.version} with ${fullVersion} in addendum/assemblydesigner/buildresources/ADITOdesigner.conf
   {
     const replace = spawn('sed', [`-i 's/\${adito.complete.final.version}/${fullVersion}/' addendum/assemblydesigner/buildresources/ADITOdesigner.conf`]);
   }
