@@ -135,7 +135,7 @@ function getHotfixVersion()
     return versionSplit[3];
   return "0" // resilience
 }
-
+*/
 
 function getVersionWithHotfixWithoutPostfix(versionTag)
 {
@@ -152,7 +152,7 @@ function getVersionWithHotfixWithoutPostfix(versionTag)
   }  
 }
 
-
+/*
 function getVersionWithHotfixPostfix()
 {
   var readable = getAditoVersionReadable();
