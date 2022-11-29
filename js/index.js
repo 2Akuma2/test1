@@ -69,7 +69,7 @@ function stageBuild()
                   '-Dadito.build.version=\"' + getAditoMajorVerson() + '\" -Dadito.build.suffix=\"' + buildSuffix + '\"');
     
     const remove = spawn('rm', ["-rf adito-designer"]);
-    const exportGitCmd = spawn('export', ["GIT_SSH_COMMAND="ssh -i ${process.env.sshUserPrivateKey}""]);
+    const exportGitCmd = spawn('export', ["GIT_SSH_COMMAND=\"ssh -i ${process.env.sshUserPrivateKey}""]);
     const gitCloneDesigner = spawn('git clone', ["-b "${params.tag}" ${process.env.ADITO_DESIGNER_REPO_URL_SSH}"]);
     
     maven('adito-designer', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion().m2Folder + ' -T 1C -e -DskipTests');
