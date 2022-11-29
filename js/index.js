@@ -231,10 +231,10 @@ function getAditoMajorVerson()
   return majorVersion;
 }
 
-
+///////////////////////////////////////////////////////////////////////////////////////////// remove 0 too
 function getPipelineVersion() // was static?
 {
-  return [tagsPrefix: "version/2022/2/*", m2Folder: "2022_2", releaseNotesStart: "2022.2.0.0"];
+  return 0 //[tagsPrefix: "version/2022/2/*", m2Folder: "2022_2", releaseNotesStart: "2022.2.0.0"];
 }
 
 
