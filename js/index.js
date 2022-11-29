@@ -102,12 +102,12 @@ function maven(pWorkingDir, pParams)
   const os = require('os');
   if(os.platform == "win32")
   {
-    const winmvn = spawn('mvn', [`-s ${MAVEN_SETTINGS} -t ${MAVEN_TOOLCHAINS} ${pParams}`]);
+    const winmvn = spawn('mvn', [`-s ${process.env.MAVEN_SETTINGS} -t ${process.env.MAVEN_TOOLCHAINS} ${pParams}`]);
   }
   else
   {
     const linuxcd = spawn('cd', [`${pWorkingDir}`]);
-    const linuxmvn = spawn('mvn', [`-s ${MAVEN_SETTINGS} -t ${MAVEN_TOOLCHAINS} ${pParams}`]);
+    const linuxmvn = spawn('mvn', [`-s ${process.env.MAVEN_SETTINGS} -t ${process.env.MAVEN_TOOLCHAINS} ${pParams}`]);
   }
 }
 
