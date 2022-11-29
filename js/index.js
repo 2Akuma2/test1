@@ -23,7 +23,7 @@ try
 
 
 
-// missing: adito.complete.final.version, fullVersion, maven(), getPipelineVersion(), getAditoMajorVersion(), process.env.sshUserPrivateKey, params.tag, process.env.ADITO_DESIGNER_REPO_URL_SSH, currentBuild.displayName, getVersionWithHotfixPostfix()
+// missing: adito.complete.final.version, fullVersion, maven(), process.env.sshUserPrivateKey, params.tag, process.env.ADITO_DESIGNER_REPO_URL_SSH, currentBuild.displayName
 
 function stageBuild()
 {
@@ -76,11 +76,17 @@ function stageBuild()
 
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// FUNCTIONS
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-
-
-
+// return the latest adito.version on the current build-branch (4.6.110_5)
+function getAditoVersion() {
+  // If the build is not failed, we can read the build-properties
+  var props = readProperties file: 'library/core/target/classes/de/adito/aditoweb/core/version/aditoVersion.properties';
+  return props['adito.version'];
+}
 
 
 function isHotfix()
@@ -160,3 +166,48 @@ function getAditoVersionReadable() {
     return theVersion;
   }
 }
+
+
+function onlyTheFirstThreeFigures(theVersion) // was static?
+{
+  var splits = theVersion.split("_");
+  var main = splits[0];
+  var parts = main.split("\\.");
+
+  if (parts.length == 4)
+  {
+    if (theVersion.contains("_"))
+    {
+      return parts[0] + "." + parts[1] + "." + parts[2] + "_" + splits[1];
+    }
+    else
+    {
+      return parts[0] + "." + parts[1] + "." + parts[2];
+    }
+  }
+  else
+  {
+    return theVersion;
+  }
+}
+
+
+// Return the major version of ADITO ("4.6", "5.0", "2019, 2020")
+function getAditoMajorVerson()
+{
+  var mvnRootPom = readMavenPom file: '';
+  var majorVersion = mvnRootPom.properties['adito.version.external'];
+  return majorVersion;
+}
+
+
+function getPipelineVersion() // was static?
+{
+  return [tagsPrefix: "version/2022/2/*", m2Folder: "2022_2", releaseNotesStart: "2022.2.0.0"];
+}
+
+
+
+
+
+
