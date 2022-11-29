@@ -1,5 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
+const { spawn } = require('node:child_process');
 
 try 
 {
@@ -11,6 +12,20 @@ try
   console.log(`Nice ${paramTag}!`);
   const resolvedParamTag = getVersionWithHotfixWithoutPostfix(paramTag);
   core.setOutput("resolvedParamTag", resolvedParamTag);
+  
+  //////////////////////////////////////////////////////////////////////////
+  const test1 = spawn('echo', ["This is test1."]);
+  test1.stdout.on('data', output => {
+    // the output data is captured and printed in the callback
+    console.log("Output: ", output.toString())
+  })
+  
+  const test2 = spawn('echo', ["This is test2 with paramTag: ${paramTag}"]);
+  test2.stdout.on('data', output => {
+    // the output data is captured and printed in the callback
+    console.log("Output: ", output.toString())
+  })
+//////////////////////////////////////////////////////////////////////////
   
   const time = (new Date()).toTimeString();
   core.setOutput("timee", time);
@@ -79,6 +94,22 @@ function stageBuild()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FUNCTIONS
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+function maven(pWorkingDir, pParams)
+{
+  const { spawn } = require('node:child_process');
+  const os = require('os');
+  if(os.platform == "win32")
+  {
+    const winmvn = spawn('mvn', ["-s ${MAVEN_SETTINGS} -t ${MAVEN_TOOLCHAINS} ${pParams}"]);
+  }
+  else
+  {
+    const linuxcd = spawn('cd', ["${pWorkingDir}"]);
+    const linuxmvn = spawn('mvn', ["-s ${MAVEN_SETTINGS} -t ${MAVEN_TOOLCHAINS} ${pParams}"]);
+  }
+}
 
 
 // return the latest adito.version on the current build-branch (4.6.110_5)
