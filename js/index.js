@@ -23,9 +23,9 @@ try
 
 
 
+// missing: adito.complete.final.version, fullVersion, maven(), getPipelineVersion(), getAditoMajorVersion(), process.env.sshUserPrivateKey, params.tag, process.env.ADITO_DESIGNER_REPO_URL_SSH, currentBuild.displayName, getVersionWithHotfixPostfix()
 
-
-function stageBuild(adito.complete.final.version, fullVersion, )
+function stageBuild()
 {
   const paramTag = core.getInput('paramTag');
   console.log(`Nice ${paramTag}!`);
@@ -35,7 +35,7 @@ function stageBuild(adito.complete.final.version, fullVersion, )
   
   try
   {
-    const command = spawn('sed', ["-i 's/\${adito.complete.final.version}/${fullVersion}/' addendum/assemblydesigner/buildresources/ADITOdesigner.conf"]);
+    const replace = spawn('sed', ["-i 's/\${adito.complete.final.version}/${fullVersion}/' addendum/assemblydesigner/buildresources/ADITOdesigner.conf"]);
   }
   catch(e)
   {
@@ -53,14 +53,23 @@ function stageBuild(adito.complete.final.version, fullVersion, )
                   '-DJOB_NAME=${JOB_NAME} ' +
                   '-Dadito.build.version=\"' + getAditoMajorVerson() + '\" -Dadito.build.suffix=\"' + buildSuffix + '\"');
     
-    const command = spawn('rm', ["-rf adito-designer"]);
-    const command = spawn('export', ["GIT_SSH_COMMAND="ssh -i ${keyFileVar}""]);
-    const command = spawn('', [""]);
+    const remove = spawn('rm', ["-rf adito-designer"]);
+    const exportGitCmd = spawn('export', ["GIT_SSH_COMMAND="ssh -i ${process.env.sshUserPrivateKey}""]);
+    const gitCloneDesigner = spawn('git clone', ["-b "${params.tag}" ${process.env.ADITO_DESIGNER_REPO_URL_SSH}"]);
     
+    maven('adito-designer', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion().m2Folder + ' -T 1C -e -DskipTests');
+    const remove2 = spawn('rm', ["-rf adito-designer"]);
+    
+    maven('addendum', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion().m2Folder + ' -e ' +
+            '-P adito.maven.assembly,adito.maven.resources,adito.maven.installer,adito.maven.javadoc,adito.production ' +
+            '-DJOB_NAME=${JOB_NAME} ' +
+            '-Dadito.build.version=\"' + getAditoMajorVerson() + '\" -Dadito.build.suffix=\"' + buildSuffix + '\"');
+    
+    currentBuild.displayName = getVersionWithHotfixPostfix();    
   }
   catch(pErr)
   {
-    
+    // 130
   }
 }
 
