@@ -222,11 +222,11 @@ function onlyTheFirstThreeFigures(theVersion) // was static?
   }
 }
 
-
+//////////////////////////////////////////////////////////////////////////////////////
 // Return the major version of ADITO ("4.6", "5.0", "2019, 2020")
 function getAditoMajorVerson()
 {
-  var mvnRootPom = readMavenPom file: '';
+  var mvnRootPom //= readMavenPom file: '';
   var majorVersion = mvnRootPom.properties['adito.version.external'];
   return majorVersion;
 }
