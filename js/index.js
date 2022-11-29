@@ -14,13 +14,13 @@ try
   core.setOutput("resolvedParamTag", resolvedParamTag);
   
   //////////////////////////////////////////////////////////////////////////
-  const test1 = spawn('echo', ["This is test1."]);
+  const test1 = spawn('echo', [`This is test1.`]);
   test1.stdout.on('data', output => {
     // the output data is captured and printed in the callback
     console.log("Output: ", output.toString())
   })
   
-  const test2 = spawn('echo', ["This is test2 with paramTag: " + $paramTag);
+  const test2 = spawn('echo', [`This is test2 with paramTag: ${paramTag}`);
   test2.stdout.on('data', output => {
     // the output data is captured and printed in the callback
     console.log("Output: ", output.toString())
