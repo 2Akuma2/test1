@@ -63,7 +63,7 @@ function stageBuild()
   try
   {
     const buildSuffix = "";
-    maven('.', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion().m2Folder + ' -T 1C -e ' +
+    maven('.', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion("m2Folder") + ' -T 1C -e ' +
                   '-P adito.maven.resources,adito.maven.javadoc,adito.production ' +
                   '-DJOB_NAME=${JOB_NAME} ' +
                   '-Dadito.build.version=\"' + getAditoMajorVerson() + '\" -Dadito.build.suffix=\"' + buildSuffix + '\"');
@@ -72,10 +72,10 @@ function stageBuild()
     const exportGitCmd = spawn('export', [`GIT_SSH_COMMAND="ssh -i ${process.env.sshUserPrivateKey}"`]); // vll \"
     const gitCloneDesigner = spawn('git clone', [`-b "${paramTag}" ${process.env.ADITO_DESIGNER_REPO_URL_SSH}`]);
     
-    maven('adito-designer', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion().m2Folder + ' -T 1C -e -DskipTests');
+    maven('adito-designer', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion("m2Folder") + ' -T 1C -e -DskipTests');
     const remove2 = spawn('rm', [`-rf adito-designer`]);
     
-    maven('addendum', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion().m2Folder + ' -e ' +
+    maven('addendum', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion("m2Folder") + ' -e ' +
             '-P adito.maven.assembly,adito.maven.resources,adito.maven.installer,adito.maven.javadoc,adito.production ' +
             '-DJOB_NAME=${JOB_NAME} ' +
             '-Dadito.build.version=\"' + getAditoMajorVerson() + '\" -Dadito.build.suffix=\"' + buildSuffix + '\"');
