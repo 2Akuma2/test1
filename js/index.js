@@ -10,8 +10,8 @@ try
   
   const paramTag = core.getInput('paramTag');
   console.log(`Nice ${paramTag}!`);
-  const resolvedParamTag = getVersionWithHotfixWithoutPostfix(paramTag);
-  core.setOutput("resolvedParamTag", resolvedParamTag);
+  const fullVersion = getVersionWithHotfixWithoutPostfix(paramTag);
+  core.setOutput("fullVersion", fullVersion);
   
   //////////////////////////////////////////////////////////////////////////
   const test1 = spawn('echo', [`This is test1.`]);
@@ -38,14 +38,14 @@ try
 
 
 
-// missing: adito.complete.final.version, fullVersion, params.tag, currentBuild.displayName
+// missing: params.tag, currentBuild.displayName
 
 function stageBuild()
 {
   const paramTag = core.getInput('paramTag');
   console.log(`Nice ${paramTag}!`);
-  const resolvedParamTag = getVersionWithHotfixWithoutPostfix(paramTag);
-  core.setOutput("resolvedParamTag", resolvedParamTag);
+  const fullVersion = getVersionWithHotfixWithoutPostfix(paramTag);
+  core.setOutput("fullVersion", fullVersion);
   const { spawn } = require('node:child_process');
   
   try
