@@ -25,6 +25,13 @@ try
     // the output data is captured and printed in the callback
     console.log("Output: ", output.toString())
   })
+  
+  const test3 = spawn('java', [`-version`]);
+  test3.stdout.on('data', output => {
+    // the output data is captured and printed in the callback
+    console.log("Output: ", output.toString())
+  })
+  
 //////////////////////////////////////////////////////////////////////////
   
   const time = (new Date()).toTimeString();
