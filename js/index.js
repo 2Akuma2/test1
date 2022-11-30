@@ -57,9 +57,6 @@ function stageBuild()
     const caught = spawn('echo', [`Designer version replacement in ADITOdesigner.conf failed.`]);
   }
   
-  
-  
-  
   try
   {
     const buildSuffix = "";
@@ -84,7 +81,11 @@ function stageBuild()
   }
   catch(pErr)
   {
-    // 130
+    if (currentBuild.result == 'UNSTABLE')
+    {
+      currentBuild.result = 'FAILURE';
+    }
+    throw pErr;
   }
 }
 
