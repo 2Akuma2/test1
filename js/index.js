@@ -29,6 +29,8 @@ try
   console.log("Checkpoint 1");
   
   const test3 = spawnSync('echo', [`$(java -version)`], {shell: true, stdio: 'inherit'});
+  
+  const test4 = spawnSync('echo', [`$(ls)`], {shell: true, stdio: 'inherit'});
 //////////////////////////////////////////////////////////////////////////
   
   const time = (new Date()).toTimeString();
