@@ -36,6 +36,12 @@ try
   
   console.log("Checkpoint 2");
   
+  const { execSync } = require('child_process');
+  const output = execSync('ls', { encoding: 'utf-8' });
+  console.log('The output is:');
+  console.log(output);
+  
+  console.log("Checkpoint 3");
 //////////////////////////////////////////////////////////////////////////
   
   const time = (new Date()).toTimeString();
