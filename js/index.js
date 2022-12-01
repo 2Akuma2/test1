@@ -28,11 +28,11 @@ try
   
   console.log("Checkpoint 1");
   
-  const test3 = spawn('echo', ['$(java -version)'], {shell: true});
-  test3.stdout.on('data', output => {
-    // the output data is captured and printed in the callback
-    console.log("Output: ", output.toString())
-  })
+  const test3 = spawn('echo', ['$(java -version)'], {shell: true, stdio: 'inherit'});
+  //test3.stdout.on('data', output => {
+  //  // the output data is captured and printed in the callback
+  //  console.log("Output: ", output.toString())
+  //})
   
   console.log("Checkpoint 2");
   
