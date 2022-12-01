@@ -20,11 +20,11 @@ try
     console.log("Output: ", output.toString())
   })
   
-  const test2 = spawn('echo', [`This is test2 with paramTag: ${paramTag}`]);
-  test2.stdout.on('data', output => {
-    // the output data is captured and printed in the callback
-    console.log("Output: ", output.toString())
-  })
+  const test2 = spawn('echo', [`This is test2 with paramTag: ${paramTag}`], stdio: 'inherit'});
+  //test2.stdout.on('data', output => {
+  //  // the output data is captured and printed in the callback
+  //  console.log("Output: ", output.toString())
+  //})
   
   console.log("Checkpoint 1");
   
