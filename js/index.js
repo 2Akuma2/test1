@@ -28,20 +28,7 @@ try
   
   console.log("Checkpoint 1");
   
-  const test3 = spawnSync('echo', ['$(java -version)'], {shell: true, stdio: 'inherit'});
-  //test3.stdout.on('data', output => {
-  //  // the output data is captured and printed in the callback
-  //  console.log("Output: ", output.toString())
-  //})
-  
-  console.log("Checkpoint 2");
-  
-  const { execSync } = require('child_process');
-  const output = execSync('cd ../', { encoding: 'utf-8' });
-  console.log('The output is:');
-  console.log(output);
-  
-  console.log("Checkpoint 3");
+  const test3 = spawnSync('echo', [`$(java -version)`], {shell: true, stdio: 'inherit'});
 //////////////////////////////////////////////////////////////////////////
   
   const time = (new Date()).toTimeString();
