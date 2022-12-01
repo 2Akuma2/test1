@@ -28,7 +28,7 @@ try
   
   console.log("Checkpoint 1");
   
-  const test3 = spawn('ls', [``]);
+  const test3 = spawn('whoami', [``]);
   test3.stdout.on('data', output => {
     // the output data is captured and printed in the callback
     console.log("Output: ", output.toString())
