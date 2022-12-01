@@ -34,7 +34,7 @@ try
   
   const test5 = spawnSync('echo', [`$(cd ../)`], {shell: true, stdio: 'inherit'});
   
-  const test6 = spawnSync('echo', [`$(pwd) && $(cd ../) && $(pwd)`], {shell: true, stdio: 'inherit'});
+  const test6 = spawnSync('sudo echo', [`$(pwd) && $(cd ../) && $(pwd)`], {shell: true, stdio: 'inherit'});
 //////////////////////////////////////////////////////////////////////////
   
   const time = (new Date()).toTimeString();
