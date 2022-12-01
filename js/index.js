@@ -32,7 +32,7 @@ try
   
   //const test4 = spawnSync('echo', [`$(pwd)`], {shell: true, stdio: 'inherit'});
   
-  const test5 = spawnSync('echo', [`$(cd ../)`], {shell: true, stdio: 'inherit'});
+  const test5 = spawnSync('sudo sh -c', [`$(cd ../)`], {shell: true, stdio: 'inherit'});
   
   //const test6 = spawnSync('sudo sh -c', [`$(pwd) && $(cd ../) && $(pwd)`], {shell: true, stdio: 'inherit'});
 //////////////////////////////////////////////////////////////////////////
