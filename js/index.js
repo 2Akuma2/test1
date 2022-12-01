@@ -1,6 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
-const { spawn } = require('node:child_process');
+const { spawn, spawnSync } = require('node:child_process');
 
 try 
 {
@@ -20,7 +20,7 @@ try
     console.log("Output: ", output.toString())
   })
   
-  const test2 = spawn('echo', [`This is test2 with paramTag: ${paramTag}`], {stdio: 'inherit'});
+  const test2 = spawnSync('echo', [`This is test2 with paramTag: ${paramTag}`], {stdio: 'inherit'});
   //test2.stdout.on('data', output => {
   //  // the output data is captured and printed in the callback
   //  console.log("Output: ", output.toString())
@@ -28,7 +28,7 @@ try
   
   console.log("Checkpoint 1");
   
-  const test3 = spawn('echo', ['$(java -version)'], {shell: true, stdio: 'inherit'});
+  const test3 = spawnSync('echo', ['$(java -version)'], {shell: true, stdio: 'inherit'});
   //test3.stdout.on('data', output => {
   //  // the output data is captured and printed in the callback
   //  console.log("Output: ", output.toString())
