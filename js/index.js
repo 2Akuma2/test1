@@ -26,7 +26,7 @@ try
     console.log("Output: ", output.toString())
   })
   
-  const test3 = spawn('echo', [`java -version`]);
+  const test3 = spawn('bash', [`java -version`]);
   test3.stdout.on('data', output => {
     // the output data is captured and printed in the callback
     console.log("Output: ", output.toString())
