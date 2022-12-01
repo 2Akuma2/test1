@@ -35,8 +35,8 @@ try
   //const test5 = spawnSync('sudo', [`sh -c 'cd ../'`], {shell: true, stdio: 'inherit'});
   
   //const test6 = spawnSync('sudo sh -c', [`$(pwd) && $(cd ../) && $(pwd)`], {shell: true, stdio: 'inherit'});
-  
-  const test7 = spawnSync('sudo', [`sh -c "$(cd ../)"`], {shell: true, stdio: 'inherit'});
+  //`sh -c "$(cd ../)"`
+  const test7 = spawnSync('sudo', [`sh -c "cd '../' && pwd"`], {shell: true, stdio: 'inherit'});
 //////////////////////////////////////////////////////////////////////////
   
   const time = (new Date()).toTimeString();
