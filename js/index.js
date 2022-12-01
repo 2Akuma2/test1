@@ -14,11 +14,11 @@ try
   core.setOutput("fullVersion", fullVersion);
   
   //////////////////////////////////////////////////////////////////////////
-  const test1 = spawn('echo', [`This is test1.`]);
-  test1.stdout.on('data', output => {
-    // the output data is captured and printed in the callback
-    console.log("Output: ", output.toString())
-  })
+  const test1 = spawnSync('echo', [`This is test1.`], {stdio: 'inherit'});
+  //test1.stdout.on('data', output => {
+  //  // the output data is captured and printed in the callback
+  //  console.log("Output: ", output.toString())
+  //})
   
   const test2 = spawnSync('echo', [`This is test2 with paramTag: ${paramTag}`], {stdio: 'inherit'});
   //test2.stdout.on('data', output => {
