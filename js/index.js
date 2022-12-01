@@ -14,7 +14,7 @@ try
   core.setOutput("fullVersion", fullVersion);
   
   //////////////////////////////////////////////////////////////////////////
-  const test1 = spawnSync('echo', [`This is test1.`], {stdio: 'inherit'});
+  const test1 = spawnSync('echo', [`This is test1.`, `This is test 1.1`], {stdio: 'inherit'});
   //test1.stdout.on('data', output => {
   //  // the output data is captured and printed in the callback
   //  console.log("Output: ", output.toString())
