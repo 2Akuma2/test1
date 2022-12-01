@@ -37,7 +37,7 @@ try
   console.log("Checkpoint 2");
   
   const { execSync } = require('child_process');
-  const output = execSync('whoami', { encoding: 'utf-8' });
+  const output = execSync('cd ../', { encoding: 'utf-8' });
   console.log('The output is:');
   console.log(output);
   
