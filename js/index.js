@@ -30,9 +30,9 @@ try
   
   const test3 = spawnSync('echo', [`$(java -version)`], {shell: true, stdio: 'inherit'});
   
-  const test4 = spawnSync('echo', [`$(pwd)`], {shell: true, stdio: 'inherit'});
+  //const test4 = spawnSync('echo', [`$(pwd)`], {shell: true, stdio: 'inherit'});
   
-  const test5 = spawnSync('echo', [`$(cd ../)`], {shell: true, stdio: 'inherit'});
+  //const test5 = spawnSync('echo', [`$(cd ../)`], {shell: true, stdio: 'inherit'});
   
   const test6 = spawnSync('sudo sh -c', [`$(pwd) && $(cd ../) && $(pwd)`], {shell: true, stdio: 'inherit'});
 //////////////////////////////////////////////////////////////////////////
