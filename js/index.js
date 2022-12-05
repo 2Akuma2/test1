@@ -69,8 +69,8 @@ try
   const time = (new Date()).toTimeString();
   core.setOutput("timee", time);
   // Get the JSON webhook payload for the event that triggered the workflow
-  const payload = JSON.stringify(github.context.payload, undefined, 2)
-  console.log(`The event payload: ${payload}`);
+  //const payload = JSON.stringify(github.context.payload, undefined, 2)
+  //console.log(`The event payload: ${payload}`);
 } catch (error) {
   core.setFailed(error.message);
 }
@@ -276,12 +276,12 @@ function getAditoMajorVersion()
       {
         console.log("ERROR: " + err);
       }
+      sleep(5000);
       console.log("check in: " + JSON.stringify(pomResponse.pomObject) + " : checked in");
       var majorVersion = pomResponse.pomObject['adito.version.external'];
       console.log("MajorVersionCheckpoint in: " + majorVersion);
       return majorVersion;
     });
-    sleep(5000);
     //console.log("MajorVersionCheckpoint 3: " + JSON.stringify(pomResponse.pomObject));
     
     //var majorVersion = pom['adito.version.external'];
