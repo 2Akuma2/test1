@@ -38,7 +38,7 @@ try
   
   console.log("Checkpoint 5"); 
   
-  const test8exportGitCmd = spawn('sudo', [`echo 'export GIT_SSH_COMMAND="ssh -i ${paramTag}"'`]);
+  const test8exportGitCmd = spawn('sudo', [`echo export GIT_SSH_COMMAND="ssh -i '${paramTag}'"`]);
   
   console.log("Checkpoint 6"); 
   ////////////////////////////////////////////////////////////////////////
