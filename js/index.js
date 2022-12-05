@@ -269,16 +269,17 @@ function getAditoMajorVersion()
   console.log("MajorVersionCheckpoint 1");
   var opts = {filePath: "/home/runner/work/test1/test1/pom.xml"};
   console.log("MajorVersionCheckpoint 2: " + JSON.stringify(opts));
-  var pom = pomParser.parse(opts, function(err, pomResponse) {
+  var pom = pomParser.parse(opts, async function(err, pomResponse) {
     if (err)
     {
       console.log("ERROR: " + err);
     }
-  //console.log("check in: " + JSON.stringify(pomResponse.pomObject) + " : checked in");
-  var majorVersion = pomResponse.pomObject['adito.version.external'];
+  await console.log("check in: " + JSON.stringify(pomResponse.pomObject) + " : checked in");
+  var majorVersion = await pomResponse.pomObject['adito.version.external'];
+  console.log("MajorVersionCheckpoint in: " + majorVersion);
   return majorVersion;
   });
-  console.log("MajorVersionCheckpoint 3: " + JSON.stringify(pomResponse.pomObject));
+  //console.log("MajorVersionCheckpoint 3: " + JSON.stringify(pomResponse.pomObject));
   
   //var majorVersion = pom['adito.version.external'];
   //console.log("MajorVersionCheckpoint 4: " + majorVersion);
