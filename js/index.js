@@ -60,6 +60,10 @@ try
   const test11 = spawnSync('sudo', [`ls && cd '../' && ls`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 9");
+  
+  console.log("getAditoMajorVersion: " + getAditoMajorVersion());
+  
+  console.log("Checkpoint 10");
   ////////////////////////////////////////////////////////////////////////
   
   const time = (new Date()).toTimeString();
@@ -98,7 +102,7 @@ function stageBuild()
     maven('.', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion("m2Folder") + ' -T 1C -e ' +
                   '-P adito.maven.resources,adito.maven.javadoc,adito.production ' +
                   '-DJOB_NAME=${JOB_NAME} ' +
-                  '-Dadito.build.version=\"' + getAditoMajorVerson() + '\" -Dadito.build.suffix=\"' + buildSuffix + '\"');
+                  '-Dadito.build.version=\"' + getAditoMajorVersion() + '\" -Dadito.build.suffix=\"' + buildSuffix + '\"');
     
     const remove = spawnSync('sudo', [`rm -rf adito-designer`], {shell: true, stdio: 'inherit'});
     const exportGitCmd = spawnSync('sudo', [`export GIT_SSH_COMMAND="ssh -i ${process.env.sshUserPrivateKey}"`], {shell: true, stdio: 'inherit'});
@@ -110,7 +114,7 @@ function stageBuild()
     maven('addendum', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion("m2Folder") + ' -e ' +
             '-P adito.maven.assembly,adito.maven.resources,adito.maven.installer,adito.maven.javadoc,adito.production ' +
             '-DJOB_NAME=${JOB_NAME} ' +
-            '-Dadito.build.version=\"' + getAditoMajorVerson() + '\" -Dadito.build.suffix=\"' + buildSuffix + '\"');
+            '-Dadito.build.version=\"' + getAditoMajorVersion() + '\" -Dadito.build.suffix=\"' + buildSuffix + '\"');
     
     currentBuild.displayName = getVersionWithHotfixPostfix();    
   }
@@ -260,7 +264,7 @@ function onlyTheFirstThreeFigures(theVersion) // was static?
 
 //////////////////////////////////////////////////////////////////////////////////////
 // Return the major version of ADITO ("4.6", "5.0", "2019, 2020")
-function getAditoMajorVerson()
+function getAditoMajorVersion()
 {
   
   var opts = {filePath: "ao/pom.xml"};
