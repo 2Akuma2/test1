@@ -266,42 +266,34 @@ function onlyTheFirstThreeFigures(theVersion) // was static?
 // Return the major version of ADITO ("4.6", "5.0", "2019, 2020")
 function getAditoMajorVersion()
 {
-  console.log("MajorVersionCheckpoint 1");
-  var opts = {filePath: "/home/runner/work/test1/test1/pom.xml"};
-  console.log("MajorVersionCheckpoint 2: " + JSON.stringify(opts));
-  var pom = pomParser.parse(opts, async function(err, pomResponse) {
-    if (err)
-    {
-      console.log("ERROR: " + err);
-    }
-  console.log("check in: " + await JSON.stringify(pomResponse.pomObject) + " : checked in");
-  var majorVersion = pomResponse.pomObject['adito.version.external'];
-  console.log("MajorVersionCheckpoint in: " + majorVersion);
-  return majorVersion;
-  });
-  //console.log("MajorVersionCheckpoint 3: " + JSON.stringify(pomResponse.pomObject));
-  
-  //var majorVersion = pom['adito.version.external'];
-  //console.log("MajorVersionCheckpoint 4: " + majorVersion);
-  //return majorVersion + "1";
-  //console.log("MajorVersionCheckpoint err");
-  
-  /*
-  pomParser.parse(opts, function(err, pomResponse) {
-    if (err)
-    {
-      console.log("ERROR: " + err);
-    }
-    console.log("MajorVersionCheckpoint 3");
-    var majorVersion = pomResponse.pomObject['adito.version.external'];
-    console.log("MajorVersionCheckpoint 4");
-    //var mvnRootPom = readMavenPom file: '';
-    //var majorVersion = mvnRootPom.properties['adito.version.external'];
+  try 
+  {
+    console.log("MajorVersionCheckpoint 1");
+    var opts = {filePath: "/home/runner/work/test1/test1/pom.xml"};
+    console.log("MajorVersionCheckpoint 2: " + JSON.stringify(opts));
+    var pom = async pomParser.parse(opts, await function(err, pomResponse) {
+      if (err)
+      {
+        console.log("ERROR: " + err);
+      }
+      console.log("check in: " + JSON.stringify(pomResponse.pomObject) + " : checked in");
+      var majorVersion = pomResponse.pomObject['adito.version.external'];
+      console.log("MajorVersionCheckpoint in: " + majorVersion);
+      return majorVersion;
+    });
     
-    return majorVersion + "1";
-  });
-  */
-  
+    //console.log("MajorVersionCheckpoint 3: " + JSON.stringify(pomResponse.pomObject));
+    
+    //var majorVersion = pom['adito.version.external'];
+    //console.log("MajorVersionCheckpoint 4: " + majorVersion);
+    //return majorVersion + "1";
+    //console.log("MajorVersionCheckpoint err");
+    
+  } 
+  catch(error) 
+  {
+        console.error("ERROR:" + error);
+  }
 }
 
 
