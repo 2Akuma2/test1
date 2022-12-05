@@ -1,0 +1,813 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>de.adito.aditoweb</groupId>
+  <artifactId>aditoonline</artifactId>
+  <packaging>pom</packaging>
+  <version>6.3.5-SNAPSHOT</version>
+  <name>ADITO Online</name>
+
+  <!-- ADITO -->
+  <organization>
+    <name>ADITO Software GmbH</name>
+    <url>http://www.adito.de</url>
+  </organization>
+
+  <!-- redmine issue tracker -->
+  <issueManagement>
+    <system>Redmine</system>
+    <url>http://internadito:81/redmine</url>
+  </issueManagement>
+
+  <!-- jenkins buildserver -->
+  <ciManagement>
+    <system>Jenkins</system>
+    <url>http://jenkins</url>
+  </ciManagement>
+
+  <!-- git scm -->
+  <scm>
+    <developerConnection>scm:git@git:aditoonline.git</developerConnection>
+  </scm>
+
+  <!-- basic license info -->
+  <licenses>
+    <license>
+      <name>ADITO Software GmbH</name>
+    </license>
+  </licenses>
+
+  <!-- beschreibung fuer deploy -->
+  <distributionManagement>
+    <repository>
+      <id>adito.m2</id>
+      <name>releases</name>
+      <url>${repository.releases}</url>
+    </repository>
+    <snapshotRepository>
+      <id>adito.m2</id>
+      <name>snapshots</name>
+      <url>${repository.snapshots}</url>
+      <uniqueVersion>false</uniqueVersion>
+    </snapshotRepository>
+    <site>
+      <name>aosite</name>
+      <id>aosite</id>
+      <url>${user.home}/.m2/adito/site</url>
+    </site>
+  </distributionManagement>
+
+  <dependencyManagement>
+    <dependencies>
+
+      <dependency>
+        <groupId>com.vaadin</groupId>
+        <artifactId>flow-server</artifactId>
+        <version>${vaadin.flow.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.vaadin</groupId>
+        <artifactId>vaadin-bom</artifactId>
+        <type>pom</type>
+        <scope>import</scope>
+        <version>${vaadin.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.ow2.asm</groupId>
+        <artifactId>asm</artifactId>
+        <version>9.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ow2.asm</groupId>
+        <artifactId>asm-commons</artifactId>
+        <version>9.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jsoup</groupId>
+        <artifactId>jsoup</artifactId>
+        <version>1.12.1</version>
+      </dependency>
+
+      <!-- rxjava -->
+      <dependency>
+        <groupId>io.reactivex.rxjava3</groupId>
+        <artifactId>rxjava</artifactId>
+        <version>3.0.4</version>
+      </dependency>
+      <dependency>
+        <groupId>org.reactivestreams</groupId>
+        <artifactId>reactive-streams</artifactId>
+        <version>1.0.3</version>
+      </dependency>
+
+      <!-- Resources -->
+      <dependency>
+        <groupId>de.adito.resources</groupId>
+        <artifactId>buildresources-designer</artifactId>
+        <version>6.2.0</version>
+      </dependency>
+      <dependency>
+        <groupId>de.adito.resources</groupId>
+        <artifactId>buildresources-licenses</artifactId>
+        <version>6.2.1</version>
+      </dependency>
+      <dependency>
+        <groupId>de.adito.resources</groupId>
+        <artifactId>buildresources-meincrm</artifactId>
+        <version>6.2.0</version>
+      </dependency>
+
+      <!-- PicoServices -->
+      <dependency>
+        <groupId>de.adito.picoservice</groupId>
+        <artifactId>picoservice</artifactId>
+        <version>1.1.6</version>
+      </dependency>
+
+      <!-- Propertly -->
+      <dependency>
+        <groupId>de.adito.propertly</groupId>
+        <artifactId>propertly.core</artifactId>
+        <version>1.0.7</version>
+      </dependency>
+      <dependency>
+        <groupId>de.adito.propertly</groupId>
+        <artifactId>propertly.serialization</artifactId>
+        <version>1.0.3</version>
+      </dependency>
+      <dependency>
+        <groupId>de.adito.propertly</groupId>
+        <artifactId>propertly.reactive</artifactId>
+        <version>1.1.0</version>
+      </dependency>
+
+      <!-- Util-Weak -->
+      <dependency>
+        <groupId>de.adito.util</groupId>
+        <artifactId>weak</artifactId>
+        <version>1.0.1</version>
+      </dependency>
+
+      <!-- Util-Reactive -->
+      <dependency>
+        <groupId>de.adito.util</groupId>
+        <artifactId>reactive</artifactId>
+        <version>1.1.8</version>
+      </dependency>
+
+      <!-- Google Guava -->
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>29.0-jre</version>
+      </dependency>
+
+      <!-- Google GSON -->
+      <dependency>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+        <version>2.8.6</version>
+      </dependency>
+
+      <!-- TrustManager -->
+      <dependency>
+        <groupId>de.adito</groupId>
+        <artifactId>trustmanager</artifactId>
+        <version>1.0.6</version>
+      </dependency>
+
+      <!-- log4j2 -->
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-api</artifactId>
+        <version>2.17.0</version>
+      </dependency>
+
+      <!-- slf4j -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.7.28</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-jdk14</artifactId>
+        <version>1.7.28</version>
+      </dependency>
+
+      <!-- Apache Commons -->
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>2.8.0</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>1.11</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>1.2</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-lang</groupId>
+        <artifactId>commons-lang</artifactId>
+        <version>2.6</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-compress</artifactId>
+        <version>1.21</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-collections</groupId>
+        <artifactId>commons-collections</artifactId>
+        <version>3.2.2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>3.6</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-text</artifactId>
+        <version>1.6</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-validator</groupId>
+        <artifactId>commons-validator</artifactId>
+        <version>1.6</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-csv</artifactId>
+        <version>1.8</version>
+      </dependency>
+
+      <!-- Apache http components -->
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.5.13</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpcore</artifactId>
+        <version>4.4.15</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpmime</artifactId>
+        <version>4.5.13</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.jdom</groupId>
+        <artifactId>jdom2</artifactId>
+        <version>2.0.6</version>
+      </dependency>
+      <dependency>
+        <groupId>xerces</groupId>
+        <artifactId>xercesImpl</artifactId>
+        <version>2.12.0</version>
+      </dependency>
+
+      <!-- Google Inject -->
+      <dependency>
+        <groupId>com.google.inject</groupId>
+        <artifactId>guice</artifactId>
+        <version>5.0.1_adito</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.inject.extensions</groupId>
+        <artifactId>guice-assistedinject</artifactId>
+        <version>5.0.1_adito</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.inject.extensions</groupId>
+        <artifactId>guice-servlet</artifactId>
+        <version>5.0.1_adito</version>
+      </dependency>
+
+      <!-- Google Findbugs -->
+      <dependency>
+        <groupId>com.google.code.findbugs</groupId>
+        <artifactId>jsr305</artifactId>
+        <version>3.0.2</version>
+      </dependency>
+
+      <!-- Google libphonenumber (googlei18n) for parsing, verifying and formatting phone numbers-->
+      <dependency>
+        <groupId>com.googlecode.libphonenumber</groupId>
+        <artifactId>libphonenumber</artifactId>
+        <version>8.10.15</version>
+      </dependency>
+
+      <!-- APIs required by Tika at runtime -->
+      <dependency>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>org.apache.felix.scr.annotations</artifactId>
+        <version>1.6.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xerial</groupId>
+        <artifactId>sqlite-jdbc</artifactId>
+        <version>3.19.3</version>
+      </dependency>
+
+      <!-- light-weight utilities -->
+      <dependency>
+        <groupId>de.adito.nbm</groupId>
+        <artifactId>de-adito-utilities</artifactId>
+        <version>RELEASE125-1.0.0</version>
+      </dependency>
+
+      <!-- Translation-API -->
+      <dependency>
+        <groupId>de.adito.nbm</groupId>
+        <artifactId>de-adito-translation-api</artifactId>
+        <version>${netbeans.version}-1.9.1</version>
+      </dependency>
+
+      <!-- NB-Adito-Interface for providing ADITO-Specific stuff -->
+      <dependency>
+        <groupId>de.adito.nb-modules</groupId>
+        <artifactId>nb-adito-interface</artifactId>
+        <version>[1.9.3-SNAPSHOT]</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-all</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>net.java.dev.jna</groupId>
+        <artifactId>jna-platform</artifactId>
+        <version>5.10.0</version>
+      </dependency>
+      <dependency>
+        <groupId>net.java.dev.jna</groupId>
+        <artifactId>jna</artifactId>
+        <version>5.10.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.restlet.jse</groupId>
+        <artifactId>org.restlet</artifactId>
+        <version>2.4.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.restlet.jse</groupId>
+        <artifactId>org.restlet.ext.jackson</artifactId>
+        <version>2.4.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.restlet.jse</groupId>
+        <artifactId>org.restlet.ext.json</artifactId>
+        <version>2.4.0</version>
+      </dependency>
+
+      <!-- Teilweise wäre die 2.3.0 als transitive Abhängigkeit dabei, aber 2.6.0 ist normalweise voll abwärtskompatibel. -->
+      <!-- Wir haben die 2.6.1 erstellt, in der keine doppelten Files sind. -->
+      <!-- siehe: https://xmlbeans.apache.org/status.html -->
+      <dependency>
+        <groupId>org.apache.xmlbeans</groupId>
+        <artifactId>xmlbeans</artifactId>
+        <version>[2.6.1]</version>
+      </dependency>
+
+      <dependency>
+        <groupId>xalan</groupId>
+        <artifactId>xalan</artifactId>
+        <version>[2.7.2]</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.bouncycastle</groupId>
+        <artifactId>bcmail-jdk15on</artifactId>
+        <version>1.63</version>
+      </dependency>
+      <dependency>
+        <groupId>org.bouncycastle</groupId>
+        <artifactId>bcprov-jdk15on</artifactId>
+        <version>1.63</version>
+      </dependency>
+      <dependency>
+        <groupId>org.bouncycastle</groupId>
+        <artifactId>bcpkix-jdk15on</artifactId>
+        <version>1.63</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+
+        <!-- clean plugin -->
+        <plugin>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>3.1.0</version>
+        </plugin>
+
+        <!-- compiler optionen -->
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.8.1</version>
+          <configuration>
+            <forceJavacCompilerUse>true</forceJavacCompilerUse>
+            <source>11</source>
+            <target>11</target>
+          </configuration>
+        </plugin>
+
+        <!-- resources plugin -->
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.2.0</version>
+        </plugin>
+
+        <!-- deploy plugin -->
+        <plugin>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>3.0.0</version>
+        </plugin>
+
+        <!-- optionen für das jar plugin -->
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.1.0</version>
+          <configuration>
+            <archive>
+              <manifestEntries>
+                <Build-Id>${maven.build.timestamp}</Build-Id>
+                <!--suppress MavenModelInspection Variable wird von Jenkins geliefert. In Dev-Builds ist das der Standardwert. -->
+                <Build-Name>${JOB_NAME}</Build-Name>
+                <Implementation-Vendor>${project.organization.name}</Implementation-Vendor>
+                <Implementation-Version>${project.version}</Implementation-Version>
+              </manifestEntries>
+              <addMavenDescriptor>false</addMavenDescriptor>
+            </archive>
+          </configuration>
+        </plugin>
+
+        <!-- install plugin -->
+        <plugin>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>3.0.0-M1</version>
+        </plugin>
+
+        <!-- dependency plugin -->
+        <plugin>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>3.1.1</version>
+          <configuration>
+            <useBaseVersion>false</useBaseVersion>
+          </configuration>
+        </plugin>
+
+        <!-- das plugin für die Unit-Tests -->
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.0.0-M5</version>
+        </plugin>
+
+        <!-- Für das Signieren der Jars -->
+        <plugin>
+          <groupId>de.adito.maven</groupId>
+          <artifactId>repository-jarsign-maven-plugin</artifactId>
+          <version>2.1.3</version>
+          <configuration>
+            <id>adito${project.version}</id>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>3.1.1</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>1.5.0</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>0.8.5</version>
+        </plugin>
+
+      </plugins>
+    </pluginManagement>
+
+
+    <plugins>
+      <!-- dependency plugin -->
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+      </plugin>
+      <!-- für Integration-Tests -->
+      <plugin>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>3.0.0-M5</version>
+        <configuration>
+          <reuseForks>false</reuseForks>
+        </configuration>
+      </plugin>
+      <!-- JavaDoc-Plugin. -->
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.0.1</version>
+        <configuration>
+          <additionalJOption>-Xdoclint:none</additionalJOption>
+          <jdkToolchain>
+            <version>13</version>
+          </jdkToolchain>
+        </configuration>
+      </plugin>
+      <!-- Site-Plugin. Erstellt eine Website mit Dependencies-Info. -->
+      <plugin>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.6</version>
+        <inherited>false</inherited>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <version>2.11.0</version>
+      </plugin>
+    </plugins>
+  </build>
+
+
+  <dependencies>
+    <!-- für den Test-Lifecycle -->
+    <!-- JUnit Jupiter: Beinhaltet die API für die Implementierung der Tests -->
+    <!-- JUnit Vintage: Support für bestehende JUnit 4 Tests -->
+    <!-- Die JUnit Engine wird durch das Surefire Plugin verwaltet.  -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${junit.jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <version>${junit.vintage.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>${junit.jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+
+    <!-- Mockito Inline (Beinhaltet immer noch JUnitRunner für 4.x) -->
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-inline</artifactId>
+      <version>${mockito.mockito-inline.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- Mockito Extensions für JUnit Jupiter -->
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <version>${mockito.mockito-inline.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-all</artifactId>
+      <version>1.3</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <version>2.17.0</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- für @NotNull-Annotations -->
+    <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
+      <version>13.0</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.google.errorprone</groupId>
+      <artifactId>error_prone_annotations</artifactId>
+      <version>2.4.0</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+    <!-- für Concurrency-Annotations -->
+    <dependency>
+      <groupId>net.jcip</groupId>
+      <artifactId>jcip-annotations</artifactId>
+      <version>1.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+  </dependencies>
+
+
+  <modules>
+    <module>addendum</module>
+    <module>application</module>
+    <module>library</module>
+    <module>neon</module>
+    <module>neon-components</module>
+    <module>docs</module>
+  </modules>
+
+
+  <properties>
+    <!-- Netbeans-Versionen -->
+    <netbeans.version>RELEASE125</netbeans.version>
+    <desinger.asm.version>8.0.1</desinger.asm.version>
+    <brandingToken>aditodesigner</brandingToken>
+    <!-- gibt das Encoding das wir im SourceCode verwenden vor -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <!-- neon -->
+    <vaadin.version>23.0.12</vaadin.version>
+    <scss.output.path>${basedir}/target/classes/META-INF/resources/frontend/styles</scss.output.path>
+    <vaadin.flow.version>23.0.9</vaadin.flow.version>
+    <jetty.version>9.4.43.v20210629</jetty.version>
+    <!-- Look and Feel -->
+    <lfflat.version>19.0-SNAPSHOT</lfflat.version>
+    <!-- JDBC-Treiber -->
+    <postgresql.jdbc.version>42.3.2</postgresql.jdbc.version>
+    <!--    <mariadb.jdbc.version>3.0.3</mariadb.jdbc.version>-->
+    <mariadb.jdbc.version>2.7.4</mariadb.jdbc.version>
+    <oracle.jdbc.version>21.5.0.0</oracle.jdbc.version>
+    <mssql.jdbc.version>10.2.0.jre11</mssql.jdbc.version>
+    <derbyandjdbc.version>10.15.2.0</derbyandjdbc.version>
+    <!-- apache poi -->
+    <apache.poi.version>3.17-beta1</apache.poi.version>
+    <apache.ooxml.schemas.version>1.3</apache.ooxml.schemas.version>
+    <!-- apache tika -->
+    <!-- <apache.tika.version>1.22</apache.tika.version> -->
+    <apache.tika.version>1.16</apache.tika.version>
+    <!-- apache lucene -->
+    <apache.lucene.version>7.2.0</apache.lucene.version>
+    <!-- fasterxml jackson server,client-->
+    <fasterxml.jackson.version>2.9.5</fasterxml.jackson.version>
+    <!-- adito indexsearch -->
+    <indexsearch.version>1.11.2</indexsearch.version>
+    <!-- Diese Version wird für den Installer verwendet und wird im Jenkinsfile referenziert. -->
+    <adito.version.external>2022</adito.version.external>
+
+    <!-- Versionen JUnit Jupiter/Vintage und Mockito-Inline -->
+    <junit.jupiter.version>5.7.1</junit.jupiter.version>
+    <junit.vintage.version>5.7.1</junit.vintage.version>
+    <mockito.mockito-inline.version>3.8.0</mockito.mockito-inline.version>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+  </properties>
+
+
+  <profiles>
+
+    <profile>
+      <id>adito.live.reload.css</id>
+      <properties>
+        <ao.base.path>${basedir}</ao.base.path>
+        <scss.output.path>${ao.base.path}/neon/init/frontend/styles</scss.output.path>
+      </properties>
+    </profile>
+
+    <!-- Aktiviert das Kopieren verschiedener Resourcen wie z.B. die 'resource.bundle'-Dateien. -->
+    <profile>
+      <id>adito.maven.resources</id>
+    </profile>
+
+    <!-- Ist dieses Profil aktiv, wird die ADITOonline-Verzeichnisstruktur erstellt und gefüllt. -->
+    <profile>
+      <id>adito.maven.assembly</id>
+    </profile>
+
+    <profile>
+      <id>adito.production</id>
+    </profile>
+
+    <profile>
+      <id>adito.maven.deploy</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>3.2.0</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.0.1</version>
+            <configuration>
+              <additionalJOption>-Xdoclint:none</additionalJOption>
+              <jdkToolchain>
+                <version>13</version>
+              </jdkToolchain>
+            </configuration>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Ist dieses Profil aktiv, werden die Installer erzeugt; Getrennt von assembly, da nicht
+      auf allen Entwicklungsrechner lauffähig-->
+    <profile>
+      <id>adito.maven.installer</id>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.sonatype.install4j</groupId>
+              <artifactId>install4j-maven-plugin</artifactId>
+              <version>1.1.2</version>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+
+    <!-- Jars werden signiert wenn dieses Profil aktiv ist. KeyStore muss verfügbar sein. -->
+    <profile>
+      <id>adito.maven.signer</id>
+      <!--<properties>
+        <jarsigner.keystore>~/.keystore</jarsigner.keystore>
+        <jarsigner.alias>alias</jarsigner.alias>
+        <jarsigner.keypass>password</jarsigner.keypass>
+        <jarsigner.storepass>password</jarsigner.storepass>
+        <jarsigner.tsa>https://timestamp.geotrust.com/tsa</jarsigner.tsa>
+        <repository.jarsign.force>true</repository.jarsign.force>
+      </properties>-->
+    </profile>
+
+    <!-- Zum Erzeugen der Javadoc -->
+    <profile>
+      <id>adito.maven.javadoc</id>
+    </profile>
+
+    <!-- Zum Erzeugen der Release Notes -->
+    <profile>
+      <id>adito.maven.releasenotes</id>
+    </profile>
+
+    <!-- Code Analyse -->
+    <profile>
+      <id>adito.maven.codeanalysis</id>
+
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.sonarsource.scanner.maven</groupId>
+              <artifactId>sonar-maven-plugin</artifactId>
+              <version>3.5.0.1254</version>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+
+  </profiles>
+
+
+</project>
