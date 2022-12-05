@@ -1,9 +1,8 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const { spawn, spawnSync } = require('node:child_process');
-//require { propertiesToJson } from 'properties-file';
 const propertiesToJson = require('properties-file');
-var pomParser = require("pom-parser");
+const pomParser = require('pom-parser');
 
 try 
 {
@@ -57,6 +56,10 @@ try
   const test10linuxmvn = spawnSync('sudo', [`echo cd '${pWorkingDir}' && echo mvn -s ${MAVEN_SETTINGS} -t ${MAVEN_TOOLCHAINS} ${pParams}`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 8");
+  
+  const test11 = spawnSync('sudo', [`ls && cd '../' && ls`], {shell: true, stdio: 'inherit'});
+  
+  console.log("Checkpoint 9");
   ////////////////////////////////////////////////////////////////////////
   
   const time = (new Date()).toTimeString();
