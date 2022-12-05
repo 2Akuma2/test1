@@ -30,11 +30,17 @@ try
   
   console.log("Checkpoint 3");
   
-  const test6 = spawnSync('sudo', [`echo ${paramTag} und '\${paramTag}'`], {shell: true, stdio: 'inherit'}); // '${paramTag}' -> value, '\${paramTag}' -> ${paramTag}
+  const test6 = spawnSync('sudo', [`echo ${paramTag} und '\${paramTag}'`], {shell: true, stdio: 'inherit'}); // ${paramTag} -> value, '\${paramTag}' -> ${paramTag}
   
   console.log("Checkpoint 4"); 
   
   const test7replace = spawnSync('sudo', [`echo sed -i s/'\${adito.complete.final.version}'/${fullVersion}/ addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  
+  console.log("Checkpoint 5"); 
+  
+  const test8exportGitCmd = spawn('sudo', [`echo export GIT_SSH_COMMAND="ssh -i ${paramTag}"`]);
+  
+  console.log("Checkpoint 6"); 
   ////////////////////////////////////////////////////////////////////////
   
   const time = (new Date()).toTimeString();
@@ -64,7 +70,7 @@ function stageBuild()
   }
   catch(e)
   {
-    const caught = spawnSync('echo', [`Designer version replacement in ADITOdesigner.conf failed.`]);
+    const caught = spawnSync('echo', [`Designer version replacement in ADITOdesigner.conf failed.`], {shell: true, stdio: 'inherit'});
   }
   
   try
@@ -75,9 +81,12 @@ function stageBuild()
                   '-DJOB_NAME=${JOB_NAME} ' +
                   '-Dadito.build.version=\"' + getAditoMajorVerson() + '\" -Dadito.build.suffix=\"' + buildSuffix + '\"');
     
-    const remove = spawn('rm', [`-rf adito-designer`]);
-    const exportGitCmd = spawn('export', [`GIT_SSH_COMMAND="ssh -i ${process.env.sshUserPrivateKey}"`]); // vll \"
-    const gitCloneDesigner = spawn('git clone', [`-b "${paramTag}" ${process.env.ADITO_DESIGNER_REPO_URL_SSH}`]);
+    //const remove = spawn('rm', [`-rf adito-designer`]);
+    const remove = spawn('sudo', [`rm -rf adito-designer`], {shell: true, stdio: 'inherit'});
+    //const exportGitCmd = spawn('export', [`GIT_SSH_COMMAND="ssh -i ${process.env.sshUserPrivateKey}"`]); // vll \"
+    const exportGitCmd = spawn('sudo', [`export GIT_SSH_COMMAND="ssh -i ${process.env.sshUserPrivateKey}"`]);
+    //const gitCloneDesigner = spawn('git clone', [`-b "${paramTag}" ${process.env.ADITO_DESIGNER_REPO_URL_SSH}`]);
+    const gitCloneDesigner = spawn('sudo', [`git clone -b "${paramTag}" ${process.env.ADITO_DESIGNER_REPO_URL_SSH}`]);
     
     maven('adito-designer', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion("m2Folder") + ' -T 1C -e -DskipTests');
     const remove2 = spawn('rm', [`-rf adito-designer`]);
