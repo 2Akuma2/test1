@@ -268,15 +268,15 @@ function getAditoMajorVersion()
 {
   console.log("MajorVersionCheckpoint 1");
   var opts = {filePath: "ao/pom.xml"};
-  console.log("MajorVersionCheckpoint 2: " + opts);
+  console.log("MajorVersionCheckpoint 2: " + JSON.stringify(opts));
   pomParser.parse(opts, function(err, pomResponse) {
     if (err)
     {
       console.log("ERROR: " + err);
     }
-    
+    console.log("MajorVersionCheckpoint 3");
     var majorVersion = pomResponse.pomObject['adito.version.external'];
-    
+    console.log("MajorVersionCheckpoint 4");
     //var mvnRootPom = readMavenPom file: '';
     //var majorVersion = mvnRootPom.properties['adito.version.external'];
     
