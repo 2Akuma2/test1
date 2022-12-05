@@ -36,7 +36,12 @@ try
   
   //const test6 = spawnSync('sudo sh -c', [`$(pwd) && $(cd ../) && $(pwd)`], {shell: true, stdio: 'inherit'});
   //`sh -c "$(cd ../)"`
-  const test7 = spawnSync('sudo', [`pwd && sh -c "cd '../' && pwd"`], {shell: true, stdio: 'inherit'});
+  //const test7 = spawnSync('sudo', [`pwd && sh -c "cd '../' && pwd"`], {shell: true, stdio: 'inherit'});
+  console.log("Checkpoint 1");
+  const test8 = spawnSync('sudo', [`sh -c "pwd && cd '../' && pwd"`], {shell: true, stdio: 'inherit'});
+  console.log("Checkpoint 2");
+  const test8 = spawnSync('sudo', [`pwd && cd '../' && pwd`], {shell: true, stdio: 'inherit'});
+  console.log("Checkpoint 3");
 //////////////////////////////////////////////////////////////////////////
   
   const time = (new Date()).toTimeString();
