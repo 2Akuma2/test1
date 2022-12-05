@@ -30,11 +30,9 @@ try
   
   console.log("Checkpoint 3");
   
-  const test6 = spawnSync('sudo', [`echo '${paramTag} und \${paramTag}'`], {shell: true, stdio: 'inherit'});
+  const test6 = spawnSync('sudo', [`echo ${paramTag} und \${paramTag}`], {shell: true, stdio: 'inherit'}); // '${paramTag}' -> value, '\${paramTag}' -> ${paramTag}
   
   console.log("Checkpoint 4"); 
-  
-  // '${paramTag}' -> value, '\${paramTag}' -> ${paramTag}
   ////////////////////////////////////////////////////////////////////////
   
   const time = (new Date()).toTimeString();
@@ -60,7 +58,7 @@ function stageBuild()
   try // replace ${adito.complete.final.version} with ${fullVersion} in addendum/assemblydesigner/buildresources/ADITOdesigner.conf
   {
     const replace = spawnSync('sed', [`-i 's/\${adito.complete.final.version}/${fullVersion}/' addendum/assemblydesigner/buildresources/ADITOdesigner.conf`]);
-    //const replace = spawnSync('sudo', [`sed -i 's/\${adito.complete.final.version}/${fullVersion}/' addendum/assemblydesigner/buildresources/ADITOdesigner.conf`]);
+    //const replace = spawnSync('sudo', [`sed -i 's/\${adito.complete.final.version}/${fullVersion}/' addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   }
   catch(e)
   {
