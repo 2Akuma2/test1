@@ -1,7 +1,8 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const { spawn, spawnSync } = require('node:child_process');
-import { propertiesToJson } from 'properties-file';
+//require { propertiesToJson } from 'properties-file';
+const propertiesToJson = require('properties-file');
 var pomParser = require("pom-parser");
 
 try 
@@ -261,15 +262,18 @@ function getAditoMajorVerson()
   
   var opts = {filePath: "ao/pom.xml"};
   pomParser.parse(opts, function(err, pomResponse) {
-    if (err) {
+    if (err)
+    {
       console.log("ERROR: " + err);
     }
-  var majorVersion = pomResponse.pomObject['adito.version.external'];
-  
-  //var mvnRootPom //= readMavenPom file: '';
-  //var majorVersion = mvnRootPom.properties['adito.version.external'];
-  
-  return majorVersion;
+    
+    var majorVersion = pomResponse.pomObject['adito.version.external'];
+    
+    //var mvnRootPom //= readMavenPom file: '';
+    //var majorVersion = mvnRootPom.properties['adito.version.external'];
+    
+    return majorVersion;
+  });
 }
 
 
