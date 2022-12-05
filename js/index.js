@@ -1,7 +1,8 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const { spawn, spawnSync } = require('node:child_process');
-require { propertiesToJson } from 'properties-file';
+//require { propertiesToJson } from 'properties-file';
+const propertiesToJson = require('properties-file');
 var pomParser = require("pom-parser");
 
 try 
