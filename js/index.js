@@ -51,7 +51,7 @@ try
   const MAVEN_TOOLCHAINS = "toolchains";
   const pParams = "params";
   
-  const linuxmvn = spawnSync('sudo', [`echo cd '${pWorkingDir}' && echo mvn -s ${MAVEN_SETTINGS} -t ${MAVEN_TOOLCHAINS} ${pParams}`], {shell: true, stdio: 'inherit'});
+  const test10linuxmvn = spawnSync('sudo', [`echo cd '${pWorkingDir}' && echo mvn -s ${MAVEN_SETTINGS} -t ${MAVEN_TOOLCHAINS} ${pParams}`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 8");
   ////////////////////////////////////////////////////////////////////////
@@ -128,17 +128,13 @@ function stageBuild()
 
 function maven(pWorkingDir, pParams)
 {
-  const { spawn } = require('node:child_process');
   const os = require('os');
   if(os.platform == "win32")
   {
-    const winmvn = spawnSync('mvn', [`-s ${process.env.MAVEN_SETTINGS} -t ${process.env.MAVEN_TOOLCHAINS} ${pParams}`], {shell: true, stdio: 'inherit'});
+    const winmvn = spawnSync('sudo', [`mvn -s ${process.env.MAVEN_SETTINGS} -t ${process.env.MAVEN_TOOLCHAINS} ${pParams}`], {shell: true, stdio: 'inherit'});
   }
   else
   {
-    //const linuxcd = spawnSync('cd', [`${pWorkingDir}`]), {shell: true, stdio: 'inherit'};
-    //const linuxmvn = spawnSync('mvn', [`-s ${process.env.MAVEN_SETTINGS} -t ${process.env.MAVEN_TOOLCHAINS} ${pParams}`], {shell: true, stdio: 'inherit'});
-    
     const linuxmvn = spawnSync('sudo', [`cd '${pWorkingDir}' && mvn -s ${process.env.MAVEN_SETTINGS} -t ${process.env.MAVEN_TOOLCHAINS} ${pParams}`], {shell: true, stdio: 'inherit'});
   }
 }
