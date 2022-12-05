@@ -264,14 +264,14 @@ function onlyTheFirstThreeFigures(theVersion) // was static?
 
 //////////////////////////////////////////////////////////////////////////////////////
 // Return the major version of ADITO ("4.6", "5.0", "2019, 2020")
-async function getAditoMajorVersion()
+function getAditoMajorVersion()
 {
   try 
   {
     console.log("MajorVersionCheckpoint 1");
     var opts = {filePath: "/home/runner/work/test1/test1/pom.xml"};
     console.log("MajorVersionCheckpoint 2: " + JSON.stringify(opts));
-    var pom = pomParser.parse(opts, await function(err, pomResponse) {
+    var pom = pomParser.parse(opts, function(err, pomResponse) {
       if (err)
       {
         console.log("ERROR: " + err);
@@ -281,7 +281,7 @@ async function getAditoMajorVersion()
       console.log("MajorVersionCheckpoint in: " + majorVersion);
       return majorVersion;
     });
-    
+    sleep(5000);
     //console.log("MajorVersionCheckpoint 3: " + JSON.stringify(pomResponse.pomObject));
     
     //var majorVersion = pom['adito.version.external'];
