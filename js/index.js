@@ -15,35 +15,23 @@ try
   
   //////////////////////////////////////////////////////////////////////////
   const test1 = spawnSync('echo', [`This is test1.`, `This is test 1.1`], {shell: true, stdio: 'inherit'});
-  //test1.stdout.on('data', output => {
-  //  // the output data is captured and printed in the callback
-  //  console.log("Output: ", output.toString())
-  //})
   
   const test2 = spawnSync('echo', [`This is test2 with paramTag: ${paramTag}`], {shell: true, stdio: 'inherit'});
-  //test2.stdout.on('data', output => {
-  //  // the output data is captured and printed in the callback
-  //  console.log("Output: ", output.toString())
-  //})
-  
-  //console.log("Checkpoint 1");
   
   const test3 = spawnSync('echo', [`$(java -version)`], {shell: true, stdio: 'inherit'});
   
-  //const test4 = spawnSync('echo', [`$(pwd)`], {shell: true, stdio: 'inherit'});
-  
-  //const test5 = spawnSync('sudo', [`sh -c 'cd ../'`], {shell: true, stdio: 'inherit'});
-  
-  //const test6 = spawnSync('sudo sh -c', [`$(pwd) && $(cd ../) && $(pwd)`], {shell: true, stdio: 'inherit'});
-  //`sh -c "$(cd ../)"`
-  //const test7 = spawnSync('sudo', [`pwd && sh -c "cd '../' && pwd"`], {shell: true, stdio: 'inherit'});
-  //console.log("Checkpoint 1");
-  ///const test8 = spawnSync('sudo', [`sh -c "pwd && cd '../' && pwd"`], {shell: true, stdio: 'inherit'});
   console.log("Checkpoint 1");
-  const test9 = spawnSync('sudo', [`pwd && cd '../' && pwd`], {shell: true, stdio: 'inherit'});
+  
+  const test4 = spawnSync('sudo', [`pwd && cd '../' && pwd`], {shell: true, stdio: 'inherit'});
+  
   console.log("Checkpoint 2");
-  const test10 = spawnSync('sudo', [`pwd`], {shell: true, stdio: 'inherit'});
-//////////////////////////////////////////////////////////////////////////
+  
+  const test5 = spawnSync('sudo', [`pwd`], {shell: true, stdio: 'inherit'});
+  
+  console.log("Checkpoint 3");
+  
+  const test6 = spawnSync('sudo', [`echo ${paramTag}`], {shell: true, stdio: 'inherit'});
+  ////////////////////////////////////////////////////////////////////////
   
   const time = (new Date()).toTimeString();
   core.setOutput("timee", time);
@@ -68,6 +56,7 @@ function stageBuild()
   try // replace ${adito.complete.final.version} with ${fullVersion} in addendum/assemblydesigner/buildresources/ADITOdesigner.conf
   {
     const replace = spawnSync('sed', [`-i 's/\${adito.complete.final.version}/${fullVersion}/' addendum/assemblydesigner/buildresources/ADITOdesigner.conf`]);
+    //const replace = spawnSync('sudo', [`sed -i 's/\${adito.complete.final.version}/${fullVersion}/' addendum/assemblydesigner/buildresources/ADITOdesigner.conf`]);
   }
   catch(e)
   {
