@@ -262,7 +262,7 @@ function onlyTheFirstThreeFigures(theVersion) // was static?
   }
 }
 
-//////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////// Alternativ einfach 2022
 // Return the major version of ADITO ("4.6", "5.0", "2019, 2020")
 function getAditoMajorVersion()
 {
@@ -279,7 +279,7 @@ function getAditoMajorVersion()
       sleep(5000);
       console.log("check in: " + JSON.stringify(pomResponse.pomObject) + " : checked in");
       var majorVersion = pomResponse.pomObject['adito.version.external'];
-      console.log("MajorVersionCheckpoint 0 in: " + pomResponse.pomObject.properties.'adito.version.external');
+      console.log("MajorVersionCheckpoint 0 in: " + pomResponse.pomObject.properties.adito.version.external);
       console.log("MajorVersionCheckpoint in: " + majorVersion);
       return majorVersion;
     });
