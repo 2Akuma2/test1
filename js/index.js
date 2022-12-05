@@ -20,7 +20,7 @@ try
   //  console.log("Output: ", output.toString())
   //})
   
-  const test2 = spawnSync('echo', [`This is test2 with paramTag: ${paramTag}`], {stdio: 'inherit'});
+  const test2 = spawnSync('echo', [`This is test2 with paramTag: ${paramTag}`], {shell: true, stdio: 'inherit'});
   //test2.stdout.on('data', output => {
   //  // the output data is captured and printed in the callback
   //  console.log("Output: ", output.toString())
