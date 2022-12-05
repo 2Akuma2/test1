@@ -8,15 +8,15 @@ on:
 jobs:
   hello_world_job:
     runs-on: ubuntu-latest
-    name: A job to say hello
+    name: build working designer
     steps:
-      - name: Hello world action step
+      - name: javascript action step
         id: hello
         uses: 2Akuma2/test1/js@main
         with:
           who-to-greet: 'Mona the Octocat'
           paramTag: ${{ inputs.paramTag }}
-      # Use the output from the `hello` step
+      # Use the output from the `js action` step
       - name: Get the output time
         run: echo "The time was ${{ steps.hello.outputs.timee }}"
       - name: Get resolved param tag
