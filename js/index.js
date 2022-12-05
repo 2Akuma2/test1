@@ -269,7 +269,7 @@ function getAditoMajorVersion()
   console.log("MajorVersionCheckpoint 1");
   var opts = {filePath: "ao/pom.xml"};
   console.log("MajorVersionCheckpoint 2: " + JSON.stringify(opts));
-  var pom = pomParser.parse(opts);
+  var pom = pomParser.parsePom(opts);
   console.log("MajorVersionCheckpoint 3: " + JSON.stringify(pom));
   var majorVersion = pom['adito.version.external'];
   console.log("MajorVersionCheckpoint 4: " + majorVersion);
