@@ -274,8 +274,8 @@ function getAditoMajorVersion()
     {
       console.log("ERROR: " + err);
     }
-  await console.log("check in: " + JSON.stringify(pomResponse.pomObject) + " : checked in");
-  var majorVersion = await pomResponse.pomObject['adito.version.external'];
+  console.log("check in: " + await JSON.stringify(pomResponse.pomObject) + " : checked in");
+  var majorVersion = pomResponse.pomObject['adito.version.external'];
   console.log("MajorVersionCheckpoint in: " + majorVersion);
   return majorVersion;
   });
