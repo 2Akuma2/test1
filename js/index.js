@@ -40,7 +40,7 @@ try
   //console.log("Checkpoint 1");
   ///const test8 = spawnSync('sudo', [`sh -c "pwd && cd '../' && pwd"`], {shell: true, stdio: 'inherit'});
   console.log("Checkpoint 1");
-  const test9 = spawnSync('sudo', [`echo "pwd && cd '../' && pwd"`], {shell: true, stdio: 'inherit'});
+  const test9 = spawnSync('sudo', [`echo 'pwd && cd '../' && pwd'`], {shell: true, stdio: 'inherit'});
   console.log("Checkpoint 2");
 //////////////////////////////////////////////////////////////////////////
   
