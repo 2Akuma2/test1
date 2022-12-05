@@ -30,7 +30,7 @@ try
   
   console.log("Checkpoint 3");
   
-  const test6 = spawnSync('sudo', [`echo ${paramTag}`], {shell: true, stdio: 'inherit'});
+  const test6 = spawnSync('sudo', [`echo \${paramTag}`], {shell: true, stdio: 'inherit'});
   ////////////////////////////////////////////////////////////////////////
   
   const time = (new Date()).toTimeString();
