@@ -286,8 +286,9 @@ function getAditoMajorVersion()
     
     while(majorVersion == null)
     {
-      sleep(500);
+      setTimeout(function() { }, 500);
     }
+    
     return majorVersion;
     //console.log("MajorVersionCheckpoint 3: " + JSON.stringify(pomResponse.pomObject));
     
