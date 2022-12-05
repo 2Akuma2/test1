@@ -30,7 +30,7 @@ try
   
   console.log("Checkpoint 3");
   
-  const test6 = spawnSync('sudo', [`echo ${paramTag} und \${paramTag}`], {shell: true, stdio: 'inherit'}); // '${paramTag}' -> value, '\${paramTag}' -> ${paramTag}
+  const test6 = spawnSync('sudo', [`echo ${paramTag} und '\${paramTag}'`], {shell: true, stdio: 'inherit'}); // '${paramTag}' -> value, '\${paramTag}' -> ${paramTag}
   
   console.log("Checkpoint 4"); 
   ////////////////////////////////////////////////////////////////////////
