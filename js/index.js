@@ -1,6 +1,8 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const { spawn, spawnSync } = require('node:child_process');
+import { propertiesToJson } from 'properties-file';
+var pomParser = require("pom-parser");
 
 try 
 {
@@ -139,11 +141,11 @@ function maven(pWorkingDir, pParams)
   }
 }
 
-//////////////////////////////////////////////////////////////////////////////////
+
 // return the latest adito.version on the current build-branch (4.6.110_5)
 function getAditoVersion() {
   // If the build is not failed, we can read the build-properties
-  var props //= readProperties file: 'library/core/target/classes/de/adito/aditoweb/core/version/aditoVersion.properties';
+  var props = propertiesToJson('library/core/target/classes/de/adito/aditoweb/core/version/aditoVersion.properties');
   return props['adito.version'];
 }
 
@@ -256,8 +258,17 @@ function onlyTheFirstThreeFigures(theVersion) // was static?
 // Return the major version of ADITO ("4.6", "5.0", "2019, 2020")
 function getAditoMajorVerson()
 {
-  var mvnRootPom //= readMavenPom file: '';
-  var majorVersion = mvnRootPom.properties['adito.version.external'];
+  
+  var opts = {filePath: "ao/pom.xml"};
+  pomParser.parse(opts, function(err, pomResponse) {
+    if (err) {
+      console.log("ERROR: " + err);
+    }
+  var majorVersion = pomResponse.pomObject['adito.version.external'];
+  
+  //var mvnRootPom //= readMavenPom file: '';
+  //var majorVersion = mvnRootPom.properties['adito.version.external'];
+  
   return majorVersion;
 }
 
