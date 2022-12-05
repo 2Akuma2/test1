@@ -266,8 +266,9 @@ function onlyTheFirstThreeFigures(theVersion) // was static?
 // Return the major version of ADITO ("4.6", "5.0", "2019, 2020")
 function getAditoMajorVersion()
 {
-  
+  console.log("MajorVersionCheckpoint 1");
   var opts = {filePath: "ao/pom.xml"};
+  console.log("MajorVersionCheckpoint 2");
   pomParser.parse(opts, function(err, pomResponse) {
     if (err)
     {
