@@ -14,7 +14,7 @@ try
   core.setOutput("fullVersion", fullVersion);
   
   //////////////////////////////////////////////////////////////////////////
-  const test1 = spawnSync('echo', [`This is test1.`, `This is test 1.1`], {stdio: 'inherit'});
+  const test1 = spawnSync('echo', [`This is test1.`, `This is test 1.1`], {shell: true, stdio: 'inherit'});
   //test1.stdout.on('data', output => {
   //  // the output data is captured and printed in the callback
   //  console.log("Output: ", output.toString())
@@ -40,7 +40,7 @@ try
   //console.log("Checkpoint 1");
   ///const test8 = spawnSync('sudo', [`sh -c "pwd && cd '../' && pwd"`], {shell: true, stdio: 'inherit'});
   console.log("Checkpoint 1");
-  const test9 = spawnSync('sudo', [`echo $(pwd && cd '../' && pwd)`], {shell: true, stdio: 'inherit'});
+  const test9 = spawnSync('sudo', [`pwd && cd '../' && pwd`], {shell: true, stdio: 'inherit'});
   console.log("Checkpoint 2");
 //////////////////////////////////////////////////////////////////////////
   
@@ -63,15 +63,14 @@ function stageBuild()
   console.log(`Nice ${paramTag}!`);
   const fullVersion = getVersionWithHotfixWithoutPostfix(paramTag);
   core.setOutput("fullVersion", fullVersion);
-  const { spawn } = require('node:child_process');
   
   try // replace ${adito.complete.final.version} with ${fullVersion} in addendum/assemblydesigner/buildresources/ADITOdesigner.conf
   {
-    const replace = spawn('sed', [`-i 's/\${adito.complete.final.version}/${fullVersion}/' addendum/assemblydesigner/buildresources/ADITOdesigner.conf`]);
+    const replace = spawnSync('sed', [`-i 's/\${adito.complete.final.version}/${fullVersion}/' addendum/assemblydesigner/buildresources/ADITOdesigner.conf`]);
   }
   catch(e)
   {
-    const caught = spawn('echo', [`Designer version replacement in ADITOdesigner.conf failed.`]);
+    const caught = spawnSync('echo', [`Designer version replacement in ADITOdesigner.conf failed.`]);
   }
   
   try
