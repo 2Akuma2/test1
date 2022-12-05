@@ -276,10 +276,10 @@ function getAditoMajorVersion()
     
     var majorVersion = pomResponse.pomObject['adito.version.external'];
     
-    //var mvnRootPom //= readMavenPom file: '';
+    //var mvnRootPom = readMavenPom file: '';
     //var majorVersion = mvnRootPom.properties['adito.version.external'];
     
-    return majorVersion;
+    return majorVersion + "1";
   });
 }
 
