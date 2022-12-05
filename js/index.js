@@ -284,19 +284,7 @@ function getAditoMajorVersion()
       console.log("MajorVersionCheckpoint in: " + majorVersion);
     });
     
-    while(majorVersion == null)
-    {
-      setTimeout(function() { }, 500);
-    }
-    
     return majorVersion;
-    //console.log("MajorVersionCheckpoint 3: " + JSON.stringify(pomResponse.pomObject));
-    
-    //var majorVersion = pom['adito.version.external'];
-    //console.log("MajorVersionCheckpoint 4: " + majorVersion);
-    //return majorVersion + "1";
-    //console.log("MajorVersionCheckpoint err");
-    
   } 
   catch(error) 
   {
