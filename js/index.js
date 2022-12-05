@@ -42,7 +42,7 @@ try
   
   console.log("Checkpoint 6"); 
   
-  const test9gitCloneDesigner = spawnSync('sudo', [`echo git clone -b "${paramTag}" ${fullVersion}`], {shell: true, stdio: 'inherit'});
+  const test9gitCloneDesigner = spawnSync('sudo', [`echo git clone -b ${paramTag} ${fullVersion}`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 7"); 
   ////////////////////////////////////////////////////////////////////////
