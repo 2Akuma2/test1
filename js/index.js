@@ -41,6 +41,10 @@ try
   const test8exportGitCmd = spawnSync('sudo', [`echo export GIT_SSH_COMMAND="ssh -i ${paramTag}"`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 6"); 
+  
+  const test9gitCloneDesigner = spawnSync('sudo', [`echo git clone -b "${paramTag}" ${fullVersion}`], {shell: true, stdio: 'inherit'});
+  
+  console.log("Checkpoint 7"); 
   ////////////////////////////////////////////////////////////////////////
   
   const time = (new Date()).toTimeString();
@@ -83,7 +87,7 @@ function stageBuild()
     
     //const remove = spawn('rm', [`-rf adito-designer`]);
     const remove = spawnSync('sudo', [`rm -rf adito-designer`], {shell: true, stdio: 'inherit'});
-    //const exportGitCmd = spawn('export', [`GIT_SSH_COMMAND="ssh -i ${process.env.sshUserPrivateKey}"`]); // vll \"
+    //const exportGitCmd = spawn('export', [`GIT_SSH_COMMAND="ssh -i ${process.env.sshUserPrivateKey}"`]);
     const exportGitCmd = spawnSync('sudo', [`export GIT_SSH_COMMAND="ssh -i ${process.env.sshUserPrivateKey}"`], {shell: true, stdio: 'inherit'});
     //const gitCloneDesigner = spawn('git clone', [`-b "${paramTag}" ${process.env.ADITO_DESIGNER_REPO_URL_SSH}`]);
     const gitCloneDesigner = spawnSync('sudo', [`git clone -b "${paramTag}" ${process.env.ADITO_DESIGNER_REPO_URL_SSH}`], {shell: true, stdio: 'inherit'});
