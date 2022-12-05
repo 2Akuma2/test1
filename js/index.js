@@ -267,7 +267,7 @@ function onlyTheFirstThreeFigures(theVersion) // was static?
 function getAditoMajorVersion()
 {
   console.log("MajorVersionCheckpoint 1");
-  var opts = {filePath: "pom.xml"};
+  var opts = {filePath: "/home/runner/work/test1/test1/pom.xml"};
   console.log("MajorVersionCheckpoint 2: " + JSON.stringify(opts));
   var pom = pomParser.parse(opts, function(err, pomResponse) {
     if (err)
