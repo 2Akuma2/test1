@@ -45,6 +45,15 @@ try
   const test9gitCloneDesigner = spawnSync('sudo', [`echo git clone -b ${paramTag} ${fullVersion}`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 7"); 
+  
+  const pWorkingDir = "workingdir";
+  const MAVEN_SETTINGS = "settings";
+  const MAVEN_TOOLCHAINS = "toolchains";
+  const pParams = "params";
+  
+  const linuxmvn = spawnSync('sudo', [`echo cd '${pWorkingDir}' && echo mvn -s ${MAVEN_SETTINGS} -t ${MAVEN_TOOLCHAINS} ${pParams}`], {shell: true, stdio: 'inherit'});
+  
+  console.log("Checkpoint 8");
   ////////////////////////////////////////////////////////////////////////
   
   const time = (new Date()).toTimeString();
@@ -85,15 +94,12 @@ function stageBuild()
                   '-DJOB_NAME=${JOB_NAME} ' +
                   '-Dadito.build.version=\"' + getAditoMajorVerson() + '\" -Dadito.build.suffix=\"' + buildSuffix + '\"');
     
-    //const remove = spawn('rm', [`-rf adito-designer`]);
     const remove = spawnSync('sudo', [`rm -rf adito-designer`], {shell: true, stdio: 'inherit'});
-    //const exportGitCmd = spawn('export', [`GIT_SSH_COMMAND="ssh -i ${process.env.sshUserPrivateKey}"`]);
     const exportGitCmd = spawnSync('sudo', [`export GIT_SSH_COMMAND="ssh -i ${process.env.sshUserPrivateKey}"`], {shell: true, stdio: 'inherit'});
-    //const gitCloneDesigner = spawn('git clone', [`-b "${paramTag}" ${process.env.ADITO_DESIGNER_REPO_URL_SSH}`]);
-    const gitCloneDesigner = spawnSync('sudo', [`git clone -b "${paramTag}" ${process.env.ADITO_DESIGNER_REPO_URL_SSH}`], {shell: true, stdio: 'inherit'});
+    const gitCloneDesigner = spawnSync('sudo', [`git clone -b ${paramTag} ${process.env.ADITO_DESIGNER_REPO_URL_SSH}`], {shell: true, stdio: 'inherit'});
     
     maven('adito-designer', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion("m2Folder") + ' -T 1C -e -DskipTests');
-    const remove2 = spawn('rm', [`-rf adito-designer`]);
+    const remove2 = spawnSync('sudo', [`rm -rf adito-designer`], {shell: true, stdio: 'inherit'});
     
     maven('addendum', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion("m2Folder") + ' -e ' +
             '-P adito.maven.assembly,adito.maven.resources,adito.maven.installer,adito.maven.javadoc,adito.production ' +
@@ -126,12 +132,14 @@ function maven(pWorkingDir, pParams)
   const os = require('os');
   if(os.platform == "win32")
   {
-    const winmvn = spawn('mvn', [`-s ${process.env.MAVEN_SETTINGS} -t ${process.env.MAVEN_TOOLCHAINS} ${pParams}`]);
+    const winmvn = spawnSync('mvn', [`-s ${process.env.MAVEN_SETTINGS} -t ${process.env.MAVEN_TOOLCHAINS} ${pParams}`], {shell: true, stdio: 'inherit'});
   }
   else
   {
-    const linuxcd = spawn('cd', [`${pWorkingDir}`]);
-    const linuxmvn = spawn('mvn', [`-s ${process.env.MAVEN_SETTINGS} -t ${process.env.MAVEN_TOOLCHAINS} ${pParams}`]);
+    //const linuxcd = spawnSync('cd', [`${pWorkingDir}`]), {shell: true, stdio: 'inherit'};
+    //const linuxmvn = spawnSync('mvn', [`-s ${process.env.MAVEN_SETTINGS} -t ${process.env.MAVEN_TOOLCHAINS} ${pParams}`], {shell: true, stdio: 'inherit'});
+    
+    const linuxmvn = spawnSync('sudo', [`cd '${pWorkingDir}' && mvn -s ${process.env.MAVEN_SETTINGS} -t ${process.env.MAVEN_TOOLCHAINS} ${pParams}`], {shell: true, stdio: 'inherit'});
   }
 }
 
