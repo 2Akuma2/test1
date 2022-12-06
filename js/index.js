@@ -58,7 +58,7 @@ try
   
   console.log("Checkpoint 8");
   
-  const test11 = spawnSync('sudo', [`ls && cd '../' && ls`], {shell: true, stdio: 'inherit'});
+  const test11 = spawnSync('sudo', [`pwd && ls && cd '../' && pwd && ls`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 9");
   
