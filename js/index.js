@@ -3,9 +3,11 @@ const github = require('@actions/github');
 const { spawn, spawnSync } = require('node:child_process');
 const propertiesToJson = require('properties-file');
 const pomParser = require('pom-parser');
+var majorVersion = 0;
 
 try 
 {
+  getAditoMajorVersion();
   // `who-to-greet` input defined in action metadata file
   const nameToGreet = core.getInput('who-to-greet');
   console.log(`Hello ${nameToGreet}!`);
@@ -61,7 +63,7 @@ try
   
   console.log("Checkpoint 9");
   
-  console.log("getAditoMajorVersion: " + getAditoMajorVersion());
+  console.log("getAditoMajorVersion: " + majorVersion);
   
   console.log("Checkpoint 10");
   ////////////////////////////////////////////////////////////////////////
@@ -271,7 +273,6 @@ function getAditoMajorVersion()
     console.log("MajorVersionCheckpoint 1");
     var opts = {filePath: "/home/runner/work/test1/test1/pom.xml"};
     console.log("MajorVersionCheckpoint 2: " + JSON.stringify(opts));
-    var majorVersion = null;
     var pom = pomParser.parse(opts, function(err, pomResponse) {
       if (err)
       {
@@ -283,8 +284,6 @@ function getAditoMajorVersion()
       //console.log("MajorVersionCheckpoint 0 in: " + pomResponse.pomObject.project.properties.adito.version.external);
       console.log("MajorVersionCheckpoint in: " + majorVersion);
     });
-    
-    return majorVersion;
   } 
   catch(error) 
   {
