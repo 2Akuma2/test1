@@ -70,7 +70,7 @@ try
   
   console.log("Checkpoint 11");
   
-  const test13 = spawnSync('sudo', [`echo $GITHUB_WORKSPACE`], {shell: true, stdio : 'inherit'});
+  const test13 = spawnSync('sudo', [`echo \$GITHUB_WORKSPACE: $GITHUB_WORKSPACE`], {shell: true, stdio : 'inherit'});
   
   console.log("Checkpoint 12");
   ////////////////////////////////////////////////////////////////////////
