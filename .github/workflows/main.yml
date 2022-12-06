@@ -10,23 +10,31 @@ jobs:
     runs-on: ubuntu-latest
     name: build working designer
     steps:
+        # checkout ao repo
+        # move all files in current directory (/home/runner/work/test1/test1) to new directory /home/runner/work/test1/ao
+        
+      - name: checkout designer    # to /home/runner/work/test1/test1 || lfs argument default false?
+        uses: actions/checkout@v3
+        
       - name: JDK
         uses: actions/setup-java@v3
         with:
           java-version: 13
           distribution: 'adopt'
-      - name: checkout designer    // to /home/runner/work/test1/test1 || lfs argument default false?
-        uses: actions/checkout@v3
+        
       - name: javascript action step
         id: hello
         uses: 2Akuma2/test1/js@main
         with:
           who-to-greet: 'Mona the Octocat'
           paramTag: ${{ inputs.paramTag }}
+        
       # Use the output from the `js action` step
       - name: Get the output time
         run: echo "The time was ${{ steps.hello.outputs.timee }}"
+        
       - name: Get resolved param tag
         run: echo "The resolved param tag is ${{ steps.hello.outputs.fullVersion }}"
+        
       - name: Get java version in main.yml
         run: java -version
