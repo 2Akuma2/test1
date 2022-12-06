@@ -7,7 +7,6 @@ var majorVersion = 2022;
 
 try 
 {
-  getAditoMajorVersion();
   // `who-to-greet` input defined in action metadata file
   const nameToGreet = core.getInput('who-to-greet');
   console.log(`Hello ${nameToGreet}!`);
