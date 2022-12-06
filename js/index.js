@@ -17,7 +17,8 @@ try
   core.setOutput("fullVersion", fullVersion);
   
   //////////////////////////////////////////////////////////////////////////
-  const test1 = spawnSync('echo', [`This is test1.`, `This is test 1.1`], {shell: true, stdio: 'inherit'});
+  const test1echo = spawnSync('echo', [`echo This is test1. && echo This is test 1.1`], {shell: true, stdio: 'inherit'});
+  const test1 = spawnSync('echo', [`This is test1. && This is test 1.1`], {shell: true, stdio: 'inherit'});
   
   const test2 = spawnSync('echo', [`This is test2 with paramTag: ${paramTag}`], {shell: true, stdio: 'inherit'});
   
@@ -94,6 +95,9 @@ function stageBuild()
   console.log(`Nice ${paramTag}!`);
   const fullVersion = getVersionWithHotfixWithoutPostfix(paramTag);
   core.setOutput("fullVersion", fullVersion);
+  
+  // clone ao first
+  const gitCloneAO spawnSync('sudo', [`git clone -b ${paramTag} ${process.env.ADITOONLINE_URL_SSH}`], {shell: true, stdio: 'inherit'});
   
   try // replace ${adito.complete.final.version} with ${fullVersion} in addendum/assemblydesigner/buildresources/ADITOdesigner.conf
   {
