@@ -69,6 +69,10 @@ try
   const test12 = spawnSync('sudo', [`pwd && cd 'QF-Test/qftest-6.0.3/bin/web64' && pwd && ls`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 11");
+  
+  const test13 = spawnSync('sudo', [`echo $GITHUB_WORKSPACE`], {shell: true, stdio : 'inherit'});
+  
+  console.log("Checkpoint 12");
   ////////////////////////////////////////////////////////////////////////
   
   const time = (new Date()).toTimeString();
