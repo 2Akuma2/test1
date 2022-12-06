@@ -74,6 +74,17 @@ try
   const test13 = spawnSync('sudo', [`echo \\$GITHUB_WORKSPACE: $GITHUB_WORKSPACE`], {shell: true, stdio : 'inherit'});
   
   console.log("Checkpoint 12");
+  
+  const test14echo = spawnSync('sudo', [`echo git clone git@github.com:aditosoftware/adito-designer.git`], {shell: true, stdio: 'inherit'});
+  const test14gitCloneAO = spawnSync('sudo', [`git clone git@github.com:aditosoftware/adito-designer.git`], {shell: true, stdio: 'inherit'});
+  
+  console.log("Checkpoint 13");
+  
+  const test15 = spawnSync('sudo', [`echo pwd && echo ls && echo cd 'adito-designer' && echo pwd && echo ls`], {shell: true, stdio: 'inherit'});
+  const test15 = spawnSync('sudo', [`pwd && ls && cd 'adito-designer' && pwd && ls`], {shell: true, stdio: 'inherit'});
+  
+  console.log("Checkpoint 14");
+  
   ////////////////////////////////////////////////////////////////////////
   
   const time = (new Date()).toTimeString();
@@ -101,7 +112,6 @@ function stageBuild()
   
   try // replace ${adito.complete.final.version} with ${fullVersion} in addendum/assemblydesigner/buildresources/ADITOdesigner.conf
   {
-    //const replace = spawnSync('sed', [`-i 's/\${adito.complete.final.version}/${fullVersion}/' addendum/assemblydesigner/buildresources/ADITOdesigner.conf`]);
     const replace = spawnSync('sudo', [`sed -i s/'\${adito.complete.final.version}'/${fullVersion}/ addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   }
   catch(e)
