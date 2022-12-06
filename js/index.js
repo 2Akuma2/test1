@@ -17,8 +17,8 @@ try
   core.setOutput("fullVersion", fullVersion);
   
   //////////////////////////////////////////////////////////////////////////
-  const test1echo = spawnSync('echo', [`echo This is test1. && echo This is test 1.1`], {shell: true, stdio: 'inherit'});
-  const test1 = spawnSync('echo', [`This is test1. && This is test 1.1`], {shell: true, stdio: 'inherit'});
+  const test1echo = spawnSync('sudo', [`echo echo This is test1. && echo echo This is test 1.1`], {shell: true, stdio: 'inherit'});
+  const test1 = spawnSync('sudo', [`echo This is test1. && echo This is test 1.1`], {shell: true, stdio: 'inherit'});
   
   const test2 = spawnSync('echo', [`This is test2 with paramTag: ${paramTag}`], {shell: true, stdio: 'inherit'});
   
