@@ -75,8 +75,8 @@ try
   
   console.log("Checkpoint 12");
   
-  const test14echo = spawnSync('sudo', [`echo git clone git@github.com:aditosoftware/adito-designer.git`], {shell: true, stdio: 'inherit'});
-  const test14gitCloneAO = spawnSync('sudo', [`git clone git@github.com:aditosoftware/adito-designer.git`], {shell: true, stdio: 'inherit'});
+  const test14echo = spawnSync('sudo', [`echo git clone git@github.com:2Akuma2/test1.git`], {shell: true, stdio: 'inherit'});
+  const test14gitCloneAO = spawnSync('sudo', [`git clone git@github.com:2Akuma2/test1.git`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 13");
   
