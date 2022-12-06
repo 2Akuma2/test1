@@ -111,7 +111,7 @@ function stageBuild()
     maven('.', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion("m2Folder") + ' -T 1C -e ' +
                   '-P adito.maven.resources,adito.maven.javadoc,adito.production ' +
                   '-DJOB_NAME=${JOB_NAME} ' +
-                  '-Dadito.build.version=\"' + getAditoMajorVersion() + '\" -Dadito.build.suffix=\"' + buildSuffix + '\"');
+                  '-Dadito.build.version=\"' + majorVersion + '\" -Dadito.build.suffix=\"' + buildSuffix + '\"');
     
     const remove = spawnSync('sudo', [`rm -rf adito-designer`], {shell: true, stdio: 'inherit'});
     const exportGitCmd = spawnSync('sudo', [`export GIT_SSH_COMMAND="ssh -i ${process.env.sshUserPrivateKey}"`], {shell: true, stdio: 'inherit'});
@@ -123,7 +123,7 @@ function stageBuild()
     maven('addendum', 'clean install -Dmaven.repo.local=$HOME/.m2_builds/' + getPipelineVersion("m2Folder") + ' -e ' +
             '-P adito.maven.assembly,adito.maven.resources,adito.maven.installer,adito.maven.javadoc,adito.production ' +
             '-DJOB_NAME=${JOB_NAME} ' +
-            '-Dadito.build.version=\"' + getAditoMajorVersion() + '\" -Dadito.build.suffix=\"' + buildSuffix + '\"');
+            '-Dadito.build.version=\"' + majorVersion + '\" -Dadito.build.suffix=\"' + buildSuffix + '\"');
     
     currentBuild.displayName = getVersionWithHotfixPostfix();    
   }
