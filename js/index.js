@@ -3,12 +3,11 @@ const github = require('@actions/github');
 const { spawn, spawnSync } = require('node:child_process');
 const propertiesToJson = require('properties-file');
 const pomParser = require('pom-parser');
-var majorVersion = 0;
+var majorVersion = 2022;
 
 try 
 {
   getAditoMajorVersion();
-  sleep(10000);
   // `who-to-greet` input defined in action metadata file
   const nameToGreet = core.getInput('who-to-greet');
   console.log(`Hello ${nameToGreet}!`);
@@ -264,43 +263,6 @@ function onlyTheFirstThreeFigures(theVersion) // was static?
     return theVersion;
   }
 }
-
-////////////////////////////////////////////////////////////////////////////////////// Alternativ einfach 2022
-// Return the major version of ADITO ("4.6", "5.0", "2019, 2020")
-function getAditoMajorVersion()
-{
-  try 
-  {
-    console.log("MajorVersionCheckpoint 1");
-    var opts = {filePath: "/home/runner/work/test1/test1/pom.xml"};
-    console.log("MajorVersionCheckpoint 2: " + JSON.stringify(opts));
-    var pom = pomParser.parse(opts, function(err, pomResponse) {
-      if (err)
-      {
-        console.log("ERROR: " + err);
-      }
-      
-      console.log("check in: " + JSON.stringify(pomResponse.pomObject) + " : checked in");
-      majorVersion = pomResponse.pomObject.project.properties["adito.version.external"];
-      //console.log("MajorVersionCheckpoint 0 in: " + pomResponse.pomObject.project.properties.adito.version.external);
-      console.log("MajorVersionCheckpoint in: " + majorVersion);
-    });
-  } 
-  catch(error) 
-  {
-        console.error("ERROR:" + error);
-  }
-}
-
-//////////////////////////////////////////////////////////////////////////
-function sleep(milliseconds) {
-  const date = Date.now();
-  let currentDate = null;
-  do {
-    currentDate = Date.now();
-  } while (currentDate - date < milliseconds);
-}
-//////////////////////////////////////////////////////////////////////////
 
 
 function getPipelineVersion(type) // was static?
