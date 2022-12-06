@@ -8,6 +8,7 @@ var majorVersion = 0;
 try 
 {
   getAditoMajorVersion();
+  sleep(3000);
   // `who-to-greet` input defined in action metadata file
   const nameToGreet = core.getInput('who-to-greet');
   console.log(`Hello ${nameToGreet}!`);
@@ -290,6 +291,16 @@ function getAditoMajorVersion()
         console.error("ERROR:" + error);
   }
 }
+
+//////////////////////////////////////////////////////////////////////////
+function sleep(milliseconds) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
+}
+//////////////////////////////////////////////////////////////////////////
 
 
 function getPipelineVersion(type) // was static?
