@@ -97,7 +97,7 @@ function stageBuild()
   core.setOutput("fullVersion", fullVersion);
   
   // clone ao first
-  const gitCloneAO spawnSync('sudo', [`git clone -b ${paramTag} ${process.env.ADITOONLINE_URL_SSH}`], {shell: true, stdio: 'inherit'});
+  const gitCloneAO = spawnSync('sudo', [`git clone -b ${paramTag} ${process.env.ADITOONLINE_URL_SSH}`], {shell: true, stdio: 'inherit'});
   
   try // replace ${adito.complete.final.version} with ${fullVersion} in addendum/assemblydesigner/buildresources/ADITOdesigner.conf
   {
