@@ -80,7 +80,7 @@ try
   
   console.log("Checkpoint 13");
   
-  const test15 = spawnSync('sudo', [`echo pwd && echo ls && echo cd 'adito-designer' && echo pwd && echo ls`], {shell: true, stdio: 'inherit'});
+  const test15echo = spawnSync('sudo', [`echo pwd && echo ls && echo cd 'adito-designer' && echo pwd && echo ls`], {shell: true, stdio: 'inherit'});
   const test15 = spawnSync('sudo', [`pwd && ls && cd 'adito-designer' && pwd && ls`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 14");
