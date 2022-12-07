@@ -85,6 +85,12 @@ try
   
   console.log("Checkpoint 14");
   
+  const test15echo = spawnSync('sudo', [`echo sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test15replace = spawnSync('sudo', [`sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  
+  console.log("Checkpoint 15");
+  
+  
   ////////////////////////////////////////////////////////////////////////
   
   const time = (new Date()).toTimeString();
@@ -107,10 +113,9 @@ function stageBuild()
   const fullVersion = getVersionWithHotfixWithoutPostfix(paramTag);
   core.setOutput("fullVersion", fullVersion);
   
-  // clone ao first
-  const gitCloneAO = spawnSync('sudo', [`git clone -b ${paramTag} ${process.env.ADITOONLINE_URL_SSH}`], {shell: true, stdio: 'inherit'});
   
-  try // replace ${adito.complete.final.version} with ${fullVersion} in addendum/assemblydesigner/buildresources/ADITOdesigner.conf
+  // replace ${adito.complete.final.version} with ${fullVersion} in addendum/assemblydesigner/buildresources/ADITOdesigner.conf
+  try 
   {
     const replace = spawnSync('sudo', [`sed -i s/'\${adito.complete.final.version}'/${fullVersion}/ addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   }
@@ -118,6 +123,18 @@ function stageBuild()
   {
     const caught = spawnSync('echo', [`Designer version replacement in ADITOdesigner.conf failed.`], {shell: true, stdio: 'inherit'});
   }
+  
+  
+  // replace jdkhome="jre" with jdkhome="${JAVA_HOME}" in addendum/assemblydesigner/buildresources/ADITOdesigner.conf 
+  try 
+  {
+    const replace = spawnSync('sudo', [`sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  }
+  catch(e)
+  {
+    const caught = spawnSync('echo', [`Designer version replacement in ADITOdesigner.conf failed.`], {shell: true, stdio: 'inherit'});
+  }
+  
   
   try
   {
