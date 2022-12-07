@@ -159,7 +159,7 @@ function stageBuild()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-function maven(pWorkingDir, pParams)
+function maven(pWorkingDir, pParams) // sync damit auf return gewartet wird?
 {
   const os = require('os');
   if(os.platform == "win32")
