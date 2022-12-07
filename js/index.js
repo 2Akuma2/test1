@@ -67,7 +67,7 @@ try
   
   console.log("Checkpoint 10");
   
-  const test12 = spawnSync('sudo', [`pwd && cd 'QF-Test/qftest-6.0.3/bin/web64' && pwd && ls`], {shell: true, stdio: 'inherit'});
+  const test12 = spawnSync('sudo', [`pwd && cd '/home/runner/work/test1/ao' && pwd && ls`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 11");
   
