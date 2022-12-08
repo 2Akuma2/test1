@@ -16,7 +16,7 @@ try
   console.log(`Nice ${paramTag}!`);
   const fullVersion = getVersionWithHotfixWithoutPostfix(paramTag);
   core.setOutput("fullVersion", fullVersion);
-  //const aditoVersion = getAditoVersion();
+  const aditoVersion = getAditoVersion();
   
   //////////////////////////////////////////////////////////////////////////
   const test1echo = spawnSync('sudo', [`echo echo This is test1. && echo echo This is test 1.1`], {shell: true, stdio: 'inherit'});
