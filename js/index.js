@@ -19,10 +19,7 @@ try
   const aditoVersion = getAditoVersion();
   
   //////////////////////////////////////////////////////////////////////////
-  const test1echo = spawnSync('sudo', [`echo echo This is test1. && echo echo This is test 1.1`], {shell: true, stdio: 'inherit'});
-  const test1 = spawnSync('sudo', [`echo This is test1. && echo This is test 1.1`], {shell: true, stdio: 'inherit'});
-  
-  const test2 = spawnSync('echo', [`This is test2 with paramTag: ${paramTag}`], {shell: true, stdio: 'inherit'});
+  console.log("Checkpoint 0");
   
   const test3 = spawnSync('echo', [`$(java -version)`], {shell: true, stdio: 'inherit'});
   
@@ -32,25 +29,29 @@ try
   
   console.log("Checkpoint 2");
   
-  const test5 = spawnSync('sudo', [`pwd`], {shell: true, stdio: 'inherit'});
-  
-  console.log("Checkpoint 3");
-  
   const test6 = spawnSync('sudo', [`echo ${paramTag} und '\${paramTag}'`], {shell: true, stdio: 'inherit'}); // ${paramTag} -> value, '\${paramTag}' -> ${paramTag}
   
-  console.log("Checkpoint 4"); 
+  console.log("Checkpoint 3"); 
   
-  const test7replace = spawnSync('sudo', [`echo sed -i s/'\${adito.complete.final.version}'/${fullVersion}/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test7echo = spawnSync('sudo', [`echo sed -i s/'\${adito.complete.final.version}'/${fullVersion}/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test7replace = spawnSync('sudo', [`sed -i s/'\${adito.complete.final.version}'/${fullVersion}/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  
+  console.log("Checkpoint 4");
+  
+  const test16echo = spawnSync('sudo', [`echo sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test16replace = spawnSync('sudo', [`sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 5"); 
   
-  const test8exportGitCmd = spawnSync('sudo', [`echo export GIT_SSH_COMMAND="ssh -i ${paramTag}"`], {shell: true, stdio: 'inherit'});
+  const test16echo = spawnSync('sudo', [`echo sed -i s/'\${installer:adito.installer.scaleui}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test16replace = spawnSync('sudo', [`sed -i s/'\${installer:adito.installer.scaleui}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
-  console.log("Checkpoint 6"); 
+  console.log("Checkpoint 6");
   
-  const test9gitCloneDesigner = spawnSync('sudo', [`echo git clone -b ${paramTag} ${fullVersion}`], {shell: true, stdio: 'inherit'});
+  const test16echo = spawnSync('sudo', [`echo sed -i s/'\${installer:adito.installer.basepath}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test16replace = spawnSync('sudo', [`sed -i s/'\${installer:adito.installer.basepath}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
-  console.log("Checkpoint 7"); 
+  console.log("Checkpoint 7");
   
   const pWorkingDir = "workingdir";
   const MAVEN_SETTINGS = "settings";
@@ -61,35 +62,20 @@ try
   
   console.log("Checkpoint 8");
   
-  const test11 = spawnSync('sudo', [`pwd && ls && cd '../' && pwd && ls`], {shell: true, stdio: 'inherit'});
+  console.log("getAditoMajorVersion: " + majorVersion);
+  console.log("getAditoVersion: " + aditoVersion);
   
   console.log("Checkpoint 9");
   
-  console.log("getAditoMajorVersion: " + majorVersion);
-  
-  console.log("Checkpoint 10");
-  
-  const test12 = spawnSync('sudo', [`pwd && cd '${process.env.HOME}/work/test1/ao' && pwd && ls`], {shell: true, stdio: 'inherit'});
-  
-  console.log("Checkpoint 11");
-  
   const test13 = spawnSync('sudo', [`echo \\$GITHUB_WORKSPACE: $GITHUB_WORKSPACE`], {shell: true, stdio : 'inherit'});
    
-  console.log("Checkpoint 12");
+  console.log("Checkpoint 10");
   
-  const test15echo = spawnSync('sudo', [`echo pwd && echo ls && echo cd 'adito-designer' && echo pwd && echo ls`], {shell: true, stdio: 'inherit'});
-  const test15 = spawnSync('sudo', [`pwd && ls && cd 'adito-designer' && pwd && ls`], {shell: true, stdio: 'inherit'});
+  const test15echo = spawnSync('sudo', [`echo pwd && echo ls && echo cd 'ao' && echo pwd && echo ls`], {shell: true, stdio: 'inherit'});
+  const test15 = spawnSync('sudo', [`pwd && ls && cd 'ao' && pwd && ls`], {shell: true, stdio: 'inherit'});
   
-  console.log("Checkpoint 13");
   
-  const test16echo = spawnSync('sudo', [`echo pwd && echo sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
-  const test16replace = spawnSync('sudo', [`pwd && sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
-  
-  console.log("Checkpoint 14");
-  
-  const test17 = spawnSync('sudo', [`echo ${aditoVersion}`], {shell: true, stdio: 'inherit'});
-  
-  console.log("Checkpoint 15");
+  console.log("Checkpoint 11");
   
   
   ////////////////////////////////////////////////////////////////////////
