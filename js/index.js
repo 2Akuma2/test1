@@ -1,8 +1,8 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const { spawn, spawnSync } = require('node:child_process');
-//const propertiesToJson = require('properties-file');
-import { propertiesToJson } from 'properties-file'
+const propertiesToJson = require('properties-file');
+//import { propertiesToJson } from 'properties-file'
 const pomParser = require('pom-parser');
 var majorVersion = 2022;
 
@@ -198,7 +198,7 @@ function maven(pWorkingDir, pParams) // sync damit auf return gewartet wird?
 // return the latest adito.version on the current build-branch (4.6.110_5)
 function getAditoVersion() {
   // If the build is not failed, we can read the build-properties
-  var props = propertiesToJson('library/core/target/classes/de/adito/aditoweb/core/version/aditoVersion.properties');
+  var props = propertiesToJson.propertiesToJson('library/core/target/classes/de/adito/aditoweb/core/version/aditoVersion.properties');
   return props['adito.version'];
 }
 
