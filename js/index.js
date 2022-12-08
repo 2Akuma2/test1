@@ -21,35 +21,35 @@ try
   //////////////////////////////////////////////////////////////////////////
   console.log("Checkpoint 0");
   
-  const test3 = spawnSync('echo', [`$(java -version)`], {shell: true, stdio: 'inherit'});
+  const test1 = spawnSync('echo', [`$(java -version)`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 1");
   
-  const test4 = spawnSync('sudo', [`pwd && cd '${process.env.HOME}/work/test1/ao/library/core/target/classes/de/adito/aditoweb/core/version' && pwd && ls`], {shell: true, stdio: 'inherit'});
+  const test2 = spawnSync('sudo', [`pwd && cd '${process.env.HOME}/work/test1/ao/library/core/target/classes/de/adito/aditoweb/core/version' && pwd && ls`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 2");
   
-  const test6 = spawnSync('sudo', [`echo ${paramTag} und '\${paramTag}'`], {shell: true, stdio: 'inherit'}); // ${paramTag} -> value, '\${paramTag}' -> ${paramTag}
+  const test3 = spawnSync('sudo', [`echo ${paramTag} und '\${paramTag}'`], {shell: true, stdio: 'inherit'}); // ${paramTag} -> value, '\${paramTag}' -> ${paramTag}
   
   console.log("Checkpoint 3"); 
   
-  const test7echo = spawnSync('sudo', [`echo sed -i s/'\${adito.complete.final.version}'/${fullVersion}/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
-  const test7replace = spawnSync('sudo', [`sed -i s/'\${adito.complete.final.version}'/${fullVersion}/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test4echo = spawnSync('sudo', [`echo sed -i s/'\${adito.complete.final.version}'/${fullVersion}/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test4replace = spawnSync('sudo', [`sed -i s/'\${adito.complete.final.version}'/${fullVersion}/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 4");
   
-  const test16echo = spawnSync('sudo', [`echo sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
-  const test16replace = spawnSync('sudo', [`sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test5echo = spawnSync('sudo', [`echo sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test5replace = spawnSync('sudo', [`sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 5"); 
   
-  const test16echo = spawnSync('sudo', [`echo sed -i s/'\${installer:adito.installer.scaleui}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
-  const test16replace = spawnSync('sudo', [`sed -i s/'\${installer:adito.installer.scaleui}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test6echo = spawnSync('sudo', [`echo sed -i s/'\${installer:adito.installer.scaleui}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test6replace = spawnSync('sudo', [`sed -i s/'\${installer:adito.installer.scaleui}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 6");
   
-  const test16echo = spawnSync('sudo', [`echo sed -i s/'\${installer:adito.installer.basepath}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
-  const test16replace = spawnSync('sudo', [`sed -i s/'\${installer:adito.installer.basepath}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test7echo = spawnSync('sudo', [`echo sed -i s/'\${installer:adito.installer.basepath}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test7replace = spawnSync('sudo', [`sed -i s/'\${installer:adito.installer.basepath}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 7");
   
@@ -58,7 +58,7 @@ try
   const MAVEN_TOOLCHAINS = "toolchains";
   const pParams = "params";
   
-  const test10linuxmvn = spawnSync('sudo', [`echo cd '${pWorkingDir}' && echo mvn -s ${MAVEN_SETTINGS} -t ${MAVEN_TOOLCHAINS} ${pParams}`], {shell: true, stdio: 'inherit'});
+  const test8linuxmvn = spawnSync('sudo', [`echo cd '${pWorkingDir}' && echo mvn -s ${MAVEN_SETTINGS} -t ${MAVEN_TOOLCHAINS} ${pParams}`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 8");
   
@@ -67,12 +67,12 @@ try
   
   console.log("Checkpoint 9");
   
-  const test13 = spawnSync('sudo', [`echo \\$GITHUB_WORKSPACE: $GITHUB_WORKSPACE`], {shell: true, stdio : 'inherit'});
+  const test9 = spawnSync('sudo', [`echo \\$GITHUB_WORKSPACE: $GITHUB_WORKSPACE`], {shell: true, stdio : 'inherit'});
    
   console.log("Checkpoint 10");
   
-  const test15echo = spawnSync('sudo', [`echo pwd && echo ls && echo cd 'ao' && echo pwd && echo ls`], {shell: true, stdio: 'inherit'});
-  const test15 = spawnSync('sudo', [`pwd && ls && cd 'ao' && pwd && ls`], {shell: true, stdio: 'inherit'});
+  const test10echo = spawnSync('sudo', [`echo pwd && echo ls && echo cd 'ao' && echo pwd && echo ls`], {shell: true, stdio: 'inherit'});
+  const test10 = spawnSync('sudo', [`pwd && ls && cd 'ao' && pwd && ls`], {shell: true, stdio: 'inherit'});
   
   
   console.log("Checkpoint 11");
