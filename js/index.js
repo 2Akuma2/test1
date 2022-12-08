@@ -16,7 +16,7 @@ try
   console.log(`Nice ${paramTag}!`);
   const fullVersion = getVersionWithHotfixWithoutPostfix(paramTag);
   core.setOutput("fullVersion", fullVersion);
-  const aditoVersion = getAditoVersion();
+  //const aditoVersion = getAditoVersion();
   
   //////////////////////////////////////////////////////////////////////////
   const test1echo = spawnSync('sudo', [`echo echo This is test1. && echo echo This is test 1.1`], {shell: true, stdio: 'inherit'});
@@ -28,7 +28,7 @@ try
   
   console.log("Checkpoint 1");
   
-  const test4 = spawnSync('sudo', [`pwd && cd '../' && pwd`], {shell: true, stdio: 'inherit'});
+  const test4 = spawnSync('sudo', [`pwd && cd '$HOME/work/test1/ao/' && ls`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 2");
   
@@ -40,7 +40,7 @@ try
   
   console.log("Checkpoint 4"); 
   
-  const test7replace = spawnSync('sudo', [`echo sed -i s/'\${adito.complete.final.version}'/${fullVersion}/ addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test7replace = spawnSync('sudo', [`echo sed -i s/'\${adito.complete.final.version}'/${fullVersion}/ $HOME/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 5"); 
   
@@ -69,7 +69,7 @@ try
   
   console.log("Checkpoint 10");
   
-  const test12 = spawnSync('sudo', [`pwd && cd '/home/runner/work/test1/ao' && pwd && ls`], {shell: true, stdio: 'inherit'});
+  const test12 = spawnSync('sudo', [`pwd && cd '$HOME/work/test1/ao' && pwd && ls`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 11");
   
@@ -87,8 +87,8 @@ try
   
   console.log("Checkpoint 14");
   
-  const test16echo = spawnSync('sudo', [`echo pwd && echo sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
-  const test16replace = spawnSync('sudo', [`pwd && sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test16echo = spawnSync('sudo', [`echo pwd && echo sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ $HOME/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test16replace = spawnSync('sudo', [`pwd && sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ $HOME/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 15");
   
@@ -120,10 +120,10 @@ function stageBuild()
   core.setOutput("fullVersion", fullVersion);
   
   
-  // replace ${adito.complete.final.version} with ${fullVersion} in addendum/assemblydesigner/buildresources/ADITOdesigner.conf
+  // replace ${adito.complete.final.version} with ${fullVersion} in $HOME/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf
   try 
   {
-    const replace = spawnSync('sudo', [`sed -i s/'\${adito.complete.final.version}'/${fullVersion}/ addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+    const replace = spawnSync('sudo', [`sed -i s/'\${adito.complete.final.version}'/${fullVersion}/ $HOME/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   }
   catch(e)
   {
@@ -131,10 +131,10 @@ function stageBuild()
   }
   
   
-  // replace jdkhome="jre" with jdkhome="${JAVA_HOME}" in addendum/assemblydesigner/buildresources/ADITOdesigner.conf 
+  // replace jdkhome="jre" with jdkhome="${JAVA_HOME}" in $HOME/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf 
   try 
   {
-    const replace = spawnSync('sudo', [`sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+    const replace = spawnSync('sudo', [`sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ $HOME/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   }
   catch(e)
   {
