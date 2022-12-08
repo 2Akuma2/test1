@@ -132,7 +132,7 @@ function stageBuild()
   }
   catch(e)
   {
-    const caught = spawnSync('echo', [`Designer version replacement in ADITOdesigner.conf failed.`], {shell: true, stdio: 'inherit'});
+    const caught = spawnSync('echo', [`jre dir replacement in ADITOdesigner.conf failed.`], {shell: true, stdio: 'inherit'});
   }
   
   
