@@ -1,7 +1,8 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const { spawn, spawnSync } = require('node:child_process');
-const propertiesToJson = require('properties-file');
+//const propertiesToJson = require('properties-file');
+import { propertiesToJson } from 'properties-file'
 const pomParser = require('pom-parser');
 var majorVersion = 2022;
 
