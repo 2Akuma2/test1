@@ -90,7 +90,7 @@ try
   
   console.log("Checkpoint 15");
   
-  const test17 = spawnSync('sudo', [`echo getAditoVersion()`], {shell: true, stdio: 'inherit'});
+  const test17 = spawnSync('sudo', [`echo ${getAditoVersion()}`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 16");
   
