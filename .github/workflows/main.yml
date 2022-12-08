@@ -43,6 +43,13 @@ jobs:
           who-to-greet: 'Mona the Octocat'
           paramTag: ${{ inputs.paramTag }}
         
+        
+      - name: move ao files to ao folder    # rename test1 to ao
+        shell: bash
+        run: |
+          cd library/core/target/classes/de/adito/aditoweb/core/version
+          cat aditoVersion.properties
+        
       # Use the output from the `js action` step
       - name: Get the output time
         run: echo "The time was ${{ steps.hello.outputs.timee }}"
