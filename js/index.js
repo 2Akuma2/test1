@@ -48,8 +48,8 @@ try
   
   console.log("Checkpoint 6");
   
-  const test7echo = spawnSync('sudo', [`echo sed -i 's/'\${installer:adito.installer.basepath}'/'XXXXXXXXX'/g' ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
-  const test7replace = spawnSync('sudo', [`sed -i 's/'\${installer:adito.installer.basepath}'/'XXXXXXXXX'/g' ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test7echo = spawnSync('sudo', [`echo sed -i "s/'\${installer:adito.installer.basepath}'/'XXXXXXXXX'/g" ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test7replace = spawnSync('sudo', [`sed -i "s/'\${installer:adito.installer.basepath}'/'XXXXXXXXX'/g" ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 7");
   
