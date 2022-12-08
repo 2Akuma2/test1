@@ -16,6 +16,7 @@ try
   console.log(`Nice ${paramTag}!`);
   const fullVersion = getVersionWithHotfixWithoutPostfix(paramTag);
   core.setOutput("fullVersion", fullVersion);
+  const aditoVersion = getAditoVersion();
   
   //////////////////////////////////////////////////////////////////////////
   const test1echo = spawnSync('sudo', [`echo echo This is test1. && echo echo This is test 1.1`], {shell: true, stdio: 'inherit'});
@@ -91,7 +92,7 @@ try
   
   console.log("Checkpoint 15");
   
-  const test17 = spawnSync('sudo', [`echo ${getAditoVersion()}`], {shell: true, stdio: 'inherit'});
+  const test17 = spawnSync('sudo', [`echo ${aditoVersion}`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 16");
   
@@ -211,7 +212,7 @@ function isHotfix()
 
 function getHotfixVersion()
 {
-  var theVersion = getAditoVersion();
+  var theVersion = aditoVersion;
   var baseSplit = theVersion.split("_"); // ignore additional version info
   var versionSplit = baseSplit[0].split("\\.");
   if (versionSplit.size() == 4)
@@ -257,7 +258,7 @@ function getVersionWithHotfixPostfix()
 // returns the human readable version (e.g. "4.6.110_RC5") of ADITO
 // example: changes "2019.3.2.1" to "2019.3.2", and "2019.3.2.0_RC1" to "2019.3.2-RC1"
 function getAditoVersionReadable() {
-  var theVersion = onlyTheFirstThreeFigures(getAditoVersion());
+  var theVersion = onlyTheFirstThreeFigures(aditoVersion);
 
   if (theVersion.contains("_RC")) 
   {
