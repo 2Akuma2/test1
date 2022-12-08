@@ -16,7 +16,7 @@ try
   console.log(`Nice ${paramTag}!`);
   const fullVersion = getVersionWithHotfixWithoutPostfix(paramTag);
   core.setOutput("fullVersion", fullVersion);
-  //const aditoVersion = getAditoVersion();
+  const aditoVersion = getAditoVersion();
   
   //////////////////////////////////////////////////////////////////////////
   const test1echo = spawnSync('sudo', [`echo echo This is test1. && echo echo This is test 1.1`], {shell: true, stdio: 'inherit'});
@@ -40,7 +40,7 @@ try
   
   console.log("Checkpoint 4"); 
   
-  const test7replace = spawnSync('sudo', [`echo sed -i s/'\${adito.complete.final.version}'/${fullVersion}/ $HOME/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test7replace = spawnSync('sudo', [`echo sed -i s/'\${adito.complete.final.version}'/${fullVersion}/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 5"); 
   
@@ -87,8 +87,8 @@ try
   
   console.log("Checkpoint 14");
   
-  const test16echo = spawnSync('sudo', [`echo pwd && echo sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ $HOME/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
-  const test16replace = spawnSync('sudo', [`pwd && sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ $HOME/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test16echo = spawnSync('sudo', [`echo pwd && echo sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test16replace = spawnSync('sudo', [`pwd && sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 15");
   
@@ -120,10 +120,10 @@ function stageBuild()
   core.setOutput("fullVersion", fullVersion);
   
   
-  // replace ${adito.complete.final.version} with ${fullVersion} in $HOME/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf
+  // replace ${adito.complete.final.version} with ${fullVersion} in ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf
   try 
   {
-    const replace = spawnSync('sudo', [`sed -i s/'\${adito.complete.final.version}'/${fullVersion}/ $HOME/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+    const replace = spawnSync('sudo', [`sed -i s/'\${adito.complete.final.version}'/${fullVersion}/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   }
   catch(e)
   {
@@ -131,10 +131,10 @@ function stageBuild()
   }
   
   
-  // replace jdkhome="jre" with jdkhome="${JAVA_HOME}" in $HOME/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf 
+  // replace jdkhome="jre" with jdkhome="${JAVA_HOME}" in ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf 
   try 
   {
-    const replace = spawnSync('sudo', [`sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ $HOME/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+    const replace = spawnSync('sudo', [`sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   }
   catch(e)
   {
@@ -199,7 +199,7 @@ function maven(pWorkingDir, pParams) // sync damit auf return gewartet wird?
 // return the latest adito.version on the current build-branch (4.6.110_5)
 function getAditoVersion() {
   // If the build is not failed, we can read the build-properties
-  var props = propertiesToJson.propertiesToJson('$HOME/work/test1/ao/library/core/target/classes/de/adito/aditoweb/core/version/aditoVersion.properties');
+  var props = propertiesToJson.propertiesToJson('${process.env.HOME}/work/test1/ao/library/core/target/classes/de/adito/aditoweb/core/version/aditoVersion.properties');
   return props['adito.version'];
 }
 
