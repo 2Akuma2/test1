@@ -86,8 +86,8 @@ try
   
   console.log("Checkpoint 14");
   
-  const test16echo = spawnSync('sudo', [`echo sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
-  const test16replace = spawnSync('sudo', [`sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test16echo = spawnSync('sudo', [`echo pwd && echo sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test16replace = spawnSync('sudo', [`pwd && sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 15");
   
