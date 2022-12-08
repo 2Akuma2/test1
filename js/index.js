@@ -105,7 +105,7 @@ try
 
 
 
-// missing: currentBuild.displayName
+// missing: currentBuild.displayName, XXXXXXXXX
 
 function stageBuild()
 {
@@ -134,6 +134,28 @@ function stageBuild()
   catch(e)
   {
     const caught = spawnSync('echo', [`jre dir replacement in ADITOdesigner.conf failed.`], {shell: true, stdio: 'inherit'});
+  }
+  
+  
+  // replace ${installer:adito.installer.scaleui} with XXXXXXXXX in ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf 
+  try 
+  {
+    const replace = spawnSync('sudo', [`sed -i s/'\${installer:adito.installer.scaleui}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  }
+  catch(e)
+  {
+    const caught = spawnSync('echo', [`installer scaleui replacement in ADITOdesigner.conf failed.`], {shell: true, stdio: 'inherit'});
+  }
+  
+  
+  // replace ${installer:adito.installer.basepath} with XXXXXXXXX in ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf 
+  try 
+  {
+    const replace = spawnSync('sudo', [`sed -i s/'\${installer:adito.installer.basepath}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  }
+  catch(e)
+  {
+    const caught = spawnSync('echo', [`installer basepath replacement in ADITOdesigner.conf failed.`], {shell: true, stdio: 'inherit'});
   }
   
   
