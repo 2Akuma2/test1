@@ -28,7 +28,7 @@ try
   
   console.log("Checkpoint 1");
   
-  const test4 = spawnSync('sudo', [`pwd && cd '${process.env.HOME}/work/test1/ao/' && pwd && ls`], {shell: true, stdio: 'inherit'});
+  const test4 = spawnSync('sudo', [`pwd && cd '${process.env.HOME}/work/test1/ao/library/core/target/classes/de/adito/aditoweb/core/version' && pwd && ls`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 2");
   
