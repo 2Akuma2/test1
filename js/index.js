@@ -74,27 +74,22 @@ try
   console.log("Checkpoint 11");
   
   const test13 = spawnSync('sudo', [`echo \\$GITHUB_WORKSPACE: $GITHUB_WORKSPACE`], {shell: true, stdio : 'inherit'});
-  
+   
   console.log("Checkpoint 12");
-  
-  const test14echo = spawnSync('sudo', [`echo git clone git@github.com:2Akuma2/test1.git`], {shell: true, stdio: 'inherit'});
-  //const test14gitCloneAO = spawnSync('sudo', [`git clone git@github.com:2Akuma2/test1.git`], {shell: true, stdio: 'inherit'});
-  
-  console.log("Checkpoint 13");
   
   const test15echo = spawnSync('sudo', [`echo pwd && echo ls && echo cd 'adito-designer' && echo pwd && echo ls`], {shell: true, stdio: 'inherit'});
   const test15 = spawnSync('sudo', [`pwd && ls && cd 'adito-designer' && pwd && ls`], {shell: true, stdio: 'inherit'});
   
-  console.log("Checkpoint 14");
+  console.log("Checkpoint 13");
   
   const test16echo = spawnSync('sudo', [`echo pwd && echo sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   const test16replace = spawnSync('sudo', [`pwd && sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
-  console.log("Checkpoint 15");
+  console.log("Checkpoint 14");
   
   const test17 = spawnSync('sudo', [`echo ${aditoVersion}`], {shell: true, stdio: 'inherit'});
   
-  console.log("Checkpoint 16");
+  console.log("Checkpoint 15");
   
   
   ////////////////////////////////////////////////////////////////////////
@@ -195,7 +190,7 @@ function maven(pWorkingDir, pParams) // sync damit auf return gewartet wird?
   }
 }
 
-
+// warum auch immer geht /home/runner, aber ${process.env.HOME} nicht
 // return the latest adito.version on the current build-branch (4.6.110_5)
 function getAditoVersion() {
   // If the build is not failed, we can read the build-properties
