@@ -33,7 +33,7 @@ try
   console.log("Checkpoint 3"); 
   
   const test4echo = spawnSync('sudo', [`echo sed -i s/'\${adito.complete.final.version}'/${fullVersion}/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
-  const test4replace = spawnSync('sudo', [`sed -i 's!'\${adito.complete.final.version}'!${fullVersion}!' ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test4replace = spawnSync('sudo', [`sed -i s/'\${adito.complete.final.version}'/${fullVersion}/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 4");
   
