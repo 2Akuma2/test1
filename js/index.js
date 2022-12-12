@@ -79,7 +79,10 @@ try
   
   console.log("Checkpoint 11");
   
+  const test11echo = spawnSync('sudo', [`echo echo ${process.env.JAVA_HOME}`], {shell: true, stdio: 'inherit'});
+  const test11print = spawnSync('sudo', [`echo ${process.env.JAVA_HOME}`], {shell: true, stdio: 'inherit'});
   
+  console.log("Checkpoint 12");
   ////////////////////////////////////////////////////////////////////////
   
   const time = (new Date()).toTimeString();
