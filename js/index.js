@@ -39,6 +39,7 @@ try
   
   // only works on linux rn
   const test5echo = spawnSync('sudo', [`echo sed -i 's!jdkhome="jre"!jdkhome="/opt/hostedtoolcache/Java_Adopt_jdk/13.0.2-8.1/x64"!g' ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test5echoo = spawnSync('sudo', [`echo sed -i 's!jdkhome="jre"!jdkhome="${process.env.JAVA_HOME}"!g' ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   const test5replace = spawnSync('sudo', [`sed -i 's!jdkhome="jre"!jdkhome="/opt/hostedtoolcache/Java_Adopt_jdk/13.0.2-8.1/x64"!g' ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 5"); 
