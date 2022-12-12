@@ -43,7 +43,6 @@ try
   
   console.log("Checkpoint 5"); 
   
-  const 
   const test6echo = spawnSync('sudo', [`echo sed -i s/'\${installer:adito.installer.scaleui}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   const test6replace = spawnSync('sudo', [`sed -i s/'\${installer:adito.installer.scaleui}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
