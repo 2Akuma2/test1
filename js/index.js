@@ -127,7 +127,7 @@ function stageBuild()
   }
   
   
-  // replace ${installer:adito.installer.scaleui} with XXXXXXXXX in ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf 
+  // replace ${installer:adito.installer.scaleui} with scaleui in ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf 
   try 
   {
     var scaleui = "A";
@@ -139,7 +139,7 @@ function stageBuild()
   }
   
   
-  // replace ${installer:adito.installer.basepath} with XXXXXXXXX in ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf 
+  // replace ${installer:adito.installer.basepath} with basepath in ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf 
   try 
   {
     var basepath = "B";
