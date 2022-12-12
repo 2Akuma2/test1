@@ -2,7 +2,6 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const { spawn, spawnSync } = require('node:child_process');
 const propertiesToJson = require('properties-file');
-//import { propertiesToJson } from 'properties-file'
 const pomParser = require('pom-parser');
 var majorVersion = 2022;
 
@@ -43,8 +42,9 @@ try
   
   console.log("Checkpoint 5"); 
   
-  const test6echo = spawnSync('sudo', [`echo sed -i s/'\${installer:adito.installer.scaleui}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
-  const test6replace = spawnSync('sudo', [`sed -i s/'\${installer:adito.installer.scaleui}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const scaleui = "AAAAAAAAA";
+  const test6echo = spawnSync('sudo', [`echo sed -i s/'\${installer:adito.installer.scaleui}'/${scaleui}/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test6replace = spawnSync('sudo', [`sed -i s/'\${installer:adito.installer.scaleui}'/${scaleui}/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 6");
   
