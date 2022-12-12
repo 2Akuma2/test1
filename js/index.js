@@ -37,8 +37,6 @@ try
   
   console.log("Checkpoint 4");
   
-  // only works on linux rn
-  const test5echo = spawnSync('sudo', [`echo sed -i 's!jdkhome="jre"!jdkhome="/opt/hostedtoolcache/Java_Adopt_jdk/13.0.2-8.1/x64"!g' ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   const test5echoo = spawnSync('sudo', [`echo sed -i 's!jdkhome="jre"!jdkhome="${process.env.JAVA_HOME}"!g' ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   const test5replace = spawnSync('sudo', [`sed -i 's!jdkhome="jre"!jdkhome="${process.env.JAVA_HOME}"!g' ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
@@ -110,7 +108,7 @@ function stageBuild()
   // replace ${adito.complete.final.version} with ${fullVersion} in ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf
   try 
   {
-    const replace = spawnSync('sudo', [`sed -i s/'\${adito.complete.final.version}'/${fullVersion}/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+    const replace = spawnSync('sudo', [`sed -i s/'\${adito.complete.final.version}'/${fullVersion}/g ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   }
   catch(e)
   {
@@ -121,7 +119,7 @@ function stageBuild()
   // replace jdkhome="jre" with jdkhome="${JAVA_HOME}" in ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf 
   try 
   {
-    const replace = spawnSync('sudo', [`sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+    const replace = spawnSync('sudo', [`sed -i 's!jdkhome="jre"!jdkhome="${process.env.JAVA_HOME}"!g' ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   }
   catch(e)
   {
@@ -132,7 +130,8 @@ function stageBuild()
   // replace ${installer:adito.installer.scaleui} with XXXXXXXXX in ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf 
   try 
   {
-    const replace = spawnSync('sudo', [`sed -i s/'\${installer:adito.installer.scaleui}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+    var scaleui = "A";
+    const replace = spawnSync('sudo', [`sed -i s/'\${installer:adito.installer.scaleui}'/${scaleui}/g ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   }
   catch(e)
   {
@@ -143,7 +142,8 @@ function stageBuild()
   // replace ${installer:adito.installer.basepath} with XXXXXXXXX in ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf 
   try 
   {
-    const replace = spawnSync('sudo', [`sed -i s/'\${installer:adito.installer.basepath}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+    var basepath = "B";
+    const replace = spawnSync('sudo', [`sed -i s/'\${installer:adito.installer.basepath}'/${basepath}/g ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   }
   catch(e)
   {
