@@ -38,11 +38,12 @@ try
   
   console.log("Checkpoint 4");
   
-  const test5echo = spawnSync('sudo', [`echo sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
-  const test5replace = spawnSync('sudo', [`sed -i s/'jdkhome="jre"'/'jdkhome="\${JAVA_HOME}"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test5echo = spawnSync('sudo', [`echo sed -i s/'jdkhome="jre"'/'jdkhome="/opt/hostedtoolcache/Java_Adopt_jdk/13.0.2-8.1/x64"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test5replace = spawnSync('sudo', [`sed -i s/'jdkhome="jre"'/'jdkhome="/opt/hostedtoolcache/Java_Adopt_jdk/13.0.2-8.1/x64"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
   console.log("Checkpoint 5"); 
   
+  const 
   const test6echo = spawnSync('sudo', [`echo sed -i s/'\${installer:adito.installer.scaleui}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   const test6replace = spawnSync('sudo', [`sed -i s/'\${installer:adito.installer.scaleui}'/'XXXXXXXXX'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
