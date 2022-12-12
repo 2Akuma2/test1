@@ -37,7 +37,7 @@ try
   
   console.log("Checkpoint 4");
   
-  const test5replacee = spawnSync('sudo', [`sed -i s/'jdkhome="jre"'/'jdkhome="opt"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
+  const test5replacee = spawnSync('sudo', [`sed -i s/'jdkhome="jre"'/'jdkhome="a\/b"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   const test5echo = spawnSync('sudo', [`echo sed -i s/'jdkhome="jre"'/'jdkhome="\/opt\/hostedtoolcache\/Java_Adopt_jdk\/13.0.2-8.1\/x64"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   //const test5replace = spawnSync('sudo', [`sed -i s/'jdkhome="jre"'/'jdkhome="\/opt\/hostedtoolcache\/Java_Adopt_jdk\/13.0.2-8.1\/x64"'/ ${process.env.HOME}/work/test1/ao/addendum/assemblydesigner/buildresources/ADITOdesigner.conf`], {shell: true, stdio: 'inherit'});
   
