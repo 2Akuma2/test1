@@ -1,0 +1,28 @@
+name: Trigger Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      # Trigger Build on different repository
+      - name: Trigger Build
+        shell: bash
+        run: |
+          curl --fail -X POST \
+          -H "Authorization: token ${{ secrets.designer_ci_token }}" \
+          -H "Accept: application/vnd.github+json" \
+          https://api.github.com/repos/aditosoftware/adito-designer-ci/dispatches \
+          -d "{ \"event_type\": \"$(echo ${{ toJSON(github.event.head_commit.message) }} | cut -c -100 | sed -e 's/"//g' )\", \"client_payload\" : { \"ref\" : \"${{ github.sha }}\" } }"
+
+      # Update commit status
+      - name: Update Commit Status
+        uses: Sibz/github-status-action@v1
+        with:
+          authToken: ${{ secrets.designer_ci_token }}
+          context: 'Continuous Integration'
+          description: 'Build Scheduled'
+          state: 'pending'
+          sha: ${{ github.sha }}
