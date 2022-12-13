@@ -1,0 +1,25 @@
+name: "Execute UnitTests"
+description: "Executes all unit tests found in this project"
+inputs:
+  nexus_user:
+    description: 'Nexus Username'
+    required: true
+  nexus_password:
+    description: 'Nexus Password'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    # Build vorbereiten
+    - name: Prepare Maven Build
+      uses: ./.github/workflows/prepare-action
+      with:
+        nexus_user: ${{ inputs.nexus_user }}
+        nexus_password: ${{ inputs.nexus_password }}
+
+    # UnitTests ausf�hren
+    - name: Unit Tests
+      working-directory: ./modules
+      shell: bash
+      run: mvn --batch-mode -T 1C surefire:test
