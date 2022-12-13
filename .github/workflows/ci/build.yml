@@ -1,0 +1,250 @@
+name: Java CI
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      silent:
+        required: false
+        description: 'True, if a failure should not lead to a teams message'
+        default: 'false'
+      sha:
+        required: true
+        description: 'SHA of the commit to build'
+
+jobs:
+  build:
+    # ensure, that we build it like our jenkins will do - once on linux
+    runs-on: ubuntu-latest
+    name: Build / Project
+    steps:
+      # Update commit status
+      - name: Update Commit Status
+        uses: Sibz/github-status-action@v1
+        with:
+          repository: adito-designer
+          authToken: ${{ secrets.designer_checkout_token }}
+          context: 'Continuous Integration'
+          description: 'Build Started'
+          state: 'pending'
+          sha: ${{ github.event.client_payload.ref || inputs.sha }}
+          target_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      # Persist github actions
+      - name: Github Action Cache
+        uses: actions/cache@v2
+        id: github-cache
+        with:
+          path: ./.github
+          key: gh-build-${{ github.run_id }}-${{ github.run_number }}
+
+      # Checkout Repository
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: aditosoftware/adito-designer
+          token: ${{ secrets.designer_checkout_token }}
+          ref: ${{ github.event.client_payload.ref || inputs.sha }}
+
+      # Check if action exists
+      - name: Check Action Exists
+        id: check_action_exists
+        uses: andstor/file-existence-action@v1
+        with:
+          files: ".github/workflows/build-action"
+
+      # Execute Action
+      - name: Build
+        uses: ./.github/workflows/build-action
+        if: steps.check_action_exists.outputs.files_exists == 'true'
+        with:
+          nexus_user: ${{ secrets.nexus_user }}
+          nexus_password: ${{ secrets.nexus_password }}
+
+  # UnitTests on all plattforms in parallel
+  unit_test:
+    runs-on: ${{ matrix.os }}
+    name: Quality / Unit Tests
+    needs:
+      - build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+          - os: ubuntu-latest
+          - os: windows-latest
+    steps:
+      # Persist github actions
+      - name: Github Action Cache
+        uses: actions/cache@v2
+        id: github-cache
+        with:
+          path: ./.github
+          key: gh-build-${{ github.run_id }}-${{ github.run_number }}
+
+      # Check if action exists
+      - name: Check Action Exists
+        id: check_action_exists
+        uses: andstor/file-existence-action@v1
+        with:
+          files: ".github/workflows/unittest-action"
+
+      # Execute Action
+      - name: Unit Tests
+        if: steps.check_action_exists.outputs.files_exists == 'true'
+        uses: ./.github/workflows/unittest-action
+        with:
+          nexus_user: ${{ secrets.nexus_user }}
+          nexus_password: ${{ secrets.nexus_password }}
+
+  # IntegrationTests on all plattforms in parallel
+  integration_test:
+    runs-on: ${{ matrix.os }}
+    name: Quality / Integration Tests
+    needs:
+      - unit_test
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+    steps:
+      # Persist github actions
+      - name: Github Action Cache
+        uses: actions/cache@v2
+        id: github-cache
+        with:
+          path: ./.github
+          key: gh-build-${{ github.run_id }}-${{ github.run_number }}
+
+      # Check if action exists
+      - name: Check Action Exists
+        id: check_action_exists
+        uses: andstor/file-existence-action@v1
+        with:
+          files: ".github/workflows/integrationtest-action"
+
+      # Execute Action
+      - name: Extended Integration Tests
+        if: steps.check_action_exists.outputs.files_exists == 'true'
+        uses: ./.github/workflows/integrationtest-action
+        with:
+          extended: 'false'
+          nexus_user: ${{ secrets.nexus_user }}
+          nexus_password: ${{ secrets.nexus_password }}
+
+  # (Extended) IntegrationTests on Linux
+  extended_integration_test:
+    runs-on: ubuntu-latest
+    name: Quality / Extended Integration Tests
+    needs:
+      - unit_test
+    steps:
+      # Persist github actions
+      - name: Github Action Cache
+        uses: actions/cache@v2
+        id: github-cache
+        with:
+          path: ./.github
+          key: gh-build-${{ github.run_id }}-${{ github.run_number }}
+
+      # Check if action exists
+      - name: Check Action Exists
+        id: check_action_exists
+        uses: andstor/file-existence-action@v1
+        with:
+          files: ".github/workflows/integrationtest-action"
+
+      # Execute Action
+      - name: Extended Integration Tests
+        if: steps.check_action_exists.outputs.files_exists == 'true'
+        uses: ./.github/workflows/integrationtest-action
+        with:
+          extended: 'true'
+          nexus_user: ${{ secrets.nexus_user }}
+          nexus_password: ${{ secrets.nexus_password }}
+          k8s_user: ${{ secrets.k8s_user }}
+          k8s_password: ${{ secrets.k8s_password }}
+
+  # Publish results on original commit
+  publish_results_on_commit:
+    runs-on: ubuntu-latest
+    name: Results / Publish on Commit
+    if: always()
+    needs:
+      - build
+      - unit_test
+      - integration_test
+      - extended_integration_test
+    steps:
+      # Update commit status
+      - name: Update Commit Status
+        uses: Sibz/github-status-action@v1
+        if: needs.integration_test.result == 'success' && needs.extended_integration_test.result == 'success'
+        with:
+          repository: adito-designer
+          authToken: ${{ secrets.designer_checkout_token }}
+          context: 'Continuous Integration'
+          description: 'Build Finished Successfully'
+          state: 'success'
+          sha: ${{ github.event.client_payload.ref || inputs.sha }}
+          target_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      # Update commit status
+      - name: Update Commit Status on Failure
+        uses: Sibz/github-status-action@v1
+        if: needs.integration_test.result != 'success' || needs.extended_integration_test.result != 'success'
+        with:
+          repository: adito-designer
+          authToken: ${{ secrets.designer_checkout_token }}
+          context: 'Continuous Integration'
+          description: 'Build Failed'
+          state: 'failure'
+          sha: ${{ github.event.client_payload.ref || inputs.sha }}
+          target_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+  # Publish results in Teams channel
+  publish_results_teams:
+    runs-on: ubuntu-latest
+    name: Results / Publish on Teams
+    if: ${{ !success() && inputs.silent != 'true' }}
+    needs:
+      - build
+      - unit_test
+      - integration_test
+      - extended_integration_test
+    steps:
+      # Checkout our own repository
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Determine fail information
+      - name: Determine Failure Information
+        shell: bash
+        run: |
+          if [[ ${{needs.build.result}} != 'success' ]]; then
+              echo 'FAIL_REASON="Build Failed"' >> $GITHUB_ENV
+              echo 'FAIL_COLOR=dc3545' >> $GITHUB_ENV
+          elif [[ ${{needs.unit_test.result}} != 'success' ]]; then
+              echo 'FAIL_REASON="UnitTests Failed"' >> $GITHUB_ENV
+              echo 'FAIL_COLOR=ffc107' >> $GITHUB_ENV
+          elif [[ ${{needs.integration_test.result}} != 'success' ]]; then
+              echo 'FAIL_REASON="IntegrationTests Failed"' >> $GITHUB_ENV
+              echo 'FAIL_COLOR=ffc107' >> $GITHUB_ENV
+          elif [[ ${{needs.extended_integration_test.result}} != 'success' ]]; then
+              echo 'FAIL_REASON="Extended IntegrationTests Failed"' >> $GITHUB_ENV
+              echo 'FAIL_COLOR=ffc107' >> $GITHUB_ENV
+          fi
+
+      # Send Teams message on failure
+      - name: Send Teams Message on Failure
+        uses: ./.github/workflows/ms-teams-notification
+        with:
+          github-token: ${{ secrets.DESIGNER_CHECKOUT_TOKEN }}
+          github-repository: aditosoftware/adito-designer
+          github-sha: ${{ github.event.client_payload.ref || inputs.sha }}
+          ms-teams-webhook-uri: ${{ secrets.TEAMS_WEBHOOK_URL }}
+          notification-summary: Continuous Integration - ${{ env.FAIL_REASON }}
+          notification-color: ${{ env.FAIL_COLOR }}
+          timezone: Europe/Berlin
