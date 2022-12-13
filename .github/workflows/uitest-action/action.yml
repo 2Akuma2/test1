@@ -1,0 +1,42 @@
+name: "Execute UI Tests"
+description: "Executes all unit tests found in this project"
+inputs:
+  nexus_user:
+    description: 'Nexus Username'
+    required: true
+  nexus_password:
+    description: 'Nexus Password'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    # Build vorbereiten
+    - name: Prepare Maven Build
+      uses: ./.github/workflows/prepare-action
+      with:
+        nexus_user: ${{ inputs.nexus_user }}
+        nexus_password: ${{ inputs.nexus_password }}
+    
+    # Edit ADITOdesigner.conf & move it to /etc
+    - name: Prepare ADITOdesigner.conf
+      uses: ./.github/workflows/uitest-action/js
+    
+    # UITests ausf�hren
+    - name: UI Tests
+      working-directory: ./QFS/
+      shell: bash
+      run:  |
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          QF-Test/qftest-6.0.3/bin/qftest -batch -nomessagewindow -verbose -run QF-Test/qftest-6.0.3/demo/carconfig/carconfig_de.qft
+        elif [ "$RUNNER_OS" == "Windows" ]; then
+          QF-Test/qftest-6.0.3/bin/qftestc.exe -batch -nomessagewindow -verbose -run QF-Test/qftest-6.0.3/demo/carconfig/carconfig_de.qft
+        elif [ "$RUNNER_OS" == "macOS" ]; then
+          QF-Test/qftest-6.0.3/bin/qftest -batch -nomessagewindow -verbose -run QF-Test/qftest-6.0.3/demo/carconfig/carconfig_de.qft
+        else
+          echo "$RUNNER_OS not supported"
+          exit 1
+        fi
+      
+      
+      
