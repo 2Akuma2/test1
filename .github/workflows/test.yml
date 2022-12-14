@@ -4,15 +4,15 @@ on:
 
 jobs:
   test_job:
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-latest                    #${{ matrix.os }}
     name: build working designer
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: macos-latest
-          - os: ubuntu-latest
-          - os: windows-latest
+    #strategy:
+      #fail-fast: false
+      #matrix:
+      #  include:
+      #    - os: macos-latest
+      #    - os: ubuntu-latest
+      #    - os: windows-latest
     steps:
     
     - name: checkout ao repo
@@ -50,7 +50,7 @@ jobs:
       shell: bash
       run:  |
         echo ${{ github.workspace }}
-        sed -r -i 's/${installer:adito.installer.scaleui}/${{ env.scaleuiwin }}/g' QF-Test/ADITOdesigner.conf > QF-Test/ADITOdesigner.conf
+        sed -r -i 's/"^${installer:adito.installer.scaleui}"/"${{ env.scaleuiwin }}"/g' QF-Test/ADITOdesigner.conf > QF-Test/ADITOdesigner.conf
         cat QF-Test/ADITOdesigner.conf
       env:
         scaleuiwin: '-J-Dsun.java2d.dpiaware=true'
