@@ -33,7 +33,7 @@ jobs:
 #      shell: bash
 #      run:  |
 #        echo ${{ github.workspace }}
-#        sed -r -i 's/\$\{installer:adito.installer.scaleui\}/${{ env.scaleuiwin }}/g' QF-Test/ADITOdesigner.conf
+#        sed -r -i 's/\${installer:adito.installer.scaleui}/${{ env.scaleuiwin }}/g' QF-Test/ADITOdesigner.conf
 #        sed -r -i 's/\${adito.complete.final.version}/${{ env.fullVersion }}/g' QF-Test/ADITOdesigner.conf
 #        sed -r -i 's!jdkhome="jre"!jdkhome="${{ env.JAVA_HOME }}"!g' QF-Test/ADITOdesigner.conf
 #        sed -r -i 's!\${installer:adito.installer.basepath}/lib/designer!${{ github.workspace }}/application/designer/target/aditodesigner!g' QF-Test/ADITOdesigner.conf
@@ -50,7 +50,7 @@ jobs:
       shell: bash
       run:  |
         echo ${{ github.workspace }}
-        sed -r -i 's/\${installer:adito.installer.scaleui}/${{ env.scaleuiwin }}/g' QF-Test/ADITOdesigner.conf
+        sed -r -i 's/\$\{installer:adito.installer.scaleui\}/${{ env.scaleuiwin }}/g' QF-Test/ADITOdesigner.conf
       env:
         scaleuiwin: '-J-Dsun.java2d.dpiaware=true'
         fullVersion: '1234.5.6.7'
