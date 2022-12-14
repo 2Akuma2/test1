@@ -31,7 +31,7 @@ jobs:
         sed -i 's/\${adito.complete.final.version}/${{ env.fullVersion }}/g' QF-Test/ADITOdesigner.conf
         sed -i 's!jdkhome="jre"!jdkhome="${{ env.JAVA_HOME }}"!g' QF-Test/ADITOdesigner.conf
         sed -i 's!\${installer:adito.installer.basepath}/lib/designer!${{ github.workspace }}/application/designer/target/aditodesigner!g' QF-Test/ADITOdesigner.conf
-        sed -i 's/\${installer:adito.installer.basepath}/${{ github.workspace }}/g' QF-Test/ADITOdesigner.conf
+        sed -i 's!\${installer:adito.installer.basepath}!${{ github.workspace }}!g' QF-Test/ADITOdesigner.conf
         mv -f QF-Test/ADITOdesigner.conf application/designer/target/aditodesigner/etc
         cat application/designer/target/aditodesigner/etc/ADITOdesigner.conf
       env:
@@ -46,7 +46,7 @@ jobs:
         sed -i 's/\${adito.complete.final.version}/${{ env.fullVersion }}/g' QF-Test/ADITOdesigner.conf
         sed -i 's!jdkhome="jre"!jdkhome="${{ env.JAVA_HOME }}"!g' QF-Test/ADITOdesigner.conf
         sed -i 's!\${installer:adito.installer.basepath}/lib/designer!${{ github.workspace }}/application/designer/target/aditodesigner!g' QF-Test/ADITOdesigner.conf
-        sed -i 's/\${installer:adito.installer.basepath}/${{ github.workspace }}/g' QF-Test/ADITOdesigner.conf
+        sed -i 's!\${installer:adito.installer.basepath}!${{ github.workspace }}!g' QF-Test/ADITOdesigner.conf
         mv -f QF-Test/ADITOdesigner.conf application/designer/target/aditodesigner/etc
         cat application/designer/target/aditodesigner/etc/ADITOdesigner.conf
       env:
@@ -61,7 +61,7 @@ jobs:
         sed -i '' 's/\${adito.complete.final.version}/${{ env.fullVersion }}/g' QF-Test/ADITOdesigner.conf
         sed -i '' 's!jdkhome="jre"!jdkhome="${{ env.JAVA_HOME }}"!g' QF-Test/ADITOdesigner.conf
         sed -i '' 's!\${installer:adito.installer.basepath}/lib/designer!${{ github.workspace }}/application/designer/target/aditodesigner!g' QF-Test/ADITOdesigner.conf
-        sed -i '' 's/\${installer:adito.installer.basepath}/${{ github.workspace }}/g' QF-Test/ADITOdesigner.conf
+        sed -i '' 's!\${installer:adito.installer.basepath}!${{ github.workspace }}!g' QF-Test/ADITOdesigner.conf
         mv -f QF-Test/ADITOdesigner.conf application/designer/target/aditodesigner/etc
         cat application/designer/target/aditodesigner/etc/ADITOdesigner.conf
       env:
