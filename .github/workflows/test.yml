@@ -50,7 +50,7 @@ jobs:
       shell: bash
       run:  |
         echo ${{ github.workspace }}
-        sed -r -i 's/\$\{installer:adito.installer.scaleui\}/${{ env.scaleuiwin }}/g' QF-Test/ADITOdesigner.conf
+        sed -r -i 's/$\{installer:adito.installer.scaleui\}/${{ env.scaleuiwin }}/g' QF-Test/ADITOdesigner.conf
       env:
         scaleuiwin: '-J-Dsun.java2d.dpiaware=true'
         fullVersion: '1234.5.6.7'
