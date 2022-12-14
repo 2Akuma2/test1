@@ -44,7 +44,7 @@ runs:
     - name: remaining prep
       shell: bash
       run:  |
-        sed -i 's/\${adito.complete.final.version}/$fullVersion/g' QF-Test/ADITOdesigner.conf
+        sed -i 's/\${adito.complete.final.version}/${{ fullVersion }}/g' QF-Test/ADITOdesigner.conf
         sed -i 's!jdkhome="jre"!jdkhome="${{ env.JAVA_HOME }}"!g' QF-Test/ADITOdesigner.conf
         sed -i 's!\${installer:adito.installer.basepath}/lib/designer!${{ github.workspace }}/application/designer/target/aditodesigner!g' QF-Test/ADITOdesigner.conf
         sed -i 's/\${installer:adito.installer.basepath}/${{ github.workspace }}/g' QF-Test/ADITOdesigner.conf
