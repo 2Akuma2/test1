@@ -18,25 +18,59 @@ runs:
         nexus_user: ${{ inputs.nexus_user }}
         nexus_password: ${{ inputs.nexus_password }}
     
-    # Edit ADITOdesigner.conf & move it to /etc
-    - name: Prepare ADITOdesigner.conf
-      uses: ./.github/workflows/uitest-action/js
     
-    # UITests ausf�hren
-    - name: UI Tests
-      working-directory: ./QF-Test
+    - name: change scaleui (windows)
+      if: runner.os == 'Windows'
+      shell: bash
+      run: sed -i 's/\${installer:adito.installer.scaleui}/$scaleuiwin/g' QF-Test/ADITOdesigner.conf
+      env:
+        scaleuiwin: '-J-Dsun.java2d.dpiaware=true'
+      
+    - name: change scaleui (linux)
+      if: runner.os == 'Linux'
+      shell: bash
+      run: sed -i 's/\${installer:adito.installer.scaleui}/$scaleuilin/g' QF-Test/ADITOdesigner.conf
+      env:
+        scaleuilin: ''
+      
+    - name: change scaleui (macos)
+      if: runner.os == 'macOS'
+      shell: bash
+      run: sed -i 's/\${installer:adito.installer.scaleui}/$scaleuimac/g' QF-Test/ADITOdesigner.conf
+      env:
+        scaleuimac: ''
+    
+    
+    - name: remaining prep
       shell: bash
       run:  |
-        if [ "$RUNNER_OS" == "Linux" ]; then
-          qftest-6.0.3/bin/qftest -batch -nomessagewindow -verbose -run qftest-6.0.3/demo/carconfig/carconfig_de.qft
-        elif [ "$RUNNER_OS" == "Windows" ]; then
-          qftest-6.0.3/bin/qftestc.exe -batch -nomessagewindow -verbose -run qftest-6.0.3/demo/carconfig/carconfig_de.qft
-        elif [ "$RUNNER_OS" == "macOS" ]; then
-          qftest-6.0.3/bin/qftest -batch -nomessagewindow -verbose -run qftest-6.0.3/demo/carconfig/carconfig_de.qft
-        else
-          echo "$RUNNER_OS not supported"
-          exit 1
-        fi
-      
-      
-      
+        sed -i 's/\${adito.complete.final.version}/$fullVersion/g' QF-Test/ADITOdesigner.conf
+        sed -i 's!jdkhome="jre"!jdkhome="${{ env.JAVA_HOME }}"!g' QF-Test/ADITOdesigner.conf
+        sed -i 's!\${installer:adito.installer.basepath}/lib/designer!${{ github.workspace }}/application/designer/target/aditodesigner!g' QF-Test/ADITOdesigner.conf
+        sed -i 's/\${installer:adito.installer.basepath}/${{ github.workspace }}/g' QF-Test/ADITOdesigner.conf
+        mv -f QF-Test/ADITOdesigner.conf application/designer/target/aditodesigner/etc
+        cat application/designer/target/aditodesigner/etc/ADITOdesigner.conf
+      env:
+        fullVersion: '1234.5.6.7'
+    
+    
+    # UITests ausf�hren
+    - name: UI Tests windows
+      if: runner.os == 'Windows'
+      working-directory: ./QF-Test
+      shell: bash
+      run: qftest-6.0.3/bin/qftestc.exe -batch -nomessagewindow -verbose -run qftest-6.0.3/demo/carconfig/carconfig_de.qft
+    
+    - name: UI Tests linux
+      if: runner.os == 'Linux'
+      working-directory: ./QF-Test
+      shell: bash
+      run: qftest-6.0.3/bin/qftest -batch -nomessagewindow -verbose -run qftest-6.0.3/demo/carconfig/carconfig_de.qft
+    
+    - name: UI Tests macos
+      if: runner.os == 'macOS'
+      working-directory: ./QF-Test
+      shell: bash
+      run: qftest-6.0.3/bin/qftest -batch -nomessagewindow -verbose -run qftest-6.0.3/demo/carconfig/carconfig_de.qft
+    
+    
