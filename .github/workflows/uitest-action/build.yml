@@ -1,6 +1,24 @@
 // gets added to designer-ci build.yml
 // https://github.com/aditosoftware/adito-designer-ci/blob/main/.github/workflows/build.yml
 
+// add the following step before the cache step to change windows cache compression algorithm from gzip to zstd to enable cross caching 
+// (Windows = gzip, Linux & MacOS = zstd by default)  
+
+      - if: ${{ runner.os == 'Windows' }}
+        name: Use GNU tar
+        shell: cmd
+        run: |
+          echo "Adding GNU tar to PATH"
+          echo C:\Program Files\Git\usr\bin>>"%GITHUB_PATH%"
+
+
+
+
+// main UITest job
+
+
+
+
 # UITests on all plattforms in parallel
   unit_test:
     runs-on: ${{ matrix.os }}
@@ -33,7 +51,7 @@
       # Execute Action
       - name: UI Tests
         if: steps.check_action_exists.outputs.files_exists == 'true'
-        uses: ./.github/workflows/ui-action
+        uses: ./.github/workflows/uitest-action
         with:
           nexus_user: ${{ secrets.nexus_user }}
           nexus_password: ${{ secrets.nexus_password }}
