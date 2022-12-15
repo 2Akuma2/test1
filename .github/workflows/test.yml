@@ -28,23 +28,23 @@ jobs:
     
     
     
-    - name: win
-      if: runner.os == 'Windows'
-      shell: bash
-      run:  |
-        echo ${{ github.workspace }}
-        sed -r -i 's/\${installer:adito.installer.scaleui}/${{ env.scaleuiwin }}/g' QF-Test/ADITOdesigner.conf
-        sed -r -i 's/\${adito.complete.final.version}/${{ env.fullVersion }}/g' QF-Test/ADITOdesigner.conf
-        sed -r -i 's!jdkhome="jre"!jdkhome="${{ env.JAVA_HOME }}"!g' QF-Test/ADITOdesigner.conf
-        sed -r -i 's!\${installer:adito.installer.basepath}/lib/designer!${{ github.workspace }}/application/designer/target/aditodesigner!g' QF-Test/ADITOdesigner.conf
-        sed -r -i 's!\${installer:adito.installer.basepath}!${{ github.workspace }}!g' QF-Test/ADITOdesigner.conf
-        mv -f QF-Test/ADITOdesigner.conf application/designer/target/aditodesigner/etc
-        cat application/designer/target/aditodesigner/etc/ADITOdesigner.conf
-      env:
-        scaleuiwin: '-J-Dsun.java2d.dpiaware=true'
-        fullVersion: '1234.5.6.7'
+#    - name: win
+#      if: runner.os == 'Windows'
+#      shell: bash
+#      run:  |
+#        echo ${{ github.workspace }}
+#        sed -r -i 's/\${installer:adito.installer.scaleui}/${{ env.scaleuiwin }}/g' QF-Test/ADITOdesigner.conf
+#        sed -r -i 's/\${adito.complete.final.version}/${{ env.fullVersion }}/g' QF-Test/ADITOdesigner.conf
+#        sed -r -i 's!jdkhome="jre"!jdkhome="${{ env.JAVA_HOME }}"!g' QF-Test/ADITOdesigner.conf
+#        sed -r -i 's!\${installer:adito.installer.basepath}/lib/designer!${{ github.workspace }}/application/designer/target/aditodesigner!g' QF-Test/ADITOdesigner.conf
+#        sed -r -i 's!\${installer:adito.installer.basepath}!${{ github.workspace }}!g' QF-Test/ADITOdesigner.conf
+#        mv -f QF-Test/ADITOdesigner.conf application/designer/target/aditodesigner/etc
+#        cat application/designer/target/aditodesigner/etc/ADITOdesigner.conf
+#      env:
+#        scaleuiwin: '-J-Dsun.java2d.dpiaware=true'
+#        fullVersion: '1234.5.6.7'
       
-    - name: win powershell            # check if github.workspace ends with \ or not .... and add cat for safety
+    - name: win powershell            # check if github.workspace ends with \ or not
       if: runner.os == 'Windows'
       shell: pwsh
       run: (Get-Content QF-Test\ADITOdesigner.conf) | % {
@@ -54,7 +54,9 @@ jobs:
                 -replace '${installer:adito.installer.basepath}/lib/designer', '${{ github.workspace }}/application/designer/target/aditodesigner' `
                 -replace '${installer:adito.installer.basepath}', '${{ github.workspace }}' `
              } | Set-Content QF-Test\ADITOdesigner.conf; `
-             Move-Item -Path ${{ github.workspace }}\QF-Test/ADITOdesigner.conf -Destination ${{ github.workspace }}\application\designer\target\aditodesigner\etc
+             Move-Item -Path QF-Test/ADITOdesigner.conf -Destination application\designer\target\aditodesigner\etc -Force; `
+             Get-Content -Path application\designer\target\aditodesigner\etc\ADITOdesigner.conf; `
+             Get-ChildItem Env':'
       env:
         scaleuiwin: '-J-Dsun.java2d.dpiaware=true'
         fullVersion: '1234.5.6.7'
