@@ -11,6 +11,7 @@ inputs:
 runs:
   using: "composite"
   steps:
+  
     # Build vorbereiten
     - name: Prepare Maven Build
       uses: ./.github/workflows/prepare-action
@@ -19,39 +20,55 @@ runs:
         nexus_password: ${{ inputs.nexus_password }}
     
     
-    - name: change scaleui (windows)
+    - name: ADITOdesigner.conf (win)
       if: runner.os == 'Windows'
-      shell: bash
-      run: sed -i 's/\${installer:adito.installer.scaleui}/$scaleuiwin/g' QF-Test/ADITOdesigner.conf
+      shell: pwsh
+      run: (Get-Content QF-Test\ADITOdesigner.conf) | % {
+             $_ -replace [regex]::escape('${installer:adito.installer.scaleui}'), '${{ env.scaleuiwin }}' `
+                -replace [regex]::escape('${adito.complete.final.version}'), '${{ env.fullVersion }}' `
+                -replace 'jdkhome="jre"', 'jdkhome="${{ env.JAVA_HOME }}"' `
+                -replace [regex]::escape('${installer:adito.installer.basepath}/lib/designer'), '${{ github.workspace }}/application/designer/target/aditodesigner' `
+                -replace [regex]::escape('${installer:adito.installer.basepath}'), '${{ github.workspace }}' `
+             } | Set-Content QF-Test\ADITOdesigner.conf; `
+             Move-Item -Path QF-Test/ADITOdesigner.conf -Destination application\designer\target\aditodesigner\etc -Force; `
+             Get-Content -Path application\designer\target\aditodesigner\etc\ADITOdesigner.conf
       env:
         scaleuiwin: '-J-Dsun.java2d.dpiaware=true'
-      
-    - name: change scaleui (linux)
+        fullVersion: '1234.5.6.7'
+    
+    
+    - name: ADITOdesigner.conf (lin)
       if: runner.os == 'Linux'
       shell: bash
-      run: sed -i 's/\${installer:adito.installer.scaleui}/$scaleuilin/g' QF-Test/ADITOdesigner.conf
-      env:
-        scaleuilin: ''
-      
-    - name: change scaleui (macos)
-      if: runner.os == 'macOS'
-      shell: bash
-      run: sed -i 's/\${installer:adito.installer.scaleui}/$scaleuimac/g' QF-Test/ADITOdesigner.conf
-      env:
-        scaleuimac: ''
-    
-    
-    - name: remaining prep
-      shell: bash
       run:  |
-        sed -i 's/\${adito.complete.final.version}/${{ fullVersion }}/g' QF-Test/ADITOdesigner.conf
+        sed -i 's/\${installer:adito.installer.scaleui}/${{ env.scaleuilin }}/g' QF-Test/ADITOdesigner.conf
+        sed -i 's/\${adito.complete.final.version}/${{ env.fullVersion }}/g' QF-Test/ADITOdesigner.conf
         sed -i 's!jdkhome="jre"!jdkhome="${{ env.JAVA_HOME }}"!g' QF-Test/ADITOdesigner.conf
         sed -i 's!\${installer:adito.installer.basepath}/lib/designer!${{ github.workspace }}/application/designer/target/aditodesigner!g' QF-Test/ADITOdesigner.conf
-        sed -i 's/\${installer:adito.installer.basepath}/${{ github.workspace }}/g' QF-Test/ADITOdesigner.conf
+        sed -i 's!\${installer:adito.installer.basepath}!${{ github.workspace }}!g' QF-Test/ADITOdesigner.conf
         mv -f QF-Test/ADITOdesigner.conf application/designer/target/aditodesigner/etc
         cat application/designer/target/aditodesigner/etc/ADITOdesigner.conf
       env:
+        scaleuilin: ''
         fullVersion: '1234.5.6.7'
+    
+    
+    # does max need scaleui? currently empty
+    - name: ADITOdesigner.conf (mac) 
+      if: runner.os == 'macOS'
+      shell: bash
+      run:  |
+        sed -i '' 's/\${installer:adito.installer.scaleui}/${{ env.scaleuimac }}/g' QF-Test/ADITOdesigner.conf
+        sed -i '' 's/\${adito.complete.final.version}/${{ env.fullVersion }}/g' QF-Test/ADITOdesigner.conf
+        sed -i '' 's!jdkhome="jre"!jdkhome="${{ env.JAVA_HOME }}"!g' QF-Test/ADITOdesigner.conf
+        sed -i '' 's!\${installer:adito.installer.basepath}/lib/designer!${{ github.workspace }}/application/designer/target/aditodesigner!g' QF-Test/ADITOdesigner.conf
+        sed -i '' 's!\${installer:adito.installer.basepath}!${{ github.workspace }}!g' QF-Test/ADITOdesigner.conf
+        mv -f QF-Test/ADITOdesigner.conf application/designer/target/aditodesigner/etc
+        cat application/designer/target/aditodesigner/etc/ADITOdesigner.conf
+      env:
+        scaleuimac: ''
+        fullVersion: '1234.5.6.7'
+    
     
     
     # UITests ausf�hren
@@ -72,5 +89,6 @@ runs:
       working-directory: ./QF-Test
       shell: bash
       run: qftest-6.0.3/bin/qftest -batch -nomessagewindow -verbose -run qftest-6.0.3/demo/carconfig/carconfig_de.qft
+    
     
     
