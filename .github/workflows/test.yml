@@ -48,11 +48,11 @@ jobs:
       if: runner.os == 'Windows'
       shell: pwsh
       run: (Get-Content QF-Test\ADITOdesigner.conf) | % {
-             $_ -replace '${installer:adito.installer.scaleui}', '${{ env.scaleuiwin }}' `
-                -replace '${adito.complete.final.version}', '${{ env.fullVersion }}' `
+             $_ -replace [regex]::escape('${installer:adito.installer.scaleui}'), '${{ env.scaleuiwin }}' `
+                -replace [regex]::escape('${adito.complete.final.version}'), '${{ env.fullVersion }}' `
                 -replace 'jdkhome="jre"', '${{ env.JAVA_HOME }}' `
-                -replace '${installer:adito.installer.basepath}/lib/designer', '${{ github.workspace }}/application/designer/target/aditodesigner' `
-                -replace '${installer:adito.installer.basepath}', '${{ github.workspace }}' `
+                -replace [regex]::escape('${installer:adito.installer.basepath}/lib/designer'), '${{ github.workspace }}/application/designer/target/aditodesigner' `
+                -replace [regex]::escape('${installer:adito.installer.basepath}'), '${{ github.workspace }}' `
              } | Set-Content QF-Test\ADITOdesigner.conf; `
              Move-Item -Path QF-Test/ADITOdesigner.conf -Destination application\designer\target\aditodesigner\etc -Force; `
              Get-Content -Path application\designer\target\aditodesigner\etc\ADITOdesigner.conf; `
