@@ -33,7 +33,7 @@ jobs:
       run: (Get-Content QF-Test\ADITOdesigner.conf) | % {
              $_ -replace [regex]::escape('${installer:adito.installer.scaleui}'), '${{ env.scaleuiwin }}' `
                 -replace [regex]::escape('${adito.complete.final.version}'), '${{ env.fullVersion }}' `
-                -replace 'jdkhome="jre"', '${{ env.JAVA_HOME }}' `
+                -replace 'jdkhome="jre"', 'jdkhome="${{ env.JAVA_HOME }}"' `
                 -replace [regex]::escape('${installer:adito.installer.basepath}/lib/designer'), '${{ github.workspace }}/application/designer/target/aditodesigner' `
                 -replace [regex]::escape('${installer:adito.installer.basepath}'), '${{ github.workspace }}' `
              } | Set-Content QF-Test\ADITOdesigner.conf; `
