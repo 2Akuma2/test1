@@ -55,8 +55,7 @@ jobs:
                 -replace [regex]::escape('${installer:adito.installer.basepath}'), '${{ github.workspace }}' `
              } | Set-Content QF-Test\ADITOdesigner.conf; `
              Move-Item -Path QF-Test/ADITOdesigner.conf -Destination application\designer\target\aditodesigner\etc -Force; `
-             Get-Content -Path application\designer\target\aditodesigner\etc\ADITOdesigner.conf; `
-             Get-ChildItem Env':'
+             Get-Content -Path application\designer\target\aditodesigner\etc\ADITOdesigner.conf
       env:
         scaleuiwin: '-J-Dsun.java2d.dpiaware=true'
         fullVersion: '1234.5.6.7'
