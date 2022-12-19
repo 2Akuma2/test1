@@ -20,6 +20,26 @@ runs:
         nexus_password: ${{ inputs.nexus_password }}
     
     
+    - name: install qfs linux
+      if: runner.os == 'Linux'
+      working-directory: ./QF-Test/lin
+      shell: bash
+      run:  |
+        tar xzvf qftest.tar.gz
+        cd qftest/qftest-6.0.4
+        printf 'y\ny\n1024\ng\n' | ./setup
+    
+    
+    - name: install qfs macos
+      if: runner.os == 'macOS'
+      working-directory: ./QF-Test/lin
+      shell: bash
+      run:  |
+        sudo hdiutil attach qftest.dmg
+        sudo cp -R /Volumes/qftest ${{ github.workspace }}/QF-Test/lin
+        sudo hdiutil unmount /Volumes/qftest/
+    
+    
     - name: ADITOdesigner.conf (win)
       if: runner.os == 'Windows'
       shell: pwsh
@@ -74,21 +94,21 @@ runs:
     # UITests ausf�hren
     - name: UI Tests windows
       if: runner.os == 'Windows'
-      working-directory: ./QF-Test
+      working-directory: ./QF-Test/win
       shell: bash
-      run: qftest-6.0.3/bin/qftestc.exe -batch -nomessagewindow -verbose -run qftest-6.0.3/demo/carconfig/carconfig_de.qft
+      run: qftest-6.0.4/bin/qftestc.exe -batch -nomessagewindow -verbose -run qftest-6.0.3/demo/carconfig/carconfig_de.qft
     
     - name: UI Tests linux
       if: runner.os == 'Linux'
-      working-directory: ./QF-Test
+      working-directory: ./QF-Test/lin
       shell: bash
-      run: qftest-6.0.3/bin/qftest -batch -nomessagewindow -verbose -run qftest-6.0.3/demo/carconfig/carconfig_de.qft
+      run: qftest-6.0.4/bin/qftest -batch -nomessagewindow -verbose -run qftest-6.0.3/demo/carconfig/carconfig_de.qft
     
     - name: UI Tests macos
       if: runner.os == 'macOS'
-      working-directory: ./QF-Test
+      working-directory: ./QF-Test/mac
       shell: bash
-      run: qftest-6.0.3/bin/qftest -batch -nomessagewindow -verbose -run qftest-6.0.3/demo/carconfig/carconfig_de.qft
+      run: qftest-6.0.4/bin/qftest -batch -nomessagewindow -verbose -run qftest-6.0.3/demo/carconfig/carconfig_de.qft
     
     
     
