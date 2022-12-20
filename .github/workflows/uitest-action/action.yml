@@ -1,5 +1,5 @@
 name: "Execute UI Tests"
-description: "Executes all ui tests"
+description: "Executes all ui tests" # needs license & ADITOdesigner.conf in QF-Test folder
 inputs:
   nexus_user:
     description: 'Nexus Username'
@@ -22,14 +22,14 @@ runs:
 ####
     
     # download qfs
-    - name: download qfs-sfx.exe windows
+    - name: download qfs-sfx.exe (win)
       if: runner.os == 'Windows'
       working-directory: ./QF-Test
       shell: pwsh
       run: (new-object System.Net.WebClient).DownloadFile('https://www.qfs.de/fileadmin/Webdata/pub/qftest/QF-Test-6.0.4-sfx.exe','${{ github.workspace }}\QF-Test\QF-Test-6.0.4-sfx.exe')
     
     
-    - name: download qfs.tar linux
+    - name: download qfs.tar (lin)
       if: runner.os == 'Linux'
       working-directory: ./QF-Test
       shell: bash
@@ -38,7 +38,7 @@ runs:
         mv QF-Test-6.0.4.tar.gz qftest.tar.gz
     
     
-    - name: download qfs.dmg macos
+    - name: download qfs.dmg (mac)
       if: runner.os == 'macOS'
       working-directory: ./QF-Test
       shell: bash
@@ -47,7 +47,7 @@ runs:
 ####
     
     # install qfs
-    - name: install qfs linux
+    - name: install qfs (lin)
       if: runner.os == 'Linux'
       working-directory: ./QF-Test
       shell: bash
@@ -57,7 +57,7 @@ runs:
         printf 'y\ny\n1024\ng\n' | ./setup
     
     
-    - name: install qfs macos
+    - name: install qfs (mac)
       if: runner.os == 'macOS'
       working-directory: ./QF-Test
       shell: bash
@@ -79,8 +79,9 @@ runs:
                 -replace [regex]::escape('${installer:adito.installer.basepath}/lib/designer'), '${{ github.workspace }}/application/designer/target/aditodesigner' `
                 -replace [regex]::escape('${installer:adito.installer.basepath}'), '${{ github.workspace }}' `
              } | Set-Content QF-Test\ADITOdesigner.conf; `
-             Move-Item -Path QF-Test/ADITOdesigner.conf -Destination application\designer\target\aditodesigner\etc -Force; `
-             Get-Content -Path application\designer\target\aditodesigner\etc\ADITOdesigner.conf
+             Move-Item -Path QF-Test\ADITOdesigner.conf -Destination application\designer\target\aditodesigner\etc -Force; `
+             Get-Content -Path application\designer\target\aditodesigner\etc\ADITOdesigner.conf `
+             Move-Item -Path QF-Test\license -Destination QF-Test\qftest-6.0.4 -Force
       env:
         scaleuiwin: '-J-Dsun.java2d.dpiaware=true'
         fullVersion: '1234.5.6.7'
@@ -97,6 +98,7 @@ runs:
         sed -i 's!\${installer:adito.installer.basepath}!${{ github.workspace }}!g' QF-Test/ADITOdesigner.conf
         mv -f QF-Test/ADITOdesigner.conf application/designer/target/aditodesigner/etc
         cat application/designer/target/aditodesigner/etc/ADITOdesigner.conf
+        mv -f QF-Test/license QF-Test/qftest-6.0.4
       env:
         scaleuilin: ''
         fullVersion: '1234.5.6.7'
@@ -114,6 +116,7 @@ runs:
         sed -i '' 's!\${installer:adito.installer.basepath}!${{ github.workspace }}!g' QF-Test/ADITOdesigner.conf
         mv -f QF-Test/ADITOdesigner.conf application/designer/target/aditodesigner/etc
         cat application/designer/target/aditodesigner/etc/ADITOdesigner.conf
+        mv -f QF-Test/license QF-Test/qftest-6.0.4
       env:
         scaleuimac: ''
         fullVersion: '1234.5.6.7'
