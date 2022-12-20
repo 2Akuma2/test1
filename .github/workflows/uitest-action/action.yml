@@ -87,7 +87,7 @@ runs:
                 -replace [regex]::escape('${installer:adito.installer.basepath}'), '${{ github.workspace }}' `
              } | Set-Content QF-Test\ADITOdesigner.conf; `
              Move-Item -Path QF-Test\ADITOdesigner.conf -Destination application\designer\target\aditodesigner\etc -Force; `
-             Get-Content -Path application\designer\target\aditodesigner\etc\ADITOdesigner.conf `
+             Get-Content -Path application\designer\target\aditodesigner\etc\ADITOdesigner.conf; `
              Move-Item -Path QF-Test\license -Destination QF-Test\qftest\qftest-6.0.4 -Force
       env:
         scaleuiwin: '-J-Dsun.java2d.dpiaware=true'
