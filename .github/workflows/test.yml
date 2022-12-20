@@ -25,8 +25,63 @@ jobs:
         distribution: 'adopt'
     
     
+####
+    
+    # download qfs
+    - name: download qfs-sfx.exe (win)
+      if: runner.os == 'Windows'
+      working-directory: ./QF-Test
+      shell: pwsh
+      run: wget https://www.qfs.de/fileadmin/Webdata/pub/qftest/QF-Test-6.0.4-sfx.exe -OutFile QF-Test-6.0.4-sfx.exe
     
     
+    - name: download qfs.tar (lin)
+      if: runner.os == 'Linux'
+      working-directory: ./QF-Test
+      shell: bash
+      run:  |
+        wget "https://www.qfs.de/fileadmin/Webdata/pub/qftest/QF-Test-6.0.4.tar.gz"
+        mv QF-Test-6.0.4.tar.gz qftest.tar.gz
+    
+    
+    - name: download qfs.dmg (mac)
+      if: runner.os == 'macOS'
+      working-directory: ./QF-Test
+      shell: bash
+      run: curl -o qftest.dmg 'https://www.qfs.de/fileadmin/Webdata/pub/qftest/QF-Test-6.0.4.dmg'
+    
+####
+    
+    # install qfs
+    - name: install qfs (win)
+      if: runner.os == 'Linux'
+      working-directory: ./QF-Test
+      shell: cmd
+      run: QF-Test-6.0.4-sfx.exe
+    
+    
+    - name: install qfs (lin)
+      if: runner.os == 'Linux'
+      working-directory: ./QF-Test
+      shell: bash
+      run:  |
+        tar xzvf qftest.tar.gz
+        cd qftest/qftest-6.0.4
+        printf 'y\ny\n1024\ng\n' | ./setup
+    
+    
+    - name: install qfs (mac)
+      if: runner.os == 'macOS'
+      working-directory: ./QF-Test
+      shell: bash
+      run:  |
+        sudo hdiutil attach qftest.dmg
+        sudo cp -R /Volumes/qftest ${{ github.workspace }}/QF-Test
+        sudo hdiutil unmount /Volumes/qftest/
+    
+####
+    
+    # edit ADITOdesigner.conf & move ADITOdesigner.conf + license to the right directory
     - name: ADITOdesigner.conf (win)
       if: runner.os == 'Windows'
       shell: pwsh
@@ -37,8 +92,9 @@ jobs:
                 -replace [regex]::escape('${installer:adito.installer.basepath}/lib/designer'), '${{ github.workspace }}/application/designer/target/aditodesigner' `
                 -replace [regex]::escape('${installer:adito.installer.basepath}'), '${{ github.workspace }}' `
              } | Set-Content QF-Test\ADITOdesigner.conf; `
-             Move-Item -Path QF-Test/ADITOdesigner.conf -Destination application\designer\target\aditodesigner\etc -Force; `
-             Get-Content -Path application\designer\target\aditodesigner\etc\ADITOdesigner.conf
+             Move-Item -Path QF-Test\ADITOdesigner.conf -Destination application\designer\target\aditodesigner\etc -Force; `
+             Get-Content -Path application\designer\target\aditodesigner\etc\ADITOdesigner.conf `
+             Move-Item -Path QF-Test\license -Destination QF-Test\qftest\qftest-6.0.4 -Force
       env:
         scaleuiwin: '-J-Dsun.java2d.dpiaware=true'
         fullVersion: '1234.5.6.7'
@@ -55,6 +111,7 @@ jobs:
         sed -i 's!\${installer:adito.installer.basepath}!${{ github.workspace }}!g' QF-Test/ADITOdesigner.conf
         mv -f QF-Test/ADITOdesigner.conf application/designer/target/aditodesigner/etc
         cat application/designer/target/aditodesigner/etc/ADITOdesigner.conf
+        mv -f QF-Test/license QF-Test/qftest/qftest-6.0.4
       env:
         scaleuilin: ''
         fullVersion: '1234.5.6.7'
@@ -72,10 +129,31 @@ jobs:
         sed -i '' 's!\${installer:adito.installer.basepath}!${{ github.workspace }}!g' QF-Test/ADITOdesigner.conf
         mv -f QF-Test/ADITOdesigner.conf application/designer/target/aditodesigner/etc
         cat application/designer/target/aditodesigner/etc/ADITOdesigner.conf
+        mv -f QF-Test/license QF-Test/qftest/qftest-6.0.4
       env:
         scaleuimac: ''
         fullVersion: '1234.5.6.7'
     
+####
+    
+    # execute ui tests
+    - name: UI Tests (win)
+      if: runner.os == 'Windows'
+      working-directory: ./QF-Test
+      shell: cmd
+      run: qftest\qftest-6.0.4\bin\qftestc.exe -batch -nomessagewindow -verbose -run qftest\qftest-6.0.4\demo\carconfig\carconfig_de.qft
+    
+    - name: UI Tests (lin)
+      if: runner.os == 'Linux'
+      working-directory: ./QF-Test
+      shell: bash
+      run: qftest/qftest-6.0.4/bin/qftest -batch -nomessagewindow -verbose -run qftest/qftest-6.0.4/demo/carconfig/carconfig_de.qft
+    
+    - name: UI Tests (mac)
+      if: runner.os == 'macOS'
+      working-directory: ./QF-Test
+      shell: bash
+      run: qftest/qftest-6.0.4/bin/qftest -batch -nomessagewindow -verbose -run qftest/qftest-6.0.4/demo/carconfig/carconfig_de.qft
     
     
     
