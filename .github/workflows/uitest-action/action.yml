@@ -26,7 +26,7 @@ runs:
       if: runner.os == 'Windows'
       working-directory: ./QF-Test
       shell: pwsh
-      run: (new-object System.Net.WebClient).DownloadFile('https://www.qfs.de/fileadmin/Webdata/pub/qftest/QF-Test-6.0.4-sfx.exe','${{ github.workspace }}\QF-Test\QF-Test-6.0.4-sfx.exe')
+      run: wget https://www.qfs.de/fileadmin/Webdata/pub/qftest/QF-Test-6.0.4-sfx.exe -OutFile QF-Test-6.0.4-sfx.exe
     
     
     - name: download qfs.tar (lin)
