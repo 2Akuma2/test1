@@ -67,7 +67,7 @@ jobs:
       run:  |
         tar xzvf qftest.tar.gz
         cd qftest/qftest-6.0.4
-        printf 'y\ny\n1024\ng\n' | ./qftest/qftest-6.0.4/setup.sh
+        printf 'y\ny\n1024\ng\n' | qftest/qftest-6.0.4/setup.sh
     
     
     - name: install qfs (mac)
@@ -77,7 +77,7 @@ jobs:
       run:  |
         sudo hdiutil attach qftest.dmg
         sudo cp -R /Volumes/QF-Test\ 6.0.4 ${{ github.workspace }}/QF-Test
-        sudo hdiutil unmount /Volumes/qftest/
+        sudo hdiutil unmount /Volumes/QF-Test\ 6.0.4/
     
 ####
     
