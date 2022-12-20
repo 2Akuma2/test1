@@ -140,10 +140,7 @@ jobs:
         cd Applications
         ls
         printf "\n"
-        cd bin
-        ls
-        printf "\n"
-        mv -f QF-Test/license QF-Test/QF-Test\ 6.0.4/Applications
+        mv -f QF-Test/license QF-Test/QF-Test\ 6.0.4
       env:
         scaleuimac: ''
         fullVersion: '1234.5.6.7'
@@ -167,7 +164,7 @@ jobs:
       if: runner.os == 'macOS'
       working-directory: ./QF-Test
       shell: bash
-      run: qftest/qftest-6.0.4/bin/qftest -batch -nomessagewindow -verbose -run qftest/qftest-6.0.4/demo/carconfig/carconfig_de.qft
+      run: QF-Test\ 6.0.4/qf-test.app -batch -nomessagewindow -verbose -run QF-Test\ 6.0.4/Applications/Utilities/demo/carconfig/carconfig_de.qft
     
     
     
