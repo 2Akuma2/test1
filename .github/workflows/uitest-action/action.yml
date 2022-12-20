@@ -131,19 +131,19 @@ runs:
 ####
     
     # execute ui tests
-    - name: UI Tests windows
+    - name: UI Tests (win)
       if: runner.os == 'Windows'
       working-directory: ./QF-Test
       shell: cmd
       run: qftest\qftest-6.0.4\bin\qftestc.exe -batch -nomessagewindow -verbose -run qftest\qftest-6.0.4\demo\carconfig\carconfig_de.qft
     
-    - name: UI Tests linux
+    - name: UI Tests (lin)
       if: runner.os == 'Linux'
       working-directory: ./QF-Test
       shell: bash
       run: qftest/qftest-6.0.4/bin/qftest -batch -nomessagewindow -verbose -run qftest/qftest-6.0.4/demo/carconfig/carconfig_de.qft
     
-    - name: UI Tests macos
+    - name: UI Tests (mac)
       if: runner.os == 'macOS'
       working-directory: ./QF-Test
       shell: bash
