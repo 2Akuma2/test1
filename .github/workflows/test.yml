@@ -54,14 +54,6 @@ jobs:
     
 ####
     
-    - name: check volumes
-      if: runner.os == 'macOS'
-      working-directory: /Volumes
-      shell: bash
-      run: |
-        sudo pwd
-        sudo ls
-    
     # install qfs
     - name: install qfs (win)
       if: runner.os == 'Windows'
@@ -86,6 +78,12 @@ jobs:
       shell: bash
       run:  |
         sudo hdiutil attach qftest.dmg
+        sudo cd /Volumes
+        sudo pwd
+        sudo ls
+        sudo cd QF-Test
+        sudo pwd
+        sudo ls
         sudo cp -R /Volumes/QF-Test\ 6.0.4 ${{ github.workspace }}/QF-Test
         sudo hdiutil unmount /Volumes/QF-Test\ 6.0.4/
     
