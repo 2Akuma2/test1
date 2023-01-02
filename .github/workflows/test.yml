@@ -77,6 +77,8 @@ jobs:
       working-directory: ./QF-Test
       shell: bash
       run:  |
+        sudo cd /Volumes
+        sudo ls
         sudo hdiutil attach qftest.dmg
         sudo cp -R /Volumes/QF-Test\ 6.0.4 ${{ github.workspace }}/QF-Test
         sudo hdiutil unmount /Volumes/QF-Test\ 6.0.4/
