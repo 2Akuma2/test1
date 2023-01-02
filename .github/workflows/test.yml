@@ -78,7 +78,6 @@ jobs:
       shell: bash
       run:  |
         sudo hdiutil attach qftest.dmg
-        sudo ls /Volumes
         sudo cp -R /Volumes/QF-Test\ 6.0.4 ${{ github.workspace }}/QF-Test
         sudo hdiutil unmount /Volumes/QF-Test\ 6.0.4/
     
@@ -137,9 +136,6 @@ jobs:
         sudo mv -f QF-Test/license QF-Test/QF-Test\ 6.0.4
         printf "\n"
         cd QF-Test\ 6.0.4
-        ls
-        printf "\n"
-        cd qf-test.app
         ls
       env:
         scaleuimac: ''
