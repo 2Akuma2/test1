@@ -54,6 +54,14 @@ jobs:
     
 ####
     
+    - name: check volumes
+      if: runner.os == 'macOS'
+      working-directory: /Volumes
+      shell: bash
+      run: |
+        sudo pwd
+        sudo ls
+    
     # install qfs
     - name: install qfs (win)
       if: runner.os == 'Windows'
@@ -81,16 +89,7 @@ jobs:
         sudo cp -R /Volumes/QF-Test\ 6.0.4 ${{ github.workspace }}/QF-Test
         sudo hdiutil unmount /Volumes/QF-Test\ 6.0.4/
     
-####
-    
-    - name: check volumes
-      if: runner.os == 'macOS'
-      working-directory: /Volumes
-      shell: bash
-      run: |
-        sudo pwd
-        sudo ls
-    
+####    
     
     # edit ADITOdesigner.conf & move ADITOdesigner.conf + license to the right directory
     - name: ADITOdesigner.conf (win)
