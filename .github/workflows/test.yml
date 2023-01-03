@@ -130,23 +130,7 @@ jobs:
         sed -i '' 's!\${installer:adito.installer.basepath}/lib/designer!${{ github.workspace }}/application/designer/target/aditodesigner!g' QF-Test/ADITOdesigner.conf
         sed -i '' 's!\${installer:adito.installer.basepath}!${{ github.workspace }}!g' QF-Test/ADITOdesigner.conf
         mv -f QF-Test/ADITOdesigner.conf application/designer/target/aditodesigner/etc
-        # cat application/designer/target/aditodesigner/etc/ADITOdesigner.conf
-        ls
-        printf "\n"
-        # sudo mv -f QF-Test/license QF-Test/QF-Test\ 6.0.4
-        # printf "\n"
-        cd QF-Test
-        ls
-        printf "\n"
-        cd QF-Test\ 6.0.4/
-        cat ReadMeMacOS.txt
-        #ls
-        #printf "\n"
-        #cd qf-test.app/
-        #ls
-        #printf "\n"
-        #cd Contents/
-        #ls
+        cat application/designer/target/aditodesigner/etc/ADITOdesigner.conf
       env:
         scaleuimac: ''
         fullVersion: '1234.5.6.7'
@@ -170,7 +154,7 @@ jobs:
       if: runner.os == 'macOS'
       working-directory: ./QF-Test
       shell: bash
-      run: open QF-Test\ 6.0.4/qf-test.app --args -batch -nomessagewindow -verbose -run QF-Test\ 6.0.4/Applications/Utilities/demo/carconfig/carconfig_de.qft
+      run: open QF-Test\ 6.0.4/qf-test.app --args -batch -nomessagewindow -verbose -license license -run QF-Test\ 6.0.4/Applications/Utilities/demo/carconfig/carconfig_de.qft
     
     
     
