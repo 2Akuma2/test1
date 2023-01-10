@@ -14,48 +14,23 @@ jobs:
     runs-on: ubuntu-latest
     name: test it!
     steps:
+    
     - name: JDK
       uses: actions/setup-java@v3
       with:
         java-version: 13
         distribution: 'adopt'
 
-    - name: settings.xml
-      uses: whelk-io/maven-settings-xml-action@v9
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+    - name: Build
+      uses: ./.github/workflows/prepare-action
       with:
-        servers: >
-          [{ 
-            "id": "default", 
-            "username": "${{ inputs.nexus_user }}", 
-            "password": "${{ inputs.nexus_password }}"
-          }, 
-          {
-            "id": "snapshots", 
-            "username": "${{ inputs.nexus_user }}", 
-            "password": "${{ inputs.nexus_password }}"
-          }]
-        repositories: >
-          [{ 
-            "id": "default", 
-            "name": "default", 
-            "url": "https://nexus.adito.cloud/repository/public/", 
-            "releases": { "enabled": "true" } 
-          }, 
-          { 
-            "id": "snapshots", 
-            "name": "snapshots", 
-            "url": "https://nexus.adito.cloud/repository/snapshots/", 
-            "snapshots": { "enabled": "true", "updatePolicy": "always" } 
-          }]
-        plugin_repositories: >
-          [{ 
-             "id": "default", 
-             "url": "https://nexus.adito.cloud/repository/public/", 
-             "releases": { "enabled": "true" }, 
-             "snapshots": { "enabled": "true", "updatePolicy": "always" } 
-          }]
+        nexus_user: ABCD
+        nexus_password: ABCD1234
         
-        - name: print settings.xml
-          shell: bash
-          run: cat ~/.m2/settings.xml
+    - name: print settings.xml
+      shell: bash
+      run: cat ~/.m2/settings.xml
         
