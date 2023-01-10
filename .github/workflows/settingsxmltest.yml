@@ -1,0 +1,61 @@
+on:
+  workflow_dispatch:
+    inputs:
+      nexus_user:
+        description: 'Nexus Username'
+        required: true
+      nexus_password:
+        description: 'Nexus Password'
+        required: true
+
+
+jobs:
+  test_job:
+    runs-on: ubuntu-latest
+    name: test it!
+    steps:
+    - name: JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: 13
+        distribution: 'adopt'
+
+    - name: settings.xml
+      uses: whelk-io/maven-settings-xml-action@v9
+      with:
+        servers: >
+          [{ 
+            "id": "default", 
+            "username": "${{ inputs.nexus_user }}", 
+            "password": "${{ inputs.nexus_password }}"
+          }, 
+          {
+            "id": "snapshots", 
+            "username": "${{ inputs.nexus_user }}", 
+            "password": "${{ inputs.nexus_password }}"
+          }]
+        repositories: >
+          [{ 
+            "id": "default", 
+            "name": "default", 
+            "url": "https://nexus.adito.cloud/repository/public/", 
+            "releases": { "enabled": "true" } 
+          }, 
+          { 
+            "id": "snapshots", 
+            "name": "snapshots", 
+            "url": "https://nexus.adito.cloud/repository/snapshots/", 
+            "snapshots": { "enabled": "true", "updatePolicy": "always" } 
+          }]
+        plugin_repositories: >
+          [{ 
+             "id": "default", 
+             "url": "https://nexus.adito.cloud/repository/public/", 
+             "releases": { "enabled": "true" }, 
+             "snapshots": { "enabled": "true", "updatePolicy": "always" } 
+          }]
+        
+        - name: print settings.xml
+          shell: bash
+          run: cat ~/.m2/settings.xml
+        
