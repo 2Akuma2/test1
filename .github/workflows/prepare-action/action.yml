@@ -261,7 +261,8 @@ runs:
       if: runner.os == 'Linux'
       shell: bash
       run: |
-        sed -i 's!\s*FLAG!111!g' ~/.m2/settings.xml
+        # sed -i 's!\s*FLAG!111!g' ~/.m2/settings.xml
+        perl -i -pe 's/<\/profile>[\S\s]*FLAG\s*<\/id>/g' ~/.m2/settings.xml
         sed -i 's/github/adito.m2/g' ~/.m2/settings.xml
         cat ~/.m2/settings.xml
     
