@@ -258,12 +258,11 @@ runs:
              Get-Content -Path ~\.m2\settings.xml;
              
       # <\/profile>[\S\s]*FLAG\s*<\/id>
-      
+      # sed -i 's!\s*FLAG!111!g' ~/.m2/settings.xml
     - name: print settings.xml (lin)
       if: runner.os == 'Linux'
       shell: bash
       run: |
-        # sed -i 's!\s*FLAG!111!g' ~/.m2/settings.xml
         perl -i -pe 's/<\/profile>[\S\s]*FLAG\s*<\/id>/111/g' ~/.m2/settings.xml
         sed -i 's/github/adito.m2/g' ~/.m2/settings.xml
         cat ~/.m2/settings.xml
