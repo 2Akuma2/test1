@@ -183,19 +183,18 @@ runs:
           [
             {
               "id": "adito.m2",
-              plugin_repositories: >
-                [
-                  {
-                    "id": "central",
-                    "url": "https://nexus.adito.cloud/repository/public",
-                    "releases": {
-                      "enabled": "true"
-                    },
-                    "snapshots": {
-                      "enabled": "true"
-                    }
+              "pluginRepositories": {
+                "pluginRepository": {
+                  "id": "central",
+                  "url": "https://nexus.adito.cloud/repository/public",
+                  "releases": {
+                    "enabled": "true"
+                  },
+                  "snapshots": {
+                    "enabled": "true"
                   }
-                ],
+                }
+              },
               "properties": {
                 "repository.releases": "https://nexus.adito.cloud/repository/releases/",
                 "repository.snapshots": "https://nexus.adito.cloud/repository/snapshots/"
@@ -246,7 +245,19 @@ runs:
               }
             }
           ]
-        #
+        plugin_repositories: >
+          [
+            {
+              "id": "central",
+              "url": "https://nexus.adito.cloud/repository/public",
+              "releases": {
+                "enabled": "true"
+              },
+              "snapshots": {
+                "enabled": "true"
+              }
+            }
+          ]
           
           
     - name: print settings.xml (win)
