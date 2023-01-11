@@ -252,16 +252,16 @@ runs:
       if: runner.os == 'Windows'
       shell: pwsh
       run:  (Get-Content ~\.m2\settings.xml) | % {
-             $_ -replace '<\/profile>[\S\s]*FLAG\s*<\/id>', '' `
+             $_ -replace 'FLAG\s*<\/id>', '1' `
                 -replace 'github', 'adito.m2' `
              } | Set-Content ~\.m2\settings.xml; `
              Get-Content -Path ~\.m2\settings.xml;
-      
+      # <\/profile>[\S\s]*FLAG\s*<\/id>
     - name: print settings.xml (lin)
       if: runner.os == 'Linux'
       shell: bash
       run: |
-        sed -i 's!</profile>[\S\s]*FLAG\s*</id>!!g' ~/.m2/settings.xml
+        sed -i 's!FLAG\s*</id>!1!g' ~/.m2/settings.xml
         sed -i 's/github/adito.m2/g' ~/.m2/settings.xml
         cat ~/.m2/settings.xml
     
