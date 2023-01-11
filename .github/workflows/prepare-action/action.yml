@@ -62,10 +62,7 @@ runs:
     - name: print settings.xml (lin)
       if: runner.os == 'Linux'
       shell: bash
-      run: |
-        sed -i 's/\s*<\/profile>[\S\s]*<profile>[\S\s]*<id>FLAG<\/id>/gm//g' ~/.m2/settings.xml
-        sed -i 's/github/adito.m2/g' ~/.m2/settings.xml
-        cat ~/.m2/settings.xml
+      run: cat ~/.m2/settings.xml
     
     - name: print settings.xml (mac)
       if: runner.os == 'macOS'
@@ -259,7 +256,10 @@ runs:
     - name: print settings.xml (lin)
       if: runner.os == 'Linux'
       shell: bash
-      run:  cat ~/.m2/settings.xml
+      run: |
+        sed -i 's/\s*<\/profile>[\S\s]*<profile>[\S\s]*<id>FLAG<\/id>/gm//g' ~/.m2/settings.xml
+        sed -i 's/github/adito.m2/g' ~/.m2/settings.xml
+        cat ~/.m2/settings.xml
     
     - name: print settings.xml (mac)
       if: runner.os == 'macOS'
