@@ -54,6 +54,26 @@ runs:
 
 
 
+    - name: print settings.xml (win)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run:  Get-Content -Path ~\.m2\settings.xml;
+      
+    - name: print settings.xml (lin)
+      if: runner.os == 'Linux'
+      shell: bash
+      run:  cat ~/.m2/settings.xml
+    
+    - name: print settings.xml (mac)
+      if: runner.os == 'macOS'
+      shell: bash
+      run:  cat ~/.m2/settings.xml
+
+
+
+
+
+
     - name: new settings.xml
       uses: whelk-io/maven-settings-xml-action@v21
       with:
@@ -131,3 +151,17 @@ runs:
         
        
     
+    - name: print settings.xml (win)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run:  Get-Content -Path ~\.m2\settings.xml;
+      
+    - name: print settings.xml (lin)
+      if: runner.os == 'Linux'
+      shell: bash
+      run:  cat ~/.m2/settings.xml
+    
+    - name: print settings.xml (mac)
+      if: runner.os == 'macOS'
+      shell: bash
+      run:  cat ~/.m2/settings.xml
