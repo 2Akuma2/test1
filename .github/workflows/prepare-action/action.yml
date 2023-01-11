@@ -263,7 +263,7 @@ runs:
       if: runner.os == 'Linux'
       shell: bash
       run: |
-        perl -i -pe 's/FLAG\n\s*/111/g' ~/.m2/settings.xml
+        perl -i -pe 's/FLAG\n[:space:]*/111/g' ~/.m2/settings.xml
         sed -i 's/github/adito.m2/g' ~/.m2/settings.xml
         cat ~/.m2/settings.xml
     
