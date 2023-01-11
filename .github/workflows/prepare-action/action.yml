@@ -252,7 +252,7 @@ runs:
       if: runner.os == 'Windows'
       shell: pwsh
       run:  (Get-Content ~\.m2\settings.xml) | % {
-             $_ -replace '\s*FLAG', '111' `
+             $_ -replace '\n\s*FLAG', '111' `
                 -replace 'github', 'adito.m2' `
              } | Set-Content ~\.m2\settings.xml; `
              Get-Content -Path ~\.m2\settings.xml;
@@ -263,7 +263,7 @@ runs:
       if: runner.os == 'Linux'
       shell: bash
       run: |
-        perl -i -pe 's/FLAG\n[:space:]*/111/g' ~/.m2/settings.xml
+        perl -i -pe 's/FLAG\n[[:space:]]*/111/g' ~/.m2/settings.xml
         sed -i 's/github/adito.m2/g' ~/.m2/settings.xml
         cat ~/.m2/settings.xml
     
