@@ -247,11 +247,11 @@ runs:
             }
           ]
         
-          
+       #   <id>\n\s*FLAG\n\s*<
     - name: print settings.xml (win)
       if: runner.os == 'Windows'
       shell: pwsh
-      run:  (Get-Content ~\.m2\settings.xml -Raw) -replace '<id>\n\s*FLAG\n\s*<', '111' -replace 'github', 'adito.m2'
+      run:  (Get-Content ~\.m2\settings.xml -Raw) -replace '</profile>[\S\n\s]*FLAG\n\s*</id>', '111' -replace 'github', 'adito.m2'
               
              
       # <\/profile>[\S\s]*FLAG\s*<\/id>
