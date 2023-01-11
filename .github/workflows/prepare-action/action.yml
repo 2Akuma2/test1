@@ -251,10 +251,9 @@ runs:
     - name: print settings.xml (win)
       if: runner.os == 'Windows'
       shell: pwsh
-      run:  (Get-Content ~\.m2\settings.xml) | % {
-             $_ -replace '\n\s*FLAG', '111' `
+      run:  (Get-Content ~\.m2\settings.xml -Raw) | -replace '\n\s*FLAG', '111' `
                 -replace 'github', 'adito.m2' `
-             } | Set-Content ~\.m2\settings.xml; `
+              | Set-Content ~\.m2\settings.xml; `
              Get-Content -Path ~\.m2\settings.xml;
              
       # <\/profile>[\S\s]*FLAG\s*<\/id>
@@ -263,7 +262,7 @@ runs:
       if: runner.os == 'Linux'
       shell: bash
       run: |
-        perl -i -pe 's/FLAG\n[ ]*<\/id>/111/g' ~/.m2/settings.xml
+        perl -i -pe 's/FLAG\n      <\/id>/111/g' ~/.m2/settings.xml
         sed -i 's/github/adito.m2/g' ~/.m2/settings.xml
         cat ~/.m2/settings.xml
     
