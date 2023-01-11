@@ -251,10 +251,8 @@ runs:
     - name: print settings.xml (win)
       if: runner.os == 'Windows'
       shell: pwsh
-      run:  (Get-Content ~\.m2\settings.xml -Raw) | -replace '\n\s*FLAG', '111' `
-                -replace 'github', 'adito.m2' `
-              | Set-Content ~\.m2\settings.xml; `
-             Get-Content -Path ~\.m2\settings.xml;
+      run:  (Get-Content ~\.m2\settings.xml -Raw) -replace '\n\s*FLAG', '111' -replace 'github', 'adito.m2'
+              
              
       # <\/profile>[\S\s]*FLAG\s*<\/id>
       # sed -i 's!\s*FLAG!111!g' ~/.m2/settings.xml
