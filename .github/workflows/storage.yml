@@ -1,0 +1,79 @@
+    - name: 2.0 settings.xml
+      uses: whelk-io/maven-settings-xml-action@v21
+      with:
+         mirrors: >
+          [
+            {
+              "id": "adito.m2",
+              "mirrorOf": "*",
+              "url": "https://nexus.adito.cloud/repository/public"
+            }
+          ]
+        profiles: >
+          [
+            {
+              "id": "adito.m2",
+              "properties": {
+                "repository.releases": "https://nexus.adito.cloud/repository/releases/",
+                "repository.snapshots": "https://nexus.adito.cloud/repository/snapshots/"
+              }
+            }
+          ]
+        active_profiles: >
+          [
+            "adito.m2"
+          ]
+        servers: >
+          [
+            {
+              "id": "adito.m2",
+              "username": "${{ inputs.nexus_user }}",
+              "password": "${{ inputs.nexus_password }}"
+            }
+          ]
+        
+        repositories: >
+          [
+            {
+              "id": "releases",
+              "name": "releases",
+              "url": "https://nexus.adito.cloud/repository/releases/",
+              "snapshots": {
+                "enabled": "false",
+                "updatePolicy": "always"
+              }
+            },
+            {
+              "id": "snapshots",
+              "name": "snapshots",
+              "url": "https://nexus.adito.cloud/repository/snapshots/",
+              "snapshots": {
+                "updatePolicy": "always"
+              }
+            },
+            {
+              "id": "central",
+              "url": "https://nexus.adito.cloud/repository/public",
+              "releases": {
+                "enabled": "true"
+              },
+              "snapshots": {
+                "enabled": "true",
+                "updatePolicy": "always"
+              }
+            }
+          ]
+        plugin_repositories: >
+          [
+            {
+              "id": "central",
+              "url": "https://nexus.adito.cloud/repository/public",
+              "releases": {
+                "enabled": "true"
+              },
+              "snapshots": {
+                "enabled": "true"
+              }
+            }
+          ]
+        output_file: ~/.m2/settingsss.xml
