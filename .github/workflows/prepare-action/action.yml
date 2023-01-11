@@ -51,3 +51,82 @@ runs:
              "releases": { "enabled": "true" }, 
              "snapshots": { "enabled": "true", "updatePolicy": "always" } 
           }]
+
+
+
+    - name: new settings.xml
+      uses: whelk-io/maven-settings-xml-action@v21
+      with:
+        repositories: >
+          [
+            {
+              "id": "releases",
+              "name": "releases",
+              "url": "https://nexus.adito.cloud/repository/releases/",
+              "snapshots": {
+                "enabled": "false",
+                "updatePolicy": "always"
+              }
+            },
+            {
+              "id": "snapshots",
+              "name": "snapshots",
+              "url": "https://nexus.adito.cloud/repository/snapshots/",
+              "snapshots": {
+                "updatePolicy": "always"
+              }
+            },
+            {
+              "id": "central",
+              "url": "https://nexus.adito.cloud/repository/public",
+              "releases": {
+                "enabled": "true"
+              },
+              "snapshots": {
+                "enabled": "true",
+                "updatePolicy": "always"
+              }
+            }
+          ]
+        plugin_repositories: >
+          [
+            {
+              "id": "central",
+              "url": "https://nexus.adito.cloud/repository/public",
+              "releases": {
+                "enabled": "true"
+              },
+              "snapshots": {
+                "enabled": "true"
+              }
+            }
+          ]
+        servers: >
+          [
+            {
+              "id": "adito.m2",
+              "username": "${{ inputs.nexus_user }}",
+              "password": "${{ inputs.nexus_password }}"
+            }
+          ]
+        mirrors: >
+          [
+            {
+              "id": "adito.m2",
+              "mirrorOf": "*",
+              "url": "https://nexus.adito.cloud/repository/public"
+            }
+          ]
+        profiles: >
+          [
+            {
+              "id": "adito.m2"
+            }
+          ]
+        active_profiles: >
+          [
+            "adito.m2"
+          ]
+        output_file: .m2/settings.xml
+        
+        
