@@ -100,8 +100,8 @@ runs:
     - name: print settings.xml (win)
       if: runner.os == 'Windows'
       shell: pwsh
-      run:  $NewContent = (Get-Content ~\.m2\settings.xml -Raw) -replace '\n\s*</profile>[\S\n\s]*FLAG\n\s*</id>', '' -replace 'github', 'adito.m2' `
-            Set-Content -Path "~\.m2\settings.xml" -Value $NewContent
+      run: $NewContent = (Get-Content ~\.m2\settings.xml -Raw) -replace '\n\s*</profile>[\S\n\s]*FLAG\n\s*</id>', '' -replace 'github', 'adito.m2'; `
+           Set-Content -Path "~\.m2\settings.xml" -Value $NewContent
              
       # <\/profile>[\S\s]*FLAG\s*<\/id>
       # sed -i 's!\s*FLAG!111!g' ~/.m2/settings.xml
