@@ -96,7 +96,14 @@ runs:
               }
             }
           ]
-        
+    
+    - name: check home dir
+      shell: bash
+      run: |
+        cd ~
+        pwd
+        ls
+    
     - name: print settings.xml (win)
       if: runner.os == 'Windows'
       shell: pwsh
