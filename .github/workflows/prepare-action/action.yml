@@ -125,3 +125,16 @@ runs:
       if: runner.os == 'macOS'
       shell: bash
       run:  cat ~/.m2/settings.xml
+    
+    
+    
+    - name: test cache
+      uses: actions/cache@v3
+      id: test-cache
+      with:
+        enableCrossOsArchive: true
+        path: |
+          ~/.m2/settings.xml
+        key: maven-settings-cache
+        restore-keys: |
+          maven-
