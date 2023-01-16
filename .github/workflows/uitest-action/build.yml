@@ -1,15 +1,7 @@
 // add to designer-ci build.yml
 // https://github.com/aditosoftware/adito-designer-ci/blob/main/.github/workflows/build.yml
 
-// add the following step before the cache step to change windows cache compression algorithm from gzip to zstd to enable cross caching 
-// (Windows = gzip, Linux & MacOS = zstd by default)  
 
-      - if: ${{ runner.os == 'Windows' }}
-        name: Use GNU tar
-        shell: cmd
-        run: |
-          echo "Adding GNU tar to PATH"
-          echo C:\Program Files\Git\usr\bin>>"%GITHUB_PATH%"
 
 
 
@@ -29,15 +21,15 @@
       fail-fast: false
       matrix:
         include:
-          - os: macos-latest
           - os: ubuntu-latest
           - os: windows-latest
     steps:
       # Persist github actions
       - name: Github Action Cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: github-cache
         with:
+          enableCrossOsArchive: true
           path: ./.github
           key: gh-build-${{ github.run_id }}-${{ github.run_number }}
 
