@@ -12,7 +12,7 @@
 
 
 # UITests on all plattforms in parallel
-  unit_test:
+  ui_test:
     runs-on: ${{ matrix.os }}
     name: UI Tests
     needs:
@@ -36,10 +36,20 @@
       # Check if action exists
       - name: Check Action Exists
         id: check_action_exists
-        uses: andstor/file-existence-action@v1
+        uses: andstor/file-existence-action@v2
         with:
           files: ".github/workflows/uitest-action"
 
+      - name: Specify Build Cache
+        uses: actions/cache@v3
+        id: build-cache
+        with:
+          enableCrossOsArchive: true
+          path: |
+            ./*
+            ~/.m2/repository/de/adito
+          key: build-${{ github.run_id }}-${{ github.run_number }}
+      
       # Execute Action
       - name: UI Tests
         if: steps.check_action_exists.outputs.files_exists == 'true'
