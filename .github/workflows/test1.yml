@@ -109,7 +109,7 @@ jobs:
       if: runner.os == 'Windows'
       working-directory: QF-Test
       shell: cmd
-      run: qftest\qftest-${{ env.qfversion }}\bin\qftestc.exe -batch -exitcode-ignore-exception -nomessagewindow -verbose all,errors -run qftest\qftest-${{ env.qfversion }}\demo\carconfig\carconfig_de.qft
+      run: qftest\qftest-${{ env.qfversion }}\bin\qftestc.exe -batch -nomessagewindow -verbose all,errors -run qftest\qftest-${{ env.qfversion }}\demo\carconfig\carconfig_de.qft
       env:
         qfversion: '6.0.4'
     
@@ -118,6 +118,6 @@ jobs:
       if: runner.os == 'Linux'
       working-directory: QF-Test
       shell: bash
-      run: sudo qftest/qftest-${{ env.qfversion }}/bin/qftest -batch -exitcode-ignore-exception -nomessagewindow -verbose all,errors -run qftest/qftest-${{ env.qfversion }}/demo/carconfig/carconfig_de.qft
+      run: sudo qftest/qftest-${{ env.qfversion }}/bin/qftest -batch -nomessagewindow -verbose all,errors -run qftest/qftest-${{ env.qfversion }}/demo/carconfig/carconfig_de.qft
       env:
         qfversion: '6.0.4'
