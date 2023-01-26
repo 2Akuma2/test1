@@ -107,7 +107,7 @@ jobs:
     # execute ui tests
     - name: UI Tests (win)
       if: runner.os == 'Windows'
-      working-directory: ./QF-Test
+      working-directory: QF-Test
       shell: cmd
       run: qftest\qftest-${{ env.qfversion }}\bin\qftestc.exe -batch -exitcode-ignore-exception -nomessagewindow -verbose all,errors -run qftest\qftest-${{ env.qfversion }}\demo\carconfig\carconfig_de.qft
       env:
@@ -116,7 +116,7 @@ jobs:
     
     - name: UI Tests (lin)
       if: runner.os == 'Linux'
-      working-directory: ./QF-Test
+      working-directory: QF-Test
       shell: bash
       run: sudo qftest/qftest-${{ env.qfversion }}/bin/qftest -batch -exitcode-ignore-exception -nomessagewindow -verbose all,errors -run qftest/qftest-${{ env.qfversion }}/demo/carconfig/carconfig_de.qft
       env:
