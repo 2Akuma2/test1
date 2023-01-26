@@ -1,0 +1,119 @@
+
+on:
+  workflow_dispatch:
+
+
+jobs:
+  test_job:
+    runs-on: ${{ matrix.os }}
+    name: test it!
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+          - os: ubuntu-latest
+          - os: windows-latest
+    steps:
+    
+      # download qfs
+    - name: download qftest-sfx.exe (win)
+      if: runner.os == 'Windows'
+      working-directory: ./QF-Test
+      shell: pwsh
+      run: Invoke-WebRequest https://www.qfs.de/fileadmin/Webdata/pub/qftest/QF-Test-${{ env.qfversion }}-sfx.exe -OutFile qftest-sfx.exe
+      env:
+        qfversion: '6.0.4'
+    
+    
+    - name: download qftest.tar.gz (lin)
+      if: runner.os == 'Linux'
+      working-directory: ./QF-Test
+      shell: bash
+      run: curl -o qftest.tar.gz "https://www.qfs.de/fileadmin/Webdata/pub/qftest/QF-Test-${{ env.qfversion }}.tar.gz"
+      env:
+        qfversion: '6.0.4'
+    
+    
+####
+    
+    # install qfs
+    - name: install qfs (win)
+      if: runner.os == 'Windows'
+      working-directory: ./QF-Test
+      shell: cmd
+      run: qftest-sfx.exe
+    
+    
+    - name: install qfs (lin)
+      if: runner.os == 'Linux'
+      working-directory: ./QF-Test
+      shell: bash
+      run:  |
+        tar xzvf qftest.tar.gz
+        cd qftest/qftest-${{ env.qfversion }}
+        printf 'y\ny\n1024\ng\n' | ./setup.sh
+      env:
+        qfversion: '6.0.4'
+    
+        
+####    
+    
+    # edit ADITOdesigner.conf & move ADITOdesigner.conf + license to the right directory
+    - name: ADITOdesigner.conf (win)
+      if: runner.os == 'Windows'
+      working-directory: ./QF-Test
+      shell: pwsh
+      run: Move-Item -Path license -Destination qftest\qftest-${{ env.qfversion }} -Force
+      env:
+        qfversion: '6.0.4'
+        scaleuiwin: '-J-Dsun.java2d.dpiaware=true'
+        fullVersion: '1234.5.6.7'
+      
+    
+    - name: ADITOdesigner.conf (lin)
+      if: runner.os == 'Linux'
+      working-directory: ./QF-Test
+      shell: bash
+      run: mv -f license qftest/qftest-${{ env.qfversion }}
+      env:
+        qfversion: '6.0.4'
+        scaleuilin: ''
+        fullVersion: '1234.5.6.7'
+    
+    
+####
+    
+    # install xvfb for linux
+    - name: xvfb
+      if: runner.os == 'Linux'
+      shell: bash
+      run: |
+        echo
+        echo XVFB start
+        export DISPLAY=:1
+        Xvfb :1 -screen 0 1600x1200x24 &
+        echo $DISPLAY -> :1
+        echo XVFB end
+        echo
+    
+    
+####
+    
+    # execute ui tests
+    - name: UI Tests (win)
+      if: runner.os == 'Windows'
+      working-directory: ./QF-Test
+      shell: cmd
+      run: qftest\qftest-${{ env.qfversion }}\bin\qftestc.exe -batch -exitcode-ignore-exception -nomessagewindow -verbose all,errors -run qftest\qftest-${{ env.qfversion }}\demo\carconfig\carconfig_de.qft
+      env:
+        qfversion: '6.0.4'
+    
+    
+    - name: UI Tests (lin)
+      if: runner.os == 'Linux'
+      working-directory: ./QF-Test
+      shell: bash
+      run: sudo qftest/qftest-${{ env.qfversion }}/bin/qftest -batch -exitcode-ignore-exception -nomessagewindow -verbose all,errors -run qftest/qftest-${{ env.qfversion }}/demo/carconfig/carconfig_de.qft
+      env:
+        qfversion: '6.0.4'
