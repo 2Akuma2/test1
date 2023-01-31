@@ -3,13 +3,8 @@ run-name: ${{ github.actor }} tried to run qfs demo carconfig_de.qft
 on: workflow_dispatch
 jobs:
   run-file:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      - run: QF-Test/qftest-6.0.3/bin/qftestc.exe -batch -nomessagewindow -verbose -variable buggyMode=false -run QF-Test/qftest-6.0.3/demo/carconfig/carconfig_de.qft
-        timeout-minutes: 5
+      - run: docker pull qualityfirstsoftware/qftest-interactive
+      - run: docker run qualityfirstsoftware/qftest-interactive -batch -nomessagewindow -verbose errors,all /qftest/qftest-container/demo/carconfig/carconfig_en.qft
 
