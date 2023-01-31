@@ -1,9 +1,17 @@
 name: qfs-run
-run-name: ${{ github.actor }} tried to run qfs demo carconfig_de.qft
+run-name: ${{ github.actor }} tried to run qfs container demo carconfig_de.qft
 on: workflow_dispatch
 jobs:
   run-file:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    name: test it!
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+          - os: windows-latest
+          - os: macos-latest
     steps:
       - run: docker pull qualityfirstsoftware/qftest-interactive
       - run: docker run qualityfirstsoftware/qftest-interactive -batch -nomessagewindow -verbose errors,all /qftest/qftest-container/demo/carconfig/carconfig_en.qft
