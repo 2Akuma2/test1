@@ -1,0 +1,22 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  job_1:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+          - os: windows-latest
+    steps:
+    
+    - name: pull aditodesigner
+      shell: bash
+      run: docker pull qualityfirstsoftware/qftest-interactive
+
+    - name: run container
+      shell: bash
+      run: docker run -p 5901:5901 qualityfirstsoftware/qftest-interactive -batch -nomessagewindow -verbose errors,all -run /qftest/qftest-container/demo/carconfig/carconfig_de.qft
+     
